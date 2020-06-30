@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.Students;
 using System;
+using System.Threading.Tasks;
+
+using OtripleS.Web.Api.Models.Students;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
@@ -8,6 +10,6 @@ namespace OtripleS.Web.Api.Brokers.Storage
     {
         public DbSet<Student> Students { get; set; }
 
-        public Student GetStudent(Guid StudentId) => Students.Find(StudentId);
+        public ValueTask<Student> SelectStudentById(Guid studentId) => Students.FindAsync(studentId);
     }
 }
