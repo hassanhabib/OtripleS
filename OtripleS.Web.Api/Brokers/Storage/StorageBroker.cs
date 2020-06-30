@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
-    public class StorageBroker : EFxceptionsContext, IStorageBroker
+    public partial class StorageBroker : EFxceptionsContext, IStorageBroker
     {
         private readonly IConfiguration configuration;
 
