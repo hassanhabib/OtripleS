@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using EFxceptions;
+﻿using EFxceptions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {

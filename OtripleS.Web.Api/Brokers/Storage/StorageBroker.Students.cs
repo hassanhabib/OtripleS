@@ -6,5 +6,5 @@ namespace OtripleS.Web.Api.Brokers.Storage
     public partial class StorageBroker
     {
         public DbSet<Student> Students { get; set; }
-}
+    }
 }

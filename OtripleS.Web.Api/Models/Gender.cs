@@ -2,9 +2,9 @@
 {
     public enum Gender
     {
-        Unknown,
         Female,
         Male,
-        Other
+        Other,
+        Unknown
     }
 }
