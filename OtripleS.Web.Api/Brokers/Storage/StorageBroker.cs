@@ -19,8 +19,6 @@ namespace OtripleS.Web.Api.Brokers.Storage
             this.Database.Migrate();
         }
 
-        public IQueryable<Student> SelectAllStudents() => this.Students.AsQueryable();
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString = this.configuration.GetConnectionString("DefaultConnection");
