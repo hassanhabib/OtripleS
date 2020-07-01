@@ -2,6 +2,8 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using OtripleS.Web.Api.Models.Students;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
