@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -26,5 +27,9 @@ namespace OtripleS.Web.Api.Services
 
             return await this.storageBroker.DeleteStudentAsync(maybeStudent);
         }
+
+        public IQueryable<Student> RetrieveAllStudents()=>
+            this.storageBroker.SelectAllStudents();
+        
     }
 }

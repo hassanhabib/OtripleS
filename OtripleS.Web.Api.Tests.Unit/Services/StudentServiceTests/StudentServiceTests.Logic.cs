@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -45,5 +46,33 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public void ShouldRetrieveAllStudents()
+        {
+            // given
+            IQueryable<Student> randomStudents = CreateRandomStudents();
+            IQueryable<Student> storageStudents = randomStudents;
+            IQueryable<Student> expectedStudents = storageStudents;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllStudents())
+                    .Returns(storageStudents);
+
+            //when
+            IQueryable<Student> actualStudents =
+                this.studentService.RetrieveAllStudents();
+
+            //then
+            actualStudents.Should().BeEquivalentTo(expectedStudents);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllStudents(),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
