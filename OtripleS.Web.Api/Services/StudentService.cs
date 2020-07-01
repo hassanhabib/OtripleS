@@ -1,12 +1,12 @@
-﻿using OtripleS.Web.Api.Brokers.Loggings;
-using OtripleS.Web.Api.Brokers.Storage;
-using OtripleS.Web.Api.Models.Students;
 using System;
 using System.Threading.Tasks;
+using OtripleS.Web.Api.Brokers.Loggings;
+using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Models.Students;
 
 namespace OtripleS.Web.Api.Services
 {
-    public class StudentService : IStudentService
+    public partial class StudentService : IStudentService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Services
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<Student> DeleteStudentAsync(Guid studentId) 
+        public async ValueTask<Student> DeleteStudentAsync(Guid studentId)
         {
             Student maybeStudent =
                 await this.storageBroker.SelectStudentByIdAsync(studentId);
