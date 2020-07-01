@@ -10,7 +10,13 @@ namespace OtripleS.Web.Api.Brokers.Storage
     {
         public DbSet<Student> Students { get; set; }
 
-        public async ValueTask<Student> SelectStudentByIdAsync(Guid studentId) => Students.FindAsync(studentId);
         public IQueryable<Student> SelectAllStudents() => this.Students.AsQueryable();
+
+        public async ValueTask<Student> SelectStudentByIdAsync(Guid studentId)
+        {
+            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
+            return await Students.FindAsync(studentId);
+        }
     }
 }
