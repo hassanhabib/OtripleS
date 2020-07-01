@@ -34,7 +34,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                 .OnProperty(student => student.BirthDate).Use(this.dateTimeBroker.GetCurrentDateTime())
                 .OnProperty(student => student.CreatedDate).Use(this.dateTimeBroker.GetCurrentDateTime())
                 .OnProperty(student => student.UpdatedDate).Use(this.dateTimeBroker.GetCurrentDateTime());
-            
+
             return filler.Create();
         }
 
