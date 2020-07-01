@@ -1,9 +1,9 @@
 using System;
-using System.Threading.Tasks;
 using System.Linq;
-using OtripleS.Web.Api.Models.Students;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using OtripleS.Web.Api.Models.Students;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
