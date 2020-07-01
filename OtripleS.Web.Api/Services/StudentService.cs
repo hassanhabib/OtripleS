@@ -20,16 +20,25 @@ namespace OtripleS.Web.Api.Services
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<Student> DeleteStudentAsync(Guid studentId)
+        public ValueTask<Student> DeleteStudentAsync(Guid studentId)=>
+        TryCatch(async()=>
         {
+            ValidateStudentId(studentId);
             Student maybeStudent =
                 await this.storageBroker.SelectStudentByIdAsync(studentId);
 
+            ValidateStorageStudent(maybeStudent, studentId);
             return await this.storageBroker.DeleteStudentAsync(maybeStudent);
-        }
+        });
 
         public IQueryable<Student> RetrieveAllStudents()=>
-            this.storageBroker.SelectAllStudents();
+        TryCatch(() => {
+            IQueryable<Student> maybeStudents = this.storageBroker.SelectAllStudents();
+            ValidateStorageStudents(maybeStudents);
+
+            return maybeStudents;
+
+        });
         
     }
 }
