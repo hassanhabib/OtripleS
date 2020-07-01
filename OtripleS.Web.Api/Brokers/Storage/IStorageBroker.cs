@@ -1,11 +1,13 @@
-﻿using OtripleS.Web.Api.Models.Students;
-
+using System;
 using System.Linq;
+using System.Threading.Tasks;
+using OtripleS.Web.Api.Models.Students;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
     public interface IStorageBroker
     {
-        IQueryable<Student> SelectAllStudents();
+        public ValueTask<Student> SelectStudentByIdAsync(Guid studentId);
+        public IQueryable<Student> SelectAllStudents();
     }
 }
