@@ -27,5 +27,13 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
             return storageStudent.Entity;
         }
+
+        public async ValueTask<Student> InsertStudentAsync(Student student)
+        {
+            EntityEntry<Student> storageStudent = await this.Students.AddAsync(student);
+            await this.SaveChangesAsync();
+
+            return storageStudent.Entity;
+        }
     }
 }
