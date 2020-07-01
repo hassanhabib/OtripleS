@@ -9,6 +9,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
     {
         public IQueryable<Student> SelectAllStudents();
         public ValueTask<Student> SelectStudentByIdAsync(Guid studentId);
+        public ValueTask<Student> AddStudentAsync(Student student);
         public ValueTask<Student> DeleteStudentAsync(Student student);
     }
 }

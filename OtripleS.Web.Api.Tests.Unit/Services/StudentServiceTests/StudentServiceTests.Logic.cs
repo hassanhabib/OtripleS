@@ -9,6 +9,31 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
 {
     public partial class StudentServiceTests
     {
+        public class RegisterAsync : StudentServiceTests
+        {
+            [Fact]
+            public async Task RegistersNewStudent()
+            {
+                // given
+                Student student = CreateRandomStudent();
+                storageBrokerMock.Setup(broker => broker.AddStudentAsync(It.IsAny<Student>()))
+                    .ReturnsAsync(student);
+
+                // when
+                Student registeredStudent = await studentService.RegisterAsync(student.Id, student.FirstName, student.MiddleName, student.LastName, student.BirthDate, student.Gender);
+
+                // then
+                storageBrokerMock.Verify(broker => broker.AddStudentAsync(It.IsAny<Student>()), Times.Once());
+
+                Assert.Equal(student.Id, registeredStudent.Id);
+                Assert.Equal(student.FirstName, registeredStudent.FirstName);
+                Assert.Equal(student.MiddleName, registeredStudent.MiddleName);
+                Assert.Equal(student.LastName, registeredStudent.LastName);
+                Assert.Equal(student.BirthDate, registeredStudent.BirthDate);
+                Assert.Equal(student.Gender, registeredStudent.Gender);
+            }
+        }
+
         [Fact]
         public async Task ShouldDeleteStudentAsync()
         {
