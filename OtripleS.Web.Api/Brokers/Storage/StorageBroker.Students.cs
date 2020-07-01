@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using OtripleS.Web.Api.Models.Students;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
@@ -17,6 +18,14 @@ namespace OtripleS.Web.Api.Brokers.Storage
             this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await Students.FindAsync(studentId);
+        }
+
+        public async ValueTask<Student> DeleteStudentAsync(Student student)
+        {
+            EntityEntry<Student> storageStudent = this.Students.Remove(student);
+            await this.SaveChangesAsync();
+
+            return storageStudent.Entity;
         }
     }
 }
