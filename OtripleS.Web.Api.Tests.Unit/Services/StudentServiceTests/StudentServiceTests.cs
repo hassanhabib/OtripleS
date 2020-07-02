@@ -4,6 +4,7 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Services;
+using System;
 using System.Linq;
 using Tynamix.ObjectFiller;
 
@@ -32,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             var filler = new Filler<Student>();
 
             filler.Setup()
-                .OnProperty(student => student.BirthDate).Use(this.dateTimeBroker.GetCurrentDateTime())
+                .OnProperty(student => student.BirthDate).Use(this.dateTimeBroker.GetRandomDate())
                 .OnProperty(student => student.CreatedDate).Use(this.dateTimeBroker.GetCurrentDateTime())
                 .OnProperty(student => student.UpdatedDate).Use(this.dateTimeBroker.GetCurrentDateTime());
 
@@ -45,7 +46,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             var filler = new Filler<Student>();
 
             filler.Setup()
-               .OnProperty(student => student.BirthDate).Use(this.dateTimeBroker.GetCurrentDateTime())
+               .OnProperty(student => student.BirthDate).Use(this.dateTimeBroker.GetRandomDate())
                .OnProperty(student => student.CreatedDate).Use(this.dateTimeBroker.GetCurrentDateTime())
                .OnProperty(student => student.UpdatedDate).Use(this.dateTimeBroker.GetCurrentDateTime());
 
