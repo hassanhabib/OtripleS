@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Services
                 var student =
                     await this.storageBroker.SelectStudentByIdAsync(studentId);
 
-                // MapChangesToStudent(updateDto, student);
+                MapChangesToStudent(updateDto, student);
                 ValidateStudent(student);
 
                 return await this.storageBroker.UpdateStudentAsync(student);
