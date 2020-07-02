@@ -4,22 +4,6 @@ namespace OtripleS.Web.Api.Models.Students
 {
     public class Student : IAuditable
     {
-        public Student()
-        {
-        }
-
-        public Student(Guid id, string firstName, string middleName, string lastName, DateTimeOffset birthDate, Gender gender)
-        {
-            Id = id;
-            FirstName = firstName;
-            MiddleName = middleName;
-            LastName = lastName;
-            BirthDate = birthDate;
-            Gender = gender;
-
-            CreatedDate = DateTime.UtcNow;
-        }
-
         public Guid Id { get; set; }
         public string UserId { get; set; }
         public string IdentityNumber { get; set; }

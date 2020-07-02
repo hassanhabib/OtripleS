@@ -20,17 +20,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                     .ReturnsAsync(student);
 
                 // when
-                Student registeredStudent = await studentService.RegisterAsync(student.Id, student.FirstName, student.MiddleName, student.LastName, student.BirthDate, student.Gender);
+                Student registeredStudent = await studentService.RegisterAsync(student);
 
                 // then
                 storageBrokerMock.Verify(broker => broker.AddStudentAsync(It.IsAny<Student>()), Times.Once());
 
-                Assert.Equal(student.Id, registeredStudent.Id);
-                Assert.Equal(student.FirstName, registeredStudent.FirstName);
-                Assert.Equal(student.MiddleName, registeredStudent.MiddleName);
-                Assert.Equal(student.LastName, registeredStudent.LastName);
-                Assert.Equal(student.BirthDate, registeredStudent.BirthDate);
-                Assert.Equal(student.Gender, registeredStudent.Gender);
+                registeredStudent.Should().BeEquivalentTo(student);
             }
         }
 

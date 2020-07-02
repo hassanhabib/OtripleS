@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
-using OtripleS.Web.Api.Models;
 using OtripleS.Web.Api.Models.Students;
 
 namespace OtripleS.Web.Api.Services
@@ -28,19 +27,21 @@ namespace OtripleS.Web.Api.Services
             return await this.storageBroker.DeleteStudentAsync(maybeStudent);
         }
 
-        public async ValueTask<Student> RegisterAsync(
-            Guid id,
-            string firstName,
-            string middleName,
-            string lastName,
-            DateTimeOffset BirthDate,
-            Gender gender
-        )
+        public async ValueTask<Student> RegisterAsync(Student student)
         {
-            Student student = await storageBroker.AddStudentAsync(new Student(id, firstName, middleName, lastName, BirthDate, gender))
-                .ConfigureAwait(false);
+            ValidateStudent(student);
 
-            return student;
+            try
+            {
+                student = await storageBroker.AddStudentAsync(student)
+                    .ConfigureAwait(false);
+                return student;
+            }
+            catch (Exception exception)
+            {
+                this.loggingBroker.LogError(exception);
+                throw;
+            }
         }
     }
 }
