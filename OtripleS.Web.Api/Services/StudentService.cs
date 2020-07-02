@@ -39,7 +39,6 @@ namespace OtripleS.Web.Api.Services
             ValidateStorageStudents(maybeStudents);
 
             return maybeStudents;
-
         });
         
     }
