@@ -9,54 +9,6 @@ namespace OtripleS.Web.Api.Services
 {
     public partial class StudentService
     {
-        public void ValidateStudent(Student student)
-        {
-            ValidateStudentIsNotNull(student);
-            ValidateStudentId(student.Id);
-            ValidateStudentFirstName(student);
-            ValidateStudentMiddleName(student);
-            ValidateStudentLastName(student);
-        }
-
-        private void ValidateStudentIsNotNull(Student student)
-        {
-            if (student is null)
-            {
-                throw new NullStudentException();
-            }
-        }
-
-        private static void ValidateStudentFirstName(Student student)
-        {
-            if (string.IsNullOrWhiteSpace(student.FirstName))
-            {
-                throw new InvalidStudentException(
-                    parameterName: nameof(Student.FirstName),
-                    parameterValue: student.FirstName);
-            }
-        }
-
-        private static void ValidateStudentMiddleName(Student student)
-        {
-            if (string.IsNullOrWhiteSpace(student.MiddleName))
-            {
-                throw new InvalidStudentException(
-                    parameterName: nameof(Student.MiddleName),
-                    parameterValue: student.MiddleName);
-            }
-        }
-
-        private static void ValidateStudentLastName(Student student)
-        {
-            if (string.IsNullOrWhiteSpace(student.LastName))
-            {
-                throw new InvalidStudentException(
-                    parameterName: nameof(Student.LastName),
-                    parameterValue: student.LastName);
-            }
-        }
-
-
         private static void ValidateStudentId(Guid studentId)
         {
             if (studentId == Guid.Empty)
