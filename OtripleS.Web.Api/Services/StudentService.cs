@@ -24,10 +24,12 @@ namespace OtripleS.Web.Api.Services
         TryCatch(async()=>
         {
             ValidateStudentId(studentId);
+
             Student maybeStudent =
                 await this.storageBroker.SelectStudentByIdAsync(studentId);
 
             ValidateStorageStudent(maybeStudent, studentId);
+
             return await this.storageBroker.DeleteStudentAsync(maybeStudent);
         });
 

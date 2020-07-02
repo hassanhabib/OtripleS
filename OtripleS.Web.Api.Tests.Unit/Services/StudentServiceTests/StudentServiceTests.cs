@@ -30,6 +30,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         private Student CreateRandomStudent()
         {
             var filler = new Filler<Student>();
+
             filler.Setup()
                 .OnProperty(student => student.BirthDate).Use(this.dateTimeBroker.GetCurrentDateTime())
                 .OnProperty(student => student.CreatedDate).Use(this.dateTimeBroker.GetCurrentDateTime())
@@ -42,6 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         {
             int randomNumber = new IntRange(min: 2, max: 10).GetValue();
             var filler = new Filler<Student>();
+
             filler.Setup()
                .OnProperty(student => student.BirthDate).Use(this.dateTimeBroker.GetCurrentDateTime())
                .OnProperty(student => student.CreatedDate).Use(this.dateTimeBroker.GetCurrentDateTime())
