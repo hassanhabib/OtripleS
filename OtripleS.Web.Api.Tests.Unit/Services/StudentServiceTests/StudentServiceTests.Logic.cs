@@ -20,12 +20,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student expectedStudent = storageStudent;
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentByIdAsync(inputId))
-                    .ReturnsAsync(storageStudent);
+                    broker.SelectStudentByIdAsync(inputId))
+                .ReturnsAsync(storageStudent);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.DeleteStudentAsync(storageStudent))
-                    .ReturnsAsync(expectedStudent);
+                    broker.DeleteStudentAsync(storageStudent))
+                .ReturnsAsync(expectedStudent);
 
             // when
             Student actualStudent =
@@ -35,15 +35,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             actualStudent.Should().BeEquivalentTo(expectedStudent);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentByIdAsync(inputId),
-                    Times.Once);
+                    broker.SelectStudentByIdAsync(inputId),
+                Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteStudentAsync(storageStudent),
-                    Times.Once);
+                    broker.DeleteStudentAsync(storageStudent),
+                Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldUpdateStudentAsync()
+        {
+            //given
+            Student randomStudent = CreateRandomStudent();
+            var inputStudent = randomStudent;
+            var storageStudent = inputStudent;
+            var dto = CreateRandomDto();
+            var expectedStudent = NewStudentWithUpdatedProperties(inputStudent, dto);
+
+            this.storageBrokerMock.Setup(broker =>
+                    broker.SelectStudentByIdAsync(inputStudent.Id))
+                .ReturnsAsync(storageStudent);
+
+            this.storageBrokerMock.Setup(broker =>
+                    broker.UpdateStudentAsync(inputStudent))
+                .ReturnsAsync(storageStudent);
+
+            // when
+            Student actualStudent =
+                await this.studentService.ModifyStudentAsync(inputStudent.Id, dto);
+            
+            // then
+            actualStudent.Should().BeEquivalentTo(expectedStudent);
+            
+            this.storageBrokerMock.Verify(broker =>
+                    broker.SelectStudentByIdAsync(inputStudent.Id),
+                Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                    broker.UpdateStudentAsync(inputStudent),
+                Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            
         }
     }
 }

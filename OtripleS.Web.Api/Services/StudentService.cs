@@ -2,7 +2,10 @@ using System;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Models;
 using OtripleS.Web.Api.Models.Students;
+using OtripleS.Web.Api.Requests;
+using OtripleS.Web.Api.Utils;
 
 namespace OtripleS.Web.Api.Services
 {
@@ -25,6 +28,42 @@ namespace OtripleS.Web.Api.Services
                 await this.storageBroker.SelectStudentByIdAsync(studentId);
 
             return await this.storageBroker.DeleteStudentAsync(maybeStudent);
+        }
+
+        public async ValueTask<Student> ModifyStudentAsync(Guid studentId, StudentUpdateDto updateDto)
+        {
+            var student =
+                await this.storageBroker.SelectStudentByIdAsync(studentId);
+            if (student.HasValue())
+            {
+                // MapChangesToStudent(updateDto, student);
+
+                return await this.storageBroker.UpdateStudentAsync(student);
+            }
+
+            return await Task.FromResult<Student>(null);
+        }
+
+        private static void MapChangesToStudent(StudentUpdateDto updateDto, Student student)
+        {
+            student.IdentityNumber = updateDto.IdentityNumber.HasValue()
+                ? updateDto.IdentityNumber
+                : student.IdentityNumber;
+            student.FirstName = updateDto.FirstName.HasValue()
+                ? updateDto.FirstName
+                : student.FirstName;
+            student.MiddleName = updateDto.MiddleName.HasValue()
+                ? updateDto.MiddleName
+                : student.MiddleName;
+            student.LastName = updateDto.LastName.HasValue()
+                ? updateDto.LastName
+                : student.LastName;
+            student.BirthDate = updateDto.BirthDate.HasValue()
+                ? updateDto.BirthDate
+                : student.BirthDate;
+            student.Gender = updateDto.Gender.HasValue()
+                ? GenderHelper.StringToGenderConverter(updateDto.Gender)
+                : student.Gender;
         }
     }
 }

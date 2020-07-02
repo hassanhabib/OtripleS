@@ -2,7 +2,9 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Students;
+using OtripleS.Web.Api.Requests;
 using OtripleS.Web.Api.Services;
+using OtripleS.Web.Api.Utils;
 
 namespace OtripleS.Web.Api.Controllers
 {
@@ -24,6 +26,17 @@ namespace OtripleS.Web.Api.Controllers
                 await this.studentService.DeleteStudentAsync(studentId);
 
             return Ok(storageStudent);
+        }
+
+        [HttpPut("{studentId}")]
+        public async ValueTask<ActionResult<Student>> UpdateStudentAsync(Guid studentId,
+            [FromBody] StudentUpdateDto dto)
+        {
+            var student = await this.studentService.ModifyStudentAsync(studentId, dto);
+
+            if (student.HasValue()) return Ok(student);
+
+            return BadRequest("update student failed");
         }
     }
 }
