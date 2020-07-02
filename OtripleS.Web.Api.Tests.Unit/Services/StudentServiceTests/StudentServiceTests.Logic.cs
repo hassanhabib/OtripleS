@@ -56,6 +56,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student randomStudent = CreateRandomStudent();
             StudentUpdateDto inputDto = CreateRandomDto();
             Student storageStudent = randomStudent;
+
+            DateTimeOffset lastUpdatedAt = storageStudent.UpdatedDate;
+            
             Student expectedStudent = storageStudent;
 
             this.storageBrokerMock.Setup(broker =>
@@ -74,6 +77,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             actualStudent.Should().BeEquivalentTo(expectedStudent);
 
             actualStudent.BirthDate.Should().BeSameDateAs(inputDto.BirthDate);
+            actualStudent.CreatedDate.Should().BeSameDateAs(storageStudent.CreatedDate);
 
             this.storageBrokerMock.Verify(broker =>
                     broker.SelectStudentByIdAsync(storageStudent.Id),
