@@ -54,7 +54,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             var inputStudent = randomStudent;
             var storageStudent = inputStudent;
             var dto = CreateRandomDto();
-            var expectedStudent = NewStudentWithUpdatedProperties(inputStudent, dto);
+            var expectedStudent = storageStudent;
 
             this.storageBrokerMock.Setup(broker =>
                     broker.SelectStudentByIdAsync(inputStudent.Id))
