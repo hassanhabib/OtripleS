@@ -30,18 +30,18 @@ namespace OtripleS.Web.Api.Services
             return await this.storageBroker.DeleteStudentAsync(maybeStudent);
         }
 
-        public async ValueTask<Student> ModifyStudentAsync(Guid studentId, StudentUpdateDto updateDto)
+        public ValueTask<Student> ModifyStudentAsync(Guid studentId, StudentUpdateDto updateDto)
         {
-            var student =
-                await this.storageBroker.SelectStudentByIdAsync(studentId);
-            if (student.HasValue())
+            return TryCatch(async () =>
             {
-                MapChangesToStudent(updateDto, student);
+                var student =
+                    await this.storageBroker.SelectStudentByIdAsync(studentId);
+
+                // MapChangesToStudent(updateDto, student);
+                ValidateStudent(student);
 
                 return await this.storageBroker.UpdateStudentAsync(student);
-            }
-
-            return await Task.FromResult<Student>(null);
+            });
         }
 
         private static void MapChangesToStudent(StudentUpdateDto updateDto, Student student)
@@ -62,7 +62,7 @@ namespace OtripleS.Web.Api.Services
                 ? updateDto.BirthDate
                 : student.BirthDate;
             student.Gender = updateDto.Gender.HasValue()
-                ? GenderHelper.StringToGenderConverter(updateDto.Gender)
+                ? updateDto.Gender
                 : student.Gender;
         }
     }

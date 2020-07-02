@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Bogus.Extensions;
 using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.Students;
+using OtripleS.Web.Api.Requests;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
@@ -50,38 +52,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         public async Task ShouldUpdateStudentAsync()
         {
             //given
+
             Student randomStudent = CreateRandomStudent();
-            var inputStudent = randomStudent;
-            var storageStudent = inputStudent;
-            var dto = CreateRandomDto();
-            var expectedStudent = storageStudent;
+            StudentUpdateDto inputDto = CreateRandomDto();
+            Student storageStudent = randomStudent;
+            Student expectedStudent = storageStudent;
 
             this.storageBrokerMock.Setup(broker =>
-                    broker.SelectStudentByIdAsync(inputStudent.Id))
+                    broker.SelectStudentByIdAsync(randomStudent.Id))
                 .ReturnsAsync(storageStudent);
 
             this.storageBrokerMock.Setup(broker =>
-                    broker.UpdateStudentAsync(inputStudent))
+                    broker.UpdateStudentAsync(storageStudent))
                 .ReturnsAsync(storageStudent);
 
             // when
             Student actualStudent =
-                await this.studentService.ModifyStudentAsync(inputStudent.Id, dto);
-            
+                await this.studentService.ModifyStudentAsync(storageStudent.Id, inputDto);
+
             // then
             actualStudent.Should().BeEquivalentTo(expectedStudent);
-            
+
+            actualStudent.BirthDate.Should().BeSameDateAs(inputDto.BirthDate);
+
             this.storageBrokerMock.Verify(broker =>
-                    broker.SelectStudentByIdAsync(inputStudent.Id),
+                    broker.SelectStudentByIdAsync(storageStudent.Id),
                 Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                    broker.UpdateStudentAsync(inputStudent),
+                    broker.UpdateStudentAsync(storageStudent),
                 Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Students;
+using OtripleS.Web.Api.Models.Students.Exceptions;
 using OtripleS.Web.Api.Requests;
 using OtripleS.Web.Api.Services;
 using OtripleS.Web.Api.Utils;
@@ -32,11 +34,29 @@ namespace OtripleS.Web.Api.Controllers
         public async ValueTask<ActionResult<Student>> UpdateStudentAsync(Guid studentId,
             [FromBody] StudentUpdateDto dto)
         {
-            var student = await this.studentService.ModifyStudentAsync(studentId, dto);
+            try
+            {
+                var storageStudent = await this.studentService.ModifyStudentAsync(studentId, dto);
 
-            if (student.HasValue()) return Ok(student);
-
-            return BadRequest("update student failed");
+                return Ok(storageStudent);
+            }
+            catch (StudentValidationException studentValidationException)
+                when (studentValidationException.InnerException is NotFoundStudentException)
+            {
+                return NotFound(studentValidationException.InnerException.Message);
+            }
+            catch (StudentValidationException studentValidationException)
+            {
+                return BadRequest(studentValidationException.Message);
+            }
+            catch (StudentDependencyException studentDependencyException)
+            {
+                return Problem(studentDependencyException.Message);
+            }
+            catch (StudentServiceException studentServiceException)
+            {
+                return Problem(studentServiceException.Message);
+            }
         }
     }
 }

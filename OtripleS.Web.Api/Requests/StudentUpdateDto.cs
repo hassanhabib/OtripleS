@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Requests
         public string MiddleName { get; set; }
         public string LastName { get; set; }
         public DateTimeOffset BirthDate { get; set; }
-        public string Gender { get; set; }
+        public Gender Gender { get; set; }
     }
 }
