@@ -45,5 +45,34 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldRetrieveStudentByIdAsync()
+        {
+            // given
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputStudentId = randomStudentId;
+            Student randomStudent = CreateRandomStudent();
+            Student storageStudent = randomStudent;
+            Student expectedStudent = storageStudent;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentByIdAsync(inputStudentId))
+                    .ReturnsAsync(storageStudent);
+
+            // when
+            Student actualStudent =
+                await this.studentService.RetrieveStudentByIdAsync(inputStudentId);
+
+            // then
+            actualStudent.Should().BeEquivalentTo(expectedStudent);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentByIdAsync(inputStudentId),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }

@@ -1,4 +1,8 @@
-﻿using Moq;
+﻿using System;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
+using Microsoft.Data.SqlClient;
+using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -36,5 +40,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
 
             return filler.Create();
         }
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message 
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
+
+        private static SqlException CreateSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));        
     }
 }
