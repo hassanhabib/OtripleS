@@ -34,7 +34,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         {
             var filler = new Filler<Student>();
             filler.Setup()
-                .OnProperty(student => student.BirthDate).Use(this.dateTimeBroker.GetCurrentDateTime())
+                .OnProperty(student => student.BirthDate).Use(GetRandomDateTime())
                 .OnProperty(student => student.CreatedDate).Use(this.dateTimeBroker.GetCurrentDateTime())
                 .OnProperty(student => student.UpdatedDate).Use(this.dateTimeBroker.GetCurrentDateTime());
 
@@ -50,5 +50,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
 
         private static SqlException CreateSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
     }
 }

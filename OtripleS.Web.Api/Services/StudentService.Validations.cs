@@ -23,5 +23,23 @@ namespace OtripleS.Web.Api.Services
                 throw new NotFoundStudentException(studentId);
             }
         }
+
+        private void ValidateStudentId(Guid studentId)
+        {
+            if (studentId == Guid.Empty)
+            {
+                throw new InvalidStudentInputException(
+                    parameterName: nameof(Student.Id),
+                    parameterValue: studentId);
+            }
+        }
+
+        private static void ValidateStorageStudent(Student storageStudent, Guid studentId)
+        {
+            if (storageStudent == null)
+            {
+                throw new NotFoundStudentException(studentId);
+            }
+        }
     }
 }
