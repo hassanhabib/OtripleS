@@ -34,7 +34,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         {
             var filler = new Filler<Student>();
             filler.Setup()
-                .OnProperty(student => student.BirthDate).Use(this.dateTimeBroker.GetCurrentDateTime())
+                .OnProperty(student => student.BirthDate)
+                    .Use(this.dateTimeBroker.GetCurrentDateTime().AddYears(-new Random().Next(6,18)))
                 .OnProperty(student => student.CreatedDate).Use(this.dateTimeBroker.GetCurrentDateTime())
                 .OnProperty(student => student.UpdatedDate).Use(this.dateTimeBroker.GetCurrentDateTime());
 
