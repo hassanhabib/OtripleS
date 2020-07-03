@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Students;
-using OtripleS.Web.Api.Models.Students.Exceptions;
 
 namespace OtripleS.Web.Api.Services
 {

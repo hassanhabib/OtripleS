@@ -20,15 +20,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                 parameterName: nameof(Student.Id),
                 parameterValue: inputStudentId);
 
-            var expectedStudentValidationException = 
+            var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentInputException);
 
             // when
-            ValueTask<Student> retrieveStudentByIdTask = 
+            ValueTask<Student> retrieveStudentByIdTask =
                 this.studentService.RetrieveStudentByIdAsync(inputStudentId);
 
             // then
-            await Assert.ThrowsAsync<StudentValidationException>(() => 
+            await Assert.ThrowsAsync<StudentValidationException>(() =>
                 retrieveStudentByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>

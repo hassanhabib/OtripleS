@@ -44,11 +44,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
-                expectedException.Message == actualException.Message 
+                expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
 
         private static SqlException CreateSqlException() =>
-            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));        
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +25,7 @@ namespace OtripleS.Web.Api.Services
             {
                 throw CreateAndLogValidationException(nullStudentException);
             }
-            catch(SqlException sqlException)
+            catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
