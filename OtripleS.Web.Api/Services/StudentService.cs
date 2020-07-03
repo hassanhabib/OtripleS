@@ -33,9 +33,9 @@ namespace OtripleS.Web.Api.Services
         public ValueTask<Student> RetrieveStudentByIdAsync(Guid studentId) =>
         TryCatch(async () =>
         {
-            ValidateStudentIdIsNotNull(studentId);
+            ValidateStudentId(studentId);
             Student storageStudent = await this.storageBroker.SelectStudentByIdAsync(studentId);
-            ValidateStudentIsNotNull(storageStudent, studentId);
+            ValidateStorageStudent(storageStudent, studentId);
 
             return storageStudent;
         });

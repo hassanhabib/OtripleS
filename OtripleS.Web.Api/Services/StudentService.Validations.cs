@@ -6,24 +6,6 @@ namespace OtripleS.Web.Api.Services
 {
     public partial class StudentService
     {
-        private static void ValidateStudentIdIsNotNull(Guid studentId)
-        {
-            if (studentId == default)
-            {
-                throw new InvalidStudentInputException(
-                    parameterName: nameof(Student.Id),
-                    parameterValue: studentId);
-            }
-        }
-
-        private static void ValidateStudentIsNotNull(Student storageStudent, Guid studentId)
-        {
-            if (storageStudent == null)
-            {
-                throw new NotFoundStudentException(studentId);
-            }
-        }
-
         private void ValidateStudentId(Guid studentId)
         {
             if (studentId == Guid.Empty)
