@@ -51,10 +51,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Guid inputStudentId = randomStudentId;
             Student randomStudent = CreateRandomStudent();
             Student invalidStorageStudent = null;
-            var nullStudentException = new NullStudentException();
+            var notFoundStudentException = new NotFoundStudentException(inputStudentId);
 
             var expectedStudentValidationException =
-                new StudentValidationException(nullStudentException);
+                new StudentValidationException(notFoundStudentException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentByIdAsync(inputStudentId))

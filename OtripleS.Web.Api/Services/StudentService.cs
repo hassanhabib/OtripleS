@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Services
         {
             ValidateStudentIdIsNotNull(studentId);
             Student storageStudent = await this.storageBroker.SelectStudentByIdAsync(studentId);
-            ValidateStudentIsNotNull(storageStudent);
+            ValidateStudentIsNotNull(storageStudent, studentId);
 
             return storageStudent;
         });

@@ -16,11 +16,11 @@ namespace OtripleS.Web.Api.Services
             }
         }
 
-        private static void ValidateStudentIsNotNull(Student storageStudent)
+        private static void ValidateStudentIsNotNull(Student storageStudent, Guid studentId)
         {
             if (storageStudent == null)
             {
-                throw new NullStudentException();
+                throw new NotFoundStudentException(studentId);
             }
         }
     }
