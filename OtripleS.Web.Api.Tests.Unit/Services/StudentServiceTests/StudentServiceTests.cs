@@ -48,7 +48,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             var filler = new Filler<Student>();
 
             filler.Setup()
-               .OnProperty(student => student.BirthDate).Use(this.dateTimeBroker.GetRandomDate())
+               .OnProperty(student => student.BirthDate).Use(GetRandomDateTime())
                .OnProperty(student => student.CreatedDate).Use(this.dateTimeBroker.GetCurrentDateTime())
                .OnProperty(student => student.UpdatedDate).Use(this.dateTimeBroker.GetCurrentDateTime());
 
