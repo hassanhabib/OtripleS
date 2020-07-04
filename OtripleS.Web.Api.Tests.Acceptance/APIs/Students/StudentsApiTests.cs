@@ -52,5 +52,23 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
 			await this.otripleSApiBroker.DeleteStudentByIdAsync(actualStudent.Id);
 		}
 
+		[Fact]
+		public async Task ShouldPutStudentAsync()
+        {
+			//given
+			Student randomStudent = CreateRandomStudent();
+			await this.otripleSApiBroker.PostStudentAsync(randomStudent);
+			Student newStudent = CreateRandomStudent();
+
+			//when
+			await this.otripleSApiBroker.PutStudentAsync(randomStudent.Id, newStudent);
+
+			Student actualStudent =
+				await this.otripleSApiBroker.GetStudentByIdAsync(randomStudent.Id);
+
+			//then
+			actualStudent.Should().BeEquivalentTo(newStudent);
+        }
+
 	}
 }
