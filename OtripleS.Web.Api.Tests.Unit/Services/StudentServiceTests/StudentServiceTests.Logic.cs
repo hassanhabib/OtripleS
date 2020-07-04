@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.Students;
+using OtripleS.Web.Api.Models.Students.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
@@ -12,7 +13,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         public class RegisterAsync : StudentServiceTests
         {
             [Fact]
-            public async Task RegistersNewStudent()
+            public async Task ShouldRegisterNewStudentWhenValidStudent()
             {
                 // given
                 Student student = CreateRandomStudent();
@@ -26,6 +27,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                 storageBrokerMock.Verify(broker => broker.AddStudentAsync(It.IsAny<Student>()), Times.Once());
 
                 registeredStudent.Should().BeEquivalentTo(student);
+            }
+
+            [Fact]
+            public async Task ShouldThrowExceptionWhenInvalidStudent()
+			{
+                // given
+                Student student = new Student();
+
+                // when & then
+              await Assert.ThrowsAsync<StudentValidationException>(async () => await studentService.RegisterAsync(student));
             }
         }
 
@@ -60,6 +71,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
 
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteStudentAsync(storageStudent),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldRetrieveStudentByIdAsync()
+        {
+            // given
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputStudentId = randomStudentId;
+            Student randomStudent = CreateRandomStudent();
+            Student storageStudent = randomStudent;
+            Student expectedStudent = storageStudent;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentByIdAsync(inputStudentId))
+                    .ReturnsAsync(storageStudent);
+
+            // when
+            Student actualStudent =
+                await this.studentService.RetrieveStudentByIdAsync(inputStudentId);
+
+            // then
+            actualStudent.Should().BeEquivalentTo(expectedStudent);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentByIdAsync(inputStudentId),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();

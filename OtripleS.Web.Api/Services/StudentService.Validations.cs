@@ -1,43 +1,60 @@
-﻿using OtripleS.Web.Api.Models.Students;
-using System;
+﻿using System;
+using OtripleS.Web.Api.Models.Students;
+using OtripleS.Web.Api.Models.Students.Exceptions;
 
 namespace OtripleS.Web.Api.Services
 {
     public partial class StudentService
     {
-        public void ValidateStudent(Student student)
+        private void ValidateStudentId(Guid studentId)
         {
-            ValidateStudentIsNotNull(student);
-            ValidateStudentId(student.Id);
-            ValidateStudentName(student);
-        }
-
-        private void ValidateStudentIsNotNull(Student student)
-        {
-            if (student is null)
+            if (studentId == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(student));
+                throw new InvalidStudentInputException(
+                    parameterName: nameof(Student.Id),
+                    parameterValue: studentId);
             }
         }
 
-        private static void ValidateStudentName(Student student)
+        private void ValidateStudent(Student student)
+		{
+            ValidateStudentId(student.Id);
+            ValidateStudentName(student);
+            ValidateBirthDate(student.BirthDate);
+		}
+
+		private void ValidateBirthDate(DateTimeOffset birthDate)
+		{
+            if (birthDate >= DateTime.UtcNow || birthDate == default(DateTimeOffset))
+			{
+                throw new InvalidStudentInputException(
+                    parameterName: nameof(Student.BirthDate),
+                    parameterValue: birthDate);
+            }
+        }
+
+		private static void ValidateStudentName(Student student)
         {
             if (string.IsNullOrWhiteSpace(student.FirstName))
             {
-                throw new ArgumentException("The student first name is required.", nameof(student.FirstName));
+                throw new InvalidStudentInputException(
+                    parameterName: nameof(Student.FirstName),
+                    parameterValue: student.FirstName);
             }
 
             if (string.IsNullOrWhiteSpace(student.LastName))
             {
-                throw new ArgumentException("The student last name is required.", nameof(student.LastName));
+                throw new InvalidStudentInputException(
+                    parameterName: nameof(Student.LastName),
+                    parameterValue: student.LastName);
             }
         }
 
-        private static void ValidateStudentId(Guid studentId)
+        private static void ValidateStorageStudent(Student storageStudent, Guid studentId)
         {
-            if (studentId == Guid.Empty)
+            if (storageStudent == null)
             {
-                throw new ArgumentException("The student id is required.", nameof(studentId));
+                throw new NotFoundStudentException(studentId);
             }
         }
     }

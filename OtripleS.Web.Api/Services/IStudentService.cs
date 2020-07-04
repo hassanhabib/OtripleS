@@ -9,5 +9,6 @@ namespace OtripleS.Web.Api.Services
         ValueTask<Student> RegisterAsync(Student student);
 
         ValueTask<Student> DeleteStudentAsync(Guid studentId);
+        ValueTask<Student> RetrieveStudentByIdAsync(Guid studentId);
     }
 }

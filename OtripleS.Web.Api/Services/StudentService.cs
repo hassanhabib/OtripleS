@@ -21,27 +21,32 @@ namespace OtripleS.Web.Api.Services
 
         public async ValueTask<Student> DeleteStudentAsync(Guid studentId)
         {
+            ValidateStudentId(studentId);
             Student maybeStudent =
                 await this.storageBroker.SelectStudentByIdAsync(studentId);
+
+            ValidateStorageStudent(maybeStudent, studentId);
 
             return await this.storageBroker.DeleteStudentAsync(maybeStudent);
         }
 
-        public async ValueTask<Student> RegisterAsync(Student student)
+        public ValueTask<Student> RegisterAsync(Student student) =>
+        TryCatch(async () =>
         {
             ValidateStudent(student);
 
-            try
-            {
-                student = await storageBroker.AddStudentAsync(student)
-                    .ConfigureAwait(false);
-                return student;
-            }
-            catch (Exception exception)
-            {
-                this.loggingBroker.LogError(exception);
-                throw;
-            }
-        }
+            return await storageBroker.AddStudentAsync(student)
+                .ConfigureAwait(false);
+        });
+
+        public ValueTask<Student> RetrieveStudentByIdAsync(Guid studentId) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentId(studentId);
+            Student storageStudent = await this.storageBroker.SelectStudentByIdAsync(studentId);
+            ValidateStorageStudent(storageStudent, studentId);
+
+            return storageStudent;
+        });
     }
 }
