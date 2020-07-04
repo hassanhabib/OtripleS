@@ -24,13 +24,12 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
 		private Student CreateRandomStudent()
 		{
 			var filler = new Filler<Student>();
-			filler.Setup()
-				.OnProperty(student => student.BirthDate).Use(this.dateTimeBroker.GetCurrentDateTime())
-				.OnProperty(student => student.CreatedDate).Use(this.dateTimeBroker.GetCurrentDateTime())
-				.OnProperty(student => student.UpdatedDate).Use(this.dateTimeBroker.GetCurrentDateTime());
-
+			filler.Setup().OnType<DateTimeOffset>().Use(GetRandomDateTime());
 			return filler.Create();
 		}
+
+		private static DateTimeOffset GetRandomDateTime() =>
+		 new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
 		[Fact]
 		public async Task ShouldPostStudentAsync()
