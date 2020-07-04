@@ -43,6 +43,8 @@ namespace OtripleS.Web.Api.Services
         public ValueTask<Student> ModifyStudentAsync(Student student)=>
             TryCatch(async () =>
             {
+                Student maybeStudent = await this.storageBroker.SelectStudentByIdAsync(student.Id);
+
                 return await this.storageBroker.UpdateStudentAsycn(student);
                
             });    
