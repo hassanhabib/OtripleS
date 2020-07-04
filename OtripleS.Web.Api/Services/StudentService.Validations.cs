@@ -23,5 +23,10 @@ namespace OtripleS.Web.Api.Services
                 throw new NotFoundStudentException(studentId);
             }
         }
+
+        private static void ValidateStudent(Student student)
+        {
+            
+        }
     }
 }

@@ -40,10 +40,13 @@ namespace OtripleS.Web.Api.Services
             return storageStudent;
         });
 
-        public ValueTask<Student> ModifyStudentAsync(Student student)
-        {
-                throw new NotImplementedException();
+        public ValueTask<Student> ModifyStudentAsync(Student student)=>
+            TryCatch(async () =>
+            {
+                return await this.storageBroker.UpdateStudentAsycn(student);
+               
+            });    
            
-        }
+        
     }
 }
