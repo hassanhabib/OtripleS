@@ -12,9 +12,6 @@ namespace OtripleS.Web.Api.Services
     public partial class StudentService
     {
         private delegate ValueTask<Student> ReturningStudentFunction();
-        private delegate IQueryable<Student> ReturningStudentsFunction();
-
-
         private async ValueTask<Student> TryCatch(ReturningStudentFunction returningStudentFunction)
         {
             try
@@ -51,18 +48,6 @@ namespace OtripleS.Web.Api.Services
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);
-            }
-        }
-
-        private IQueryable<Student> TryCatch(ReturningStudentsFunction returningStudentsFunction)
-        {
-            try
-            {
-                return returningStudentsFunction();
-            }
-            catch (SqlException sqlException)
-            {
-                throw CreateAndLogCriticalDependencyException(sqlException);
             }
         }
 

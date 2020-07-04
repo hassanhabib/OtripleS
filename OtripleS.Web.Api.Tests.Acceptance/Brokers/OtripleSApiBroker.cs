@@ -4,7 +4,7 @@ using RESTFulSense.Clients;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
 {
-    public class OtripleSApiBroker
+    public partial class OtripleSApiBroker
     {
         private readonly WebApplicationFactory<Startup> webApplicationFactory;
         private readonly HttpClient httpClient;

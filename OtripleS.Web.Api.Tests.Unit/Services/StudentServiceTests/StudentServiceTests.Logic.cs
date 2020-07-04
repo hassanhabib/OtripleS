@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Bogus.Extensions;
 using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.Students;
@@ -49,6 +48,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         }
 
         [Fact]
+        public async Task ShouldRetrieveStudentByIdAsync()
+        {
+            // given
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputStudentId = randomStudentId;
+            Student randomStudent = CreateRandomStudent();
+            Student storageStudent = randomStudent;
+            Student expectedStudent = storageStudent;
+
+            this.storageBrokerMock.Setup(broker =>
+                    broker.SelectStudentByIdAsync(inputStudentId))
+                .ReturnsAsync(storageStudent);
+
+            // when
+            Student actualStudent =
+                await this.studentService.RetrieveStudentByIdAsync(inputStudentId);
+
+            // then
+            actualStudent.Should().BeEquivalentTo(expectedStudent);
+
+            this.storageBrokerMock.Verify(broker =>
+                    broker.SelectStudentByIdAsync(inputStudentId),
+                Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public async Task ShouldUpdateStudentAsync()
         {
             //given
@@ -58,7 +86,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student storageStudent = randomStudent;
 
             DateTimeOffset lastUpdatedAt = storageStudent.UpdatedDate;
-            
+
             Student expectedStudent = storageStudent;
 
             this.storageBrokerMock.Setup(broker =>
@@ -72,6 +100,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             // when
             Student actualStudent =
                 await this.studentService.ModifyStudentAsync(storageStudent.Id, inputDto);
+
 
             // then
             actualStudent.Should().BeEquivalentTo(expectedStudent);
