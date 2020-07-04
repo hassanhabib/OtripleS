@@ -1,19 +1,17 @@
-﻿using OtripleS.Web.Api.Models.Students;
-using SchoolEM.Models.Students.Exceptions;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using OtripleS.Web.Api.Models.Students;
+using OtripleS.Web.Api.Models.Students.Exceptions;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services
 {
     public partial class StudentService
     {
-        private static void ValidateStudentId(Guid studentId)
+        private void ValidateStudentId(Guid studentId)
         {
             if (studentId == Guid.Empty)
             {
-                throw new InvalidStudentException(
+                throw new InvalidStudentInputException(
                     parameterName: nameof(Student.Id),
                     parameterValue: studentId);
             }
@@ -26,7 +24,7 @@ namespace OtripleS.Web.Api.Services
                 throw new NotFoundStudentException(studentId);
             }
         }
-
+        
         private void ValidateStorageStudents(IQueryable<Student> storageStudents)
         {
             if (storageStudents.Count() == 0)

@@ -1,49 +1,35 @@
-﻿using EFxceptions.Models.Exceptions;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Students;
-using SchoolEM.Models.Students.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using OtripleS.Web.Api.Models.Students.Exceptions;
 
 namespace OtripleS.Web.Api.Services
 {
     public partial class StudentService
     {
-        private delegate ValueTask<Student> ReturningStudentFunction();
+        private delegate ValueTask<Student> ReturningRetrieveStudentFunction();
         private delegate IQueryable<Student> ReturningStudentsFunction();
 
-
-        private async ValueTask<Student> TryCatch(ReturningStudentFunction returningStudentFunction)
+        private async ValueTask<Student> TryCatch(ReturningRetrieveStudentFunction returningRetrieveStudentFunction)
         {
             try
             {
-                return await returningStudentFunction();
+                return await returningRetrieveStudentFunction();
             }
-            catch (NullStudentException nullStudentException)
+            catch (InvalidStudentInputException invalidStudentInputException)
+            {
+                throw CreateAndLogValidationException(invalidStudentInputException);
+            }
+            catch (NotFoundStudentException nullStudentException)
             {
                 throw CreateAndLogValidationException(nullStudentException);
-            }
-            catch (InvalidStudentException invalidStudentException)
-            {
-                throw CreateAndLogValidationException(invalidStudentException);
             }
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
-            }
-            catch (NotFoundStudentException studentNotFoundException)
-            {
-                throw CreateAndLogValidationException(studentNotFoundException);
-            }
-            catch (DuplicateKeyException duplicateKeyException)
-            {
-                var studentAlreadyExistsException =
-                    new AlreadyExistsStudentException(duplicateKeyException);
-
-                throw CreateAndLogValidationException(studentAlreadyExistsException);
             }
             catch (DbUpdateException dbUpdateException)
             {
@@ -67,12 +53,12 @@ namespace OtripleS.Web.Api.Services
             }
         }
 
-        private StudentValidationException CreateAndLogValidationException(Exception exception)
+        private StudentServiceException CreateAndLogServiceException(Exception exception)
         {
-            var studentValidationException = new StudentValidationException(exception);
-            this.loggingBroker.LogError(studentValidationException);
+            var studentServiceException = new StudentServiceException(exception);
+            this.loggingBroker.LogError(studentServiceException);
 
-            return studentValidationException;
+            return studentServiceException;
         }
 
         private StudentDependencyException CreateAndLogDependencyException(Exception exception)
@@ -91,14 +77,12 @@ namespace OtripleS.Web.Api.Services
             return studentDependencyException;
         }
 
-        private StudentServiceException CreateAndLogServiceException(Exception exception)
+        private StudentValidationException CreateAndLogValidationException(Exception exception)
         {
-            var studentServiceException = new StudentServiceException(exception);
+            var studentValidationException = new StudentValidationException(exception);
+            this.loggingBroker.LogError(studentValidationException);
 
-            this.loggingBroker.LogError(studentServiceException);
-
-            return studentServiceException;
+            return studentValidationException;
         }
-
     }
 }

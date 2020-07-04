@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -48,6 +48,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         }
 
         [Fact]
+        public async Task ShouldRetrieveStudentByIdAsync()
+        {
+            // given
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputStudentId = randomStudentId;
+            Student randomStudent = CreateRandomStudent();
+            Student storageStudent = randomStudent;
+            Student expectedStudent = storageStudent;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentByIdAsync(inputStudentId))
+                    .ReturnsAsync(storageStudent);
+
+            // when
+            Student actualStudent =
+                await this.studentService.RetrieveStudentByIdAsync(inputStudentId);
+
+            // then
+            actualStudent.Should().BeEquivalentTo(expectedStudent);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentByIdAsync(inputStudentId),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public void ShouldRetrieveAllStudents()
         {
             // given
@@ -73,6 +102,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-
     }
 }
