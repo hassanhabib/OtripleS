@@ -49,6 +49,11 @@ namespace OtripleS.Web.Api.Services
                     throw new InvalidStudentInputException(
                         parameterName: nameof(Student.CreatedDate),
                         parameterValue: student.CreatedDate);
+
+                case { } when student.UpdatedBy == default:
+                    throw new InvalidStudentInputException(
+                        parameterName: nameof(Student.UpdatedBy),
+                        parameterValue: student.UpdatedBy);
             }
         }
 
