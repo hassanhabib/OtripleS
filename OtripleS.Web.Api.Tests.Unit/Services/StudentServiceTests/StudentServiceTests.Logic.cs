@@ -97,10 +97,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student storageStudent = randomStudent;
             Student expectedStudent = storageStudent;
 
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(randomDateTime);
-
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertStudentAsync(inputStudent))
                     .ReturnsAsync(storageStudent);
@@ -111,10 +107,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
 
             // then
             actualStudent.Should().BeEquivalentTo(expectedStudent);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentAsync(inputStudent),
