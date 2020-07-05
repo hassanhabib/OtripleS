@@ -1,4 +1,9 @@
-﻿using System;
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Students;
@@ -12,10 +17,8 @@ namespace OtripleS.Web.Api.Controllers
     {
         private readonly IStudentService studentService;
 
-        public StudentController(IStudentService studentService)
-        {
+        public StudentController(IStudentService studentService) =>
             this.studentService = studentService;
-        }
 
         [HttpDelete("{studentId}")]
         public async ValueTask<ActionResult<Student>> DeleteStudentAsync(Guid studentId)

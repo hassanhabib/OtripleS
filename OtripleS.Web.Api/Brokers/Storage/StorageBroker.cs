@@ -1,5 +1,8 @@
-﻿using EFxceptions;
+﻿// ---------------------------------------------------------------
+// Copyright (c) PiorSoft, LLC. All rights reserved.
+// ---------------------------------------------------------------
 
+using EFxceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
