@@ -67,6 +67,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
 
 			//then
 			actualStudent.Should().BeEquivalentTo(newStudent);
+
+			await this.otripleSApiBroker.DeleteStudentByIdAsync(randomStudent.Id);
         }
 
 	}
