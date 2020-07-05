@@ -30,6 +30,32 @@ namespace OtripleS.Web.Api.Services
             ValidateStudentId(student.Id);
             ValidateStudentRequiredData(student);
             ValidateCreatedSignature(student);
+            ValidateDates(student);
+        }
+
+        private void ValidateDates(Student student)
+        {
+            if (IsDateNotRecent(student.CreatedDate))
+            {
+                throw new InvalidStudentInputException(
+                    parameterName: nameof(student.CreatedDate),
+                    parameterValue: student.CreatedDate);
+            }
+            else if (IsDateNotRecent(student.UpdatedDate))
+            {
+                throw new InvalidStudentInputException(
+                    parameterName: nameof(student.UpdatedDate),
+                    parameterValue: student.UpdatedDate);
+            }
+        }
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int validMinuteVariation = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > validMinuteVariation;
         }
 
         private void ValidateCreatedSignature(Student student)

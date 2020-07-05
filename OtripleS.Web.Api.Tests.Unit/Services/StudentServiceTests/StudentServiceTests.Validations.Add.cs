@@ -348,6 +348,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             DateTimeOffset dateTime = GetRandomDateTime();
             Student randomStudent = CreateRandomStudent(dateTime);
             Student inputStudent = randomStudent;
+            inputStudent.UpdatedBy = inputStudent.CreatedBy;
             inputStudent.CreatedDate = dateTime.AddMinutes(minutes);
             inputStudent.UpdatedDate = inputStudent.CreatedDate;
 
@@ -358,6 +359,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentInputException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
             // when
             ValueTask<Student> registerStudentTask =
                 this.studentService.RegisterStudentAsync(inputStudent);
@@ -365,6 +370,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             // then
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 registerStudentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(), 
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
