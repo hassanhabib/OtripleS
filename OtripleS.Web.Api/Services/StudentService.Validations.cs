@@ -27,6 +27,7 @@ namespace OtripleS.Web.Api.Services
         private void ValidateStudentOnCreate(Student student)
         {
             ValidateStudent(student);
+            ValidateStudentId(student.Id);
         }
 
         private void ValidateStudent(Student student)
