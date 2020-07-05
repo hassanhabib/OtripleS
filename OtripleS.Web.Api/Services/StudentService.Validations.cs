@@ -29,11 +29,22 @@ namespace OtripleS.Web.Api.Services
             ValidateStudent(student);
             ValidateStudentId(student.Id);
             ValidateStudentRequiredData(student);
+            ValidateCreatedSignature(student);
+        }
+
+        private void ValidateCreatedSignature(Student student)
+        {
+            if (student.CreatedBy != student.UpdatedBy)
+            {
+                throw new InvalidStudentInputException(
+                    parameterName: nameof(Student.UpdatedBy),
+                    parameterValue: student.UpdatedBy);
+            }
         }
 
         private void ValidateStudentRequiredData(Student student)
         {
-            switch(student)
+            switch (student)
             {
                 case { } when student.BirthDate == default:
                     throw new InvalidStudentInputException(
