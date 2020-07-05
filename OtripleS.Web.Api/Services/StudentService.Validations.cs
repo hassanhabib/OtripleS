@@ -41,12 +41,6 @@ namespace OtripleS.Web.Api.Services
                     parameterName: nameof(student.CreatedDate),
                     parameterValue: student.CreatedDate);
             }
-            else if (IsDateNotRecent(student.UpdatedDate))
-            {
-                throw new InvalidStudentInputException(
-                    parameterName: nameof(student.UpdatedDate),
-                    parameterValue: student.UpdatedDate);
-            }
         }
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
