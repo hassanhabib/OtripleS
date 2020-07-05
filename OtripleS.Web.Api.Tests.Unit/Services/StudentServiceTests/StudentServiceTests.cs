@@ -17,26 +17,27 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         private readonly Mock<IStorageBroker> storageBrokerMock;
         private readonly IStudentService studentService;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
-        private readonly DateTimeBroker dateTimeBroker;
+        private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
 
         public StudentServiceTests()
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
-            this.dateTimeBroker = new DateTimeBroker();
+            this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
 
             this.studentService = new StudentService(
                 storageBroker: this.storageBrokerMock.Object,
-                loggingBroker: this.loggingBrokerMock.Object);
+                loggingBroker: this.loggingBrokerMock.Object,
+                dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
-        private Student CreateRandomStudent()
+        private Student CreateRandomStudent(DateTimeOffset now)
         {
             var filler = new Filler<Student>();
             filler.Setup()
                 .OnProperty(student => student.BirthDate).Use(GetRandomDateTime())
-                .OnProperty(student => student.CreatedDate).Use(this.dateTimeBroker.GetCurrentDateTime())
-                .OnProperty(student => student.UpdatedDate).Use(this.dateTimeBroker.GetCurrentDateTime());
+                .OnProperty(student => student.CreatedDate).Use(now)
+                .OnProperty(student => student.UpdatedDate).Use(now);
 
             return filler.Create();
         }
