@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Requests;
@@ -80,17 +81,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         public async Task ShouldUpdateStudentAsync()
         {
             //given
-
             Student randomStudent = CreateRandomStudent();
             StudentUpdateDto inputDto = CreateRandomDto();
-            Student storageStudent = randomStudent;
-
-            DateTimeOffset lastUpdatedAt = storageStudent.UpdatedDate;
-
+            Student inputStudent = randomStudent;
+            Student storageStudent = inputStudent.DeepClone();
+            // storageStudent.UpdatedDate = DateTimeOffset.Now;
             Student expectedStudent = storageStudent;
 
             this.storageBrokerMock.Setup(broker =>
-                    broker.SelectStudentByIdAsync(randomStudent.Id))
+                    broker.SelectStudentByIdAsync(inputStudent.Id))
                 .ReturnsAsync(storageStudent);
 
             this.storageBrokerMock.Setup(broker =>
@@ -99,17 +98,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
 
             // when
             Student actualStudent =
-                await this.studentService.ModifyStudentAsync(storageStudent.Id, inputDto);
+                await this.studentService.ModifyStudentAsync(inputStudent.Id, inputDto);
 
 
             // then
             actualStudent.Should().BeEquivalentTo(expectedStudent);
 
             actualStudent.BirthDate.Should().BeSameDateAs(inputDto.BirthDate);
-            actualStudent.CreatedDate.Should().BeSameDateAs(storageStudent.CreatedDate);
+            actualStudent.CreatedDate.Should().BeSameDateAs(inputStudent.CreatedDate);
+            actualStudent.UpdatedDate.Should().BeAfter(inputStudent.UpdatedDate).And.BeBefore(DateTimeOffset.Now);
 
             this.storageBrokerMock.Verify(broker =>
-                    broker.SelectStudentByIdAsync(storageStudent.Id),
+                    broker.SelectStudentByIdAsync(inputStudent.Id),
                 Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
