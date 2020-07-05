@@ -40,10 +40,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
                     Times.Once);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
@@ -54,7 +59,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             // given
             Guid randomStudentId = Guid.NewGuid();
             Guid inputStudentId = randomStudentId;
-            Student randomStudent = CreateRandomStudent();
             Student invalidStorageStudent = null;
             var notFoundStudentException = new NotFoundStudentException(inputStudentId);
 
@@ -77,10 +81,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
                     Times.Once);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentByIdAsync(inputStudentId),
                     Times.Once);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Students;
@@ -17,6 +18,10 @@ namespace OtripleS.Web.Api.Services
             {
                 return await returningRetrieveStudentFunction();
             }
+            catch (NullStudentException nullStudentException)
+            {
+                throw CreateAndLogValidationException(nullStudentException);
+            }
             catch (InvalidStudentInputException invalidStudentInputException)
             {
                 throw CreateAndLogValidationException(invalidStudentInputException);
@@ -28,6 +33,13 @@ namespace OtripleS.Web.Api.Services
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsStudentException =
+                    new AlreadyExistsStudentException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsStudentException);
             }
             catch (DbUpdateException dbUpdateException)
             {

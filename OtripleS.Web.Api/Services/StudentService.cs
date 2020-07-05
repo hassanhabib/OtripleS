@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Students;
@@ -15,13 +16,16 @@ namespace OtripleS.Web.Api.Services
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
+        private readonly IDateTimeBroker dateTimeBroker;
 
         public StudentService(
             IStorageBroker storageBroker,
-            ILoggingBroker loggingBroker)
+            ILoggingBroker loggingBroker,
+            IDateTimeBroker dateTimeBroker)
         {
             this.storageBroker = storageBroker;
             this.loggingBroker = loggingBroker;
+            this.dateTimeBroker = dateTimeBroker;
         }
 
         public async ValueTask<Student> DeleteStudentAsync(Guid studentId)
@@ -34,6 +38,14 @@ namespace OtripleS.Web.Api.Services
 
             return await this.storageBroker.DeleteStudentAsync(maybeStudent);
         }
+
+        public ValueTask<Student> RegisterStudentAsync(Student student) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentOnCreate(student);
+
+            return await this.storageBroker.InsertStudentAsync(student);
+        });
 
         public ValueTask<Student> RetrieveStudentByIdAsync(Guid studentId) =>
         TryCatch(async () =>

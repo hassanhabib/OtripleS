@@ -15,7 +15,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             // given
             Guid randomId = Guid.NewGuid();
             Guid inputId = randomId;
-            Student randomStudent = CreateRandomStudent();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Student randomStudent = CreateRandomStudent(randomDateTime);
             Student storageStudent = randomStudent;
             Student expectedStudent = storageStudent;
 
@@ -34,6 +35,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             // then
             actualStudent.Should().BeEquivalentTo(expectedStudent);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentByIdAsync(inputId),
                     Times.Once);
@@ -42,6 +47,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                 broker.DeleteStudentAsync(storageStudent),
                     Times.Once);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
@@ -52,7 +58,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             // given
             Guid randomStudentId = Guid.NewGuid();
             Guid inputStudentId = randomStudentId;
-            Student randomStudent = CreateRandomStudent();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Student randomStudent = CreateRandomStudent(randomDateTime);
             Student storageStudent = randomStudent;
             Student expectedStudent = storageStudent;
 
@@ -67,10 +74,55 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             // then
             actualStudent.Should().BeEquivalentTo(expectedStudent);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentByIdAsync(inputStudentId),
                     Times.Once);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldRegisterStudentByIdAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            DateTimeOffset dateTime = randomDateTime;
+            Student randomStudent = CreateRandomStudent(randomDateTime);
+            randomStudent.UpdatedBy = randomStudent.CreatedBy;
+            Student inputStudent = randomStudent;
+            Student storageStudent = randomStudent;
+            Student expectedStudent = storageStudent;
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertStudentAsync(inputStudent))
+                    .ReturnsAsync(storageStudent);
+
+            // when
+            Student actualStudent =
+                await this.studentService.RegisterStudentAsync(inputStudent);
+
+            // then
+            actualStudent.Should().BeEquivalentTo(expectedStudent);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentAsync(inputStudent),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
