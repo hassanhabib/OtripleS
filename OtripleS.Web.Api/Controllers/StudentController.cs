@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Students;
+using OtripleS.Web.Api.Models.Students.Exceptions;
 using OtripleS.Web.Api.Services;
 
 namespace OtripleS.Web.Api.Controllers
@@ -19,6 +20,31 @@ namespace OtripleS.Web.Api.Controllers
 
         public StudentController(IStudentService studentService) =>
             this.studentService = studentService;
+
+        [HttpPost]
+        public async ValueTask<ActionResult<Student>> PostStudentAsync([FromBody] Student student)
+        {
+            try
+            {
+                Student registeredStudent =
+                        await this.studentService.RegisterStudentAsync(student);
+
+                return Ok(registeredStudent);
+            }
+            catch (StudentValidationException studentValidationException)
+            {
+                string innerMessage = studentValidationException.InnerException.Message;
+                return BadRequest(innerMessage);
+            }
+            catch (StudentDependencyException studentDependencyException)
+            {
+                return Problem(studentDependencyException.Message);
+            }
+            catch (StudentServiceException studentServiceException)
+            {
+                return Problem(studentServiceException.Message);
+            }
+        }
 
         [HttpDelete("{studentId}")]
         public async ValueTask<ActionResult<Student>> DeleteStudentAsync(Guid studentId)
