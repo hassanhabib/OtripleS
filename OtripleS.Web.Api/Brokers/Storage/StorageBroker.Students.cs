@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
             return await Students.FindAsync(studentId);
         }
 
-        public async ValueTask<Student> UpdateStudentAsycn(Student student)
+        public async ValueTask<Student> UpdateStudentAsync(Student student)
         {
             EntityEntry<Student> studentEntityEntry = this.Students.Update(student);
             await this.SaveChangesAsync();
