@@ -35,8 +35,8 @@ namespace OtripleS.Web.Api.Services
         }
 
         public async ValueTask<Student> RegisterStudentAsync(Student student)
-        {
-            throw new NotImplementedException();
+        {            
+            return await this.storageBroker.InsertStudentAsync(student);
         }
 
         public ValueTask<Student> RetrieveStudentByIdAsync(Guid studentId) =>
