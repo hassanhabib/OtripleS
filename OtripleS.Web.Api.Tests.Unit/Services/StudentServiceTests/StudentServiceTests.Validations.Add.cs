@@ -308,6 +308,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             DateTimeOffset dateTime = GetRandomDateTime();
             Student randomStudent = CreateRandomStudent(dateTime);
             Student inputStudent = randomStudent;
+            inputStudent.UpdatedBy = randomStudent.CreatedBy;
             inputStudent.UpdatedDate = GetRandomDateTime();
 
             var invalidStudentInputException = new InvalidStudentInputException(

@@ -40,6 +40,12 @@ namespace OtripleS.Web.Api.Services
                     parameterName: nameof(Student.UpdatedBy),
                     parameterValue: student.UpdatedBy);
             }
+            else if (student.CreatedDate != student.UpdatedDate)
+            {
+                throw new InvalidStudentInputException(
+                    parameterName: nameof(Student.UpdatedDate),
+                    parameterValue: student.UpdatedDate);
+            }
         }
 
         private void ValidateStudentRequiredData(Student student)
