@@ -1,12 +1,15 @@
-﻿using System;
-using System.Globalization;
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Models.Students.Exceptions;
 using OtripleS.Web.Api.Requests;
 using OtripleS.Web.Api.Services;
-using OtripleS.Web.Api.Utils;
 
 namespace OtripleS.Web.Api.Controllers
 {
@@ -16,10 +19,8 @@ namespace OtripleS.Web.Api.Controllers
     {
         private readonly IStudentService studentService;
 
-        public StudentController(IStudentService studentService)
-        {
+        public StudentController(IStudentService studentService) =>
             this.studentService = studentService;
-        }
 
         [HttpDelete("{studentId}")]
         public async ValueTask<ActionResult<Student>> DeleteStudentAsync(Guid studentId)
@@ -37,7 +38,6 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 var storageStudent = await this.studentService.ModifyStudentAsync(studentId, dto);
-
                 return Ok(storageStudent);
             }
             catch (StudentValidationException studentValidationException)

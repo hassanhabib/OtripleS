@@ -1,11 +1,16 @@
+//?---------------------------------------------------------------
+//?Copyright?(c)?Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+//?---------------------------------------------------------------
+
 using System;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Requests;
-using OtripleS.Web.Api.Utils;
 
 namespace OtripleS.Web.Api.Services
 {
@@ -49,19 +54,11 @@ namespace OtripleS.Web.Api.Services
 
         private static void MapChangesToStudent(StudentUpdateDto updateDto, Student student)
         {
-            student.IdentityNumber = updateDto.IdentityNumber.HasValue()
-                ? updateDto.IdentityNumber
-                : student.IdentityNumber;
-            student.FirstName = updateDto.FirstName.HasValue()
-                ? updateDto.FirstName
-                : student.FirstName;
-            student.MiddleName = updateDto.MiddleName.HasValue()
-                ? updateDto.MiddleName
-                : student.MiddleName;
-            student.LastName = updateDto.LastName.HasValue()
-                ? updateDto.LastName
-                : student.LastName;
-            student.BirthDate = updateDto.BirthDate.HasValue()
+            student.IdentityNumber = updateDto.IdentityNumber ?? student.IdentityNumber;
+            student.FirstName = updateDto.FirstName ?? student.FirstName;
+            student.MiddleName = updateDto.MiddleName ?? student.MiddleName;
+            student.LastName = updateDto.LastName ?? student.LastName;
+            student.BirthDate = updateDto.BirthDate.IsValid()
                 ? updateDto.BirthDate
                 : student.BirthDate;
             student.Gender = updateDto.Gender.HasValue()

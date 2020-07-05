@@ -1,3 +1,8 @@
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
 using System;
 
 namespace OtripleS.Web.Api.Models.Students.Exceptions
@@ -5,8 +10,6 @@ namespace OtripleS.Web.Api.Models.Students.Exceptions
     public class StudentValidationException : Exception
     {
         public StudentValidationException(Exception innerException)
-            : base("Student validation error occurred, correct your request and try again", innerException)
-        { }
-
+            : base("Invalid input, contact support.", innerException) { }
     }
 }

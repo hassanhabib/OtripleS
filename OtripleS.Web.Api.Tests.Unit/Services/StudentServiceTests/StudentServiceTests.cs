@@ -1,4 +1,9 @@
-﻿using System;
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
+using System;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -10,7 +15,6 @@ using OtripleS.Web.Api.Models;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Requests;
 using OtripleS.Web.Api.Services;
-using OtripleS.Web.Api.Utils;
 using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests

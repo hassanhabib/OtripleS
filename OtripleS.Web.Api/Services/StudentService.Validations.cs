@@ -7,12 +7,12 @@ namespace OtripleS.Web.Api.Services
 {
     public partial class StudentService
     {
-
         public void ValidateStudent(Student student)
         {
             ValidateStudentIsNotNull(student);
             ValidateStudentId(student.Id);
             ValidateStudentName(student);
+            // ValidateStudentBirthDate(student.BirthDate);
         }
 
         private void ValidateStudentIsNotNull(Student student)
@@ -20,6 +20,20 @@ namespace OtripleS.Web.Api.Services
             if (student is null)
             {
                 throw new NullStudentException();
+            }
+        }
+
+        private static void ValidateStudentBirthDate(DateTimeOffset birthDate)
+        {
+            var studentMaxAge = 100;
+            var studentMinAge = 2;
+            var today = DateTime.Today;
+
+            if (birthDate > today.AddYears(studentMaxAge) || birthDate < today.AddYears(-1 * studentMinAge))
+            {
+                throw new InvalidStudentException(
+                    parameterName: nameof(Student.BirthDate),
+                    parameterValue: birthDate);
             }
         }
 
@@ -31,7 +45,6 @@ namespace OtripleS.Web.Api.Services
                     parameterName: nameof(Student.FirstName),
                     parameterValue: student.FirstName);
             }
-            
         }
 
         private static void ValidateStudentId(Guid studentId)

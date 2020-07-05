@@ -1,4 +1,6 @@
-﻿namespace OtripleS.Web.Api.Utils
+﻿using System;
+
+namespace OtripleS.Web.Api.Extensions
 {
     public static class GenericExtensions
     {
