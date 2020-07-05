@@ -53,7 +53,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
 
 		[Fact]
 		public async Task ShouldPutStudentAsync()
-        {
+		{
 			//given
 			Student randomStudent = CreateRandomStudent();
 			await this.otripleSApiBroker.PostStudentAsync(randomStudent);
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
 			actualStudent.Should().BeEquivalentTo(newStudent);
 
 			await this.otripleSApiBroker.DeleteStudentByIdAsync(randomStudent.Id);
-        }
+		}
 
 	}
 }
