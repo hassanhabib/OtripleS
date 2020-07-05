@@ -13,22 +13,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         public async void ShouldThrowValidationExceptionOnRegisterWhenStudentIsNullAndLogItAsync()
         {
             // given
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent(randomDateTime);
-            Student inputStudent = randomStudent;
+            Student randomStudent = null;
+            Student nullStudent = randomStudent;
 
             var nullStudentException = new NullStudentException();
 
             var expectedStudentValidationException =
                 new StudentValidationException(nullStudentException);
 
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(randomDateTime);
-
             // when
             ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(inputStudent);
+                this.studentService.RegisterStudentAsync(nullStudent);
 
             // then
             await Assert.ThrowsAsync<StudentValidationException>(() =>
@@ -36,10 +31,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>

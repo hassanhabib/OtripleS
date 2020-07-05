@@ -17,6 +17,10 @@ namespace OtripleS.Web.Api.Services
             {
                 return await returningRetrieveStudentFunction();
             }
+            catch (NullStudentException nullStudentException)
+            {
+                throw CreateAndLogValidationException(nullStudentException);
+            }
             catch (InvalidStudentInputException invalidStudentInputException)
             {
                 throw CreateAndLogValidationException(invalidStudentInputException);

@@ -23,5 +23,18 @@ namespace OtripleS.Web.Api.Services
                 throw new NotFoundStudentException(studentId);
             }
         }
+
+        private void ValidateStudentOnCreate(Student student)
+        {
+            ValidateStudent(student);
+        }
+
+        private void ValidateStudent(Student student)
+        {
+            if (student is null)
+            {
+                throw new NullStudentException();
+            }
+        }
     }
 }
