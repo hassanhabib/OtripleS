@@ -85,7 +85,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             StudentUpdateDto inputDto = CreateRandomDto();
             Student inputStudent = randomStudent;
             Student storageStudent = inputStudent.DeepClone();
-            // storageStudent.UpdatedDate = DateTimeOffset.Now;
+            storageStudent.UpdatedDate = DateTimeOffset.Now;
             Student expectedStudent = storageStudent;
 
             this.storageBrokerMock.Setup(broker =>
@@ -100,10 +100,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student actualStudent =
                 await this.studentService.ModifyStudentAsync(inputStudent.Id, inputDto);
 
-
             // then
             actualStudent.Should().BeEquivalentTo(expectedStudent);
-
             actualStudent.BirthDate.Should().BeSameDateAs(inputDto.BirthDate);
             actualStudent.CreatedDate.Should().BeSameDateAs(inputStudent.CreatedDate);
             actualStudent.UpdatedDate.Should().BeAfter(inputStudent.UpdatedDate).And.BeBefore(DateTimeOffset.Now);
