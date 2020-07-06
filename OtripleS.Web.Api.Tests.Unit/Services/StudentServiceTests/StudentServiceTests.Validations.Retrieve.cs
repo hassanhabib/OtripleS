@@ -98,7 +98,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         }
 
         [Fact]
-        public void ShouldLogWarningOnRetrieveAllWhenStudentsWasEmptyAndLogItAsync()
+        public void ShouldLogWarningOnRetrieveAllWhenStudentsWasEmptyAndLogIt()
         {
             // given
             IQueryable<Student> emptyStorageStudents = new List<Student>().AsQueryable();

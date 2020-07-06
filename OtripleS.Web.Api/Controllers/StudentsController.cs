@@ -90,7 +90,7 @@ namespace OtripleS.Web.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IQueryable<Student>> GetAllStudentAsync()
+        public ActionResult<IQueryable<Student>> GetAllStudents()
         {
             try
             {
