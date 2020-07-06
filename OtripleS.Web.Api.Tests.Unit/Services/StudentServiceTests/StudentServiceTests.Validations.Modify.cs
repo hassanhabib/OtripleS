@@ -3,9 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using OtripleS.Web.Api.Models.Students;
@@ -21,7 +18,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         {
             // given
             Student invalidStudent = null;
-
             var nullStudentException = new NullStudentException();
 
             var expectedStudentValidationException =
@@ -32,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                 this.studentService.ModifyStudentAsync(invalidStudent);
 
             // then
-            await Assert.ThrowsAsync<StudentValidationException>(() => 
+            await Assert.ThrowsAsync<StudentValidationException>(() =>
                 modifyStudentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
@@ -42,6 +38,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        } 
+        }
     }
 }

@@ -373,7 +373,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                 registerStudentTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(), 
+                broker.GetCurrentDateTime(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -387,7 +387,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-        }        
+        }
 
         [Fact]
         public async void ShouldThrowValidationExceptionOnRegisterWhenStudentAlreadyExistsAndLogItAsync()

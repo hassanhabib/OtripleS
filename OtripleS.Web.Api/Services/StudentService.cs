@@ -46,15 +46,18 @@ namespace OtripleS.Web.Api.Services
             return storageStudent;
         });
 
-        public async ValueTask<Student> ModifyStudentAsync(Student student)
+        public ValueTask<Student> ModifyStudentAsync(Student student) =>
+        TryCatch(async () =>
         {
-            Student storageStudent = 
+            ValidateStudent(student);
+
+            Student storageStudent =
                 await this.storageBroker.SelectStudentByIdAsync(student.Id);
 
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
 
             return await this.storageBroker.UpdateStudentAsync(student);
-        }
+        });
 
         public async ValueTask<Student> DeleteStudentAsync(Guid studentId)
         {

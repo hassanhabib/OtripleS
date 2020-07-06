@@ -14,47 +14,47 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
 {
-	[Collection(nameof(ApiTestCollection))]
-	public class StudentsApiTests
-	{
-		private readonly OtripleSApiBroker otripleSApiBroker;
-		private readonly DateTimeBroker dateTimeBroker;
+    [Collection(nameof(ApiTestCollection))]
+    public class StudentsApiTests
+    {
+        private readonly OtripleSApiBroker otripleSApiBroker;
+        private readonly DateTimeBroker dateTimeBroker;
 
-		public StudentsApiTests(OtripleSApiBroker otripleSApiBroker)
-		{
-			this.dateTimeBroker = new DateTimeBroker();
-			this.otripleSApiBroker = otripleSApiBroker;
-		}
+        public StudentsApiTests(OtripleSApiBroker otripleSApiBroker)
+        {
+            this.dateTimeBroker = new DateTimeBroker();
+            this.otripleSApiBroker = otripleSApiBroker;
+        }
 
-		private Student CreateRandomStudent()
-		{
-			var filler = new Filler<Student>();
-			filler.Setup().OnType<DateTimeOffset>().Use(GetRandomDateTime());
-			return filler.Create();
-		}
+        private Student CreateRandomStudent()
+        {
+            var filler = new Filler<Student>();
+            filler.Setup().OnType<DateTimeOffset>().Use(GetRandomDateTime());
+            return filler.Create();
+        }
 
-		private static DateTimeOffset GetRandomDateTime() =>
-		 new DateTimeRange(earliestDate: new DateTime()).GetValue();
+        private static DateTimeOffset GetRandomDateTime() =>
+         new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-		[Fact]
-		public async Task ShouldPostStudentAsync()
-		{
-			// given
-			Student randomStudent = CreateRandomStudent();
-			Student inputStudent = randomStudent;
-			Student expectedStudent = inputStudent;
+        [Fact]
+        public async Task ShouldPostStudentAsync()
+        {
+            // given
+            Student randomStudent = CreateRandomStudent();
+            Student inputStudent = randomStudent;
+            Student expectedStudent = inputStudent;
 
-			// when 
-			await this.otripleSApiBroker.PostStudentAsync(inputStudent);
+            // when 
+            await this.otripleSApiBroker.PostStudentAsync(inputStudent);
 
-			Student actualStudent =
-				await this.otripleSApiBroker.GetStudentByIdAsync(inputStudent.Id);
+            Student actualStudent =
+                await this.otripleSApiBroker.GetStudentByIdAsync(inputStudent.Id);
 
-			// then
-			actualStudent.Should().BeEquivalentTo(expectedStudent);
+            // then
+            actualStudent.Should().BeEquivalentTo(expectedStudent);
 
-			await this.otripleSApiBroker.DeleteStudentByIdAsync(actualStudent.Id);
-		}
+            await this.otripleSApiBroker.DeleteStudentByIdAsync(actualStudent.Id);
+        }
 
-	}
+    }
 }
