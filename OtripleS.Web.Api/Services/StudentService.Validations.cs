@@ -46,6 +46,17 @@ namespace OtripleS.Web.Api.Services
             ValidateUpdatedDateIsRecent(student);
         }
 
+        public void ValidateAginstStorageStudentOnModify(Student inputStudent, Student storageStudent)
+        {
+            switch (inputStudent)
+            {
+                case { } when inputStudent.CreatedDate != storageStudent.CreatedDate:
+                    throw new InvalidStudentException(
+                        parameterName: nameof(Student.CreatedDate),
+                        parameterValue: inputStudent.CreatedDate);
+            }
+        }
+
         private void ValidateStudentStrings(Student student)
         {
             switch (student)

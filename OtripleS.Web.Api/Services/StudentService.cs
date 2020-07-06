@@ -55,6 +55,7 @@ namespace OtripleS.Web.Api.Services
                 await this.storageBroker.SelectStudentByIdAsync(student.Id);
 
             ValidateStorageStudent(maybeStudent, student.Id);
+            ValidateAginstStorageStudentOnModify(student, maybeStudent);
 
             return await this.storageBroker.UpdateStudentAsync(student);
         });
