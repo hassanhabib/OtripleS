@@ -29,7 +29,8 @@ namespace OtripleS.Web.Api.Services
         {
             ValidateStudent(student);
             ValidateStudentId(student.Id);
-            ValidateStudentRequiredData(student);
+            ValidateStudentIds(student);
+            ValidateStudentDates(student);
             ValidateCreatedSignature(student);
             ValidateDates(student);
         }
@@ -97,7 +98,7 @@ namespace OtripleS.Web.Api.Services
             }
         }
 
-        private void ValidateStudentRequiredData(Student student)
+        private void ValidateStudentDates(Student student)
         {
             switch (student)
             {
@@ -128,6 +129,22 @@ namespace OtripleS.Web.Api.Services
             }
         }
 
+        private void ValidateStudentIds(Student student)
+        {
+            switch (student)
+            {
+                case { } when IsInvalid(student.CreatedBy):
+                    throw new InvalidStudentException(
+                        parameterName: nameof(Student.CreatedBy),
+                        parameterValue: student.CreatedBy);
+
+                case { } when IsInvalid(student.UpdatedBy):
+                    throw new InvalidStudentException(
+                        parameterName: nameof(Student.UpdatedBy),
+                        parameterValue: student.UpdatedBy);
+            }
+        }
+
         private void ValidateStudent(Student student)
         {
             if (student is null)
@@ -137,5 +154,6 @@ namespace OtripleS.Web.Api.Services
         }
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
+        private static bool IsInvalid(Guid input) => input == default;
     }
 }
