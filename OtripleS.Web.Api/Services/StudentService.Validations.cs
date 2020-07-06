@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Models.Students.Exceptions;
 
@@ -90,7 +89,7 @@ namespace OtripleS.Web.Api.Services
 
         private void ValidateDatesAreNotSame(Student student)
         {
-            if(student.CreatedDate == student.UpdatedDate)
+            if (student.CreatedDate == student.UpdatedDate)
             {
                 throw new InvalidStudentException(
                     parameterName: nameof(Student.CreatedDate),

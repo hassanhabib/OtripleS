@@ -5,7 +5,6 @@
 
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Students;
@@ -60,7 +59,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                 new StudentValidationException(invalidStudentException);
 
             // when
-            ValueTask<Student> modifyStudentTask = 
+            ValueTask<Student> modifyStudentTask =
                 this.studentService.ModifyStudentAsync(invalidStudent);
 
             // then
@@ -390,15 +389,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             DateTimeOffset randomDateTime = GetRandomDateTime();
             Student randomStudent = CreateRandomStudent(dates: randomDateTime);
             Student invalidStudent = randomStudent;
-           
-            invalidStudent.UpdatedDate = 
+
+            invalidStudent.UpdatedDate =
                 invalidStudent.UpdatedDate.AddMinutes(randomMoreOrLessThanOneMinute);
 
             var invalidStudentException = new InvalidStudentException(
                 parameterName: nameof(Student.UpdatedDate),
                 parameterValue: invalidStudent.UpdatedDate);
 
-            var expectedStudentValidationException = 
+            var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
 
             this.dateTimeBrokerMock.Setup(broker =>

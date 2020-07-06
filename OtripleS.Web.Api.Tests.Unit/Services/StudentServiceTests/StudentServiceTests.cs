@@ -37,10 +37,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
-        private Student CreateRandomStudent() => 
+        private Student CreateRandomStudent() =>
             CreateStudentFiller(dates: DateTimeOffset.UtcNow).Create();
 
-        private Student CreateRandomStudent(DateTimeOffset dates) => 
+        private Student CreateRandomStudent(DateTimeOffset dates) =>
             CreateStudentFiller(dates).Create();
 
         public static IEnumerable<object[]> InvalidMinuteCases()
