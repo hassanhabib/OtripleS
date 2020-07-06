@@ -74,7 +74,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-
         [Theory]
         [InlineData(null)]
         [InlineData("")]
@@ -110,6 +109,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
 
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task ShouldThrowValidationExceptionOnModifyWhenStudentFirstnameIsInvalidAndLogItAsync(
+            string invalidStudentFirstName)
+        {
+            // given
+            Student randomStudent = CreateRandomStudent();
+            Student invalidStudent = randomStudent;
+            invalidStudent.FirstName = invalidStudentFirstName;
+
+            var invalidStudentException = new InvalidStudentInputException(
+               parameterName: nameof(Student.FirstName),
+               parameterValue: invalidStudent.FirstName);
+
+            var expectedStudentValidationException =
+                new StudentValidationException(invalidStudentException);
+
+            // when
+            ValueTask<Student> modifyStudentTask =
+                this.studentService.ModifyStudentAsync(invalidStudent);
+
+            // then
+            await Assert.ThrowsAsync<StudentValidationException>(() =>
+                modifyStudentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
