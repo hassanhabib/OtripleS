@@ -38,6 +38,18 @@ namespace OtripleS.Web.Api.Services
         {
             ValidateStudent(student);
             ValidateStudentId(student.Id);
+            ValidateStudentStrings(student);
+        }
+
+        private void ValidateStudentStrings(Student student)
+        {
+            switch (student)
+            {
+                case { } when IsInvalid(student.UserId):
+                    throw new InvalidStudentInputException(
+                        parameterName: nameof(student.UserId),
+                        parameterValue: student.UserId);
+            }
         }
 
         private void ValidateDates(Student student)
@@ -113,5 +125,7 @@ namespace OtripleS.Web.Api.Services
                 throw new NullStudentException();
             }
         }
+
+        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
     }
 }
