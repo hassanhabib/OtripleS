@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Students;
@@ -77,6 +78,26 @@ namespace OtripleS.Web.Api.Controllers
                 string innerMessage = GetInnerMessage(studentValidationException);
 
                 return BadRequest(studentValidationException);
+            }
+            catch (StudentDependencyException studentDependencyException)
+            {
+                return Problem(studentDependencyException.Message);
+            }
+            catch (StudentServiceException studentServiceException)
+            {
+                return Problem(studentServiceException.Message);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<IQueryable<Student>> GetAllStudents()
+        {
+            try
+            {
+                IQueryable<Student> storageStudents =
+                    this.studentService.RetrieveAllStudents();
+
+                return Ok(storageStudents);
             }
             catch (StudentDependencyException studentDependencyException)
             {

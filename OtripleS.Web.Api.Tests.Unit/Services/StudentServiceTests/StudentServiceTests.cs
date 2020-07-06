@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -71,6 +72,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+        private static IQueryable<Student> CreateRandomStudents(DateTimeOffset dates) =>
+            CreateStudentFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
         private static Filler<Student> CreateStudentFiller(DateTimeOffset dates)
         {

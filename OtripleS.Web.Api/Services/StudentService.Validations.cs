@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Models.Students.Exceptions;
 
@@ -189,6 +190,14 @@ namespace OtripleS.Web.Api.Services
             if (student is null)
             {
                 throw new NullStudentException();
+            }
+        }
+
+        private void ValidateStorageStudents(IQueryable<Student> storageStudents)
+        {
+            if (storageStudents.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No students found in storage.");
             }
         }
 
