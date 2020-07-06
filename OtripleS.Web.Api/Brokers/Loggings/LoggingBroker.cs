@@ -22,7 +22,7 @@ namespace OtripleS.Web.Api.Brokers.Loggings
             this.logger.LogDebug(message);
 
         public void LogError(Exception exception) =>
-            this.LogError(exception);
+            this.logger.LogError(exception.Message, exception);
 
         public void LogInformation(string message) =>
             this.logger.LogInformation(message);

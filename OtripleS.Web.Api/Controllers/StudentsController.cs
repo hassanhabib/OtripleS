@@ -23,12 +23,12 @@ namespace OtripleS.Web.Api.Controllers
             this.studentService = studentService;
 
         [HttpPost]
-        public async ValueTask<ActionResult<Student>> PostStudentAsync([FromBody] Student student)
+        public async ValueTask<ActionResult<Student>> PostStudentAsync(Student student)
         {
             try
             {
                 Student registeredStudent =
-                        await this.studentService.RegisterStudentAsync(student);
+                    await this.studentService.RegisterStudentAsync(student);
 
                 return Ok(registeredStudent);
             }
@@ -61,7 +61,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 Student storageStudent =
-                        await this.studentService.RetrieveStudentByIdAsync(studentId);
+                    await this.studentService.RetrieveStudentByIdAsync(studentId);
 
                 return Ok(storageStudent);
             }
@@ -94,7 +94,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 Student registeredStudent =
-                        await this.studentService.RegisterStudentAsync(student);
+                    await this.studentService.ModifyStudentAsync(student);
 
                 return Ok(registeredStudent);
             }
@@ -112,7 +112,7 @@ namespace OtripleS.Web.Api.Controllers
                 return BadRequest(innerMessage);
             }
             catch (StudentDependencyException studentDependencyException)
-                when(studentDependencyException.InnerException is LockedStudentException)
+                when (studentDependencyException.InnerException is LockedStudentException)
             {
                 string innerMessage = GetInnerMessage(studentDependencyException);
 

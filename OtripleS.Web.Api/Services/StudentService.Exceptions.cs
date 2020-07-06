@@ -1,4 +1,9 @@
-﻿using System;
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
+using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -10,13 +15,13 @@ namespace OtripleS.Web.Api.Services
 {
     public partial class StudentService
     {
-        private delegate ValueTask<Student> ReturningRetrieveStudentFunction();
+        private delegate ValueTask<Student> ReturningStudentFunction();
 
-        private async ValueTask<Student> TryCatch(ReturningRetrieveStudentFunction returningRetrieveStudentFunction)
+        private async ValueTask<Student> TryCatch(ReturningStudentFunction returningStudentFunction)
         {
             try
             {
-                return await returningRetrieveStudentFunction();
+                return await returningStudentFunction();
             }
             catch (NullStudentException nullStudentException)
             {
