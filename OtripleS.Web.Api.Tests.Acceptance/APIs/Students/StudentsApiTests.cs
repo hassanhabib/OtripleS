@@ -38,6 +38,23 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
             return filler.Create();
         }
 
+        private Student UpdateStudentRandom(Student student)
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+
+            var filler = new Filler<Student>();
+
+            filler.Setup()
+                .OnProperty(student => student.Id).Use(student.Id)
+                .OnProperty(student => student.CreatedBy).Use(student.CreatedBy)
+                .OnProperty(student => student.UpdatedBy).Use(student.UpdatedBy)
+                .OnProperty(student => student.CreatedDate).Use(student.CreatedDate)
+                .OnProperty(student => student.UpdatedDate).Use(now)
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+
+            return filler.Create();
+        }
+
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
     }

@@ -21,5 +21,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
 
         public async ValueTask<Student> DeleteStudentByIdAsync(Guid studentId) =>
             await this.apiFactoryClient.DeleteContentAsync<Student>($"{StudentsRelativeUrl}/{studentId}");
+        public async ValueTask<Student> PutStudentAsync(Student student) =>
+            await this.apiFactoryClient.PutContentAsync(StudentsRelativeUrl, student);
     }
 }
