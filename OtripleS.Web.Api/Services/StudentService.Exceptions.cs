@@ -78,6 +78,10 @@ namespace OtripleS.Web.Api.Services
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private StudentServiceException CreateAndLogServiceException(Exception exception)
