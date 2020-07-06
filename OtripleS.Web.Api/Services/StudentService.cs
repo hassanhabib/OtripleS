@@ -60,7 +60,8 @@ namespace OtripleS.Web.Api.Services
             return await this.storageBroker.UpdateStudentAsync(student);
         });
 
-        public async ValueTask<Student> DeleteStudentAsync(Guid studentId)
+        public ValueTask<Student> DeleteStudentAsync(Guid studentId) =>
+        TryCatch(async () =>
         {
             ValidateStudentId(studentId);
 
@@ -70,6 +71,6 @@ namespace OtripleS.Web.Api.Services
             ValidateStorageStudent(maybeStudent, studentId);
 
             return await this.storageBroker.DeleteStudentAsync(maybeStudent);
-        }
+        });
     }
 }
