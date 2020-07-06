@@ -42,6 +42,7 @@ namespace OtripleS.Web.Api.Services
             ValidateStudentStrings(student);
             ValidateStudentDates(student);
             ValidateStudentIds(student);
+            ValidateDatesAreNotSame(student);
             ValidateUpdatedDateIsRecent(student);
         }
 
@@ -63,6 +64,16 @@ namespace OtripleS.Web.Api.Services
                     throw new InvalidStudentException(
                         parameterName: nameof(student.FirstName),
                         parameterValue: student.FirstName);
+            }
+        }
+
+        private void ValidateDatesAreNotSame(Student student)
+        {
+            if(student.CreatedDate == student.UpdatedDate)
+            {
+                throw new InvalidStudentException(
+                    parameterName: nameof(Student.CreatedDate),
+                    parameterValue: student.CreatedDate);
             }
         }
 

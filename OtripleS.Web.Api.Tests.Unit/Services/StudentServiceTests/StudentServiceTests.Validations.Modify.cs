@@ -345,6 +345,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfCreatedAndUpdatedDatesAreSameAndLogItAsync()
+        {
+            // given
+            Student randomStudent = CreateRandomStudent();
+            DateTimeOffset sameDate = randomStudent.CreatedDate;
+            Student invalidStudent = randomStudent;
+            invalidStudent.CreatedDate = sameDate;
+            invalidStudent.UpdatedDate = sameDate;
+
+            var invalidStudentException = new InvalidStudentException(
+                parameterName: nameof(Student.CreatedDate),
+                parameterValue: invalidStudent.CreatedDate);
+
+            var expectedStudentValidationException =
+                new StudentValidationException(invalidStudentException);
+
+            // when
+            ValueTask<Student> modifyStudentTask =
+                this.studentService.ModifyStudentAsync(invalidStudent);
+
+            // then
+            await Assert.ThrowsAsync<StudentValidationException>(() =>
+                modifyStudentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Theory]
         [MemberData(nameof(InvalidMinuteCases))]
         public async Task ShouldThrowValidationExceptionOnModifyIfStudentUpdatedDateIsNotRecentAndLogItAsync(
@@ -380,40 +414,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Once);
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                    Times.Once);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async Task ShouldThrowValidationExceptionOnModifyIfCreatedAndUpdatedDatesAreSameAndLogItAsync()
-        {
-            // given
-            Student randomStudent = CreateRandomStudent();
-            DateTimeOffset sameDate = randomStudent.CreatedDate;
-            Student invalidStudent = randomStudent;
-            invalidStudent.CreatedDate = sameDate;
-            invalidStudent.UpdatedDate = sameDate;
-
-            var invalidStudentException = new InvalidStudentException(
-                parameterName: nameof(Student.CreatedDate),
-                parameterValue: invalidStudent.CreatedDate);
-
-            var expectedStudentValidationException =
-                new StudentValidationException(invalidStudentException);
-
-            // when
-            ValueTask<Student> modifyStudentTask =
-                this.studentService.ModifyStudentAsync(invalidStudent);
-
-            // then
-            await Assert.ThrowsAsync<StudentValidationException>(() =>
-                modifyStudentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
