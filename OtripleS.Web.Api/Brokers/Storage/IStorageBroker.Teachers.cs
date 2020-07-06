@@ -5,12 +5,10 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Models
+namespace OtripleS.Web.Api.Brokers.Storage
 {
-    public enum TeacherStatus
+    public partial interface IStorageBroker
     {
-        Active,
-        Retired,
-        Terminated
+        
     }
 }

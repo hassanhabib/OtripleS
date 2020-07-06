@@ -3,14 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
+using Microsoft.EntityFrameworkCore;
+using OtripleS.Web.Api.Models.Teachers;
 
-namespace OtripleS.Web.Api.Models
+namespace OtripleS.Web.Api.Brokers.Storage
 {
-    public enum TeacherStatus
+    public partial class StorageBroker
     {
-        Active,
-        Retired,
-        Terminated
+        public DbSet<Teacher> Teachers { get; set; }
     }
 }
