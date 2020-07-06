@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Models.Students.Exceptions;
 
@@ -31,6 +32,12 @@ namespace OtripleS.Web.Api.Services
             ValidateStudentRequiredData(student);
             ValidateCreatedSignature(student);
             ValidateDates(student);
+        }
+
+        private void ValidateStudentOnModify(Student student)
+        {
+            ValidateStudent(student);
+            ValidateStudentId(student.Id);
         }
 
         private void ValidateDates(Student student)

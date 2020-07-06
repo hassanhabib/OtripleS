@@ -49,7 +49,7 @@ namespace OtripleS.Web.Api.Services
         public ValueTask<Student> ModifyStudentAsync(Student student) =>
         TryCatch(async () =>
         {
-            ValidateStudent(student);
+            ValidateStudentOnModify(student);
 
             Student storageStudent =
                 await this.storageBroker.SelectStudentByIdAsync(student.Id);
