@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.Students;
 
@@ -15,5 +16,6 @@ namespace OtripleS.Web.Api.Services
         ValueTask<Student> RetrieveStudentByIdAsync(Guid studentId);
         ValueTask<Student> ModifyStudentAsync(Student student);
         ValueTask<Student> DeleteStudentAsync(Guid studentId);
+        IQueryable<Student> RetrieveAllStudents();
     }
 }
