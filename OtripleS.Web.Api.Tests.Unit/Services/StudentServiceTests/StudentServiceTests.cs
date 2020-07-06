@@ -62,7 +62,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
 
-        private static SqlException CreateSqlException() =>
+        private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static DateTimeOffset GetRandomDateTime() =>

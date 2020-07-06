@@ -23,7 +23,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student randomStudent = CreateRandomStudent(dateTime);
             Student inputStudent = randomStudent;
             inputStudent.UpdatedBy = inputStudent.CreatedBy;
-            var sqlException = CreateSqlException();
+            var sqlException = GetSqlException();
 
             var expectedStudentDependencyException =
                 new StudentDependencyException(sqlException);

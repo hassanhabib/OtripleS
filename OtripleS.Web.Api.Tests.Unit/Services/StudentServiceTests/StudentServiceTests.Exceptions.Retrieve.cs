@@ -21,7 +21,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             // given
             Guid randomStudentId = Guid.NewGuid();
             Guid inputStudentId = randomStudentId;
-            var sqlException = CreateSqlException();
+            var sqlException = GetSqlException();
 
             var expectedStudentDependencyException =
                 new StudentDependencyException(sqlException);
