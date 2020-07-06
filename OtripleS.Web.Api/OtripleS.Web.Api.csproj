@@ -16,4 +16,10 @@
   </ItemGroup>
 
 
+  <ItemGroup>
+    <Folder Include="Models\Teacher\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Brokers\Storage\StorageBroker.Teacher.cs" />
+  </ItemGroup>
 </Project>
