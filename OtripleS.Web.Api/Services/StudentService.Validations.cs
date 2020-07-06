@@ -41,6 +41,7 @@ namespace OtripleS.Web.Api.Services
             ValidateStudentId(student.Id);
             ValidateStudentStrings(student);
             ValidateStudentDates(student);
+            ValidateStudentIds(student);
         }
 
         private void ValidateStudentStrings(Student student)
