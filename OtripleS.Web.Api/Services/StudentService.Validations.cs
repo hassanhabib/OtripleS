@@ -108,20 +108,10 @@ namespace OtripleS.Web.Api.Services
                         parameterName: nameof(Student.BirthDate),
                         parameterValue: student.BirthDate);
 
-                case { } when student.CreatedBy == default:
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.CreatedBy),
-                        parameterValue: student.CreatedBy);
-
                 case { } when student.CreatedDate == default:
                     throw new InvalidStudentException(
                         parameterName: nameof(Student.CreatedDate),
                         parameterValue: student.CreatedDate);
-
-                case { } when student.UpdatedBy == default:
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.UpdatedBy),
-                        parameterValue: student.UpdatedBy);
 
                 case { } when student.UpdatedDate == default:
                     throw new InvalidStudentException(

@@ -278,5 +278,71 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyifCreatedByIsInvalidAndLogItAsync()
+        {
+            // given
+            Guid invalidId = Guid.Empty;
+            Student randomStudent = CreateRandomStudent();
+            Student invalidStudent = randomStudent;
+            invalidStudent.CreatedBy = invalidId;
+
+            var invalidStudentException = new InvalidStudentException(
+               parameterName: nameof(Student.CreatedBy),
+               parameterValue: invalidStudent.CreatedBy);
+
+            var expectedStudentValidationException =
+                new StudentValidationException(invalidStudentException);
+
+            // when
+            ValueTask<Student> modifyStudentTask =
+                this.studentService.ModifyStudentAsync(invalidStudent);
+
+            // then
+            await Assert.ThrowsAsync<StudentValidationException>(() =>
+                modifyStudentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyifUpdatedByIsInvalidAndLogItAsync()
+        {
+            // given
+            Guid invalidId = Guid.Empty;
+            Student randomStudent = CreateRandomStudent();
+            Student invalidStudent = randomStudent;
+            invalidStudent.UpdatedBy = invalidId;
+
+            var invalidStudentException = new InvalidStudentException(
+               parameterName: nameof(Student.UpdatedBy),
+               parameterValue: invalidStudent.UpdatedBy);
+
+            var expectedStudentValidationException =
+                new StudentValidationException(invalidStudentException);
+
+            // when
+            ValueTask<Student> modifyStudentTask =
+                this.studentService.ModifyStudentAsync(invalidStudent);
+
+            // then
+            await Assert.ThrowsAsync<StudentValidationException>(() =>
+                modifyStudentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
