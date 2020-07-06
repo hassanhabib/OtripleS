@@ -76,7 +76,10 @@ namespace OtripleS.Web.Api.Services
 
         public IQueryable<Student> RetrieveAllStudents()
         {
-            return this.storageBroker.SelectAllStudents();
-        }
+            IQueryable<Student> storageStudents = this.storageBroker.SelectAllStudents();
+            ValidateStorageStudents(storageStudents);
+
+            return storageStudents;
+        }        
     }
 }
