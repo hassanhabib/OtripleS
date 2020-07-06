@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Services
             ValidateStudentIds(student);
             ValidateStudentDates(student);
             ValidateCreatedSignature(student);
-            ValidateDates(student);
+            ValidateCreatedDateIsRecent(student);
         }
 
         private void ValidateStudentOnModify(Student student)
@@ -42,6 +42,7 @@ namespace OtripleS.Web.Api.Services
             ValidateStudentStrings(student);
             ValidateStudentDates(student);
             ValidateStudentIds(student);
+            ValidateUpdatedDateIsRecent(student);
         }
 
         private void ValidateStudentStrings(Student student)
@@ -65,7 +66,7 @@ namespace OtripleS.Web.Api.Services
             }
         }
 
-        private void ValidateDates(Student student)
+        private void ValidateCreatedDateIsRecent(Student student)
         {
             if (IsDateNotRecent(student.CreatedDate))
             {
@@ -75,13 +76,23 @@ namespace OtripleS.Web.Api.Services
             }
         }
 
+        private void ValidateUpdatedDateIsRecent(Student student)
+        {
+            if (IsDateNotRecent(student.UpdatedDate))
+            {
+                throw new InvalidStudentException(
+                    parameterName: nameof(student.UpdatedDate),
+                    parameterValue: student.UpdatedDate);
+            }
+        }
+
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
-            int validMinuteVariation = 1;
+            int oneMinute = 1;
             TimeSpan difference = now.Subtract(dateTime);
 
-            return Math.Abs(difference.TotalMinutes) > validMinuteVariation;
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
         private void ValidateCreatedSignature(Student student)

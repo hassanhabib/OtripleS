@@ -347,7 +347,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
 
         [Theory]
         [MemberData(nameof(InvalidMinuteCases))]
-        public async Task ShouldThrowValidationExceptionOnModifyIfStudentIsNotFoundAndLogItAsync(
+        public async Task ShouldThrowValidationExceptionOnModifyIfStudentUpdatedDateIsNotRecentAndLogItAsync(
             int randomMoreOrLessThanOneMinute)
         {
             // given
