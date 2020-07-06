@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using Moq;
 using OtripleS.Web.Api.Models.Students;
@@ -25,6 +26,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
 
             // when
             ValueTask<Student> modifyStudentTask =
+                this.studentService.ModifyStudentAsync(invalidStudent);
+
+            // then
+            await Assert.ThrowsAsync<StudentValidationException>(() =>
+                modifyStudentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyWhenStudentIdIsInvalidAndLogItAsync()
+        {
+            // given
+            Guid invalidStudentId = Guid.Empty;
+            Student randomStudent = CreateRandomStudent();
+            Student invalidStudent = randomStudent;
+            invalidStudent.Id = invalidStudentId;
+
+            var invalidStudentException = new InvalidStudentInputException(
+                parameterName: nameof(Student.Id),
+                parameterValue: invalidStudent.Id);
+
+            var expectedStudentValidationException =
+                new StudentValidationException(invalidStudentException);
+
+            // when
+            ValueTask<Student> modifyStudentTask = 
                 this.studentService.ModifyStudentAsync(invalidStudent);
 
             // then

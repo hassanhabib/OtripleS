@@ -37,16 +37,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
-        private Student CreateRandomStudent(DateTimeOffset dates)
-        {
-            var filler = new Filler<Student>();
-            filler.Setup()
-                .OnProperty(student => student.BirthDate).Use(GetRandomDateTime())
-                .OnProperty(student => student.CreatedDate).Use(dates)
-                .OnProperty(student => student.UpdatedDate).Use(dates);
+        private Student CreateRandomStudent() => 
+            CreateStudentFiller(dates: DateTimeOffset.UtcNow).Create();
 
-            return filler.Create();
-        }
+        private Student CreateRandomStudent(DateTimeOffset dates) => 
+            CreateStudentFiller(dates).Create();
 
         public static IEnumerable<object[]> GetMinutesForValidationOfDate()
         {
@@ -76,5 +71,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+        private static Filler<Student> CreateStudentFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<Student>();
+            filler.Setup()
+                .OnProperty(student => student.BirthDate).Use(GetRandomDateTime())
+                .OnProperty(student => student.CreatedDate).Use(dates)
+                .OnProperty(student => student.UpdatedDate).Use(dates);
+
+            return filler;
+        }
     }
 }
