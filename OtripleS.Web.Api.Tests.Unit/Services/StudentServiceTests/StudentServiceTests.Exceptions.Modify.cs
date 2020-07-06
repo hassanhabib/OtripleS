@@ -154,5 +154,51 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnModifyIfServiceExceptionOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Student randomStudent = CreateRandomStudent();
+            Student someStudent = randomStudent;
+            someStudent.UpdatedDate = randomDateTime;
+            var serviceException = new Exception();
+
+            var expectedStudentServiceException =
+                new StudentServiceException(serviceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentByIdAsync(someStudent.Id))
+                    .ThrowsAsync(serviceException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
+
+            // when
+            ValueTask<Student> modifyStudentTask =
+                this.studentService.ModifyStudentAsync(someStudent);
+
+            // then
+            await Assert.ThrowsAsync<StudentServiceException>(() =>
+                modifyStudentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentByIdAsync(someStudent.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentServiceException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
