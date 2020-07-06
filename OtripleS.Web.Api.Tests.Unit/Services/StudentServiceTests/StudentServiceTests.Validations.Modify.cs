@@ -584,10 +584,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         public async Task ShouldThrowValidationExceptionOnModifyIfStorageUpdatedDateSameAsUpdatedDateAndLogItAsync()
         {
             // given
-            Guid differentId = Guid.NewGuid();
-            Guid invalidCreatedBy = differentId;
+            int randomNegativeMinutes = GetNegativeRandomNumber();
+            int minutesInThePast = randomNegativeMinutes;
             DateTimeOffset randomDate = GetRandomDateTime();
             Student randomStudent = CreateRandomStudent(dates: randomDate);
+            randomStudent.CreatedDate = randomStudent.CreatedDate.AddMinutes(minutesInThePast);
             Student invalidStudent = randomStudent;
             invalidStudent.UpdatedDate = randomDate;
             Student storageStudent = randomStudent.DeepClone();

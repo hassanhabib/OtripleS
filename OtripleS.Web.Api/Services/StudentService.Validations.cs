@@ -59,6 +59,11 @@ namespace OtripleS.Web.Api.Services
                     throw new InvalidStudentException(
                         parameterName: nameof(Student.CreatedBy),
                         parameterValue: inputStudent.CreatedBy);
+
+                case { } when inputStudent.UpdatedDate == storageStudent.UpdatedDate:
+                    throw new InvalidStudentException(
+                        parameterName: nameof(Student.UpdatedDate),
+                        parameterValue: inputStudent.UpdatedDate);
             }
         }
 
