@@ -50,6 +50,11 @@ namespace OtripleS.Web.Api.Services
                         parameterName: nameof(student.UserId),
                         parameterValue: student.UserId);
 
+                case { } when IsInvalid(student.IdentityNumber):
+                    throw new InvalidStudentException(
+                        parameterName: nameof(student.IdentityNumber),
+                        parameterValue: student.IdentityNumber);
+
                 case { } when IsInvalid(student.FirstName):
                     throw new InvalidStudentException(
                         parameterName: nameof(student.FirstName),
