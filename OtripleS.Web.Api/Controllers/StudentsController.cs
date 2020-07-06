@@ -15,11 +15,11 @@ namespace OtripleS.Web.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class StudentController : RESTFulController
+    public class StudentsController : RESTFulController
     {
         private readonly IStudentService studentService;
 
-        public StudentController(IStudentService studentService) =>
+        public StudentsController(IStudentService studentService) =>
             this.studentService = studentService;
 
         [HttpPost]
