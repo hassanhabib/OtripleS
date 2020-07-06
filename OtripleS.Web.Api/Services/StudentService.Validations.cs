@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Services
         {
             if (studentId == Guid.Empty)
             {
-                throw new InvalidStudentInputException(
+                throw new InvalidStudentException(
                     parameterName: nameof(Student.Id),
                     parameterValue: studentId);
             }
@@ -46,9 +46,14 @@ namespace OtripleS.Web.Api.Services
             switch (student)
             {
                 case { } when IsInvalid(student.UserId):
-                    throw new InvalidStudentInputException(
+                    throw new InvalidStudentException(
                         parameterName: nameof(student.UserId),
                         parameterValue: student.UserId);
+
+                case { } when IsInvalid(student.FirstName):
+                    throw new InvalidStudentException(
+                        parameterName: nameof(student.FirstName),
+                        parameterValue: student.FirstName);
             }
         }
 
@@ -56,7 +61,7 @@ namespace OtripleS.Web.Api.Services
         {
             if (IsDateNotRecent(student.CreatedDate))
             {
-                throw new InvalidStudentInputException(
+                throw new InvalidStudentException(
                     parameterName: nameof(student.CreatedDate),
                     parameterValue: student.CreatedDate);
             }
@@ -75,13 +80,13 @@ namespace OtripleS.Web.Api.Services
         {
             if (student.CreatedBy != student.UpdatedBy)
             {
-                throw new InvalidStudentInputException(
+                throw new InvalidStudentException(
                     parameterName: nameof(Student.UpdatedBy),
                     parameterValue: student.UpdatedBy);
             }
             else if (student.CreatedDate != student.UpdatedDate)
             {
-                throw new InvalidStudentInputException(
+                throw new InvalidStudentException(
                     parameterName: nameof(Student.UpdatedDate),
                     parameterValue: student.UpdatedDate);
             }
@@ -92,27 +97,27 @@ namespace OtripleS.Web.Api.Services
             switch (student)
             {
                 case { } when student.BirthDate == default:
-                    throw new InvalidStudentInputException(
+                    throw new InvalidStudentException(
                         parameterName: nameof(Student.BirthDate),
                         parameterValue: student.BirthDate);
 
                 case { } when student.CreatedBy == default:
-                    throw new InvalidStudentInputException(
+                    throw new InvalidStudentException(
                         parameterName: nameof(Student.CreatedBy),
                         parameterValue: student.CreatedBy);
 
                 case { } when student.CreatedDate == default:
-                    throw new InvalidStudentInputException(
+                    throw new InvalidStudentException(
                         parameterName: nameof(Student.CreatedDate),
                         parameterValue: student.CreatedDate);
 
                 case { } when student.UpdatedBy == default:
-                    throw new InvalidStudentInputException(
+                    throw new InvalidStudentException(
                         parameterName: nameof(Student.UpdatedBy),
                         parameterValue: student.UpdatedBy);
 
                 case { } when student.UpdatedDate == default:
-                    throw new InvalidStudentInputException(
+                    throw new InvalidStudentException(
                         parameterName: nameof(Student.UpdatedDate),
                         parameterValue: student.UpdatedDate);
             }

@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student invalidStudent = randomStudent;
             invalidStudent.Id = invalidStudentId;
 
-            var invalidStudentException = new InvalidStudentInputException(
+            var invalidStudentException = new InvalidStudentException(
                 parameterName: nameof(Student.Id),
                 parameterValue: invalidStudent.Id);
 
@@ -86,7 +86,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student invalidStudent = randomStudent;
             invalidStudent.UserId = invalidStudentUserId;
 
-            var invalidStudentException = new InvalidStudentInputException(
+            var invalidStudentException = new InvalidStudentException(
                parameterName: nameof(Student.UserId),
                parameterValue: invalidStudent.UserId);
 
@@ -123,7 +123,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student invalidStudent = randomStudent;
             invalidStudent.FirstName = invalidStudentFirstName;
 
-            var invalidStudentException = new InvalidStudentInputException(
+            var invalidStudentException = new InvalidStudentException(
                parameterName: nameof(Student.FirstName),
                parameterValue: invalidStudent.FirstName);
 

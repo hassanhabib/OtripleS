@@ -7,10 +7,10 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Students.Exceptions
 {
-    public class InvalidStudentInputException : Exception
+    public class InvalidStudentException : Exception
     {
-        public InvalidStudentInputException(string parameterName, object parameterValue)
-            : base($"Invalid input. " +
+        public InvalidStudentException(string parameterName, object parameterValue)
+            : base($"Invalid Student, " +
                   $"ParameterName: {parameterName}, " +
                   $"ParameterValue: {parameterValue}.")
         { }

@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student inputStudent = randomStudent;
             inputStudent.Id = default;
 
-            var invalidStudentInputException = new InvalidStudentInputException(
+            var invalidStudentInputException = new InvalidStudentException(
                 parameterName: nameof(Student.Id),
                 parameterValue: inputStudent.Id);
 
@@ -89,7 +89,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student inputStudent = randomStudent;
             inputStudent.BirthDate = default;
 
-            var invalidStudentInputException = new InvalidStudentInputException(
+            var invalidStudentInputException = new InvalidStudentException(
                 parameterName: nameof(Student.BirthDate),
                 parameterValue: inputStudent.BirthDate);
 
@@ -126,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student inputStudent = randomStudent;
             inputStudent.CreatedBy = default;
 
-            var invalidStudentInputException = new InvalidStudentInputException(
+            var invalidStudentInputException = new InvalidStudentException(
                 parameterName: nameof(Student.CreatedBy),
                 parameterValue: inputStudent.CreatedBy);
 
@@ -163,7 +163,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student inputStudent = randomStudent;
             inputStudent.CreatedDate = default;
 
-            var invalidStudentInputException = new InvalidStudentInputException(
+            var invalidStudentInputException = new InvalidStudentException(
                 parameterName: nameof(Student.CreatedDate),
                 parameterValue: inputStudent.CreatedDate);
 
@@ -200,7 +200,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student inputStudent = randomStudent;
             inputStudent.UpdatedBy = default;
 
-            var invalidStudentInputException = new InvalidStudentInputException(
+            var invalidStudentInputException = new InvalidStudentException(
                 parameterName: nameof(Student.UpdatedBy),
                 parameterValue: inputStudent.UpdatedBy);
 
@@ -237,7 +237,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student inputStudent = randomStudent;
             inputStudent.UpdatedDate = default;
 
-            var invalidStudentInputException = new InvalidStudentInputException(
+            var invalidStudentInputException = new InvalidStudentException(
                 parameterName: nameof(Student.UpdatedDate),
                 parameterValue: inputStudent.UpdatedDate);
 
@@ -274,7 +274,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             Student inputStudent = randomStudent;
             inputStudent.UpdatedBy = Guid.NewGuid();
 
-            var invalidStudentInputException = new InvalidStudentInputException(
+            var invalidStudentInputException = new InvalidStudentException(
                 parameterName: nameof(Student.UpdatedBy),
                 parameterValue: inputStudent.UpdatedBy);
 
@@ -312,7 +312,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             inputStudent.UpdatedBy = randomStudent.CreatedBy;
             inputStudent.UpdatedDate = GetRandomDateTime();
 
-            var invalidStudentInputException = new InvalidStudentInputException(
+            var invalidStudentInputException = new InvalidStudentException(
                 parameterName: nameof(Student.UpdatedDate),
                 parameterValue: inputStudent.UpdatedDate);
 
@@ -353,7 +353,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             inputStudent.CreatedDate = dateTime.AddMinutes(minutes);
             inputStudent.UpdatedDate = inputStudent.CreatedDate;
 
-            var invalidStudentInputException = new InvalidStudentInputException(
+            var invalidStudentInputException = new InvalidStudentException(
                 parameterName: nameof(Student.CreatedDate),
                 parameterValue: inputStudent.CreatedDate);
 

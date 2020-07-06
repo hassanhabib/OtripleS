@@ -22,7 +22,7 @@ namespace OtripleS.Web.Api.Services
             {
                 throw CreateAndLogValidationException(nullStudentException);
             }
-            catch (InvalidStudentInputException invalidStudentInputException)
+            catch (InvalidStudentException invalidStudentInputException)
             {
                 throw CreateAndLogValidationException(invalidStudentInputException);
             }
