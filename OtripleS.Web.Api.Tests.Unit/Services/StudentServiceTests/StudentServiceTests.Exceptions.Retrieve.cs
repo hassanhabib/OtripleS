@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -124,6 +125,43 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentByIdAsync(inputStudentId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogItAsync()
+        {
+            // given
+            var sqlException = GetSqlException();
+
+            var expectedStudentDependencyException =
+                new StudentDependencyException(sqlException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllStudents())
+                    .Throws(sqlException);
+
+            // when
+            IQueryable<Student> retrieveAllStudentsTask =
+                this.studentService.RetrieveAllStudents();
+
+            // then
+            Assert.Throws<StudentDependencyException>(() => retrieveAllStudentsTask);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllStudents(),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
