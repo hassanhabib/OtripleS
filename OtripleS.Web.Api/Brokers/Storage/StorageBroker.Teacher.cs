@@ -5,6 +5,6 @@ namespace OtripleS.Web.Api.Brokers.Storage
 {
     public partial class StorageBroker
     {
-        public DbSet<Teacher> Techers { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
     }
 }

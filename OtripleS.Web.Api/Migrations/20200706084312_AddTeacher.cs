@@ -8,7 +8,7 @@ namespace OtripleS.Web.Api.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Techers",
+                name: "Teachers",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -26,14 +26,14 @@ namespace OtripleS.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Techers", x => x.Id);
+                    table.PrimaryKey("PK_Teachers", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Techers");
+                name: "Teachers");
         }
     }
 }
