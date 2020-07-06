@@ -341,7 +341,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         }
 
         [Theory]
-        [MemberData(nameof(GetMinutesForValidationOfDate))]
+        [MemberData(nameof(InvalidMinuteCases))]
         public async void ShouldThrowValidationExceptionOnRegisterWhenCreatedDateIsNotRecentAndLogItAsync(
             int minutes)
         {

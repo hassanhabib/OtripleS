@@ -43,15 +43,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         private Student CreateRandomStudent(DateTimeOffset dates) => 
             CreateStudentFiller(dates).Create();
 
-        public static IEnumerable<object[]> GetMinutesForValidationOfDate()
+        public static IEnumerable<object[]> InvalidMinuteCases()
         {
-            int randomMinutesMoreThanOneMinuteFromNow = GetRandomNumber();
-            int randomMinutesMoreThanOneMoniuteBeforeFromNow = GetNegativeRandomNumber();
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
 
             return new List<object[]>
             {
-                new object[] { randomMinutesMoreThanOneMinuteFromNow },
-                new object[] { randomMinutesMoreThanOneMoniuteBeforeFromNow }
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
             };
         }
 
