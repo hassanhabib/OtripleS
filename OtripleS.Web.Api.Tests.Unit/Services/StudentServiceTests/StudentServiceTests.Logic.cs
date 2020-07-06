@@ -62,12 +62,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             int randomNumber = GetRandomNumber();
             int randomDays = randomNumber;
             DateTimeOffset randomDate = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent(dates: randomDate);
+            Student randomStudent = CreateRandomStudent();
             Student inputStudent = randomStudent;
+            inputStudent.UpdatedDate = randomDate;
             Student afterUpdateStorageStudent = inputStudent;
             Student expectedStudent = afterUpdateStorageStudent;
             Student beforeUpdateStorageStudent = randomStudent.DeepClone();
-            inputStudent.UpdatedDate = beforeUpdateStorageStudent.UpdatedDate.AddDays(days: randomDays);
             Guid studentId = inputStudent.Id;
 
             this.storageBrokerMock.Setup(broker =>

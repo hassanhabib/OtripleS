@@ -55,7 +55,6 @@ namespace OtripleS.Web.Api.Services
                 await this.storageBroker.SelectStudentByIdAsync(student.Id);
 
             ValidateStorageStudent(maybeStudent, student.Id);
-            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
 
             return await this.storageBroker.UpdateStudentAsync(student);
         });
