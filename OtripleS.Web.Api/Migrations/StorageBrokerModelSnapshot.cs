@@ -104,7 +104,7 @@ namespace OtripleS.Web.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Techers");
+                    b.ToTable("Teachers");
                 });
 #pragma warning restore 612, 618
         }
