@@ -76,7 +76,7 @@ namespace OtripleS.Web.Api.Services
 
         public IQueryable<Student> RetrieveAllStudents()
         {
-            throw new NotImplementedException();
+            return this.storageBroker.SelectAllStudents();
         }
     }
 }
