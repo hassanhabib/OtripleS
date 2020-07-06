@@ -115,7 +115,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenStudentFirstnameIsInvalidAndLogItAsync(
+        public async Task ShouldThrowValidationExceptionOnModifyWhenStudentFirstNameIsInvalidAndLogItAsync(
             string invalidStudentFirstName)
         {
             // given
@@ -126,6 +126,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             var invalidStudentException = new InvalidStudentException(
                parameterName: nameof(Student.FirstName),
                parameterValue: invalidStudent.FirstName);
+
+            var expectedStudentValidationException =
+                new StudentValidationException(invalidStudentException);
+
+            // when
+            ValueTask<Student> modifyStudentTask =
+                this.studentService.ModifyStudentAsync(invalidStudent);
+
+            // then
+            await Assert.ThrowsAsync<StudentValidationException>(() =>
+                modifyStudentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task ShouldThrowValidationExceptionOnModifyWhenStudentIdentityNumberIsInvalidAndLogItAsync(
+            string invalidStudentIdentityNumber)
+        {
+            // given
+            Student randomStudent = CreateRandomStudent();
+            Student invalidStudent = randomStudent;
+            invalidStudent.IdentityNumber = invalidStudentIdentityNumber;
+
+            var invalidStudentException = new InvalidStudentException(
+               parameterName: nameof(Student.IdentityNumber),
+               parameterValue: invalidStudent.IdentityNumber);
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
