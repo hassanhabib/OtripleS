@@ -28,17 +28,6 @@ namespace OtripleS.Web.Api.Services
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async ValueTask<Student> DeleteStudentAsync(Guid studentId)
-        {
-            ValidateStudentId(studentId);
-            Student maybeStudent =
-                await this.storageBroker.SelectStudentByIdAsync(studentId);
-
-            ValidateStorageStudent(maybeStudent, studentId);
-
-            return await this.storageBroker.DeleteStudentAsync(maybeStudent);
-        }
-
         public ValueTask<Student> RegisterStudentAsync(Student student) =>
         TryCatch(async () =>
         {
@@ -56,5 +45,21 @@ namespace OtripleS.Web.Api.Services
 
             return storageStudent;
         });
+
+        public ValueTask<Student> ModifyStudentAsync(Student student)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async ValueTask<Student> DeleteStudentAsync(Guid studentId)
+        {
+            ValidateStudentId(studentId);
+            Student maybeStudent =
+                await this.storageBroker.SelectStudentByIdAsync(studentId);
+
+            ValidateStorageStudent(maybeStudent, studentId);
+
+            return await this.storageBroker.DeleteStudentAsync(maybeStudent);
+        }
     }
 }

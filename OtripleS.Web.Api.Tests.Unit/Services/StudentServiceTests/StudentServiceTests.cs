@@ -37,13 +37,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
-        private Student CreateRandomStudent(DateTimeOffset now)
+        private Student CreateRandomStudent(DateTimeOffset dates)
         {
             var filler = new Filler<Student>();
             filler.Setup()
                 .OnProperty(student => student.BirthDate).Use(GetRandomDateTime())
-                .OnProperty(student => student.CreatedDate).Use(now)
-                .OnProperty(student => student.UpdatedDate).Use(now);
+                .OnProperty(student => student.CreatedDate).Use(dates)
+                .OnProperty(student => student.UpdatedDate).Use(dates);
 
             return filler.Create();
         }
