@@ -74,7 +74,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         private static string GetRandomMessage() => new MnemonicString().GetValue();
 
         private static IQueryable<Student> CreateRandomStudents(DateTimeOffset dates) =>
-           CreateStudentFiller(dates).Create(GetRandomNumber()).AsQueryable();
+            CreateStudentFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
         private static Filler<Student> CreateStudentFiller(DateTimeOffset dates)
         {
