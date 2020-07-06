@@ -149,12 +149,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                 broker.SelectAllStudents())
                     .Throws(sqlException);
 
-            // when
-            IQueryable<Student> retrieveAllStudentsTask =
-                this.studentService.RetrieveAllStudents();
-
-            // then
-            Assert.Throws<StudentDependencyException>(() => retrieveAllStudentsTask);
+            // when . then
+            Assert.Throws<StudentDependencyException>(() => 
+                this.studentService.RetrieveAllStudents());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentDependencyException))),

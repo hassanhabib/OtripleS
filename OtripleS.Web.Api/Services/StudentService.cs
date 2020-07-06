@@ -74,12 +74,13 @@ namespace OtripleS.Web.Api.Services
             return await this.storageBroker.DeleteStudentAsync(maybeStudent);
         });
 
-        public IQueryable<Student> RetrieveAllStudents()
+        public IQueryable<Student> RetrieveAllStudents() =>
+        TryCatch(() =>
         {
             IQueryable<Student> storageStudents = this.storageBroker.SelectAllStudents();
             ValidateStorageStudents(storageStudents);
 
             return storageStudents;
-        }        
+        });        
     }
 }

@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -16,6 +17,7 @@ namespace OtripleS.Web.Api.Services
     public partial class StudentService
     {
         private delegate ValueTask<Student> ReturningStudentFunction();
+        private delegate IQueryable<Student> ReturningQueryableStudentFunction();
 
         private async ValueTask<Student> TryCatch(ReturningStudentFunction returningStudentFunction)
         {
@@ -59,6 +61,18 @@ namespace OtripleS.Web.Api.Services
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private IQueryable<Student> TryCatch(ReturningQueryableStudentFunction returningQueryableStudentFunction)
+        {
+            try
+            {
+                return returningQueryableStudentFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
             }
         }
 
