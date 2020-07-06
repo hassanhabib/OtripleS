@@ -137,7 +137,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
         }
 
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogItAsync()
+        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogIt()
         {
             // given
             var sqlException = GetSqlException();
@@ -155,6 +155,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllStudents(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenDbExceptionOccursAndLogIt()
+        {
+            // given
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedStudentDependencyException =
+                new StudentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllStudents())
+                    .Throws(databaseUpdateException);
+
+            // when . then
+            Assert.Throws<StudentDependencyException>(() =>
+                this.studentService.RetrieveAllStudents());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
