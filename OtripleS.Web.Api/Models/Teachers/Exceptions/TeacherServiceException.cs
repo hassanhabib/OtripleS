@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Teachers.Exceptions
 {
-    public class LockedTeacherException : Exception
+    public class TeacherServiceException : Exception
     {
-        public LockedTeacherException(Exception innerException)
-            : base("Locked teacher record exception, please try again later.", innerException) { }
+        public TeacherServiceException(Exception innerException)
+            : base("Service error occurred, contact support.", innerException) { }
     }
 }
