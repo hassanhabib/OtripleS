@@ -1,6 +1,11 @@
-﻿namespace OtripleS.Web.Api.Brokers.Storage
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
+namespace OtripleS.Web.Api.Brokers.Storage
 {
-    public interface IStorageBroker
+    public partial interface IStorageBroker
     {
     }
 }

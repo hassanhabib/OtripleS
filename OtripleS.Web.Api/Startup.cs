@@ -1,12 +1,18 @@
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Services;
 
 namespace OtripleS.Web.Api
 {
@@ -24,6 +30,8 @@ namespace OtripleS.Web.Api
             services.AddScoped<IStorageBroker, StorageBroker>();
             services.AddTransient<ILogger, Logger<LoggingBroker>>();
             services.AddTransient<ILoggingBroker, LoggingBroker>();
+            services.AddTransient<IDateTimeBroker, DateTimeBroker>();
+            services.AddTransient<IStudentService, StudentService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
