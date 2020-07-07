@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.Teachers;
 using OtripleS.Web.Api.Models.Teachers.Exceptions;
 
@@ -28,6 +29,18 @@ namespace OtripleS.Web.Api.Services.Teachers
             {
                 throw CreateAndLogValidationException(notFoundTeacherException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+        }
+
+        private TeacherDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var teacherDependencyException = new TeacherDependencyException(exception);
+            this.loggingBroker.LogCritical(teacherDependencyException);
+
+            return teacherDependencyException;
         }
 
         private TeacherValidationException CreateAndLogValidationException(Exception exception)
