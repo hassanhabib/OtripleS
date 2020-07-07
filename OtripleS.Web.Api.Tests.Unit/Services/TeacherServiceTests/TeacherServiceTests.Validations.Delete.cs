@@ -52,6 +52,47 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-        
+        [Fact]
+        public async Task ShouldThrowValidatonExceptionOnDeleteWhenStorageTeacherIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Teacher randomTeacher = CreateRandomTeacher(dateTime);
+            Guid inputTeacherId = randomTeacher.Id;
+            Teacher inputTeacher = randomTeacher;
+            Teacher nullStorageTeacher = null;
+
+            var notFoundTeacherException = new NotFoundTeacherException(inputTeacherId);
+
+            var expectedTeacherValidationException = 
+                new TeacherValidationException(notFoundTeacherException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectTeacherByIdAsync(inputTeacherId))
+                    .ReturnsAsync(nullStorageTeacher);
+
+            // when
+            ValueTask<Teacher> actualTeacherTask =
+                this.teacherService.DeleteTeacherByIdAsync(inputTeacherId);
+
+            // then
+            await Assert.ThrowsAsync<TeacherValidationException>(() => actualTeacherTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectTeacherByIdAsync(inputTeacherId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteTeacherAsync(It.IsAny<Teacher>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
