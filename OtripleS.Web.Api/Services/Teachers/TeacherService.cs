@@ -27,9 +27,13 @@ namespace OtripleS.Web.Api.Services.Teachers
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<Teacher> DeleteTeacherByIdAsync(Guid teacherId)
+        public async ValueTask<Teacher> DeleteTeacherByIdAsync(Guid teacherId)
         {
-            throw new NotImplementedException();
+            Teacher maybeTeacher =
+               await this.storageBroker.SelectTeacherByIdAsync(teacherId);
+
+
+            return await this.storageBroker.DeleteTeacherAsync(maybeTeacher);
         }
     }
 }
