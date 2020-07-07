@@ -20,5 +20,13 @@ namespace OtripleS.Web.Api.Services.Teachers
                     parameterValue: teacherId);
             }
         }
+
+        private void ValidateStorageTeacher(Teacher maybeTeacher, Guid teacherId)
+        {
+            if (maybeTeacher is null)
+            {
+                throw new NotFoundTeacherException(teacherId);
+            }
+        }
     }
 }

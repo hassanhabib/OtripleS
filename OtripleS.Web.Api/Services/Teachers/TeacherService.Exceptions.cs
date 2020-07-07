@@ -24,6 +24,10 @@ namespace OtripleS.Web.Api.Services.Teachers
             {
                 throw CreateAndLogValidationException(invalidTeacherInputException);
             }
+            catch (NotFoundTeacherException notFoundTeacherException)
+            {
+                throw CreateAndLogValidationException(notFoundTeacherException);
+            }
         }
 
         private TeacherValidationException CreateAndLogValidationException(Exception exception)

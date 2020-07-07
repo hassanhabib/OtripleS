@@ -35,8 +35,9 @@ namespace OtripleS.Web.Api.Services.Teachers
             Teacher maybeTeacher =
                await this.storageBroker.SelectTeacherByIdAsync(teacherId);
 
+            ValidateStorageTeacher(maybeTeacher, teacherId);
 
             return await this.storageBroker.DeleteTeacherAsync(maybeTeacher);
-        });
+        });       
     }
 }
