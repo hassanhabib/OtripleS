@@ -35,6 +35,7 @@ namespace OtripleS.Web.Api.Services
             ValidateStudent(student);
             ValidateStudentId(student.Id);
             ValidateStudentIds(student);
+            ValidateStudentStrings(student);
             ValidateStudentDates(student);
             ValidateCreatedSignature(student);
             ValidateCreatedDateIsRecent(student);
