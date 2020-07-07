@@ -44,6 +44,18 @@ namespace OtripleS.Web.Api.Services.Teachers
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private TeacherServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var teacherServiceException = new TeacherServiceException(exception);
+            this.loggingBroker.LogError(teacherServiceException);
+
+            return teacherServiceException;
         }
 
         private TeacherDependencyException CreateAndLogDependencyException(Exception exception)
