@@ -6,7 +6,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Models.Students.Exceptions;
-using OtripleS.Web.Api.Services;
+using OtripleS.Web.Api.Services.Students;
 using RESTFulSense.Controllers;
 using System;
 using System.Linq;

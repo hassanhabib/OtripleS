@@ -8,7 +8,7 @@ using OtripleS.Web.Api.Models.Students.Exceptions;
 using System;
 using System.Linq;
 
-namespace OtripleS.Web.Api.Services
+namespace OtripleS.Web.Api.Services.Students
 {
     public partial class StudentService
     {
@@ -35,6 +35,7 @@ namespace OtripleS.Web.Api.Services
             ValidateStudent(student);
             ValidateStudentId(student.Id);
             ValidateStudentIds(student);
+            ValidateStudentStrings(student);
             ValidateStudentDates(student);
             ValidateCreatedSignature(student);
             ValidateCreatedDateIsRecent(student);

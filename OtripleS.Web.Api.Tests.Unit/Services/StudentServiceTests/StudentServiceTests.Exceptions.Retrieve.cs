@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -150,7 +149,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                     .Throws(sqlException);
 
             // when . then
-            Assert.Throws<StudentDependencyException>(() => 
+            Assert.Throws<StudentDependencyException>(() =>
                 this.studentService.RetrieveAllStudents());
 
             this.loggingBrokerMock.Verify(broker =>

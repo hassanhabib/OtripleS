@@ -8,7 +8,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OtripleS.Web.Api.Services
+namespace OtripleS.Web.Api.Services.Students
 {
     public interface IStudentService
     {
