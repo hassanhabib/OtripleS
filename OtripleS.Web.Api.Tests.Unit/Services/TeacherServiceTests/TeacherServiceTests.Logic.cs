@@ -25,9 +25,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             Teacher storageTeacher = randomTeacher;
             Teacher expectedTeacher = randomTeacher;
 
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(dateTime);
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectTeacherByIdAsync(inputTeacherId))
+                    .ReturnsAsync(inputTeacher);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.DeleteTeacherAsync(inputTeacher))
@@ -40,8 +40,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             // then
             actualTeacher.Should().BeEquivalentTo(expectedTeacher);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(), 
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectTeacherByIdAsync(inputTeacherId), 
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
