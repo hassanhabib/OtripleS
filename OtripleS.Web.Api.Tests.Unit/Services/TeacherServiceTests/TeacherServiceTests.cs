@@ -5,6 +5,8 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
+using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -45,6 +47,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
 
         private Teacher CreateRandomTeacher(DateTimeOffset dateTime) =>
             CreateRandomTeacherFiller(dateTime).Create();
+
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private Filler<Teacher> CreateRandomTeacherFiller(DateTimeOffset dateTime)
         {
