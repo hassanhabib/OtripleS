@@ -28,8 +28,4 @@
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="Services\StudentServiceTests\" />
-  </ItemGroup>
 </Project>

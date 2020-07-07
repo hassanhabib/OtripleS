@@ -1,9 +1,9 @@
 using System;
-using System.Threading.Tasks;
 using System.Linq;
-using OtripleS.Web.Api.Models.Students;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using OtripleS.Web.Api.Models.Students;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
@@ -11,7 +11,23 @@ namespace OtripleS.Web.Api.Brokers.Storage
     {
         public DbSet<Student> Students { get; set; }
 
+        public async ValueTask<Student> InsertStudentAsync(Student student)
+        {
+            EntityEntry<Student> studentEntityEntry = await this.Students.AddAsync(student);
+            await this.SaveChangesAsync();
+
+            return studentEntityEntry.Entity;
+        }
+
         public IQueryable<Student> SelectAllStudents() => this.Students.AsQueryable();
+
+        public async ValueTask<Student> AddStudentAsync(Student student)
+        {
+            Students.Add(student);
+            await SaveChangesAsync().ConfigureAwait(false);
+
+            return student;
+        }
 
         public async ValueTask<Student> SelectStudentByIdAsync(Guid studentId)
         {
@@ -20,12 +36,20 @@ namespace OtripleS.Web.Api.Brokers.Storage
             return await Students.FindAsync(studentId);
         }
 
-        public async ValueTask<Student> DeleteStudentAsync(Student student)
+        public async ValueTask<Student> UpdateStudentAsycn(Student student)
         {
-            EntityEntry<Student> storageStudent = this.Students.Remove(student);
+            EntityEntry<Student> studentEntityEntry = this.Students.Update(student);
             await this.SaveChangesAsync();
 
-            return storageStudent.Entity;
+            return studentEntityEntry.Entity;
+        }
+
+        public async ValueTask<Student> DeleteStudentAsync(Student student)
+        {
+            EntityEntry<Student> studentEntityEntry = this.Students.Remove(student);
+            await this.SaveChangesAsync();
+
+            return studentEntityEntry.Entity;
         }
 
         public async ValueTask<Student> InsertStudentAsync(Student student)
