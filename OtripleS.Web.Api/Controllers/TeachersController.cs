@@ -22,49 +22,6 @@ namespace OtripleS.Web.Api.Controllers
         private readonly ITeacherService teacherService;
 
         public TeachersController(ITeacherService teacherService) =>
-            this.teacherService = teacherService;
-
-        [HttpDelete("{teacherId}")]
-        public async ValueTask<ActionResult<Teacher>> DeleteTeacherAsync(Guid teacherId)
-        {
-            try
-            {
-                Teacher storageTeacher =
-                    await this.teacherService.DeleteTeacherByIdAsync(teacherId);
-
-                return Ok(storageTeacher);
-            }
-            catch (TeacherValidationException teacherValidationException)
-                when (teacherValidationException.InnerException is NotFoundTeacherException)
-            {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return NotFound(innerMessage);
-            }
-            catch (TeacherValidationException teacherValidationException)
-            {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return BadRequest(teacherValidationException);
-            }
-            catch (TeacherDependencyException teacherDependencyException)
-               when (teacherDependencyException.InnerException is LockedTeacherException)
-            {
-                string innerMessage = GetInnerMessage(teacherDependencyException);
-
-                return Locked(innerMessage);
-            }
-            catch (TeacherDependencyException teacherDependencyException)
-            {
-                return Problem(teacherDependencyException.Message);
-            }
-            catch (TeacherServiceException teacherServiceException)
-            {
-                return Problem(teacherServiceException.Message);
-            }
-        }
-
-        public static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
+            this.teacherService = teacherService;        
     }
 }
