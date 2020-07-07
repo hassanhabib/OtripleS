@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Teachers;
 using OtripleS.Web.Api.Models.Teachers.Exceptions;
 
@@ -33,6 +34,18 @@ namespace OtripleS.Web.Api.Services.Teachers
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+        }
+
+        private TeacherDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var teacherDependencyException = new TeacherDependencyException(exception);
+            this.loggingBroker.LogError(teacherDependencyException);
+
+            return teacherDependencyException;
         }
 
         private TeacherDependencyException CreateAndLogCriticalDependencyException(Exception exception)
