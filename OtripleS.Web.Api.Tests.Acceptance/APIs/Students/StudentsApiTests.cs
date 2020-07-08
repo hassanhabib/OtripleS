@@ -1,7 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using FluentAssertions;
-using OtripleS.Web.Api.Brokers.DateTimes;
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
@@ -9,47 +13,59 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
 {
-	[Collection(nameof(ApiTestCollection))]
-	public class StudentsApiTests
-	{
-		private readonly OtripleSApiBroker otripleSApiBroker;
-		private readonly DateTimeBroker dateTimeBroker;
+    [Collection(nameof(ApiTestCollection))]
+    public partial class StudentsApiTests
+    {
+        private readonly OtripleSApiBroker otripleSApiBroker;
 
-		public StudentsApiTests(OtripleSApiBroker otripleSApiBroker)
-		{
-			this.dateTimeBroker = new DateTimeBroker();
-			this.otripleSApiBroker = otripleSApiBroker;
-		}
+        public StudentsApiTests(OtripleSApiBroker otripleSApiBroker)
+        {
+            this.otripleSApiBroker = otripleSApiBroker;
+        }
 
-		private Student CreateRandomStudent()
-		{
-			var filler = new Filler<Student>();
-			filler.Setup().OnType<DateTimeOffset>().Use(GetRandomDateTime());
-			return filler.Create();
-		}
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-		private static DateTimeOffset GetRandomDateTime() =>
-		 new DateTimeRange(earliestDate: new DateTime()).GetValue();
+        private IEnumerable<Student> GetRandomStudents() =>
+            CreateRandomStudentFiller().Create(GetRandomNumber());
 
-		[Fact]
-		public async Task ShouldPostStudentAsync()
-		{
-			// given
-			Student randomStudent = CreateRandomStudent();
-			Student inputStudent = randomStudent;
-			Student expectedStudent = inputStudent;
+        private Student CreateRandomStudent() =>
+            CreateRandomStudentFiller().Create();
 
-			// when 
-			await this.otripleSApiBroker.PostStudentAsync(inputStudent);
+        private Filler<Student> CreateRandomStudentFiller()
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            Guid posterId = Guid.NewGuid();
 
-			Student actualStudent =
-				await this.otripleSApiBroker.GetStudentByIdAsync(inputStudent.Id);
+            var filler = new Filler<Student>();
 
-			// then
-			actualStudent.Should().BeEquivalentTo(expectedStudent);
+            filler.Setup()
+                .OnProperty(student => student.CreatedBy).Use(posterId)
+                .OnProperty(student => student.UpdatedBy).Use(posterId)
+                .OnProperty(student => student.CreatedDate).Use(now)
+                .OnProperty(student => student.UpdatedDate).Use(now)
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
-			await this.otripleSApiBroker.DeleteStudentByIdAsync(actualStudent.Id);
-		}
+            return filler;
+        }
 
-	}
+        private Student UpdateStudentRandom(Student student)
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+
+            var filler = new Filler<Student>();
+
+            filler.Setup()
+                .OnProperty(student => student.Id).Use(student.Id)
+                .OnProperty(student => student.CreatedBy).Use(student.CreatedBy)
+                .OnProperty(student => student.UpdatedBy).Use(student.UpdatedBy)
+                .OnProperty(student => student.CreatedDate).Use(student.CreatedDate)
+                .OnProperty(student => student.UpdatedDate).Use(now)
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+
+            return filler.Create();
+        }
+
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+    }
 }

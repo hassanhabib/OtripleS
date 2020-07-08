@@ -1,9 +1,14 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OtripleS.Web.Api.Models.Students;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
@@ -36,7 +41,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
             return await Students.FindAsync(studentId);
         }
 
-        public async ValueTask<Student> UpdateStudentAsycn(Student student)
+        public async ValueTask<Student> UpdateStudentAsync(Student student)
         {
             EntityEntry<Student> studentEntityEntry = this.Students.Update(student);
             await this.SaveChangesAsync();

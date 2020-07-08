@@ -1,5 +1,10 @@
-﻿using System;
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace OtripleS.Web.Api.Brokers.Loggings
 {
@@ -17,7 +22,7 @@ namespace OtripleS.Web.Api.Brokers.Loggings
             this.logger.LogDebug(message);
 
         public void LogError(Exception exception) =>
-            this.LogError(exception);
+            this.logger.LogError(exception.Message, exception);
 
         public void LogInformation(string message) =>
             this.logger.LogInformation(message);
