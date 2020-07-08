@@ -45,6 +45,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
+        private Teacher CreateRandomTeacher() =>
+            CreateRandomTeacherFiller(dateTime: DateTime.UtcNow).Create();
+
         private Teacher CreateRandomTeacher(DateTimeOffset dateTime) =>
             CreateRandomTeacherFiller(dateTime).Create();
 

@@ -59,7 +59,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         {
             // given
             DateTimeOffset randomDate = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(randomDate);
+            Teacher randomTeacher = CreateRandomTeacher();
             Teacher inputTeacher = randomTeacher;
             Teacher afterUpdateStorageTeacher = inputTeacher;
             Teacher expectedTeacher = afterUpdateStorageTeacher;

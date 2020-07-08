@@ -43,7 +43,14 @@ namespace OtripleS.Web.Api.Services.Teachers
         public ValueTask<Teacher> ModifyTeacherAsync(Teacher teacher) =>
         TryCatch(async () =>
         {
-            throw new NotImplementedException();
+            ValidateTeacherOnModify(teacher);
+
+            Teacher maybeTeacher = await this.storageBroker.SelectTeacherByIdAsync(teacher.Id);
+
+            ValidateStorageTeacher(maybeTeacher, teacher.Id);
+            ValidateAgainstStorageTeacherOnModify(inputTeacher: teacher, storageTeacher: maybeTeacher);
+
+            return await this.storageBroker.UpdateTeacherAsync(teacher);
         });
     }
 }
