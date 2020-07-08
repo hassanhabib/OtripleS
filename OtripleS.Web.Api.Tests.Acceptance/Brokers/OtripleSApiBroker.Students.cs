@@ -4,6 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.Students;
 
@@ -21,7 +23,12 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
 
         public async ValueTask<Student> DeleteStudentByIdAsync(Guid studentId) =>
             await this.apiFactoryClient.DeleteContentAsync<Student>($"{StudentsRelativeUrl}/{studentId}");
+        
         public async ValueTask<Student> PutStudentAsync(Student student) =>
             await this.apiFactoryClient.PutContentAsync(StudentsRelativeUrl, student);
+
+        public async ValueTask<List<Student>> GetAllStudents() =>
+            await this.apiFactoryClient.GetContentAsync<List<Student>>($"{StudentsRelativeUrl}/");
+        
     }
 }
