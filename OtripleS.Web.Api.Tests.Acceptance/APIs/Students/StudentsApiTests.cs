@@ -4,6 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
@@ -21,7 +23,15 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
             this.otripleSApiBroker = otripleSApiBroker;
         }
 
-        private Student CreateRandomStudent()
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+
+        private IEnumerable<Student> GetRandomStudents() =>
+            CreateRandomStudentFiller().Create(GetRandomNumber());
+
+        private Student CreateRandomStudent() =>
+            CreateRandomStudentFiller().Create();
+
+        private Filler<Student> CreateRandomStudentFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
@@ -35,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
                 .OnProperty(student => student.UpdatedDate).Use(now)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
-            return filler.Create();
+            return filler;
         }
 
         private Student UpdateStudentRandom(Student student)
