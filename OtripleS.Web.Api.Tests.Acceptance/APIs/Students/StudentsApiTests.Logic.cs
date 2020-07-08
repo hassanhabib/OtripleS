@@ -55,7 +55,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
         }
 
         [Fact]
-        public async Task ShouldGetAllStudentAsync()
+        public async Task ShouldGetAllStudentsAsync()
         {
             // given
             IEnumerable<Student> randomStudents = GetRandomStudents();
