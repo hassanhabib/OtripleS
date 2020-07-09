@@ -382,13 +382,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedDateIsSameToCreatedDateAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedDateIsNotSameToCreatedDateAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             Teacher randomTeacher = CreateRandomTeacher(dateTime);
             Teacher inputTeacher = randomTeacher;
-            
+            inputTeacher.UpdatedBy = randomTeacher.CreatedBy;
+            inputTeacher.UpdatedDate = GetRandomDateTime();
+
             var invalidTeacherInputException = new InvalidTeacherInputException(
                 parameterName: nameof(Teacher.UpdatedDate),
                 parameterValue: inputTeacher.UpdatedDate);
