@@ -380,5 +380,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedDateIsSameToCreatedDateAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Teacher randomTeacher = CreateRandomTeacher(dateTime);
+            Teacher inputTeacher = randomTeacher;
+            
+            var invalidTeacherInputException = new InvalidTeacherInputException(
+                parameterName: nameof(Teacher.UpdatedDate),
+                parameterValue: inputTeacher.UpdatedDate);
+
+            var expectedTeacherValidationException =
+                new TeacherValidationException(invalidTeacherInputException);
+
+            // when
+            ValueTask<Teacher> createTeacherTask =
+                this.teacherService.CreateTeacherAsync(inputTeacher);
+
+            // then
+            await Assert.ThrowsAsync<TeacherValidationException>(() =>
+                createTeacherTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
