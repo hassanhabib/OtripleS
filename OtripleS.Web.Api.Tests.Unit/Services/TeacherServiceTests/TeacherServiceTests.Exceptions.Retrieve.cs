@@ -1,13 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-using Moq;
-
-using OtripleS.Web.Api.Models.Teachers.Exceptions;
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-
+using Microsoft.EntityFrameworkCore;
+using Moq;
+using OtripleS.Web.Api.Models.Teachers.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests

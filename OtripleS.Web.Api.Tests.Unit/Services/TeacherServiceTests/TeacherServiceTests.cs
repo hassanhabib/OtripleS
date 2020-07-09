@@ -61,7 +61,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             var filler = new Filler<Teacher>();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(dateTime);                 
+                .OnType<DateTimeOffset>().Use(dateTime);
 
             return filler;
         }

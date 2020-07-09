@@ -35,14 +35,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                     .ReturnsAsync(storageTeacher);
 
             // when
-            Teacher actualTeacher = 
+            Teacher actualTeacher =
                 await this.teacherService.DeleteTeacherByIdAsync(inputTeacherId);
 
             // then
             actualTeacher.Should().BeEquivalentTo(expectedTeacher);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherByIdAsync(inputTeacherId), 
+                broker.SelectTeacherByIdAsync(inputTeacherId),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
