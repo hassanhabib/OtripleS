@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.Teachers;
 
@@ -13,5 +14,6 @@ namespace OtripleS.Web.Api.Services.Teachers
     {
         ValueTask<Teacher> RetrieveTeacherByIdAsync(Guid teacherId);
         ValueTask<Teacher> DeleteTeacherByIdAsync(Guid teacherId);
+        IQueryable<Teacher> RetreiveAllTeachers();
     }
 }

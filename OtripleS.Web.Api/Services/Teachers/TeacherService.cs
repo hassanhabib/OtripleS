@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -39,6 +40,11 @@ namespace OtripleS.Web.Api.Services.Teachers
 
             return await this.storageBroker.DeleteTeacherAsync(maybeTeacher);
         });
+
+        public IQueryable<Teacher> RetreiveAllTeachers()
+        {
+            throw new NotImplementedException();
+        }
 
         public ValueTask<Teacher> RetrieveTeacherByIdAsync(Guid teacherId) =>
         TryCatch(async () =>
