@@ -41,9 +41,12 @@ namespace OtripleS.Web.Api.Services.Teachers
             return await this.storageBroker.DeleteTeacherAsync(maybeTeacher);
         });
 
-        public IQueryable<Teacher> RetreiveAllTeachers()
+        public IQueryable<Teacher> RetrieveAllTeachers()
         {
-            return this.storageBroker.SelectAllTeachers();
+            IQueryable<Teacher> storageTeachers = this.storageBroker.SelectAllTeachers();
+            ValidateStorageTeachers(storageTeachers);
+
+            return storageTeachers;
         }
 
         public ValueTask<Teacher> RetrieveTeacherByIdAsync(Guid teacherId) =>

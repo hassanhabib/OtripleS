@@ -104,7 +104,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
 
             // when
             IQueryable<Teacher> actualTeachers =
-                this.teacherService.RetreiveAllTeachers();
+                this.teacherService.RetrieveAllTeachers();
 
             // then
             actualTeachers.Should().BeEquivalentTo(emptyStorageTeachers);

@@ -14,6 +14,6 @@ namespace OtripleS.Web.Api.Services.Teachers
     {
         ValueTask<Teacher> RetrieveTeacherByIdAsync(Guid teacherId);
         ValueTask<Teacher> DeleteTeacherByIdAsync(Guid teacherId);
-        IQueryable<Teacher> RetreiveAllTeachers();
+        IQueryable<Teacher> RetrieveAllTeachers();
     }
 }

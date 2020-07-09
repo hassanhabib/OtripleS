@@ -99,7 +99,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                     .Returns(storageTeachers);
 
             // when
-            IQueryable<Teacher> actualTeachers = this.teacherService.RetreiveAllTeachers();
+            IQueryable<Teacher> actualTeachers = this.teacherService.RetrieveAllTeachers();
 
             // then
             actualTeachers.Should().BeEquivalentTo(expectedTeachers);

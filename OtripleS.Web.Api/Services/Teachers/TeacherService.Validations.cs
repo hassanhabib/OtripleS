@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.Teachers;
 using OtripleS.Web.Api.Models.Teachers.Exceptions;
 
@@ -26,6 +27,14 @@ namespace OtripleS.Web.Api.Services.Teachers
             if (maybeTeacher is null)
             {
                 throw new NotFoundTeacherException(teacherId);
+            }
+        }
+
+        private void ValidateStorageTeachers(IQueryable<Teacher> storageTeachers)
+        {
+            if (storageTeachers.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No teachers found in storage.");
             }
         }
     }
