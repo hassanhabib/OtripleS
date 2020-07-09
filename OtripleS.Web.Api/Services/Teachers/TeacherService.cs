@@ -44,7 +44,8 @@ namespace OtripleS.Web.Api.Services.Teachers
         TryCatch(async () =>
         {
             ValidateTeacherId(teacherId);
-            Teacher storageStudent = await this.storageBroker.SelectTeacherByIdAsync(teacherId);
+            Teacher storageStudent = 
+            await this.storageBroker.SelectTeacherByIdAsync(teacherId);
             ValidateStorageTeacher(storageStudent, teacherId);
 
             return storageStudent;
