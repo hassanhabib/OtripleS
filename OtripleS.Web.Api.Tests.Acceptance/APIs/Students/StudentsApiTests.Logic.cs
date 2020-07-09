@@ -60,13 +60,13 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
             // given
             IEnumerable<Student> randomStudents = GetRandomStudents();
             IEnumerable<Student> inputStudents = randomStudents;
-            foreach(var student in inputStudents)
+            foreach (var student in inputStudents)
             {
                 await this.otripleSApiBroker.PostStudentAsync(student);
             }
 
             List<Student> expectedStudents = inputStudents.ToList();
-            
+
             // when
             List<Student> actualStudents = await this.otripleSApiBroker.GetAllStudents();
 

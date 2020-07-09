@@ -3,12 +3,12 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-
-namespace OtripleS.Web.Api.Models.Students.Exceptions
+namespace OtripleS.Web.Api.Models.Teachers
 {
-    public class NullStudentException : Exception
+    public enum TeacherStatus
     {
-        public NullStudentException() : base($"The student is null.") { }
+        Active,
+        Retired,
+        Terminated
     }
 }

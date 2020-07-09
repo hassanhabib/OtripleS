@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace OtripleS.Web.Api.Services.Teachers
     public partial class TeacherService
     {
         private delegate ValueTask<Teacher> ReturningTeacherFunction();
+        private delegate IQueryable<Teacher> ReturningQueryableTeacherFunction();
 
         private async ValueTask<Teacher> TryCatch(ReturningTeacherFunction returningTeacherFunction)
         {
@@ -39,6 +41,26 @@ namespace OtripleS.Web.Api.Services.Teachers
                 var lockedStudentException = new LockedTeacherException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedStudentException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private IQueryable<Teacher> TryCatch(ReturningQueryableTeacherFunction returningQueryableTeacherFunction)
+        {
+            try
+            {
+                return returningQueryableTeacherFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
             }
             catch (DbUpdateException dbUpdateException)
             {

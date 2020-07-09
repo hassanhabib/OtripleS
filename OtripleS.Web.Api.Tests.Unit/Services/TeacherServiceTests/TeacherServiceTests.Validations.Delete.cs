@@ -5,7 +5,6 @@
 
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.Teachers;
 using OtripleS.Web.Api.Models.Teachers.Exceptions;
@@ -29,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             var expectedTeacherValidationException = new TeacherValidationException(invalidTeacherInputException);
 
             // when
-            ValueTask<Teacher> actualTeacherTask = 
+            ValueTask<Teacher> actualTeacherTask =
                 this.teacherService.DeleteTeacherByIdAsync(inputTeacherId);
 
             // then
@@ -40,7 +39,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()), 
+                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
@@ -64,7 +63,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
 
             var notFoundTeacherException = new NotFoundTeacherException(inputTeacherId);
 
-            var expectedTeacherValidationException = 
+            var expectedTeacherValidationException =
                 new TeacherValidationException(notFoundTeacherException);
 
             this.storageBrokerMock.Setup(broker =>
