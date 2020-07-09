@@ -37,5 +37,18 @@ namespace OtripleS.Web.Api.Services.Teachers
                 this.loggingBroker.LogWarning("No teachers found in storage.");
             }
         }
+
+        private void ValidateTeacherOnCreate(Teacher teacher)
+        {
+            ValidateTeacher(teacher);
+        }
+
+        private void ValidateTeacher(Teacher teacher)
+        {
+            if (teacher == default)
+            {
+                throw new NullTeacherException();
+            }
+        }
     }
 }

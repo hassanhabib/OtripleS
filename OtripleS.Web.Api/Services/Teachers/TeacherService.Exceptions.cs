@@ -24,6 +24,10 @@ namespace OtripleS.Web.Api.Services.Teachers
             {
                 return await returningTeacherFunction();
             }
+            catch (NullTeacherException nullTeacherException)
+            {
+                throw CreateAndLogValidationException(nullTeacherException);
+            }
             catch (InvalidTeacherInputException invalidTeacherInputException)
             {
                 throw CreateAndLogValidationException(invalidTeacherInputException);

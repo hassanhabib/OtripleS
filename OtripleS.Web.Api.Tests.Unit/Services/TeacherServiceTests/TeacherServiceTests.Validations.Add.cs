@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
     public partial class TeacherServiceTests
     {
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRegisterWhenTeacherIsNullAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnCreateWhenTeacherIsNullAndLogItAsync()
         {
             // given
             Teacher randomTeacher = null;
