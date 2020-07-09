@@ -49,13 +49,27 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         private IEnumerable<Teacher> CreateRandomTeachers(DateTimeOffset dateTime) =>
             CreateRandomTeacherFiller(dateTime).Create(GetRandomNumber());
 
-        private int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
         private Teacher CreateRandomTeacher(DateTimeOffset dateTime) =>
             CreateRandomTeacherFiller(dateTime).Create();
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
 
         private Filler<Teacher> CreateRandomTeacherFiller(DateTimeOffset dateTime)
         {
