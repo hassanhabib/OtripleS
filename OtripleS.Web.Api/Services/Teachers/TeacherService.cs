@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Services.Teachers
 
         public IQueryable<Teacher> RetreiveAllTeachers()
         {
-            throw new NotImplementedException();
+            return this.storageBroker.SelectAllTeachers();
         }
 
         public ValueTask<Teacher> RetrieveTeacherByIdAsync(Guid teacherId) =>
