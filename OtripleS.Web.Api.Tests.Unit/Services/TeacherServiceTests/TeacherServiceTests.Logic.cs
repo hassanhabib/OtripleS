@@ -114,7 +114,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         }
 
         [Fact]
-        public async Task ShouldCreateTeacherByIdAsync()
+        public async Task ShouldCreateTeacherAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
