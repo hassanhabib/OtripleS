@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -53,6 +54,37 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-        
+        [Fact]
+        public void ShouldRetrieveAllTeachers()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            IQueryable<Teacher> randomTeachers = CreateRandomTeachers(randomDateTime);
+            IQueryable<Teacher> storageTeachers = randomTeachers;
+            IQueryable<Teacher> expectedTeachers = storageTeachers;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllTeachers())
+                    .Returns(storageTeachers);
+
+            // when
+            IQueryable<Teacher> actualTeachers =
+                this.teacherService.RetrieveAllTeachers();
+
+            // then
+            actualTeachers.Should().BeEquivalentTo(expectedTeachers);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllTeachers(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }

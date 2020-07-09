@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -41,6 +42,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
@@ -48,10 +50,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         private Teacher CreateRandomTeacher(DateTimeOffset dateTime) =>
             CreateRandomTeacherFiller(dateTime).Create();
 
+        private static IQueryable<Teacher> CreateRandomTeachers(DateTimeOffset dates) =>
+            CreateRandomTeacherFiller(dates).Create(GetRandomNumber()).AsQueryable();
+
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
-        private Filler<Teacher> CreateRandomTeacherFiller(DateTimeOffset dateTime)
+        private static Filler<Teacher> CreateRandomTeacherFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Teacher>();
 
