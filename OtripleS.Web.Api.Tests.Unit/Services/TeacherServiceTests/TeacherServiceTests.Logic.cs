@@ -112,5 +112,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldCreateTeacherByIdAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Teacher randomTeacher = CreateRandomTeacher(dateTime);
+            Teacher inputTeacher = randomTeacher;
+            Teacher storageTeacher = randomTeacher;
+            Teacher expectedTeacher = randomTeacher;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertTeacherAsync(inputTeacher))
+                    .ReturnsAsync(storageTeacher);
+
+            // when
+            Teacher actualTeacher =
+                await this.teacherService.CreateTeacherAsync(inputTeacher);
+
+            // then
+            actualTeacher.Should().BeEquivalentTo(expectedTeacher);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTeacherAsync(inputTeacher),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
