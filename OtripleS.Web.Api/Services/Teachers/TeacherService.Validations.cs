@@ -45,7 +45,28 @@ namespace OtripleS.Web.Api.Services.Teachers
             ValidateTeacherStrings(teacher);
             ValidateTeacherDates(teacher);
             ValidateTeacherIds(teacher);
+            ValidateCreatedDateIsNotRecent(teacher);
         }
+
+        private void ValidateCreatedDateIsNotRecent(Teacher teacher)
+        {
+            if (IsDateNotRecent(teacher.CreatedDate))
+            {
+                throw new InvalidTeacherInputException(
+                    parameterName: nameof(teacher.CreatedDate),
+                    parameterValue: teacher.CreatedDate);
+            }
+        }
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
+
         private void ValidateTeacherDates(Teacher teacher)
         {
             switch (teacher)
