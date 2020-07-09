@@ -38,6 +38,11 @@ namespace OtripleS.Web.Api.Services.Teachers
             ValidateStorageTeacher(maybeTeacher, teacherId);
 
             return await this.storageBroker.DeleteTeacherAsync(maybeTeacher);
-        });       
+        });
+
+        public ValueTask<Teacher> RetrieveTeacherByIdAsync(Guid teacherId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
