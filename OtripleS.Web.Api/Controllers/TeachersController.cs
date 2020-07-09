@@ -28,7 +28,8 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Teacher teacher = await this.teacherService.RetrieveTeacherByIdAsync(teacherId);
+                Teacher teacher = 
+                await this.teacherService.RetrieveTeacherByIdAsync(teacherId);
 
                 return Ok(teacherId);
             }
