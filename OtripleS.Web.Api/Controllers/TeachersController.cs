@@ -22,6 +22,40 @@ namespace OtripleS.Web.Api.Controllers
         private readonly ITeacherService teacherService;
 
         public TeachersController(ITeacherService teacherService) =>
-            this.teacherService = teacherService;        
+            this.teacherService = teacherService;
+
+        public async ValueTask<ActionResult<Teacher>> GetTeacherAsync(Guid teacherId)
+        {
+            try
+            {
+                Teacher teacher = await this.teacherService.RetrieveTeacherByIdAsync(teacherId);
+
+                return Ok(teacherId);
+            }
+            catch (TeacherValidationException teacherValidationException)
+                when (teacherValidationException.InnerException is NotFoundTeacherException)
+            {
+                string innerMessage = GetInnerMessage(teacherValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (TeacherValidationException teacherValidationException)
+            {
+                string innerMessage = GetInnerMessage(teacherValidationException);
+
+                return BadRequest(teacherValidationException);
+            }
+            catch (TeacherDependencyException teacherValidationException)
+            {
+                return Problem(teacherValidationException.Message);
+            }
+            catch (TeacherServiceException teacherValidationException)
+            {
+                return Problem(teacherValidationException.Message);
+            }
+        }
+
+        public static string GetInnerMessage(Exception exception) =>
+            exception.InnerException.Message;
     }
 }
