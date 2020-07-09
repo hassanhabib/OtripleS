@@ -4,6 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -87,6 +89,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldLogWarningOnRetrieveAllWhenTeachersWereEmptyAndLogIt()
+        {
+            // given
+            IQueryable<Teacher> emptyStorageTeachers = new List<Teacher>().AsQueryable();
+            IQueryable<Teacher> expectedTeachers = emptyStorageTeachers;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllTeachers())
+                    .Returns(expectedTeachers);
+
+            // when
+            IQueryable<Teacher> actualTeachers =
+                this.teacherService.RetreiveAllTeachers();
+
+            // then
+            actualTeachers.Should().BeEquivalentTo(emptyStorageTeachers);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogWarning("No teachers found in storage."),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllTeachers(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
