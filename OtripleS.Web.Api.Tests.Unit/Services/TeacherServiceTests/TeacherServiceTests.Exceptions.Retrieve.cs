@@ -124,5 +124,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogIt()
+        {
+            // given
+            var sqlException = GetSqlException();
+
+            var expectedTeacherDependencyException =
+                new TeacherDependencyException(sqlException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllTeachers())
+                    .Throws(sqlException);
+
+            // when . then
+            Assert.Throws<TeacherDependencyException>(() =>
+                this.teacherService.RetrieveAllTeachers());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllTeachers(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
