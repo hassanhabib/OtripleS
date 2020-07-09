@@ -55,7 +55,7 @@ namespace OtripleS.Web.Api.Services.Teachers
                         parameterName: nameof(Teacher.CreatedDate),
                         parameterValue: teacher.CreatedDate);
 
-                case { } when teacher.UpdatedDate == default:
+                case { } when teacher.UpdatedDate == default || teacher.CreatedDate != teacher.UpdatedDate:
                     throw new InvalidTeacherInputException(
                         parameterName: nameof(Teacher.UpdatedDate),
                         parameterValue: teacher.UpdatedDate);
