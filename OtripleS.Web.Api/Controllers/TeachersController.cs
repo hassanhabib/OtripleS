@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Teachers;
@@ -63,6 +64,25 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
         
+        [HttpGet]
+        public ActionResult<IQueryable<Teacher>> GetAllTeachers()
+        {
+            try
+            {
+                IQueryable<Teacher> teachers =
+                    this.teacherService.RetrieveAllTeachers();
+
+                return Ok(teachers);
+            }
+            catch (TeacherDependencyException teacherDependencyException)
+            {
+                return Problem(teacherDependencyException.Message);
+            }
+            catch (TeacherServiceException teacherServiceException)
+            {
+                return Problem(teacherServiceException.Message);
+            }
+        }
 
         public static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
