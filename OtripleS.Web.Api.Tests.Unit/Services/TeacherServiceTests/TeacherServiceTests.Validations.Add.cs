@@ -88,7 +88,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
-        public async Task ShouldThrowValidationExceptionOnRegisterWhenTeacherUserIdIsInvalidAndLogItAsync(
+        public async Task ShouldThrowValidationExceptionOnCreateWhenTeacherUserIdIsInvalidAndLogItAsync(
             string invalidTeacherUserId)
         {
             // given

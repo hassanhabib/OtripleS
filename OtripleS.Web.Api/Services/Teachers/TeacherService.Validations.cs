@@ -42,6 +42,7 @@ namespace OtripleS.Web.Api.Services.Teachers
         {
             ValidateTeacher(teacher);
             ValidateTeacherId(teacher.Id);
+            ValidateTeacherStrings(teacher);
         }
 
         private void ValidateTeacher(Teacher teacher)
@@ -51,5 +52,34 @@ namespace OtripleS.Web.Api.Services.Teachers
                 throw new NullTeacherException();
             }
         }
+
+        private void ValidateTeacherStrings(Teacher teacher)
+        {
+            switch (teacher)
+            {
+                case { } when IsInvalid(teacher.UserId):
+                    throw new InvalidTeacherInputException(
+                        parameterName: nameof(teacher.UserId),
+                        parameterValue: teacher.UserId);
+
+                case { } when IsInvalid(teacher.EmployeeNumber):
+                    throw new InvalidTeacherInputException(
+                        parameterName: nameof(teacher.EmployeeNumber),
+                        parameterValue: teacher.EmployeeNumber);
+
+                case { } when IsInvalid(teacher.FirstName):
+                    throw new InvalidTeacherInputException(
+                        parameterName: nameof(teacher.FirstName),
+                        parameterValue: teacher.FirstName);
+
+                case { } when IsInvalid(teacher.LastName):
+                    throw new InvalidTeacherInputException(
+                        parameterName: nameof(teacher.LastName),
+                        parameterValue: teacher.LastName);
+            }
+        }
+
+        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
+        private static bool IsInvalid(Guid input) => input == default;
     }
 }
