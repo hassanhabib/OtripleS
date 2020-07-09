@@ -71,7 +71,7 @@ namespace OtripleS.Web.Api.Services.Teachers
                         parameterName: nameof(Teacher.CreatedBy),
                         parameterValue: teacher.CreatedBy);
 
-                case { } when IsInvalid(teacher.UpdatedBy):
+                case { } when IsInvalid(teacher.UpdatedBy) || teacher.CreatedBy != teacher.UpdatedBy:
                     throw new InvalidTeacherInputException(
                         parameterName: nameof(Teacher.UpdatedBy),
                         parameterValue: teacher.UpdatedBy);
