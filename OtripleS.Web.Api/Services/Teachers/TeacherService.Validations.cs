@@ -43,6 +43,39 @@ namespace OtripleS.Web.Api.Services.Teachers
             ValidateTeacher(teacher);
             ValidateTeacherId(teacher.Id);
             ValidateTeacherStrings(teacher);
+            ValidateTeacherDates(teacher);
+            ValidateTeacherIds(teacher);
+        }
+        private void ValidateTeacherDates(Teacher teacher)
+        {
+            switch (teacher)
+            {
+                case { } when teacher.CreatedDate == default:
+                    throw new InvalidTeacherInputException(
+                        parameterName: nameof(Teacher.CreatedDate),
+                        parameterValue: teacher.CreatedDate);
+
+                case { } when teacher.UpdatedDate == default:
+                    throw new InvalidTeacherInputException(
+                        parameterName: nameof(Teacher.UpdatedDate),
+                        parameterValue: teacher.UpdatedDate);
+            }
+        }
+
+        private void ValidateTeacherIds(Teacher teacher)
+        {
+            switch (teacher)
+            {
+                case { } when IsInvalid(teacher.CreatedBy):
+                    throw new InvalidTeacherInputException(
+                        parameterName: nameof(Teacher.CreatedBy),
+                        parameterValue: teacher.CreatedBy);
+
+                case { } when IsInvalid(teacher.UpdatedBy):
+                    throw new InvalidTeacherInputException(
+                        parameterName: nameof(Teacher.UpdatedBy),
+                        parameterValue: teacher.UpdatedBy);
+            }
         }
 
         private void ValidateTeacher(Teacher teacher)
