@@ -12,7 +12,9 @@ namespace OtripleS.Web.Api.Services.Teachers
 {
     public interface ITeacherService
     {
-        ValueTask<Teacher> DeleteTeacherByIdAsync(Guid teacherId);
         IQueryable<Teacher> RetrieveAllTeachers();
+        ValueTask<Teacher> ModifyStudentAsync(Teacher teacher);
+        ValueTask<Teacher> DeleteTeacherByIdAsync(Guid teacherId);
+       
     }
 }

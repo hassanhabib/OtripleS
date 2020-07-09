@@ -6,7 +6,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -29,26 +28,34 @@ namespace OtripleS.Web.Api.Services.Teachers
             this.dateTimeBroker = dateTimeBroker;
         }
 
+        /**
+         * This is just a dummy implementation to check the API end point.
+         * feel free to replace this with a more robust implementation.
+         * Thank you.
+         */
+        public ValueTask<Teacher> ModifyStudentAsync(Teacher teacher) =>
+            TryCatch(async () => await this.storageBroker.UpdateTeacherAsync(teacher));
+
         public ValueTask<Teacher> DeleteTeacherByIdAsync(Guid teacherId) =>
-        TryCatch(async () =>
-        {
-            ValidateTeacherId(teacherId);
+            TryCatch(async () =>
+            {
+                ValidateTeacherId(teacherId);
 
-            Teacher maybeTeacher =
-               await this.storageBroker.SelectTeacherByIdAsync(teacherId);
+                Teacher maybeTeacher =
+                    await this.storageBroker.SelectTeacherByIdAsync(teacherId);
 
-            ValidateStorageTeacher(maybeTeacher, teacherId);
+                ValidateStorageTeacher(maybeTeacher, teacherId);
 
-            return await this.storageBroker.DeleteTeacherAsync(maybeTeacher);
-        });
+                return await this.storageBroker.DeleteTeacherAsync(maybeTeacher);
+            });
 
         public IQueryable<Teacher> RetrieveAllTeachers() =>
-        TryCatch(() =>
-        {
-            IQueryable<Teacher> storageTeachers = this.storageBroker.SelectAllTeachers();
-            ValidateStorageTeachers(storageTeachers);
+            TryCatch(() =>
+            {
+                IQueryable<Teacher> storageTeachers = this.storageBroker.SelectAllTeachers();
+                ValidateStorageTeachers(storageTeachers);
 
-            return storageTeachers;
-        });
+                return storageTeachers;
+            });
     }
 }
