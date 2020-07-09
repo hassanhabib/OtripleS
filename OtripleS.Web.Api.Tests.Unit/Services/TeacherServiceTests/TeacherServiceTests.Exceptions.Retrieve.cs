@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Teachers.Exceptions;
@@ -17,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         public void ShouldThrowDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogIt()
         {
             // given
-            var sqlException = GetSqlException();
+            SqlException sqlException = GetSqlException();
 
             var expectedTeacherDependencyException =
                 new TeacherDependencyException(sqlException);

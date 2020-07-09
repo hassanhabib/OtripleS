@@ -50,18 +50,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         private Teacher CreateRandomTeacher(DateTimeOffset dateTime) =>
             CreateRandomTeacherFiller(dateTime).Create();
 
-        private static IQueryable<Teacher> CreateRandomTeachers(DateTimeOffset dates) =>
-            CreateRandomTeacherFiller(dates).Create(GetRandomNumber()).AsQueryable();
+        private static IQueryable<Teacher> CreateRandomTeachers() =>
+            CreateRandomTeacherFiller(dates: DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
-        private static Filler<Teacher> CreateRandomTeacherFiller(DateTimeOffset dateTime)
+        private static Filler<Teacher> CreateRandomTeacherFiller(DateTimeOffset dates)
         {
             var filler = new Filler<Teacher>();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(dateTime);
+                .OnType<DateTimeOffset>().Use(dates);
 
             return filler;
         }

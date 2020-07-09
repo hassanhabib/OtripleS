@@ -58,8 +58,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         public void ShouldRetrieveAllTeachers()
         {
             // given
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            IQueryable<Teacher> randomTeachers = CreateRandomTeachers(randomDateTime);
+            IQueryable<Teacher> randomTeachers = CreateRandomTeachers();
             IQueryable<Teacher> storageTeachers = randomTeachers;
             IQueryable<Teacher> expectedTeachers = storageTeachers;
 
