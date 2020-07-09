@@ -41,6 +41,7 @@ namespace OtripleS.Web.Api.Services.Teachers
         private void ValidateTeacherOnCreate(Teacher teacher)
         {
             ValidateTeacher(teacher);
+            ValidateTeacherId(teacher.Id);
         }
 
         private void ValidateTeacher(Teacher teacher)
