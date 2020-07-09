@@ -1,9 +1,14 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OtripleS.Web.Api.Models.Students;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
