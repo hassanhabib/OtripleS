@@ -58,7 +58,7 @@ namespace OtripleS.Web.Api.Services.Teachers
             ValidateStorageTeacher(maybeTeacher, teacher.Id);
             ValidateAginstStorageTeacherOnModify(inputTeacher: teacher, storageTeacher: maybeTeacher);
 
-            return await this.storageBroker.UpdateTeacherAsync(maybeTeacher);
+            return await this.storageBroker.UpdateTeacherAsync(teacher);
         });
 
         public IQueryable<Teacher> RetrieveAllTeachers() =>
