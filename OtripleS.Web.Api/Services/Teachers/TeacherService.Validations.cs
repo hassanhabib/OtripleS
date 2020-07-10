@@ -49,6 +49,11 @@ namespace OtripleS.Web.Api.Services.Teachers
             ValidateCreatedDateIsNotRecent(teacher);
         }
 
+        private void ValidateTeacherOnModify(Teacher teacher)
+        {
+            ValidateTeacher(teacher);
+        }
+
         private void ValidateCreatedDateIsNotRecent(Teacher teacher)
         {
             if (IsDateNotRecent(teacher.CreatedDate))
