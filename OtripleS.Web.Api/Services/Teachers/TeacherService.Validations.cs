@@ -135,6 +135,11 @@ namespace OtripleS.Web.Api.Services.Teachers
                     throw new InvalidTeacherInputException(
                         parameterName: nameof(Teacher.UpdatedDate),
                         parameterValue: teacher.UpdatedDate);
+
+                case { } when IsDateNotRecent(teacher.UpdatedDate):
+                    throw new InvalidTeacherInputException(
+                        parameterName: nameof(teacher.UpdatedDate),
+                        parameterValue: teacher.UpdatedDate);
             }
         }
 

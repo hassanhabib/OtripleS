@@ -421,8 +421,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             inputTeacher.UpdatedDate = dateTime.AddMinutes(minutes);
 
             var invalidTeacherInputException = new InvalidTeacherInputException(
-                parameterName: nameof(Teacher.CreatedDate),
-                parameterValue: inputTeacher.CreatedDate);
+                parameterName: nameof(Teacher.UpdatedDate),
+                parameterValue: inputTeacher.UpdatedDate);
 
             var expectedTeacherValidationException =
                 new TeacherValidationException(invalidTeacherInputException);
