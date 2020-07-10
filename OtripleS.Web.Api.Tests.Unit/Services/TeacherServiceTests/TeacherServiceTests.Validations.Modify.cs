@@ -566,7 +566,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             DateTimeOffset randomDate = GetRandomDateTime();
             Teacher randomTeacher = CreateRandomTeacher(randomDate);
             Teacher invalidTeacher = randomTeacher;
-            invalidTeacher.UpdatedDate = randomDate;
+            invalidTeacher.CreatedDate = randomDate.AddMinutes(-1 * GetRandomNumber());
             Teacher storageTeacher = randomTeacher.DeepClone();
             Guid studentId = invalidTeacher.Id;
             invalidTeacher.CreatedBy = invalidCreatedBy;

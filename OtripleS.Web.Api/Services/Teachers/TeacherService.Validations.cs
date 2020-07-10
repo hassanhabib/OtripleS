@@ -185,6 +185,11 @@ namespace OtripleS.Web.Api.Services.Teachers
                     throw new InvalidTeacherInputException(
                         parameterName: nameof(Teacher.CreatedDate),
                         parameterValue: inputTeacher.CreatedDate);
+
+                case { } when inputTeacher.CreatedBy != storageTeacher.CreatedBy:
+                    throw new InvalidTeacherInputException(
+                        parameterName: nameof(Teacher.CreatedBy),
+                        parameterValue: inputTeacher.CreatedBy);
             }
         }
 
