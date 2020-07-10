@@ -58,6 +58,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
 
         public static IEnumerable<object[]> InvalidMinuteCases()
         {
