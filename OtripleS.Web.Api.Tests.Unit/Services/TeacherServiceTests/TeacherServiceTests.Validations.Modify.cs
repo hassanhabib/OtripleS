@@ -462,7 +462,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             DateTimeOffset dateTime = GetRandomDateTime();
             Teacher randomTeacher = CreateRandomTeacher(dateTime);
             Teacher nonExistentTeacher = randomTeacher;
-            nonExistentTeacher.UpdatedDate = dateTime;
+            nonExistentTeacher.CreatedDate = dateTime.AddMinutes(-1 * GetRandomNumber());
             Teacher noTeacher = null;
             var notFoundTeacherException = new NotFoundTeacherException(nonExistentTeacher.Id);
 
