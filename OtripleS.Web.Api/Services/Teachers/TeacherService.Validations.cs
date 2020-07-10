@@ -57,6 +57,7 @@ namespace OtripleS.Web.Api.Services.Teachers
             ValidateTeacherStrings(teacher);
             ValidateTeacherIds(teacher);
             ValidateTeacherDates(teacher);
+            ValidateUpdatedSignatureOnUpdate(teacher);
         }
 
         private void ValidateCreatedDateIsNotRecent(Teacher teacher)
@@ -123,6 +124,17 @@ namespace OtripleS.Web.Api.Services.Teachers
                     throw new InvalidTeacherInputException(
                         parameterName: nameof(Teacher.UpdatedBy),
                         parameterValue: teacher.UpdatedBy);
+            }
+        }
+
+        private void ValidateUpdatedSignatureOnUpdate(Teacher teacher)
+        {
+            switch (teacher)
+            {
+                case { } when teacher.CreatedDate == teacher.UpdatedDate:
+                    throw new InvalidTeacherInputException(
+                        parameterName: nameof(Teacher.UpdatedDate),
+                        parameterValue: teacher.UpdatedDate);
             }
         }
 
