@@ -50,6 +50,17 @@ namespace OtripleS.Web.Api.Services.Teachers
             return await this.storageBroker.DeleteTeacherAsync(maybeTeacher);
         });
 
+        public ValueTask<Teacher> ModifyTeacherAsync(Teacher teacher) =>
+        TryCatch(async () =>
+        {
+            ValidateTeacherOnModify(teacher);
+            Teacher maybeTeacher = await this.storageBroker.SelectTeacherByIdAsync(teacher.Id);
+            ValidateStorageTeacher(maybeTeacher, teacher.Id);
+            ValidateAginstStorageTeacherOnModify(inputTeacher: teacher, storageTeacher: maybeTeacher);
+
+            return await this.storageBroker.UpdateTeacherAsync(teacher);
+        });
+
         public IQueryable<Teacher> RetrieveAllTeachers() =>
         TryCatch(() =>
         {
