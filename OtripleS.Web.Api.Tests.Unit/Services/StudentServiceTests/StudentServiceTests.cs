@@ -14,7 +14,7 @@ using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Students;
-using OtripleS.Web.Api.Services;
+using OtripleS.Web.Api.Services.Students;
 using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests

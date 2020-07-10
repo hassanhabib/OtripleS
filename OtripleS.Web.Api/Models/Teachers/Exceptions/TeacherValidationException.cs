@@ -5,12 +5,11 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Models
+namespace OtripleS.Web.Api.Models.Teachers.Exceptions
 {
-    public enum TeacherStatus
+    public class TeacherValidationException : Exception
     {
-        Active,
-        Retired,
-        Terminated
+        public TeacherValidationException(Exception innerException)
+            : base("Invalid input, contact support.", innerException) { }
     }
 }

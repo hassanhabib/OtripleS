@@ -5,11 +5,11 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Models.Students.Exceptions
+namespace OtripleS.Web.Api.Models.Teachers.Exceptions
 {
-    public class AlreadyExistsStudentException : Exception
+    public class TeacherDependencyException : Exception
     {
-        public AlreadyExistsStudentException(Exception innerException)
-            : base("Student with the same id already exists.", innerException) { }
+        public TeacherDependencyException(Exception innerException)
+            : base("Service dependency error occurred, contact support.", innerException) { }
     }
 }

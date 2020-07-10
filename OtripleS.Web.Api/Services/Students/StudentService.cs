@@ -11,7 +11,7 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Students;
 
-namespace OtripleS.Web.Api.Services
+namespace OtripleS.Web.Api.Services.Students
 {
     public partial class StudentService : IStudentService
     {
@@ -81,6 +81,6 @@ namespace OtripleS.Web.Api.Services
             ValidateStorageStudents(storageStudents);
 
             return storageStudents;
-        });        
+        });
     }
 }
