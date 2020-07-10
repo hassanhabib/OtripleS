@@ -177,6 +177,17 @@ namespace OtripleS.Web.Api.Services.Teachers
             }
         }
 
+        private void ValidateAginstStorageTeacherOnModify(Teacher inputTeacher, Teacher storageTeacher)
+        {
+            switch (inputTeacher)
+            {
+                case { } when inputTeacher.CreatedDate != storageTeacher.CreatedDate:
+                    throw new InvalidTeacherInputException(
+                        parameterName: nameof(Teacher.CreatedDate),
+                        parameterValue: inputTeacher.CreatedDate);
+            }
+        }
+
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(Guid input) => input == default;
     }
