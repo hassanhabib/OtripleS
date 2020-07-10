@@ -46,6 +46,7 @@ namespace OtripleS.Web.Api.Services.Teachers
             ValidateTeacherStrings(teacher);
             ValidateTeacherDates(teacher);
             ValidateTeacherIds(teacher);
+            ValidateUpdatedSignatureOnCreate(teacher);
             ValidateCreatedDateIsNotRecent(teacher);
         }
 
@@ -55,6 +56,7 @@ namespace OtripleS.Web.Api.Services.Teachers
             ValidateTeacherId(teacher.Id);
             ValidateTeacherStrings(teacher);
             ValidateTeacherIds(teacher);
+            ValidateTeacherDates(teacher);
         }
 
         private void ValidateCreatedDateIsNotRecent(Teacher teacher)
@@ -85,7 +87,7 @@ namespace OtripleS.Web.Api.Services.Teachers
                         parameterName: nameof(Teacher.CreatedDate),
                         parameterValue: teacher.CreatedDate);
 
-                case { } when teacher.UpdatedDate == default || teacher.CreatedDate != teacher.UpdatedDate:
+                case { } when teacher.UpdatedDate == default:
                     throw new InvalidTeacherInputException(
                         parameterName: nameof(Teacher.UpdatedDate),
                         parameterValue: teacher.UpdatedDate);
@@ -101,7 +103,23 @@ namespace OtripleS.Web.Api.Services.Teachers
                         parameterName: nameof(Teacher.CreatedBy),
                         parameterValue: teacher.CreatedBy);
 
-                case { } when IsInvalid(teacher.UpdatedBy) || teacher.CreatedBy != teacher.UpdatedBy:
+                case { } when IsInvalid(teacher.UpdatedBy):
+                    throw new InvalidTeacherInputException(
+                        parameterName: nameof(Teacher.UpdatedBy),
+                        parameterValue: teacher.UpdatedBy);
+            }
+        }
+
+        private void ValidateUpdatedSignatureOnCreate(Teacher teacher)
+        {
+            switch (teacher)
+            {
+                case { } when teacher.CreatedDate != teacher.UpdatedDate:
+                    throw new InvalidTeacherInputException(
+                        parameterName: nameof(Teacher.UpdatedDate),
+                        parameterValue: teacher.UpdatedDate);
+
+                case { } when teacher.CreatedBy != teacher.UpdatedBy:
                     throw new InvalidTeacherInputException(
                         parameterName: nameof(Teacher.UpdatedBy),
                         parameterValue: teacher.UpdatedBy);
