@@ -460,10 +460,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         [Fact]
         public async Task ShouldThorwValidationExceptionOnModifyIfTeacherDoesntExistAndLogItAsync()
         {
+            // given
+            int randomNegativeMinutes = GetNegativeRandomNumber();
             DateTimeOffset dateTime = GetRandomDateTime();
             Teacher randomTeacher = CreateRandomTeacher(dateTime);
             Teacher nonExistentTeacher = randomTeacher;
-            nonExistentTeacher.CreatedDate = dateTime.AddMinutes(-1 * GetRandomNumber());
+            nonExistentTeacher.CreatedDate = dateTime.AddMinutes(randomNegativeMinutes);
             Teacher noTeacher = null;
             var notFoundTeacherException = new NotFoundTeacherException(nonExistentTeacher.Id);
 
@@ -561,12 +563,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedByNotSameAsCreatedByAndLogItAsync()
         {
             // given
+            int randomNegativeMinutes = GetNegativeRandomNumber();
             Guid differentId = Guid.NewGuid();
             Guid invalidCreatedBy = differentId;
             DateTimeOffset randomDate = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(randomDate);
+            Teacher randomTeacher = CreateRandomTeacher(randomDate);            
             Teacher invalidTeacher = randomTeacher;
-            invalidTeacher.CreatedDate = randomDate.AddMinutes(-1 * GetRandomNumber());
+            invalidTeacher.CreatedDate = randomDate.AddMinutes(randomNegativeMinutes);
             Teacher storageTeacher = randomTeacher.DeepClone();
             Guid studentId = invalidTeacher.Id;
             invalidTeacher.CreatedBy = invalidCreatedBy;
@@ -574,6 +577,60 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             var invalidTeacherInputException = new InvalidTeacherInputException(
                 parameterName: nameof(Teacher.CreatedBy),
                 parameterValue: invalidTeacher.CreatedBy);
+
+            var expectedTeacherValidationException =
+              new TeacherValidationException(invalidTeacherInputException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectTeacherByIdAsync(studentId))
+                    .ReturnsAsync(storageTeacher);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
+            // when
+            ValueTask<Teacher> modifyTeacherTask =
+                this.teacherService.ModifyTeacherAsync(invalidTeacher);
+
+            // then
+            await Assert.ThrowsAsync<TeacherValidationException>(() =>
+                modifyTeacherTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectTeacherByIdAsync(invalidTeacher.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfStorageUpdatedDateSameAsUpdatedDateAndLogItAsync()
+        {
+            // given
+            int randomNegativeMinutes = GetNegativeRandomNumber();
+            int minutesInThePast = randomNegativeMinutes;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            Teacher randomTeacher = CreateRandomTeacher(randomDate);
+            randomTeacher.CreatedDate = randomTeacher.CreatedDate.AddMinutes(minutesInThePast);
+            Teacher invalidTeacher = randomTeacher;
+            invalidTeacher.UpdatedDate = randomDate;
+            Teacher storageTeacher = randomTeacher.DeepClone();
+            Guid studentId = invalidTeacher.Id;
+
+            var invalidTeacherInputException = new InvalidTeacherInputException(
+                parameterName: nameof(Teacher.UpdatedDate),
+                parameterValue: invalidTeacher.UpdatedDate);
 
             var expectedTeacherValidationException =
               new TeacherValidationException(invalidTeacherInputException);
