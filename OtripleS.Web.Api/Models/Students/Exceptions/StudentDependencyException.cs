@@ -5,10 +5,11 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Brokers.DateTimes
+namespace OtripleS.Web.Api.Models.Students.Exceptions
 {
-    public interface IDateTimeBroker
+    public class StudentDependencyException : Exception
     {
-        DateTimeOffset GetCurrentDateTime();
+        public StudentDependencyException(Exception innerException)
+            : base("Service dependency error occurred, contact support.", innerException) { }
     }
 }

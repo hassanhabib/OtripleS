@@ -5,10 +5,12 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Brokers.DateTimes
+namespace OtripleS.Web.Api.Models
 {
-    public interface IDateTimeBroker
+    public enum TeacherStatus
     {
-        DateTimeOffset GetCurrentDateTime();
+        Active,
+        Retired,
+        Terminated
     }
 }

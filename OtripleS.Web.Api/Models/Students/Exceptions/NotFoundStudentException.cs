@@ -5,10 +5,11 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Brokers.DateTimes
+namespace OtripleS.Web.Api.Models.Students.Exceptions
 {
-    public interface IDateTimeBroker
+    public class NotFoundStudentException : Exception
     {
-        DateTimeOffset GetCurrentDateTime();
+        public NotFoundStudentException(Guid studentId)
+            : base($"Couldn't find student with Id: {studentId}.") { }
     }
 }

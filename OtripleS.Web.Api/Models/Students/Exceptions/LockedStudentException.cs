@@ -5,10 +5,11 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Brokers.DateTimes
+namespace OtripleS.Web.Api.Models.Students.Exceptions
 {
-    public interface IDateTimeBroker
+    public class LockedStudentException : Exception
     {
-        DateTimeOffset GetCurrentDateTime();
+        public LockedStudentException(Exception innerException)
+            : base("Locked student record exception, please try again later.", innerException) { }
     }
 }

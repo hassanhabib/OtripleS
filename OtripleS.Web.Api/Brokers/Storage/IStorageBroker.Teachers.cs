@@ -5,10 +5,10 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Brokers.DateTimes
+namespace OtripleS.Web.Api.Brokers.Storage
 {
-    public interface IDateTimeBroker
+    public partial interface IStorageBroker
     {
-        DateTimeOffset GetCurrentDateTime();
+        
     }
 }

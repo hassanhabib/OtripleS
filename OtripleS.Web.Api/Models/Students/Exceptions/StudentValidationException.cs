@@ -5,10 +5,11 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Brokers.DateTimes
+namespace OtripleS.Web.Api.Models.Students.Exceptions
 {
-    public interface IDateTimeBroker
+    public class StudentValidationException : Exception
     {
-        DateTimeOffset GetCurrentDateTime();
+        public StudentValidationException(Exception innerException)
+            : base("Invalid input, contact support.", innerException) { }
     }
 }

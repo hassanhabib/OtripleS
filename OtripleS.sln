@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtripleS.Web.Api", "OtripleS.Web.Api\OtripleS.Web.Api.csproj", "{2101194B-3C5D-4484-8C28-64F4FD748B4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtripleS.Web.Api.Tests.Unit", "OtripleS.Web.Api.Tests.Unit\OtripleS.Web.Api.Tests.Unit.csproj", "{8C68DB6C-CD89-4921-9D05-3DE808397E7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtripleS.Web.Api.Tests.Unit", "OtripleS.Web.Api.Tests.Unit\OtripleS.Web.Api.Tests.Unit.csproj", "{8C68DB6C-CD89-4921-9D05-3DE808397E7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtripleS.Web.Api.Tests.Acceptance", "OtripleS.Web.Api.Tests.Acceptance\OtripleS.Web.Api.Tests.Acceptance.csproj", "{E651A18B-517E-4D75-B6BB-6AF9782FA1F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtripleS.Web.Api.Tests.Acceptance", "OtripleS.Web.Api.Tests.Acceptance\OtripleS.Web.Api.Tests.Acceptance.csproj", "{E651A18B-517E-4D75-B6BB-6AF9782FA1F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

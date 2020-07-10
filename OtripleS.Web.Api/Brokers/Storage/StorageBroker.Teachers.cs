@@ -3,12 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
+using Microsoft.EntityFrameworkCore;
+using OtripleS.Web.Api.Models.Teachers;
 
-namespace OtripleS.Web.Api.Brokers.DateTimes
+namespace OtripleS.Web.Api.Brokers.Storage
 {
-    public interface IDateTimeBroker
+    public partial class StorageBroker
     {
-        DateTimeOffset GetCurrentDateTime();
+        public DbSet<Teacher> Teachers { get; set; }
     }
 }
