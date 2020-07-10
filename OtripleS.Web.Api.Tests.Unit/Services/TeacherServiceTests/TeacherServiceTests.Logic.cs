@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,14 +37,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                     .ReturnsAsync(storageTeacher);
 
             // when
-            Teacher actualTeacher = 
+            Teacher actualTeacher =
                 await this.teacherService.DeleteTeacherByIdAsync(inputTeacherId);
 
             // then
             actualTeacher.Should().BeEquivalentTo(expectedTeacher);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherByIdAsync(inputTeacherId), 
+                broker.SelectTeacherByIdAsync(inputTeacherId),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
@@ -89,39 +90,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         public void ShouldRetrieveAllTeachers()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            IEnumerable<Teacher> randomTeachers = CreateRandomTeachers(dateTime);
-            IQueryable<Teacher> storageTeachers = randomTeachers.AsQueryable();
-            IQueryable<Teacher> expectedTeachers = randomTeachers.AsQueryable();
+            IQueryable<Teacher> randomTeachers = CreateRandomTeachers();
+            IQueryable<Teacher> storageTeachers = randomTeachers;
+            IQueryable<Teacher> expectedTeachers = storageTeachers;
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllTeachers())
                     .Returns(storageTeachers);
 
             // when
-            IQueryable<Teacher> actualTeachers = this.teacherService.RetrieveAllTeachers();
+            IQueryable<Teacher> actualTeachers =
+                this.teacherService.RetrieveAllTeachers();
 
             // then
             actualTeachers.Should().BeEquivalentTo(expectedTeachers);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllTeachers(),
                     Times.Once);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public async Task ShouldCreateTeacherAsync()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
+            DateTimeOffset dateTime = DateTimeOffset.UtcNow;
             Teacher randomTeacher = CreateRandomTeacher(dateTime);
+            randomTeacher.UpdatedBy = randomTeacher.CreatedBy;
+            randomTeacher.UpdatedDate = randomTeacher.CreatedDate;
             Teacher inputTeacher = randomTeacher;
             Teacher storageTeacher = randomTeacher;
             Teacher expectedTeacher = randomTeacher;
+
+            this.dateTimeBrokerMock.Setup(broker =>
+               broker.GetCurrentDateTime())
+                   .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertTeacherAsync(inputTeacher))
@@ -136,6 +147,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertTeacherAsync(inputTeacher),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();

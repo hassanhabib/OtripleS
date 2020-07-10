@@ -17,8 +17,8 @@ namespace OtripleS.Web.Api.Services.Teachers
     public partial class TeacherService
     {
         private delegate ValueTask<Teacher> ReturningTeacherFunction();
-        private delegate IQueryable<Teacher> ReturningTeacherQueryableFunction();
-
+        private delegate IQueryable<Teacher> ReturningQueryableTeacherFunction();
+        
         private async ValueTask<Teacher> TryCatch(ReturningTeacherFunction returningTeacherFunction)
         {
             try
@@ -64,11 +64,11 @@ namespace OtripleS.Web.Api.Services.Teachers
             }
         }
 
-        private IQueryable<Teacher> TryCatch(ReturningTeacherQueryableFunction returningTeacherQueryableFunction)
+        private IQueryable<Teacher> TryCatch(ReturningQueryableTeacherFunction returningQueryableTeacherFunction)
         {
             try
             {
-                return returningTeacherQueryableFunction();
+                return returningQueryableTeacherFunction();
             }
             catch (SqlException sqlException)
             {

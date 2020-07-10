@@ -5,6 +5,7 @@
 
 using System;
 using System.Linq;
+
 using OtripleS.Web.Api.Models.Teachers;
 using OtripleS.Web.Api.Models.Teachers.Exceptions;
 
