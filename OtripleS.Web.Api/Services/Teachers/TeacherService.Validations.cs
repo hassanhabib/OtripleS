@@ -54,6 +54,7 @@ namespace OtripleS.Web.Api.Services.Teachers
             ValidateTeacher(teacher);
             ValidateTeacherId(teacher.Id);
             ValidateTeacherStrings(teacher);
+            ValidateTeacherIds(teacher);
         }
 
         private void ValidateCreatedDateIsNotRecent(Teacher teacher)
