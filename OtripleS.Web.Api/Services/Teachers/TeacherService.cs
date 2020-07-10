@@ -29,6 +29,14 @@ namespace OtripleS.Web.Api.Services.Teachers
             this.dateTimeBroker = dateTimeBroker;
         }
 
+        public ValueTask<Teacher> CreateTeacherAsync(Teacher teacher) =>
+        TryCatch(async () =>
+        {
+            ValidateTeacherOnCreate(teacher);
+
+            return await this.storageBroker.InsertTeacherAsync(teacher);
+        });
+
         public ValueTask<Teacher> DeleteTeacherByIdAsync(Guid teacherId) =>
         TryCatch(async () =>
         {
@@ -49,6 +57,19 @@ namespace OtripleS.Web.Api.Services.Teachers
             ValidateStorageTeachers(storageTeachers);
 
             return storageTeachers;
+        });
+
+        public ValueTask<Teacher> RetrieveTeacherByIdAsync(Guid teacherId) =>
+        TryCatch(async () =>
+        {
+            ValidateTeacherId(teacherId);
+
+            Teacher storageTeacher =
+               await this.storageBroker.SelectTeacherByIdAsync(teacherId);
+
+            ValidateStorageTeacher(storageTeacher, teacherId);
+
+            return storageTeacher;
         });
     }
 }

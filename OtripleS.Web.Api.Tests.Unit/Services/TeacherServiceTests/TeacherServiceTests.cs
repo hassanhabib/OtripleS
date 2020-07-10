@@ -5,6 +5,7 @@
 
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -47,6 +48,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
+        private IEnumerable<Teacher> CreateRandomTeachers(DateTimeOffset dateTime) =>
+            CreateRandomTeacherFiller(dateTime).Create(GetRandomNumber());
+
         private Teacher CreateRandomTeacher(DateTimeOffset dateTime) =>
             CreateRandomTeacherFiller(dateTime).Create();
 
@@ -55,6 +59,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
 
         private static Filler<Teacher> CreateRandomTeacherFiller(DateTimeOffset dates)
         {
