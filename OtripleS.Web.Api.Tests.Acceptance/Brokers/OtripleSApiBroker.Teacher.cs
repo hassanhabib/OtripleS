@@ -9,17 +9,17 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
     {
         private const string TeachersRelativeUrl = "api/teachers";
 
-        public async ValueTask<Teacher> PostTeacherAsync(Teacher student) =>
-            await this.apiFactoryClient.PostContentAsync(TeachersRelativeUrl, student);
+        public async ValueTask<Teacher> PostTeacherAsync(Teacher teacher) =>
+            await this.apiFactoryClient.PostContentAsync(TeachersRelativeUrl, teacher);
 
-        public async ValueTask<Teacher> GetTeacherByIdAsync(Guid studentId) =>
-            await this.apiFactoryClient.GetContentAsync<Teacher>($"{TeachersRelativeUrl}/{studentId}");
+        public async ValueTask<Teacher> GetTeacherByIdAsync(Guid teacherId) =>
+            await this.apiFactoryClient.GetContentAsync<Teacher>($"{TeachersRelativeUrl}/{teacherId}");
 
-        public async ValueTask<Teacher> DeleteTeacherByIdAsync(Guid studentId) =>
-            await this.apiFactoryClient.DeleteContentAsync<Teacher>($"{TeachersRelativeUrl}/{studentId}");
+        public async ValueTask<Teacher> DeleteTeacherByIdAsync(Guid teacherId) =>
+            await this.apiFactoryClient.DeleteContentAsync<Teacher>($"{TeachersRelativeUrl}/{teacherId}");
 
-        public async ValueTask<Teacher> PutTeacherAsync(Teacher student) =>
-            await this.apiFactoryClient.PutContentAsync(TeachersRelativeUrl, student);
+        public async ValueTask<Teacher> PutTeacherAsync(Teacher teacher) =>
+            await this.apiFactoryClient.PutContentAsync(TeachersRelativeUrl, teacher);
 
         public async ValueTask<List<Teacher>> GetAllTeachers() =>
             await this.apiFactoryClient.GetContentAsync<List<Teacher>>($"{TeachersRelativeUrl}/");

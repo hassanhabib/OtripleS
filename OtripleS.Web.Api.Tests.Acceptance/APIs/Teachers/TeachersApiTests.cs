@@ -27,10 +27,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
 			var filler = new Filler<Teacher>();
 
 			filler.Setup()
-				.OnProperty(student => student.CreatedBy).Use(posterId)
-				.OnProperty(student => student.UpdatedBy).Use(posterId)
-				.OnProperty(student => student.CreatedDate).Use(now)
-				.OnProperty(student => student.UpdatedDate).Use(now)
+				.OnProperty(teacher => teacher.CreatedBy).Use(posterId)
+				.OnProperty(teacher => teacher.UpdatedBy).Use(posterId)
+				.OnProperty(teacher => teacher.CreatedDate).Use(now)
+				.OnProperty(teacher => teacher.UpdatedDate).Use(now)
 				.OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
 			return filler;
