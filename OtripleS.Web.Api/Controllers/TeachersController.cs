@@ -97,38 +97,6 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public async ValueTask<ActionResult<Teacher>> GetTeacherAsync(Guid id)
-        {
-            try
-            {
-                Teacher teacher = await this.teacherService.RetrieveTeacherByIdAsync(id);
-
-                return Ok(teacher);
-            }
-            catch (TeacherValidationException teacherValidationException)
-                when (teacherValidationException.InnerException is NotFoundTeacherException)
-            {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return NotFound(innerMessage);
-            }
-            catch (TeacherValidationException teacherValidationException)
-            {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return BadRequest(innerMessage);
-            }
-            catch (TeacherDependencyException teacherDependencyException)
-            {
-                return Problem(teacherDependencyException.Message);
-            }
-            catch (TeacherServiceException teacherServiceException)
-            {
-                return Problem(teacherServiceException.Message);
-            }
-        }
-
         public static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
