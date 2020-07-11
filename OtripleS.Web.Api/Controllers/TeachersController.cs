@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Controllers
             this.teacherService = teacherService;
 
         [HttpGet("{teacherId}")]
-        public async ValueTask<ActionResult<Teacher>> GetTeacherAsync(Guid teacherId)
+        public async ValueTask<ActionResult<Teacher>> GetById(Guid teacherId)
         {
             try
             {
