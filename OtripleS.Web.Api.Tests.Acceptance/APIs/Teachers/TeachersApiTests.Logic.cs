@@ -1,4 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
+using System.Threading.Tasks;
 using FluentAssertions;
 using OtripleS.Web.Api.Models.Teachers;
 using Xunit;
@@ -17,15 +22,12 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
 
 			// when 
 			await this.otripleSApiBroker.PostTeacherAsync(inputTeacher);
-
 			Teacher actualTeacher =
 				await this.otripleSApiBroker.GetTeacherByIdAsync(inputTeacher.Id);
 
 			// then
 			actualTeacher.Should().BeEquivalentTo(expectedTeacher);
-
 			await this.otripleSApiBroker.DeleteTeacherByIdAsync(actualTeacher.Id);
 		}
-
 	}
 }
