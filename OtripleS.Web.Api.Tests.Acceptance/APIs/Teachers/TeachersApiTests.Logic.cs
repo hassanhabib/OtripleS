@@ -1,4 +1,4 @@
-﻿// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
@@ -27,6 +27,26 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
 
 			// then
 			actualTeacher.Should().BeEquivalentTo(expectedTeacher);
+			await this.otripleSApiBroker.DeleteTeacherByIdAsync(actualTeacher.Id);
+		}
+
+		[Fact]
+		public async Task ShouldPutTeacherAsync()
+		{
+			// given
+			Teacher randomTeacher = CreateRandomTeacher();
+			await this.otripleSApiBroker.PostTeacherAsync(randomTeacher);
+			Teacher modifiedTeacher = UpdateTeacherRandom(randomTeacher);
+
+			// when
+			await this.otripleSApiBroker.PutTeacherAsync(modifiedTeacher);
+
+			Teacher actualTeacher =
+				await this.otripleSApiBroker.GetTeacherByIdAsync(randomTeacher.Id);
+
+			// then
+			actualTeacher.Should().BeEquivalentTo(modifiedTeacher);
+
 			await this.otripleSApiBroker.DeleteTeacherByIdAsync(actualTeacher.Id);
 		}
 	}
