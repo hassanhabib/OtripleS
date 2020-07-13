@@ -14,6 +14,8 @@ This project is aiming toward directing all the software development funds and h
 
 
 ## Project Updates
-[OtripleS 001: Project Init & Student Model Conceptualization](https://www.youtube.com/watch?v=aq28Bw9vzgU)
-[OtripleS 002: Student CRUD Operations](https://www.youtube.com/watch?v=pIlV8lms__I)
-[OtripleS 003: Modifying Student Object End-to-End](https://www.youtube.com/watch?v=FLsHIDe3cNs)
+<img width=20 src="https://www.searchmarketingaustralia.com.au/wp-content/uploads/2017/10/original_images_YouTube.png" /> [OtripleS 001: Project Init & Student Model Conceptualization](https://www.youtube.com/watch?v=aq28Bw9vzgU)
+
+<img width=20 src="https://www.searchmarketingaustralia.com.au/wp-content/uploads/2017/10/original_images_YouTube.png" /> [OtripleS 002: Student CRUD Operations](https://www.youtube.com/watch?v=pIlV8lms__I)
+
+<img width=20 src="https://www.searchmarketingaustralia.com.au/wp-content/uploads/2017/10/original_images_YouTube.png" /> [OtripleS 003: Modifying Student Object End-to-End](https://www.youtube.com/watch?v=FLsHIDe3cNs)
