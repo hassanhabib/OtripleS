@@ -49,6 +49,10 @@ namespace OtripleS.Web.Api.Controllers
             {
                 return Problem(teacherValidationException.Message);
             }
+            catch (TeacherServiceException teacherServiceException)
+            {
+                return Problem(teacherServiceException.Message);
+            }
         }
 
         [HttpPost]
