@@ -52,8 +52,7 @@ namespace OtripleS.Web.Api.Controllers
         }
 
         [HttpPost]
-        public async ValueTask<ActionResult<Teacher>> PostTeacherAsync(
-            [FromBody] Teacher teacher)
+        public async ValueTask<ActionResult<Teacher>> PostTeacherAsync(Teacher teacher)
         {
             try
             {
