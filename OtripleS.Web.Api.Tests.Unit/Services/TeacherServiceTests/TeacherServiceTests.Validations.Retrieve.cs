@@ -4,7 +4,10 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.Teachers;
 using OtripleS.Web.Api.Models.Teachers.Exceptions;
@@ -15,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
     public partial class TeacherServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnDeleteWhenIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomTeacherId = default;
@@ -25,11 +28,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                 parameterName: nameof(Teacher.Id),
                 parameterValue: inputTeacherId);
 
-            var expectedTeacherValidationException = new TeacherValidationException(invalidTeacherInputException);
+            var expectedTeacherValidationException = 
+                new TeacherValidationException(invalidTeacherInputException);
 
             // when
-            ValueTask<Teacher> actualTeacherTask =
-                this.teacherService.DeleteTeacherByIdAsync(inputTeacherId);
+            ValueTask<Teacher> actualTeacherTask = 
+                this.teacherService.RetrieveTeacherByIdAsync(inputTeacherId);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() => actualTeacherTask.AsTask());
@@ -39,11 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.DeleteTeacherAsync(It.IsAny<Teacher>()),
+                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()), 
                     Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -51,8 +51,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnDeleteWhenStorageTeacherIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetriveWhenStorageTeacherIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -72,7 +73,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
 
             // when
             ValueTask<Teacher> actualTeacherTask =
-                this.teacherService.DeleteTeacherByIdAsync(inputTeacherId);
+                this.teacherService.RetrieveTeacherByIdAsync(inputTeacherId);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() => actualTeacherTask.AsTask());
@@ -85,13 +86,44 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                 broker.SelectTeacherByIdAsync(inputTeacherId),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.DeleteTeacherAsync(It.IsAny<Teacher>()),
-                    Times.Never);
-
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldLogWarningOnRetrieveAllWhenTeachersWereEmptyAndLogIt()
+        {
+            // given
+            IQueryable<Teacher> emptyStorageTeachers = new List<Teacher>().AsQueryable();
+            IQueryable<Teacher> expectedTeachers = emptyStorageTeachers;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllTeachers())
+                    .Returns(expectedTeachers);
+
+            // when
+            IQueryable<Teacher> actualTeachers =
+                this.teacherService.RetrieveAllTeachers();
+
+            // then
+            actualTeachers.Should().BeEquivalentTo(emptyStorageTeachers);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogWarning("No teachers found in storage."),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllTeachers(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

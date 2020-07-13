@@ -4,7 +4,9 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Teachers;
@@ -15,12 +17,17 @@ namespace OtripleS.Web.Api.Services.Teachers
     public partial class TeacherService
     {
         private delegate ValueTask<Teacher> ReturningTeacherFunction();
-
+        private delegate IQueryable<Teacher> ReturningQueryableTeacherFunction();
+        
         private async ValueTask<Teacher> TryCatch(ReturningTeacherFunction returningTeacherFunction)
         {
             try
             {
                 return await returningTeacherFunction();
+            }
+            catch (NullTeacherException nullTeacherException)
+            {
+                throw CreateAndLogValidationException(nullTeacherException);
             }
             catch (InvalidTeacherInputException invalidTeacherInputException)
             {
@@ -34,11 +41,44 @@ namespace OtripleS.Web.Api.Services.Teachers
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsTeacherException =
+                    new AlreadyExistsTeacherException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsTeacherException);
+            }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                var lockedStudentException = new LockedTeacherException(dbUpdateConcurrencyException);
+                var lockedTeacherException = new LockedTeacherException(dbUpdateConcurrencyException);
 
-                throw CreateAndLogDependencyException(lockedStudentException);
+                throw CreateAndLogDependencyException(lockedTeacherException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private IQueryable<Teacher> TryCatch(ReturningQueryableTeacherFunction returningQueryableTeacherFunction)
+        {
+            try
+            {
+                return returningQueryableTeacherFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedTeacherException = new LockedTeacherException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedTeacherException);
             }
             catch (DbUpdateException dbUpdateException)
             {

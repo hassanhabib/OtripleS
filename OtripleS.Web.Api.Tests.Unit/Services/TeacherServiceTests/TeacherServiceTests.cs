@@ -4,6 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -41,22 +43,44 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
+        private IEnumerable<Teacher> CreateRandomTeachers(DateTimeOffset dateTime) =>
+            CreateRandomTeacherFiller(dateTime).Create(GetRandomNumber());
+
         private Teacher CreateRandomTeacher(DateTimeOffset dateTime) =>
             CreateRandomTeacherFiller(dateTime).Create();
+
+        private static IQueryable<Teacher> CreateRandomTeachers() =>
+            CreateRandomTeacherFiller(dates: DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
-        private Filler<Teacher> CreateRandomTeacherFiller(DateTimeOffset dateTime)
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
+
+        private static Filler<Teacher> CreateRandomTeacherFiller(DateTimeOffset dates)
         {
             var filler = new Filler<Teacher>();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(dateTime);                 
+                .OnType<DateTimeOffset>().Use(dates);
 
             return filler;
         }
