@@ -16,10 +16,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
     {
         private readonly OtripleSApiBroker otripleSApiBroker;
 
-        public TeachersApiTests(OtripleSApiBroker otripleSApiBroker)
-        {
+        public TeachersApiTests(OtripleSApiBroker otripleSApiBroker) =>
             this.otripleSApiBroker = otripleSApiBroker;
-        }
 
         private Teacher CreateRandomTeacher() =>
             CreateRandomTeacherFiller().Create();

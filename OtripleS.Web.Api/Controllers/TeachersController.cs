@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Controllers
             {
                 Teacher teacher = await this.teacherService.RetrieveTeacherByIdAsync(teacherId);
 
-                return Ok(teacherId);
+                return Ok(teacher);
             }
             catch (TeacherValidationException teacherValidationException)
                 when (teacherValidationException.InnerException is NotFoundTeacherException)
