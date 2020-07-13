@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Services.Teachers
     {
         private delegate ValueTask<Teacher> ReturningTeacherFunction();
         private delegate IQueryable<Teacher> ReturningQueryableTeacherFunction();
-        
+
         private async ValueTask<Teacher> TryCatch(ReturningTeacherFunction returningTeacherFunction)
         {
             try

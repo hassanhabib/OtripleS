@@ -6,7 +6,6 @@
 using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
-using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.Teachers;
 using OtripleS.Web.Api.Models.Teachers.Exceptions;

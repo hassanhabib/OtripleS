@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Controllers
         [HttpGet("{teacherId}")]
         public async ValueTask<ActionResult<Teacher>> GetById(Guid teacherId)
         {
-           try
+            try
             {
                 Teacher teacher = await this.teacherService.RetrieveTeacherByIdAsync(teacherId);
 
@@ -49,8 +49,8 @@ namespace OtripleS.Web.Api.Controllers
             {
                 return Problem(teacherValidationException.Message);
             }
-		}
-        
+        }
+
         [HttpPost]
         public async ValueTask<ActionResult<Teacher>> PostTeacherAsync(
             [FromBody] Teacher teacher)
@@ -84,7 +84,7 @@ namespace OtripleS.Web.Api.Controllers
                 return Problem(teacherServiceException.Message);
             }
         }
-        
+
         [HttpPut]
         public async ValueTask<ActionResult<Teacher>> PutTeacher(Teacher teacher)
         {
@@ -124,7 +124,7 @@ namespace OtripleS.Web.Api.Controllers
                 return Problem(teacherServiceException.Message);
             }
         }
-        
+
         [HttpGet]
         public ActionResult<IQueryable<Teacher>> GetAllTeachers()
         {
@@ -167,10 +167,6 @@ namespace OtripleS.Web.Api.Controllers
                 string innerMessage = GetInnerMessage(teacherValidationException);
 
                 return BadRequest(teacherValidationException);
-            }
-            catch (TeacherDependencyException teacherValidationException)
-            {
-                return Problem(teacherValidationException.Message);
             }
             catch (TeacherDependencyException teacherDependencyException)
                when (teacherDependencyException.InnerException is LockedTeacherException)

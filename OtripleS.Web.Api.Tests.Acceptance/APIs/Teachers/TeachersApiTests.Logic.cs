@@ -10,44 +10,44 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
 {
-	public partial class TeachersApiTests
-	{
-		[Fact]
-		public async Task ShouldPostTeacherAsync()
-		{
-			// given
-			Teacher randomTeacher = CreateRandomTeacher();
-			Teacher inputTeacher = randomTeacher;
-			Teacher expectedTeacher = inputTeacher;
+    public partial class TeachersApiTests
+    {
+        [Fact]
+        public async Task ShouldPostTeacherAsync()
+        {
+            // given
+            Teacher randomTeacher = CreateRandomTeacher();
+            Teacher inputTeacher = randomTeacher;
+            Teacher expectedTeacher = inputTeacher;
 
-			// when 
-			await this.otripleSApiBroker.PostTeacherAsync(inputTeacher);
-			Teacher actualTeacher =
-				await this.otripleSApiBroker.GetTeacherByIdAsync(inputTeacher.Id);
+            // when 
+            await this.otripleSApiBroker.PostTeacherAsync(inputTeacher);
+            Teacher actualTeacher =
+                await this.otripleSApiBroker.GetTeacherByIdAsync(inputTeacher.Id);
 
-			// then
-			actualTeacher.Should().BeEquivalentTo(expectedTeacher);
-			await this.otripleSApiBroker.DeleteTeacherByIdAsync(actualTeacher.Id);
-		}
+            // then
+            actualTeacher.Should().BeEquivalentTo(expectedTeacher);
+            await this.otripleSApiBroker.DeleteTeacherByIdAsync(actualTeacher.Id);
+        }
 
-		[Fact]
-		public async Task ShouldPutTeacherAsync()
-		{
-			// given
-			Teacher randomTeacher = CreateRandomTeacher();
-			await this.otripleSApiBroker.PostTeacherAsync(randomTeacher);
-			Teacher modifiedTeacher = UpdateTeacherRandom(randomTeacher);
+        [Fact]
+        public async Task ShouldPutTeacherAsync()
+        {
+            // given
+            Teacher randomTeacher = CreateRandomTeacher();
+            await this.otripleSApiBroker.PostTeacherAsync(randomTeacher);
+            Teacher modifiedTeacher = UpdateTeacherRandom(randomTeacher);
 
-			// when
-			await this.otripleSApiBroker.PutTeacherAsync(modifiedTeacher);
+            // when
+            await this.otripleSApiBroker.PutTeacherAsync(modifiedTeacher);
 
-			Teacher actualTeacher =
-				await this.otripleSApiBroker.GetTeacherByIdAsync(randomTeacher.Id);
+            Teacher actualTeacher =
+                await this.otripleSApiBroker.GetTeacherByIdAsync(randomTeacher.Id);
 
-			// then
-			actualTeacher.Should().BeEquivalentTo(modifiedTeacher);
+            // then
+            actualTeacher.Should().BeEquivalentTo(modifiedTeacher);
 
-			await this.otripleSApiBroker.DeleteTeacherByIdAsync(actualTeacher.Id);
-		}
-	}
+            await this.otripleSApiBroker.DeleteTeacherByIdAsync(actualTeacher.Id);
+        }
+    }
 }

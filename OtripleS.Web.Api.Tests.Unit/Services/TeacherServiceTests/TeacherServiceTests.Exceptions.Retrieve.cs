@@ -5,7 +5,6 @@
 
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -118,7 +117,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
-    
+
         [Fact]
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
         {
@@ -225,6 +224,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-        }        
+        }
     }
 }
