@@ -23,38 +23,6 @@ namespace OtripleS.Web.Api.Controllers
         public TeachersController(ITeacherService teacherService) =>
             this.teacherService = teacherService;
 
-        [HttpGet("{teacherId}")]
-        public async ValueTask<ActionResult<Teacher>> GetById(Guid teacherId)
-        {
-            try
-            {
-                Teacher teacher = await this.teacherService.RetrieveTeacherByIdAsync(teacherId);
-
-                return Ok(teacher);
-            }
-            catch (TeacherValidationException teacherValidationException)
-                when (teacherValidationException.InnerException is NotFoundTeacherException)
-            {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return NotFound(innerMessage);
-            }
-            catch (TeacherValidationException teacherValidationException)
-            {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return BadRequest(teacherValidationException);
-            }
-            catch (TeacherDependencyException teacherValidationException)
-            {
-                return Problem(teacherValidationException.Message);
-            }
-            catch (TeacherServiceException teacherServiceException)
-            {
-                return Problem(teacherServiceException.Message);
-            }
-        }
-
         [HttpPost]
         public async ValueTask<ActionResult<Teacher>> PostTeacherAsync(Teacher teacher)
         {
@@ -81,6 +49,58 @@ namespace OtripleS.Web.Api.Controllers
             catch (TeacherDependencyException teacherDependencyException)
             {
                 return Problem(teacherDependencyException.Message);
+            }
+            catch (TeacherServiceException teacherServiceException)
+            {
+                return Problem(teacherServiceException.Message);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<IQueryable<Teacher>> GetAllTeachers()
+        {
+            try
+            {
+                IQueryable<Teacher> teachers =
+                    this.teacherService.RetrieveAllTeachers();
+
+                return Ok(teachers);
+            }
+            catch (TeacherDependencyException teacherDependencyException)
+            {
+                return Problem(teacherDependencyException.Message);
+            }
+            catch (TeacherServiceException teacherServiceException)
+            {
+                return Problem(teacherServiceException.Message);
+            }
+        }
+
+        [HttpGet("{teacherId}")]
+        public async ValueTask<ActionResult<Teacher>> GetById(Guid teacherId)
+        {
+            try
+            {
+                Teacher teacher = await this.teacherService.RetrieveTeacherByIdAsync(teacherId);
+
+                return Ok(teacher);
+            }
+            catch (TeacherValidationException teacherValidationException)
+                when (teacherValidationException.InnerException is NotFoundTeacherException)
+            {
+                string innerMessage = GetInnerMessage(teacherValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (TeacherValidationException teacherValidationException)
+            {
+                string innerMessage = GetInnerMessage(teacherValidationException);
+
+                return BadRequest(teacherValidationException);
+            }
+            catch (TeacherDependencyException teacherValidationException)
+            {
+                return Problem(teacherValidationException.Message);
             }
             catch (TeacherServiceException teacherServiceException)
             {
@@ -117,26 +137,6 @@ namespace OtripleS.Web.Api.Controllers
                 string innerMessage = GetInnerMessage(teacherDependencyException);
 
                 return Locked(innerMessage);
-            }
-            catch (TeacherDependencyException teacherDependencyException)
-            {
-                return Problem(teacherDependencyException.Message);
-            }
-            catch (TeacherServiceException teacherServiceException)
-            {
-                return Problem(teacherServiceException.Message);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult<IQueryable<Teacher>> GetAllTeachers()
-        {
-            try
-            {
-                IQueryable<Teacher> teachers =
-                    this.teacherService.RetrieveAllTeachers();
-
-                return Ok(teachers);
             }
             catch (TeacherDependencyException teacherDependencyException)
             {
