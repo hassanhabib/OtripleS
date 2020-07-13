@@ -60,7 +60,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
             // given
             IEnumerable<Student> randomStudents = GetRandomStudents();
             IEnumerable<Student> inputStudents = randomStudents;
-            foreach (var student in inputStudents)
+
+            foreach (Student student in inputStudents)
             {
                 await this.otripleSApiBroker.PostStudentAsync(student);
             }
@@ -68,11 +69,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
             List<Student> expectedStudents = inputStudents.ToList();
 
             // when
-            List<Student> actualStudents = await this.otripleSApiBroker.GetAllStudents();
+            List<Student> actualStudents = await this.otripleSApiBroker.GetAllStudentsAsync();
 
             // then
-            actualStudents.Count().Equals(expectedStudents.Count);
-
             foreach (Student expectedStudent in expectedStudents)
             {
                 Student actualStudent = actualStudents.Single(student => student.Id == expectedStudent.Id);

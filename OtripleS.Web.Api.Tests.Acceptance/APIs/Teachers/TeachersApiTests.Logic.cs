@@ -3,6 +3,9 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using OtripleS.Web.Api.Models.Teachers;
@@ -22,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
 
             // when 
             await this.otripleSApiBroker.PostTeacherAsync(inputTeacher);
-            
+
             Teacher actualTeacher =
                 await this.otripleSApiBroker.GetTeacherByIdAsync(inputTeacher.Id);
 
@@ -49,6 +52,35 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
             actualTeacher.Should().BeEquivalentTo(modifiedTeacher);
 
             await this.otripleSApiBroker.DeleteTeacherByIdAsync(actualTeacher.Id);
+        }
+
+        [Fact]
+        public async Task ShouldGetAllTeachersAsync()
+        {
+            // given
+            IEnumerable<Teacher> randomTeachers = CreateRandomTeachers();
+            IEnumerable<Teacher> inputTeachers = randomTeachers;
+            IEnumerable<Teacher> expectedTeachers = inputTeachers;
+
+            foreach(Teacher inputTeacher in inputTeachers)
+            {
+                await this.otripleSApiBroker.PostTeacherAsync(inputTeacher);
+            }
+
+            // when
+            IEnumerable<Teacher> actualTeachers =
+                await this.otripleSApiBroker.GetAllTeachersAsync();
+
+            // then
+
+            foreach(Teacher expectedTeacher in expectedTeachers)
+            {
+                Teacher actualTeacher =
+                    actualTeachers.Single(teacher => teacher.Id == expectedTeacher.Id);
+
+                actualTeacher.Should().BeEquivalentTo(expectedTeacher);
+                await this.otripleSApiBroker.DeleteTeacherByIdAsync(actualTeacher.Id);
+            }
         }
     }
 }
