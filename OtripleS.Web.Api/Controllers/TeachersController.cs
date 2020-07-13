@@ -22,6 +22,34 @@ namespace OtripleS.Web.Api.Controllers
 
         public TeachersController(ITeacherService teacherService) =>
             this.teacherService = teacherService;
+
+        [HttpGet("{teacherId}")]
+        public async ValueTask<ActionResult<Teacher>> GetById(Guid teacherId)
+        {
+           try
+            {
+                Teacher teacher = await this.teacherService.RetrieveTeacherByIdAsync(teacherId);
+
+                return Ok(teacherId);
+            }
+            catch (TeacherValidationException teacherValidationException)
+                when (teacherValidationException.InnerException is NotFoundTeacherException)
+            {
+                string innerMessage = GetInnerMessage(teacherValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (TeacherValidationException teacherValidationException)
+            {
+                string innerMessage = GetInnerMessage(teacherValidationException);
+
+                return BadRequest(teacherValidationException);
+            }
+            catch (TeacherDependencyException teacherValidationException)
+            {
+                return Problem(teacherValidationException.Message);
+            }
+		}
         
         [HttpPost]
         public async ValueTask<ActionResult<Teacher>> PostTeacherAsync(
@@ -139,6 +167,10 @@ namespace OtripleS.Web.Api.Controllers
                 string innerMessage = GetInnerMessage(teacherValidationException);
 
                 return BadRequest(teacherValidationException);
+            }
+            catch (TeacherDependencyException teacherValidationException)
+            {
+                return Problem(teacherValidationException.Message);
             }
             catch (TeacherDependencyException teacherDependencyException)
                when (teacherDependencyException.InnerException is LockedTeacherException)
