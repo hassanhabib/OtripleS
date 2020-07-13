@@ -1,7 +1,10 @@
 # OtripleS
 Open Source Schooling System
 
+[![BCH compliance](https://bettercodehub.com/edge/badge/hassanhabib/OtripleS?branch=master)](https://bettercodehub.com/)
+
 [![Build Status](https://dev.azure.com/OtripleS/OtripleS/_apis/build/status/OtripleS%20BUILD?branchName=master)](https://dev.azure.com/OtripleS/OtripleS/_build/latest?definitionId=1&branchName=master)
+
 
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/OtripleS/community)
 
