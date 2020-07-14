@@ -28,11 +28,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                 parameterName: nameof(Teacher.Id),
                 parameterValue: inputTeacherId);
 
-            var expectedTeacherValidationException = 
+            var expectedTeacherValidationException =
                 new TeacherValidationException(invalidTeacherInputException);
 
             // when
-            ValueTask<Teacher> actualTeacherTask = 
+            ValueTask<Teacher> actualTeacherTask =
                 this.teacherService.RetrieveTeacherByIdAsync(inputTeacherId);
 
             // then
@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()), 
+                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();

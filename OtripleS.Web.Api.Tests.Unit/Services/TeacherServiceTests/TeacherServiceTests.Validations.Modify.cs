@@ -380,7 +380,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             DateTimeOffset dateTime = GetRandomDateTime();
             Teacher randomTeacher = CreateRandomTeacher(dateTime);
             Teacher inputTeacher = randomTeacher;
-            
+
             var invalidTeacherInputException = new InvalidTeacherInputException(
                 parameterName: nameof(Teacher.UpdatedDate),
                 parameterValue: inputTeacher.UpdatedDate);
@@ -567,7 +567,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             Guid differentId = Guid.NewGuid();
             Guid invalidCreatedBy = differentId;
             DateTimeOffset randomDate = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(randomDate);            
+            Teacher randomTeacher = CreateRandomTeacher(randomDate);
             Teacher invalidTeacher = randomTeacher;
             invalidTeacher.CreatedDate = randomDate.AddMinutes(randomNegativeMinutes);
             Teacher storageTeacher = randomTeacher.DeepClone();

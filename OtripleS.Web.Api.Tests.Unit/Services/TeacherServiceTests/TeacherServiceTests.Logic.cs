@@ -5,14 +5,12 @@
 
 using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Teachers;
 using Xunit;
-using Force.DeepCloner;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
 {
@@ -70,7 +68,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherByIdAsync(inputTeacherId))
                     .ReturnsAsync(storageTeacher);
-           
+
             // when
             Teacher actualTeacher =
                 await this.teacherService.RetrieveTeacherByIdAsync(inputTeacherId);
@@ -178,7 +176,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             this.dateTimeBrokerMock.Setup(broker =>
                broker.GetCurrentDateTime())
                    .Returns(randomDate);
-                
+
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherByIdAsync(studentId))
                     .ReturnsAsync(beforeUpdateStorageTeacher);
