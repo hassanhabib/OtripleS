@@ -31,13 +31,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             Guid courseId = inputCourse.Id;
 
             // when
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                .Returns(randomDate);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectCourseByIdAsync(courseId))
                 .ReturnsAsync(beforeUpdateStorageCourse);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                .Returns(randomDate);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.UpdateCourseAsync(inputCourse))
@@ -48,12 +49,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             // then
             actualCourse.Should().BeEquivalentTo(expectedCourse);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                Times.Once);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCourseByIdAsync(courseId),
+                Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                 Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
