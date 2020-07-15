@@ -34,10 +34,16 @@ namespace OtripleS.Web.Api.Services.Courses
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedCourseException = new LockedCourseException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedCourseException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
-            }
+            }            
         }
 
         private CourseValidationException CreateAndLogValidationException(Exception exception)
