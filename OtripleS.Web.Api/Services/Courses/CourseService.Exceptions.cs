@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.Courses.Exceptions;
 
@@ -33,6 +34,10 @@ namespace OtripleS.Web.Api.Services.Courses
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
         private CourseValidationException CreateAndLogValidationException(Exception exception)
@@ -47,6 +52,14 @@ namespace OtripleS.Web.Api.Services.Courses
         {
             var courseDependencyException = new CourseDependencyException(exception);
             this.loggingBroker.LogCritical(courseDependencyException);
+
+            return courseDependencyException;
+        }
+
+        private CourseDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var courseDependencyException = new CourseDependencyException(exception);
+            this.loggingBroker.LogError(courseDependencyException);
 
             return courseDependencyException;
         }
