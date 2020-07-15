@@ -43,7 +43,11 @@ namespace OtripleS.Web.Api.Services.Courses
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
-            }            
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private CourseValidationException CreateAndLogValidationException(Exception exception)
@@ -68,6 +72,14 @@ namespace OtripleS.Web.Api.Services.Courses
             this.loggingBroker.LogError(courseDependencyException);
 
             return courseDependencyException;
+        }
+
+        private CourseServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var courseServiceException = new CourseServiceException(exception);
+            this.loggingBroker.LogError(courseServiceException);
+
+            return courseServiceException;
         }
     }
 }
