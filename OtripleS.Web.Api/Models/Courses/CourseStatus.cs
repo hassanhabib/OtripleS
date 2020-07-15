@@ -3,7 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-namespace OtripleS.Web.Api.Models.Course
+namespace OtripleS.Web.Api.Models.Courses
 {
     public enum CourseStatus
     {
