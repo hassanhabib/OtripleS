@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.Courses;
 
@@ -12,5 +13,6 @@ namespace OtripleS.Web.Api.Services.Courses
     public interface ICourseService
     {
         ValueTask<Course> DeleteCourseAsync(Guid CourseId);
+        IQueryable<Course> RetrieveAllCourses();
     }
 }
