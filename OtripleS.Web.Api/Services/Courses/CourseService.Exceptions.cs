@@ -24,6 +24,10 @@ namespace OtripleS.Web.Api.Services.Courses
             {
                 throw CreateAndLogValidationException(invalidCourseInputException);
             }
+            catch (NotFoundCourseException notFoundCourseException)
+            {
+                throw CreateAndLogValidationException(notFoundCourseException);
+            }
         }
 
         private CourseValidationException CreateAndLogValidationException(Exception exception)
