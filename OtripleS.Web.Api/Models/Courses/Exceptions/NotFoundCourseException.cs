@@ -4,14 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Courses;
-
-namespace OtripleS.Web.Api.Services.Courses
+namespace OtripleS.Web.Api.Models.Courses.Exceptions
 {
-    public interface ICourseService
+    public class NotFoundCourseException : Exception
     {
-        ValueTask<Course> ModifyCourseAsync(Course course);
-        ValueTask<Course> DeleteCourseAsync(Guid CourseId);
+        public NotFoundCourseException(Guid courseId)
+            : base($"Couldn't find course with Id: {courseId}.") { }
     }
 }

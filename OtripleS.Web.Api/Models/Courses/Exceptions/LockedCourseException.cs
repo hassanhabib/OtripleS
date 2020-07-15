@@ -4,14 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Courses;
 
-namespace OtripleS.Web.Api.Services.Courses
+namespace OtripleS.Web.Api.Models.Courses.Exceptions
 {
-    public interface ICourseService
+    public class LockedCourseException : Exception
     {
-        ValueTask<Course> ModifyCourseAsync(Course course);
-        ValueTask<Course> DeleteCourseAsync(Guid CourseId);
+        public LockedCourseException(Exception innerException)
+            : base("Locked course record exception, please try again later.", innerException) { }
     }
 }

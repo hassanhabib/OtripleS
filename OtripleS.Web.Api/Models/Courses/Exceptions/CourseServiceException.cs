@@ -3,11 +3,12 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-namespace OtripleS.Web.Api.Models.Course
+using System;
+namespace OtripleS.Web.Api.Models.Courses.Exceptions
 {
-    public enum CourseStatus
+    public class CourseServiceException : Exception
     {
-        Available,
-        Unavailable
+        public CourseServiceException(Exception innerException)
+            : base("Service error occurred, contact support.", innerException) { }
     }
 }
