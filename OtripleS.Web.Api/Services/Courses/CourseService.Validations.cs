@@ -14,6 +14,7 @@ namespace OtripleS.Web.Api.Services.Courses
         private void ValidateCourseOnModify(Course course)
         {
             ValidateCourse(course);
+            ValidateCourseId(course.Id);
         }
         private void ValidateCourseId(Guid courseId)
         {
