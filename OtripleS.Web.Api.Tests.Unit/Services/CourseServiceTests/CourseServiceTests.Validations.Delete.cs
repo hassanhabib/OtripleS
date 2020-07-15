@@ -50,5 +50,48 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidatonExceptionOnDeleteWhenStorageCourseIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Course randomCourse = CreateRandomCourse(dateTime);
+            Guid inputCourseId = randomCourse.Id;
+            Course inputCourse = randomCourse;
+            Course nullStorageCourse = null;
+
+            var notFoundCourseException = new NotFoundCourseException(inputCourseId);
+
+            var expectedCourseValidationException =
+                new CourseValidationException(notFoundCourseException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCourseByIdAsync(inputCourseId))
+                    .ReturnsAsync(nullStorageCourse);
+
+            // when
+            ValueTask<Course> actualCourseTask =
+                this.courseService.DeleteCourseAsync(inputCourseId);
+
+            // then
+            await Assert.ThrowsAsync<CourseValidationException>(() => actualCourseTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCourseByIdAsync(inputCourseId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteCourseAsync(It.IsAny<Course>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
