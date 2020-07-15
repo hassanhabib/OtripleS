@@ -30,6 +30,10 @@ namespace OtripleS.Web.Api.Services.Courses
             {
                 throw CreateAndLogValidationException(notFoundCourseException);
             }
+            catch (NullCourseException nullCourseException)
+            {
+                throw CreateAndLogValidationException(nullCourseException);
+            }
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
