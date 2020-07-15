@@ -26,14 +26,16 @@ namespace OtripleS.Web.Api.Services.Courses
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
         }
-        public async ValueTask<Course> ModifyCourseAsync(Course course)
+        public ValueTask<Course> ModifyCourseAsync(Course course) =>
+        TryCatch(async () =>
         {
+            ValidateCourseOnModify(course);
             Course maybeCourse = await this.storageBroker.SelectCourseByIdAsync(course.Id);
 
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
 
             return await this.storageBroker.UpdateCourseAsync(course);
-        }
+        });
 
         public ValueTask<Course> DeleteCourseAsync(Guid courseId) =>
         TryCatch(async () =>

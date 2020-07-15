@@ -11,6 +11,10 @@ namespace OtripleS.Web.Api.Services.Courses
 {
     public partial class CourseService
     {
+        private void ValidateCourseOnModify(Course course)
+        {
+            ValidateCourse(course);
+        }
         private void ValidateCourseId(Guid courseId)
         {
             if (courseId == Guid.Empty)
@@ -26,6 +30,14 @@ namespace OtripleS.Web.Api.Services.Courses
             if (storageCourse == null)
             {
                 throw new NotFoundCourseException(courseId);
+            }
+        }
+
+        private void ValidateCourse(Course course)
+        {
+            if (course is null)
+            {
+                throw new NullCourseException();
             }
         }
     }
