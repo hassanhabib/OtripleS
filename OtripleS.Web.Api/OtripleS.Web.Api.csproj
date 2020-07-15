@@ -15,7 +15,4 @@
     <PackageReference Include="RESTFulSense" Version="1.4.0" />
   </ItemGroup>
     
-  <ItemGroup>
-    <Folder Include="Services\Courses\" />
-  </ItemGroup>
 </Project>
