@@ -117,5 +117,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task ShouldThrowValidationExceptionOnModifyWhenCourseDescriptionIsInvalidAndLogItAsync(
+            string invalidCourseDescription)
+        {
+            // given
+            Course randomCourse = CreateRandomCourse(DateTime.Now);
+            Course invalidCourse = randomCourse;
+            invalidCourse.Description = invalidCourseDescription;
+
+            var invalidCourseException = new InvalidCourseInputException(
+               parameterName: nameof(Course.Description),
+               parameterValue: invalidCourse.Description);
+
+            var expectedCourseValidationException =
+                new CourseValidationException(invalidCourseException);
+
+            // when
+            ValueTask<Course> modifyCourseTask =
+                this.courseService.ModifyCourseAsync(invalidCourse);
+
+            // then
+            await Assert.ThrowsAsync<CourseValidationException>(() =>
+                modifyCourseTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
