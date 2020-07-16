@@ -49,5 +49,13 @@ namespace OtripleS.Web.Api.Services.Courses
 
 			return storageCourses;
         });
+
+        public ValueTask<Course> RetrieveCourseById(Guid courseId) =>
+        TryCatch(async () =>
+        {
+            Course storageCourse = null;
+
+            return storageCourse;
+        });
     }
 }

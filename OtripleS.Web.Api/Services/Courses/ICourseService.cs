@@ -12,7 +12,8 @@ namespace OtripleS.Web.Api.Services.Courses
 {
     public interface ICourseService
     {
-        ValueTask<Course> DeleteCourseAsync(Guid CourseId);
+        ValueTask<Course> DeleteCourseAsync(Guid courseId);
         IQueryable<Course> RetrieveAllCourses();
+        ValueTask<Course> RetrieveCourseById(Guid courseId);
     }
 }

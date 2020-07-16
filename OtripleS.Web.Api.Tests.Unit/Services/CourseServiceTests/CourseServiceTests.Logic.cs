@@ -52,5 +52,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact] async Task ShouldRetrieveCourseById()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Course randomCourse = CreateRandomCourse(dateTime);
+            Guid inputCourseId = randomCourse.Id;
+            Course inputCourse = randomCourse;
+            Course storageCourse = randomCourse;
+            Course expectedCourse = randomCourse;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCourseByIdAsync(inputCourseId))
+                    .ReturnsAsync(inputCourse);
+
+            // when
+            Course actualCourse =
+                await this.courseService.RetrieveCourseById(inputCourseId);
+
+            // then
+            actualCourse.Should().BeEquivalentTo(expectedCourse);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCourseByIdAsync(inputCourseId),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
