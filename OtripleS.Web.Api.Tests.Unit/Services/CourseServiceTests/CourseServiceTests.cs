@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -59,6 +60,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
                 .OnType<DateTimeOffset>().Use(dateTime);
 
             return filler;
+        }
+
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
         }
 
         private static SqlException GetSqlException() =>
