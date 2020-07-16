@@ -31,6 +31,7 @@ namespace OtripleS.Web.Api.Services.Courses
         {
             ValidateCourseOnModify(course);
             Course maybeCourse = await this.storageBroker.SelectCourseByIdAsync(course.Id);
+            ValidateStorageCourse(maybeCourse, course.Id);
 
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
 
