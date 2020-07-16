@@ -163,7 +163,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             inputCourse.CreatedBy = default;
 
             var invalidCourseInputException = new InvalidCourseInputException(
-                parameterName: nameof(Teacher.CreatedBy),
+                parameterName: nameof(Course.CreatedBy),
                 parameterValue: inputCourse.CreatedBy);
 
             var expectedCourseValidationException =
@@ -200,8 +200,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             inputCourse.UpdatedBy = default;
 
             var invalidCourseInputException = new InvalidCourseInputException(
-                parameterName: nameof(Teacher.UpdatedBy),
+                parameterName: nameof(Course.UpdatedBy),
                 parameterValue: inputCourse.UpdatedBy);
+
+            var expectedCourseValidationException =
+                new CourseValidationException(invalidCourseInputException);
+
+            // when
+            ValueTask<Course> modifyCourseTask =
+                this.courseService.ModifyCourseAsync(inputCourse);
+
+            // then
+            await Assert.ThrowsAsync<CourseValidationException>(() =>
+                modifyCourseTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnModifyWhenCreatedDateIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Course randomCourse  = CreateRandomCourse(dateTime);
+            Course inputCourse = randomCourse;
+            inputCourse.CreatedDate = default;
+
+            var invalidCourseInputException = new InvalidCourseInputException(
+                parameterName: nameof(Course.CreatedDate),
+                parameterValue: inputCourse.CreatedDate);
 
             var expectedCourseValidationException =
                 new CourseValidationException(invalidCourseInputException);
