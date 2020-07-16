@@ -13,41 +13,41 @@ using OtripleS.Web.Api.Models.Courses;
 
 namespace OtripleS.Web.Api.Services.Courses
 {
-    public partial class CourseService : ICourseService
-    {
-        private readonly IStorageBroker storageBroker;
-        private readonly ILoggingBroker loggingBroker;
-        private readonly IDateTimeBroker dateTimeBroker;
+	public partial class CourseService : ICourseService
+	{
+		private readonly IStorageBroker storageBroker;
+		private readonly ILoggingBroker loggingBroker;
+		private readonly IDateTimeBroker dateTimeBroker;
 
-        public CourseService(IStorageBroker storageBroker,
-            ILoggingBroker loggingBroker,
-            IDateTimeBroker dateTimeBroker)
-        {
-            this.storageBroker = storageBroker;
-            this.loggingBroker = loggingBroker;
-            this.dateTimeBroker = dateTimeBroker;
-        }
+		public CourseService(IStorageBroker storageBroker,
+			ILoggingBroker loggingBroker,
+			IDateTimeBroker dateTimeBroker)
+		{
+			this.storageBroker = storageBroker;
+			this.loggingBroker = loggingBroker;
+			this.dateTimeBroker = dateTimeBroker;
+		}
 
-        public ValueTask<Course> DeleteCourseAsync(Guid courseId) =>
-        TryCatch(async () =>
-        {
-            ValidateCourseId(courseId);
+		public ValueTask<Course> DeleteCourseAsync(Guid courseId) =>
+		TryCatch(async () =>
+		{
+			ValidateCourseId(courseId);
 
-            Course maybeCourse =
-               await this.storageBroker.SelectCourseByIdAsync(courseId);
+			Course maybeCourse =
+			   await this.storageBroker.SelectCourseByIdAsync(courseId);
 
-            ValidateStorageCourse(maybeCourse, courseId);
+			ValidateStorageCourse(maybeCourse, courseId);
 
-            return await this.storageBroker.DeleteCourseAsync(maybeCourse);
-        });
+			return await this.storageBroker.DeleteCourseAsync(maybeCourse);
+		});
 
-        public IQueryable<Course> RetrieveAllCourses() =>
-        TryCatch(() =>
-        {
-            IQueryable<Course> storageCourses = this.storageBroker.SelectAllCourses();
+		public IQueryable<Course> RetrieveAllCourses() =>
+		TryCatch(() =>
+		{
+			IQueryable<Course> storageCourses = this.storageBroker.SelectAllCourses();
 			ValidateStorageCourses(storageCourses);
 
 			return storageCourses;
-        });
-    }
+		});
+	}
 }
