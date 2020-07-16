@@ -24,6 +24,11 @@ namespace OtripleS.Web.Api.Services.Courses
         }
 
         public ValueTask<Course> CreateCourseAsync(Course course) =>
-            throw new NotImplementedException();        
+        TryCatch(async () =>
+        {
+            ValidateCourseOnCreate(course);
+
+            return await this.storageBroker.InsertCourseAsync(course);
+        });
     }
 }
