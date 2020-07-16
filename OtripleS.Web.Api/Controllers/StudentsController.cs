@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Models.Students.Exceptions;
-using OtripleS.Web.Api.Services;
+using OtripleS.Web.Api.Services.Students;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers
@@ -56,6 +56,26 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult<IQueryable<Student>> GetAllStudents()
+        {
+            try
+            {
+                IQueryable<Student> storageStudents =
+                    this.studentService.RetrieveAllStudents();
+
+                return Ok(storageStudents);
+            }
+            catch (StudentDependencyException studentDependencyException)
+            {
+                return Problem(studentDependencyException.Message);
+            }
+            catch (StudentServiceException studentServiceException)
+            {
+                return Problem(studentServiceException.Message);
+            }
+        }
+
         [HttpGet("{studentId}")]
         public async ValueTask<ActionResult<Student>> GetStudentAsync(Guid studentId)
         {
@@ -78,26 +98,6 @@ namespace OtripleS.Web.Api.Controllers
                 string innerMessage = GetInnerMessage(studentValidationException);
 
                 return BadRequest(studentValidationException);
-            }
-            catch (StudentDependencyException studentDependencyException)
-            {
-                return Problem(studentDependencyException.Message);
-            }
-            catch (StudentServiceException studentServiceException)
-            {
-                return Problem(studentServiceException.Message);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult<IQueryable<Student>> GetAllStudents()
-        {
-            try
-            {
-                IQueryable<Student> storageStudents =
-                    this.studentService.RetrieveAllStudents();
-
-                return Ok(storageStudents);
             }
             catch (StudentDependencyException studentDependencyException)
             {

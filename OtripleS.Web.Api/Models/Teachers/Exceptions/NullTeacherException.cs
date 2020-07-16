@@ -5,11 +5,10 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Models.Students.Exceptions
+namespace OtripleS.Web.Api.Models.Teachers.Exceptions
 {
-    public class AlreadyExistsStudentException : Exception
+    public class NullTeacherException : Exception
     {
-        public AlreadyExistsStudentException(Exception innerException)
-            : base("Student with the same id already exists.", innerException) { }
+        public NullTeacherException() : base("The teacher is null.") { }
     }
 }

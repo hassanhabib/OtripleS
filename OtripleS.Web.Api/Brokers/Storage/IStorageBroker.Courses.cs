@@ -6,16 +6,16 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Teachers;
+using OtripleS.Web.Api.Models.Courses;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
     public partial interface IStorageBroker
     {
-        ValueTask<Teacher> InsertTeacherAsync(Teacher teacher);
-        IQueryable<Teacher> SelectAllTeachers();
-        ValueTask<Teacher> SelectTeacherByIdAsync(Guid teacherId);
-        ValueTask<Teacher> UpdateTeacherAsync(Teacher teacher);
-        ValueTask<Teacher> DeleteTeacherAsync(Teacher teacher);
+        ValueTask<Course> InsertCourseAsync(Course course);
+        IQueryable<Course> SelectAllCourses();
+        ValueTask<Course> SelectCourseByIdAsync(Guid courseId);
+        ValueTask<Course> UpdateCourseAsync(Course course);
+        ValueTask<Course> DeleteCourseAsync(Course course);
     }
 }
