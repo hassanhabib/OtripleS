@@ -8,13 +8,12 @@ using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.Courses.Exceptions;
-using OtripleS.Web.Api.Models.Students.Exceptions;
-using OtripleS.Web.Api.Models.Teachers;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Force.DeepCloner;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
 {
@@ -422,6 +421,61 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCourseByIdAsync(nonExistentCourse.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedDateNotSameAsCreateDateAndLogItAsync()
+        {
+            // given
+            int randomNumber = GetRandomNumber();
+            int randomMinutes = randomNumber;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            Course randomCourse = CreateRandomCourse(randomDate);
+            Course invalidCourse = randomCourse;
+            invalidCourse.UpdatedDate = randomDate;
+            Course storageCourse = randomCourse.DeepClone();
+            Guid courseId = invalidCourse.Id;
+            invalidCourse.CreatedDate = storageCourse.CreatedDate.AddMinutes(randomNumber);
+
+            var invalidCourseException = new InvalidCourseInputException(
+                parameterName: nameof(Course.CreatedDate),
+                parameterValue: invalidCourse.CreatedDate);
+
+            var expectedCourseValidationException =
+              new CourseValidationException(invalidCourseException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCourseByIdAsync(courseId))
+                    .ReturnsAsync(storageCourse);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
+            // when
+            ValueTask<Course> modifyCourseTask =
+                this.courseService.ModifyCourseAsync(invalidCourse);
+
+            // then
+            await Assert.ThrowsAsync<CourseValidationException>(() =>
+                modifyCourseTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCourseByIdAsync(invalidCourse.Id),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
