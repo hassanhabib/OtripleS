@@ -19,6 +19,7 @@ namespace OtripleS.Web.Api.Services.Courses
             ValidateCourseIds(course);
             ValidateCourseDates(course);
             ValidateDatesAreNotSame(course);
+            ValidateUpdatedDateIsRecent(course);
         }
         private void ValidateCourseId(Guid courseId)
         {
@@ -84,6 +85,25 @@ namespace OtripleS.Web.Api.Services.Courses
             {
                 throw new InvalidCourseInputException(
                     parameterName: nameof(Course.UpdatedDate),
+                    parameterValue: course.UpdatedDate);
+            }
+        }
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
+
+        private void ValidateUpdatedDateIsRecent(Course course)
+        {
+            if (IsDateNotRecent(course.UpdatedDate))
+            {
+                throw new InvalidCourseInputException(
+                    parameterName: nameof(course.UpdatedDate),
                     parameterValue: course.UpdatedDate);
             }
         }
