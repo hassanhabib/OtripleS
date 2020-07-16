@@ -18,6 +18,7 @@ namespace OtripleS.Web.Api.Services.Courses
             ValidateCourseStrings(course);
             ValidateCourseIds(course);
             ValidateCourseDates(course);
+            ValidateDatesAreNotSame(course);
         }
         private void ValidateCourseId(Guid courseId)
         {
@@ -74,6 +75,16 @@ namespace OtripleS.Web.Api.Services.Courses
                     throw new InvalidCourseInputException(
                         parameterName: nameof(Course.UpdatedDate),
                         parameterValue: course.UpdatedDate);
+            }
+        }
+
+        private void ValidateDatesAreNotSame(Course course)
+        {
+            if (course.CreatedDate == course.UpdatedDate)
+            {
+                throw new InvalidCourseInputException(
+                    parameterName: nameof(Course.UpdatedDate),
+                    parameterValue: course.UpdatedDate);
             }
         }
 
