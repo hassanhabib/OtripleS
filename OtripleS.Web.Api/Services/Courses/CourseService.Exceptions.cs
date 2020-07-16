@@ -5,10 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.Courses.Exceptions;
-using OtripleS.Web.Api.Models.Students.Exceptions;
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -95,5 +93,5 @@ namespace OtripleS.Web.Api.Services.Courses
 
             return courseValidationException;
         }
-    }    
+    }
 }

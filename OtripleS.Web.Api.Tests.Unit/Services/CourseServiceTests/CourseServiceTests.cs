@@ -1,18 +1,20 @@
-﻿using Microsoft.Data.SqlClient;
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
 
+using System;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
+using Microsoft.Data.SqlClient;
 using Moq;
-
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Services.Courses;
-
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Serialization;
 
 using Tynamix.ObjectFiller;
 
@@ -48,20 +50,30 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
         private Course CreateRandomCourse(DateTimeOffset dateTime) =>
             CreateRandomCourseFiller(dateTime).Create();
 
-        private static IQueryable<Course> CreateRandomCourses() =>
-            CreateRandomCourseFiller(dates: DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+        private IQueryable<Course> CreateRandomCourses() =>
+            CreateRandomCourseFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
-        
+
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
+
+        private Filler<Course> CreateRandomCourseFiller(DateTimeOffset dateTime)
+        {
+            var filler = new Filler<Course>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dateTime);
+
+            return filler;
         }
 
         public static IEnumerable<object[]> InvalidMinuteCases()
@@ -74,16 +86,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
                 new object[] { randomMoreThanMinuteFromNow },
                 new object[] { randomMoreThanMinuteBeforeNow }
             };
-        }
-
-        private static Filler<Course> CreateRandomCourseFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<Course>();
-
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates);
-
-            return filler;
         }
     }
 }

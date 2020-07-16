@@ -6,9 +6,12 @@
 using System;
 namespace OtripleS.Web.Api.Models.Courses.Exceptions
 {
-    public class CourseServiceException : Exception
+    public class InvalidCourseInputException : Exception
     {
-        public CourseServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+        public InvalidCourseInputException(string parameterName, object parameterValue)
+            : base($"Invalid Course, " +
+                  $"ParameterName: {parameterName}, " +
+                  $"ParameterValue: {parameterValue}.")
+        { }
     }
 }

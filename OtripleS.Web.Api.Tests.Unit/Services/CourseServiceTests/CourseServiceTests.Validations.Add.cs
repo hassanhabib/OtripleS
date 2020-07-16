@@ -6,8 +6,6 @@ using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.Courses.Exceptions;
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 using Xunit;
@@ -86,7 +84,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
-       
+
 
         [Fact]
         public async void ShouldThrowValidationExceptionOnCreateWhenCreatedByIsInvalidAndLogItAsync()

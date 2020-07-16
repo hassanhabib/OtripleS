@@ -5,7 +5,7 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Models.Students.Exceptions
+namespace OtripleS.Web.Api.Models.Courses.Exceptions
 {
     public class LockedCourseException : Exception
     {
