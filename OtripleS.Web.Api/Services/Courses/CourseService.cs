@@ -34,8 +34,6 @@ namespace OtripleS.Web.Api.Services.Courses
             ValidateStorageCourse(maybeCourse, course.Id);
             ValidateAgainstStorageCourseOnModify(inputCourse: course, storageCourse: maybeCourse);
 
-            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
-
             return await this.storageBroker.UpdateCourseAsync(course);
         });
 

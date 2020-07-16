@@ -22,48 +22,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             int randomNumber = GetRandomNumber();
             int randomDays = randomNumber;
             DateTimeOffset randomDate = GetRandomDateTime();
-            Course randomCourse = CreateRandomCourse(dateTime: randomDate);
+            DateTimeOffset randomInputDate = GetRandomDateTime();
+            Course randomCourse = CreateRandomCourse(randomInputDate);
             Course inputCourse = randomCourse;
-            Course beforeUpdateStorageCourse = randomCourse.DeepClone();
-            inputCourse.UpdatedDate = beforeUpdateStorageCourse.UpdatedDate.AddDays(days: randomDays);
             Course afterUpdateStorageCourse = inputCourse;
             Course expectedCourse = afterUpdateStorageCourse;
+            Course beforeUpdateStorageCourse = randomCourse.DeepClone();
+            inputCourse.UpdatedDate = randomDate;
             Guid courseId = inputCourse.Id;
 
-            // when
+            this.dateTimeBrokerMock.Setup(broker =>
+               broker.GetCurrentDateTime())
+                   .Returns(randomDate);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectCourseByIdAsync(courseId))
-                .ReturnsAsync(beforeUpdateStorageCourse);
-
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                .Returns(randomDate);
+                    .ReturnsAsync(beforeUpdateStorageCourse);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.UpdateCourseAsync(inputCourse))
-                .ReturnsAsync(afterUpdateStorageCourse);
+                    .ReturnsAsync(afterUpdateStorageCourse);
 
-            Course actualCourse = await this.courseService.ModifyCourseAsync(inputCourse);
+            // when
+            Course actualCourse =
+                await this.courseService.ModifyCourseAsync(inputCourse);
 
             // then
             actualCourse.Should().BeEquivalentTo(expectedCourse);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseByIdAsync(courseId),
-                Times.Once);
-
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
-                Times.Once);
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCourseByIdAsync(courseId),
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.UpdateCourseAsync(inputCourse),
-                Times.Once);
+                    Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
