@@ -16,6 +16,7 @@ namespace OtripleS.Web.Api.Services.Courses
             ValidateCourse(course);
             ValidateCourseId(course.Id);
             ValidateCourseStrings(course);
+            ValidateCourseIds(course);
         }
         private void ValidateCourseId(Guid courseId)
         {
@@ -40,6 +41,22 @@ namespace OtripleS.Web.Api.Services.Courses
                     throw new InvalidCourseInputException(
                         parameterName: nameof(Course.Description),
                         parameterValue: course.Description);
+            }
+        }
+
+        private void ValidateCourseIds(Course course)
+        {
+            switch (course)
+            {
+                case { } when IsInvalid(course.CreatedBy):
+                    throw new InvalidCourseInputException(
+                        parameterName: nameof(Course.CreatedBy),
+                        parameterValue: course.CreatedBy);
+
+                case { } when IsInvalid(course.UpdatedBy):
+                    throw new InvalidCourseInputException(
+                        parameterName: nameof(Course.UpdatedBy),
+                        parameterValue: course.UpdatedBy);
             }
         }
 
