@@ -124,6 +124,17 @@ namespace OtripleS.Web.Api.Services.Courses
             }
         }
 
+        private void ValidateAgainstStorageCourseOnModify(Course inputCourse, Course storageCourse)
+        {
+            switch (inputCourse)
+            {
+                case { } when inputCourse.CreatedDate != storageCourse.CreatedDate:
+                    throw new InvalidCourseInputException(
+                        parameterName: nameof(Course.CreatedDate),
+                        parameterValue: inputCourse.CreatedDate);
+            }
+        }
+
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(Guid input) => input == default;
     }
