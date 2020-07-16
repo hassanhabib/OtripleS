@@ -137,6 +137,11 @@ namespace OtripleS.Web.Api.Services.Courses
                     throw new InvalidCourseInputException(
                         parameterName: nameof(Course.CreatedBy),
                         parameterValue: inputCourse.CreatedBy);
+
+                case { } when inputCourse.UpdatedDate == storageCourse.UpdatedDate:
+                    throw new InvalidCourseInputException(
+                        parameterName: nameof(Course.UpdatedDate),
+                        parameterValue: inputCourse.UpdatedDate);
             }
         }
 
