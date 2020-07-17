@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System.Linq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -48,6 +49,24 @@ namespace OtripleS.Web.Api.Services.Courses
             ValidateStorageCourse(maybeCourse, courseId);
 
             return await this.storageBroker.DeleteCourseAsync(maybeCourse);
+        });
+
+        public IQueryable<Course> RetrieveAllCourses() =>
+        TryCatch(() =>
+        {
+            IQueryable<Course> storageCourses = this.storageBroker.SelectAllCourses();
+			ValidateStorageCourses(storageCourses);
+
+			return storageCourses;
+        });
+
+        public ValueTask<Course> RetrieveCourseById(Guid courseId) =>
+        TryCatch(async () =>
+        {
+            Course storageCourse = await this.storageBroker.SelectCourseByIdAsync(courseId);
+            ValidateStorageCourse(storageCourse, courseId);
+
+            return storageCourse;
         });
     }
 }

@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System.Linq;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Courses;
@@ -15,6 +16,7 @@ namespace OtripleS.Web.Api.Services.Courses
     public partial class CourseService
     {
         private delegate ValueTask<Course> ReturningCourseFunction();
+        private delegate IQueryable<Course> ReturningQueryableCourseFunction();
 
         private async ValueTask<Course> TryCatch(ReturningCourseFunction returningCourseFunction)
         {
@@ -33,6 +35,32 @@ namespace OtripleS.Web.Api.Services.Courses
             catch (NullCourseException nullCourseException)
             {
                 throw CreateAndLogValidationException(nullCourseException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedCourseException = new LockedCourseException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedCourseException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private IQueryable<Course> TryCatch(ReturningQueryableCourseFunction returningQueryableCourseFunction)
+        {
+            try
+            {
+                return returningQueryableCourseFunction();
             }
             catch (SqlException sqlException)
             {
