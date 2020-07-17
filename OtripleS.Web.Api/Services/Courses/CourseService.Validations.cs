@@ -22,6 +22,7 @@ namespace OtripleS.Web.Api.Services.Courses
             ValidateCreatedSignature(course);
             ValidateCreatedDateIsRecent(course);
         }
+
         private void ValidateCourseOnModify(Course course)
         {
             ValidateCourse(course);
@@ -45,7 +46,7 @@ namespace OtripleS.Web.Api.Services.Courses
         {
             if (courseId == Guid.Empty)
             {
-                throw new InvalidCourseException(
+                throw new InvalidCourseInputException(
                     parameterName: nameof(Course.Id),
                     parameterValue: courseId);
             }
@@ -56,12 +57,12 @@ namespace OtripleS.Web.Api.Services.Courses
             switch (course)
             {
                 case { } when IsInvalid(course.CreatedBy):
-                    throw new InvalidCourseException(
+                    throw new InvalidCourseInputException(
                         parameterName: nameof(Course.CreatedBy),
                         parameterValue: course.CreatedBy);
 
                 case { } when IsInvalid(course.UpdatedBy):
-                    throw new InvalidCourseException(
+                    throw new InvalidCourseInputException(
                         parameterName: nameof(Course.UpdatedBy),
                         parameterValue: course.UpdatedBy);
             }
@@ -72,12 +73,12 @@ namespace OtripleS.Web.Api.Services.Courses
             switch (course)
             {
                 case { } when IsInvalid(course.Name):
-                    throw new InvalidCourseException(
+                    throw new InvalidCourseInputException(
                         parameterName: nameof(Course.Name),
                         parameterValue: course.Name);
 
                 case { } when IsInvalid(course.Description):
-                    throw new InvalidCourseException(
+                    throw new InvalidCourseInputException(
                         parameterName: nameof(Course.Description),
                         parameterValue: course.Description);
             }
@@ -88,12 +89,12 @@ namespace OtripleS.Web.Api.Services.Courses
             switch (course)
             {
                 case { } when course.CreatedDate == default:
-                    throw new InvalidCourseException(
+                    throw new InvalidCourseInputException(
                         parameterName: nameof(Course.CreatedDate),
                         parameterValue: course.CreatedDate);
 
                 case { } when course.UpdatedDate == default:
-                    throw new InvalidCourseException(
+                    throw new InvalidCourseInputException(
                         parameterName: nameof(Course.UpdatedDate),
                         parameterValue: course.UpdatedDate);
             }
@@ -103,13 +104,13 @@ namespace OtripleS.Web.Api.Services.Courses
         {
             if (course.CreatedBy != course.UpdatedBy)
             {
-                throw new InvalidCourseException(
+                throw new InvalidCourseInputException(
                     parameterName: nameof(Course.UpdatedBy),
                     parameterValue: course.UpdatedBy);
             }
             else if (course.CreatedDate != course.UpdatedDate)
             {
-                throw new InvalidCourseException(
+                throw new InvalidCourseInputException(
                     parameterName: nameof(Course.UpdatedDate),
                     parameterValue: course.UpdatedDate);
             }
@@ -118,7 +119,7 @@ namespace OtripleS.Web.Api.Services.Courses
         {
             if (IsDateNotRecent(course.CreatedDate))
             {
-                throw new InvalidCourseException(
+                throw new InvalidCourseInputException(
                     parameterName: nameof(course.CreatedDate),
                     parameterValue: course.CreatedDate);
             }
@@ -146,11 +147,9 @@ namespace OtripleS.Web.Api.Services.Courses
 
         private void ValidateStorageCourse(Course storageCourse, Guid courseId)
         {
-            if (IsDateNotRecent(storageCourse.UpdatedDate))
+            if (storageCourse == null)
             {
-                throw new InvalidCourseException(
-                    parameterName: nameof(storageCourse.UpdatedDate),
-                    parameterValue: storageCourse.UpdatedDate);
+                throw new NotFoundCourseException(courseId);
             }
         }
 

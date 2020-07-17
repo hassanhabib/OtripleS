@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             Course inputCourse = randomCourse;
             inputCourse.Id = default;
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseInputException = new InvalidCourseInputException(
                 parameterName: nameof(Course.Id),
                 parameterValue: inputCourse.Id);
 
@@ -95,7 +95,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             Course inputCourse = randomCourse;
             inputCourse.CreatedBy = default;
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseInputException = new InvalidCourseInputException(
                 parameterName: nameof(Course.CreatedBy),
                 parameterValue: inputCourse.CreatedBy);
 
@@ -132,7 +132,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             Course inputCourse = randomCourse;
             inputCourse.CreatedDate = default;
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseInputException = new InvalidCourseInputException(
                 parameterName: nameof(Course.CreatedDate),
                 parameterValue: inputCourse.CreatedDate);
 
@@ -169,7 +169,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             Course inputCourse = randomCourse;
             inputCourse.UpdatedBy = default;
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseInputException = new InvalidCourseInputException(
                 parameterName: nameof(Course.UpdatedBy),
                 parameterValue: inputCourse.UpdatedBy);
 
@@ -206,7 +206,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             Course inputCourse = randomCourse;
             inputCourse.UpdatedDate = default;
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseInputException = new InvalidCourseInputException(
                 parameterName: nameof(Course.UpdatedDate),
                 parameterValue: inputCourse.UpdatedDate);
 
@@ -243,7 +243,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             Course inputCourse = randomCourse;
             inputCourse.UpdatedBy = Guid.NewGuid();
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseInputException = new InvalidCourseInputException(
                 parameterName: nameof(Course.UpdatedBy),
                 parameterValue: inputCourse.UpdatedBy);
 
@@ -281,7 +281,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             inputCourse.UpdatedBy = randomCourse.CreatedBy;
             inputCourse.UpdatedDate = GetRandomDateTime();
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseInputException = new InvalidCourseInputException(
                 parameterName: nameof(Course.UpdatedDate),
                 parameterValue: inputCourse.UpdatedDate);
 
@@ -322,7 +322,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             inputCourse.CreatedDate = dateTime.AddMinutes(minutes);
             inputCourse.UpdatedDate = inputCourse.CreatedDate;
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseInputException = new InvalidCourseInputException(
                 parameterName: nameof(Course.CreatedDate),
                 parameterValue: inputCourse.CreatedDate);
 

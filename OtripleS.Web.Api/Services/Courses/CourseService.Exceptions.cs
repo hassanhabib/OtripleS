@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.Courses
             {
                 throw CreateAndLogValidationException(nullCourseException);
             }
-            catch (InvalidCourseException invalidCourseInputException)
+            catch (InvalidCourseInputException invalidCourseInputException)
             {
                 throw CreateAndLogValidationException(invalidCourseInputException);
             }
@@ -41,6 +41,13 @@ namespace OtripleS.Web.Api.Services.Courses
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsCourseException =
+                    new AlreadyExistsCourseException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsCourseException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
