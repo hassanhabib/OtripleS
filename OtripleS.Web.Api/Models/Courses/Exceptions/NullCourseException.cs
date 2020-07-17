@@ -5,11 +5,16 @@
 
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 namespace OtripleS.Web.Api.Models.Courses.Exceptions
 {
-    public class CourseValidationException : Exception
+    public class NullCourseException : Exception
     {
-        public CourseValidationException(Exception innerException)
-            : base("Invalid input, contact support.", innerException) { }
+        public NullCourseException() :base("The course is null.")
+        {
+        }
     }
 }

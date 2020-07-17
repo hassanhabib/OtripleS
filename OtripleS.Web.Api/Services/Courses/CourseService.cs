@@ -3,12 +3,12 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Courses;
+using System;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.Courses
 {
@@ -26,6 +26,16 @@ namespace OtripleS.Web.Api.Services.Courses
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
         }
+        public ValueTask<Course> ModifyCourseAsync(Course course) =>
+        TryCatch(async () =>
+        {
+            ValidateCourseOnModify(course);
+            Course maybeCourse = await this.storageBroker.SelectCourseByIdAsync(course.Id);
+            ValidateStorageCourse(maybeCourse, course.Id);
+            ValidateAgainstStorageCourseOnModify(inputCourse: course, storageCourse: maybeCourse);
+
+            return await this.storageBroker.UpdateCourseAsync(course);
+        });
 
         public ValueTask<Course> DeleteCourseAsync(Guid courseId) =>
         TryCatch(async () =>
