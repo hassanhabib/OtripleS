@@ -12,6 +12,7 @@ using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Services.Courses;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
@@ -36,6 +37,24 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
                 loggingBroker: this.loggingBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
+        
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private IEnumerable<Course> CreateRandomCourses(DateTimeOffset dateTime) =>
+            CreateRandomCourseFiller(dateTime).Create(GetRandomNumber());
+
+        private Course CreateRandomCourse(DateTimeOffset dateTime) =>
+            CreateRandomCourseFiller(dateTime).Create();
+
+        private IQueryable<Course> CreateRandomCourses() =>
+            CreateRandomCourseFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
@@ -45,13 +64,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
         }
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
-
-        private static DateTimeOffset GetRandomDateTime() =>
-             new DateTimeRange(earliestDate: new DateTime()).GetValue();
-
-        private Course CreateRandomCourse(DateTimeOffset dateTime) =>
-            CreateRandomCourseFiller(dateTime).Create();
-
+        
         private Filler<Course> CreateRandomCourseFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Course>();
@@ -62,7 +75,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             return filler;
         }
 
-        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         public static IEnumerable<object[]> InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
@@ -73,10 +85,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
                 new object[] { randomMoreThanMinuteFromNow },
                 new object[] { randomMoreThanMinuteBeforeNow }
             };
-        }
-
-        private static SqlException GetSqlException() =>
-            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
-
+        }        
     }
 }

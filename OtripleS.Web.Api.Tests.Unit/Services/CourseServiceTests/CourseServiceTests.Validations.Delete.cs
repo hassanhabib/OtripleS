@@ -5,9 +5,12 @@
 
 using System;
 using System.Threading.Tasks;
+
 using Moq;
+
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.Courses.Exceptions;
+
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests

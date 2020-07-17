@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using EFxceptions.Models.Exceptions;
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.Courses.Exceptions;
 
@@ -24,21 +25,28 @@ namespace OtripleS.Web.Api.Services.Courses
             {
                 return await returningCourseFunction();
             }
+            catch (NullCourseException nullCourseException)
+            {
+                throw CreateAndLogValidationException(nullCourseException);
+            }
             catch (InvalidCourseInputException invalidCourseInputException)
             {
                 throw CreateAndLogValidationException(invalidCourseInputException);
             }
-            catch (NotFoundCourseException notFoundCourseException)
-            {
-                throw CreateAndLogValidationException(notFoundCourseException);
-            }
-            catch (NullCourseException nullCourseException)
+            catch (NotFoundCourseException nullCourseException)
             {
                 throw CreateAndLogValidationException(nullCourseException);
             }
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsCourseException =
+                    new AlreadyExistsCourseException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsCourseException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
@@ -66,6 +74,13 @@ namespace OtripleS.Web.Api.Services.Courses
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsCourseException =
+                    new AlreadyExistsCourseException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsCourseException);
+            }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
                 var lockedCourseException = new LockedCourseException(dbUpdateConcurrencyException);
@@ -82,20 +97,12 @@ namespace OtripleS.Web.Api.Services.Courses
             }
         }
 
-        private CourseValidationException CreateAndLogValidationException(Exception exception)
+        private CourseServiceException CreateAndLogServiceException(Exception exception)
         {
-            var courseValidationException = new CourseValidationException(exception);
-            this.loggingBroker.LogError(courseValidationException);
+            var courseServiceException = new CourseServiceException(exception);
+            this.loggingBroker.LogError(courseServiceException);
 
-            return courseValidationException;
-        }
-
-        private CourseDependencyException CreateAndLogCriticalDependencyException(Exception exception)
-        {
-            var courseDependencyException = new CourseDependencyException(exception);
-            this.loggingBroker.LogCritical(courseDependencyException);
-
-            return courseDependencyException;
+            return courseServiceException;
         }
 
         private CourseDependencyException CreateAndLogDependencyException(Exception exception)
@@ -106,12 +113,20 @@ namespace OtripleS.Web.Api.Services.Courses
             return courseDependencyException;
         }
 
-        private CourseServiceException CreateAndLogServiceException(Exception exception)
+        private CourseDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
-            var courseServiceException = new CourseServiceException(exception);
-            this.loggingBroker.LogError(courseServiceException);
+            var courseDependencyException = new CourseDependencyException(exception);
+            this.loggingBroker.LogCritical(courseDependencyException);
 
-            return courseServiceException;
+            return courseDependencyException;
+        }
+
+        private CourseValidationException CreateAndLogValidationException(Exception exception)
+        {
+            var courseValidationException = new CourseValidationException(exception);
+            this.loggingBroker.LogError(courseValidationException);
+
+            return courseValidationException;
         }
     }
 }

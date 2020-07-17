@@ -19,15 +19,23 @@ namespace OtripleS.Web.Api.Services.Courses
 		private readonly ILoggingBroker loggingBroker;
 		private readonly IDateTimeBroker dateTimeBroker;
 
-		public CourseService(IStorageBroker storageBroker,
-			ILoggingBroker loggingBroker,
-			IDateTimeBroker dateTimeBroker)
-		{
-			this.storageBroker = storageBroker;
-			this.loggingBroker = loggingBroker;
-			this.dateTimeBroker = dateTimeBroker;
-		}
-      
+        public CourseService(IStorageBroker storageBroker,
+            ILoggingBroker loggingBroker,
+            IDateTimeBroker dateTimeBroker)
+        {
+            this.storageBroker = storageBroker;
+            this.loggingBroker = loggingBroker;
+            this.dateTimeBroker = dateTimeBroker;
+        }
+
+        public ValueTask<Course> CreateCourseAsync(Course course) =>
+        TryCatch(async () =>
+        {
+            ValidateCourseOnCreate(course);
+
+            return await this.storageBroker.InsertCourseAsync(course);
+        });
+
         public ValueTask<Course> ModifyCourseAsync(Course course) =>
         TryCatch(async () =>
         {
