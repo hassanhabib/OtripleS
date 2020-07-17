@@ -13,41 +13,52 @@ using OtripleS.Web.Api.Models.Courses;
 
 namespace OtripleS.Web.Api.Services.Courses
 {
-	public partial class CourseService : ICourseService
-	{
-		private readonly IStorageBroker storageBroker;
-		private readonly ILoggingBroker loggingBroker;
-		private readonly IDateTimeBroker dateTimeBroker;
+    public partial class CourseService : ICourseService
+    {
+        private readonly IStorageBroker storageBroker;
+        private readonly ILoggingBroker loggingBroker;
+        private readonly IDateTimeBroker dateTimeBroker;
 
-		public CourseService(IStorageBroker storageBroker,
-			ILoggingBroker loggingBroker,
-			IDateTimeBroker dateTimeBroker)
-		{
-			this.storageBroker = storageBroker;
-			this.loggingBroker = loggingBroker;
-			this.dateTimeBroker = dateTimeBroker;
-		}
+        public CourseService(IStorageBroker storageBroker,
+            ILoggingBroker loggingBroker,
+            IDateTimeBroker dateTimeBroker)
+        {
+            this.storageBroker = storageBroker;
+            this.loggingBroker = loggingBroker;
+            this.dateTimeBroker = dateTimeBroker;
+        }
+        
+        public ValueTask<Course> ModifyCourseAsync(Course course) =>
+        TryCatch(async () =>
+        {
+            ValidateCourseOnModify(course);
+            Course maybeCourse = await this.storageBroker.SelectCourseByIdAsync(course.Id);
+            ValidateStorageCourse(maybeCourse, course.Id);
+            ValidateAgainstStorageCourseOnModify(inputCourse: course, storageCourse: maybeCourse);
 
-		public ValueTask<Course> DeleteCourseAsync(Guid courseId) =>
-		TryCatch(async () =>
-		{
-			ValidateCourseId(courseId);
+            return await this.storageBroker.UpdateCourseAsync(course);
+        });
 
-			Course maybeCourse =
-			   await this.storageBroker.SelectCourseByIdAsync(courseId);
+        public ValueTask<Course> DeleteCourseAsync(Guid courseId) =>
+        TryCatch(async () =>
+        {
+            ValidateCourseId(courseId);
 
-			ValidateStorageCourse(maybeCourse, courseId);
+            Course maybeCourse =
+               await this.storageBroker.SelectCourseByIdAsync(courseId);
 
-			return await this.storageBroker.DeleteCourseAsync(maybeCourse);
-		});
+            ValidateStorageCourse(maybeCourse, courseId);
 
-		public IQueryable<Course> RetrieveAllCourses() =>
-		TryCatch(() =>
-		{
-			IQueryable<Course> storageCourses = this.storageBroker.SelectAllCourses();
-			ValidateStorageCourses(storageCourses);
+            return await this.storageBroker.DeleteCourseAsync(maybeCourse);
+        });
+        
+        public IQueryable<Course> RetrieveAllCourses() =>
+		    TryCatch(() =>
+        {
+            IQueryable<Course> storageCourses = this.storageBroker.SelectAllCourses();
+            ValidateStorageCourses(storageCourses);
 
-			return storageCourses;
-		});
-	}
+            return storageCourses;
+        });
+    }
 }
