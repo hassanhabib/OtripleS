@@ -1,4 +1,4 @@
-﻿// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
@@ -27,14 +27,14 @@ namespace OtripleS.Web.Api.Services.Courses
 			this.loggingBroker = loggingBroker;
 			this.dateTimeBroker = dateTimeBroker;
 		}
-
-		public ValueTask<Course> ModifyCourseAsync(Course course) =>
-		TryCatch(async () =>
-		{
-			ValidateCourseOnModify(course);
-			Course maybeCourse = await this.storageBroker.SelectCourseByIdAsync(course.Id);
-			ValidateStorageCourse(maybeCourse, course.Id);
-			ValidateAgainstStorageCourseOnModify(inputCourse: course, storageCourse: maybeCourse);
+      
+        public ValueTask<Course> ModifyCourseAsync(Course course) =>
+        TryCatch(async () =>
+        {
+            ValidateCourseOnModify(course);
+            Course maybeCourse = await this.storageBroker.SelectCourseByIdAsync(course.Id);
+            ValidateStorageCourse(maybeCourse, course.Id);
+            ValidateAgainstStorageCourseOnModify(inputCourse: course, storageCourse: maybeCourse);
 
 			return await this.storageBroker.UpdateCourseAsync(course);
 		});
@@ -59,6 +59,15 @@ namespace OtripleS.Web.Api.Services.Courses
 			ValidateStorageCourses(storageCourses);
 
 			return storageCourses;
-		});
-	}
+        });
+
+        public ValueTask<Course> RetrieveCourseById(Guid courseId) =>
+        TryCatch(async () =>
+        {
+            Course storageCourse = await this.storageBroker.SelectCourseByIdAsync(courseId);
+            ValidateStorageCourse(storageCourse, courseId);
+
+            return storageCourse;
+        });
+    }
 }
