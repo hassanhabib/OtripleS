@@ -4,16 +4,13 @@
 // ---------------------------------------------------------------
 
 
-using FluentAssertions;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.Courses.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using Force.DeepCloner;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
 {
@@ -26,7 +23,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             Course invalidCourse = null;
 
             var nullCourseException = new NullCourseException();
-            var expectedCourseValidationException = 
+            var expectedCourseValidationException =
                 new CourseValidationException(nullCourseException);
 
             //when
@@ -231,7 +228,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Course randomCourse  = CreateRandomCourse(dateTime);
+            Course randomCourse = CreateRandomCourse(dateTime);
             Course inputCourse = randomCourse;
             inputCourse.CreatedDate = default;
 
