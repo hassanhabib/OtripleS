@@ -3,9 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq.Expressions;
-using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
@@ -13,6 +10,10 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Services.Courses;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
@@ -43,6 +44,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
 
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+
         private static DateTimeOffset GetRandomDateTime() =>
              new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
@@ -57,6 +60,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
                 .OnType<DateTimeOffset>().Use(dateTime);
 
             return filler;
+        }
+
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
         }
 
         private static SqlException GetSqlException() =>

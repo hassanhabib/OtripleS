@@ -3,13 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.Courses.Exceptions;
+using System;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.Courses
 {
@@ -31,6 +31,10 @@ namespace OtripleS.Web.Api.Services.Courses
             catch (NotFoundCourseException notFoundCourseException)
             {
                 throw CreateAndLogValidationException(notFoundCourseException);
+            }
+            catch (NullCourseException nullCourseException)
+            {
+                throw CreateAndLogValidationException(nullCourseException);
             }
             catch (SqlException sqlException)
             {
