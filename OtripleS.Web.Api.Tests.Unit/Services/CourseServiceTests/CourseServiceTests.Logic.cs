@@ -14,7 +14,7 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
 {
-	public partial class CourseServiceTests
+    public partial class CourseServiceTests
     {
         [Fact]
         public async Task ShouldCreateCourseAsync()
@@ -147,7 +147,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-        [Fact] async Task ShouldRetrieveCourseById()
+        [Fact]
+        async Task ShouldRetrieveCourseById()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();

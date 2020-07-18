@@ -1,13 +1,9 @@
-﻿using EFxceptions.Models.Exceptions;
-
+﻿using System;
+using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Moq;
-
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.Courses.Exceptions;
-
-using System;
-using System.Threading.Tasks;
-
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests

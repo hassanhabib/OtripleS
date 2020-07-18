@@ -13,14 +13,14 @@ using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
-	public class CoursesController : RESTFulController
-	{
-		private readonly ICourseService courseService;
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CoursesController : RESTFulController
+    {
+        private readonly ICourseService courseService;
 
-		public CoursesController(ICourseService courseService) =>
-			this.courseService = courseService;
+        public CoursesController(ICourseService courseService) =>
+            this.courseService = courseService;
 
         [HttpDelete("{courseId}")]
         public async ValueTask<ActionResult<Course>> DeleteCourseAsync(Guid courseId)

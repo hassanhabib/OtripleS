@@ -4,12 +4,12 @@
 // ---------------------------------------------------------------
 
 
+using System;
+using System.Threading.Tasks;
 using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.Courses.Exceptions;
-using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests

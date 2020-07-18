@@ -3,6 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
@@ -10,11 +15,6 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Services.Courses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
                 loggingBroker: this.loggingBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
-        
+
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
@@ -64,7 +64,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
         }
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
-        
+
         private Filler<Course> CreateRandomCourseFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Course>();
@@ -85,6 +85,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
                 new object[] { randomMoreThanMinuteFromNow },
                 new object[] { randomMoreThanMinuteBeforeNow }
             };
-        }        
+        }
     }
 }

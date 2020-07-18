@@ -12,7 +12,7 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
 {
-	public partial class CourseServiceTests
+    public partial class CourseServiceTests
     {
         [Fact]
         public void ShouldThrowDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogIt()
@@ -114,6 +114,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-        }  
+        }
     }
 }
