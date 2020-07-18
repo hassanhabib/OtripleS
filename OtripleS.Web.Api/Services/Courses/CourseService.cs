@@ -60,7 +60,14 @@ namespace OtripleS.Web.Api.Services.Courses
 			return await this.storageBroker.DeleteCourseAsync(maybeCourse);
 		});
 
-        public IQueryable<Course> RetrieveAllCourses() => throw new NotImplementedException();
+		public IQueryable<Course> RetrieveAllCourses() =>
+		TryCatch(() =>
+		{
+			IQueryable<Course> storageCourses = this.storageBroker.SelectAllCourses();
+			ValidateStorageCourses(storageCourses);
+
+			return storageCourses;
+        });
 
         public ValueTask<Course> RetrieveCourseById(Guid courseId) =>
         TryCatch(async () =>
