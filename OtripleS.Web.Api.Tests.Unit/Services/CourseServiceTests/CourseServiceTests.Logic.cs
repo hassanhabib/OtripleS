@@ -3,18 +3,18 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
-
 using OtripleS.Web.Api.Models.Courses;
-using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
 {
-    public partial class CourseServiceTests
+	public partial class CourseServiceTests
     {
         [Fact]
         public async Task ShouldCreateCourseAsync()
@@ -175,6 +175,38 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldRetrieveAllCourses()
+        {
+            // given
+            IQueryable<Course> randomCourses = CreateRandomCourses();
+            IQueryable<Course> storageCourses = randomCourses;
+            IQueryable<Course> expectedCourses = storageCourses;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllCourses())
+                    .Returns(storageCourses);
+
+            // when
+            IQueryable<Course> actualCourses =
+                this.courseService.RetrieveAllCourses();
+
+            // then
+            actualCourses.Should().BeEquivalentTo(expectedCourses);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllCourses(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
