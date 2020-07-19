@@ -14,7 +14,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
 {
     public partial class CoursesApiTests
     {
-        
         [Fact]
         public async Task ShouldPutCourseAsync()
         {
@@ -33,8 +32,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
             actualCourse.Should().BeEquivalentTo(modifiedCourse);
 
             await this.otripleSApiBroker.DeleteCourseByIdAsync(actualCourse.Id);
-        }
-
-        
+        }    
     }
 }
