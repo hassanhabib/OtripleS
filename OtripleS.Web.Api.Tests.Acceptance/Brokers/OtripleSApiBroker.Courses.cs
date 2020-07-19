@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
         public async ValueTask<Course> PutCourseAsync(Course course) =>
             await this.apiFactoryClient.PutContentAsync(CoursesRelativeUrl, course);
 
-        public async ValueTask<List<Course>> GetAllCoursesAsync() =>
+        public async ValueTask<List<Course>> GetAllCourses() =>
             await this.apiFactoryClient.GetContentAsync<List<Course>>($"{CoursesRelativeUrl}/");
 
     }
