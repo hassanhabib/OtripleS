@@ -66,8 +66,5 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
 
             return filler;
         }
-
-     
-
     }
 }
