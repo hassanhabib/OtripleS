@@ -26,6 +26,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
+    projects: '**/*Unit*.csproj' 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
