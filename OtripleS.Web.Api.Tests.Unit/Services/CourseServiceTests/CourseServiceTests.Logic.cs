@@ -155,7 +155,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
             Course randomCourse = CreateRandomCourse(dateTime);
             Guid inputCourseId = randomCourse.Id;
             Course inputCourse = randomCourse;
-            Course storageCourse = randomCourse;
             Course expectedCourse = randomCourse;
 
             this.storageBrokerMock.Setup(broker =>
