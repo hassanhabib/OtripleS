@@ -338,3 +338,13 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/.vscode/launch.json
+/.vscode/tasks.json
+/OtripleS.Web.Api/Migrations/20200719090247_AddCourses.cs
+/OtripleS.Web.Api/Migrations/20200719090247_AddCourses.Designer.cs
+/OtripleS.Web.Api/Brokers/Storage/StorageBroker.Courses.cs
+/OtripleS.Web.Api/Brokers/Storage/IStorageBroker.Courses.cs
+/OtripleS.Web.Api/Models/Courses/Exceptions
+/OtripleS.Web.Api/Models/Courses
+/OtripleS.Web.Api/Services/Courses
+/OtripleS.Web.Api/Controllers
