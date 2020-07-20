@@ -21,8 +21,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
         {
             //given
             Course invalidCourse = null;
-
             var nullCourseException = new NullCourseException();
+
             var expectedCourseValidationException =
                 new CourseValidationException(nullCourseException);
 
