@@ -3,7 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -62,7 +61,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
             IEnumerable<Teacher> inputTeachers = randomTeachers;
             IEnumerable<Teacher> expectedTeachers = inputTeachers;
 
-            foreach(Teacher inputTeacher in inputTeachers)
+            foreach (Teacher inputTeacher in inputTeachers)
             {
                 await this.otripleSApiBroker.PostTeacherAsync(inputTeacher);
             }
@@ -73,7 +72,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
 
             // then
 
-            foreach(Teacher expectedTeacher in expectedTeachers)
+            foreach (Teacher expectedTeacher in expectedTeachers)
             {
                 Teacher actualTeacher =
                     actualTeachers.Single(teacher => teacher.Id == expectedTeacher.Id);
