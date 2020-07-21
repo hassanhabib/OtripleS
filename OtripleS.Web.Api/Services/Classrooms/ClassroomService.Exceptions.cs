@@ -50,6 +50,12 @@ namespace OtripleS.Web.Api.Services.Classrooms
 
                 throw CreateAndLogValidationException(alreadyExistsClassroomException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedClassroomException = new LockedClassroomException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedClassroomException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
