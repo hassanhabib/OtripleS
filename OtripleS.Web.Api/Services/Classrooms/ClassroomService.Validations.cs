@@ -32,6 +32,11 @@ namespace OtripleS.Web.Api.Services.Classrooms
                     throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.CreatedDate),
                     parameterValue: classroom.CreatedDate);
+
+                case { } when classroom.UpdatedBy == default:
+                    throw new InvalidClassroomException(
+                    parameterName: nameof(Classroom.UpdatedBy),
+                    parameterValue: classroom.UpdatedBy);
             }
         }
 
