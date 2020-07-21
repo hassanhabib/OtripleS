@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 
@@ -27,6 +28,13 @@ namespace OtripleS.Web.Api.Services.Classrooms
             catch (InvalidClassroomException invalidClassroomException)
             {
                 throw CreateAndLogValidationException(invalidClassroomException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsClassroomException =
+                    new AlreadyExistsClassroomException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsClassroomException);
             }
         }
 
