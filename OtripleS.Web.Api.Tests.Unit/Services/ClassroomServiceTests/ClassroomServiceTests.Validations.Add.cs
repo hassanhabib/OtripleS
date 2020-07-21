@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Moq;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
@@ -390,6 +391,57 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenClassroomAlreadyExistsAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Classroom randomClassroom = CreateRandomClassroom(dateTime);
+            Classroom alreadyExistsClassroom = randomClassroom;
+            alreadyExistsClassroom.UpdatedBy = alreadyExistsClassroom.CreatedBy;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsClassroomException =
+                new AlreadyExistsClassroomException(duplicateKeyException);
+
+            var expectedClassroomValidationException =
+                new ClassroomValidationException(alreadyExistsClassroomException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertClassroomAsync(alreadyExistsClassroom))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<Classroom> createClassroomTask =
+                this.classroomService.CreateClassroomAsync(alreadyExistsClassroom);
+
+            // then
+            await Assert.ThrowsAsync<ClassroomValidationException>(() =>
+                createClassroomTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertClassroomAsync(alreadyExistsClassroom),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
