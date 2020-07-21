@@ -53,5 +53,44 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldDeleteClassroomAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Classroom randomClassroom = CreateRandomClassroom(dates: dateTime);
+            Guid inputClassroomId = randomClassroom.Id;
+            Classroom inputClassroom = randomClassroom;
+            Classroom storageClassroom = randomClassroom;
+            Classroom expectedClassroom = randomClassroom;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectClassroomByIdAsync(inputClassroomId))
+                    .ReturnsAsync(inputClassroom);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteClassroomAsync(inputClassroom))
+                    .ReturnsAsync(storageClassroom);
+
+            // when
+            Classroom actualClassroom =
+                await this.classroomService.DeleteClassroomAsync(inputClassroomId);
+
+            // then
+            actualClassroom.Should().BeEquivalentTo(expectedClassroom);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectClassroomByIdAsync(inputClassroomId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteClassroomAsync(inputClassroom),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
