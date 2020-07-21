@@ -16,6 +16,18 @@ namespace OtripleS.Web.Api.Services.Classrooms
             ValidateClassroomIsNull(classroom);
             ValidateClassroomIdIsNull(classroom);
             ValidateClassroomFields(classroom);
+            ValidateClassroomAuditFields(classroom);
+        }
+
+        private void ValidateClassroomAuditFields(Classroom classroom)
+        {
+            switch (classroom)
+            {
+                case { } when classroom.CreatedBy == default:
+                    throw new InvalidClassroomException(
+                    parameterName: nameof(Classroom.CreatedBy),
+                    parameterValue: classroom.CreatedBy);
+            }
         }
 
         private void ValidateClassroomFields(Classroom classroom)
@@ -41,7 +53,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
             if (classroom.Id == default)
             {
                 throw new InvalidClassroomException(
-                    parameterName: nameof(Classroom.Id), 
+                    parameterName: nameof(Classroom.Id),
                     parameterValue: classroom.Id);
             }
         }
