@@ -6,6 +6,7 @@
 using System;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
+using OtripleS.Web.Api.Models.Courses.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Classrooms
 {
@@ -104,6 +105,24 @@ namespace OtripleS.Web.Api.Services.Classrooms
             TimeSpan difference = now.Subtract(dateTime);
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
+
+        private void ValidateClassroomId(Guid classroomId)
+        {
+            if (classroomId == Guid.Empty)
+            {
+                throw new InvalidClassroomInputException(
+                    parameterName: nameof(Classroom.Id),
+                    parameterValue: classroomId);
+            }
+        }
+
+        private void ValidateStorageClassroom(Classroom storageClassroom, Guid classroomId)
+        {
+            if (storageClassroom == null)
+            {
+                throw new NotFoundCourseException(classroomId);
+            }
         }
     }
 }
