@@ -82,5 +82,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task ShouldThrowValidationExceptionOnCreateWhenClassroomNameIsInvalidAndLogItAsync(
+            string invalidClassroomName)
+        {
+            // given
+            Classroom randomClassroom = CreateRandomClassroom();
+            Classroom invalidClassroom = randomClassroom;
+            invalidClassroom.Name = invalidClassroomName;
+
+            var invalidClassroomException = new InvalidClassroomException(
+               parameterName: nameof(Classroom.Name),
+               parameterValue: invalidClassroom.Name);
+
+            var expectedClassroomValidationException =
+                new ClassroomValidationException(invalidClassroomException);
+
+            // when
+            ValueTask<Classroom> createClassroomTask =
+                this.classroomService.CreateClassroomAsync(invalidClassroom);
+
+            // then
+            await Assert.ThrowsAsync<ClassroomValidationException>(() =>
+                createClassroomTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+
+        }
     }
 }

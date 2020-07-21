@@ -55,5 +55,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
+
+        private Classroom CreateRandomClassroom() =>
+            CreateClassroomFiller(dates: DateTimeOffset.UtcNow).Create();
     }
 }
