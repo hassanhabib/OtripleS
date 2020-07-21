@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 
@@ -14,6 +15,17 @@ namespace OtripleS.Web.Api.Services.Classrooms
         {
             ValidateClassroomIsNull(classroom);
             ValidateClassroomIdIsNull(classroom);
+            ValidateClassroomFields(classroom);
+        }
+
+        private void ValidateClassroomFields(Classroom classroom)
+        {
+            if (IsEmpty(classroom.Name))
+            {
+                throw new InvalidClassroomException(
+                    parameterName: nameof(Classroom.Name),
+                    parameterValue: classroom.Name);
+            }
         }
 
         private void ValidateClassroomIsNull(Classroom classroom)
@@ -34,5 +46,6 @@ namespace OtripleS.Web.Api.Services.Classrooms
             }
         }
 
+        private static bool IsEmpty(string input) => String.IsNullOrWhiteSpace(input);
     }
 }
