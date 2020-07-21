@@ -3,9 +3,61 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Threading.Tasks;
+using Moq;
+using OtripleS.Web.Api.Models.Classrooms;
+using OtripleS.Web.Api.Models.Classrooms.Exceptions;
+using Xunit;
+
 namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
 {
     public partial class ClassroomServiceTests
     {
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnCreateWhenSqlExceptionOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Classroom randomClassroom = CreateRandomClassroom(dateTime);
+            Classroom inputClassroom = randomClassroom;
+            inputClassroom.UpdatedBy = inputClassroom.CreatedBy;
+            var sqlException = GetSqlException();
+
+            var expectedClassroomDependencyException =
+                new ClassroomDependencyException(sqlException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertClassroomAsync(inputClassroom))
+                    .ThrowsAsync(sqlException);
+
+            // when
+            ValueTask<Classroom> createClassroomByIdTask =
+                this.classroomService.CreateClassroomAsync(inputClassroom);
+
+            // then
+            await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
+                createClassroomByIdTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(expectedClassroomDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertClassroomAsync(inputClassroom),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
