@@ -35,6 +35,10 @@ namespace OtripleS.Web.Api.Services.Classrooms
             {
                 throw CreateAndLogValidationException(invalidClassroomException);
             }
+            catch (NotFoundClassroomException notFoundClassroomException)
+            {
+                throw CreateAndLogValidationException(notFoundClassroomException);
+            }
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
