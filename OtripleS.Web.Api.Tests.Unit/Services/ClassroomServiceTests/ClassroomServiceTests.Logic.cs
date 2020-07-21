@@ -26,10 +26,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Classroom storageClassroom = randomClassroom;
             Classroom expectedClassroom = storageClassroom;
 
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertClassroomAsync(inputClassroom))
                     .ReturnsAsync(storageClassroom);
@@ -40,10 +36,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
 
             // then
             actualClassroom.Should().BeEquivalentTo(expectedClassroom);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertClassroomAsync(inputClassroom),

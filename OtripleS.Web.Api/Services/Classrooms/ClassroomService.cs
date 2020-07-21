@@ -26,9 +26,9 @@ namespace OtripleS.Web.Api.Services.Classrooms
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<Classroom> CreateClassroomAsync(Classroom classroom)
+        public async ValueTask<Classroom> CreateClassroomAsync(Classroom classroom)
         {
-            throw new System.NotImplementedException();
+            return await this.storageBroker.InsertClassroomAsync(classroom);
         }
     }
 }
