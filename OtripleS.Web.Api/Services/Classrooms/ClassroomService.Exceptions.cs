@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 
@@ -29,6 +30,10 @@ namespace OtripleS.Web.Api.Services.Classrooms
             {
                 throw CreateAndLogValidationException(invalidClassroomException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsClassroomException =
@@ -44,6 +49,14 @@ namespace OtripleS.Web.Api.Services.Classrooms
             this.loggingBroker.LogError(classroomValidationException);
 
             return classroomValidationException;
+        }
+
+        private ClassroomDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var classroomDependencyException = new ClassroomDependencyException(exception);
+            this.loggingBroker.LogCritical(classroomDependencyException);
+
+            return classroomDependencyException;
         }
     }
 }
