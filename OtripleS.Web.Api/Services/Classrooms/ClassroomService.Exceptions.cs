@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 
@@ -41,6 +42,10 @@ namespace OtripleS.Web.Api.Services.Classrooms
 
                 throw CreateAndLogValidationException(alreadyExistsClassroomException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
         private ClassroomValidationException CreateAndLogValidationException(Exception exception)
@@ -55,6 +60,13 @@ namespace OtripleS.Web.Api.Services.Classrooms
         {
             var classroomDependencyException = new ClassroomDependencyException(exception);
             this.loggingBroker.LogCritical(classroomDependencyException);
+
+            return classroomDependencyException;
+        }
+        private ClassroomDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var classroomDependencyException = new ClassroomDependencyException(exception);
+            this.loggingBroker.LogError(classroomDependencyException);
 
             return classroomDependencyException;
         }
