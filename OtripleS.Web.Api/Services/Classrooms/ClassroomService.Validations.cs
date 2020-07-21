@@ -28,7 +28,8 @@ namespace OtripleS.Web.Api.Services.Classrooms
                     parameterName: nameof(Classroom.CreatedBy),
                     parameterValue: classroom.CreatedBy);
 
-                case { } when classroom.CreatedDate == default:
+                case { } when classroom.CreatedDate == default ||
+                                IsDateNotRecent(classroom.CreatedDate):
                     throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.CreatedDate),
                     parameterValue: classroom.CreatedDate);
@@ -76,5 +77,14 @@ namespace OtripleS.Web.Api.Services.Classrooms
         }
 
         private static bool IsEmpty(string input) => String.IsNullOrWhiteSpace(input);
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
     }
 }
