@@ -50,5 +50,48 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidatonExceptionOnDeleteWhenStorageClassroomIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Classroom randomClassroom = CreateRandomClassroom(dates: randomDateTime);
+            Guid inputClassroomId = randomClassroom.Id;
+            Classroom inputClassroom = randomClassroom;
+            Classroom nullStorageClassroom = null;
+
+            var notFoundClassroomException = new NotFoundClassroomException(inputClassroomId);
+
+            var expectedClassroomValidationException =
+                new ClassroomValidationException(notFoundClassroomException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectClassroomByIdAsync(inputClassroomId))
+                    .ReturnsAsync(nullStorageClassroom);
+
+            // when
+            ValueTask<Classroom> actualClassroomTask =
+                this.classroomService.DeleteClassroomAsync(inputClassroomId);
+
+            // then
+            await Assert.ThrowsAsync<ClassroomValidationException>(() => actualClassroomTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectClassroomByIdAsync(inputClassroomId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteClassroomAsync(It.IsAny<Classroom>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }

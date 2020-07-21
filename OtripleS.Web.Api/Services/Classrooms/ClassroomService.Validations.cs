@@ -6,7 +6,6 @@
 using System;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
-using OtripleS.Web.Api.Models.Courses.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Classrooms
 {
@@ -121,7 +120,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
         {
             if (storageClassroom == null)
             {
-                throw new NotFoundCourseException(classroomId);
+                throw new NotFoundClassroomException(classroomId);
             }
         }
     }
