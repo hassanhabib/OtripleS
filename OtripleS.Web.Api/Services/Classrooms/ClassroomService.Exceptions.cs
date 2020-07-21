@@ -50,10 +50,6 @@ namespace OtripleS.Web.Api.Services.Classrooms
 
                 throw CreateAndLogValidationException(alreadyExistsClassroomException);
             }
-            catch (DbUpdateException dbUpdateException)
-            {
-                throw CreateAndLogDependencyException(dbUpdateException);
-            }
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);

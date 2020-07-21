@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
@@ -40,6 +41,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedClassroomDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectClassroomByIdAsync(inputClassroomId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomClassroomId = Guid.NewGuid();
+            Guid inputClassroomId = randomClassroomId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedClassroomDependencyException =
+                new ClassroomDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectClassroomByIdAsync(inputClassroomId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<Classroom> deleteClassroomTask =
+                this.classroomService.DeleteClassroomAsync(inputClassroomId);
+
+            // then
+            await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
+                deleteClassroomTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedClassroomDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
