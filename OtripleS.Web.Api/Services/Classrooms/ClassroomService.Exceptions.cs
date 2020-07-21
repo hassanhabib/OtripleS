@@ -24,6 +24,10 @@ namespace OtripleS.Web.Api.Services.Classrooms
             {
                 throw CreateAndLogValidationException(nullClassroomException);
             }
+            catch (InvalidClassroomException invalidClassroomException)
+            {
+                throw CreateAndLogValidationException(invalidClassroomException);
+            }
         }
 
         private ClassroomValidationException CreateAndLogValidationException(Exception exception)

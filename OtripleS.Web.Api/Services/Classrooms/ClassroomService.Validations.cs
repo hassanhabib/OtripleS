@@ -12,10 +12,27 @@ namespace OtripleS.Web.Api.Services.Classrooms
     {
         private void ValidateClassroom(Classroom classroom)
         {
+            ValidateClassroomIsNull(classroom);
+            ValidateClassroomIdIsNull(classroom);
+        }
+
+        private void ValidateClassroomIsNull(Classroom classroom)
+        {
             if (classroom is null)
             {
                 throw new NullClassroomException();
-            }    
+            }
         }
+
+        private void ValidateClassroomIdIsNull(Classroom classroom)
+        {
+            if (classroom.Id == default)
+            {
+                throw new InvalidClassroomException(
+                    parameterName: nameof(Classroom.Id), 
+                    parameterValue: classroom.Id);
+            }
+        }
+
     }
 }
