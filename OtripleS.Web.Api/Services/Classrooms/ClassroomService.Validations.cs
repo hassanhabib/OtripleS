@@ -16,10 +16,10 @@ namespace OtripleS.Web.Api.Services.Classrooms
             ValidateClassroomIsNull(classroom);
             ValidateClassroomIdIsNull(classroom);
             ValidateClassroomFields(classroom);
-            ValidateClassroomAuditFields(classroom);
+            ValidateAuditFieldsOnCreate(classroom);
         }
 
-        private void ValidateClassroomAuditFields(Classroom classroom)
+        private void ValidateAuditFieldsOnCreate(Classroom classroom)
         {
             switch (classroom)
             {
@@ -34,12 +34,13 @@ namespace OtripleS.Web.Api.Services.Classrooms
                     parameterValue: classroom.CreatedDate);
 
                 case { } when classroom.UpdatedBy == default ||
-                              classroom.UpdatedBy != classroom.CreatedBy:
+                                classroom.UpdatedBy != classroom.CreatedBy:
                     throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.UpdatedBy),
                     parameterValue: classroom.UpdatedBy);
 
-                case { } when classroom.UpdatedDate == default:
+                case { } when classroom.UpdatedDate == default ||
+                                classroom.UpdatedDate != classroom.CreatedDate:
                     throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.UpdatedDate),
                     parameterValue: classroom.UpdatedDate);
