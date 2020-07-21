@@ -16,10 +16,32 @@ namespace OtripleS.Web.Api.Services.Classrooms
             ValidateClassroomIsNull(classroom);
             ValidateClassroomIdIsNull(classroom);
             ValidateClassroomFields(classroom);
-            ValidateAuditFieldsOnCreate(classroom);
+            ValidateInvalidAuditFieldsOnCreate(classroom);
+            ValidateAuditFieldsDataOnCreate(classroom);
         }
 
-        private void ValidateAuditFieldsOnCreate(Classroom classroom)
+        private void ValidateAuditFieldsDataOnCreate(Classroom classroom)
+        {
+            switch (classroom)
+            {
+                case { } when classroom.UpdatedBy != classroom.CreatedBy:
+                    throw new InvalidClassroomException(
+                    parameterName: nameof(Classroom.UpdatedBy),
+                    parameterValue: classroom.UpdatedBy);
+
+                case { } when classroom.UpdatedDate != classroom.CreatedDate:
+                    throw new InvalidClassroomException(
+                    parameterName: nameof(Classroom.UpdatedDate),
+                    parameterValue: classroom.UpdatedDate);
+
+                case { } when IsDateNotRecent(classroom.CreatedDate):
+                    throw new InvalidClassroomException(
+                    parameterName: nameof(Classroom.CreatedDate),
+                    parameterValue: classroom.CreatedDate);
+            }
+        }
+
+        private void ValidateInvalidAuditFieldsOnCreate(Classroom classroom)
         {
             switch (classroom)
             {
@@ -28,20 +50,17 @@ namespace OtripleS.Web.Api.Services.Classrooms
                     parameterName: nameof(Classroom.CreatedBy),
                     parameterValue: classroom.CreatedBy);
 
-                case { } when classroom.CreatedDate == default ||
-                                IsDateNotRecent(classroom.CreatedDate):
+                case { } when classroom.CreatedDate == default:
                     throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.CreatedDate),
                     parameterValue: classroom.CreatedDate);
 
-                case { } when classroom.UpdatedBy == default ||
-                                classroom.UpdatedBy != classroom.CreatedBy:
+                case { } when classroom.UpdatedBy == default:
                     throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.UpdatedBy),
                     parameterValue: classroom.UpdatedBy);
 
-                case { } when classroom.UpdatedDate == default ||
-                                classroom.UpdatedDate != classroom.CreatedDate:
+                case { } when classroom.UpdatedDate == default:
                     throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.UpdatedDate),
                     parameterValue: classroom.UpdatedDate);

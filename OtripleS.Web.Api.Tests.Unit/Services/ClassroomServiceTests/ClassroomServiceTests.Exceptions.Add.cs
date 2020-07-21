@@ -37,12 +37,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
                     .ThrowsAsync(sqlException);
 
             // when
-            ValueTask<Classroom> createClassroomByIdTask =
+            ValueTask<Classroom> createClassroomTask =
                 this.classroomService.CreateClassroomAsync(inputClassroom);
 
             // then
             await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
-                createClassroomByIdTask.AsTask());
+                createClassroomTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedClassroomDependencyException))),
@@ -83,12 +83,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
                     .ThrowsAsync(databaseUpdateException);
 
             // when
-            ValueTask<Classroom> createClassroomByIdTask =
+            ValueTask<Classroom> createClassroomTask =
                 this.classroomService.CreateClassroomAsync(inputClassroom);
 
             // then
             await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
-                createClassroomByIdTask.AsTask());
+                createClassroomTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedClassroomDependencyException))),
@@ -129,12 +129,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
                     .ThrowsAsync(exception);
 
             // when
-            ValueTask<Classroom> createClassroomByIdTask =
+            ValueTask<Classroom> createClassroomTask =
                  this.classroomService.CreateClassroomAsync(inputClassroom);
 
             // then
             await Assert.ThrowsAsync<ClassroomServiceException>(() =>
-                createClassroomByIdTask.AsTask());
+                createClassroomTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedClassroomServiceException))),
