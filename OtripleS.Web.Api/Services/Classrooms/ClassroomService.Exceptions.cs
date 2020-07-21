@@ -60,6 +60,10 @@ namespace OtripleS.Web.Api.Services.Classrooms
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private ClassroomValidationException CreateAndLogValidationException(Exception exception)
@@ -84,6 +88,14 @@ namespace OtripleS.Web.Api.Services.Classrooms
             this.loggingBroker.LogError(classroomDependencyException);
 
             return classroomDependencyException;
+        }
+
+        private ClassroomServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var classroomServiceException = new ClassroomServiceException(exception);
+            this.loggingBroker.LogError(classroomServiceException);
+
+            return classroomServiceException;
         }
     }
 }
