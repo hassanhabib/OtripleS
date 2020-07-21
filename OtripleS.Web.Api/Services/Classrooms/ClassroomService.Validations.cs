@@ -33,7 +33,8 @@ namespace OtripleS.Web.Api.Services.Classrooms
                     parameterName: nameof(Classroom.CreatedDate),
                     parameterValue: classroom.CreatedDate);
 
-                case { } when classroom.UpdatedBy == default:
+                case { } when classroom.UpdatedBy == default ||
+                              classroom.UpdatedBy != classroom.CreatedBy:
                     throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.UpdatedBy),
                     parameterValue: classroom.UpdatedBy);
