@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
@@ -380,6 +381,60 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectClassroomByIdAsync(nonExistentClassroom.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedDateNotSameAsCreateDateAndLogItAsync()
+        {
+            // given
+            int randomNumber = GetRandomNumber();
+            int randomMinutes = randomNumber;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            Classroom randomClassroom = CreateRandomClassroom(randomDate);
+            Classroom invalidClassroom = randomClassroom;
+            invalidClassroom.UpdatedDate = randomDate;
+            Classroom storageClassroom = randomClassroom.DeepClone();
+            Guid classroomId = invalidClassroom.Id;
+            invalidClassroom.CreatedDate = storageClassroom.CreatedDate.AddMinutes(randomNumber);
+
+            var invalidClassroomException = new InvalidClassroomInputException(
+                parameterName: nameof(Classroom.CreatedDate),
+                parameterValue: invalidClassroom.CreatedDate);
+
+            var expectedClassroomValidationException =
+              new ClassroomValidationException(invalidClassroomException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectClassroomByIdAsync(classroomId))
+                    .ReturnsAsync(storageClassroom);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
+            // when
+            ValueTask<Classroom> modifyClassroomTask =
+                this.classroomService.ModifyClassroomAsync(invalidClassroom);
+
+            // then
+            await Assert.ThrowsAsync<ClassroomValidationException>(() =>
+                modifyClassroomTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectClassroomByIdAsync(invalidClassroom.Id),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
