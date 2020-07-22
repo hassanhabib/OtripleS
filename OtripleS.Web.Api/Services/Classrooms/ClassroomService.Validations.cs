@@ -122,6 +122,18 @@ namespace OtripleS.Web.Api.Services.Classrooms
 			}
 		}
 
+		private void ValidateClassroomDates(Classroom classroom)
+		{
+			switch (classroom)
+			{
+				case { } when classroom.CreatedDate == default:
+					throw new InvalidClassroomInputException(
+						parameterName: nameof(Classroom.CreatedDate),
+						parameterValue: classroom.CreatedDate);
+
+			}
+		}
+
 		private static bool IsEmpty(string input) => String.IsNullOrWhiteSpace(input);
 		private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
 		private static bool IsInvalid(Guid input) => input == default;
@@ -159,6 +171,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
 			ValidateClassroomIdIsNull(classroom);
 			ValidateClassroomStrings(classroom);
 			ValidateClassroomIds(classroom);
+			ValidateClassroomDates(classroom);
 		}
 	}
 }
