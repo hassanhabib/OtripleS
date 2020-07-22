@@ -44,7 +44,6 @@ namespace OtripleS.Web.Api.Services.Classrooms
                await this.storageBroker.SelectClassroomByIdAsync(classroomId);
 
             ValidateStorageClassroom(maybeClassroom, classroomId);
-
             return await this.storageBroker.DeleteClassroomAsync(maybeClassroom);
         });
     }
