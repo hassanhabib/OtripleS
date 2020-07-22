@@ -115,6 +115,10 @@ namespace OtripleS.Web.Api.Services.Classrooms
 						parameterName: nameof(Classroom.CreatedBy),
 						parameterValue: classroom.CreatedBy);
 
+				case { } when IsInvalid(classroom.UpdatedBy):
+					throw new InvalidClassroomInputException(
+						parameterName: nameof(Classroom.UpdatedBy),
+						parameterValue: classroom.UpdatedBy);
 			}
 		}
 
