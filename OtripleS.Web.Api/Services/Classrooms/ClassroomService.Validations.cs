@@ -126,7 +126,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
 
         private void ValidateClassroomOnModify(Classroom classroom)
         {
-            ValidateClassroom(classroom);
-        }
+			ValidateClassroomIsNull(classroom);
+		}
     }
 }
