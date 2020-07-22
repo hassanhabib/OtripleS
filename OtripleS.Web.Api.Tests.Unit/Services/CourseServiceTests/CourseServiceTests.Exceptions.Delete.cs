@@ -5,12 +5,9 @@
 
 using System;
 using System.Threading.Tasks;
-
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-
 using Moq;
-
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.Courses.Exceptions;
 
