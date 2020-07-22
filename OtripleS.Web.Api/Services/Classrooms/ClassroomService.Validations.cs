@@ -95,7 +95,19 @@ namespace OtripleS.Web.Api.Services.Classrooms
             }
         }
 
+        private void ValidateClassroomStrings(Classroom classroom)
+        {
+            switch (classroom)
+            {
+                case { } when IsInvalid(classroom.Name):
+                    throw new InvalidClassroomInputException(
+                        parameterName: nameof(Classroom.Name),
+                        parameterValue: classroom.Name);
+            }
+        }
+
         private static bool IsEmpty(string input) => String.IsNullOrWhiteSpace(input);
+        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
@@ -128,6 +140,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
         {
 			ValidateClassroomIsNull(classroom);
             ValidateClassroomIdIsNull(classroom);
+            ValidateClassroomStrings(classroom);
 		}
     }
 }
