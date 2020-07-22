@@ -148,6 +148,16 @@ namespace OtripleS.Web.Api.Services.Classrooms
 			}
 		}
 
+		private void ValidateUpdatedDateIsRecent(Classroom classroom)
+		{
+			if (IsDateNotRecent(classroom.UpdatedDate))
+			{
+				throw new InvalidClassroomInputException(
+					parameterName: nameof(classroom.UpdatedDate),
+					parameterValue: classroom.UpdatedDate);
+			}
+		}
+
 		private static bool IsEmpty(string input) => String.IsNullOrWhiteSpace(input);
 		private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
 		private static bool IsInvalid(Guid input) => input == default;
@@ -187,6 +197,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
 			ValidateClassroomIds(classroom);
 			ValidateClassroomDates(classroom);
 			ValidateDatesAreNotSame(classroom);
+			ValidateUpdatedDateIsRecent(classroom);
 		}
 	}
 }
