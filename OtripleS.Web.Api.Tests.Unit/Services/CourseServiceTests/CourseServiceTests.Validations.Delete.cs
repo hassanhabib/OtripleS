@@ -5,12 +5,9 @@
 
 using System;
 using System.Threading.Tasks;
-
 using Moq;
-
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.Courses.Exceptions;
-
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
@@ -28,7 +25,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
                 parameterName: nameof(Course.Id),
                 parameterValue: inputCourseId);
 
-            var expectedCourseValidationException = new CourseValidationException(invalidCourseInputException);
+            var expectedCourseValidationException = 
+                new CourseValidationException(invalidCourseInputException);
 
             // when
             ValueTask<Course> actualCourseTask =

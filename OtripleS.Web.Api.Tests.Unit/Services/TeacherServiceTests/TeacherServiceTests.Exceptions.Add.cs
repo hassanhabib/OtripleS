@@ -37,12 +37,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                     .ThrowsAsync(sqlException);
 
             // when
-            ValueTask<Teacher> createTeacherByIdTask =
+            ValueTask<Teacher> createTeacherTask =
                 this.teacherService.CreateTeacherAsync(inputTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherDependencyException>(() =>
-                createTeacherByIdTask.AsTask());
+                createTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherDependencyException))),
@@ -83,12 +83,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                     .ThrowsAsync(databaseUpdateException);
 
             // when
-            ValueTask<Teacher> createTeacherByIdTask =
+            ValueTask<Teacher> createTeacherTask =
                 this.teacherService.CreateTeacherAsync(inputTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherDependencyException>(() =>
-                createTeacherByIdTask.AsTask());
+                createTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherDependencyException))),
@@ -129,12 +129,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                     .ThrowsAsync(exception);
 
             // when
-            ValueTask<Teacher> createTeacherByIdTask =
+            ValueTask<Teacher> createTeacherTask =
                  this.teacherService.CreateTeacherAsync(inputTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherServiceException>(() =>
-                createTeacherByIdTask.AsTask());
+                createTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherServiceException))),

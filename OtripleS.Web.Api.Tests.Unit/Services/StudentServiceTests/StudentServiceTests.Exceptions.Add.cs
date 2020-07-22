@@ -37,12 +37,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                     .ThrowsAsync(sqlException);
 
             // when
-            ValueTask<Student> registerStudentByIdTask =
+            ValueTask<Student> registerStudentTask =
                 this.studentService.RegisterStudentAsync(inputStudent);
 
             // then
             await Assert.ThrowsAsync<StudentDependencyException>(() =>
-                registerStudentByIdTask.AsTask());
+                registerStudentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentDependencyException))),
@@ -83,12 +83,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                     .ThrowsAsync(databaseUpdateException);
 
             // when
-            ValueTask<Student> registerStudentByIdTask =
+            ValueTask<Student> registerStudentTask =
                 this.studentService.RegisterStudentAsync(inputStudent);
 
             // then
             await Assert.ThrowsAsync<StudentDependencyException>(() =>
-                registerStudentByIdTask.AsTask());
+                registerStudentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentDependencyException))),
@@ -129,12 +129,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                     .ThrowsAsync(exception);
 
             // when
-            ValueTask<Student> registerStudentByIdTask =
+            ValueTask<Student> registerStudentTask =
                  this.studentService.RegisterStudentAsync(inputStudent);
 
             // then
             await Assert.ThrowsAsync<StudentServiceException>(() =>
-                registerStudentByIdTask.AsTask());
+                registerStudentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentServiceException))),
