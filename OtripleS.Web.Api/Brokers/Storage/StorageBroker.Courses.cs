@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
         }
 
         public IQueryable<Course> SelectAllCourses() => this.Courses.AsQueryable();
-
+       
         public async ValueTask<Course> SelectCourseByIdAsync(Guid courseId)
         {
             this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;

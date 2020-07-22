@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 
@@ -66,6 +67,15 @@ namespace OtripleS.Web.Api.Services.Classrooms
                     parameterValue: classroom.UpdatedDate);
             }
         }
+
+        private void ValidateStorageClassroom(IQueryable<Classroom> storageClassroms)
+        {
+            if (storageClassroms.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No Classroom found in storage.");
+            }
+        }
+
 
         private void ValidateClassroomFields(Classroom classroom)
         {

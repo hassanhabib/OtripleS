@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -16,6 +17,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
     public partial class ClassroomService
     {
         private delegate ValueTask<Classroom> ReturningClassroomFunction();
+        private delegate IQueryable<Classroom> ReturningQueryableClassroomFunction();
 
         private async ValueTask<Classroom> TryCatch(ReturningClassroomFunction returningClassroomFunction)
         {
@@ -52,6 +54,39 @@ namespace OtripleS.Web.Api.Services.Classrooms
             }
         }
 
+        private IQueryable<Classroom> TryCatch(ReturningQueryableClassroomFunction returningQueryableClassroomFunction)
+        {
+            try
+            {
+                return returningQueryableClassroomFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsClassroomException =
+                    new AlreadyExistsClassroomException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsClassroomException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedClassromException = new LockedClassroomException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedClassromException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+        
         private ClassroomValidationException CreateAndLogValidationException(Exception exception)
         {
             var classroomValidationException = new ClassroomValidationException(exception);
