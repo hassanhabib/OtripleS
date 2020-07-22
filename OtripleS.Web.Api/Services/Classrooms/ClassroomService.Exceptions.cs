@@ -27,9 +27,17 @@ namespace OtripleS.Web.Api.Services.Classrooms
             {
                 throw CreateAndLogValidationException(nullClassroomException);
             }
+            catch (InvalidClassroomInputException invalidClassroomInputException)
+            {
+                throw CreateAndLogValidationException(invalidClassroomInputException);
+            }
             catch (InvalidClassroomException invalidClassroomException)
             {
                 throw CreateAndLogValidationException(invalidClassroomException);
+            }
+            catch (NotFoundClassroomException notFoundClassroomException)
+            {
+                throw CreateAndLogValidationException(notFoundClassroomException);
             }
             catch (SqlException sqlException)
             {
@@ -41,6 +49,12 @@ namespace OtripleS.Web.Api.Services.Classrooms
                     new AlreadyExistsClassroomException(duplicateKeyException);
 
                 throw CreateAndLogValidationException(alreadyExistsClassroomException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedClassroomException = new LockedClassroomException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedClassroomException);
             }
             catch (DbUpdateException dbUpdateException)
             {

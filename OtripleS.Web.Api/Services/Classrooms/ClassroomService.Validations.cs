@@ -105,5 +105,23 @@ namespace OtripleS.Web.Api.Services.Classrooms
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
+
+        private void ValidateClassroomId(Guid classroomId)
+        {
+            if (classroomId == Guid.Empty)
+            {
+                throw new InvalidClassroomInputException(
+                    parameterName: nameof(Classroom.Id),
+                    parameterValue: classroomId);
+            }
+        }
+
+        private void ValidateStorageClassroom(Classroom storageClassroom, Guid classroomId)
+        {
+            if (storageClassroom == null)
+            {
+                throw new NotFoundClassroomException(classroomId);
+            }
+        }
     }
 }
