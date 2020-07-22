@@ -123,5 +123,10 @@ namespace OtripleS.Web.Api.Services.Classrooms
                 throw new NotFoundClassroomException(classroomId);
             }
         }
+
+        private void ValidateClassroomOnModify(Classroom classroom)
+        {
+            ValidateClassroom(classroom);
+        }
     }
 }

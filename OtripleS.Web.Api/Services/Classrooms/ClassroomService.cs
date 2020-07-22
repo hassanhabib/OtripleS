@@ -47,13 +47,15 @@ namespace OtripleS.Web.Api.Services.Classrooms
 			return await this.storageBroker.DeleteClassroomAsync(maybeClassroom);
 		});
 
-		public async ValueTask<Classroom> ModifyClassroomAsync(Classroom classroom)
+		public ValueTask<Classroom> ModifyClassroomAsync(Classroom classroom) =>
+		TryCatch(async () =>
 		{
+			ValidateClassroomOnModify(classroom);
 			Classroom maybeClassroom = await this.storageBroker.SelectClassroomByIdAsync(classroom.Id);
 
 			DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
 
 			return await this.storageBroker.UpdateClassroomAsync(classroom);
-		}
+		});
 	}
 }
