@@ -49,7 +49,11 @@ namespace OtripleS.Web.Api.Services.Classrooms
 
 		public async ValueTask<Classroom> ModifyClassroomAsync(Classroom classroom)
 		{
-			throw new NotImplementedException();
+			Classroom maybeClassroom = await this.storageBroker.SelectClassroomByIdAsync(classroom.Id);
+
+			DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+
+			return await this.storageBroker.UpdateClassroomAsync(classroom);
 		}
 	}
 }
