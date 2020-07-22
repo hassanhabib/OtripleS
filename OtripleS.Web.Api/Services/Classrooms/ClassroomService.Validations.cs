@@ -189,6 +189,18 @@ namespace OtripleS.Web.Api.Services.Classrooms
 			}
 		}
 
+		private void ValidateAgainstStorageClassroomOnModify(Classroom inputClassroom, Classroom storageClassroom)
+		{
+			switch (inputClassroom)
+			{
+				case { } when inputClassroom.CreatedDate != storageClassroom.CreatedDate:
+					throw new InvalidClassroomInputException(
+						parameterName: nameof(Classroom.CreatedDate),
+						parameterValue: inputClassroom.CreatedDate);
+
+			}
+		}
+
 		private void ValidateClassroomOnModify(Classroom classroom)
 		{
 			ValidateClassroomIsNull(classroom);
