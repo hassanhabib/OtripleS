@@ -198,6 +198,10 @@ namespace OtripleS.Web.Api.Services.Classrooms
 						parameterName: nameof(Classroom.CreatedDate),
 						parameterValue: inputClassroom.CreatedDate);
 
+				case { } when inputClassroom.UpdatedDate == storageClassroom.UpdatedDate:
+					throw new InvalidClassroomInputException(
+						parameterName: nameof(Classroom.UpdatedDate),
+						parameterValue: inputClassroom.UpdatedDate);
 			}
 		}
 
