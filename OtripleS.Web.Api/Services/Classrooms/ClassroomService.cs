@@ -86,7 +86,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
 			}
 			catch (DbUpdateException dbUpdateException)
 			{
-				throw CreateAndLogCriticalDependencyException(dbUpdateException);
+				throw CreateAndLogDependencyException(dbUpdateException);
 			}
 		}
 	}
