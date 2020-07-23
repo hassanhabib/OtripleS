@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
@@ -65,6 +66,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedClassroomDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllClassrooms(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
+        {
+            // given
+            var exception = new Exception();
+
+            var expectedClassroomServiceException =
+                new ClassroomServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllClassrooms())
+                    .Throws(exception);
+
+            // when . then
+            Assert.Throws<ClassroomServiceException>(() =>
+                this.classroomService.RetrieveAllClassrooms());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedClassroomServiceException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
