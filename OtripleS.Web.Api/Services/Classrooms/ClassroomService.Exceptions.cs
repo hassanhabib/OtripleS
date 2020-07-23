@@ -60,10 +60,10 @@ namespace OtripleS.Web.Api.Services.Classrooms
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
-            catch (Exception exception)
-            {
-                throw CreateAndLogServiceException(exception);
-            }
+            // catch (Exception exception)
+            // {
+            //     throw CreateAndLogServiceException(exception);
+            // }
         }
 
         private ClassroomValidationException CreateAndLogValidationException(Exception exception)
