@@ -62,6 +62,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
         public IQueryable<Classroom> RetrieveAllClassrooms()
         {
 			IQueryable<Classroom> storageClassrooms = this.storageBroker.SelectAllClassrooms();
+			ValidateStorageClassrooms(storageClassrooms);
 
 			return storageClassrooms;
 		}
