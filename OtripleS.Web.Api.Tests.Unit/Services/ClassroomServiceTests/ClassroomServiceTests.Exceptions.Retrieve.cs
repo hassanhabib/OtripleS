@@ -12,7 +12,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
     {
         [Fact]
         public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenSqlExceptionOccursAndLogItAsync()
-        {
+        { 
             // given
             Guid randomClassroomId = Guid.NewGuid();
             Guid inputClassroomId = randomClassroomId;
