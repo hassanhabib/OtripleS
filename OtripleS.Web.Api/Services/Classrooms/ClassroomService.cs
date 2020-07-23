@@ -9,6 +9,7 @@ using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Classrooms;
+using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Classrooms
 {
@@ -62,9 +63,17 @@ namespace OtripleS.Web.Api.Services.Classrooms
 
 		public async ValueTask<Classroom> RetrieveClassroomById(Guid classroomId)
 		{
-			Classroom storageClassroom = await this.storageBroker.SelectClassroomByIdAsync(classroomId);
-			ValidateStorageClassroom(storageClassroom, classroomId);
-			return storageClassroom;
+			try
+			{
+				ValidateClassroomId(classroomId);
+				Classroom storageClassroom = await this.storageBroker.SelectClassroomByIdAsync(classroomId);
+				ValidateStorageClassroom(storageClassroom, classroomId);
+				return storageClassroom;
+			}
+			catch (InvalidClassroomInputException invalidClassroomInputException)
+			{
+				throw CreateAndLogValidationException(invalidClassroomInputException);
+			}
 		}
 	}
 }
