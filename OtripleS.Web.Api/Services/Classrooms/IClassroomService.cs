@@ -9,10 +9,11 @@ using OtripleS.Web.Api.Models.Classrooms;
 
 namespace OtripleS.Web.Api.Services.Classrooms
 {
-    public interface IClassroomService
-    {
-        ValueTask<Classroom> CreateClassroomAsync(Classroom classroom);
-        ValueTask<Classroom> GetClassroomById(Guid classroomId);
-        ValueTask<Classroom> DeleteClassroomAsync(Guid classroomId);
-    }
+	public interface IClassroomService
+	{
+		ValueTask<Classroom> CreateClassroomAsync(Classroom classroom);
+		ValueTask<Classroom> DeleteClassroomAsync(Guid classroomId);
+		ValueTask<Classroom> ModifyClassroomAsync(Classroom classroom);
+		ValueTask<Classroom> RetrieveClassroomById(Guid classroomId);
+	}
 }

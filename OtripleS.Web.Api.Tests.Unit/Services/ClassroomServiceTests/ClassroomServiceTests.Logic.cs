@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Classrooms;
 using Xunit;
@@ -27,12 +28,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Classroom expectedClassroom = storageClassroom;
 
             this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(dateTime);
+                    broker.GetCurrentDateTime())
+                .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertClassroomAsync(inputClassroom))
-                    .ReturnsAsync(storageClassroom);
+                    broker.InsertClassroomAsync(inputClassroom))
+                .ReturnsAsync(storageClassroom);
 
             // when
             Classroom actualClassroom =
@@ -42,12 +43,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             actualClassroom.Should().BeEquivalentTo(expectedClassroom);
 
             this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
+                    broker.GetCurrentDateTime(),
+                Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertClassroomAsync(inputClassroom),
-                    Times.Once);
+                    broker.InsertClassroomAsync(inputClassroom),
+                Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -66,12 +67,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Classroom expectedClassroom = randomClassroom;
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectClassroomByIdAsync(inputClassroomId))
-                    .ReturnsAsync(inputClassroom);
+                    broker.SelectClassroomByIdAsync(inputClassroomId))
+                .ReturnsAsync(inputClassroom);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.DeleteClassroomAsync(inputClassroom))
-                    .ReturnsAsync(storageClassroom);
+                    broker.DeleteClassroomAsync(inputClassroom))
+                .ReturnsAsync(storageClassroom);
 
             // when
             Classroom actualClassroom =
@@ -81,12 +82,64 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             actualClassroom.Should().BeEquivalentTo(expectedClassroom);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectClassroomByIdAsync(inputClassroomId),
-                    Times.Once);
+                    broker.SelectClassroomByIdAsync(inputClassroomId),
+                Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteClassroomAsync(inputClassroom),
-                    Times.Once);
+                    broker.DeleteClassroomAsync(inputClassroom),
+                Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldModifyClassroomAsync()
+        {
+            // given
+            int randomNumber = GetRandomNumber();
+            int randomDays = randomNumber;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            DateTimeOffset randomInputDate = GetRandomDateTime();
+            Classroom randomClassroom = CreateRandomClassroom(randomInputDate);
+            Classroom inputClassroom = randomClassroom;
+            Classroom afterUpdateStorageClassroom = inputClassroom;
+            Classroom expectedClassroom = afterUpdateStorageClassroom;
+            Classroom beforeUpdateStorageClassroom = randomClassroom.DeepClone();
+            inputClassroom.UpdatedDate = randomDate;
+            Guid classroomId = inputClassroom.Id;
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                    broker.GetCurrentDateTime())
+                .Returns(randomDate);
+
+            this.storageBrokerMock.Setup(broker =>
+                    broker.SelectClassroomByIdAsync(classroomId))
+                .ReturnsAsync(beforeUpdateStorageClassroom);
+
+            this.storageBrokerMock.Setup(broker =>
+                    broker.UpdateClassroomAsync(inputClassroom))
+                .ReturnsAsync(afterUpdateStorageClassroom);
+
+            // when
+            Classroom actualClassroom =
+                await this.classroomService.ModifyClassroomAsync(inputClassroom);
+
+            // then
+            actualClassroom.Should().BeEquivalentTo(expectedClassroom);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                    broker.GetCurrentDateTime(),
+                Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                    broker.SelectClassroomByIdAsync(classroomId),
+                Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                    broker.UpdateClassroomAsync(inputClassroom),
+                Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

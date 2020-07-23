@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 Classroom storageClassroom =
-                    await this.classroomService.GetClassroomById(classroomId);
+                    await this.classroomService.RetrieveClassroomById(classroomId);
 
                 return Ok(storageClassroom);
             }
