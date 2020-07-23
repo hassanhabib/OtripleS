@@ -60,9 +60,12 @@ namespace OtripleS.Web.Api.Services.Classrooms
 			return await this.storageBroker.UpdateClassroomAsync(classroom);
 		});
 
-		public ValueTask<Classroom> RetrieveClassroomById(Guid classroomId)
+		public async ValueTask<Classroom> RetrieveClassroomById(Guid classroomId)
 		{
-			throw new NotImplementedException();
+			Classroom storageClassroom = await this.storageBroker.SelectClassroomByIdAsync(classroomId);
+			ValidateStorageClassroom(storageClassroom, classroomId);
+
+			return storageClassroom;
 		}
 	}
 }
