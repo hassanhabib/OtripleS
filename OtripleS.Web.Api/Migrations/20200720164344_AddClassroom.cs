@@ -3,9 +3,8 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using Microsoft.EntityFrameworkCore.Migrations;
-
 using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OtripleS.Web.Api.Migrations
 {
