@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -46,5 +47,14 @@ namespace OtripleS.Web.Api.Services.Classrooms
             ValidateStorageClassroom(maybeClassroom, classroomId);
             return await this.storageBroker.DeleteClassroomAsync(maybeClassroom);
         });
+
+        public IQueryable<Classroom> RetrieveAllClassrooms() =>
+         TryCatch(() =>
+         {
+             IQueryable<Classroom> storageClassroom = this.storageBroker.SelectAllClassrooms();
+             ValidateStorageClassrooms(storageClassroom);
+
+             return storageClassroom;
+         });
     }
 }

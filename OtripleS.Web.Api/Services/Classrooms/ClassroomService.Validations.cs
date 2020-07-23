@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 
@@ -121,6 +122,13 @@ namespace OtripleS.Web.Api.Services.Classrooms
             if (storageClassroom == null)
             {
                 throw new NotFoundClassroomException(classroomId);
+            }
+        }
+        private void ValidateStorageClassrooms(IQueryable<Classroom> storageClassroom)
+        {
+            if (storageClassroom.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No Classrooms found in storage.");
             }
         }
     }

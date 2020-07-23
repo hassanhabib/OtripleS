@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -40,8 +41,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
+        private IEnumerable<Classroom> CreateRandomClassrooms(DateTimeOffset dateTime) =>
+           CreateClassroomFiller(dateTime).Create(GetRandomNumber());
+
         private Classroom CreateRandomClassroom(DateTimeOffset dates) =>
             CreateClassroomFiller(dates).Create();
+
+        private IQueryable<Classroom> CreateRandomClassrooms() =>
+                CreateClassroomFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+
+        private Classroom CreateRandomClassroom() =>
+           CreateClassroomFiller(dates: DateTimeOffset.UtcNow).Create();
 
         private static Filler<Classroom> CreateClassroomFiller(DateTimeOffset dates)
         {
@@ -58,9 +68,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
-
-        private Classroom CreateRandomClassroom() =>
-            CreateClassroomFiller(dates: DateTimeOffset.UtcNow).Create();
 
         public static IEnumerable<object[]> InvalidMinuteCases()
         {
