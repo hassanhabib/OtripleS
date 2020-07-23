@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -57,5 +58,10 @@ namespace OtripleS.Web.Api.Services.Classrooms
 
 			return await this.storageBroker.UpdateClassroomAsync(classroom);
 		});
-	}
+
+        public IQueryable<Classroom> RetrieveAllClassrooms()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
