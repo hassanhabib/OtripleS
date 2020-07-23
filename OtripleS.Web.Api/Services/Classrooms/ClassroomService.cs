@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -82,6 +83,10 @@ namespace OtripleS.Web.Api.Services.Classrooms
 			catch (SqlException sqlException)
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
+			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogCriticalDependencyException(dbUpdateException);
 			}
 		}
 	}
