@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -77,6 +78,10 @@ namespace OtripleS.Web.Api.Services.Classrooms
 			catch (NotFoundClassroomException notFoundClassroomException)
 			{
 				throw CreateAndLogValidationException(notFoundClassroomException);
+			}
+			catch (SqlException sqlException)
+			{
+				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
 		}
 	}
