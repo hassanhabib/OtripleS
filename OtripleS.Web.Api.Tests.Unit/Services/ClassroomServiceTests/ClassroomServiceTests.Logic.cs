@@ -162,13 +162,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
 
             //when 
             Classroom actualClassroom = await this.classroomService.RetrieveClassroomById(inputClassroomId);
-            
+
             //then
             actualClassroom.Should().BeEquivalentTo(expectedClassroom);
-            
-            this.storageBrokerMock.Verify(broker=>
-                broker.SelectClassroomByIdAsync(inputClassroomId),Times.Once);
-            
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectClassroomByIdAsync(inputClassroomId), Times.Once);
+
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
