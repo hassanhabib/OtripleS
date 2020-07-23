@@ -61,7 +61,9 @@ namespace OtripleS.Web.Api.Services.Classrooms
 
         public IQueryable<Classroom> RetrieveAllClassrooms()
         {
-            throw new NotImplementedException();
-        }
+			IQueryable<Classroom> storageClassrooms = this.storageBroker.SelectAllClassrooms();
+
+			return storageClassrooms;
+		}
     }
 }
