@@ -1,10 +1,15 @@
-using System;
-using System.Threading.Tasks;
+//�---------------------------------------------------------------
+//�Copyright�(c)�Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+//�---------------------------------------------------------------
+
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 using OtripleS.Web.Api.Services.Classrooms;
 using RESTFulSense.Controllers;
+using System;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Controllers
 {
@@ -18,7 +23,7 @@ namespace OtripleS.Web.Api.Controllers
         {
             this.classroomService = classroomService;
         }
-        
+
         [HttpPost]
         public async ValueTask<ActionResult<Classroom>> CreateClassroomAsync(Classroom classroom)
         {
@@ -83,7 +88,7 @@ namespace OtripleS.Web.Api.Controllers
                 return Problem(classroomServiceException.Message);
             }
         }
-        
+
         [HttpDelete("{classroomId}")]
         public async ValueTask<ActionResult<Classroom>> DeleteCourseAsync(Guid classroomId)
         {
