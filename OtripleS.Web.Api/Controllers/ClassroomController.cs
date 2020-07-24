@@ -24,8 +24,8 @@ namespace OtripleS.Web.Api.Controllers
             this.classroomService = classroomService;
         }
         
-        [HttpGet("{courseId}")]
-        public async ValueTask<ActionResult<Classroom>> GetCourseAsync(Guid classroomId)
+        [HttpGet("{classroomId}")]
+        public async ValueTask<ActionResult<Classroom>> GetClassroomAsync(Guid classroomId)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace OtripleS.Web.Api.Controllers
         }
         
         [HttpDelete("{classroomId}")]
-        public async ValueTask<ActionResult<Classroom>> DeleteCourseAsync(Guid classroomId)
+        public async ValueTask<ActionResult<Classroom>> DeleteClassroomAsync(Guid classroomId)
         {
             try
             {

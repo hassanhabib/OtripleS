@@ -20,20 +20,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
         public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenSqlExceptionOccursAndLogItAsync()
         { 
             // given
-            Guid randomClassroomId = Guid.NewGuid();
-            Guid inputClassroomId = randomClassroomId;
+            Guid someClassroomId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
             
             var expectedClassroomDependencyException =
                 new ClassroomDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                    broker.SelectClassroomByIdAsync(inputClassroomId))
+                    broker.SelectClassroomByIdAsync(someClassroomId))
                 .ThrowsAsync(sqlException);
 
             // when
             ValueTask<Classroom> retrieveClassroomTask =
-                this.classroomService.RetrieveClassroomById(inputClassroomId);
+                this.classroomService.RetrieveClassroomById(someClassroomId);
             
             // then
             await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
@@ -44,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
                 Times.Once);
             
             this.storageBrokerMock.Verify(broker =>
-                    broker.SelectClassroomByIdAsync(inputClassroomId),
+                    broker.SelectClassroomByIdAsync(someClassroomId),
                 Times.Once);
             
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -123,8 +122,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            
-            
         }
         
         [Fact]
