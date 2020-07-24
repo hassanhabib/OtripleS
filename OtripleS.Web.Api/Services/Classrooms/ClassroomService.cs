@@ -36,6 +36,20 @@ namespace OtripleS.Web.Api.Services.Classrooms
 			return await this.storageBroker.InsertClassroomAsync(classroom);
 		});
 
+		/**
+         * This was implemented to check the API end point,
+         * feel free to replace it with your implementation.
+         */
+        public ValueTask<Classroom> GetClassroomById(Guid classroomId) =>
+            TryCatch(async () =>
+            {
+                Classroom storageClassroom = await this.storageBroker.SelectClassroomByIdAsync(classroomId);
+                ValidateStorageClassroom(storageClassroom, classroomId);
+
+                return storageClassroom;
+                
+            });
+
 		public ValueTask<Classroom> DeleteClassroomAsync(Guid classroomId) =>
 		TryCatch(async () =>
 		{
@@ -67,5 +81,5 @@ namespace OtripleS.Web.Api.Services.Classrooms
 
 			return storageClassrooms;
 		});
-    }
+	}
 }
