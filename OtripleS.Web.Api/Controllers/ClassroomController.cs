@@ -19,6 +19,33 @@ namespace OtripleS.Web.Api.Controllers
             this.classroomService = classroomService;
         }
         
+        [HttpPost]
+        public async ValueTask<ActionResult<Classroom>> CreateClassroomAsync(Classroom classroom)
+        {
+            try
+            {
+                Classroom persistedClassroom = await classroomService.CreateClassroomAsync(classroom);
+                return Ok(persistedClassroom);
+            }
+            catch (ClassroomValidationException ex) when (ex.InnerException is AlreadyExistsClassroomException)
+            {
+                return Conflict(GetInnerMessage(ex));
+            }
+            catch (ClassroomValidationException ex)
+            {
+                return BadRequest(GetInnerMessage(ex));
+            }
+            catch (ClassroomDependencyException ex)
+            {
+                return Problem(ex.Message);
+            }
+            catch (ClassroomServiceException ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
+
+
         [HttpGet("{courseId}")]
         public async ValueTask<ActionResult<Classroom>> GetCourseAsync(Guid classroomId)
         {
