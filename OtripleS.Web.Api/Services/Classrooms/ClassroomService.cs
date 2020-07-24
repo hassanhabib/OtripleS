@@ -3,10 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Classrooms;
+using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,45 +33,32 @@ namespace OtripleS.Web.Api.Services.Classrooms
 
         public ValueTask<Classroom> CreateClassroomAsync(Classroom classroom) =>
             TryCatch(async () =>
-        {
-            ValidateClassroom(classroom);
-
-            return await this.storageBroker.InsertClassroomAsync(classroom);
-        });
-
-        /**
-         * This was implemented to check the API end point,
-         * feel free to replace it with your implementation.
-         */
-        public ValueTask<Classroom> GetClassroomById(Guid classroomId) =>
-            TryCatch(async () =>
             {
-                Classroom storageClassroom = await this.storageBroker.SelectClassroomByIdAsync(classroomId);
-                ValidateStorageClassroom(storageClassroom, classroomId);
+                ValidateClassroom(classroom);
 
-                return storageClassroom;
-
+                return await this.storageBroker.InsertClassroomAsync(classroom);
             });
 
+
         public ValueTask<Classroom> DeleteClassroomAsync(Guid classroomId) =>
-        TryCatch(async () =>
-        {
-            ValidateClassroomId(classroomId);
+            TryCatch(async () =>
+            {
+                ValidateClassroomId(classroomId);
 
-            Classroom maybeClassroom =
-               await this.storageBroker.SelectClassroomByIdAsync(classroomId);
+                Classroom maybeClassroom =
+                    await this.storageBroker.SelectClassroomByIdAsync(classroomId);
 
-            ValidateStorageClassroom(maybeClassroom, classroomId);
-            return await this.storageBroker.DeleteClassroomAsync(maybeClassroom);
-        });
+                ValidateStorageClassroom(maybeClassroom, classroomId);
+                return await this.storageBroker.DeleteClassroomAsync(maybeClassroom);
+            });
 
         public ValueTask<Classroom> ModifyClassroomAsync(Classroom classroom) =>
-        TryCatch(async () =>
-        {
-            ValidateClassroomOnModify(classroom);
-            Classroom maybeClassroom = await this.storageBroker.SelectClassroomByIdAsync(classroom.Id);
-            ValidateStorageClassroom(maybeClassroom, classroom.Id);
-            ValidateAgainstStorageClassroomOnModify(inputClassroom: classroom, storageClassroom: maybeClassroom);
+            TryCatch(async () =>
+            {
+                ValidateClassroomOnModify(classroom);
+                Classroom maybeClassroom = await this.storageBroker.SelectClassroomByIdAsync(classroom.Id);
+                ValidateStorageClassroom(maybeClassroom, classroom.Id);
+                ValidateAgainstStorageClassroomOnModify(inputClassroom: classroom, storageClassroom: maybeClassroom);
 
             return await this.storageBroker.UpdateClassroomAsync(classroom);
         });
@@ -79,7 +69,16 @@ namespace OtripleS.Web.Api.Services.Classrooms
             IQueryable<Classroom> storageClassrooms = this.storageBroker.SelectAllClassrooms();
             ValidateStorageClassrooms(storageClassrooms);
 
-            return storageClassrooms;
-        });
+			return storageClassrooms;
+		});
+        
+        public ValueTask<Classroom> RetrieveClassroomById(Guid classroomId) =>
+            TryCatch(async () =>
+            {
+                ValidateClassroomId(classroomId);
+                Classroom storageClassroom = await this.storageBroker.SelectClassroomByIdAsync(classroomId);
+                ValidateStorageClassroom(storageClassroom, classroomId);
+                return storageClassroom;
+            });
     }
 }

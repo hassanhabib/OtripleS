@@ -17,5 +17,6 @@ namespace OtripleS.Web.Api.Services.Classrooms
         ValueTask<Classroom> DeleteClassroomAsync(Guid classroomId);
         ValueTask<Classroom> ModifyClassroomAsync(Classroom classroom);
         IQueryable<Classroom> RetrieveAllClassrooms();
+        ValueTask<Classroom> RetrieveClassroomById(Guid classroomId);
     }
 }

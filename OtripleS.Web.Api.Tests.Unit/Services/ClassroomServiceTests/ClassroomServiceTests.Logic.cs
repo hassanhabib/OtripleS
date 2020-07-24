@@ -179,5 +179,33 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
 			this.storageBrokerMock.VerifyNoOtherCalls();
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 		}
+		
+		[Fact]
+		public async Task ShouldRetrieveClassroomById()
+		{
+			//given
+			DateTimeOffset dateTime = GetRandomDateTime();
+			Classroom randomClassroom = CreateRandomClassroom(dateTime);
+			Guid inputClassroomId = randomClassroom.Id;
+			Classroom inputClassroom = randomClassroom;
+			Classroom expectedClassroom = randomClassroom;
+
+			this.storageBrokerMock.Setup(broker =>
+					broker.SelectClassroomByIdAsync(inputClassroomId))
+				.ReturnsAsync(inputClassroom);
+
+			//when 
+			Classroom actualClassroom = await this.classroomService.RetrieveClassroomById(inputClassroomId);
+
+			//then
+			actualClassroom.Should().BeEquivalentTo(expectedClassroom);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectClassroomByIdAsync(inputClassroomId), Times.Once);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }

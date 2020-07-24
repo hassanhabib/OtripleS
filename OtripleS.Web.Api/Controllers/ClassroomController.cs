@@ -49,15 +49,14 @@ namespace OtripleS.Web.Api.Controllers
                 return Problem(ex.Message);
             }
         }
-
-
-        [HttpGet("{courseId}")]
-        public async ValueTask<ActionResult<Classroom>> GetCourseAsync(Guid classroomId)
+        
+        [HttpGet("{classroomId}")]
+        public async ValueTask<ActionResult<Classroom>> GetClassroomAsync(Guid classroomId)
         {
             try
             {
                 Classroom storageClassroom =
-                    await this.classroomService.GetClassroomById(classroomId);
+                    await this.classroomService.RetrieveClassroomById(classroomId);
 
                 return Ok(storageClassroom);
             }
@@ -90,7 +89,7 @@ namespace OtripleS.Web.Api.Controllers
         }
 
         [HttpDelete("{classroomId}")]
-        public async ValueTask<ActionResult<Classroom>> DeleteCourseAsync(Guid classroomId)
+        public async ValueTask<ActionResult<Classroom>> DeleteClassroomAsync(Guid classroomId)
         {
             try
             {
