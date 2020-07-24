@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -59,9 +60,18 @@ namespace OtripleS.Web.Api.Services.Classrooms
                 ValidateStorageClassroom(maybeClassroom, classroom.Id);
                 ValidateAgainstStorageClassroomOnModify(inputClassroom: classroom, storageClassroom: maybeClassroom);
 
-                return await this.storageBroker.UpdateClassroomAsync(classroom);
-            });
+			return await this.storageBroker.UpdateClassroomAsync(classroom);
+		});
 
+		public IQueryable<Classroom> RetrieveAllClassrooms() =>
+		TryCatch(() =>
+		{
+			IQueryable<Classroom> storageClassrooms = this.storageBroker.SelectAllClassrooms();
+			ValidateStorageClassrooms(storageClassrooms);
+
+			return storageClassrooms;
+		});
+        
         public ValueTask<Classroom> RetrieveClassroomById(Guid classroomId) =>
             TryCatch(async () =>
             {
