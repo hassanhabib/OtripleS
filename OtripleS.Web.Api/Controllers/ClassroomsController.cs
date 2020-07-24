@@ -21,10 +21,10 @@ namespace OtripleS.Web.Api.Controllers
 		{
 			try
 			{
-				IQueryable storageClassroom =
+				IQueryable storageClassrooms =
 					this.classroomService.RetrieveAllClassrooms();
 
-				return Ok(storageClassroom);
+				return Ok(storageClassrooms);
 			}
 			catch (ClassroomDependencyException classRoomDependencyException)
 			{
