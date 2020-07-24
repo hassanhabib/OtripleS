@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using OtripleS.Web.Api.Models.Teachers;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
@@ -43,7 +42,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
             return filler.Create();
         }
 
-        private static int GetRandomNumber() => 
+        private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
 
         private static DateTimeOffset GetRandomDateTime() =>

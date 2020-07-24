@@ -7,49 +7,49 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.Teachers;
-using OtripleS.Web.Api.Models.Teachers.Exceptions;
+using OtripleS.Web.Api.Models.Courses;
+using OtripleS.Web.Api.Models.Courses.Exceptions;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
 {
-    public partial class TeacherServiceTests
+    public partial class CourseServiceTests
     {
         [Fact]
         public async Task ShouldThrowDependencyExceptionOnCreateWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(dateTime);
-            Teacher inputTeacher = randomTeacher;
-            inputTeacher.UpdatedBy = inputTeacher.CreatedBy;
+            Course randomCourse = CreateRandomCourse(dateTime);
+            Course inputCourse = randomCourse;
+            inputCourse.UpdatedBy = inputCourse.CreatedBy;
             var sqlException = GetSqlException();
 
-            var expectedTeacherDependencyException =
-                new TeacherDependencyException(sqlException);
+            var expectedCourseDependencyException =
+                new CourseDependencyException(sqlException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertTeacherAsync(inputTeacher))
+                broker.InsertCourseAsync(inputCourse))
                     .ThrowsAsync(sqlException);
 
             // when
-            ValueTask<Teacher> createTeacherTask =
-                this.teacherService.CreateTeacherAsync(inputTeacher);
+            ValueTask<Course> createCourseTask =
+                this.courseService.CreateCourseAsync(inputCourse);
 
             // then
-            await Assert.ThrowsAsync<TeacherDependencyException>(() =>
-                createTeacherTask.AsTask());
+            await Assert.ThrowsAsync<CourseDependencyException>(() =>
+                createCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherDependencyException))),
+                broker.LogCritical(It.Is(SameExceptionAs(expectedCourseDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertTeacherAsync(inputTeacher),
+                broker.InsertCourseAsync(inputCourse),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -66,36 +66,36 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(dateTime);
-            Teacher inputTeacher = randomTeacher;
-            inputTeacher.UpdatedBy = inputTeacher.CreatedBy;
+            Course randomCourse = CreateRandomCourse(dateTime);
+            Course inputCourse = randomCourse;
+            inputCourse.UpdatedBy = inputCourse.CreatedBy;
             var databaseUpdateException = new DbUpdateException();
 
-            var expectedTeacherDependencyException =
-                new TeacherDependencyException(databaseUpdateException);
+            var expectedCourseDependencyException =
+                new CourseDependencyException(databaseUpdateException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertTeacherAsync(inputTeacher))
+                broker.InsertCourseAsync(inputCourse))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
-            ValueTask<Teacher> createTeacherTask =
-                this.teacherService.CreateTeacherAsync(inputTeacher);
+            ValueTask<Course> createCourseTask =
+                this.courseService.CreateCourseAsync(inputCourse);
 
             // then
-            await Assert.ThrowsAsync<TeacherDependencyException>(() =>
-                createTeacherTask.AsTask());
+            await Assert.ThrowsAsync<CourseDependencyException>(() =>
+                createCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherDependencyException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertTeacherAsync(inputTeacher),
+                broker.InsertCourseAsync(inputCourse),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -112,36 +112,36 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(dateTime);
-            Teacher inputTeacher = randomTeacher;
-            inputTeacher.UpdatedBy = inputTeacher.CreatedBy;
+            Course randomCourse = CreateRandomCourse(dateTime);
+            Course inputCourse = randomCourse;
+            inputCourse.UpdatedBy = inputCourse.CreatedBy;
             var exception = new Exception();
 
-            var expectedTeacherServiceException =
-                new TeacherServiceException(exception);
+            var expectedCourseServiceException =
+                new CourseServiceException(exception);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertTeacherAsync(inputTeacher))
+                broker.InsertCourseAsync(inputCourse))
                     .ThrowsAsync(exception);
 
             // when
-            ValueTask<Teacher> createTeacherTask =
-                 this.teacherService.CreateTeacherAsync(inputTeacher);
+            ValueTask<Course> createCourseTask =
+                 this.courseService.CreateCourseAsync(inputCourse);
 
             // then
-            await Assert.ThrowsAsync<TeacherServiceException>(() =>
-                createTeacherTask.AsTask());
+            await Assert.ThrowsAsync<CourseServiceException>(() =>
+                createCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherServiceException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseServiceException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertTeacherAsync(inputTeacher),
+                broker.InsertCourseAsync(inputCourse),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -152,5 +152,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
     }
 }
