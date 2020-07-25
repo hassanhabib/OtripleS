@@ -23,6 +23,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Classroom randomClassroom = CreateRandomClassroom(dateTime);
             Classroom inputClassroom = randomClassroom;
             inputClassroom.UpdatedBy = inputClassroom.CreatedBy;
+            inputClassroom.UpdatedDate = inputClassroom.CreatedDate;
             var sqlException = GetSqlException();
 
             var expectedClassroomDependencyException =
@@ -69,6 +70,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Classroom randomClassroom = CreateRandomClassroom(dateTime);
             Classroom inputClassroom = randomClassroom;
             inputClassroom.UpdatedBy = inputClassroom.CreatedBy;
+            inputClassroom.UpdatedDate = inputClassroom.CreatedDate;
             var databaseUpdateException = new DbUpdateException();
 
             var expectedClassroomDependencyException =
@@ -115,6 +117,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Classroom randomClassroom = CreateRandomClassroom(dateTime);
             Classroom inputClassroom = randomClassroom;
             inputClassroom.UpdatedBy = inputClassroom.CreatedBy;
+            inputClassroom.UpdatedDate = inputClassroom.CreatedDate;
             var exception = new Exception();
 
             var expectedClassroomServiceException =

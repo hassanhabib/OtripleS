@@ -24,6 +24,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
 			DateTimeOffset dateTime = randomDateTime;
 			Classroom randomClassroom = CreateRandomClassroom(randomDateTime);
 			randomClassroom.UpdatedBy = randomClassroom.CreatedBy;
+			randomClassroom.UpdatedDate = randomClassroom.CreatedDate;
 			Classroom inputClassroom = randomClassroom;
 			Classroom storageClassroom = randomClassroom;
 			Classroom expectedClassroom = storageClassroom;
