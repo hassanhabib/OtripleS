@@ -68,7 +68,8 @@ namespace OtripleS.Web.Api.Services.Classrooms
             }
         }
 
-        private IQueryable<Classroom> TryCatch(ReturningQueryableClassroomFunction returningQueryableClassroomFunction)
+        private IQueryable<Classroom> TryCatch(
+            ReturningQueryableClassroomFunction returningQueryableClassroomFunction)
         {
             try
             {
