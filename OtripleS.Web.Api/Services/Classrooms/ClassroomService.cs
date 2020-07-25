@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
         public ValueTask<Classroom> CreateClassroomAsync(Classroom classroom) =>
         TryCatch(async () =>
         {
-            ValidateClassroom(classroom);
+            ValidateClassroomOnCreate(classroom);
 
             return await this.storageBroker.InsertClassroomAsync(classroom);
         });
@@ -58,7 +58,10 @@ namespace OtripleS.Web.Api.Services.Classrooms
                 await this.storageBroker.SelectClassroomByIdAsync(classroom.Id);
             
             ValidateStorageClassroom(maybeClassroom, classroom.Id);
-            ValidateAgainstStorageClassroomOnModify(inputClassroom: classroom, storageClassroom: maybeClassroom);
+            
+            ValidateAgainstStorageClassroomOnModify(
+                inputClassroom: classroom, 
+                storageClassroom: maybeClassroom);
 
 			return await this.storageBroker.UpdateClassroomAsync(classroom);
 		});

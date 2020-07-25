@@ -12,14 +12,23 @@ namespace OtripleS.Web.Api.Services.Classrooms
 {
     public partial class ClassroomService
     {
-        private void ValidateClassroom(Classroom classroom)
+        private void ValidateClassroomOnCreate(Classroom classroom)
         {
             ValidateClassroomIsNull(classroom);
             ValidateClassroomIdIsNull(classroom.Id);
             ValidateClassroomFields(classroom);
             ValidateInvalidAuditFields(classroom);
             ValidateAuditFieldsDataOnCreate(classroom);
+        }
 
+        private void ValidateClassroomOnModify(Classroom classroom)
+        {
+            ValidateClassroomIsNull(classroom);
+            ValidateClassroomIdIsNull(classroom.Id);
+            ValidateClassroomFields(classroom);
+            ValidateInvalidAuditFields(classroom);
+            ValidateDatesAreNotSame(classroom);
+            ValidateUpdatedDateIsRecent(classroom);
         }
 
         private void ValidateAuditFieldsDataOnCreate(Classroom classroom)
@@ -45,7 +54,6 @@ namespace OtripleS.Web.Api.Services.Classrooms
                     throw new InvalidClassroomInputException(
                         parameterName: nameof(Classroom.UpdatedDate),
                         parameterValue: classroom.UpdatedDate);
-
             }
         }
 
@@ -123,10 +131,6 @@ namespace OtripleS.Web.Api.Services.Classrooms
             }
         }
 
-        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
-        private static bool IsInvalid(Guid input) => input == default;
-        private static bool IsInvalid(DateTimeOffset input) => input == default;
-
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
@@ -164,7 +168,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
                         parameterValue: inputClassroom.UpdatedDate);
             }
         }
-
+        
         private void ValidateStorageClassrooms(IQueryable<Classroom> storageClassrooms)
         {
             if (storageClassrooms.Count() == 0)
@@ -172,15 +176,8 @@ namespace OtripleS.Web.Api.Services.Classrooms
                 this.loggingBroker.LogWarning("No classrooms found in storage.");
             }
         }
-
-        private void ValidateClassroomOnModify(Classroom classroom)
-        {
-            ValidateClassroomIsNull(classroom);
-            ValidateClassroomIdIsNull(classroom.Id);
-            ValidateClassroomFields(classroom);
-            ValidateInvalidAuditFields(classroom);
-            ValidateDatesAreNotSame(classroom);
-            ValidateUpdatedDateIsRecent(classroom);
-        }
+        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
+        private static bool IsInvalid(Guid input) => input == default;
+        private static bool IsInvalid(DateTimeOffset input) => input == default;
     }
 }
