@@ -72,8 +72,8 @@ namespace OtripleS.Web.Api.Services.Classrooms
 		TryCatch(async () =>
 		{
 			Classroom storageClassroom =
-				await this.storageBroker.SelectClassroomByIdAsync(classroomId); await this.storageBroker.SelectClassroomByIdAsync(classroomId);
-			ValidateStorageClassroom(storageClassroom, classroomId); ValidateStorageClassroom(storageClassroom, classroomId);
+				await this.storageBroker.SelectClassroomByIdAsync(classroomId);
+			ValidateStorageClassroom(storageClassroom, classroomId);
 
 			return storageClassroom;
 		});    
