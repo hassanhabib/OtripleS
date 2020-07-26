@@ -9,74 +9,62 @@ using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 using OtripleS.Web.Api.Services.Classrooms;
 using RESTFulSense.Controllers;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class ClassroomController : RESTFulController
+    [Route("api/[controller]")]
+    public class ClassroomsController : RESTFulController
     {
         private readonly IClassroomService classroomService;
 
-        public ClassroomController(IClassroomService classroomService)
-        {
+        public ClassroomsController(IClassroomService classroomService) =>
             this.classroomService = classroomService;
+
+        [HttpGet]
+        public ActionResult<IQueryable<Classroom>> GetAllClassrooms()
+        {
+            try
+            {
+                IQueryable storageClassrooms =
+                    this.classroomService.RetrieveAllClassrooms();
+
+                return Ok(storageClassrooms);
+            }
+            catch (ClassroomDependencyException classRoomDependencyException)
+            {
+                return Problem(classRoomDependencyException.Message);
+            }
+            catch (ClassroomServiceException classRoomServiceException)
+            {
+                return Problem(classRoomServiceException.Message);
+            }
         }
 
         [HttpPost]
-        public async ValueTask<ActionResult<Classroom>> CreateClassroomAsync(Classroom classroom)
+        public async ValueTask<ActionResult<Classroom>> PostClassroomAsync(Classroom classroom)
         {
             try
             {
-                Classroom persistedClassroom = await classroomService.CreateClassroomAsync(classroom);
+                Classroom persistedClassroom =
+                    await this.classroomService.CreateClassroomAsync(classroom);
+
                 return Ok(persistedClassroom);
             }
-            catch (ClassroomValidationException ex) when (ex.InnerException is AlreadyExistsClassroomException)
-            {
-                return Conflict(GetInnerMessage(ex));
-            }
-            catch (ClassroomValidationException ex)
-            {
-                return BadRequest(GetInnerMessage(ex));
-            }
-            catch (ClassroomDependencyException ex)
-            {
-                return Problem(ex.Message);
-            }
-            catch (ClassroomServiceException ex)
-            {
-                return Problem(ex.Message);
-            }
-        }
-        
-        [HttpGet("{classroomId}")]
-        public async ValueTask<ActionResult<Classroom>> GetClassroomAsync(Guid classroomId)
-        {
-            try
-            {
-                Classroom storageClassroom =
-                    await this.classroomService.RetrieveClassroomById(classroomId);
-
-                return Ok(storageClassroom);
-            }
             catch (ClassroomValidationException classroomValidationException)
-                when (classroomValidationException.InnerException is NotFoundClassroomException)
+                when (classroomValidationException.InnerException is AlreadyExistsClassroomException)
             {
                 string innerMessage = GetInnerMessage(classroomValidationException);
 
-                return NotFound(innerMessage);
+                return Conflict(innerMessage);
             }
             catch (ClassroomValidationException classroomValidationException)
             {
-                return BadRequest(classroomValidationException.Message);
-            }
-            catch (ClassroomDependencyException classroomDependencyException)
-                when (classroomDependencyException.InnerException is LockedClassroomException)
-            {
-                string innerMessage = GetInnerMessage(classroomDependencyException);
+                string innerMessage = GetInnerMessage(classroomValidationException);
 
-                return Locked(innerMessage);
+                return BadRequest(innerMessage);
             }
             catch (ClassroomDependencyException classroomDependencyException)
             {
@@ -108,6 +96,46 @@ namespace OtripleS.Web.Api.Controllers
             catch (ClassroomValidationException classroomValidationException)
             {
                 return BadRequest(classroomValidationException.Message);
+            }
+            catch (ClassroomDependencyException classroomDependencyException)
+                when (classroomDependencyException.InnerException is LockedClassroomException)
+            {
+                string innerMessage = GetInnerMessage(classroomDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (ClassroomDependencyException classroomDependencyException)
+            {
+                return Problem(classroomDependencyException.Message);
+            }
+            catch (ClassroomServiceException classroomServiceException)
+            {
+                return Problem(classroomServiceException.Message);
+            }
+        }
+
+        [HttpPut]
+        public async ValueTask<ActionResult<Classroom>> PutClassroomAsync(Classroom classroom)
+        {
+            try
+            {
+                Classroom registeredClassroom =
+                    await this.classroomService.ModifyClassroomAsync(classroom);
+
+                return Ok(registeredClassroom);
+            }
+            catch (ClassroomValidationException classroomValidationException)
+                when (classroomValidationException.InnerException is NotFoundClassroomException)
+            {
+                string innerMessage = GetInnerMessage(classroomValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (ClassroomValidationException classroomValidationException)
+            {
+                string innerMessage = GetInnerMessage(classroomValidationException);
+
+                return BadRequest(innerMessage);
             }
             catch (ClassroomDependencyException classroomDependencyException)
                 when (classroomDependencyException.InnerException is LockedClassroomException)

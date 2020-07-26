@@ -12,13 +12,23 @@ namespace OtripleS.Web.Api.Services.Classrooms
 {
     public partial class ClassroomService
     {
-        private void ValidateClassroom(Classroom classroom)
+        private void ValidateClassroomOnCreate(Classroom classroom)
         {
             ValidateClassroomIsNull(classroom);
-            ValidateClassroomIdIsNull(classroom);
+            ValidateClassroomIdIsNull(classroom.Id);
             ValidateClassroomFields(classroom);
-            ValidateInvalidAuditFieldsOnCreate(classroom);
+            ValidateInvalidAuditFields(classroom);
             ValidateAuditFieldsDataOnCreate(classroom);
+        }
+
+        private void ValidateClassroomOnModify(Classroom classroom)
+        {
+            ValidateClassroomIsNull(classroom);
+            ValidateClassroomIdIsNull(classroom.Id);
+            ValidateClassroomFields(classroom);
+            ValidateInvalidAuditFields(classroom);
+            ValidateDatesAreNotSame(classroom);
+            ValidateUpdatedDateIsRecent(classroom);
         }
 
         private void ValidateAuditFieldsDataOnCreate(Classroom classroom)
@@ -39,29 +49,34 @@ namespace OtripleS.Web.Api.Services.Classrooms
                     throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.CreatedDate),
                     parameterValue: classroom.CreatedDate);
+
+                case { } when classroom.CreatedDate != classroom.UpdatedDate:
+                    throw new InvalidClassroomInputException(
+                        parameterName: nameof(Classroom.UpdatedDate),
+                        parameterValue: classroom.UpdatedDate);
             }
         }
 
-        private void ValidateInvalidAuditFieldsOnCreate(Classroom classroom)
+        private void ValidateInvalidAuditFields(Classroom classroom)
         {
             switch (classroom)
             {
-                case { } when classroom.CreatedBy == default:
+                case { } when IsInvalid(classroom.CreatedBy):
                     throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.CreatedBy),
                     parameterValue: classroom.CreatedBy);
 
-                case { } when classroom.CreatedDate == default:
+                case { } when IsInvalid(classroom.CreatedDate):
                     throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.CreatedDate),
                     parameterValue: classroom.CreatedDate);
 
-                case { } when classroom.UpdatedBy == default:
+                case { } when IsInvalid(classroom.UpdatedBy):
                     throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.UpdatedBy),
                     parameterValue: classroom.UpdatedBy);
 
-                case { } when classroom.UpdatedDate == default:
+                case { } when IsInvalid(classroom.UpdatedDate):
                     throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.UpdatedDate),
                     parameterValue: classroom.UpdatedDate);
@@ -70,7 +85,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
 
         private void ValidateClassroomFields(Classroom classroom)
         {
-            if (IsEmpty(classroom.Name))
+            if (IsInvalid(classroom.Name))
             {
                 throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.Name),
@@ -86,56 +101,13 @@ namespace OtripleS.Web.Api.Services.Classrooms
             }
         }
 
-        private void ValidateClassroomIdIsNull(Classroom classroom)
+        private void ValidateClassroomIdIsNull(Guid classroomId)
         {
-            if (classroom.Id == default)
+            if (classroomId == default)
             {
                 throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.Id),
-                    parameterValue: classroom.Id);
-            }
-        }
-
-        private void ValidateClassroomStrings(Classroom classroom)
-        {
-            switch (classroom)
-            {
-                case { } when IsInvalid(classroom.Name):
-                    throw new InvalidClassroomInputException(
-                        parameterName: nameof(Classroom.Name),
-                        parameterValue: classroom.Name);
-            }
-        }
-
-        private void ValidateClassroomIds(Classroom classroom)
-        {
-            switch (classroom)
-            {
-                case { } when IsInvalid(classroom.CreatedBy):
-                    throw new InvalidClassroomInputException(
-                        parameterName: nameof(Classroom.CreatedBy),
-                        parameterValue: classroom.CreatedBy);
-
-                case { } when IsInvalid(classroom.UpdatedBy):
-                    throw new InvalidClassroomInputException(
-                        parameterName: nameof(Classroom.UpdatedBy),
-                        parameterValue: classroom.UpdatedBy);
-            }
-        }
-
-        private void ValidateClassroomDates(Classroom classroom)
-        {
-            switch (classroom)
-            {
-                case { } when classroom.CreatedDate == default:
-                    throw new InvalidClassroomInputException(
-                        parameterName: nameof(Classroom.CreatedDate),
-                        parameterValue: classroom.CreatedDate);
-
-                case { } when classroom.UpdatedDate == default:
-                    throw new InvalidClassroomInputException(
-                        parameterName: nameof(Classroom.UpdatedDate),
-                        parameterValue: classroom.UpdatedDate);
+                    parameterValue: classroomId);
             }
         }
 
@@ -159,10 +131,6 @@ namespace OtripleS.Web.Api.Services.Classrooms
             }
         }
 
-        private static bool IsEmpty(string input) => String.IsNullOrWhiteSpace(input);
-        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
-        private static bool IsInvalid(Guid input) => input == default;
-
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
@@ -170,16 +138,6 @@ namespace OtripleS.Web.Api.Services.Classrooms
             TimeSpan difference = now.Subtract(dateTime);
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
-        }
-
-        private void ValidateClassroomId(Guid classroomId)
-        {
-            if (classroomId == Guid.Empty)
-            {
-                throw new InvalidClassroomInputException(
-                    parameterName: nameof(Classroom.Id),
-                    parameterValue: classroomId);
-            }
         }
 
         private void ValidateStorageClassroom(Classroom storageClassroom, Guid classroomId)
@@ -219,15 +177,8 @@ namespace OtripleS.Web.Api.Services.Classrooms
             }
         }
 
-        private void ValidateClassroomOnModify(Classroom classroom)
-        {
-            ValidateClassroomIsNull(classroom);
-            ValidateClassroomIdIsNull(classroom);
-            ValidateClassroomStrings(classroom);
-            ValidateClassroomIds(classroom);
-            ValidateClassroomDates(classroom);
-            ValidateDatesAreNotSame(classroom);
-            ValidateUpdatedDateIsRecent(classroom);
-        }
+        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
+        private static bool IsInvalid(Guid input) => input == default;
+        private static bool IsInvalid(DateTimeOffset input) => input == default;
     }
 }
