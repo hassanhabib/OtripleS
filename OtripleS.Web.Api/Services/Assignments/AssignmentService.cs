@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Services.Assignments
 
         public IQueryable<Assignment> RetrieveAllAssignments()
         {
-            throw new NotImplementedException();
+            return this.storageBroker.SelectAllAssignments();
         }
     }
 }
