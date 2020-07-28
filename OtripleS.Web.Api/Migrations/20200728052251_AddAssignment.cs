@@ -1,25 +1,26 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OtripleS.Web.Api.Migrations
 {
-    public partial class AddClassroom : Migration
+    public partial class AddAssignment : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Classrooms",
+                name: "Assignments",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Location = table.Column<string>(nullable: true),
+                    Label = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true),
                     Status = table.Column<int>(nullable: false),
+                    Deadline = table.Column<DateTimeOffset>(nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(nullable: false),
                     UpdatedDate = table.Column<DateTimeOffset>(nullable: false),
                     CreatedBy = table.Column<Guid>(nullable: false),
@@ -27,14 +28,14 @@ namespace OtripleS.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Classrooms", x => x.Id);
+                    table.PrimaryKey("PK_Assignments", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Classrooms");
+                name: "Assignments");
         }
     }
 }

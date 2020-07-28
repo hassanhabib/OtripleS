@@ -4,13 +4,12 @@
 // ---------------------------------------------------------------
 
 using Microsoft.EntityFrameworkCore;
-
-using OtripleS.Web.Api.Models.Classrooms;
+using OtripleS.Web.Api.Models.Assignments;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
     public partial class StorageBroker
     {
-        public DbSet<Classroom> Classrooms { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
     }
 }

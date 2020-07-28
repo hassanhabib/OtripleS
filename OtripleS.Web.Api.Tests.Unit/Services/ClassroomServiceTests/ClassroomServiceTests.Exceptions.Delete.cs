@@ -8,44 +8,43 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.Courses;
-using OtripleS.Web.Api.Models.Courses.Exceptions;
-
+using OtripleS.Web.Api.Models.Classrooms;
+using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
 {
-    public partial class CourseServiceTests
+    public partial class ClassroomServiceTests
     {
         [Fact]
         public async Task ShouldThrowDependencyExceptionOnDeleteWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomCourseId = Guid.NewGuid();
-            Guid inputCourseId = randomCourseId;
+            Guid randomClassroomId = Guid.NewGuid();
+            Guid inputClassroomId = randomClassroomId;
             SqlException sqlException = GetSqlException();
 
-            var expectedCourseDependencyException =
-                new CourseDependencyException(sqlException);
+            var expectedClassroomDependencyException =
+                new ClassroomDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId))
+                broker.SelectClassroomByIdAsync(inputClassroomId))
                     .ThrowsAsync(sqlException);
 
             // when
-            ValueTask<Course> deleteCourseTask =
-                this.courseService.DeleteCourseAsync(inputCourseId);
+            ValueTask<Classroom> deleteClassroomTask =
+                this.classroomService.DeleteClassroomAsync(inputClassroomId);
 
             // then
-            await Assert.ThrowsAsync<CourseDependencyException>(() =>
-                deleteCourseTask.AsTask());
+            await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
+                deleteClassroomTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedCourseDependencyException))),
+                broker.LogCritical(It.Is(SameExceptionAs(expectedClassroomDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId),
+                broker.SelectClassroomByIdAsync(inputClassroomId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -57,31 +56,31 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
         public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomCourseId = Guid.NewGuid();
-            Guid inputCourseId = randomCourseId;
+            Guid randomClassroomId = Guid.NewGuid();
+            Guid inputClassroomId = randomClassroomId;
             var databaseUpdateException = new DbUpdateException();
 
-            var expectedCourseDependencyException =
-                new CourseDependencyException(databaseUpdateException);
+            var expectedClassroomDependencyException =
+                new ClassroomDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId))
+                broker.SelectClassroomByIdAsync(inputClassroomId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
-            ValueTask<Course> deleteCourseTask =
-                this.courseService.DeleteCourseAsync(inputCourseId);
+            ValueTask<Classroom> deleteClassroomTask =
+                this.classroomService.DeleteClassroomAsync(inputClassroomId);
 
             // then
-            await Assert.ThrowsAsync<CourseDependencyException>(() =>
-                deleteCourseTask.AsTask());
+            await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
+                deleteClassroomTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseDependencyException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedClassroomDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId),
+                broker.SelectClassroomByIdAsync(inputClassroomId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -93,32 +92,32 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
         public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomCourseId = Guid.NewGuid();
-            Guid inputCourseId = randomCourseId;
+            Guid randomClassroomId = Guid.NewGuid();
+            Guid inputClassroomId = randomClassroomId;
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
-            var lockedCourseException = new LockedCourseException(databaseUpdateConcurrencyException);
+            var lockedClassroomException = new LockedClassroomException(databaseUpdateConcurrencyException);
 
-            var expectedCourseDependencyException =
-                new CourseDependencyException(lockedCourseException);
+            var expectedClassroomDependencyException =
+                new ClassroomDependencyException(lockedClassroomException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId))
+                broker.SelectClassroomByIdAsync(inputClassroomId))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
-            ValueTask<Course> deleteCourseTask =
-                this.courseService.DeleteCourseAsync(inputCourseId);
+            ValueTask<Classroom> deleteClassroomTask =
+                this.classroomService.DeleteClassroomAsync(inputClassroomId);
 
             // then
-            await Assert.ThrowsAsync<CourseDependencyException>(() =>
-                deleteCourseTask.AsTask());
+            await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
+                deleteClassroomTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseDependencyException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedClassroomDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId),
+                broker.SelectClassroomByIdAsync(inputClassroomId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -130,31 +129,31 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
         public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomCourseId = Guid.NewGuid();
-            Guid inputCourseId = randomCourseId;
+            Guid randomClassroomId = Guid.NewGuid();
+            Guid inputClassroomId = randomClassroomId;
             var exception = new Exception();
 
-            var expectedCourseServiceException =
-                new CourseServiceException(exception);
+            var expectedClassroomServiceException =
+                new ClassroomServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId))
+                broker.SelectClassroomByIdAsync(inputClassroomId))
                     .ThrowsAsync(exception);
 
             // when
-            ValueTask<Course> deleteCourseTask =
-                this.courseService.DeleteCourseAsync(inputCourseId);
+            ValueTask<Classroom> deleteClassroomTask =
+                this.classroomService.DeleteClassroomAsync(inputClassroomId);
 
             // then
-            await Assert.ThrowsAsync<CourseServiceException>(() =>
-                deleteCourseTask.AsTask());
+            await Assert.ThrowsAsync<ClassroomServiceException>(() =>
+                deleteClassroomTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseServiceException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedClassroomServiceException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId),
+                broker.SelectClassroomByIdAsync(inputClassroomId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
