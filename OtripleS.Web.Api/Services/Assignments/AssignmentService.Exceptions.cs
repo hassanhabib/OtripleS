@@ -37,6 +37,10 @@ namespace OtripleS.Web.Api.Services.Assignments
 
                 throw CreateAndLogValidationException(alreadyExistsAssignmentException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
         }
 
         private AssignmentValidationException CreateAndLogValidationException(Exception exception)
@@ -45,6 +49,14 @@ namespace OtripleS.Web.Api.Services.Assignments
             this.loggingBroker.LogError(assignmentValidationException);
 
             return assignmentValidationException;
+        }
+
+        private AssignmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var assignmentDependencyException = new AssignmentDependencyException(exception);
+            this.loggingBroker.LogCritical(assignmentDependencyException);
+
+            return assignmentDependencyException;
         }
     }
 }
