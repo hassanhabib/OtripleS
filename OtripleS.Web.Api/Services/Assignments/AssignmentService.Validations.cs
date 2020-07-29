@@ -90,6 +90,11 @@ namespace OtripleS.Web.Api.Services.Assignments
         {
             switch (assignment)
             {
+                case { } when assignment.UpdatedBy != assignment.CreatedBy:
+                    throw new InvalidAssignmentException(
+                    parameterName: nameof(Assignment.UpdatedBy),
+                    parameterValue: assignment.UpdatedBy);
+
                 case { } when assignment.UpdatedDate != assignment.CreatedDate:
                     throw new InvalidAssignmentException(
                     parameterName: nameof(Assignment.UpdatedDate),
