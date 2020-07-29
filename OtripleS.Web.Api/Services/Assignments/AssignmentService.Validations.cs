@@ -44,6 +44,13 @@ namespace OtripleS.Web.Api.Services.Assignments
                     parameterName: nameof(Assignment.Label),
                     parameterValue: assignment.Label);
             }
+
+            if (IsInvalid(assignment.Content))
+            {
+                throw new InvalidAssignmentException(
+                    parameterName: nameof(Assignment.Content),
+                    parameterValue: assignment.Content);
+            }
         }
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
