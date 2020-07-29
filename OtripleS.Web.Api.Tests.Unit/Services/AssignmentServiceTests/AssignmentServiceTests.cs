@@ -60,5 +60,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
+
+        private Assignment CreateRandomAssignment() =>
+            CreateAssignmentFiller(dates: DateTimeOffset.UtcNow).Create();
     }
 }
