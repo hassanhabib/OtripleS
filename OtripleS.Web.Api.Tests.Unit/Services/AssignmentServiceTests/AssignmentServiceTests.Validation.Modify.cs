@@ -416,5 +416,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfAssignmentDoesntExistAndLogItAsync()
+        {
+            // given
+            int randomNegativeMinutes = GetNegativeRandomNumber();
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Assignment randomAssignment = CreateRandomAssignment(dateTime);
+            Assignment nonExistentAssignment = randomAssignment;
+            nonExistentAssignment.CreatedDate = dateTime.AddMinutes(randomNegativeMinutes);
+            Assignment noAssignment = null;
+            var notFoundAssignmentException = new NotFoundAssignmentException(nonExistentAssignment.Id);
+
+            var expectedAssignmentValidationException =
+                new AssignmentValidationException(notFoundAssignmentException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAssignmentByIdAsync(nonExistentAssignment.Id))
+                    .ReturnsAsync(noAssignment);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            // when
+            ValueTask<Assignment> modifyAssignmentTask =
+                this.assignmentService.ModifyAssignmentAsync(nonExistentAssignment);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentValidationException>(() =>
+                modifyAssignmentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAssignmentByIdAsync(nonExistentAssignment.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
