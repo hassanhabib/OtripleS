@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Models.Assignments.Exceptions;
 
@@ -21,9 +22,9 @@ namespace OtripleS.Web.Api.Services.Assignments
             {
                 return await returningAssignmentFunction();
             }
-            catch (NullAssignmentException nullClassroomException)
+            catch (NullAssignmentException nullAssignmentException)
             {
-                throw CreateAndLogValidationException(nullClassroomException);
+                throw CreateAndLogValidationException(nullAssignmentException);
             }
             catch (InvalidAssignmentException invalidAssignmentException)
             {
@@ -31,10 +32,10 @@ namespace OtripleS.Web.Api.Services.Assignments
             }
             catch (DuplicateKeyException duplicateKeyException)
             {
-                var alreadyExistsClassroomException =
+                var alreadyExistsAssignmentException =
                     new AlreadyExistsAssignmentException(duplicateKeyException);
 
-                throw CreateAndLogValidationException(alreadyExistsClassroomException);
+                throw CreateAndLogValidationException(alreadyExistsAssignmentException);
             }
         }
 
