@@ -156,5 +156,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            int randomNegativeNumber = GetNegativeRandomNumber();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Assignment randomAssignment = CreateRandomAssignment(randomDateTime);
+            Assignment someAssignment = randomAssignment;
+            someAssignment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+            var lockedAssignmentException = new LockedAssignmentException(databaseUpdateConcurrencyException);
+
+            var expectedAssignmentDependencyException =
+                new AssignmentDependencyException(lockedAssignmentException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAssignmentByIdAsync(someAssignment.Id))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
+
+            // when
+            ValueTask<Assignment> modifyAssignmentTask =
+                this.assignmentService.ModifyAssignmentAsync(someAssignment);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentDependencyException>(() =>
+                modifyAssignmentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAssignmentByIdAsync(someAssignment.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
