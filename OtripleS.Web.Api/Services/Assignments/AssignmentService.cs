@@ -30,6 +30,7 @@ namespace OtripleS.Web.Api.Services.Assignments
         TryCatch(() =>
         {
             IQueryable<Assignment> storageAssignments = this.storageBroker.SelectAllAssignments();
+            ValidateStorageAssignments(storageAssignments);
             return storageAssignments;
         });
     }
