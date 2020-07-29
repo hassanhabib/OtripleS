@@ -100,6 +100,11 @@ namespace OtripleS.Web.Api.Services.Assignments
                     parameterName: nameof(Assignment.UpdatedDate),
                     parameterValue: assignment.UpdatedDate);
 
+                case { } when assignment.Deadline < assignment.CreatedDate:
+                    throw new InvalidAssignmentException(
+                    parameterName: nameof(Assignment.Deadline),
+                    parameterValue: assignment.Deadline);
+
                 case { } when IsDateNotRecent(assignment.CreatedDate):
                     throw new InvalidAssignmentException(
                     parameterName: nameof(Assignment.CreatedDate),
