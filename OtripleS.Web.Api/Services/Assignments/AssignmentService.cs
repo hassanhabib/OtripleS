@@ -43,6 +43,10 @@ namespace OtripleS.Web.Api.Services.Assignments
 
             ValidateStorageAssignment(maybeAssignment, assignment.Id);
 
+            ValidateAgainstStorageAssignmentOnModify(
+                inputAssignment: assignment, 
+                storageAssignment: maybeAssignment);
+
             return await this.storageBroker.UpdateAssignmentAsync(assignment);
         });
     }

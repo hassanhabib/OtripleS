@@ -145,6 +145,17 @@ namespace OtripleS.Web.Api.Services.Assignments
             }
         }
 
+        private void ValidateAgainstStorageAssignmentOnModify(Assignment inputAssignment, Assignment storageAssignment)
+        {
+            switch (inputAssignment)
+            {
+                case { } when inputAssignment.CreatedDate != storageAssignment.CreatedDate:
+                    throw new InvalidAssignmentException(
+                        parameterName: nameof(Assignment.CreatedDate),
+                        parameterValue: inputAssignment.CreatedDate);
+            }
+        }
+
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(Guid input) => input == default;
         private static bool IsInvalid(DateTimeOffset input) => input == default;
