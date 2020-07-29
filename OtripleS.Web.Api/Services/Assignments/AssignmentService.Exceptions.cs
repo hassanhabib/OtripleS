@@ -24,6 +24,10 @@ namespace OtripleS.Web.Api.Services.Assignments
             {
                 throw CreateAndLogValidationException(nullClassroomException);
             }
+            catch (InvalidAssignmentException invalidAssignmentException)
+            {
+                throw CreateAndLogValidationException(invalidAssignmentException);
+            }
         }
 
         private AssignmentValidationException CreateAndLogValidationException(Exception exception)

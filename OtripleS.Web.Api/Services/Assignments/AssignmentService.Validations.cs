@@ -14,6 +14,7 @@ namespace OtripleS.Web.Api.Services.Assignments
         private void ValidateAssignmentOnCreate(Assignment assignment)
         {
             ValidateAssignmentIsNull(assignment);
+            ValidateAssignmentIdIsNull(assignment.Id);
         }
 
         private void ValidateAssignmentIsNull(Assignment assignment)
@@ -21,6 +22,16 @@ namespace OtripleS.Web.Api.Services.Assignments
             if (assignment is null)
             {
                 throw new NullAssignmentException();
+            }
+        }
+
+        private void ValidateAssignmentIdIsNull(Guid assignmentId)
+        {
+            if (assignmentId == default)
+            {
+                throw new InvalidAssignmentException(
+                    parameterName: nameof(Assignment.Id),
+                    parameterValue: assignmentId);
             }
         }
     }
