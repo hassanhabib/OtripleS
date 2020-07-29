@@ -228,5 +228,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedByIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Assignment randomAssignment = CreateRandomAssignment(dateTime);
+            Assignment inputAssignment = randomAssignment;
+            inputAssignment.UpdatedBy = default;
+
+            var invalidAssignmentInputException = new InvalidAssignmentException(
+                parameterName: nameof(Assignment.UpdatedBy),
+                parameterValue: inputAssignment.UpdatedBy);
+
+            var expectedAssignmentValidationException =
+                new AssignmentValidationException(invalidAssignmentInputException);
+
+            // when
+            ValueTask<Assignment> createAssignmentTask =
+                this.assignmentService.CreateAssignmentAsync(inputAssignment);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentValidationException>(() =>
+                createAssignmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
