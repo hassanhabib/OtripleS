@@ -15,6 +15,7 @@ namespace OtripleS.Web.Api.Services.Assignments
         {
             ValidateAssignmentIsNull(assignment);
             ValidateAssignmentIdIsNull(assignment.Id);
+            ValidateAssignmentFields(assignment);
         }
 
         private void ValidateAssignmentIsNull(Assignment assignment)
@@ -34,5 +35,17 @@ namespace OtripleS.Web.Api.Services.Assignments
                     parameterValue: assignmentId);
             }
         }
+
+        private void ValidateAssignmentFields(Assignment assignment)
+        {
+            if (IsInvalid(assignment.Label))
+            {
+                throw new InvalidAssignmentException(
+                    parameterName: nameof(Assignment.Label),
+                    parameterValue: assignment.Label);
+            }
+        }
+
+        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
     }
 }
