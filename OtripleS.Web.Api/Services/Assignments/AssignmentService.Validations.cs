@@ -81,6 +81,11 @@ namespace OtripleS.Web.Api.Services.Assignments
                     throw new InvalidAssignmentException(
                     parameterName: nameof(Assignment.UpdatedDate),
                     parameterValue: assignment.UpdatedDate);
+
+                case { } when IsInvalid(assignment.Deadline):
+                    throw new InvalidAssignmentException(
+                    parameterName: nameof(Assignment.Deadline),
+                    parameterValue: assignment.Deadline);
             }
         }
     }
