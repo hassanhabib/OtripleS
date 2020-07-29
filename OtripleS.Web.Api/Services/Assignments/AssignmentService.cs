@@ -27,9 +27,12 @@ namespace OtripleS.Web.Api.Services.Assignments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async ValueTask<Assignment> CreateAssignmentAsync(Assignment assignemnt)
+        public ValueTask<Assignment> CreateAssignmentAsync(Assignment assignment) =>
+        TryCatch(async () =>
         {
-            return await this.storageBroker.InsertAssignmentAsync(assignemnt);
-        }
+            ValidateAssignmentOnCreate(assignment);
+
+            return await this.storageBroker.InsertAssignmentAsync(assignment);
+        });
     }
 }
