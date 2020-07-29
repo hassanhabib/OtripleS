@@ -20,6 +20,11 @@ namespace OtripleS.Web.Api.Services.Assignments
             ValidateAuditFieldsDataOnCreate(assignment);
         }
 
+        private void ValidateAssignmentOnModify(Assignment assignment)
+        {
+            ValidateAssignmentIsNull(assignment);
+        }
+
         private void ValidateAssignmentIsNull(Assignment assignment)
         {
             if (assignment is null)

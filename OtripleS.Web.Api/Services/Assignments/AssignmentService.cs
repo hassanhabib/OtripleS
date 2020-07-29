@@ -35,13 +35,15 @@ namespace OtripleS.Web.Api.Services.Assignments
             return await this.storageBroker.InsertAssignmentAsync(assignment);
         });
 
-        public async ValueTask<Assignment> ModifyAssignmentAsync(Assignment assignment)
+        public ValueTask<Assignment> ModifyAssignmentAsync(Assignment assignment) =>
+        TryCatch(async () =>
         {
+            ValidateAssignmentOnModify(assignment);
             Assignment maybeAssignment = await this.storageBroker.SelectAssignmentByIdAsync(assignment.Id);
 
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
 
             return await this.storageBroker.UpdateAssignmentAsync(assignment);
-        }
+        });
     }
 }
