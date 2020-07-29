@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Assignments.Exceptions;
@@ -59,6 +60,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllAssignments(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+        [Fact]
+        public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
+        {
+            // given
+            var exception = new Exception();
+
+            var expectedAssignmentServiceException =
+                new AssignmentServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllAssignments())
+                    .Throws(exception);
+
+            // when . then
+            Assert.Throws<AssignmentServiceException>(() =>
+                this.assignmentService.RetrieveAllAssignments());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentServiceException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
