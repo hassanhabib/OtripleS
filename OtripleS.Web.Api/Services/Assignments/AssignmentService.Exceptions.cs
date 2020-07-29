@@ -46,6 +46,12 @@ namespace OtripleS.Web.Api.Services.Assignments
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedAssignmentException = new LockedAssignmentException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedAssignmentException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
