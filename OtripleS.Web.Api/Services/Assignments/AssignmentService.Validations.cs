@@ -154,6 +154,11 @@ namespace OtripleS.Web.Api.Services.Assignments
                         parameterName: nameof(Assignment.CreatedDate),
                         parameterValue: inputAssignment.CreatedDate);
 
+                case { } when inputAssignment.CreatedBy != storageAssignment.CreatedBy:
+                    throw new InvalidAssignmentException(
+                        parameterName: nameof(Assignment.CreatedBy),
+                        parameterValue: inputAssignment.CreatedBy);
+
                 case { } when inputAssignment.UpdatedDate == storageAssignment.UpdatedDate:
                     throw new InvalidAssignmentException(
                         parameterName: nameof(Assignment.UpdatedDate),
