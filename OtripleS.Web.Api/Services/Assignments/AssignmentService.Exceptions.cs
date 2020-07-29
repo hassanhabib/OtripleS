@@ -27,11 +27,22 @@ namespace OtripleS.Web.Api.Services.Assignments
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
         private AssignmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
             var assignmentDependencyException = new AssignmentDependencyException(exception);
             this.loggingBroker.LogCritical(assignmentDependencyException);
+
+            return assignmentDependencyException;
+        }
+        private AssignmentDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var assignmentDependencyException = new AssignmentDependencyException(exception);
+            this.loggingBroker.LogError(assignmentDependencyException);
 
             return assignmentDependencyException;
         }
