@@ -78,5 +78,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
         }
 
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
     }
 }

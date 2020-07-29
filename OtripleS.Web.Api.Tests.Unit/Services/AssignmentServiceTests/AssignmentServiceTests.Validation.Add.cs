@@ -9,6 +9,7 @@ using Moq;
 using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Models.Assignments.Exceptions;
 using Xunit;
+using EFxceptions.Models.Exceptions;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
 {
@@ -462,6 +463,57 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenAssignmentAlreadyExistsAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Assignment randomAssignment = CreateRandomAssignment(dateTime);
+            Assignment alreadyExistsAssignment = randomAssignment;
+            alreadyExistsAssignment.UpdatedBy = alreadyExistsAssignment.CreatedBy;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsAssignmentException =
+                new AlreadyExistsAssignmentException(duplicateKeyException);
+
+            var expectedAssignmentValidationException =
+                new AssignmentValidationException(alreadyExistsAssignmentException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertAssignmentAsync(alreadyExistsAssignment))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<Assignment> createAssignmentTask =
+                this.assignmentService.CreateAssignmentAsync(alreadyExistsAssignment);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentValidationException>(() =>
+                createAssignmentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertAssignmentAsync(alreadyExistsAssignment),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
