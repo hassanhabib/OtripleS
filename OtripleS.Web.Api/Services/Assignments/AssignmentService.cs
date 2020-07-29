@@ -34,5 +34,7 @@ namespace OtripleS.Web.Api.Services.Assignments
 
             return await this.storageBroker.InsertAssignmentAsync(assignment);
         });
+
+        public ValueTask<Assignment> ModifyAssignmentAsync(Assignment assignment) => throw new NotImplementedException();
     }
 }

@@ -12,5 +12,6 @@ namespace OtripleS.Web.Api.Services.Assignments
     public interface IAssignmentService
     {
         ValueTask<Assignment> CreateAssignmentAsync(Assignment assignemnt);
+        ValueTask<Assignment> ModifyAssignmentAsync(Assignment assignment);
     }
 }
