@@ -27,6 +27,7 @@ namespace OtripleS.Web.Api.Services.Assignments
 			ValidateAssignmentFields(assignment);
 			ValidateInvalidAuditFields(assignment);
             ValidateDatesAreNotSame(assignment);
+            ValidateUpdatedDateIsRecent(assignment);
         }
 
         private void ValidateAssignmentIsNull(Assignment assignment)
@@ -122,6 +123,16 @@ namespace OtripleS.Web.Api.Services.Assignments
             {
                 throw new InvalidAssignmentException(
                     parameterName: nameof(Assignment.UpdatedDate),
+                    parameterValue: assignment.UpdatedDate);
+            }
+        }
+
+        private void ValidateUpdatedDateIsRecent(Assignment assignment)
+        {
+            if (IsDateNotRecent(assignment.UpdatedDate))
+            {
+                throw new InvalidAssignmentException(
+                    parameterName: nameof(assignment.UpdatedDate),
                     parameterValue: assignment.UpdatedDate);
             }
         }
