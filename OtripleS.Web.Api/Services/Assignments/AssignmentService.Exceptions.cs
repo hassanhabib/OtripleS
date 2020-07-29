@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Models.Assignments.Exceptions;
 
@@ -27,6 +28,13 @@ namespace OtripleS.Web.Api.Services.Assignments
             catch (InvalidAssignmentException invalidAssignmentException)
             {
                 throw CreateAndLogValidationException(invalidAssignmentException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsClassroomException =
+                    new AlreadyExistsAssignmentException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsClassroomException);
             }
         }
 
