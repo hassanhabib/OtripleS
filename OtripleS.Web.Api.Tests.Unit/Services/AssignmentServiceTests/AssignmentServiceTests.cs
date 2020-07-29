@@ -6,12 +6,15 @@
 using System;
 using System.Linq;
 using Moq;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Services.Assignments;
 using Tynamix.ObjectFiller;
+using System.Runtime.Serialization;
+using System.Linq.Expressions;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
 {
@@ -34,6 +37,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
                 dateTimeBroker: dateTimeBrokerMock.Object
             );
         }
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
@@ -49,5 +58,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
             return filler;
         }
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
     }
 }
