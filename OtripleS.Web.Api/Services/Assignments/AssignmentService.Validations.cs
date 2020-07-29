@@ -24,8 +24,9 @@ namespace OtripleS.Web.Api.Services.Assignments
         {
             ValidateAssignmentIsNull(assignment);
             ValidateAssignmentIdIsNull(assignment.Id);
-            ValidateAssignmentFields(assignment);
-        }
+			ValidateAssignmentFields(assignment);
+			ValidateInvalidAuditFields(assignment);
+		}
 
         private void ValidateAssignmentIsNull(Assignment assignment)
         {
