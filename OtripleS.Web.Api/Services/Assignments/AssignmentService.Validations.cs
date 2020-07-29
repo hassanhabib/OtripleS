@@ -56,6 +56,7 @@ namespace OtripleS.Web.Api.Services.Assignments
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(Guid input) => input == default;
+        private static bool IsInvalid(DateTimeOffset input) => input == default;
 
         private void ValidateInvalidAuditFields(Assignment assignment)
         {
@@ -65,6 +66,11 @@ namespace OtripleS.Web.Api.Services.Assignments
                     throw new InvalidAssignmentException(
                     parameterName: nameof(assignment.CreatedBy),
                     parameterValue: assignment.CreatedBy);
+
+                case { } when IsInvalid(assignment.CreatedDate):
+                    throw new InvalidAssignmentException(
+                    parameterName: nameof(Assignment.CreatedDate),
+                    parameterValue: assignment.CreatedDate);
             }
         }
     }
