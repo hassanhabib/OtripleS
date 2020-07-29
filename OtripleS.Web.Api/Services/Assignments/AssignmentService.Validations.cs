@@ -17,6 +17,7 @@ namespace OtripleS.Web.Api.Services.Assignments
             ValidateAssignmentIdIsNull(assignment.Id);
             ValidateAssignmentFields(assignment);
             ValidateInvalidAuditFields(assignment);
+            ValidateAuditFieldsDataOnCreate(assignment);
         }
 
         private void ValidateAssignmentIsNull(Assignment assignment)
@@ -54,10 +55,6 @@ namespace OtripleS.Web.Api.Services.Assignments
             }
         }
 
-        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
-        private static bool IsInvalid(Guid input) => input == default;
-        private static bool IsInvalid(DateTimeOffset input) => input == default;
-
         private void ValidateInvalidAuditFields(Assignment assignment)
         {
             switch (assignment)
@@ -72,8 +69,7 @@ namespace OtripleS.Web.Api.Services.Assignments
                     parameterName: nameof(Assignment.CreatedDate),
                     parameterValue: assignment.CreatedDate);
 
-                case { } when IsInvalid(assignment.UpdatedBy) ||
-                                        assignment.UpdatedBy != assignment.CreatedBy:
+                case { } when IsInvalid(assignment.UpdatedBy):
                     throw new InvalidAssignmentException(
                     parameterName: nameof(Assignment.UpdatedBy),
                     parameterValue: assignment.UpdatedBy);
@@ -94,11 +90,15 @@ namespace OtripleS.Web.Api.Services.Assignments
         {
             switch (assignment)
             {
-                case { } when assignment.UpdatedBy != assignment.CreatedBy:
+                case { } when assignment.UpdatedDate != assignment.CreatedDate:
                     throw new InvalidAssignmentException(
-                    parameterName: nameof(Assignment.UpdatedBy),
-                    parameterValue: assignment.UpdatedBy);
+                    parameterName: nameof(Assignment.UpdatedDate),
+                    parameterValue: assignment.UpdatedDate);
             }
         }
+
+        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
+        private static bool IsInvalid(Guid input) => input == default;
+        private static bool IsInvalid(DateTimeOffset input) => input == default;
     }
 }
