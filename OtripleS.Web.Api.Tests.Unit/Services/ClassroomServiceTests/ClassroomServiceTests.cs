@@ -50,6 +50,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
         private static Filler<Classroom> CreateClassroomFiller(DateTimeOffset dates)
         {
             var filler = new Filler<Classroom>();
+
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates);
 
