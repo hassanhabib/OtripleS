@@ -137,6 +137,14 @@ namespace OtripleS.Web.Api.Services.Assignments
             }
         }
 
+        private void ValidateStorageAssignment(Assignment storageAssignment, Guid assignmentId)
+        {
+            if (storageAssignment == null)
+            {
+                throw new NotFoundAssignmentException(assignmentId);
+            }
+        }
+
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(Guid input) => input == default;
         private static bool IsInvalid(DateTimeOffset input) => input == default;

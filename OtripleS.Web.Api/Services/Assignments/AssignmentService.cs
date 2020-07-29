@@ -41,7 +41,7 @@ namespace OtripleS.Web.Api.Services.Assignments
             ValidateAssignmentOnModify(assignment);
             Assignment maybeAssignment = await this.storageBroker.SelectAssignmentByIdAsync(assignment.Id);
 
-            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            ValidateStorageAssignment(maybeAssignment, assignment.Id);
 
             return await this.storageBroker.UpdateAssignmentAsync(assignment);
         });

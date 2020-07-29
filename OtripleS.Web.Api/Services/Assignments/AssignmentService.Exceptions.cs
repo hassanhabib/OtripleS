@@ -31,6 +31,10 @@ namespace OtripleS.Web.Api.Services.Assignments
             {
                 throw CreateAndLogValidationException(invalidAssignmentException);
             }
+            catch (NotFoundAssignmentException notFoundAssignmentException)
+            {
+                throw CreateAndLogValidationException(notFoundAssignmentException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsAssignmentException =
