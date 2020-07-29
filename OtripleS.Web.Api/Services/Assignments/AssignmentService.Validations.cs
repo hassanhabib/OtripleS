@@ -26,7 +26,8 @@ namespace OtripleS.Web.Api.Services.Assignments
             ValidateAssignmentIdIsNull(assignment.Id);
 			ValidateAssignmentFields(assignment);
 			ValidateInvalidAuditFields(assignment);
-		}
+            ValidateDatesAreNotSame(assignment);
+        }
 
         private void ValidateAssignmentIsNull(Assignment assignment)
         {
@@ -112,6 +113,16 @@ namespace OtripleS.Web.Api.Services.Assignments
                     throw new InvalidAssignmentException(
                     parameterName: nameof(Assignment.CreatedDate),
                     parameterValue: assignment.CreatedDate);
+            }
+        }
+
+        private void ValidateDatesAreNotSame(Assignment assignment)
+        {
+            if (assignment.CreatedDate == assignment.UpdatedDate)
+            {
+                throw new InvalidAssignmentException(
+                    parameterName: nameof(Assignment.UpdatedDate),
+                    parameterValue: assignment.UpdatedDate);
             }
         }
 
