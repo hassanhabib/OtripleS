@@ -23,9 +23,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
 			Assignment randomAssignment = CreateRandomAssignment(randomDateTime);
 			randomAssignment.UpdatedBy = randomAssignment.CreatedBy;
 			randomAssignment.UpdatedDate = randomAssignment.CreatedDate;
-			Assignment inputAssignment= randomAssignment;
+			Assignment inputAssignment = randomAssignment;
 			Assignment storageAssignment = randomAssignment;
 			Assignment expectedAssignment = storageAssignment;
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(dateTime);
 
 			this.storageBrokerMock.Setup(broker =>
 				broker.InsertAssignmentAsync(inputAssignment))
@@ -37,6 +41,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
 
 			// then
 			actualAssignment.Should().BeEquivalentTo(expectedAssignment);
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
 
 			this.storageBrokerMock.Verify(broker =>
 				broker.InsertAssignmentAsync(inputAssignment),
