@@ -72,7 +72,8 @@ namespace OtripleS.Web.Api.Services.Assignments
                     parameterName: nameof(Assignment.CreatedDate),
                     parameterValue: assignment.CreatedDate);
 
-                case { } when IsInvalid(assignment.UpdatedBy):
+                case { } when IsInvalid(assignment.UpdatedBy) ||
+                                        assignment.UpdatedBy != assignment.CreatedBy:
                     throw new InvalidAssignmentException(
                     parameterName: nameof(Assignment.UpdatedBy),
                     parameterValue: assignment.UpdatedBy);
@@ -86,6 +87,17 @@ namespace OtripleS.Web.Api.Services.Assignments
                     throw new InvalidAssignmentException(
                     parameterName: nameof(Assignment.Deadline),
                     parameterValue: assignment.Deadline);
+            }
+        }
+
+        private void ValidateAuditFieldsDataOnCreate(Assignment assignment)
+        {
+            switch (assignment)
+            {
+                case { } when assignment.UpdatedBy != assignment.CreatedBy:
+                    throw new InvalidAssignmentException(
+                    parameterName: nameof(Assignment.UpdatedBy),
+                    parameterValue: assignment.UpdatedBy);
             }
         }
     }
