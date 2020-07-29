@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Models.Assignments.Exceptions;
 
@@ -40,7 +41,7 @@ namespace OtripleS.Web.Api.Services.Assignments
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
-            }
+            } 
         }
 
         private AssignmentValidationException CreateAndLogValidationException(Exception exception)
