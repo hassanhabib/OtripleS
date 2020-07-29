@@ -26,9 +26,11 @@ namespace OtripleS.Web.Api.Services.Assignments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public IQueryable<Assignment> RetrieveAllAssignments()
+        public IQueryable<Assignment> RetrieveAllAssignments() =>
+        TryCatch(() =>
         {
-            return this.storageBroker.SelectAllAssignments();
-        }
+            IQueryable<Assignment> storageAssignments = this.storageBroker.SelectAllAssignments();
+            return storageAssignments;
+        });
     }
 }
