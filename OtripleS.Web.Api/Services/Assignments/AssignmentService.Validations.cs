@@ -94,11 +94,25 @@ namespace OtripleS.Web.Api.Services.Assignments
                     throw new InvalidAssignmentException(
                     parameterName: nameof(Assignment.UpdatedDate),
                     parameterValue: assignment.UpdatedDate);
+
+                case { } when IsDateNotRecent(assignment.CreatedDate):
+                    throw new InvalidAssignmentException(
+                    parameterName: nameof(Assignment.CreatedDate),
+                    parameterValue: assignment.CreatedDate);
             }
         }
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(Guid input) => input == default;
         private static bool IsInvalid(DateTimeOffset input) => input == default;
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
     }
 }
