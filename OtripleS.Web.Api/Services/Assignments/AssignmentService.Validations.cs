@@ -23,6 +23,7 @@ namespace OtripleS.Web.Api.Services.Assignments
         private void ValidateAssignmentOnModify(Assignment assignment)
         {
             ValidateAssignmentIsNull(assignment);
+            ValidateAssignmentIdIsNull(assignment.Id);
         }
 
         private void ValidateAssignmentIsNull(Assignment assignment)
