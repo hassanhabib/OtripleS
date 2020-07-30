@@ -7,7 +7,7 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Assignments
 {
-    public class Assignment
+    public class Assignment : IAuditable
     {
         public Guid Id { get; set; }
         public string Label { get; set; }
