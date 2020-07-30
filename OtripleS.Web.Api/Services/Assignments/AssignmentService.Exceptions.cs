@@ -39,7 +39,7 @@ namespace OtripleS.Web.Api.Services.Assignments
                     new AlreadyExistsAssignmentException(duplicateKeyException);
 
                 throw CreateAndLogValidationException(alreadyExistsAssignmentException);
-
+            }
             catch (NotFoundAssignmentException notFoundAssignmentException)
             {
                 throw CreateAndLogValidationException(notFoundAssignmentException);
@@ -93,6 +93,22 @@ namespace OtripleS.Web.Api.Services.Assignments
             this.loggingBroker.LogError(assignmentDependencyException);
 
             return assignmentDependencyException;
+        }
+
+        private AssignmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var assignmentDependencyException = new AssignmentDependencyException(exception);
+            this.loggingBroker.LogCritical(assignmentDependencyException);
+
+            return assignmentDependencyException;
+        }
+
+        private AssignmentServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var assignmentServiceException = new AssignmentServiceException(exception);
+            this.loggingBroker.LogError(assignmentServiceException);
+
+            return assignmentServiceException;
         }
     }
 }
