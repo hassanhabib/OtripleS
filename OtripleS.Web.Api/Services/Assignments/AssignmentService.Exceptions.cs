@@ -5,6 +5,8 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Assignments;
@@ -15,6 +17,39 @@ namespace OtripleS.Web.Api.Services.Assignments
     public partial class AssignmentService
     {
         private delegate IQueryable<Assignment> ReturningQueryableAssignmentFunction();
+        private delegate ValueTask<Assignment> ReturningAssignmentFunction();
+
+        private async ValueTask<Assignment> TryCatch(ReturningAssignmentFunction returningAssignmentFunction)
+        {
+            try
+            {
+                return await returningAssignmentFunction();
+            }
+            catch (NullAssignmentException nullAssignmentException)
+            {
+                throw CreateAndLogValidationException(nullAssignmentException);
+            }
+            catch (InvalidAssignmentException invalidAssignmentInputException)
+            {
+                throw CreateAndLogValidationException(invalidAssignmentInputException);
+            }
+            catch (NotFoundAssignmentException notFoundAssignmentException)
+            {
+                throw CreateAndLogValidationException(notFoundAssignmentException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
 
         private IQueryable<Assignment> TryCatch(
             ReturningQueryableAssignmentFunction returningQueryableAssignmentFunction)
@@ -36,6 +71,15 @@ namespace OtripleS.Web.Api.Services.Assignments
                 throw CreateAndLogServiceException(exception);
             }
         }
+
+        private AssignmentValidationException CreateAndLogValidationException(Exception exception)
+        {
+            var assignmentValidationException = new AssignmentValidationException(exception);
+            this.loggingBroker.LogError(assignmentValidationException);
+
+            return assignmentValidationException;
+        }
+
         private AssignmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
             var assignmentDependencyException = new AssignmentDependencyException(exception);
