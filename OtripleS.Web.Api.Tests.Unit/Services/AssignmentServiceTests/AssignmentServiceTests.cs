@@ -48,6 +48,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
         private static IQueryable<Assignment> CreateRandomAssignments(DateTimeOffset dates) =>
             CreateAssignmentFiller(dates).Create(GetRandomNumber()).AsQueryable();
+        private static Assignment CreateRandomAssignment(DateTimeOffset dates) =>
+            CreateAssignmentFiller(dates).Create();
         private static Filler<Assignment> CreateAssignmentFiller(DateTimeOffset dates)
         {
             var filler = new Filler<Assignment>();

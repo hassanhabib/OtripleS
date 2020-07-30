@@ -5,6 +5,7 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.Assignments;
@@ -45,6 +46,34 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldRetrieveAssignmentById()
+        {
+            //given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Assignment randomAssignment = CreateRandomAssignment(dateTime);
+            Guid inputAssignmentId = randomAssignment.Id;
+            Assignment inputAssignment = randomAssignment;
+            Assignment expectedAssignment = randomAssignment;
+
+            this.storageBrokerMock.Setup(broker =>
+                    broker.SelectAssignmentByIdAsync(inputAssignmentId))
+                .ReturnsAsync(inputAssignment);
+
+            //when 
+            Assignment actualAssignment = await this.assignmentService.RetrieveAssignmentById(inputAssignmentId);
+
+            //then
+            actualAssignment.Should().BeEquivalentTo(expectedAssignment);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAssignmentByIdAsync(inputAssignmentId), Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
