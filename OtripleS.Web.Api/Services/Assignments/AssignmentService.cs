@@ -1,9 +1,11 @@
-﻿// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
 using System;
+using System.Threading.Tasks;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -33,6 +35,25 @@ namespace OtripleS.Web.Api.Services.Assignments
             ValidateAssignmentOnCreate(assignment);
 
             return await this.storageBroker.InsertAssignmentAsync(assignment);
+        });
+
+        public IQueryable<Assignment> RetrieveAllAssignments() =>
+        TryCatch(() =>
+        {
+            IQueryable<Assignment> storageAssignments = this.storageBroker.SelectAllAssignments();
+            ValidateStorageAssignments(storageAssignments);
+
+            return storageAssignments;
+        });
+
+        public ValueTask<Assignment> RetrieveAssignmentById(Guid guid) => 
+        TryCatch( async () =>
+        {
+            ValidateStorageIdIsNotNullOrEmpty(guid);
+            Assignment storageAssignment = await this.storageBroker.SelectAssignmentByIdAsync(guid);
+            ValidateStorageAssignment(storageAssignment, guid);
+
+            return storageAssignment;
         });
     }
 }
