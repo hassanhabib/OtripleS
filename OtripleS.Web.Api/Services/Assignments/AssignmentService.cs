@@ -42,7 +42,7 @@ namespace OtripleS.Web.Api.Services.Assignments
         {
             ValidateStorageIdIsNotNullOrEmpty(guid);
             Assignment storageAssignment = await this.storageBroker.SelectAssignmentByIdAsync(guid);
-            ValidateStorageAssignment(storageAssignment);
+            ValidateStorageAssignment(storageAssignment, guid);
 
             throw new NotImplementedException();
         });

@@ -25,6 +25,14 @@ namespace OtripleS.Web.Api.Services.Assignments
             {
                 return await returningAssignmentFunction();
             }
+            catch (NullAssignmentException nullAssignmentException)
+            {
+                throw CreateAndLogValidationException(nullAssignmentException);
+            }
+            catch (InvalidAssignmentException invalidAssignmentInputException)
+            {
+                throw CreateAndLogValidationException(invalidAssignmentInputException);
+            }
             catch (NotFoundAssignmentException notFoundAssignmentException)
             {
                 throw CreateAndLogValidationException(notFoundAssignmentException);
@@ -66,10 +74,10 @@ namespace OtripleS.Web.Api.Services.Assignments
 
         private AssignmentValidationException CreateAndLogValidationException(Exception exception)
         {
-            var classroomValidationException = new AssignmentValidationException(exception);
-            this.loggingBroker.LogError(classroomValidationException);
+            var assignmentValidationException = new AssignmentValidationException(exception);
+            this.loggingBroker.LogError(assignmentValidationException);
 
-            return classroomValidationException;
+            return assignmentValidationException;
         }
 
         private AssignmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)

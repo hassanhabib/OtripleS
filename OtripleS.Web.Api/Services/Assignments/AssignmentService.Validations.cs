@@ -31,10 +31,9 @@ namespace OtripleS.Web.Api.Services.Assignments
 
         private void ValidateStorageAssignment(Assignment storageAssignment, Guid guid)
         {
-            ValidateStorageAssignment(storageAssignment);
-            if (!guid.Equals(storageAssignment.Id))
+            if (storageAssignment is null)
             {
-                throw new InvalidAssignmentException(nameof(Assignment.Id), guid);
+                throw new NotFoundAssignmentException(guid);
             }
         }
 
