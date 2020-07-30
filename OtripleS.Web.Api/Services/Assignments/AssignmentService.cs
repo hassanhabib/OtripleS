@@ -44,7 +44,7 @@ namespace OtripleS.Web.Api.Services.Assignments
             Assignment storageAssignment = await this.storageBroker.SelectAssignmentByIdAsync(guid);
             ValidateStorageAssignment(storageAssignment, guid);
 
-            throw new NotImplementedException();
+            return storageAssignment;
         });
     }
 }
