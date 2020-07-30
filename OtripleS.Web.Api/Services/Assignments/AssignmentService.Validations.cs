@@ -45,5 +45,13 @@ namespace OtripleS.Web.Api.Services.Assignments
                 throw new InvalidAssignmentException(nameof(Assignment.Id), guid);
             }
         }
+
+        private void ValidateAssignmentIsNull(Assignment assignment)
+        {
+            if (assignment is null)
+            {
+                throw new NullAssignmentException();
+            }
+        }
     }
 }
