@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.Assignments;
 
@@ -13,5 +14,7 @@ namespace OtripleS.Web.Api.Services.Assignments
     {
         ValueTask<Assignment> CreateAssignmentAsync(Assignment assignemnt);
         ValueTask<Assignment> ModifyAssignmentAsync(Assignment assignment);
+        IQueryable<Assignment> RetrieveAllAssignments();
+        ValueTask<Assignment> RetrieveAssignmentById(Guid guid);
     }
 }

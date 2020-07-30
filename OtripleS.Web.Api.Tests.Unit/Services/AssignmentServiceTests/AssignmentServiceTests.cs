@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -66,6 +67,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
 
         private Assignment CreateRandomAssignment() =>
             CreateAssignmentFiller(dates: DateTimeOffset.UtcNow).Create();
+
+        private static IQueryable<Assignment> CreateRandomAssignments(DateTimeOffset dates) =>            
+            CreateAssignmentFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
         public static IEnumerable<object[]> InvalidMinuteCases()
         {

@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Models.Assignments.Exceptions;
 
@@ -163,6 +164,14 @@ namespace OtripleS.Web.Api.Services.Assignments
                     throw new InvalidAssignmentException(
                         parameterName: nameof(Assignment.UpdatedDate),
                         parameterValue: inputAssignment.UpdatedDate);
+            }
+        }
+
+        private void ValidateStorageAssignments(IQueryable<Assignment> storageAssignments)
+        {
+            if (storageAssignments.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No Assignments found in storage.");
             }
         }
 
