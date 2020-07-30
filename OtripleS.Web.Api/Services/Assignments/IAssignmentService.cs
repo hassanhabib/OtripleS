@@ -14,5 +14,8 @@ namespace OtripleS.Web.Api.Services.Assignments
     {
         IQueryable<Assignment> RetrieveAllAssignments();
         ValueTask<Assignment> RetrieveAssignmentById(Guid guid);
+        ValueTask<Assignment> CreateAssignmentAsync(Assignment assignment);
+        ValueTask<Assignment> DeleteAssignmentAsync(Guid assignmentId);
+        ValueTask<Assignment> ModifyAssignmentAsync(Assignment assignment);
     }
 }

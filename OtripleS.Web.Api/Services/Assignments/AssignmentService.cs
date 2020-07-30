@@ -46,5 +46,20 @@ namespace OtripleS.Web.Api.Services.Assignments
 
             return storageAssignment;
         });
+
+        public ValueTask<Assignment> CreateAssignmentAsync(Assignment assignment)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ValueTask<Assignment> DeleteAssignmentAsync(Guid assignmentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ValueTask<Assignment> ModifyAssignmentAsync(Assignment assignment)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
