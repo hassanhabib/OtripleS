@@ -19,6 +19,7 @@ namespace OtripleS.Web.Api.Services.Assignments
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
         private readonly IDateTimeBroker dateTimeBroker;
+
         public AssignmentService(IStorageBroker storageBroker,
             ILoggingBroker loggingBroker,
             IDateTimeBroker dateTimeBroker)
@@ -29,37 +30,45 @@ namespace OtripleS.Web.Api.Services.Assignments
         }
 
         public IQueryable<Assignment> RetrieveAllAssignments() =>
-        TryCatch(() =>
-        {
-            IQueryable<Assignment> storageAssignments = this.storageBroker.SelectAllAssignments();
-            ValidateStorageAssignments(storageAssignments);
+            TryCatch(() =>
+            {
+                IQueryable<Assignment> storageAssignments = this.storageBroker.SelectAllAssignments();
+                ValidateStorageAssignments(storageAssignments);
 
-            return storageAssignments;
+                return storageAssignments;
+            });
+
+        public ValueTask<Assignment> RetrieveAssignmentById(Guid guid) =>
+            TryCatch(async () =>
+            {
+                ValidateStorageIdIsNotNullOrEmpty(guid);
+                Assignment storageAssignment = await this.storageBroker.SelectAssignmentByIdAsync(guid);
+                ValidateStorageAssignment(storageAssignment, guid);
+
+                return storageAssignment;
+            });
+
+        public ValueTask<Assignment> CreateAssignmentAsync(Assignment assignment) =>
+            TryCatch(async () => { return await this.storageBroker.InsertAssignmentAsync(assignment); });
+
+        public ValueTask<Assignment> DeleteAssignmentAsync(Guid assignmentId) => TryCatch(async () =>
+        {
+            Assignment maybeAssignment =
+                await this.storageBroker.SelectAssignmentByIdAsync(assignmentId);
+
+            ValidateStorageAssignment(maybeAssignment, assignmentId);
+
+            return await this.storageBroker.DeleteAssignmentAsync(maybeAssignment);
         });
 
-        public ValueTask<Assignment> RetrieveAssignmentById(Guid guid) => 
-        TryCatch( async () =>
+        public ValueTask<Assignment> ModifyAssignmentAsync(Assignment assignment) => TryCatch(async () =>
         {
-            ValidateStorageIdIsNotNullOrEmpty(guid);
-            Assignment storageAssignment = await this.storageBroker.SelectAssignmentByIdAsync(guid);
-            ValidateStorageAssignment(storageAssignment, guid);
+            Assignment maybeAssignment =
+                await this.storageBroker.SelectAssignmentByIdAsync(assignment.Id);
 
-            return storageAssignment;
+            ValidateStorageAssignment(maybeAssignment, assignment.Id);
+
+            return await this.storageBroker.UpdateAssignmentAsync(maybeAssignment);
         });
-
-        public ValueTask<Assignment> CreateAssignmentAsync(Assignment assignment)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ValueTask<Assignment> DeleteAssignmentAsync(Guid assignmentId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ValueTask<Assignment> ModifyAssignmentAsync(Assignment assignment)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
