@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
+using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
 {
+    [Collection(nameof(ApiTestCollection))]
     public partial class AssignmentsApiTests
     {
         private OtripleSApiBroker otripleSApiBroker;

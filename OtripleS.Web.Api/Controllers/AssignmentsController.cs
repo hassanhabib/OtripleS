@@ -11,11 +11,11 @@ namespace OtripleS.Web.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AssignmentController : RESTFulController
+    public class AssignmentsController : RESTFulController
     {
         private IAssignmentService assignmentService;
 
-        public AssignmentController(IAssignmentService assignmentService) =>
+        public AssignmentsController(IAssignmentService assignmentService) =>
             this.assignmentService = assignmentService;
 
         [HttpGet]

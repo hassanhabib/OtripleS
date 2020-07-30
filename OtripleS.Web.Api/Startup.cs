@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Services.Assignments;
 using OtripleS.Web.Api.Services.Classrooms;
 using OtripleS.Web.Api.Services.Courses;
 using OtripleS.Web.Api.Services.Students;
@@ -38,6 +39,7 @@ namespace OtripleS.Web.Api
             services.AddTransient<ITeacherService, TeacherService>();
             services.AddTransient<ICourseService, CourseService>();
             services.AddTransient<IClassroomService, ClassroomService>();
+            services.AddTransient<IAssignmentService, AssignmentService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
