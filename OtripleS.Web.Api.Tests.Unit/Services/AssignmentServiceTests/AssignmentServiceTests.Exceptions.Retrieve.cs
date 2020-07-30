@@ -4,9 +4,13 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Threading.Tasks;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Models.Assignments.Exceptions;
+using OtripleS.Web.Api.Models.Students;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
@@ -14,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
     public partial class AssignmentServiceTests
     {
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogIt()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogIt()
         {
             // given
             var sqlException = GetSqlException();
@@ -28,9 +32,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
                 broker.SelectAssignmentByIdAsync(badGuid))
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<AssignmentDependencyException>(() =>
-                this.assignmentService.RetrieveAssignmentById(badGuid));
+            // when 
+            ValueTask<Assignment> retrieveTask = this.assignmentService.RetrieveAssignmentById(badGuid);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentDependencyException>(() => retrieveTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
@@ -50,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
         }
 
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogIt()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogIt()
         {
             // given
             var databaseUpdateException = new DbUpdateException();
@@ -64,9 +70,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
                 broker.SelectAssignmentByIdAsync(guid))
                     .Throws(databaseUpdateException);
 
-            // when . then
-            Assert.Throws<AssignmentDependencyException>(() =>
-                this.assignmentService.RetrieveAssignmentById(guid));
+            // when 
+
+            ValueTask<Assignment> retrieveTask = this.assignmentService.RetrieveAssignmentById(guid);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentDependencyException>(() => retrieveTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
@@ -85,7 +94,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
         [Fact]
-        public void ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogIt()
+        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogIt()
         {
             // given
             var exception = new Exception();
@@ -99,9 +108,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
                 broker.SelectAssignmentByIdAsync(guid))
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<AssignmentServiceException>(() =>
-                this.assignmentService.RetrieveAssignmentById(guid));
+            // when 
+            ValueTask<Assignment> retrieveTask = this.assignmentService.RetrieveAssignmentById(guid);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentServiceException>(() => retrieveTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAssignmentServiceException))),

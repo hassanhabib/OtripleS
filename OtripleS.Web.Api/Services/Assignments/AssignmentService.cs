@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Bson;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -36,9 +37,14 @@ namespace OtripleS.Web.Api.Services.Assignments
             return storageAssignments;
         });
 
-        public ValueTask<Assignment> RetrieveAssignmentById(Guid guid)
+        public ValueTask<Assignment> RetrieveAssignmentById(Guid guid) => 
+        TryCatch( async () =>
         {
+            ValidateStorageIdIsNotNullOrEmpty(guid);
+            Assignment storageAssignment = await this.storageBroker.SelectAssignmentByIdAsync(guid);
+            ValidateStorageAssignment(storageAssignment);
+
             throw new NotImplementedException();
-        }
+        });
     }
 }
