@@ -1,4 +1,4 @@
-// ---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
@@ -12,6 +12,8 @@ namespace OtripleS.Web.Api.Services.Assignments
 {
     public interface IAssignmentService
     {
+        ValueTask<Assignment> CreateAssignmentAsync(Assignment assignemnt);
+        ValueTask<Assignment> ModifyAssignmentAsync(Assignment assignment);
         IQueryable<Assignment> RetrieveAllAssignments();
         ValueTask<Assignment> RetrieveAssignmentById(Guid guid);
     }
