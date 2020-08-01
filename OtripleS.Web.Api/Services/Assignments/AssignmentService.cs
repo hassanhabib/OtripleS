@@ -1,4 +1,4 @@
-// ---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
@@ -6,7 +6,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Bson;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -29,6 +28,29 @@ namespace OtripleS.Web.Api.Services.Assignments
             this.dateTimeBroker = dateTimeBroker;
         }
 
+        public ValueTask<Assignment> CreateAssignmentAsync(Assignment assignment) =>
+            TryCatch(async () =>
+            {
+                ValidateAssignmentOnCreate(assignment);
+
+                return await this.storageBroker.InsertAssignmentAsync(assignment);
+            });
+
+        public ValueTask<Assignment> ModifyAssignmentAsync(Assignment assignment) =>
+            TryCatch(async () =>
+            {
+                ValidateAssignmentOnModify(assignment);
+                Assignment maybeAssignment = await this.storageBroker.SelectAssignmentByIdAsync(assignment.Id);
+
+                ValidateStorageAssignment(maybeAssignment, assignment.Id);
+
+                ValidateAgainstStorageAssignmentOnModify(
+                    inputAssignment: assignment,
+                    storageAssignment: maybeAssignment);
+
+                return await this.storageBroker.UpdateAssignmentAsync(assignment);
+            });
+
         public IQueryable<Assignment> RetrieveAllAssignments() =>
             TryCatch(() =>
             {
@@ -41,15 +63,12 @@ namespace OtripleS.Web.Api.Services.Assignments
         public ValueTask<Assignment> RetrieveAssignmentById(Guid guid) =>
             TryCatch(async () =>
             {
-                ValidateStorageIdIsNotNullOrEmpty(guid);
+                ValidateAssignmentIdIsNull(guid);
                 Assignment storageAssignment = await this.storageBroker.SelectAssignmentByIdAsync(guid);
                 ValidateStorageAssignment(storageAssignment, guid);
 
                 return storageAssignment;
             });
-
-        public ValueTask<Assignment> CreateAssignmentAsync(Assignment assignment) =>
-            TryCatch(async () => { return await this.storageBroker.InsertAssignmentAsync(assignment); });
 
         public ValueTask<Assignment> DeleteAssignmentAsync(Guid assignmentId) => TryCatch(async () =>
         {
@@ -59,16 +78,6 @@ namespace OtripleS.Web.Api.Services.Assignments
             ValidateStorageAssignment(maybeAssignment, assignmentId);
 
             return await this.storageBroker.DeleteAssignmentAsync(maybeAssignment);
-        });
-
-        public ValueTask<Assignment> ModifyAssignmentAsync(Assignment assignment) => TryCatch(async () =>
-        {
-            Assignment maybeAssignment =
-                await this.storageBroker.SelectAssignmentByIdAsync(assignment.Id);
-
-            ValidateStorageAssignment(maybeAssignment, assignment.Id);
-
-            return await this.storageBroker.UpdateAssignmentAsync(maybeAssignment);
         });
     }
 }

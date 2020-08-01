@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Assignments.Exceptions
 {
-	public class AssignmentValidationException : Exception
+	public class LockedAssignmentException : Exception
     {
-        public AssignmentValidationException(Exception innerException)
-            : base("Invalid input, contact support.", innerException) { }
+        public LockedAssignmentException(Exception innerException)
+            : base("Locked assignment record exception, please try again later.", innerException) { }
     }
 }

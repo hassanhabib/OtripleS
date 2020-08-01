@@ -17,5 +17,6 @@
     
   <ItemGroup>
     <Folder Include="Services\Courses\" />
+    <Folder Include="Models\Assignments\Exceptions\" />
   </ItemGroup>
 </Project>

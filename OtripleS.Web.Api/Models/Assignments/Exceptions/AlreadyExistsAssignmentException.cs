@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Assignments.Exceptions
 {
-	public class AssignmentValidationException : Exception
+    public class AlreadyExistsAssignmentException : Exception
     {
-        public AssignmentValidationException(Exception innerException)
-            : base("Invalid input, contact support.", innerException) { }
+        public AlreadyExistsAssignmentException(Exception innerException)
+            : base("Assignment with the same id already exists.", innerException) { }
     }
 }
