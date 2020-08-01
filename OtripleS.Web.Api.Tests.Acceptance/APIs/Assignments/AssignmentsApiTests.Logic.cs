@@ -35,6 +35,24 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
             }
         }
         
-        
+        [Fact]
+        public async Task ShouldModifyAssignmentAsync()
+        {
+            // given
+            Assignment randomAssignment = CreateRandomAssignment();
+            await this.otripleSApiBroker.PostAssignmentAsync(randomAssignment);
+            Assignment modifiedAssignment = UpdateAssignmentRandom(randomAssignment);
+
+            // when
+            await this.otripleSApiBroker.PutAssignmentAsync(modifiedAssignment);
+
+            Assignment actualAssignment =
+                await this.otripleSApiBroker.GetAssignmentByIdAsync(randomAssignment.Id);
+
+            // then
+            actualAssignment.Should().BeEquivalentTo(modifiedAssignment);
+
+            await this.otripleSApiBroker.DeleteCourseByIdAsync(actualAssignment.Id);
+        }
     }
 }
