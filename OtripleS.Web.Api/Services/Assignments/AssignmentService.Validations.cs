@@ -22,6 +22,16 @@ namespace OtripleS.Web.Api.Services.Assignments
             ValidateAuditFieldsDataOnCreate(assignment);
         }
 
+        private void ValidateAssignmentOnModify(Assignment assignment)
+        {
+            ValidateAssignmentIsNull(assignment);
+            ValidateAssignmentIdIsNull(assignment.Id);
+			ValidateAssignmentFields(assignment);
+			ValidateInvalidAuditFields(assignment);
+            ValidateDatesAreNotSame(assignment);
+            ValidateUpdatedDateIsRecent(assignment);
+        }
+
         private void ValidateAssignmentIsNull(Assignment assignment)
         {
             if (assignment is null)
@@ -114,6 +124,63 @@ namespace OtripleS.Web.Api.Services.Assignments
             }
         }
 
+        private void ValidateDatesAreNotSame(Assignment assignment)
+        {
+            if (assignment.CreatedDate == assignment.UpdatedDate)
+            {
+                throw new InvalidAssignmentException(
+                    parameterName: nameof(Assignment.UpdatedDate),
+                    parameterValue: assignment.UpdatedDate);
+            }
+        }
+
+        private void ValidateUpdatedDateIsRecent(Assignment assignment)
+        {
+            if (IsDateNotRecent(assignment.UpdatedDate))
+            {
+                throw new InvalidAssignmentException(
+                    parameterName: nameof(assignment.UpdatedDate),
+                    parameterValue: assignment.UpdatedDate);
+            }
+        }
+
+        private void ValidateStorageAssignment(Assignment storageAssignment, Guid assignmentId)
+        {
+            if (storageAssignment == null)
+            {
+                throw new NotFoundAssignmentException(assignmentId);
+            }
+        }
+
+        private void ValidateAgainstStorageAssignmentOnModify(Assignment inputAssignment, Assignment storageAssignment)
+        {
+            switch (inputAssignment)
+            {
+                case { } when inputAssignment.CreatedDate != storageAssignment.CreatedDate:
+                    throw new InvalidAssignmentException(
+                        parameterName: nameof(Assignment.CreatedDate),
+                        parameterValue: inputAssignment.CreatedDate);
+
+                case { } when inputAssignment.CreatedBy != storageAssignment.CreatedBy:
+                    throw new InvalidAssignmentException(
+                        parameterName: nameof(Assignment.CreatedBy),
+                        parameterValue: inputAssignment.CreatedBy);
+
+                case { } when inputAssignment.UpdatedDate == storageAssignment.UpdatedDate:
+                    throw new InvalidAssignmentException(
+                        parameterName: nameof(Assignment.UpdatedDate),
+                        parameterValue: inputAssignment.UpdatedDate);
+            }
+        }
+
+        private void ValidateStorageAssignments(IQueryable<Assignment> storageAssignments)
+        {
+            if (storageAssignments.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No Assignments found in storage.");
+            }
+        }
+
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(Guid input) => input == default;
         private static bool IsInvalid(DateTimeOffset input) => input == default;
@@ -125,38 +192,6 @@ namespace OtripleS.Web.Api.Services.Assignments
             TimeSpan difference = now.Subtract(dateTime);
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
-        }
-
-        private void ValidateStorageAssignments(IQueryable<Assignment> storageAssignments)
-        {
-            if (storageAssignments.Count() == 0)
-            {
-                this.loggingBroker.LogWarning("No Assignments found in storage.");
-            }
-        }
-
-        private void ValidateStorageAssignment(Assignment storageAssignment)
-        {
-            if (storageAssignment == null)
-            {
-                this.loggingBroker.LogWarning("No Assignment found in storage.");
-            }
-        }
-
-        private void ValidateStorageAssignment(Assignment storageAssignment, Guid guid)
-        {
-            if (storageAssignment is null)
-            {
-                throw new NotFoundAssignmentException(guid);
-            }
-        }
-
-        private void ValidateStorageIdIsNotNullOrEmpty(Guid guid)
-        {
-            if (guid == default)
-            {
-                throw new InvalidAssignmentException(nameof(Assignment.Id), guid);
-            }
         }
     }
 }

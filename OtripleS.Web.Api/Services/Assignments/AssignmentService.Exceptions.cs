@@ -19,46 +19,52 @@ namespace OtripleS.Web.Api.Services.Assignments
         private delegate IQueryable<Assignment> ReturningQueryableAssignmentFunction();
         private delegate ValueTask<Assignment> ReturningAssignmentFunction();
 
-        private async ValueTask<Assignment> TryCatch(ReturningAssignmentFunction returningAssignmentFunction)
-        {
-            try
-            {
-                return await returningAssignmentFunction();
-            }
-            catch (NullAssignmentException nullAssignmentException)
-            {
-                throw CreateAndLogValidationException(nullAssignmentException);
-            }
-            catch (InvalidAssignmentException invalidAssignmentException)
-            {
-                throw CreateAndLogValidationException(invalidAssignmentException);
-            }
-            catch (DuplicateKeyException duplicateKeyException)
-            {
-                var alreadyExistsAssignmentException =
-                    new AlreadyExistsAssignmentException(duplicateKeyException);
+		private async ValueTask<Assignment> TryCatch(ReturningAssignmentFunction returningAssignmentFunction)
+		{
+			try
+			{
+				return await returningAssignmentFunction();
+			}
+			catch (NullAssignmentException nullAssignmentException)
+			{
+				throw CreateAndLogValidationException(nullAssignmentException);
+			}
+			catch (InvalidAssignmentException invalidAssignmentInputException)
+			{
+				throw CreateAndLogValidationException(invalidAssignmentInputException);
+			}
+			catch (NotFoundAssignmentException notFoundAssignmentException)
+			{
+				throw CreateAndLogValidationException(notFoundAssignmentException);
+			}
+			catch (DuplicateKeyException duplicateKeyException)
+			{
+				var alreadyExistsAssignmentException =
+					new AlreadyExistsAssignmentException(duplicateKeyException);
 
-                throw CreateAndLogValidationException(alreadyExistsAssignmentException);
-            }
-            catch (NotFoundAssignmentException notFoundAssignmentException)
-            {
-                throw CreateAndLogValidationException(notFoundAssignmentException);
-            }
-            catch (SqlException sqlException)
-            {
-                throw CreateAndLogCriticalDependencyException(sqlException);
-            }
-            catch (DbUpdateException dbUpdateException)
-            {
-                throw CreateAndLogDependencyException(dbUpdateException);
-            }
-            catch (Exception exception)
-            {
-                throw CreateAndLogServiceException(exception);
-            }
-        }
+				throw CreateAndLogValidationException(alreadyExistsAssignmentException);
+			}
+			catch (SqlException sqlException)
+			{
+				throw CreateAndLogCriticalDependencyException(sqlException);
+			}
+			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+			{
+				var lockedAssignmentException = new LockedAssignmentException(dbUpdateConcurrencyException);
 
-        private IQueryable<Assignment> TryCatch(
+				throw CreateAndLogDependencyException(lockedAssignmentException);
+			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
+			catch (Exception exception)
+			{
+				throw CreateAndLogServiceException(exception);
+			}
+		}
+
+		private IQueryable<Assignment> TryCatch(
             ReturningQueryableAssignmentFunction returningQueryableAssignmentFunction)
         {
             try
@@ -79,13 +85,13 @@ namespace OtripleS.Web.Api.Services.Assignments
             }
         }
 
-        private AssignmentValidationException CreateAndLogValidationException(Exception exception)
-        {
-            var assignmentValidationException = new AssignmentValidationException(exception);
-            this.loggingBroker.LogError(assignmentValidationException);
+		private AssignmentValidationException CreateAndLogValidationException(Exception exception)
+		{
+			var assignmentValidationException = new AssignmentValidationException(exception);
+			this.loggingBroker.LogError(assignmentValidationException);
 
-            return assignmentValidationException;
-        }
+			return assignmentValidationException;
+		}
 
         private AssignmentDependencyException CreateAndLogDependencyException(Exception exception)
         {
@@ -110,5 +116,6 @@ namespace OtripleS.Web.Api.Services.Assignments
 
             return assignmentServiceException;
         }
-    }
+	}
 }
+

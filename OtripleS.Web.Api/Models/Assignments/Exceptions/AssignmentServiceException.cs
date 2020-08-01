@@ -13,4 +13,3 @@ namespace OtripleS.Web.Api.Models.Assignments.Exceptions
             : base("Service error occurred, contact support.", innerException) { }
     }
 }
-

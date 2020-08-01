@@ -13,7 +13,7 @@ using OtripleS.Web.Api.Models.Assignments;
 
 namespace OtripleS.Web.Api.Services.Assignments
 {
-    public partial class AssignmentService : IAssignmentService
+	public partial class AssignmentService : IAssignmentService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -36,6 +36,21 @@ namespace OtripleS.Web.Api.Services.Assignments
             return await this.storageBroker.InsertAssignmentAsync(assignment);
         });
 
+        public ValueTask<Assignment> ModifyAssignmentAsync(Assignment assignment) =>
+        TryCatch(async () =>
+        {
+            ValidateAssignmentOnModify(assignment);
+            Assignment maybeAssignment = await this.storageBroker.SelectAssignmentByIdAsync(assignment.Id);
+
+            ValidateStorageAssignment(maybeAssignment, assignment.Id);
+
+            ValidateAgainstStorageAssignmentOnModify(
+                inputAssignment: assignment, 
+                storageAssignment: maybeAssignment);
+
+            return await this.storageBroker.UpdateAssignmentAsync(assignment);
+        });
+
         public IQueryable<Assignment> RetrieveAllAssignments() =>
         TryCatch(() =>
         {
@@ -48,7 +63,7 @@ namespace OtripleS.Web.Api.Services.Assignments
         public ValueTask<Assignment> RetrieveAssignmentById(Guid guid) => 
         TryCatch( async () =>
         {
-            ValidateStorageIdIsNotNullOrEmpty(guid);
+            ValidateAssignmentIdIsNull(guid);
             Assignment storageAssignment = await this.storageBroker.SelectAssignmentByIdAsync(guid);
             ValidateStorageAssignment(storageAssignment, guid);
 

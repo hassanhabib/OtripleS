@@ -8,14 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using Microsoft.Data.SqlClient;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Services.Assignments;
 using Tynamix.ObjectFiller;
-using System.Runtime.Serialization;
-using System.Linq.Expressions;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
 {
@@ -89,4 +89,3 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
     }
 }
-
