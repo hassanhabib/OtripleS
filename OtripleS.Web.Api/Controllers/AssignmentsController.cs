@@ -48,13 +48,13 @@ namespace OtripleS.Web.Api.Controllers
 
                 return Ok(persistedAssignment);
             }
-            // catch (AssignmentValidationException assignmentValidationException)
-            //     when (assignmentValidationException.InnerException is AlreadyExistsAssignmentException)
-            // {
-            //     string innerMessage = GetInnerMessage(assignmentValidationException);
-            //
-            //     return Conflict(innerMessage);
-            // }
+            catch (AssignmentValidationException assignmentValidationException)
+                when (assignmentValidationException.InnerException is AlreadyExistsAssignmentException)
+            {
+                string innerMessage = GetInnerMessage(assignmentValidationException);
+            
+                return Conflict(innerMessage);
+            }
             catch (AssignmentValidationException assignmentValidationException)
             {
                 string innerMessage = GetInnerMessage(assignmentValidationException);
@@ -92,13 +92,13 @@ namespace OtripleS.Web.Api.Controllers
             {
                 return BadRequest(assignmentValidationException.Message);
             }
-            // catch (AssignmentDependencyException assignmentDependencyException)
-            //     when (assignmentDependencyException.InnerException is LockedAssignmentException)
-            // {
-            //     string innerMessage = GetInnerMessage(assignmentDependencyException);
-            //
-            //     return Locked(innerMessage);
-            // }
+            catch (AssignmentDependencyException assignmentDependencyException)
+                when (assignmentDependencyException.InnerException is LockedAssignmentException)
+            {
+                string innerMessage = GetInnerMessage(assignmentDependencyException);
+            
+                return Locked(innerMessage);
+            }
             catch (AssignmentDependencyException assignmentDependencyException)
             {
                 return Problem(assignmentDependencyException.Message);
@@ -132,13 +132,13 @@ namespace OtripleS.Web.Api.Controllers
 
                 return BadRequest(innerMessage);
             }
-            // catch (AssignmentDependencyException assignmentDependencyException)
-            //     when (assignmentDependencyException.InnerException is LockedAssignmentException)
-            // {
-            //     string innerMessage = GetInnerMessage(assignmentDependencyException);
-            //
-            //     return Locked(innerMessage);
-            // }
+            catch (AssignmentDependencyException assignmentDependencyException)
+                when (assignmentDependencyException.InnerException is LockedAssignmentException)
+            {
+                string innerMessage = GetInnerMessage(assignmentDependencyException);
+            
+                return Locked(innerMessage);
+            }
             catch (AssignmentDependencyException assignmentDependencyException)
             {
                 return Problem(assignmentDependencyException.Message);
