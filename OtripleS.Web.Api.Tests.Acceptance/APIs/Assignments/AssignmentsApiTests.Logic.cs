@@ -54,5 +54,25 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
 
             await this.otripleSApiBroker.DeleteCourseByIdAsync(actualAssignment.Id);
         }
+        
+        [Fact]
+        public async Task ShouldPostAssignmentAsync()
+        {
+            // given
+            Assignment randomAssignment = CreateRandomAssignment();
+            Assignment inputAssignment = randomAssignment;
+            Assignment expectedAssignment = inputAssignment;
+
+            // when 
+            await this.otripleSApiBroker.PostAssignmentAsync(inputAssignment);
+
+            Assignment actualAssignment =
+                await this.otripleSApiBroker.GetAssignmentByIdAsync(inputAssignment.Id);
+
+            // then
+            actualAssignment.Should().BeEquivalentTo(expectedAssignment);
+
+            await this.otripleSApiBroker.DeleteCourseByIdAsync(actualAssignment.Id);
+        }
     }
 }
