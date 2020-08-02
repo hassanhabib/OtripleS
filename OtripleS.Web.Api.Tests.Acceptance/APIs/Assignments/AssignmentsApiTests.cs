@@ -20,10 +20,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
 
         private IEnumerable<Assignment> GetRandomAssignments() =>
             CreateRandomAssignmentFiller().Create(GetRandomNumber());
-        
+
         private Assignment CreateRandomAssignment() =>
             CreateRandomAssignmentFiller().Create();
-        
+
         private Filler<Assignment> CreateRandomAssignmentFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -41,7 +41,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
 
             return filler;
         }
-        
+
         private Assignment UpdateAssignmentRandom(Assignment inputAssignment)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -58,8 +58,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
 
             return filler.Create();
         }
-        
-        
+
+
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
     }

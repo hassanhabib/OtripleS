@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Controllers
                 when (assignmentValidationException.InnerException is AlreadyExistsAssignmentException)
             {
                 string innerMessage = GetInnerMessage(assignmentValidationException);
-            
+
                 return Conflict(innerMessage);
             }
             catch (AssignmentValidationException assignmentValidationException)
@@ -101,7 +101,7 @@ namespace OtripleS.Web.Api.Controllers
                 when (assignmentDependencyException.InnerException is LockedAssignmentException)
             {
                 string innerMessage = GetInnerMessage(assignmentDependencyException);
-            
+
                 return Locked(innerMessage);
             }
             catch (AssignmentDependencyException assignmentDependencyException)
@@ -141,7 +141,7 @@ namespace OtripleS.Web.Api.Controllers
                 when (assignmentDependencyException.InnerException is LockedAssignmentException)
             {
                 string innerMessage = GetInnerMessage(assignmentDependencyException);
-            
+
                 return Locked(innerMessage);
             }
             catch (AssignmentDependencyException assignmentDependencyException)

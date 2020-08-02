@@ -14,7 +14,7 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
 {
-	public partial class ClassroomServiceTests
+    public partial class ClassroomServiceTests
     {
         [Fact]
         public async Task ShouldThrowDependencyExceptionOnModifyIfSqlExceptionOccursAndLogItAsync()

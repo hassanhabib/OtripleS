@@ -5,12 +5,10 @@
 
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Models.Assignments.Exceptions;
-using OtripleS.Web.Api.Models.Students;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests

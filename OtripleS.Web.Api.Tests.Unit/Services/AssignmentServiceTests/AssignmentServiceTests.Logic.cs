@@ -16,46 +16,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
 {
     public partial class AssignmentServiceTests
     {
-		[Fact]
-		public async Task ShouldCreateAssignmentAsync()
-		{
-			// given
-			DateTimeOffset randomDateTime = GetRandomDateTime();
-			DateTimeOffset dateTime = randomDateTime;
-			Assignment randomAssignment = CreateRandomAssignment(randomDateTime);
-			randomAssignment.UpdatedBy = randomAssignment.CreatedBy;
-			randomAssignment.UpdatedDate = randomAssignment.CreatedDate;
-			Assignment inputAssignment = randomAssignment;
-			Assignment storageAssignment = randomAssignment;
-			Assignment expectedAssignment = storageAssignment;
+        [Fact]
+        public async Task ShouldCreateAssignmentAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            DateTimeOffset dateTime = randomDateTime;
+            Assignment randomAssignment = CreateRandomAssignment(randomDateTime);
+            randomAssignment.UpdatedBy = randomAssignment.CreatedBy;
+            randomAssignment.UpdatedDate = randomAssignment.CreatedDate;
+            Assignment inputAssignment = randomAssignment;
+            Assignment storageAssignment = randomAssignment;
+            Assignment expectedAssignment = storageAssignment;
 
-			this.dateTimeBrokerMock.Setup(broker =>
-				broker.GetCurrentDateTime())
-					.Returns(dateTime);
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.InsertAssignmentAsync(inputAssignment))
-					.ReturnsAsync(storageAssignment);
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertAssignmentAsync(inputAssignment))
+                    .ReturnsAsync(storageAssignment);
 
-			// when
-			Assignment actualAssignment =
-				await this.assignmentService.CreateAssignmentAsync(inputAssignment);
+            // when
+            Assignment actualAssignment =
+                await this.assignmentService.CreateAssignmentAsync(inputAssignment);
 
-			// then
-			actualAssignment.Should().BeEquivalentTo(expectedAssignment);
+            // then
+            actualAssignment.Should().BeEquivalentTo(expectedAssignment);
 
-			this.dateTimeBrokerMock.Verify(broker =>
-				broker.GetCurrentDateTime(),
-					Times.Once);
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.InsertAssignmentAsync(inputAssignment),
-					Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertAssignmentAsync(inputAssignment),
+                    Times.Once);
 
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-		}
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
 
         [Fact]
         public async Task ShouldModifyAssignmentAsync()

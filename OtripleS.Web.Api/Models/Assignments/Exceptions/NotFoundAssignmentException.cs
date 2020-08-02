@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Assignments.Exceptions
 {
-	public class NotFoundAssignmentException : Exception
-	{
-		public NotFoundAssignmentException(Guid assignmentId)
-			: base($"Couldn't find assignment with Id: {assignmentId}.") { }
-	}
+    public class NotFoundAssignmentException : Exception
+    {
+        public NotFoundAssignmentException(Guid assignmentId)
+            : base($"Couldn't find assignment with Id: {assignmentId}.") { }
+    }
 }

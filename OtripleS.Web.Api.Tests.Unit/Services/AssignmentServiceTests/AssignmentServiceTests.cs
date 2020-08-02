@@ -68,7 +68,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
         private Assignment CreateRandomAssignment() =>
             CreateAssignmentFiller(dates: DateTimeOffset.UtcNow).Create();
 
-        private static IQueryable<Assignment> CreateRandomAssignments(DateTimeOffset dates) =>            
+        private static IQueryable<Assignment> CreateRandomAssignments(DateTimeOffset dates) =>
             CreateAssignmentFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
         public static IEnumerable<object[]> InvalidMinuteCases()
