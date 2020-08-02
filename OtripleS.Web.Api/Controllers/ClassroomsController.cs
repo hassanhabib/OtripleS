@@ -43,6 +43,39 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpGet("{classroomId}")]
+        public async ValueTask<ActionResult<Classroom>> GetClassroomByIdAsync(Guid classroomId)
+        {
+            try
+            {
+                Classroom classroom =
+                    await this.classroomService.RetrieveClassroomById(classroomId);
+
+                return Ok(classroom);
+            }
+            catch (ClassroomValidationException classroomValidationException)
+                when (classroomValidationException.InnerException is NotFoundClassroomException)
+            {
+                string innerMessage = GetInnerMessage(classroomValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (ClassroomValidationException classroomValidationException)
+            {
+                string innerMessage = GetInnerMessage(classroomValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (ClassroomDependencyException classroomDependencyException)
+            {
+                return Problem(classroomDependencyException.Message);
+            }
+            catch (ClassroomServiceException classroomServiceException)
+            {
+                return Problem(classroomServiceException.Message);
+            }
+        }
+
         [HttpPost]
         public async ValueTask<ActionResult<Classroom>> PostClassroomAsync(Classroom classroom)
         {

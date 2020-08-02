@@ -48,7 +48,7 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Assignment storageAssignment = 
+                Assignment storageAssignment =
                     await this.assignmentService.RetrieveAssignmentById(assignmentId);
 
                 return Ok(storageAssignment);
