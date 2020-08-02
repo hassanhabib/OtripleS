@@ -43,6 +43,39 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpGet("{assignmentId}")]
+        public async ValueTask<ActionResult<Assignment>> GetAssignmentByIdAsync(Guid assignmentId)
+        {
+            try
+            {
+                Assignment storageAssignment = 
+                    await this.assignmentService.RetrieveAssignmentById(assignmentId);
+
+                return Ok(storageAssignment);
+            }
+            catch (AssignmentValidationException assignmentValidationException)
+                when (assignmentValidationException.InnerException is NotFoundAssignmentException)
+            {
+                string innerMessage = GetInnerMessage(assignmentValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (AssignmentValidationException assignmentValidationException)
+            {
+                string innerMessage = GetInnerMessage(assignmentValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (AssignmentDependencyException assignmentDependencyException)
+            {
+                return Problem(assignmentDependencyException.Message);
+            }
+            catch (AssignmentServiceException assignmentServiceException)
+            {
+                return Problem(assignmentServiceException.Message);
+            }
+        }
+
         [HttpPost]
         public async ValueTask<ActionResult<Assignment>> PostAssignmentAsync(Assignment assignment)
         {

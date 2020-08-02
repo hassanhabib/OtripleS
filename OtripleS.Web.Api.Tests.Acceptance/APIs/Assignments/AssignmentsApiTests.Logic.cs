@@ -56,8 +56,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
 
             // then
             actualAssignment.Should().BeEquivalentTo(modifiedAssignment);
-
-            await this.otripleSApiBroker.DeleteCourseByIdAsync(actualAssignment.Id);
+            await this.otripleSApiBroker.DeleteAssignmentByIdAsync(actualAssignment.Id);
         }
 
         [Fact]
@@ -76,8 +75,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
 
             // then
             actualAssignment.Should().BeEquivalentTo(expectedAssignment);
-
-            await this.otripleSApiBroker.DeleteCourseByIdAsync(actualAssignment.Id);
+            await this.otripleSApiBroker.DeleteAssignmentByIdAsync(actualAssignment.Id);
         }
     }
 }
