@@ -1,47 +1,47 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 using OtripleS.Web.Api.Services.Classrooms;
 using RESTFulSense.Controllers;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Controllers
 {
-	[ApiController]
+    [ApiController]
     [Route("api/[controller]")]
     public class ClassroomsController : RESTFulController
-	{
-		private readonly IClassroomService classroomService;
+    {
+        private readonly IClassroomService classroomService;
 
-		public ClassroomsController(IClassroomService classroomService) =>
-			this.classroomService = classroomService;
+        public ClassroomsController(IClassroomService classroomService) =>
+            this.classroomService = classroomService;
 
-		[HttpGet]
-		public ActionResult<IQueryable<Classroom>> GetAllClassrooms()
-		{
-			try
-			{
-				IQueryable storageClassrooms =
-					this.classroomService.RetrieveAllClassrooms();
+        [HttpGet]
+        public ActionResult<IQueryable<Classroom>> GetAllClassrooms()
+        {
+            try
+            {
+                IQueryable storageClassrooms =
+                    this.classroomService.RetrieveAllClassrooms();
 
-				return Ok(storageClassrooms);
-			}
-			catch (ClassroomDependencyException classRoomDependencyException)
-			{
-				return Problem(classRoomDependencyException.Message);
-			}
-			catch (ClassroomServiceException classRoomServiceException)
-			{
-				return Problem(classRoomServiceException.Message);
-			}
-		}
+                return Ok(storageClassrooms);
+            }
+            catch (ClassroomDependencyException classRoomDependencyException)
+            {
+                return Problem(classRoomDependencyException.Message);
+            }
+            catch (ClassroomServiceException classRoomServiceException)
+            {
+                return Problem(classRoomServiceException.Message);
+            }
+        }
 
         [HttpPost]
         public async ValueTask<ActionResult<Classroom>> PostClassroomAsync(Classroom classroom)

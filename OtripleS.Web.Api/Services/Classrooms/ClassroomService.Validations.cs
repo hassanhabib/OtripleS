@@ -3,10 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
+using System;
+using System.Linq;
 
 namespace OtripleS.Web.Api.Services.Classrooms
 {
@@ -109,7 +109,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
                     parameterName: nameof(Classroom.Id),
                     parameterValue: classroomId);
             }
-        }        
+        }
 
         private void ValidateDatesAreNotSame(Classroom classroom)
         {
@@ -168,7 +168,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
                         parameterValue: inputClassroom.UpdatedDate);
             }
         }
-        
+
         private void ValidateStorageClassrooms(IQueryable<Classroom> storageClassrooms)
         {
             if (storageClassrooms.Count() == 0)
