@@ -42,7 +42,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Classrooms
                 .OnProperty(classroom => classroom.UpdatedBy).Use(posterId)
                 .OnProperty(classroom => classroom.CreatedDate).Use(now)
                 .OnProperty(classroom => classroom.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
+                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt();
 
             return filler;
         }
@@ -59,7 +60,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Classrooms
                 .OnProperty(classroom => classroom.UpdatedBy).Use(classroom.UpdatedBy)
                 .OnProperty(classroom => classroom.CreatedDate).Use(classroom.CreatedDate)
                 .OnProperty(classroom => classroom.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
+                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt();
 
             return filler.Create();
         }
