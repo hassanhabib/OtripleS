@@ -15,5 +15,13 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
                     parameterValue: semesterCourseId);
             }
         }
+
+        private void ValidateStorageSemesterCourse(SemesterCourse storageSemesterCourse, Guid semesterCourseId)
+        {
+            if (storageSemesterCourse == null)
+            {
+                throw new NotFoundSemesterCourseException(semesterCourseId);
+            }
+        }
     }
 }

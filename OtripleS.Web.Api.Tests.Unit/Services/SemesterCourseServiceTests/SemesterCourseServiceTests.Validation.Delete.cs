@@ -57,7 +57,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             DateTimeOffset randomDateTime = GetRandomDateTime();
             SemesterCourse randomSemesterCourse = CreateRandomSemesterCourse(randomDateTime);
             Guid inputSemesterCourseId = randomSemesterCourse.Id;
-            SemesterCourse inputSemesterCourse = randomSemesterCourse;
             SemesterCourse nullStorageSemesterCourse = null;
 
             var notFoundSemesterCourseException = new NotFoundSemesterCourseException(inputSemesterCourseId);

@@ -33,12 +33,18 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             try
             {
                 ValidateSemesterCourseServiceIdIsNull(semesterCourseId);
-                SemesterCourse semesterCourse =
+                SemesterCourse maybeSemesterCourse =
                     await this.storageBroker.SelectSemesterCourseByIdAsync(semesterCourseId);
-                return await this.storageBroker.DeleteSemesterCourseAsync(semesterCourse);
-            } catch (InvalidSemesterCourseInputException invalidSemesterCourseInputException)
+                ValidateStorageSemesterCourse(maybeSemesterCourse, semesterCourseId);
+                return await this.storageBroker.DeleteSemesterCourseAsync(maybeSemesterCourse);
+            }
+            catch (InvalidSemesterCourseInputException invalidSemesterCourseInputException)
             {
                 throw CreateAndLogValidationException(invalidSemesterCourseInputException);
+            }
+            catch (NotFoundSemesterCourseException notFoundSemesterCourseException)
+            {
+                throw CreateAndLogValidationException(notFoundSemesterCourseException);
             }
         }
     }
