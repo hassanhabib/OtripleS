@@ -1,4 +1,10 @@
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
 using System;
+using System.Linq.Expressions;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -43,5 +49,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
         
         private SemesterCourse CreateRandomSemesterCourse(DateTimeOffset dateTime) =>
             CreateRandomSemesterCourseFiller(dateTime).Create();
+        
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
     }
 }
