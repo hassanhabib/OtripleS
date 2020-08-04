@@ -6,7 +6,6 @@
 using System;
 using System.Threading.Tasks;
 using Moq;
-using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 using Xunit;
@@ -33,7 +32,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
                 this.semesterCourseService.DeleteSemesterCourseAsync(inputSemesterCourseId);
 
             //then
-            await Assert.ThrowsAsync<ClassroomValidationException>(
+            await Assert.ThrowsAsync<SemesterCourseValidationException>(
                 () => actualSemesterCourseDeleteTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>

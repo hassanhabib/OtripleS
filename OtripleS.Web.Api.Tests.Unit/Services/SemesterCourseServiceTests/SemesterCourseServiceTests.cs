@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
         private readonly Mock<IStorageBroker> storageBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
-        private SemesterCourseService semesterCourseService;
+        private ISemesterCourseService semesterCourseService;
 
         public SemesterCourseServiceTests()
         {
