@@ -20,9 +20,10 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
         }
-        public ValueTask<SemesterCourse> DeleteSemesterCourseAsync(Guid semesterCourseId)
+        public async ValueTask<SemesterCourse> DeleteSemesterCourseAsync(Guid semesterCourseId)
         {
-            throw new NotImplementedException();
+            SemesterCourse semesterCourse = await this.storageBroker.SelectSemesterCourseByIdAsync(semesterCourseId);
+            return await this.storageBroker.DeleteSemesterCourseAsync(semesterCourse);
         }
     }
 }
