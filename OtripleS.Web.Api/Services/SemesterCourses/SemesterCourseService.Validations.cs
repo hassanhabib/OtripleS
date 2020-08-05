@@ -6,19 +6,9 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 {
     public partial class SemesterCourseService
     {
-        private void ValidateSemesterCourseServiceIdIsNull(Guid semesterCourseId)
-        {
-            if (semesterCourseId == default)
-            {
-                throw new InvalidSemesterCourseInputException(
-                    parameterName: nameof(SemesterCourse.Id),
-                    parameterValue: semesterCourseId);
-            }
-        }
-        
         private void ValidateSemesterCourseId(Guid semesterCourseId)
         {
-            if (semesterCourseId == Guid.Empty)
+            if (semesterCourseId == default)
             {
                 throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.Id),
