@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-		public ValueTask<SemesterCourse> RetrieveCourseById(Guid courseId)
+		public ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid courseId)
 		{
 			throw new NotImplementedException();
 		}
