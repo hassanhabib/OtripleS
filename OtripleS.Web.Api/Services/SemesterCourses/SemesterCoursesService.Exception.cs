@@ -15,6 +15,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 	public partial class SemesterCourseService
 	{
         private delegate ValueTask<SemesterCourse> ReturningSemesterCourseFunction();
+
         private async ValueTask<SemesterCourse> TryCatch(ReturningSemesterCourseFunction returningSemesterCourseFunction)
         {
             try
