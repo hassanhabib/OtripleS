@@ -15,6 +15,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
         private void ValidateSemesterCourseOnCreate(SemesterCourse semesterCourse)
         {
             ValidateSemesterCourseIsNull(semesterCourse);
+            ValidateSemesterCourseIdIsNull(semesterCourse.Id);
         }
 
         private void ValidateSemesterCourseIsNull(SemesterCourse semesterCourse)
@@ -40,6 +41,16 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             if (storageSemesterCourse == null)
             {
                 throw new NotFoundSemesterCourseException(semesterCourseId);
+            }
+        }
+
+        private void ValidateSemesterCourseIdIsNull(Guid semesterCourseId)
+        {
+            if (semesterCourseId == default)
+            {
+                throw new InvalidSemesterCourseException(
+                    parameterName: nameof(SemesterCourse.Id),
+                    parameterValue: semesterCourseId);
             }
         }
     }
