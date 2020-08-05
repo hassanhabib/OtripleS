@@ -47,7 +47,10 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             {
                 throw CreateAndLogValidationException(notFoundSemesterCourseException);
             }
-            
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
         }
     }
 }
