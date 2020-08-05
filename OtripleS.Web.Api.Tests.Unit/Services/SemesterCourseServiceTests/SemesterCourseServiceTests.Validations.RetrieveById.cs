@@ -21,7 +21,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             Guid randomSemesterCourseId = default;
             Guid inputSemesterCourseId = randomSemesterCourseId;
 
-            var invalidSemesterCourseInputException = new InvalidSemesterCourseException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.Id),
                 parameterValue: inputSemesterCourseId);
 

@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
         {
             if (semesterCourseId == Guid.Empty)
             {
-                throw new InvalidSemesterCourseException(
+                throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.Id),
                     parameterValue: semesterCourseId);
             }
