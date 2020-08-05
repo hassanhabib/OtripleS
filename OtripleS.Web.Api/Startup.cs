@@ -15,6 +15,7 @@ using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Services.Assignments;
 using OtripleS.Web.Api.Services.Classrooms;
 using OtripleS.Web.Api.Services.Courses;
+using OtripleS.Web.Api.Services.SemesterCourses;
 using OtripleS.Web.Api.Services.Students;
 using OtripleS.Web.Api.Services.Teachers;
 
@@ -40,6 +41,7 @@ namespace OtripleS.Web.Api
             services.AddTransient<ICourseService, CourseService>();
             services.AddTransient<IClassroomService, ClassroomService>();
             services.AddTransient<IAssignmentService, AssignmentService>();
+            services.AddTransient<ISemesterCourseService, SemesterCourseService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
