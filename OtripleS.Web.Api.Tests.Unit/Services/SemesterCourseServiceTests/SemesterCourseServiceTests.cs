@@ -5,6 +5,8 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
+using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -40,6 +42,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 				expectedException.Message == actualException.Message
 				&& expectedException.InnerException.Message == actualException.InnerException.Message;
 		}
+		private static SqlException GetSqlException() =>
+			(SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
 		private static DateTimeOffset GetRandomDateTime() =>
 			new DateTimeRange(earliestDate: new DateTime()).GetValue();
