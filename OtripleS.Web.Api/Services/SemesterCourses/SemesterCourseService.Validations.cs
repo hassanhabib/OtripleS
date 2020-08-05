@@ -21,6 +21,15 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             ValidateAuditFieldsDataOnCreate(semesterCourse);
         }
 
+        private void ValidateSemesterCourseOnModify(SemesterCourse semesterCourse)
+        {
+            ValidateSemesterCourseIsNull(semesterCourse);
+            ValidateSemesterCourseIdIsNull(semesterCourse.Id);
+            ValidateSemesterCourseFields(semesterCourse);
+            ValidateInvalidAuditFields(semesterCourse);
+            ValidateAuditFieldsDataOnModify(semesterCourse);
+        }
+
         private void ValidateSemesterCourseIsNull(SemesterCourse semesterCourse)
         {
             if (semesterCourse is null)
@@ -160,6 +169,38 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             TimeSpan difference = now.Subtract(dateTime);
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
+
+        private void ValidateAuditFieldsDataOnModify(SemesterCourse semesterCourse)
+        {
+            switch (semesterCourse)
+            {
+                case { } when IsDateNotRecent(semesterCourse.UpdatedDate):
+                    throw new InvalidSemesterCourseException(
+                    parameterName: nameof(SemesterCourse.UpdatedDate),
+                    parameterValue: semesterCourse.UpdatedDate);
+            }
+        }
+
+        private void ValidateAgainstStorageSemesterCourseOnModify(SemesterCourse inputSemesterCourse, SemesterCourse storageSemesterCourse)
+        {
+            switch (inputSemesterCourse)
+            {
+                case { } when inputSemesterCourse.CreatedDate != storageSemesterCourse.CreatedDate:
+                    throw new InvalidSemesterCourseException(
+                        parameterName: nameof(SemesterCourse.CreatedDate),
+                        parameterValue: inputSemesterCourse.CreatedDate);
+
+                case { } when inputSemesterCourse.CreatedBy != storageSemesterCourse.CreatedBy:
+                    throw new InvalidSemesterCourseException(
+                        parameterName: nameof(SemesterCourse.CreatedBy),
+                        parameterValue: inputSemesterCourse.CreatedBy);
+
+                case { } when inputSemesterCourse.UpdatedDate == storageSemesterCourse.UpdatedDate:
+                    throw new InvalidSemesterCourseException(
+                        parameterName: nameof(SemesterCourse.UpdatedDate),
+                        parameterValue: inputSemesterCourse.UpdatedDate);
+            }
         }
     }
 }
