@@ -17,6 +17,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             ValidateSemesterCourseIsNull(semesterCourse);
             ValidateSemesterCourseIdIsNull(semesterCourse.Id);
             ValidateSemesterCourseFields(semesterCourse);
+            ValidateInvalidAuditFields(semesterCourse);
         }
 
         private void ValidateSemesterCourseIsNull(SemesterCourse semesterCourse)
@@ -72,6 +73,17 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
                 throw new InvalidSemesterCourseException(
                     parameterName: nameof(SemesterCourse.ClassroomId),
                     parameterValue: semesterCourse.ClassroomId);
+            }
+        }
+
+        private void ValidateInvalidAuditFields(SemesterCourse semesterCourse)
+        {
+            switch (semesterCourse)
+            {
+                case { } when IsInvalid(semesterCourse.CreatedBy):
+                    throw new InvalidSemesterCourseException(
+                    parameterName: nameof(SemesterCourse.CreatedBy),
+                    parameterValue: semesterCourse.CreatedBy);
             }
         }
 
