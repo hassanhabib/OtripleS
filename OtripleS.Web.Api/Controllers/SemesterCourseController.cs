@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.Courses.Exceptions;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 using OtripleS.Web.Api.Services.SemesterCourses;
@@ -60,23 +59,41 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult<IQueryable<SemesterCourse>> GetAllSemesterCourse()
+        [HttpDelete("{semesterCourseId}")]
+        public async ValueTask<ActionResult<SemesterCourse>> DeleteSemesterCourseAsync(Guid semesterCourseId)
         {
             try
             {
-                IQueryable storageSemesterCourse =
-                    this.semesterCourseService.RetrieveAllSemesterCourses();
+                SemesterCourse storageSemesterCourse =
+                    await this.semesterCourseService.DeleteSemesterCourseAsync(semesterCourseId);
 
                 return Ok(storageSemesterCourse);
             }
-            catch (CourseDependencyException courseDependencyException)
+            catch (SemesterCourseValidationException semesterCourseValidationException)
+                when (semesterCourseValidationException.InnerException is NotFoundSemesterCourseException)
             {
-                return Problem(courseDependencyException.Message);
+                string innerMessage = GetInnerMessage(semesterCourseValidationException);
+
+                return NotFound(innerMessage);
             }
-            catch (CourseServiceException courseServiceException)
+            catch (SemesterCourseValidationException semesterCourseValidationException)
             {
-                return Problem(courseServiceException.Message);
+                return BadRequest(semesterCourseValidationException.Message);
+            }
+            catch (SemesterCourseDependencyException semesterCourseDependencyException)
+                when (semesterCourseDependencyException.InnerException is LockedSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(semesterCourseDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (SemesterCourseDependencyException semesterCourseDependencyException)
+            {
+                return Problem(semesterCourseDependencyException.Message);
+            }
+            catch (SemesterCourseServiceException semesterCourseServiceException)
+            {
+                return Problem(semesterCourseServiceException.Message);
             }
         }
 
