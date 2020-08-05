@@ -39,5 +39,15 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
                 ValidateStorageSemesterCourse(maybeSemesterCourse, semesterCourseId);
                 return await this.storageBroker.DeleteSemesterCourseAsync(maybeSemesterCourse);
             });
+        
+        public ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid semesterCourseId) =>
+            TryCatch(async () =>
+            {
+                ValidateSemesterCourseId(semesterCourseId);
+                SemesterCourse storageSemesterCourse = await this.storageBroker.SelectSemesterCourseByIdAsync(semesterCourseId);
+                ValidateStorageSemesterCourse(storageSemesterCourse, semesterCourseId);
+
+                return storageSemesterCourse;
+            });
     }
 }

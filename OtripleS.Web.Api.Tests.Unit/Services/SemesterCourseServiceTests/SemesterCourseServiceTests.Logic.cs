@@ -24,33 +24,68 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             SemesterCourse inputSemesterCourse = randomSemesterCourse;
             SemesterCourse storageSemesterCourse = inputSemesterCourse;
             SemesterCourse expectedSemesterCourse = storageSemesterCourse;
-            
+
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
+                    broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
                 .ReturnsAsync(inputSemesterCourse);
-            
+
             this.storageBrokerMock.Setup(broker =>
-                 broker.DeleteSemesterCourseAsync(inputSemesterCourse))
+                    broker.DeleteSemesterCourseAsync(inputSemesterCourse))
                 .ReturnsAsync(storageSemesterCourse);
-            
+
             // when
-            SemesterCourse actualSemesterCourse = 
+            SemesterCourse actualSemesterCourse =
                 await this.semesterCourseService.DeleteSemesterCourseAsync(inputSemesterCourseId);
-            
+
             //then
             actualSemesterCourse.Should().BeEquivalentTo(expectedSemesterCourse);
-            
+
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),
+                    broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),
                 Times.Once);
-            
+
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteSemesterCourseAsync(inputSemesterCourse),
+                    broker.DeleteSemesterCourseAsync(inputSemesterCourse),
                 Times.Once);
-            
+
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+        
+        [Fact]
+        public async Task ShouldRetrieveSemesterCourseByIdAsync()
+        {
+            // given
+            Guid randomSemesterCourseId = Guid.NewGuid();
+            Guid inputSemesterCourseId = randomSemesterCourseId;
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            SemesterCourse randomSemesterCourse = CreateRandomSemesterCourse(randomDateTime);
+            SemesterCourse storageSemesterCourse = randomSemesterCourse;
+            SemesterCourse expectedSemesterCourse = storageSemesterCourse;
+
+            this.storageBrokerMock.Setup(broker =>
+                    broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
+                .ReturnsAsync(storageSemesterCourse);
+
+            // when
+            SemesterCourse actualSemesterCourse =
+                await this.semesterCourseService.RetrieveSemesterCourseByIdAsync(inputSemesterCourseId);
+
+            // then
+            actualSemesterCourse.Should().BeEquivalentTo(expectedSemesterCourse);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                    broker.GetCurrentDateTime(),
+                Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                    broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),
+                Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

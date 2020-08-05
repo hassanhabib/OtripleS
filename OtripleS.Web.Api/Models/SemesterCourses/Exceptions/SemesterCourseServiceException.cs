@@ -10,6 +10,8 @@ namespace OtripleS.Web.Api.Models.SemesterCourses.Exceptions
     public class SemesterCourseServiceException : Exception
     {
         public SemesterCourseServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+            : base("Service error occurred, contact support.", innerException)
+        {
+        }
     }
 }

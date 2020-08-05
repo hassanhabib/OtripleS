@@ -35,13 +35,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
                 loggingBroker: this.loggingBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
-        
+
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
-        
+
         private static SqlException GetSqlException() =>
-            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
-        
+            (SqlException) FormatterServices.GetUninitializedObject(typeof(SqlException));
+
         private Filler<SemesterCourse> CreateRandomSemesterCourseFiller(DateTimeOffset dates)
         {
             var filler = new Filler<SemesterCourse>();
@@ -51,10 +51,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 
             return filler;
         }
-        
+
         private SemesterCourse CreateRandomSemesterCourse(DateTimeOffset dateTime) =>
             CreateRandomSemesterCourseFiller(dateTime).Create();
-        
+
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
