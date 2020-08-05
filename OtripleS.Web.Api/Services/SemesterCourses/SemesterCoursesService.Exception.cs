@@ -4,11 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using EFxceptions.Models.Exceptions;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 
@@ -26,6 +22,10 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             catch (InvalidSemesterCourseException invalidSemesterCourseInputException)
             {
                 throw CreateAndLogValidationException(invalidSemesterCourseInputException);
+            }
+            catch (NotFoundSemesterCourseException nullSemesterCourseException)
+            {
+                throw CreateAndLogValidationException(nullSemesterCourseException);
             }
             catch (Exception exception)
             {
