@@ -11,6 +11,6 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 {
 	public interface ISemesterCourseService
 	{
-		ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid courseId);
+		ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid semesterCourseId);
 	}
 }
