@@ -27,6 +27,11 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
+		public ValueTask<SemesterCourse> CreateSemesterCourseAsync(SemesterCourse semesterCourse)
+		{
+			throw new NotImplementedException();
+		}
+
 		public ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid semesterCourseId) =>
 		TryCatch(async () =>
 		{
