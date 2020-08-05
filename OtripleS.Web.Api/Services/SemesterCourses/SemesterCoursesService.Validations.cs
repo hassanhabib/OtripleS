@@ -52,6 +52,13 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
                     parameterName: nameof(SemesterCourse.EndDate),
                     parameterValue: semesterCourse.EndDate);
             }
+
+            if (IsInvalid(semesterCourse.CourseId))
+            {
+                throw new InvalidSemesterCourseException(
+                    parameterName: nameof(SemesterCourse.CourseId),
+                    parameterValue: semesterCourse.CourseId);
+            }
         }
 
         private static void ValidateStorageSemesterCourse(SemesterCourse storageSemesterCourse, Guid semesterCourseId)
@@ -73,5 +80,6 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
         }
 
         private static bool IsInvalid(DateTimeOffset input) => input == default;
+        private static bool IsInvalid(Guid input) => input == default;
     }
 }
