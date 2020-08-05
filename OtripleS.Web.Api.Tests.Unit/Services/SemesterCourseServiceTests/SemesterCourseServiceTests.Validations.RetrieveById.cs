@@ -52,5 +52,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnRetrieveWhenStorageSemesterCourseIsNullAndLogItAsync()
+        {
+            // given
+            Guid randomSemesterCourseId = Guid.NewGuid();
+            Guid inputSemesterCourseId = randomSemesterCourseId;
+            SemesterCourse invalidStorageSemesterCourse = null;
+            var notFoundSemesterCourseException = new NotFoundSemesterCourseException(inputSemesterCourseId);
+
+            var expectedSemesterCourseValidationException =
+                new SemesterCourseValidationException(notFoundSemesterCourseException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
+                    .ReturnsAsync(invalidStorageSemesterCourse);
+
+            // when
+            ValueTask<SemesterCourse> retrieveSemesterCourseByIdTask =
+                this.semesterCourseService.RetrieveSemesterCourseByIdAsync(inputSemesterCourseId);
+
+            // then
+            await Assert.ThrowsAsync<SemesterCourseValidationException>(() =>
+                retrieveSemesterCourseByIdTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
