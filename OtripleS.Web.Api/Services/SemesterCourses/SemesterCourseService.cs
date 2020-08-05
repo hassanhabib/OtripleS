@@ -52,10 +52,16 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedSemesterCourseException = new LockedSemesterCourseException(dbUpdateConcurrencyException);
+                throw CreateAndLogDependencyException(lockedSemesterCourseException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            
         }
     }
 }
