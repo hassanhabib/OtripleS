@@ -26,27 +26,28 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             SemesterCourse expectedSemesterCourse = storageSemesterCourse;
             
             this.storageBrokerMock.Setup(broker =>
-                    broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
+                 broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
                 .ReturnsAsync(inputSemesterCourse);
             
             this.storageBrokerMock.Setup(broker =>
-                    broker.DeleteSemesterCourseAsync(inputSemesterCourse))
+                 broker.DeleteSemesterCourseAsync(inputSemesterCourse))
                 .ReturnsAsync(storageSemesterCourse);
             
             // when
-            SemesterCourse actualSemesterCourse =
+            SemesterCourse actualSemesterCourse = 
                 await this.semesterCourseService.DeleteSemesterCourseAsync(inputSemesterCourseId);
             
             //then
             actualSemesterCourse.Should().BeEquivalentTo(expectedSemesterCourse);
             
             this.storageBrokerMock.Verify(broker =>
-                    broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),
+                broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),
                 Times.Once);
             
             this.storageBrokerMock.Verify(broker =>
-                    broker.DeleteSemesterCourseAsync(inputSemesterCourse),
+                broker.DeleteSemesterCourseAsync(inputSemesterCourse),
                 Times.Once);
+            
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

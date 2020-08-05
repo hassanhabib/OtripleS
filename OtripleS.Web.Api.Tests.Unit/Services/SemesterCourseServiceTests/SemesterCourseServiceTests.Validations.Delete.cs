@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
                 () => actualSemesterCourseDeleteTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
                 Times.Once);
             
             this.storageBrokerMock.Verify(broker =>
@@ -65,7 +65,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
                 new SemesterCourseValidationException(notFoundSemesterCourseException);
 
             this.storageBrokerMock.Setup(broker =>
-                    broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
+                 broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
                 .ReturnsAsync(nullStorageSemesterCourse);
 
             // when
@@ -76,15 +76,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             await Assert.ThrowsAsync<SemesterCourseValidationException>(() => actualSemesterCourseDeleteTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
                 Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                    broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),
+                broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),
                 Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                    broker.DeleteSemesterCourseAsync(It.IsAny<SemesterCourse>()),
+                broker.DeleteSemesterCourseAsync(It.IsAny<SemesterCourse>()),
                 Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
