@@ -12,6 +12,19 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 {
 	public partial class SemesterCourseService
 	{
+        private void ValidateSemesterCourseOnCreate(SemesterCourse semesterCourse)
+        {
+            ValidateSemesterCourseIsNull(semesterCourse);
+        }
+
+        private void ValidateSemesterCourseIsNull(SemesterCourse semesterCourse)
+        {
+            if (semesterCourse is null)
+            {
+                throw new NullSemesterCourseException();
+            }
+        }
+
         private void ValidateSemesterCourseId(Guid semesterCourseId)
         {
             if (semesterCourseId == Guid.Empty)

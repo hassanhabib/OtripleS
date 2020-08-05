@@ -22,6 +22,10 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             {
                 return await returningSemesterCourseFunction();
             }
+            catch (NullSemesterCourseException nullSemesterCourseException)
+            {
+                throw CreateAndLogValidationException(nullSemesterCourseException);
+            }
             catch (InvalidSemesterCourseException invalidSemesterCourseInputException)
             {
                 throw CreateAndLogValidationException(invalidSemesterCourseInputException);
