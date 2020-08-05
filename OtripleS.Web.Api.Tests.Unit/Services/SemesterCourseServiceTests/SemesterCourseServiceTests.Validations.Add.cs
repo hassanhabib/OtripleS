@@ -340,5 +340,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedDateInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            SemesterCourse randomSemesterCourse = CreateRandomSemesterCourse(dateTime);
+            SemesterCourse inputSemesterCourse = randomSemesterCourse;
+            inputSemesterCourse.CreatedDate = default;
+
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseException(
+                parameterName: nameof(SemesterCourse.CreatedDate),
+                parameterValue: inputSemesterCourse.CreatedDate);
+
+            var expectedSemesterCourseValidationException =
+                new SemesterCourseValidationException(invalidSemesterCourseInputException);
+
+            // when
+            ValueTask<SemesterCourse> createSemesterCourseTask =
+                this.semesterCourseService.CreateSemesterCourseAsync(inputSemesterCourse);
+
+            // then
+            await Assert.ThrowsAsync<SemesterCourseValidationException>(() =>
+                createSemesterCourseTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
