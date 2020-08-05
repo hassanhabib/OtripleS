@@ -12,5 +12,13 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 
             return semesterCourseValidationException;
         }
+        
+        private SemesterCourseDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var semesterCourseDependencyException = new SemesterCourseDependencyException(exception);
+            this.loggingBroker.LogCritical(semesterCourseDependencyException);
+
+            return semesterCourseDependencyException;
+        }
     }
 }
