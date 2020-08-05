@@ -30,42 +30,14 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async ValueTask<SemesterCourse> DeleteSemesterCourseAsync(Guid semesterCourseId)
-        {
-            try
+        public ValueTask<SemesterCourse> DeleteSemesterCourseAsync(Guid semesterCourseId) =>
+            TryCatch(async () =>
             {
                 ValidateSemesterCourseServiceIdIsNull(semesterCourseId);
                 SemesterCourse maybeSemesterCourse =
                     await this.storageBroker.SelectSemesterCourseByIdAsync(semesterCourseId);
                 ValidateStorageSemesterCourse(maybeSemesterCourse, semesterCourseId);
                 return await this.storageBroker.DeleteSemesterCourseAsync(maybeSemesterCourse);
-            }
-            catch (InvalidSemesterCourseInputException invalidSemesterCourseInputException)
-            {
-                throw CreateAndLogValidationException(invalidSemesterCourseInputException);
-            }
-            catch (NotFoundSemesterCourseException notFoundSemesterCourseException)
-            {
-                throw CreateAndLogValidationException(notFoundSemesterCourseException);
-            }
-            catch (SqlException sqlException)
-            {
-                throw CreateAndLogCriticalDependencyException(sqlException);
-            }
-            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
-            {
-                var lockedSemesterCourseException = new LockedSemesterCourseException(dbUpdateConcurrencyException);
-                throw CreateAndLogDependencyException(lockedSemesterCourseException);
-            }
-            catch (DbUpdateException dbUpdateException)
-            {
-                throw CreateAndLogDependencyException(dbUpdateException);
-            }
-            catch (Exception exception)
-            {
-                throw CreateAndLogServiceException(exception);
-            }
-            
-        }
+            });
     }
 }

@@ -1,4 +1,8 @@
 using System;
+using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 
 namespace OtripleS.Web.Api.Services.SemesterCourses
@@ -34,6 +38,42 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             this.loggingBroker.LogError(semesterCourseServiceException);
 
             return semesterCourseServiceException;
+        }
+        
+        private delegate ValueTask<SemesterCourse> ReturningSemesterCourseFunction();
+
+        
+        private async ValueTask<SemesterCourse> TryCatch(ReturningSemesterCourseFunction returningStudentFunction)
+        {
+            try
+            {
+                return await returningStudentFunction();
+            }
+            catch (InvalidSemesterCourseInputException invalidSemesterCourseInputException)
+            {
+                throw CreateAndLogValidationException(invalidSemesterCourseInputException);
+            }
+            catch (NotFoundSemesterCourseException notFoundSemesterCourseException)
+            {
+                throw CreateAndLogValidationException(notFoundSemesterCourseException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedSemesterCourseException = new LockedSemesterCourseException(dbUpdateConcurrencyException);
+                throw CreateAndLogDependencyException(lockedSemesterCourseException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
     }
 }
