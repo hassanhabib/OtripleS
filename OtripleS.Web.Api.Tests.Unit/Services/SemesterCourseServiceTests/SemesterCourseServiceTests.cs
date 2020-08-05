@@ -42,12 +42,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
         
-        private Filler<SemesterCourse> CreateRandomSemesterCourseFiller(DateTimeOffset dateTime)
+        private Filler<SemesterCourse> CreateRandomSemesterCourseFiller(DateTimeOffset dates)
         {
             var filler = new Filler<SemesterCourse>();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(dateTime);
+                .OnType<DateTimeOffset>().Use(dates);
 
             return filler;
         }

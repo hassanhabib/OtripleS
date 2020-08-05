@@ -47,12 +47,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
         private Classroom CreateRandomClassroom(DateTimeOffset dates) =>
             CreateClassroomFiller(dates).Create();
 
-        private static Filler<Classroom> CreateClassroomFiller(DateTimeOffset date)
+        private static Filler<Classroom> CreateClassroomFiller(DateTimeOffset dates)
         {
             var filler = new Filler<Classroom>();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(date);
+                .OnType<DateTimeOffset>().Use(dates);
 
             return filler;
         }
@@ -65,7 +65,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
         }
 
         private Classroom CreateRandomClassroom() =>
-            CreateClassroomFiller(date: DateTimeOffset.UtcNow).Create();
+            CreateClassroomFiller(dates: DateTimeOffset.UtcNow).Create();
 
         public static IEnumerable<object[]> InvalidMinuteCases()
         {
