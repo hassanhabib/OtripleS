@@ -16,6 +16,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
         {
             ValidateSemesterCourseIsNull(semesterCourse);
             ValidateSemesterCourseIdIsNull(semesterCourse.Id);
+            ValidateSemesterCourseFields(semesterCourse);
         }
 
         private void ValidateSemesterCourseIsNull(SemesterCourse semesterCourse)
@@ -36,6 +37,16 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             }
         }
 
+        private void ValidateSemesterCourseFields(SemesterCourse semesterCourse)
+        {
+            if (IsInvalid(semesterCourse.StartDate))
+            {
+                throw new InvalidSemesterCourseException(
+                    parameterName: nameof(SemesterCourse.StartDate),
+                    parameterValue: semesterCourse.StartDate);
+            }
+        }
+
         private static void ValidateStorageSemesterCourse(SemesterCourse storageSemesterCourse, Guid semesterCourseId)
         {
             if (storageSemesterCourse == null)
@@ -53,5 +64,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
                     parameterValue: semesterCourseId);
             }
         }
+
+        private static bool IsInvalid(DateTimeOffset input) => input == default;
     }
 }
