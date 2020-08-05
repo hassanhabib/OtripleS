@@ -66,6 +66,13 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
                     parameterName: nameof(SemesterCourse.TeacherId),
                     parameterValue: semesterCourse.TeacherId);
             }
+
+            if (IsInvalid(semesterCourse.ClassroomId))
+            {
+                throw new InvalidSemesterCourseException(
+                    parameterName: nameof(SemesterCourse.ClassroomId),
+                    parameterValue: semesterCourse.ClassroomId);
+            }
         }
 
         private static void ValidateStorageSemesterCourse(SemesterCourse storageSemesterCourse, Guid semesterCourseId)
