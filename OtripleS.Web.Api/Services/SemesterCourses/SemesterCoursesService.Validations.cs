@@ -173,5 +173,16 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
                     parameterValue: semesterCourse.UpdatedDate);
             }
         }
+
+        private void ValidateAgainstStorageSemesterCourseOnModify(SemesterCourse inputSemesterCourse, SemesterCourse storageSemesterCourse)
+        {
+            switch (inputSemesterCourse)
+            {
+                case { } when inputSemesterCourse.CreatedDate != storageSemesterCourse.CreatedDate:
+                    throw new InvalidSemesterCourseException(
+                        parameterName: nameof(SemesterCourse.CreatedDate),
+                        parameterValue: inputSemesterCourse.CreatedDate);
+            }
+        }
     }
 }
