@@ -11,7 +11,8 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 {
     public interface ISemesterCourseService
     {
-        ValueTask<SemesterCourse> DeleteSemesterCourseAsync(Guid semesterCourseId);
+        ValueTask<SemesterCourse> CreateSemesterCourseAsync(SemesterCourse semesterCourse);
         ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid semesterCourseId);
+        ValueTask<SemesterCourse> DeleteSemesterCourseAsync(Guid semesterCourseId);
     }
 }

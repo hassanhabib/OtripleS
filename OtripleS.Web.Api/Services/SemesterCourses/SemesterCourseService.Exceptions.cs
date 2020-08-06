@@ -1,5 +1,11 @@
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.SemesterCourses;
@@ -11,19 +17,31 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
     {
         private delegate ValueTask<SemesterCourse> ReturningSemesterCourseFunction();
 
-        private async ValueTask<SemesterCourse> TryCatch(ReturningSemesterCourseFunction returningStudentFunction)
+        private async ValueTask<SemesterCourse> TryCatch(
+            ReturningSemesterCourseFunction returningSemesterCourseFunction)
         {
             try
             {
-                return await returningStudentFunction();
+                return await returningSemesterCourseFunction();
             }
-            catch (InvalidSemesterCourseInputException invalidSemesterCourseInputException)
+            catch (NullSemesterCourseException nullSemesterCourseException)
+            {
+                throw CreateAndLogValidationException(nullSemesterCourseException);
+            }
+            catch (InvalidSemesterCourseException invalidSemesterCourseInputException)
             {
                 throw CreateAndLogValidationException(invalidSemesterCourseInputException);
             }
-            catch (NotFoundSemesterCourseException notFoundSemesterCourseException)
+            catch (NotFoundSemesterCourseException nullSemesterCourseException)
             {
-                throw CreateAndLogValidationException(notFoundSemesterCourseException);
+                throw CreateAndLogValidationException(nullSemesterCourseException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsSemesterCourseException =
+                    new AlreadyExistsSemesterCourseException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsSemesterCourseException);
             }
             catch (SqlException sqlException)
             {
@@ -44,10 +62,19 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             }
         }
 
+        private SemesterCourseServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var semesterCourseServiceException = new SemesterCourseServiceException(exception);
+            this.loggingBroker.LogError(semesterCourseServiceException);
+
+            return semesterCourseServiceException;
+        }
+
         private SemesterCourseValidationException CreateAndLogValidationException(Exception exception)
         {
             var semesterCourseValidationException = new SemesterCourseValidationException(exception);
             this.loggingBroker.LogError(semesterCourseValidationException);
+
             return semesterCourseValidationException;
         }
 
@@ -55,6 +82,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
         {
             var semesterCourseDependencyException = new SemesterCourseDependencyException(exception);
             this.loggingBroker.LogCritical(semesterCourseDependencyException);
+
             return semesterCourseDependencyException;
         }
 
@@ -62,15 +90,8 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
         {
             var semesterCourseDependencyException = new SemesterCourseDependencyException(exception);
             this.loggingBroker.LogError(semesterCourseDependencyException);
+
             return semesterCourseDependencyException;
-        }
-
-        private SemesterCourseServiceException CreateAndLogServiceException(Exception exception)
-        {
-            var semesterCourseServiceException = new SemesterCourseServiceException(exception);
-            this.loggingBroker.LogError(semesterCourseServiceException);
-
-            return semesterCourseServiceException;
         }
     }
 }

@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -17,49 +18,67 @@ using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 {
-    public partial class SemesterCourseServiceTests
-    {
-        private readonly Mock<IStorageBroker> storageBrokerMock;
-        private readonly Mock<ILoggingBroker> loggingBrokerMock;
-        private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
-        private ISemesterCourseService semesterCourseService;
+	public partial class SemesterCourseServiceTests
+	{
+		private readonly Mock<IStorageBroker> storageBrokerMock;
+		private readonly Mock<ILoggingBroker> loggingBrokerMock;
+		private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
+		private readonly ISemesterCourseService semesterCourseService;
 
-        public SemesterCourseServiceTests()
-        {
-            this.storageBrokerMock = new Mock<IStorageBroker>();
-            this.loggingBrokerMock = new Mock<ILoggingBroker>();
-            this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
+		public SemesterCourseServiceTests()
+		{
+			this.storageBrokerMock = new Mock<IStorageBroker>();
+			this.loggingBrokerMock = new Mock<ILoggingBroker>();
+			this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
 
-            this.semesterCourseService = new SemesterCourseService(
-                storageBroker: this.storageBrokerMock.Object,
-                loggingBroker: this.loggingBrokerMock.Object,
-                dateTimeBroker: this.dateTimeBrokerMock.Object);
-        }
+			this.semesterCourseService = new SemesterCourseService(
+				storageBroker: this.storageBrokerMock.Object,
+				loggingBroker: this.loggingBrokerMock.Object,
+				dateTimeBroker: this.dateTimeBrokerMock.Object);
+		}
 
-        private static DateTimeOffset GetRandomDateTime() =>
-            new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private static SqlException GetSqlException() =>
-            (SqlException) FormatterServices.GetUninitializedObject(typeof(SqlException));
+		private static SqlException GetSqlException() =>
+			(SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
-        private Filler<SemesterCourse> CreateRandomSemesterCourseFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<SemesterCourse>();
+		private static DateTimeOffset GetRandomDateTime() =>
+			new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates);
+		private SemesterCourse CreateRandomSemesterCourse(DateTimeOffset dates) =>
+			CreateSemesterCourseFiller(dates).Create();
 
-            return filler;
-        }
+		private static Filler<SemesterCourse> CreateSemesterCourseFiller(DateTimeOffset dates)
+		{
+			var filler = new Filler<SemesterCourse>();
+			filler.Setup()
+				.OnType<DateTimeOffset>().Use(dates)
+				.OnProperty(semesterCourse => semesterCourse.CreatedDate).Use(dates)
+				.OnProperty(semesterCourse => semesterCourse.UpdatedDate).Use(dates);
 
-        private SemesterCourse CreateRandomSemesterCourse(DateTimeOffset dateTime) =>
-            CreateRandomSemesterCourseFiller(dateTime).Create();
+			return filler;
+		}
 
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
-        {
-            return actualException =>
-                expectedException.Message == actualException.Message
-                && expectedException.InnerException.Message == actualException.InnerException.Message;
-        }
-    }
+		public static IEnumerable<object[]> InvalidMinuteCases()
+		{
+			int randomMoreThanMinuteFromNow = GetRandomNumber();
+			int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+			return new List<object[]>
+			{
+				new object[] { randomMoreThanMinuteFromNow },
+				new object[] { randomMoreThanMinuteBeforeNow }
+			};
+		}
+
+		private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+		private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+		private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+		private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+		{
+			return actualException =>
+				expectedException.Message == actualException.Message
+				&& expectedException.InnerException.Message == actualException.InnerException.Message;
+		}
+	}
 }
