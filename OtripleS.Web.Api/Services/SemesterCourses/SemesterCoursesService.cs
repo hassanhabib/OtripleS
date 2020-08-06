@@ -35,7 +35,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 			return await this.storageBroker.InsertSemesterCourseAsync(semesterCourse);
 		});
 
-		public ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid semesterCourseId) =>
+        public ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid semesterCourseId) =>
 		TryCatch(async () =>
 		{
 			ValidateSemesterCourseId(semesterCourseId);
@@ -44,5 +44,10 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 
 			return storageSemesterCourse;
 		});
+
+		public ValueTask<SemesterCourse> ModifySemesterCourseAsync(SemesterCourse semesterCourse)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

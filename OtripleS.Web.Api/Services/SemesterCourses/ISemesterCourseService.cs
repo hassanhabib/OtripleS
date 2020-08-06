@@ -13,5 +13,6 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 	{
 		ValueTask<SemesterCourse> CreateSemesterCourseAsync(SemesterCourse semesterCourse);
 		ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid semesterCourseId);
+		ValueTask<SemesterCourse> ModifySemesterCourseAsync(SemesterCourse semesterCourse);
 	}
 }
