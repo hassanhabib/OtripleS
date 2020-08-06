@@ -111,6 +111,11 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
                     throw new InvalidSemesterCourseException(
                     parameterName: nameof(SemesterCourse.UpdatedBy),
                     parameterValue: semesterCourse.UpdatedBy);
+
+                case { } when semesterCourse.UpdatedDate != semesterCourse.CreatedDate:
+                    throw new InvalidSemesterCourseException(
+                    parameterName: nameof(SemesterCourse.UpdatedDate),
+                    parameterValue: semesterCourse.UpdatedDate);
             }
         }
 
