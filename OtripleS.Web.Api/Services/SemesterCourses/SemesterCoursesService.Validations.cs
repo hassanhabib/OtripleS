@@ -62,13 +62,6 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
                     parameterValue: semesterCourse.EndDate);
             }
 
-            if (IsInvalid(semesterCourse.CourseId))
-            {
-                throw new InvalidSemesterCourseException(
-                    parameterName: nameof(SemesterCourse.CourseId),
-                    parameterValue: semesterCourse.CourseId);
-            }
-
             if (IsInvalid(semesterCourse.TeacherId))
             {
                 throw new InvalidSemesterCourseException(
