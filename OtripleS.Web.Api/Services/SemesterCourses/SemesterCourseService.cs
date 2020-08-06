@@ -34,9 +34,11 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             TryCatch(async () =>
             {
                 ValidateSemesterCourseId(semesterCourseId);
+                
                 SemesterCourse maybeSemesterCourse =
                     await this.storageBroker.SelectSemesterCourseByIdAsync(semesterCourseId);
                 ValidateStorageSemesterCourse(maybeSemesterCourse, semesterCourseId);
+                
                 return await this.storageBroker.DeleteSemesterCourseAsync(maybeSemesterCourse);
             });
 
