@@ -24,6 +24,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
         private void ValidateSemesterCourseOnModify(SemesterCourse semesterCourse)
         {
             ValidateSemesterCourseIsNull(semesterCourse);
+            ValidateSemesterCourseIdIsNull(semesterCourse.Id);
         }
 
         private void ValidateSemesterCourseIsNull(SemesterCourse semesterCourse)
