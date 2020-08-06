@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.SemesterCourses;
@@ -15,11 +16,16 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 	public partial class SemesterCourseService
 	{
         private delegate ValueTask<SemesterCourse> ReturningSemesterCourseFunction();
+
         private async ValueTask<SemesterCourse> TryCatch(ReturningSemesterCourseFunction returningSemesterCourseFunction)
         {
             try
             {
                 return await returningSemesterCourseFunction();
+            }
+            catch (NullSemesterCourseException nullSemesterCourseException)
+            {
+                throw CreateAndLogValidationException(nullSemesterCourseException);
             }
             catch (InvalidSemesterCourseException invalidSemesterCourseInputException)
             {
@@ -28,6 +34,13 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             catch (NotFoundSemesterCourseException nullSemesterCourseException)
             {
                 throw CreateAndLogValidationException(nullSemesterCourseException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsSemesterCourseException =
+                    new AlreadyExistsSemesterCourseException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsSemesterCourseException);
             }
             catch (SqlException sqlException)
             {
