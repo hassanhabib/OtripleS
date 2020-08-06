@@ -1,4 +1,4 @@
-﻿// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
@@ -13,11 +13,12 @@ using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 
 namespace OtripleS.Web.Api.Services.SemesterCourses
 {
-	public partial class SemesterCourseService
-	{
+    public partial class SemesterCourseService
+    {
         private delegate ValueTask<SemesterCourse> ReturningSemesterCourseFunction();
 
-        private async ValueTask<SemesterCourse> TryCatch(ReturningSemesterCourseFunction returningSemesterCourseFunction)
+        private async ValueTask<SemesterCourse> TryCatch(
+            ReturningSemesterCourseFunction returningSemesterCourseFunction)
         {
             try
             {
@@ -45,6 +46,11 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedSemesterCourseException = new LockedSemesterCourseException(dbUpdateConcurrencyException);
+                throw CreateAndLogDependencyException(lockedSemesterCourseException);
             }
             catch (DbUpdateException dbUpdateException)
             {

@@ -7,11 +7,12 @@ using System;
 
 namespace OtripleS.Web.Api.Models.SemesterCourses.Exceptions
 {
-    public class SemesterCourseDependencyException : Exception
+    public class InvalidSemesterCourseInputException : Exception
     {
-        public SemesterCourseDependencyException(Exception innerException) : base(
-            "Service dependency error occurred, contact support.", innerException)
-        {
-        }
+        public InvalidSemesterCourseInputException(string parameterName, object parameterValue)
+            : base($"Invalid SemesterCourse, " +
+                   $"ParameterName: {parameterName}, " +
+                   $"ParameterValue: {parameterValue}.")
+        { }
     }
 }

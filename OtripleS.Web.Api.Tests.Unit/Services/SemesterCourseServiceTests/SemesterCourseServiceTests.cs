@@ -1,4 +1,4 @@
-﻿// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
@@ -37,12 +37,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 				dateTimeBroker: this.dateTimeBrokerMock.Object);
 		}
 
-		private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
-		{
-			return actualException =>
-				expectedException.Message == actualException.Message
-				&& expectedException.InnerException.Message == actualException.InnerException.Message;
-		}
+
 		private static SqlException GetSqlException() =>
 			(SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
@@ -78,5 +73,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 		private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 		private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
 		private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+		private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+		{
+			return actualException =>
+				expectedException.Message == actualException.Message
+				&& expectedException.InnerException.Message == actualException.InnerException.Message;
+		}
 	}
 }
