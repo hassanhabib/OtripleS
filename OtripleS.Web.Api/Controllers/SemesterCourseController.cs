@@ -30,6 +30,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 IQueryable storageSemesterCourse = this.semesterCourseService.RetrieveAllSemesterCourses();
+
                 return Ok(storageSemesterCourse);
             }
             catch(SemesterCourseDependencyException semesterCourseDependencyException)
