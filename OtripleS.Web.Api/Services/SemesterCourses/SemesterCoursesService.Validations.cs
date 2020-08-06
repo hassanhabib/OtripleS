@@ -27,6 +27,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             ValidateSemesterCourseIdIsNull(semesterCourse.Id);
             ValidateSemesterCourseFields(semesterCourse);
             ValidateInvalidAuditFields(semesterCourse);
+            ValidateAuditFieldsDataOnModify(semesterCourse);
         }
 
         private void ValidateSemesterCourseIsNull(SemesterCourse semesterCourse)
@@ -160,6 +161,17 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             TimeSpan difference = now.Subtract(dateTime);
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
+
+        private void ValidateAuditFieldsDataOnModify(SemesterCourse semesterCourse)
+        {
+            switch (semesterCourse)
+            {
+                case { } when IsDateNotRecent(semesterCourse.UpdatedDate):
+                    throw new InvalidSemesterCourseException(
+                    parameterName: nameof(SemesterCourse.UpdatedDate),
+                    parameterValue: semesterCourse.UpdatedDate);
+            }
         }
     }
 }
