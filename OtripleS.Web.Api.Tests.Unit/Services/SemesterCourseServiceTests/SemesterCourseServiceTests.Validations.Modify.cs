@@ -541,12 +541,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
                     .Returns(randomDate);
 
             // when
-            ValueTask<SemesterCourse> modifyAssignmentTask =
+            ValueTask<SemesterCourse> modifySemesterCourseTask =
                 this.semesterCourseService.ModifySemesterCourseAsync(invalidSemesterCourse);
 
             // then
             await Assert.ThrowsAsync<SemesterCourseValidationException>(() =>
-                modifyAssignmentTask.AsTask());
+                modifySemesterCourseTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
