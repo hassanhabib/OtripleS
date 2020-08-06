@@ -108,10 +108,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             inputSemesterCourse.UpdatedDate = randomDate;
             Guid semesterCourseId = inputSemesterCourse.Id;
 
-            this.dateTimeBrokerMock.Setup(broker =>
-               broker.GetCurrentDateTime())
-                   .Returns(randomDate);
-
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectSemesterCourseByIdAsync(semesterCourseId))
                     .ReturnsAsync(beforeUpdateStorageSemesterCourse);
@@ -126,10 +122,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 
             // then
             actualSemesterCourse.Should().BeEquivalentTo(expectedSemesterCourse);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(semesterCourseId),
