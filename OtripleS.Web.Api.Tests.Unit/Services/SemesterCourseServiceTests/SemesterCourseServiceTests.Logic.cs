@@ -67,12 +67,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             SemesterCourse expectedSemesterCourse = storageSemesterCourse;
 
             this.storageBrokerMock.Setup(broker =>
-                    broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
-                .ReturnsAsync(inputSemesterCourse);
+                broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
+                    .ReturnsAsync(inputSemesterCourse);
 
             this.storageBrokerMock.Setup(broker =>
-                    broker.DeleteSemesterCourseAsync(inputSemesterCourse))
-                .ReturnsAsync(storageSemesterCourse);
+                broker.DeleteSemesterCourseAsync(inputSemesterCourse))
+                    .ReturnsAsync(storageSemesterCourse);
 
             // when
             SemesterCourse actualSemesterCourse =
@@ -82,12 +82,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             actualSemesterCourse.Should().BeEquivalentTo(expectedSemesterCourse);
 
             this.storageBrokerMock.Verify(broker =>
-                    broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),
-                Times.Once);
+                broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                    broker.DeleteSemesterCourseAsync(inputSemesterCourse),
-                Times.Once);
+                broker.DeleteSemesterCourseAsync(inputSemesterCourse),
+                    Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
