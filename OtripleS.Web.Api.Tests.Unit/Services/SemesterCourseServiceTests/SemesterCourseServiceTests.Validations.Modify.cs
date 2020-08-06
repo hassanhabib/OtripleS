@@ -510,5 +510,59 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfStorageUpdatedDateSameAsUpdatedDateAndLogItAsync()
+        {
+            // given
+            int randomNegativeMinutes = GetNegativeRandomNumber();
+            int minutesInThePast = randomNegativeMinutes;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            SemesterCourse randomSemesterCourse = CreateRandomSemesterCourse(randomDate);
+            randomSemesterCourse.CreatedDate = randomSemesterCourse.CreatedDate.AddMinutes(minutesInThePast);
+            SemesterCourse invalidSemesterCourse = randomSemesterCourse;
+            invalidSemesterCourse.UpdatedDate = randomDate;
+            SemesterCourse storageSemesterCourse = randomSemesterCourse.DeepClone();
+            Guid semesterCourseId = invalidSemesterCourse.Id;
+
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseException(
+                parameterName: nameof(SemesterCourse.UpdatedDate),
+                parameterValue: invalidSemesterCourse.UpdatedDate);
+
+            var expectedSemesterCourseValidationException =
+              new SemesterCourseValidationException(invalidSemesterCourseInputException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectSemesterCourseByIdAsync(semesterCourseId))
+                    .ReturnsAsync(storageSemesterCourse);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
+            // when
+            ValueTask<SemesterCourse> modifyAssignmentTask =
+                this.semesterCourseService.ModifySemesterCourseAsync(invalidSemesterCourse);
+
+            // then
+            await Assert.ThrowsAsync<SemesterCourseValidationException>(() =>
+                modifyAssignmentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectSemesterCourseByIdAsync(invalidSemesterCourse.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
