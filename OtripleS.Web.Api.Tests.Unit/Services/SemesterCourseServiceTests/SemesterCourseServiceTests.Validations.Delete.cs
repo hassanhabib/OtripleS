@@ -37,13 +37,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                Times.Once);
+                    Times.Once);
             
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()), Times.Never);
+                broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
         
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteSemesterCourseAsync(It.IsAny<SemesterCourse>()), Times.Never);
+                broker.DeleteSemesterCourseAsync(It.IsAny<SemesterCourse>()),
+                    Times.Never);
             
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -66,7 +68,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 
             this.storageBrokerMock.Setup(broker =>
                  broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
-                .ReturnsAsync(nullStorageSemesterCourse);
+                    .ReturnsAsync(nullStorageSemesterCourse);
 
             // when
             ValueTask<SemesterCourse> actualSemesterCourseDeleteTask =
@@ -77,15 +79,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                Times.Once);
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),
-                Times.Once);
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteSemesterCourseAsync(It.IsAny<SemesterCourse>()),
-                Times.Never);
+                    Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
