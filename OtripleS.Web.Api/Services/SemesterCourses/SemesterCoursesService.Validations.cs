@@ -21,6 +21,11 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             ValidateAuditFieldsDataOnCreate(semesterCourse);
         }
 
+        private void ValidateSemesterCourseOnModify(SemesterCourse semesterCourse)
+        {
+            ValidateSemesterCourseIsNull(semesterCourse);
+        }
+
         private void ValidateSemesterCourseIsNull(SemesterCourse semesterCourse)
         {
             if (semesterCourse is null)

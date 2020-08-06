@@ -45,11 +45,13 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 			return storageSemesterCourse;
 		});
 
-		public async ValueTask<SemesterCourse> ModifySemesterCourseAsync(SemesterCourse semesterCourse)
+		public ValueTask<SemesterCourse> ModifySemesterCourseAsync(SemesterCourse semesterCourse) =>
+		TryCatch(async () =>
 		{
+			ValidateSemesterCourseOnModify(semesterCourse);
 			SemesterCourse maybeSemesterCourse = await this.storageBroker.SelectSemesterCourseByIdAsync(semesterCourse.Id);
 
 			return await this.storageBroker.UpdateSemesterCourseAsync(semesterCourse);
-		}
+		});
 	}
 }
