@@ -182,6 +182,11 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
                     throw new InvalidSemesterCourseException(
                         parameterName: nameof(SemesterCourse.CreatedDate),
                         parameterValue: inputSemesterCourse.CreatedDate);
+
+                case { } when inputSemesterCourse.UpdatedDate == storageSemesterCourse.UpdatedDate:
+                    throw new InvalidSemesterCourseException(
+                        parameterName: nameof(SemesterCourse.UpdatedDate),
+                        parameterValue: inputSemesterCourse.UpdatedDate);
             }
         }
     }
