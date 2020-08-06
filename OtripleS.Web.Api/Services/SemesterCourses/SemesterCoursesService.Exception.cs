@@ -50,6 +50,10 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private SemesterCourseServiceException CreateAndLogServiceException(Exception exception)
