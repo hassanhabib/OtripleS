@@ -116,6 +116,11 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
                     throw new InvalidSemesterCourseException(
                     parameterName: nameof(SemesterCourse.UpdatedDate),
                     parameterValue: semesterCourse.UpdatedDate);
+
+                case { } when IsDateNotRecent(semesterCourse.CreatedDate):
+                    throw new InvalidSemesterCourseException(
+                    parameterName: nameof(SemesterCourse.CreatedDate),
+                    parameterValue: semesterCourse.CreatedDate);
             }
         }
 
@@ -139,5 +144,14 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 
         private static bool IsInvalid(DateTimeOffset input) => input == default;
         private static bool IsInvalid(Guid input) => input == default;
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
     }
 }
