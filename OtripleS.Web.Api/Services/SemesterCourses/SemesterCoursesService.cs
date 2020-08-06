@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -41,6 +42,15 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 			ValidateSemesterCourseId(semesterCourseId);
 			SemesterCourse storageSemesterCourse = await this.storageBroker.SelectSemesterCourseByIdAsync(semesterCourseId);
 			ValidateStorageSemesterCourse(storageSemesterCourse, semesterCourseId);
+
+			return storageSemesterCourse;
+		});
+
+		public IQueryable<SemesterCourse> RetrieveAllSemesterCourses() =>
+		TryCatch(() =>
+		{
+			IQueryable<SemesterCourse> storageSemesterCourse = this.storageBroker.SelectAllSemesterCourses();
+			ValidateStorageSemesterCourses(storageSemesterCourse);
 
 			return storageSemesterCourse;
 		});
