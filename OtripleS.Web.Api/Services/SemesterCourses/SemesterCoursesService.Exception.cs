@@ -42,10 +42,6 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 
                 throw CreateAndLogValidationException(alreadyExistsSemesterCourseException);
             }
-            catch (SqlException sqlException)
-            {
-                throw CreateAndLogCriticalDependencyException(sqlException);
-            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
