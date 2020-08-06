@@ -69,6 +69,13 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
                     parameterValue: semesterCourse.CourseId);
             }
 
+            if (IsInvalid(semesterCourse.TeacherId))
+            {
+                throw new InvalidSemesterCourseException(
+                    parameterName: nameof(SemesterCourse.TeacherId),
+                    parameterValue: semesterCourse.TeacherId);
+            }
+
             if (IsInvalid(semesterCourse.ClassroomId))
             {
                 throw new InvalidSemesterCourseException(
