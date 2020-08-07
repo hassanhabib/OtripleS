@@ -21,26 +21,45 @@ namespace OtripleS.Web.Api.Controllers
     public class SemesterCourseController : RESTFulController
     {
         private readonly ISemesterCourseService semesterCourseService;
-        public SemesterCourseController(ISemesterCourseService semesterCourseService)=>
+
+        public SemesterCourseController(ISemesterCourseService semesterCourseService) =>
             this.semesterCourseService = semesterCourseService;
 
-        [HttpGet]
-        public ActionResult<IQueryable<SemesterCourse>> GetAllSemesterCourse()
+        [HttpPost]
+        public async ValueTask<ActionResult<SemesterCourse>> PostSemesterCourseAsync(
+            SemesterCourse semesterCourse)
         {
             try
             {
-                IQueryable storageSemesterCourse = this.semesterCourseService.RetrieveAllSemesterCourses();
+                SemesterCourse persistedSemesterCourse =
+                    await this.semesterCourseService.CreateSemesterCourseAsync(semesterCourse);
 
-                return Ok(storageSemesterCourse);
+                return Ok(persistedSemesterCourse);
             }
-            catch(SemesterCourseDependencyException semesterCourseDependencyException)
+            catch (SemesterCourseValidationException semesterCourseValidationException)
+                when (semesterCourseValidationException.InnerException is AlreadyExistsSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(semesterCourseValidationException);
+
+                return Conflict(innerMessage);
+            }
+            catch (SemesterCourseValidationException semesterCourseValidationException)
+            {
+                string innerMessage = GetInnerMessage(semesterCourseValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (SemesterCourseDependencyException semesterCourseDependencyException)
             {
                 return Problem(semesterCourseDependencyException.Message);
             }
-            catch(SemesterCourseServiceException semesterCourseServiceException)
+            catch (SemesterCourseServiceException semesterCourseServiceException)
             {
                 return Problem(semesterCourseServiceException.Message);
             }
         }
+
+        private static string GetInnerMessage(Exception exception) =>
+            exception.InnerException.Message;
     }
 }

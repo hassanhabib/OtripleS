@@ -7,11 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.SemesterCourses.Exceptions
 {
-    public class SemesterCourseDependencyException : Exception
+    public class LockedSemesterCourseException : Exception
     {
-        public SemesterCourseDependencyException(Exception innerException) : base(
-            "Service dependency error occurred, contact support.", innerException)
-        {
-        }
+        public LockedSemesterCourseException(Exception innerException)
+            : base("Locked semesterCourse record exception, please try again later.", innerException) { }
     }
 }
