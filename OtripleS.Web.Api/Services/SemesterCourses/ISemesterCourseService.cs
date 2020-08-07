@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.SemesterCourses;
 
@@ -14,5 +15,6 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
         ValueTask<SemesterCourse> CreateSemesterCourseAsync(SemesterCourse semesterCourse);
         ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid semesterCourseId);
         ValueTask<SemesterCourse> DeleteSemesterCourseAsync(Guid semesterCourseId);
+        IQueryable<SemesterCourse> RetrieveAllSemesterCourses();
     }
 }

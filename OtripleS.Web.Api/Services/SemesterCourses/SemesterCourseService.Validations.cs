@@ -132,6 +132,14 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             }
         }
 
+        private void ValidateStorageSemesterCourses(IQueryable<SemesterCourse> storageSemesterCourse)
+        {
+            if (storageSemesterCourse.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No Semestercourses found in storage.");
+            }
+        }
+
         private void ValidateSemesterCourseIdIsNull(Guid semesterCourseId)
         {
             if (semesterCourseId == default)

@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -60,5 +61,14 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 
                 return await this.storageBroker.InsertSemesterCourseAsync(semesterCourse);
             });
+
+        public IQueryable<SemesterCourse> RetrieveAllSemesterCourses() =>
+        TryCatch(() =>
+        {
+            IQueryable<SemesterCourse> storageSemesterCourse = this.storageBroker.SelectAllSemesterCourses();
+            ValidateStorageSemesterCourses(storageSemesterCourse);
+
+            return storageSemesterCourse;
+        });
     }
 }

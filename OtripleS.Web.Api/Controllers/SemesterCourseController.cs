@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Models.Courses.Exceptions;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 using OtripleS.Web.Api.Services.SemesterCourses;
@@ -56,6 +57,26 @@ namespace OtripleS.Web.Api.Controllers
             catch (SemesterCourseServiceException semesterCourseServiceException)
             {
                 return Problem(semesterCourseServiceException.Message);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<IQueryable<SemesterCourse>> GetAllSemesterCourse()
+        {
+            try
+            {
+                IQueryable storageSemesterCourse =
+                    this.semesterCourseService.RetrieveAllSemesterCourses();
+
+                return Ok(storageSemesterCourse);
+            }
+            catch (CourseDependencyException courseDependencyException)
+            {
+                return Problem(courseDependencyException.Message);
+            }
+            catch (CourseServiceException courseServiceException)
+            {
+                return Problem(courseServiceException.Message);
             }
         }
 
