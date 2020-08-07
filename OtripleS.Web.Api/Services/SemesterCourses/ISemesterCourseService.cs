@@ -1,4 +1,4 @@
-﻿// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
@@ -14,5 +14,6 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 		ValueTask<SemesterCourse> CreateSemesterCourseAsync(SemesterCourse semesterCourse);
 		ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid semesterCourseId);
 		ValueTask<SemesterCourse> ModifySemesterCourseAsync(SemesterCourse semesterCourse);
-	}
+        ValueTask<SemesterCourse> DeleteSemesterCourseAsync(Guid semesterCourseId);
+    }
 }
