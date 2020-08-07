@@ -18,7 +18,6 @@ namespace OtripleS.Web.Api.Services.Courses
     {
         private delegate ValueTask<Course> ReturningCourseFunction();
         private delegate IQueryable<Course> ReturningQueryableCourseFunction();
-
         private async ValueTask<Course> TryCatch(ReturningCourseFunction returningCourseFunction)
         {
             try

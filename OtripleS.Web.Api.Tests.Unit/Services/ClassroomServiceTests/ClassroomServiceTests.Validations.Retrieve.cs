@@ -78,14 +78,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
                 Times.Once);
-            
+
             this.dateTimeBrokerMock.Verify(broker => broker.GetCurrentDateTime(),
                 Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
                     broker.SelectClassroomByIdAsync(It.IsAny<Guid>()),
                 Times.Once);
-            
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();

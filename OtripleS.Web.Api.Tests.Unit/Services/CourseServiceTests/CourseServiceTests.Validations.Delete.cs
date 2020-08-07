@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
                 parameterName: nameof(Course.Id),
                 parameterValue: inputCourseId);
 
-            var expectedCourseValidationException = 
+            var expectedCourseValidationException =
                 new CourseValidationException(invalidCourseInputException);
 
             // when

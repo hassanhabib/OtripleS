@@ -109,7 +109,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
                     parameterName: nameof(Classroom.Id),
                     parameterValue: classroomId);
             }
-        }        
+        }
 
         private void ValidateDatesAreNotSame(Classroom classroom)
         {
@@ -168,7 +168,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
                         parameterValue: inputClassroom.UpdatedDate);
             }
         }
-        
+
         private void ValidateStorageClassrooms(IQueryable<Classroom> storageClassrooms)
         {
             if (storageClassrooms.Count() == 0)

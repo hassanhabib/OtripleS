@@ -118,6 +118,53 @@ namespace OtripleS.Web.Api.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("OtripleS.Web.Api.Models.SemesterCourses.SemesterCourse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClassroomId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("EndDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TeacherId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("UpdatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassroomId");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("SemesterCourses");
+                });
+
             modelBuilder.Entity("OtripleS.Web.Api.Models.Students.Student", b =>
                 {
                     b.Property<Guid>("Id")
@@ -204,6 +251,27 @@ namespace OtripleS.Web.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("OtripleS.Web.Api.Models.SemesterCourses.SemesterCourse", b =>
+                {
+                    b.HasOne("OtripleS.Web.Api.Models.Classrooms.Classroom", "Classroom")
+                        .WithMany("SemesterCourses")
+                        .HasForeignKey("ClassroomId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("OtripleS.Web.Api.Models.Courses.Course", "Course")
+                        .WithMany("SemesterCourses")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("OtripleS.Web.Api.Models.Teachers.Teacher", "Teacher")
+                        .WithMany("SemesterCourses")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

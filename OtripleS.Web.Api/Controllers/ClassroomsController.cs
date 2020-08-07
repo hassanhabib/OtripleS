@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -14,34 +14,67 @@ using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers
 {
-	[ApiController]
+    [ApiController]
     [Route("api/[controller]")]
     public class ClassroomsController : RESTFulController
-	{
-		private readonly IClassroomService classroomService;
+    {
+        private readonly IClassroomService classroomService;
 
-		public ClassroomsController(IClassroomService classroomService) =>
-			this.classroomService = classroomService;
+        public ClassroomsController(IClassroomService classroomService) =>
+            this.classroomService = classroomService;
 
-		[HttpGet]
-		public ActionResult<IQueryable<Classroom>> GetAllClassrooms()
-		{
-			try
-			{
-				IQueryable storageClassrooms =
-					this.classroomService.RetrieveAllClassrooms();
+        [HttpGet]
+        public ActionResult<IQueryable<Classroom>> GetAllClassrooms()
+        {
+            try
+            {
+                IQueryable storageClassrooms =
+                    this.classroomService.RetrieveAllClassrooms();
 
-				return Ok(storageClassrooms);
-			}
-			catch (ClassroomDependencyException classRoomDependencyException)
-			{
-				return Problem(classRoomDependencyException.Message);
-			}
-			catch (ClassroomServiceException classRoomServiceException)
-			{
-				return Problem(classRoomServiceException.Message);
-			}
-		}
+                return Ok(storageClassrooms);
+            }
+            catch (ClassroomDependencyException classRoomDependencyException)
+            {
+                return Problem(classRoomDependencyException.Message);
+            }
+            catch (ClassroomServiceException classRoomServiceException)
+            {
+                return Problem(classRoomServiceException.Message);
+            }
+        }
+
+        [HttpGet("{classroomId}")]
+        public async ValueTask<ActionResult<Classroom>> GetClassroomByIdAsync(Guid classroomId)
+        {
+            try
+            {
+                Classroom classroom =
+                    await this.classroomService.RetrieveClassroomById(classroomId);
+
+                return Ok(classroom);
+            }
+            catch (ClassroomValidationException classroomValidationException)
+                when (classroomValidationException.InnerException is NotFoundClassroomException)
+            {
+                string innerMessage = GetInnerMessage(classroomValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (ClassroomValidationException classroomValidationException)
+            {
+                string innerMessage = GetInnerMessage(classroomValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (ClassroomDependencyException classroomDependencyException)
+            {
+                return Problem(classroomDependencyException.Message);
+            }
+            catch (ClassroomServiceException classroomServiceException)
+            {
+                return Problem(classroomServiceException.Message);
+            }
+        }
 
         [HttpPost]
         public async ValueTask<ActionResult<Classroom>> PostClassroomAsync(Classroom classroom)
