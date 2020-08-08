@@ -59,6 +59,44 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpDelete("{semesterCourseId}")]
+        public async ValueTask<ActionResult<SemesterCourse>> DeleteSemesterCourseAsync(Guid semesterCourseId)
+        {
+            try
+            {
+                SemesterCourse storageSemesterCourse =
+                    await this.semesterCourseService.DeleteSemesterCourseAsync(semesterCourseId);
+
+                return Ok(storageSemesterCourse);
+            }
+            catch (SemesterCourseValidationException semesterCourseValidationException)
+                when (semesterCourseValidationException.InnerException is NotFoundSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(semesterCourseValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (SemesterCourseValidationException semesterCourseValidationException)
+            {
+                return BadRequest(semesterCourseValidationException.Message);
+            }
+            catch (SemesterCourseDependencyException semesterCourseDependencyException)
+                when (semesterCourseDependencyException.InnerException is LockedSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(semesterCourseDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (SemesterCourseDependencyException semesterCourseDependencyException)
+            {
+                return Problem(semesterCourseDependencyException.Message);
+            }
+            catch (SemesterCourseServiceException semesterCourseServiceException)
+            {
+                return Problem(semesterCourseServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
