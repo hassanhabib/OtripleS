@@ -59,6 +59,26 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult<IQueryable<SemesterCourse>> GetAllSemesterCourse()
+        {
+            try
+            {
+                IQueryable storageClassrooms =
+                    this.semesterCourseService.RetrieveAllSemesterCourse();
+
+                return Ok(storageClassrooms);
+            }
+            catch (SemesterCourseDependencyException semesterCourseDependencyException)
+            {
+                return Problem(semesterCourseDependencyException.Message);
+            }
+            catch (SemesterCourseServiceException semesterCourseServiceException)
+            {
+                return Problem(semesterCourseServiceException.Message);
+            }
+        }
+
         [HttpDelete("{semesterCourseId}")]
         public async ValueTask<ActionResult<SemesterCourse>> DeleteSemesterCourseAsync(Guid semesterCourseId)
         {

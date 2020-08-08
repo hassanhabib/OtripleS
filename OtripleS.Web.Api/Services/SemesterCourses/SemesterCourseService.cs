@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,16 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             this.storageBroker = storageBroker;
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
-        }      
+        }
+
+        public IQueryable<SemesterCourse> RetrieveAllSemesterCourse() =>
+        TryCatch(() =>
+        {
+            IQueryable<SemesterCourse> storageSemesterCourse = this.storageBroker.SelectAllSemesterCourses();
+            ValidateStorageSemesterCourse(storageSemesterCourse);
+
+            return storageSemesterCourse;
+        });
 
         public ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid semesterCourseId) =>
             TryCatch(async () =>
