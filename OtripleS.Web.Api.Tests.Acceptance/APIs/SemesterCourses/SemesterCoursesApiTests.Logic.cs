@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Force.DeepCloner;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using Xunit;
 
@@ -72,7 +71,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             List<SemesterCourse> expectedSemesterCourses = inputSemesterCourses.ToList();
 
             // when
-            List<SemesterCourse> actualSemesterCourses = await this.otripleSApiBroker.GetAllSemesterCoursesAsync();
+            List<SemesterCourse> actualSemesterCourses = 
+                await this.otripleSApiBroker.GetAllSemesterCoursesAsync();
 
             // then
             foreach (SemesterCourse expectedSemesterCourse in expectedSemesterCourses)

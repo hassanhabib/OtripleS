@@ -79,6 +79,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
                 .OnProperty(semesterCourse => semesterCourse.UpdatedBy).Use(semesterCourse.UpdatedBy)
                 .OnProperty(semesterCourse => semesterCourse.CreatedDate).Use(semesterCourse.CreatedDate)
                 .OnProperty(semesterCourse => semesterCourse.UpdatedDate).Use(now)
+                .OnProperty(semesterCourse => semesterCourse.TeacherId).Use(semesterCourse.Id)
+                .OnProperty(semesterCourse => semesterCourse.ClassroomId).Use(semesterCourse.Id)
+                .OnProperty(semesterCourse => semesterCourse.CourseId).Use(semesterCourse.Id)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler.Create();
