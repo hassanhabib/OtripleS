@@ -28,10 +28,8 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public IQueryable<SemesterCourse> RetrieveAllSemesterCourses()
-        {
-            throw new NotImplementedException();
-        }
+        public IQueryable<SemesterCourse> RetrieveAllSemesterCourses() =>
+            this.storageBroker.SelectAllSemesterCourses();
 
         public ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid semesterCourseId) =>
         TryCatch(async () =>
