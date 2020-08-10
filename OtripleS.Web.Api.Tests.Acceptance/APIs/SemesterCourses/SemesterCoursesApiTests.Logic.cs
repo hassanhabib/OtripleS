@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Force.DeepCloner;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using Xunit;
 
@@ -20,7 +21,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             // given
             SemesterCourse randomSemesterCourse = CreateRandomSemesterCourse();
             SemesterCourse inputSemesterCourse = randomSemesterCourse;
-            SemesterCourse expectedSemesterCourse = inputSemesterCourse;
+            
+            SemesterCourse expectedSemesterCourse = 
+                CreateExpectedSemesterCourse(inputSemesterCourse);
 
             // when 
             await this.otripleSApiBroker.PostSemesterCourseAsync(inputSemesterCourse);
@@ -74,7 +77,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             // then
             foreach (SemesterCourse expectedSemesterCourse in expectedSemesterCourses)
             {
-                SemesterCourse actualSemesterCourse = actualSemesterCourses.Single(semesterCourse => semesterCourse.Id == expectedSemesterCourse.Id);
+                SemesterCourse actualSemesterCourse = 
+                    actualSemesterCourses.Single(semesterCourse => 
+                        semesterCourse.Id == expectedSemesterCourse.Id);
+                
                 actualSemesterCourse.Should().BeEquivalentTo(expectedSemesterCourse);
                 await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(actualSemesterCourse.Id);
             }
