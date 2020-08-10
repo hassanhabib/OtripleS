@@ -13,7 +13,7 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 {
-	public partial class SemesterCourseServiceTests
+    public partial class SemesterCourseServiceTests
     {
         [Fact]
         public async Task ShouldCreateSemesterCourseAsync()
@@ -94,7 +94,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-        
+
         [Fact]
         public async Task ShouldRetrieveSemesterCourseByIdAsync()
         {
@@ -128,7 +128,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-        
+
         }
 
         [Fact]

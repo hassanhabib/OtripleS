@@ -12,7 +12,7 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 {
-	public partial class SemesterCourseServiceTests
+    public partial class SemesterCourseServiceTests
     {
         [Fact]
         public async void ShouldThrowValidationExceptionOnRetrieveWhenIdIsInvalidAndLogItAsync()

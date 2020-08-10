@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             var teacherId = this.otripleSApiBroker.GetAllTeachersAsync().Result.FirstOrDefault().Id;
             var classroomId = this.otripleSApiBroker.GetAllClassroomsAsync().Result.FirstOrDefault().Id;
             var courseId = this.otripleSApiBroker.GetAllCoursesAsync().Result.FirstOrDefault().Id;
-            
+
             filler.Setup()
                 .OnProperty(semesterCourse => semesterCourse.CreatedBy).Use(posterId)
                 .OnProperty(semesterCourse => semesterCourse.UpdatedBy).Use(posterId)

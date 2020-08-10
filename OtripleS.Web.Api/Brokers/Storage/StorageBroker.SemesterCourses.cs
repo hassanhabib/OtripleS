@@ -18,15 +18,15 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
         public async ValueTask<SemesterCourse> InsertSemesterCourseAsync(SemesterCourse semesterCourse)
         {
-            EntityEntry<SemesterCourse> semesterCourseEntityEntry = 
+            EntityEntry<SemesterCourse> semesterCourseEntityEntry =
                 await this.SemesterCourses.AddAsync(semesterCourse);
-            
+
             await this.SaveChangesAsync();
 
             return semesterCourseEntityEntry.Entity;
         }
 
-        public IQueryable<SemesterCourse> SelectAllSemesterCourses() => 
+        public IQueryable<SemesterCourse> SelectAllSemesterCourses() =>
             this.SemesterCourses.AsQueryable();
 
         public async ValueTask<SemesterCourse> SelectSemesterCourseByIdAsync(Guid semesterCourseId)

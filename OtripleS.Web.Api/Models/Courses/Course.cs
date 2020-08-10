@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using OtripleS.Web.Api.Models.SemesterCourses;
 

@@ -9,11 +9,11 @@ using OtripleS.Web.Api.Models.SemesterCourses;
 
 namespace OtripleS.Web.Api.Services.SemesterCourses
 {
-	public interface ISemesterCourseService
-	{
-		ValueTask<SemesterCourse> CreateSemesterCourseAsync(SemesterCourse semesterCourse);
-		ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid semesterCourseId);
-		ValueTask<SemesterCourse> ModifySemesterCourseAsync(SemesterCourse semesterCourse);
+    public interface ISemesterCourseService
+    {
+        ValueTask<SemesterCourse> CreateSemesterCourseAsync(SemesterCourse semesterCourse);
+        ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid semesterCourseId);
+        ValueTask<SemesterCourse> ModifySemesterCourseAsync(SemesterCourse semesterCourse);
         ValueTask<SemesterCourse> DeleteSemesterCourseAsync(Guid semesterCourseId);
     }
 }
