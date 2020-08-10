@@ -20,8 +20,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             // given
             SemesterCourse randomSemesterCourse = CreateRandomSemesterCourse();
             SemesterCourse inputSemesterCourse = randomSemesterCourse;
-            
-            SemesterCourse expectedSemesterCourse = 
+
+            SemesterCourse expectedSemesterCourse =
                 CreateExpectedSemesterCourse(inputSemesterCourse);
 
             // when 
@@ -71,16 +71,16 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             List<SemesterCourse> expectedSemesterCourses = inputSemesterCourses.ToList();
 
             // when
-            List<SemesterCourse> actualSemesterCourses = 
+            List<SemesterCourse> actualSemesterCourses =
                 await this.otripleSApiBroker.GetAllSemesterCoursesAsync();
 
             // then
             foreach (SemesterCourse expectedSemesterCourse in expectedSemesterCourses)
             {
-                SemesterCourse actualSemesterCourse = 
-                    actualSemesterCourses.Single(semesterCourse => 
+                SemesterCourse actualSemesterCourse =
+                    actualSemesterCourses.Single(semesterCourse =>
                         semesterCourse.Id == expectedSemesterCourse.Id);
-                
+
                 actualSemesterCourse.Should().BeEquivalentTo(expectedSemesterCourse);
                 await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(actualSemesterCourse.Id);
             }

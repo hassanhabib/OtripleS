@@ -9,7 +9,6 @@ using Force.DeepCloner;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.SemesterCourses;
-using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 using OtripleS.Web.Api.Models.Teachers;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
