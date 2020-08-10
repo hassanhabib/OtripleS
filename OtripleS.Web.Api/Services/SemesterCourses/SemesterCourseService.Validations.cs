@@ -4,14 +4,13 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 
 namespace OtripleS.Web.Api.Services.SemesterCourses
 {
-	public partial class SemesterCourseService
-	{
+    public partial class SemesterCourseService
+    {
         private void ValidateSemesterCourseOnCreate(SemesterCourse semesterCourse)
         {
             ValidateSemesterCourseIsNull(semesterCourse);

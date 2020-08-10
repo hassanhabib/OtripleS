@@ -70,7 +70,7 @@ namespace OtripleS.Web.Api.Services.Assignments
             return storageAssignment;
         });
 
-        public ValueTask<Assignment> DeleteAssignmentAsync(Guid assignmentId) => 
+        public ValueTask<Assignment> DeleteAssignmentAsync(Guid assignmentId) =>
         TryCatch(async () =>
         {
             Assignment maybeAssignment =
