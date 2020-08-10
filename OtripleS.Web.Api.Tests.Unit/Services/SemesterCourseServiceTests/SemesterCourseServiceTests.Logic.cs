@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
@@ -54,6 +55,36 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldRetireveAllSemesterCourses()
+        {
+            // given
+            IQueryable<SemesterCourse> randomSemesterCourses = 
+                CreateRandomSemesterCourses();
+
+            IQueryable<SemesterCourse> storageSemesterCourses = randomSemesterCourses;
+            IQueryable<SemesterCourse> expectedSemesterCourses = storageSemesterCourses;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllSemesterCourses())
+                    .Returns(storageSemesterCourses);
+
+            // when
+            IQueryable<SemesterCourse> actualSemesterCourses =
+                this.semesterCourseService.RetrieveAllSemesterCourses();
+
+            // then
+            actualSemesterCourses.Should().BeEquivalentTo(expectedSemesterCourses);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllSemesterCourses(),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]

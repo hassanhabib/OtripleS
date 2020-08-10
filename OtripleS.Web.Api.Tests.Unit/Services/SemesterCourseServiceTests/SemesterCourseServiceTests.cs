@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -37,7 +38,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
-
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
@@ -46,6 +46,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 
         private SemesterCourse CreateRandomSemesterCourse(DateTimeOffset dates) =>
             CreateSemesterCourseFiller(dates).Create();
+
+        private IQueryable<SemesterCourse> CreateRandomSemesterCourses() =>
+            CreateSemesterCourseFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static Filler<SemesterCourse> CreateSemesterCourseFiller(DateTimeOffset dates)
         {
