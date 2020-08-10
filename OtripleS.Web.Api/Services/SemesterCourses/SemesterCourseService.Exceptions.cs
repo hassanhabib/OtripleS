@@ -17,7 +17,8 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
     public partial class SemesterCourseService
     {
         private delegate ValueTask<SemesterCourse> ReturningSemesterCourseFunction();
-        private delegate IQueryable<SemesterCourse> ReturningQueryableSemesterCourseFunction();
+        private delegate IQueryable<SemesterCourse> ReturningSemesterCoursesFunction();
+
         private async ValueTask<SemesterCourse> TryCatch(
             ReturningSemesterCourseFunction returningSemesterCourseFunction)
         {
@@ -64,19 +65,11 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             }
         }
 
-        private SemesterCourseServiceException CreateAndLogServiceException(Exception exception)
-        {
-            var semesterCourseServiceException = new SemesterCourseServiceException(exception);
-            this.loggingBroker.LogError(semesterCourseServiceException);
-
-            return semesterCourseServiceException;
-        }
-        private IQueryable<SemesterCourse> TryCatch(
-         ReturningQueryableSemesterCourseFunction returningQueryableSemesterCourseFunction)
+        private IQueryable<SemesterCourse> TryCatch(ReturningSemesterCoursesFunction returningSemesterCoursesFunction)
         {
             try
             {
-                return returningQueryableSemesterCourseFunction();
+                return returningSemesterCoursesFunction();
             }
             catch (SqlException sqlException)
             {
@@ -92,6 +85,13 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             }
         }
 
+        private SemesterCourseServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var semesterCourseServiceException = new SemesterCourseServiceException(exception);
+            this.loggingBroker.LogError(semesterCourseServiceException);
+
+            return semesterCourseServiceException;
+        }
 
         private SemesterCourseValidationException CreateAndLogValidationException(Exception exception)
         {
