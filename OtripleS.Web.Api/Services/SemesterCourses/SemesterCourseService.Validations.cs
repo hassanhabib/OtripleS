@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 
         private void ValidateStorageSemesterCourses(IQueryable<SemesterCourse> semesterCourses)
         {
-            if(semesterCourses.Count() == 0)
+            if (semesterCourses.Count() == 0)
             {
                 this.loggingBroker.LogWarning("No semesterSemesterCourses found in storage.");
             }

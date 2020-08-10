@@ -61,7 +61,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
         public void ShouldRetireveAllSemesterCourses()
         {
             // given
-            IQueryable<SemesterCourse> randomSemesterCourses = 
+            IQueryable<SemesterCourse> randomSemesterCourses =
                 CreateRandomSemesterCourses();
 
             IQueryable<SemesterCourse> storageSemesterCourses = randomSemesterCourses;

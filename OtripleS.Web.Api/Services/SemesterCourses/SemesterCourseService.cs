@@ -29,7 +29,8 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
         }
 
         public IQueryable<SemesterCourse> RetrieveAllSemesterCourses() =>
-        TryCatch(() => {
+        TryCatch(() =>
+        {
             IQueryable<SemesterCourse> storageSemesterCourses =
                 this.storageBroker.SelectAllSemesterCourses();
 
