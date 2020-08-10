@@ -30,7 +30,12 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 
         public IQueryable<SemesterCourse> RetrieveAllSemesterCourses() =>
         TryCatch(() => {
-            return this.storageBroker.SelectAllSemesterCourses();
+            IQueryable<SemesterCourse> storageSemesterCourses =
+                this.storageBroker.SelectAllSemesterCourses();
+
+            ValidateStorageSemesterCourses(storageSemesterCourses);
+
+            return storageSemesterCourses;
         });
 
         public ValueTask<SemesterCourse> RetrieveSemesterCourseByIdAsync(Guid semesterCourseId) =>

@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 
@@ -27,6 +28,14 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             ValidateSemesterCourseFields(semesterCourse);
             ValidateInvalidAuditFields(semesterCourse);
             ValidateAuditFieldsDataOnModify(semesterCourse);
+        }
+
+        private void ValidateStorageSemesterCourses(IQueryable<SemesterCourse> semesterCourses)
+        {
+            if(semesterCourses.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No semesterSemesterCourses found in storage.");
+            }
         }
 
         private void ValidateSemesterCourseIsNull(SemesterCourse semesterCourse)
