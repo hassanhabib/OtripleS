@@ -59,15 +59,35 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult<IQueryable<SemesterCourse>> GetAllSemesterCourse()
+        [HttpPut]
+        public async ValueTask<ActionResult<SemesterCourse>> PutSemesterCourseAsync(SemesterCourse semesterCourse)
         {
             try
             {
-                IQueryable storageClassrooms =
-                    this.semesterCourseService.RetrieveAllSemesterCourse();
+                SemesterCourse registeredSemesterCourse =
+                    await this.semesterCourseService.ModifySemesterCourseAsync(semesterCourse);
 
-                return Ok(storageClassrooms);
+                return Ok(registeredSemesterCourse);
+            }
+            catch (SemesterCourseValidationException semesterCourseValidationException)
+                when (semesterCourseValidationException.InnerException is NotFoundSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(semesterCourseValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (SemesterCourseValidationException semesterCourseValidationException)
+            {
+                string innerMessage = GetInnerMessage(semesterCourseValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (SemesterCourseDependencyException semesterCourseDependencyException)
+                when (semesterCourseDependencyException.InnerException is LockedSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(semesterCourseDependencyException);
+
+                return Locked(innerMessage);
             }
             catch (SemesterCourseDependencyException semesterCourseDependencyException)
             {
