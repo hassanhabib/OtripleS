@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using System.Linq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -33,5 +34,10 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             ValidateStudentSemesterCourseOnCreate(studentSemesterCourse);
             return await this.storageBroker.InsertStudentSemesterCourseAsync(studentSemesterCourse);
         });
+
+        public IQueryable<StudentSemesterCourse> RetrieveAllStudentSemesterCourses()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

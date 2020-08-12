@@ -8,6 +8,7 @@ using Moq;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -56,6 +57,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldRetrieveAllStudentSemesterCoursesAsync()
+        {
+            //given
+            IQueryable<StudentSemesterCourse> randomSemesterCourses =
+                CreateRandomStudentSemesterCourses();
+
+            IQueryable<StudentSemesterCourse> storageStudentSemesterCourses = randomSemesterCourses;
+            IQueryable<StudentSemesterCourse> expectedStudentSemesterCourses = storageStudentSemesterCourses;
+            
+            this.storageBrokerMock.Setup(broker =>
+                    broker.SelectAllStudentSemesterCourses())
+                .Returns(storageStudentSemesterCourses);
+            
+            // when
+            IQueryable<StudentSemesterCourse> actualStudentSemesterCourses =
+                this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses();
+            
+            actualStudentSemesterCourses.Should().BeEquivalentTo(expectedStudentSemesterCourses);
+
+            this.storageBrokerMock.Verify(broker =>
+                    broker.SelectAllSemesterCourses(),
+                Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
