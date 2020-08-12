@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
@@ -41,7 +42,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
-        
+
         [Fact]
         public void ShouldThrowDependencyExceptionOnRetrieveAllWhenDbExceptionOccursAndLogIt()
         {
@@ -66,11 +67,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             this.storageBrokerMock.Verify(broker =>
                     broker.SelectAllStudentSemesterCourses(),
                 Times.Once);
-            
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public void ()
+        {
+            // given
+            var exception = new Exception();
+
+            var expectedStudentSemesterCourseServiceException =
+                new StudentSemesterCourseServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                    broker.SelectAllStudentSemesterCourses())
+                .Throws(exception);
+
+            // when . then
+            Assert.Throws<StudentSemesterCourseServiceException>(() =>
+                this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses());
+
+            this.loggingBrokerMock.Verify(broker =>
+                    broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseServiceException))),
+                Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                    broker.SelectAllStudentSemesterCourses(),
+                Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
