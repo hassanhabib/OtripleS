@@ -105,5 +105,52 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnCreateWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
+            StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
+            inputStudentSemesterCourse.UpdatedBy = inputStudentSemesterCourse.CreatedBy;
+            inputStudentSemesterCourse.UpdatedDate = inputStudentSemesterCourse.CreatedDate;
+            var exception = new Exception();
+
+            var expectedStudentSemesterCourseServiceException =
+                new StudentSemesterCourseServiceException(exception);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =
+                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(inputStudentSemesterCourse);
+
+            // then
+            await Assert.ThrowsAsync<StudentSemesterCourseServiceException>(() =>
+                createStudentSemesterCourseTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
