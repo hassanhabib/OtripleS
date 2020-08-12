@@ -80,7 +80,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             actualStudentSemesterCourses.Should().BeEquivalentTo(expectedStudentSemesterCourses);
 
             this.storageBrokerMock.Verify(broker =>
-                    broker.SelectAllSemesterCourses(),
+                    broker.SelectAllStudentSemesterCourses(),
                 Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();

@@ -28,16 +28,19 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<StudentSemesterCourse> CreateStudentSemesterCourseAsync(StudentSemesterCourse studentSemesterCourse) =>
-        TryCatch(async () =>
-        {
-            ValidateStudentSemesterCourseOnCreate(studentSemesterCourse);
-            return await this.storageBroker.InsertStudentSemesterCourseAsync(studentSemesterCourse);
-        });
+        public ValueTask<StudentSemesterCourse> CreateStudentSemesterCourseAsync(
+            StudentSemesterCourse studentSemesterCourse) =>
+            TryCatch(async () =>
+            {
+                ValidateStudentSemesterCourseOnCreate(studentSemesterCourse);
+                return await this.storageBroker.InsertStudentSemesterCourseAsync(studentSemesterCourse);
+            });
 
         public IQueryable<StudentSemesterCourse> RetrieveAllStudentSemesterCourses()
         {
-            throw new System.NotImplementedException();
+            IQueryable<StudentSemesterCourse> storageStudentSemesterCourses =
+                this.storageBroker.SelectAllStudentSemesterCourses();
+            return storageStudentSemesterCourses;
         }
     }
 }
