@@ -1,8 +1,9 @@
-using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
+using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
+using OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
@@ -10,34 +11,34 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
     public partial class StudentSemesterCourseServiceTests
     {
         [Fact]
-        public void ShouldLogWarningOnRetrieveAllWhenStudentSemesterCoursesWereEmptyAndLogIt()
+        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogIt()
         {
             // given
-            IQueryable<StudentSemesterCourse> emptyStorageStudentSemesterCourses =
-                new List<StudentSemesterCourse>().AsQueryable();
-            IQueryable<StudentSemesterCourse> expectedStudentSemesterCourses = emptyStorageStudentSemesterCourses;
+            SqlException sqlException = GetSqlException();
 
-            string expectedMessage = "No studentSemesterSemesterCourses found in storage.";
-            
+            var expectedStudentSemesterCourseDependencyException =
+                new StudentSemesterCourseDependencyException(sqlException);
+
             this.storageBrokerMock.Setup(broker =>
                     broker.SelectAllStudentSemesterCourses())
-                .Returns(expectedStudentSemesterCourses);
+                .Throws(sqlException);
 
-            // when
-            IQueryable<StudentSemesterCourse> actualSemesterCourses =
+            //when
+            IQueryable<StudentSemesterCourse> studentSemesterCoursesTask =
                 this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses();
-
+            
             // then
-            actualSemesterCourses.Should().BeEquivalentTo(emptyStorageStudentSemesterCourses);
+            Assert.Throws<StudentSemesterCourseDependencyException>(() =>
+                studentSemesterCoursesTask);
 
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogWarning(expectedMessage),
+                    broker.LogCritical(It.Is(SameExceptionAs(expectedStudentSemesterCourseDependencyException))),
                 Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                     broker.SelectAllStudentSemesterCourses(),
                 Times.Once);
-            
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
