@@ -40,6 +40,9 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
         {
             IQueryable<StudentSemesterCourse> storageStudentSemesterCourses =
                 this.storageBroker.SelectAllStudentSemesterCourses();
+            
+            ValidateStorageStudentSemesterCourses(storageStudentSemesterCourses);
+            
             return storageStudentSemesterCourses;
         }
     }

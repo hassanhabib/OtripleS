@@ -6,6 +6,7 @@
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions;
 using System;
+using System.Linq;
 
 namespace OtripleS.Web.Api.Services.StudentSemesterCourses
 {
@@ -101,6 +102,14 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             TimeSpan difference = now.Subtract(dateTime);
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
+
+        private void ValidateStorageStudentSemesterCourses(IQueryable<StudentSemesterCourse> storageStudentSemesterCourses)
+        {
+            if (storageStudentSemesterCourses.Count()==0)
+            {
+                this.loggingBroker.LogWarning("No studentSemesterSemesterCourses found in storage.");
+            }
         }
     }
 }
