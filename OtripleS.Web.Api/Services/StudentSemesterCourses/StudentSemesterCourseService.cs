@@ -30,9 +30,11 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async ValueTask<StudentSemesterCourse> CreateStudentSemesterCourseAsync(StudentSemesterCourse studentSemesterCourse)
+        public ValueTask<StudentSemesterCourse> CreateStudentSemesterCourseAsync(StudentSemesterCourse studentSemesterCourse) =>
+        TryCatch(async () =>
         {
+            ValidateStudentSemesterCourseOnCreate(studentSemesterCourse);
             return await this.storageBroker.InsertStudentSemesterCourseAsync(studentSemesterCourse);
-        }
+        });
     }
 }
