@@ -12,6 +12,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
     public partial class StudentSemesterCourseServiceTests
     {
         [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenStudentSemesterCourseIsNullAndLogItAsync()
+        {
+            // given
+            StudentSemesterCourse randomStudentSemesterCourse = null;
+            StudentSemesterCourse nullStudentSemesterCourse = randomStudentSemesterCourse;
+            var nullStudentSemesterCourseException = new NullStudentSemesterCourseException();
+
+            var expectedStudentSemesterCourseValidationException =
+                new StudentSemesterCourseValidationException(nullStudentSemesterCourseException);
+
+            // when
+            ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =
+                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(nullStudentSemesterCourse);
+
+            // then
+            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
+                createStudentSemesterCourseTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+
+        [Fact]
         public async void ShouldThrowValidationExceptionOnCreateWhenCreatedDateIsInvalidAndLogItAsync()
         {
             // given
