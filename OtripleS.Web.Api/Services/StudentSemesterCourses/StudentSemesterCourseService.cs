@@ -11,6 +11,7 @@ using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace OtripleS.Web.Api.Services.StudentSemesterCourses
 {
@@ -44,14 +45,18 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             {
                 IQueryable<StudentSemesterCourse> storageStudentSemesterCourses =
                     this.storageBroker.SelectAllStudentSemesterCourses();
-            
+
                 ValidateStorageStudentSemesterCourses(storageStudentSemesterCourses);
-            
+
                 return storageStudentSemesterCourses;
             }
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
             }
             
         }

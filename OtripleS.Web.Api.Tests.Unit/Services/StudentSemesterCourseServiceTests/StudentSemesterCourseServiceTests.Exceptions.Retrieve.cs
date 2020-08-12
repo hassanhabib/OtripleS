@@ -64,9 +64,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                 Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                    broker.SelectAllSemesterCourses(),
+                    broker.SelectAllStudentSemesterCourses(),
                 Times.Once);
             
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
