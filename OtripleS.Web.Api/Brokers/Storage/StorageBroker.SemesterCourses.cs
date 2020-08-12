@@ -38,7 +38,9 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
         public async ValueTask<SemesterCourse> UpdateSemesterCourseAsync(SemesterCourse semesterCourse)
         {
-            EntityEntry<SemesterCourse> semesterCourseEntityEntry = this.SemesterCourses.Update(semesterCourse);
+            EntityEntry<SemesterCourse> semesterCourseEntityEntry =
+                this.SemesterCourses.Update(semesterCourse);
+
             await this.SaveChangesAsync();
 
             return semesterCourseEntityEntry.Entity;
