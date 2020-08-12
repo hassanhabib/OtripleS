@@ -22,6 +22,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             AddSemesterCourseReferences(modelBuilder);
+            AddStudentSemesterCourseReferences(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

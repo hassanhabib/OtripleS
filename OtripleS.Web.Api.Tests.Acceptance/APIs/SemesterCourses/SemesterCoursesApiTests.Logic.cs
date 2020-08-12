@@ -46,8 +46,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
 
             // when
             await this.otripleSApiBroker.PutSemesterCourseAsync(modifiedSemesterCourse);
-            
-            SemesterCourse expectedSemesterCourse = 
+
+            SemesterCourse expectedSemesterCourse =
                 CreateExpectedSemesterCourse(modifiedSemesterCourse);
 
             SemesterCourse actualSemesterCourse =

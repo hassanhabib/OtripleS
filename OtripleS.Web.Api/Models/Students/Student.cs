@@ -4,6 +4,9 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using OtripleS.Web.Api.Models.StudentSemesterCourses;
 
 namespace OtripleS.Web.Api.Models.Students
 {
@@ -21,5 +24,8 @@ namespace OtripleS.Web.Api.Models.Students
         public DateTimeOffset UpdatedDate { get; set; }
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<StudentSemesterCourse> StudentSemesterCourses { get; set; }
     }
 }

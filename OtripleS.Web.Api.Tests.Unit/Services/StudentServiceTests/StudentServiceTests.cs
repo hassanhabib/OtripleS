@@ -82,7 +82,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
             filler.Setup()
                 .OnProperty(student => student.BirthDate).Use(GetRandomDateTime())
                 .OnProperty(student => student.CreatedDate).Use(dates)
-                .OnProperty(student => student.UpdatedDate).Use(dates);
+                .OnProperty(student => student.UpdatedDate).Use(dates)
+                .OnProperty(student => student.StudentSemesterCourses).IgnoreIt();
 
             return filler;
         }
