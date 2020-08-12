@@ -40,9 +40,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             actualSemesterCourse.Should().BeEquivalentTo(expectedStudentSemesterCourse);
 
             // This is called within validation code
-            //this.dateTimeBrokerMock.Verify(broker =>
-            //    broker.GetCurrentDateTime(),
-            //        Times.Once);
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse),

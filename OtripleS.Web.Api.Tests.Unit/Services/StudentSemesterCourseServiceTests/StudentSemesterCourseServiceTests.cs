@@ -6,6 +6,7 @@ using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using OtripleS.Web.Api.Services.StudentSemesterCourses;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using Tynamix.ObjectFiller;
 
@@ -45,6 +46,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                 .OnProperty(semesterCourse => semesterCourse.UpdatedDate).Use(dates);
 
             return filler;
+        }
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
     }
 }
