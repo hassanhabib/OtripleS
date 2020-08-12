@@ -31,12 +31,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             StudentSemesterCourse expectedStudentSemesterCourse = storageStudentSemesterCourse;
 
             this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(dateTime);
+                    broker.GetCurrentDateTime())
+                .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse))
-                    .ReturnsAsync(storageStudentSemesterCourse);
+                    broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse))
+                .ReturnsAsync(storageStudentSemesterCourse);
 
             // when
             StudentSemesterCourse actualSemesterCourse =
@@ -47,12 +47,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
 
             // This is called within validation code
             this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
+                    broker.GetCurrentDateTime(),
+                Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse),
-                    Times.Once);
+                    broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse),
+                Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -60,7 +60,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
         }
 
         [Fact]
-        public async Task ShouldRetrieveAllStudentSemesterCoursesAsync()
+        public void ShouldRetrieveAllStudentSemesterCourses()
         {
             //given
             IQueryable<StudentSemesterCourse> randomSemesterCourses =
@@ -68,19 +68,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
 
             IQueryable<StudentSemesterCourse> storageStudentSemesterCourses = randomSemesterCourses;
             IQueryable<StudentSemesterCourse> expectedStudentSemesterCourses = storageStudentSemesterCourses;
-            
-            this.storageBrokerMock.Setup(broker =>
-                    broker.SelectAllStudentSemesterCourses())
+
+            this.storageBrokerMock.Setup(broker => broker.SelectAllStudentSemesterCourses())
                 .Returns(storageStudentSemesterCourses);
-            
+
             // when
             IQueryable<StudentSemesterCourse> actualStudentSemesterCourses =
                 this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses();
-            
+
             actualStudentSemesterCourses.Should().BeEquivalentTo(expectedStudentSemesterCourses);
 
-            this.storageBrokerMock.Verify(broker =>
-                    broker.SelectAllStudentSemesterCourses(),
+            this.storageBrokerMock.Verify(broker => broker.SelectAllStudentSemesterCourses(),
                 Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
