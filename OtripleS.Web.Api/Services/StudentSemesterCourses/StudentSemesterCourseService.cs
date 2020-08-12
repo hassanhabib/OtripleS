@@ -39,29 +39,14 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
                 return await this.storageBroker.InsertStudentSemesterCourseAsync(studentSemesterCourse);
             });
 
-        public IQueryable<StudentSemesterCourse> RetrieveAllStudentSemesterCourses()
-        {
-            try
+        public IQueryable<StudentSemesterCourse> RetrieveAllStudentSemesterCourses() =>
+            TryCatch(() =>
             {
                 IQueryable<StudentSemesterCourse> storageStudentSemesterCourses =
                     this.storageBroker.SelectAllStudentSemesterCourses();
 
                 ValidateStorageStudentSemesterCourses(storageStudentSemesterCourses);
-
                 return storageStudentSemesterCourses;
-            }
-            catch (SqlException sqlException)
-            {
-                throw CreateAndLogCriticalDependencyException(sqlException);
-            }
-            catch (DbUpdateException dbUpdateException)
-            {
-                throw CreateAndLogDependencyException(dbUpdateException);
-            }catch (Exception exception)
-            {
-                throw CreateAndLogServiceException(exception);
-            }
-            
-        }
+            });
     }
 }
