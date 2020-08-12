@@ -3,8 +3,8 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace OtripleS.Web.Api.Brokers.Loggings
 {
