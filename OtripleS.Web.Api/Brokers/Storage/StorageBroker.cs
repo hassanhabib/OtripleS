@@ -19,6 +19,12 @@ namespace OtripleS.Web.Api.Brokers.Storage
             this.Database.Migrate();
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            AddSemesterCourseReferences(modelBuilder);
+            AddStudentSemesterCourseReferences(modelBuilder);
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString = this.configuration.GetConnectionString("DefaultConnection");

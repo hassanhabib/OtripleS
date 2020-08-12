@@ -4,6 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using OtripleS.Web.Api.Models.SemesterCourses;
 
 namespace OtripleS.Web.Api.Models.Classrooms
 {
@@ -17,5 +19,7 @@ namespace OtripleS.Web.Api.Models.Classrooms
         public DateTimeOffset UpdatedDate { get; set; }
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
+
+        public IEnumerable<SemesterCourse> SemesterCourses { get; set; }
     }
 }

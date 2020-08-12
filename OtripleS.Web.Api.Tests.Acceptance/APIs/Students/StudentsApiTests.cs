@@ -42,6 +42,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
                 .OnProperty(student => student.UpdatedBy).Use(posterId)
                 .OnProperty(student => student.CreatedDate).Use(now)
                 .OnProperty(student => student.UpdatedDate).Use(now)
+                .OnProperty(student => student.StudentSemesterCourses).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
@@ -59,6 +60,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
                 .OnProperty(student => student.UpdatedBy).Use(student.UpdatedBy)
                 .OnProperty(student => student.CreatedDate).Use(student.CreatedDate)
                 .OnProperty(student => student.UpdatedDate).Use(now)
+                .OnProperty(student => student.StudentSemesterCourses).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler.Create();

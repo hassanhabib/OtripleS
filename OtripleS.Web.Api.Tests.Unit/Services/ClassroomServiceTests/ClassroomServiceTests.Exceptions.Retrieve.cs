@@ -18,11 +18,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
     {
         [Fact]
         public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenSqlExceptionOccursAndLogItAsync()
-        { 
+        {
             // given
             Guid someClassroomId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
-            
+
             var expectedClassroomDependencyException =
                 new ClassroomDependencyException(sqlException);
 
@@ -33,19 +33,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             // when
             ValueTask<Classroom> retrieveClassroomTask =
                 this.classroomService.RetrieveClassroomById(someClassroomId);
-            
+
             // then
             await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
                 retrieveClassroomTask.AsTask());
-            
+
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogCritical(It.Is(SameExceptionAs(expectedClassroomDependencyException))),
                 Times.Once);
-            
+
             this.storageBrokerMock.Verify(broker =>
                     broker.SelectClassroomByIdAsync(someClassroomId),
                 Times.Once);
-            
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -61,27 +61,27 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
 
             var expectedClassroomDependencyException =
                 new ClassroomDependencyException(databaseUpdateException);
-            
+
             this.storageBrokerMock.Setup(broker =>
                     broker.SelectClassroomByIdAsync(inputClassroomId))
                 .ThrowsAsync(databaseUpdateException);
-            
+
             // when
             ValueTask<Classroom> retrieveClassroomTask =
                 this.classroomService.RetrieveClassroomById(inputClassroomId);
-            
+
             // then
             await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
                 retrieveClassroomTask.AsTask());
-            
+
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogError(It.Is(SameExceptionAs(expectedClassroomDependencyException))),
                 Times.Once);
-            
+
             this.storageBrokerMock.Verify(broker =>
                     broker.SelectClassroomByIdAsync(inputClassroomId),
                 Times.Once);
-            
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -95,35 +95,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Guid inputClassroomId = randomClassroomId;
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
             var lockedClassroomException = new LockedClassroomException(databaseUpdateConcurrencyException);
-            
+
             var expectedClassroomDependencyException =
                 new ClassroomDependencyException(lockedClassroomException);
-            
+
             this.storageBrokerMock.Setup(broker =>
                     broker.SelectClassroomByIdAsync(inputClassroomId))
                 .ThrowsAsync(databaseUpdateConcurrencyException);
-            
+
             //when
             ValueTask<Classroom> retrieveClassroomTask =
                 this.classroomService.RetrieveClassroomById(inputClassroomId);
-            
+
             // then
             await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
                 retrieveClassroomTask.AsTask());
-            
+
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogError(It.Is(SameExceptionAs(expectedClassroomDependencyException))),
                 Times.Once);
-            
+
             this.storageBrokerMock.Verify(broker =>
                     broker.SelectClassroomByIdAsync(inputClassroomId),
                 Times.Once);
-            
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
-        
+
         [Fact]
         public async Task ShouldThrowServiceExceptionOnRetrieveByIdWhenExceptionOccursAndLogItAsync()
         {
@@ -135,27 +135,27 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
 
             var expectedClassroomServiceException =
                 new ClassroomServiceException(exception);
-            
+
             this.storageBrokerMock.Setup(broker =>
                     broker.SelectClassroomByIdAsync(inputClassroomId))
                 .ThrowsAsync(exception);
-            
+
             // when
             ValueTask<Classroom> retrieveClassroomTask =
                 this.classroomService.RetrieveClassroomById(inputClassroomId);
-            
+
             // then
             await Assert.ThrowsAsync<ClassroomServiceException>(() =>
                 retrieveClassroomTask.AsTask());
-            
+
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogError(It.Is(SameExceptionAs(expectedClassroomServiceException))),
                 Times.Once);
-            
+
             this.storageBrokerMock.Verify(broker =>
                     broker.SelectClassroomByIdAsync(inputClassroomId),
                 Times.Once);
-            
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();

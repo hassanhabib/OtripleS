@@ -74,19 +74,6 @@ namespace OtripleS.Web.Api.Services.Courses
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
-            catch (DuplicateKeyException duplicateKeyException)
-            {
-                var alreadyExistsCourseException =
-                    new AlreadyExistsCourseException(duplicateKeyException);
-
-                throw CreateAndLogValidationException(alreadyExistsCourseException);
-            }
-            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
-            {
-                var lockedCourseException = new LockedCourseException(dbUpdateConcurrencyException);
-
-                throw CreateAndLogDependencyException(lockedCourseException);
-            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
