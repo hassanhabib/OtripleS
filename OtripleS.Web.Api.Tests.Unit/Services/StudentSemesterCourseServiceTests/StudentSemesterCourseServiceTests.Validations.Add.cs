@@ -339,5 +339,43 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedDateIsNotSameToCreatedDateAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
+            StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
+            inputStudentSemesterCourse.UpdatedBy = randomStudentSemesterCourse.CreatedBy;
+            inputStudentSemesterCourse.UpdatedDate = GetRandomDateTime();
+
+            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
+                parameterName: nameof(StudentSemesterCourse.UpdatedDate),
+                parameterValue: inputStudentSemesterCourse.UpdatedDate);
+
+            var expectedStudentSemesterCourseValidationException =
+                new StudentSemesterCourseValidationException(invalidStudentSemesterCourseInputException);
+
+            // when
+            ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =
+                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(inputStudentSemesterCourse);
+
+            // then
+            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
+                createStudentSemesterCourseTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
