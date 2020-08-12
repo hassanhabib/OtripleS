@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using EFxceptions.Models.Exceptions;
+using Moq;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions;
 using System;
@@ -425,6 +426,57 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenStudentSemesterCourseAlreadyExistsAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
+            StudentSemesterCourse alreadyExistsStudentSemesterCourse = randomStudentSemesterCourse;
+            alreadyExistsStudentSemesterCourse.UpdatedBy = alreadyExistsStudentSemesterCourse.CreatedBy;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsStudentSemesterCourseException =
+                new AlreadyExistsStudentSemesterCourseException(duplicateKeyException);
+
+            var expectedStudentSemesterCourseValidationException =
+                new StudentSemesterCourseValidationException(alreadyExistsStudentSemesterCourseException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertStudentSemesterCourseAsync(alreadyExistsStudentSemesterCourse))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =
+                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(alreadyExistsStudentSemesterCourse);
+
+            // then
+            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
+                createStudentSemesterCourseTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentSemesterCourseAsync(alreadyExistsStudentSemesterCourse),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
