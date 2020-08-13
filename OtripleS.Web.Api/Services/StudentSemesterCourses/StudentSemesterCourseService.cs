@@ -35,9 +35,18 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             return await this.storageBroker.InsertStudentSemesterCourseAsync(studentSemesterCourse);
         });
 
-        public ValueTask<StudentSemesterCourse> RetrieveStudentSemesterCourseByIdAsync(Guid studentId, Guid semesterCourse)
+        public ValueTask<StudentSemesterCourse> RetrieveStudentSemesterCourseByIdAsync
+            (Guid studentId, Guid semesterCourse) =>
+        TryCatch(async () =>
         {
-            throw new NotImplementedException();
-        }
+            ValidateStudentSemesterCourseIdIsNull(studentId, semesterCourse);
+
+            StudentSemesterCourse storageStudentSemesterCourse =
+               await this.storageBroker.SelectStudentSemesterCourseByIdAsync(studentId, semesterCourse);
+
+            ValidateStorageStudentSemesterCourse(storageStudentSemesterCourse, studentId, semesterCourse);
+
+            return storageStudentSemesterCourse;
+        });
     }
 }

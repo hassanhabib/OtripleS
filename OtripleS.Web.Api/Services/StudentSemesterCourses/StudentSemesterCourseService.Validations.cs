@@ -102,5 +102,14 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
+
+        private static void ValidateStorageStudentSemesterCourse(StudentSemesterCourse storageStudentSemesterCourse, Guid studentId, Guid semesterCourseId)
+        {
+            if (storageStudentSemesterCourse == null)
+            {
+                throw new NotFoundStudentSemesterCourseException(studentId, semesterCourseId);
+            }
+        }
+
     }
 }
