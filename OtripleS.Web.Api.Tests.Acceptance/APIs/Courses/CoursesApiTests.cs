@@ -17,10 +17,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
     {
         private readonly OtripleSApiBroker otripleSApiBroker;
 
-        public CoursesApiTests(OtripleSApiBroker otripleSApiBroker)
-        {
+        public CoursesApiTests(OtripleSApiBroker otripleSApiBroker) =>
             this.otripleSApiBroker = otripleSApiBroker;
-        }
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
@@ -34,7 +32,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
-
             var filler = new Filler<Course>();
 
             filler.Setup()
@@ -42,7 +39,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
                 .OnProperty(course => course.UpdatedBy).Use(posterId)
                 .OnProperty(course => course.CreatedDate).Use(now)
                 .OnProperty(course => course.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
+                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt();
 
             return filler;
         }
@@ -50,7 +48,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
         private Course UpdateCourseRandom(Course course)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
-
             var filler = new Filler<Course>();
 
             filler.Setup()
@@ -59,7 +56,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
                 .OnProperty(course => course.UpdatedBy).Use(course.UpdatedBy)
                 .OnProperty(course => course.CreatedDate).Use(course.CreatedDate)
                 .OnProperty(course => course.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
+                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt();
 
             return filler.Create();
         }

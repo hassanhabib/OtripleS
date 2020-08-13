@@ -3,13 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Classrooms;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.Classrooms
 {
@@ -53,38 +53,38 @@ namespace OtripleS.Web.Api.Services.Classrooms
         TryCatch(async () =>
         {
             ValidateClassroomOnModify(classroom);
-            
-            Classroom maybeClassroom = 
+
+            Classroom maybeClassroom =
                 await this.storageBroker.SelectClassroomByIdAsync(classroom.Id);
-            
+
             ValidateStorageClassroom(maybeClassroom, classroom.Id);
-            
+
             ValidateAgainstStorageClassroomOnModify(
-                inputClassroom: classroom, 
+                inputClassroom: classroom,
                 storageClassroom: maybeClassroom);
 
-			return await this.storageBroker.UpdateClassroomAsync(classroom);
-		});
+            return await this.storageBroker.UpdateClassroomAsync(classroom);
+        });
 
-		public IQueryable<Classroom> RetrieveAllClassrooms() =>
-		TryCatch(() =>
-		{
-			IQueryable<Classroom> storageClassrooms = this.storageBroker.SelectAllClassrooms();
-			ValidateStorageClassrooms(storageClassrooms);
+        public IQueryable<Classroom> RetrieveAllClassrooms() =>
+        TryCatch(() =>
+        {
+            IQueryable<Classroom> storageClassrooms = this.storageBroker.SelectAllClassrooms();
+            ValidateStorageClassrooms(storageClassrooms);
 
-			return storageClassrooms;
-		});
-        
+            return storageClassrooms;
+        });
+
         public ValueTask<Classroom> RetrieveClassroomById(Guid classroomId) =>
         TryCatch(async () =>
         {
             ValidateClassroomIdIsNull(classroomId);
-            
-            Classroom storageClassroom = 
+
+            Classroom storageClassroom =
                 await this.storageBroker.SelectClassroomByIdAsync(classroomId);
-            
+
             ValidateStorageClassroom(storageClassroom, classroomId);
-            
+
             return storageClassroom;
         });
     }

@@ -3,14 +3,14 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.Courses.Exceptions;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.Courses
 {
@@ -73,19 +73,6 @@ namespace OtripleS.Web.Api.Services.Courses
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
-            }
-            catch (DuplicateKeyException duplicateKeyException)
-            {
-                var alreadyExistsCourseException =
-                    new AlreadyExistsCourseException(duplicateKeyException);
-
-                throw CreateAndLogValidationException(alreadyExistsCourseException);
-            }
-            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
-            {
-                var lockedCourseException = new LockedCourseException(dbUpdateConcurrencyException);
-
-                throw CreateAndLogDependencyException(lockedCourseException);
             }
             catch (DbUpdateException dbUpdateException)
             {

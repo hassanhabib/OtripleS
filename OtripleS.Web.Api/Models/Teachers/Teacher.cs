@@ -3,7 +3,9 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using OtripleS.Web.Api.Models.SemesterCourses;
 using System;
+using System.Collections.Generic;
 
 namespace OtripleS.Web.Api.Models.Teachers
 {
@@ -21,5 +23,7 @@ namespace OtripleS.Web.Api.Models.Teachers
         public DateTimeOffset UpdatedDate { get; set; }
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
+
+        public IEnumerable<SemesterCourse> SemesterCourses { get; set; }
     }
 }
