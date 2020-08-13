@@ -102,5 +102,15 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
+
+        private void ValidateSemesterCourseId(Guid semesterCourseId)
+        {
+            if (semesterCourseId == Guid.Empty)
+            {
+                throw new InvalidStudentSemesterCourseException(
+                    parameterName: nameof(StudentSemesterCourse.SemesterCourseId),
+                    parameterValue: semesterCourseId);
+            }
+        }
     }
 }

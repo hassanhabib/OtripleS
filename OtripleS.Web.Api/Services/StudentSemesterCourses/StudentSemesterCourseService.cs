@@ -38,6 +38,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
         public ValueTask<StudentSemesterCourse> DeleteStudentSemesterCourseAsync(Guid semesterCourseId, Guid studentId) =>
         TryCatch(async () =>
         {
+            ValidateSemesterCourseId(semesterCourseId);
             StudentSemesterCourse studentSemesterCourse =
                 await this.storageBroker.SelectStudentSemesterCourseByIdAsync(semesterCourseId, studentId);
 
