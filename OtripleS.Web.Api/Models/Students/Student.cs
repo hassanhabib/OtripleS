@@ -3,7 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using Newtonsoft.Json;
+using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using System;
+using System.Collections.Generic;
 
 namespace OtripleS.Web.Api.Models.Students
 {
@@ -21,5 +24,8 @@ namespace OtripleS.Web.Api.Models.Students
         public DateTimeOffset UpdatedDate { get; set; }
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<StudentSemesterCourse> StudentSemesterCourses { get; set; }
     }
 }

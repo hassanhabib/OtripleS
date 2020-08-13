@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
@@ -13,7 +14,7 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 {
-	public partial class SemesterCourseServiceTests
+    public partial class SemesterCourseServiceTests
     {
         [Fact]
         public async Task ShouldCreateSemesterCourseAsync()
@@ -57,6 +58,36 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
         }
 
         [Fact]
+        public void ShouldRetireveAllSemesterCourses()
+        {
+            // given
+            IQueryable<SemesterCourse> randomSemesterCourses =
+                CreateRandomSemesterCourses();
+
+            IQueryable<SemesterCourse> storageSemesterCourses = randomSemesterCourses;
+            IQueryable<SemesterCourse> expectedSemesterCourses = storageSemesterCourses;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllSemesterCourses())
+                    .Returns(storageSemesterCourses);
+
+            // when
+            IQueryable<SemesterCourse> actualSemesterCourses =
+                this.semesterCourseService.RetrieveAllSemesterCourses();
+
+            // then
+            actualSemesterCourses.Should().BeEquivalentTo(expectedSemesterCourses);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllSemesterCourses(),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public async Task ShouldDeleteSemesterCourseAsync()
         {
             // given
@@ -94,7 +125,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-        
+
         [Fact]
         public async Task ShouldRetrieveSemesterCourseByIdAsync()
         {
@@ -128,7 +159,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-        
+
         }
 
         [Fact]

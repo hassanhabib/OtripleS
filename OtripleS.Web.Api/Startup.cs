@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -17,6 +18,7 @@ using OtripleS.Web.Api.Services.Classrooms;
 using OtripleS.Web.Api.Services.Courses;
 using OtripleS.Web.Api.Services.SemesterCourses;
 using OtripleS.Web.Api.Services.Students;
+using OtripleS.Web.Api.Services.StudentSemesterCourses;
 using OtripleS.Web.Api.Services.Teachers;
 
 namespace OtripleS.Web.Api
@@ -31,6 +33,14 @@ namespace OtripleS.Web.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddMvc().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            });
+
             services.AddDbContext<StorageBroker>();
             services.AddScoped<IStorageBroker, StorageBroker>();
             services.AddTransient<ILogger, Logger<LoggingBroker>>();
@@ -42,6 +52,7 @@ namespace OtripleS.Web.Api
             services.AddTransient<IClassroomService, ClassroomService>();
             services.AddTransient<IAssignmentService, AssignmentService>();
             services.AddTransient<ISemesterCourseService, SemesterCourseService>();
+            services.AddTransient<IStudentSemesterCourseService, StudentSemesterCourseService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

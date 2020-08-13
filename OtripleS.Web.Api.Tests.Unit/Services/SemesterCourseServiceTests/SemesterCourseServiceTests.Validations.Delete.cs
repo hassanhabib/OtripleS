@@ -38,20 +38,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
                     Times.Once);
-            
+
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
-        
+
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteSemesterCourseAsync(It.IsAny<SemesterCourse>()),
                     Times.Never);
-            
+
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-        
+
         [Fact]
         public async Task ShouldThrowValidationExceptionOnDeleteWhenStorageSemesterCourseIsInvalidAndLogItAsync()
         {

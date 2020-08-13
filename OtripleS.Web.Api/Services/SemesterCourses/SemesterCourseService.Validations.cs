@@ -3,15 +3,15 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
+using System;
+using System.Linq;
 
 namespace OtripleS.Web.Api.Services.SemesterCourses
 {
-	public partial class SemesterCourseService
-	{
+    public partial class SemesterCourseService
+    {
         private void ValidateSemesterCourseOnCreate(SemesterCourse semesterCourse)
         {
             ValidateSemesterCourseIsNull(semesterCourse);
@@ -28,6 +28,14 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             ValidateSemesterCourseFields(semesterCourse);
             ValidateInvalidAuditFields(semesterCourse);
             ValidateAuditFieldsDataOnModify(semesterCourse);
+        }
+
+        private void ValidateStorageSemesterCourses(IQueryable<SemesterCourse> semesterCourses)
+        {
+            if (semesterCourses.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No semesterSemesterCourses found in storage.");
+            }
         }
 
         private void ValidateSemesterCourseIsNull(SemesterCourse semesterCourse)
