@@ -3,26 +3,24 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 using OtripleS.Web.Api.Services.SemesterCourses;
 using RESTFulSense.Controllers;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SemesterCourseController : RESTFulController
+    public class SemesterCoursesController : RESTFulController
     {
         private readonly ISemesterCourseService semesterCourseService;
 
-        public SemesterCourseController(ISemesterCourseService semesterCourseService) =>
+        public SemesterCoursesController(ISemesterCourseService semesterCourseService) =>
             this.semesterCourseService = semesterCourseService;
 
         [HttpPost]
@@ -56,6 +54,59 @@ namespace OtripleS.Web.Api.Controllers
             catch (SemesterCourseServiceException semesterCourseServiceException)
             {
                 return Problem(semesterCourseServiceException.Message);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<IQueryable<SemesterCourse>> GetAllSemesterCourses()
+        {
+            try
+            {
+                IQueryable storageSemesterCourses =
+                    this.semesterCourseService.RetrieveAllSemesterCourses();
+
+                return Ok(storageSemesterCourses);
+            }
+            catch (SemesterCourseDependencyException semesterCourseDependencyException)
+            {
+                return Problem(semesterCourseDependencyException.Message);
+            }
+            catch (SemesterCourseServiceException semesterCourseServiceException)
+            {
+                return Problem(semesterCourseServiceException.Message);
+            }
+        }
+
+        [HttpGet("{semesterCourseId}")]
+        public async ValueTask<ActionResult<SemesterCourse>> GetSemesterCourseAsync(Guid semesterCourseId)
+        {
+            try
+            {
+                SemesterCourse storageSemesterCourse =
+                    await this.semesterCourseService.RetrieveSemesterCourseByIdAsync(semesterCourseId);
+
+                return Ok(storageSemesterCourse);
+            }
+            catch (SemesterCourseValidationException semesterSemesterCourseValidationException)
+                when (semesterSemesterCourseValidationException.InnerException is NotFoundSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(semesterSemesterCourseValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (SemesterCourseValidationException semesterSemesterCourseValidationException)
+            {
+                string innerMessage = GetInnerMessage(semesterSemesterCourseValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (SemesterCourseDependencyException semesterSemesterCourseDependencyException)
+            {
+                return Problem(semesterSemesterCourseDependencyException.Message);
+            }
+            catch (SemesterCourseServiceException semesterSemesterCourseServiceException)
+            {
+                return Problem(semesterSemesterCourseServiceException.Message);
             }
         }
 

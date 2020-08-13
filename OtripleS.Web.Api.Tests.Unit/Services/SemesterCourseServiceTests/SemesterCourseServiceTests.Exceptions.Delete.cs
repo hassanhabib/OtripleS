@@ -61,18 +61,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 
             var expectedSemesterCourseDependencyException = new SemesterCourseDependencyException(databaseUpdateException);
 
-            this.storageBrokerMock.Setup(broker => 
+            this.storageBrokerMock.Setup(broker =>
                 broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
-            ValueTask<SemesterCourse> deleteSemesterCourseTask = 
+            ValueTask<SemesterCourse> deleteSemesterCourseTask =
                 this.semesterCourseService.DeleteSemesterCourseAsync(inputSemesterCourseId);
 
             // then
             await Assert.ThrowsAsync<SemesterCourseDependencyException>(() => deleteSemesterCourseTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker => 
+            this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseDependencyException))),
                     Times.Once);
 
@@ -97,7 +97,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 
             var expectedSemesterCourseException = new SemesterCourseDependencyException(lockedSemesterCourseException);
 
-            this.storageBrokerMock.Setup(broker => 
+            this.storageBrokerMock.Setup(broker =>
                 broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
@@ -131,12 +131,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
 
             var expectedSemesterCourseServiceException = new SemesterCourseServiceException(exception);
 
-            this.storageBrokerMock.Setup(broker => 
+            this.storageBrokerMock.Setup(broker =>
                  broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
                     .ThrowsAsync(exception);
 
             // when
-            ValueTask<SemesterCourse> deleteSemesterCourseTask = 
+            ValueTask<SemesterCourse> deleteSemesterCourseTask =
                 this.semesterCourseService.DeleteSemesterCourseAsync(inputSemesterCourseId);
 
             // then

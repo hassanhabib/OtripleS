@@ -3,12 +3,12 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OtripleS.Web.Api.Models.SemesterCourses;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
@@ -18,15 +18,15 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
         public async ValueTask<SemesterCourse> InsertSemesterCourseAsync(SemesterCourse semesterCourse)
         {
-            EntityEntry<SemesterCourse> semesterCourseEntityEntry = 
+            EntityEntry<SemesterCourse> semesterCourseEntityEntry =
                 await this.SemesterCourses.AddAsync(semesterCourse);
-            
+
             await this.SaveChangesAsync();
 
             return semesterCourseEntityEntry.Entity;
         }
 
-        public IQueryable<SemesterCourse> SelectAllSemesterCourses() => 
+        public IQueryable<SemesterCourse> SelectAllSemesterCourses() =>
             this.SemesterCourses.AsQueryable();
 
         public async ValueTask<SemesterCourse> SelectSemesterCourseByIdAsync(Guid semesterCourseId)
@@ -38,7 +38,9 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
         public async ValueTask<SemesterCourse> UpdateSemesterCourseAsync(SemesterCourse semesterCourse)
         {
-            EntityEntry<SemesterCourse> semesterCourseEntityEntry = this.SemesterCourses.Update(semesterCourse);
+            EntityEntry<SemesterCourse> semesterCourseEntityEntry =
+                this.SemesterCourses.Update(semesterCourse);
+
             await this.SaveChangesAsync();
 
             return semesterCourseEntityEntry.Entity;
