@@ -38,6 +38,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
                 throw CreateAndLogServiceException(exception);
             }
         }
+        
         private async ValueTask<StudentSemesterCourse> TryCatch(
             ReturningStudentSemesterCourseFunction returningStudentStudentSemesterCourseFunction)
         {

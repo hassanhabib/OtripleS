@@ -49,8 +49,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             // given
             var databaseUpdateException = new DbUpdateException();
 
-            var expectedSemesterCourseDependencyException =
-                new SemesterCourseDependencyException(databaseUpdateException);
+            var expectedStudentSemesterCourseDependencyException =
+                new StudentSemesterCourseDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker => broker.SelectAllStudentSemesterCourses())
                 .Throws(databaseUpdateException);
@@ -60,7 +60,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                 this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses());
 
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseDependencyException))),
+                    broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseDependencyException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker => broker.SelectAllStudentSemesterCourses(),
