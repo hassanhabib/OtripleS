@@ -86,5 +86,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomSemesterCourseId = Guid.NewGuid();
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputSemesterCourseId = randomSemesterCourseId;
+            Guid inputStudentId = randomStudentId;
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+            var lockedSemesterCourseException =
+                new LockedStudentSemesterCourseException(databaseUpdateConcurrencyException);
+
+            var expectedStudentSemesterCourseException =
+                new StudentSemesterCourseDependencyException(lockedSemesterCourseException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId, inputStudentId))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
+
+            // when
+            ValueTask<StudentSemesterCourse> deleteStudentSemesterCourseTask =
+                this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputSemesterCourseId, inputStudentId);
+
+            // then
+            await Assert.ThrowsAsync<StudentSemesterCourseDependencyException>(() => deleteStudentSemesterCourseTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId, inputStudentId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
