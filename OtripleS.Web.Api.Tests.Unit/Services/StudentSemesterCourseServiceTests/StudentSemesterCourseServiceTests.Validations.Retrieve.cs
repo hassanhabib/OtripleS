@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
         public async Task ShouldThrowValidatonExceptionOnRetrieveWhenStudentIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomSemesterCourseId = default;
+            Guid randomSemesterCourseId = Guid.NewGuid();
             Guid randomStudentId = default;
             Guid inputSemesterCourseId = randomSemesterCourseId;
             Guid inputStudentId = randomStudentId;
@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
         {
             // given
             Guid randomSemesterCourseId = default;
-            Guid randomStudentId = default;
+            Guid randomStudentId = Guid.NewGuid();
             Guid inputSemesterCourseId = randomSemesterCourseId;
             Guid inputStudentId = randomStudentId;
 
