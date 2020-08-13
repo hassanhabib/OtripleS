@@ -88,5 +88,50 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageStudentSemesterCourseIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(randomDateTime);
+            Guid inputSemasterCourseId = randomStudentSemesterCourse.SemesterCourseId;
+            Guid inputStudentId = randomStudentSemesterCourse.StudentId;
+            StudentSemesterCourse nullStorageStudentSemesterCourse = null;
+
+            var notFoundStudentSemesterCourseException =
+                new NotFoundStudentSemesterCourseException(inputStudentId, inputSemasterCourseId);
+
+            var expectedSemesterCourseValidationException =
+                new StudentSemesterCourseValidationException(notFoundStudentSemesterCourseException);
+
+            this.storageBrokerMock.Setup(broker =>
+                 broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemasterCourseId))
+                    .ReturnsAsync(nullStorageStudentSemesterCourse);
+
+            // when
+            ValueTask<StudentSemesterCourse> actualStudentSemesterCourseDeleteTask =
+                this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync(inputStudentId, inputSemasterCourseId);
+
+            // then
+            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
+                actualStudentSemesterCourseDeleteTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemasterCourseId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteStudentSemesterCourseAsync(It.IsAny<StudentSemesterCourse>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
