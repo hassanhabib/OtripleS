@@ -3,13 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.SemesterCourses;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.SemesterCourses
 {
@@ -62,7 +62,9 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
         TryCatch(async () =>
         {
             ValidateSemesterCourseOnModify(semesterCourse);
-            SemesterCourse maybeSemesterCourse = await this.storageBroker.SelectSemesterCourseByIdAsync(semesterCourse.Id);
+
+            SemesterCourse maybeSemesterCourse =
+                await this.storageBroker.SelectSemesterCourseByIdAsync(semesterCourse.Id);
 
             ValidateStorageSemesterCourse(maybeSemesterCourse, semesterCourse.Id);
 
