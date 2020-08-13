@@ -47,11 +47,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             // when
             await this.otripleSApiBroker.PutSemesterCourseAsync(modifiedSemesterCourse);
 
+            SemesterCourse expectedSemesterCourse =
+                CreateExpectedSemesterCourse(modifiedSemesterCourse);
+
             SemesterCourse actualSemesterCourse =
                 await this.otripleSApiBroker.GetSemesterCourseByIdAsync(randomSemesterCourse.Id);
 
             // then
-            actualSemesterCourse.Should().BeEquivalentTo(modifiedSemesterCourse);
+            actualSemesterCourse.Should().BeEquivalentTo(expectedSemesterCourse);
 
             await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(actualSemesterCourse.Id);
         }
@@ -60,8 +63,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
         public async Task ShouldGetAllSemesterCoursesAsync()
         {
             // given
-            IEnumerable<SemesterCourse> randomSemesterCourses = GetRandomSemesterCourses();
-            IEnumerable<SemesterCourse> inputSemesterCourses = randomSemesterCourses;
+            IEnumerable<SemesterCourse> randomSemesterCourses = CreateRandomSemesterCourses();
+            List<SemesterCourse> inputSemesterCourses = randomSemesterCourses.ToList();
 
             foreach (SemesterCourse semesterCourse in inputSemesterCourses)
             {
@@ -81,7 +84,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
                     actualSemesterCourses.Single(semesterCourse =>
                         semesterCourse.Id == expectedSemesterCourse.Id);
 
-                actualSemesterCourse.Should().BeEquivalentTo(expectedSemesterCourse);
+                SemesterCourse expectedReturnedCourse = CreateExpectedSemesterCourse(expectedSemesterCourse);
+                actualSemesterCourse.Should().BeEquivalentTo(expectedReturnedCourse);
                 await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(actualSemesterCourse.Id);
             }
         }
