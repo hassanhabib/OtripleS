@@ -59,5 +59,11 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
             return studentSemesterCourseEntityEntry.Entity;
         }
+        public async ValueTask<StudentSemesterCourse> SelectStudentSemesterCourseByIdAsync(Guid studentId, Guid semesterCourseId)
+        {
+            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
+            return await StudentSemesterCourses.FindAsync(studentId, semesterCourseId);
+        }
     }
 }
