@@ -19,6 +19,8 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
         public ValueTask<StudentSemesterCourse> SelectStudentSemesterCourseByIdAsync(
             Guid studentSemesterCourseId);
+        public ValueTask<StudentSemesterCourse> SelectStudentSemesterCourseByIdAsync(
+            Guid semesterCourseId, Guid studentId);
 
         public ValueTask<StudentSemesterCourse> UpdateStudentSemesterCourseAsync(
             StudentSemesterCourse studentSemesterCourse);

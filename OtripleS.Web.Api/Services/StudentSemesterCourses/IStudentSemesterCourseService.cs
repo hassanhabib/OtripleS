@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
+using System;
 using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.StudentSemesterCourses
@@ -11,5 +12,6 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
     public interface IStudentSemesterCourseService
     {
         public ValueTask<StudentSemesterCourse> CreateStudentSemesterCourseAsync(StudentSemesterCourse inputStudentSemesterCourse);
+        ValueTask<StudentSemesterCourse> DeleteStudentSemesterCourseAsync(Guid semesterCourseId, Guid studentId);
     }
 }
