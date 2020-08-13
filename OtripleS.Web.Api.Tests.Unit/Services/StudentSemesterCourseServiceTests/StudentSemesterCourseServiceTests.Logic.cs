@@ -30,13 +30,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             StudentSemesterCourse storageStudentSemesterCourse = randomSemesterCourse;
             StudentSemesterCourse expectedStudentSemesterCourse = storageStudentSemesterCourse;
 
-            this.dateTimeBrokerMock.Setup(broker =>
-                    broker.GetCurrentDateTime())
+            this.dateTimeBrokerMock.Setup(broker => broker.GetCurrentDateTime())
                 .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
                     broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse))
-                .ReturnsAsync(storageStudentSemesterCourse);
+                        .ReturnsAsync(storageStudentSemesterCourse);
 
             // when
             StudentSemesterCourse actualSemesterCourse =
@@ -46,13 +45,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             actualSemesterCourse.Should().BeEquivalentTo(expectedStudentSemesterCourse);
 
             // This is called within validation code
-            this.dateTimeBrokerMock.Verify(broker =>
-                    broker.GetCurrentDateTime(),
+            this.dateTimeBrokerMock.Verify(broker => broker.GetCurrentDateTime(),
                 Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                    broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse),
-                Times.Once);
+                    broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse), Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
