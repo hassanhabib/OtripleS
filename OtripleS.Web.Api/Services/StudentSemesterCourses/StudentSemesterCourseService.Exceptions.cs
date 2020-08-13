@@ -31,6 +31,10 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             {
                 throw CreateAndLogValidationException(invalidStudentStudentSemesterCourseInputException);
             }
+            catch (NotFoundStudentSemesterCourseException nullStudentSemesterCourseException)
+            {
+                throw CreateAndLogValidationException(nullStudentSemesterCourseException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsStudentStudentSemesterCourseException =
