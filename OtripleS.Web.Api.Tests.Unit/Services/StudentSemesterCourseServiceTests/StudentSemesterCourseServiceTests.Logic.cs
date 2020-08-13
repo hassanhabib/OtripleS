@@ -85,7 +85,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             actualStudentSemesterCourse.Should().BeEquivalentTo(expectedStudentSemesterCourse);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId),
+                broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId, inputStudentId),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>

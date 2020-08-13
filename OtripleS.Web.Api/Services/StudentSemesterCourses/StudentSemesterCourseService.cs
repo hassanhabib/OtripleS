@@ -35,9 +35,13 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             return await this.storageBroker.InsertStudentSemesterCourseAsync(studentSemesterCourse);
         });
 
-        public ValueTask<StudentSemesterCourse> DeleteStudentSemesterCourseAsync(Guid semesterCourseId, Guid studentId)
+        public ValueTask<StudentSemesterCourse> DeleteStudentSemesterCourseAsync(Guid semesterCourseId, Guid studentId) =>
+        TryCatch(async () =>
         {
-            throw new NotImplementedException();
-        }
+            StudentSemesterCourse studentSemesterCourse =
+                await this.storageBroker.SelectStudentSemesterCourseByIdAsync(semesterCourseId, studentId);
+
+            return await this.storageBroker.DeleteStudentSemesterCourseAsync(studentSemesterCourse);
+        });
     }
 }
