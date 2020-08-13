@@ -30,12 +30,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             StudentSemesterCourse storageStudentSemesterCourse = randomSemesterCourse;
             StudentSemesterCourse expectedStudentSemesterCourse = storageStudentSemesterCourse;
 
-            this.dateTimeBrokerMock.Setup(broker => broker.GetCurrentDateTime())
-                .Returns(dateTime);
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                    broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse))
-                        .ReturnsAsync(storageStudentSemesterCourse);
+                broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse))
+                    .ReturnsAsync(storageStudentSemesterCourse);
 
             // when
             StudentSemesterCourse actualSemesterCourse =
@@ -45,11 +46,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             actualSemesterCourse.Should().BeEquivalentTo(expectedStudentSemesterCourse);
 
             // This is called within validation code
-            this.dateTimeBrokerMock.Verify(broker => broker.GetCurrentDateTime(),
-                Times.Once);
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                    broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse), Times.Once);
+                broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse),
+                    Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -82,5 +85,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldDeleteStudentSemesterCourseAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
+            Guid inputSemesterCourseId = randomStudentSemesterCourse.SemesterCourseId;
+            Guid inputStudentId = randomStudentSemesterCourse.StudentId;
+            StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
+            StudentSemesterCourse storageStudentSemesterCourse = inputStudentSemesterCourse;
+            StudentSemesterCourse expectedStudentSemesterCourse = storageStudentSemesterCourse;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId, inputStudentId))
+                    .ReturnsAsync(inputStudentSemesterCourse);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteStudentSemesterCourseAsync(inputStudentSemesterCourse))
+                    .ReturnsAsync(storageStudentSemesterCourse);
+
+            // when
+            StudentSemesterCourse actualStudentSemesterCourse =
+                await this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputSemesterCourseId, inputStudentId);
+
+            actualStudentSemesterCourse.Should().BeEquivalentTo(expectedStudentSemesterCourse);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId, inputStudentId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteStudentSemesterCourseAsync(inputStudentSemesterCourse),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }

@@ -54,6 +54,10 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             {
                 throw CreateAndLogValidationException(invalidStudentStudentSemesterCourseInputException);
             }
+            catch (NotFoundStudentSemesterCourseException nullStudentSemesterCourseException)
+            {
+                throw CreateAndLogValidationException(nullStudentSemesterCourseException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsStudentStudentSemesterCourseException =
@@ -64,6 +68,12 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedSemesterCourseException = new LockedStudentSemesterCourseException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedSemesterCourseException);
             }
             catch (DbUpdateException dbUpdateException)
             {
