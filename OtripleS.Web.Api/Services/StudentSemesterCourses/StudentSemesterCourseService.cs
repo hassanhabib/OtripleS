@@ -7,6 +7,7 @@ using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
+using System;
 using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.StudentSemesterCourses
@@ -33,5 +34,10 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             ValidateStudentSemesterCourseOnCreate(studentSemesterCourse);
             return await this.storageBroker.InsertStudentSemesterCourseAsync(studentSemesterCourse);
         });
+
+        public ValueTask<StudentSemesterCourse> DeleteStudentSemesterCourseAsync(Guid semesterCourseId, Guid studentId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
