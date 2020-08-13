@@ -57,5 +57,36 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldRetrieveStudentSemesterCourseByIdAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
+            Guid inputSemesterCourseId = randomStudentSemesterCourse.SemesterCourseId;
+            Guid inputStudentId = randomStudentSemesterCourse.StudentId;
+            StudentSemesterCourse storageStudentSemesterCourse = randomStudentSemesterCourse;
+            StudentSemesterCourse expectedStudentSemesterCourse = storageStudentSemesterCourse;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId))
+                    .ReturnsAsync(storageStudentSemesterCourse);
+
+            // when
+            StudentSemesterCourse actualStudentSemesterCourse =
+                await this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId);
+
+            // then
+            actualStudentSemesterCourse.Should().BeEquivalentTo(expectedStudentSemesterCourse);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
