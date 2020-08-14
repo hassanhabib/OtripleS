@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
@@ -80,6 +81,18 @@ namespace OtripleS.Web.Api.Controllers
 
                 return BadRequest(innerMessage);
             }
+        }
+
+        [HttpGet]
+        public ActionResult<IQueryable<StudentSemesterCourse>> GetAllStudentSemesterCourse()
+        {
+            try
+            {
+                IQueryable storageStudentSemesterCourses =
+                    this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses();
+
+                return Ok(storageStudentSemesterCourses);
+            }
             catch (StudentSemesterCourseDependencyException studentSemesterCourseDependencyException)
             {
                 return Problem(studentSemesterCourseDependencyException.Message);
@@ -118,14 +131,6 @@ namespace OtripleS.Web.Api.Controllers
                 string innerMessage = GetInnerMessage(studentSemesterCourseDependencyException);
 
                 return Locked(innerMessage);
-            }
-            catch (StudentSemesterCourseDependencyException studentSemesterCourseDependencyException)
-            {
-                return Problem(studentSemesterCourseDependencyException.Message);
-            }
-            catch (StudentSemesterCourseServiceException studentSemesterCourseServiceException)
-            {
-                return Problem(studentSemesterCourseServiceException.Message);
             }
         }
 
