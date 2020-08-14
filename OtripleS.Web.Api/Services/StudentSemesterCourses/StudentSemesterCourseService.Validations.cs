@@ -26,6 +26,17 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             ValidateStudentSemesterCourseIdIsNull(studentSemesterCourse.StudentId, studentSemesterCourse.SemesterCourseId);
             ValidateStudentSemesterCourseFields(studentSemesterCourse);
             ValidateInvalidAuditFields(studentSemesterCourse);
+            ValidateDatesAreNotSame(studentSemesterCourse);
+        }
+
+        private void ValidateDatesAreNotSame(StudentSemesterCourse studentSemesterCourse)
+        {
+            if (studentSemesterCourse.CreatedDate == studentSemesterCourse.UpdatedDate)
+            {
+                throw new InvalidStudentSemesterCourseException(
+                    parameterName: nameof(StudentSemesterCourse.UpdatedDate),
+                    parameterValue: studentSemesterCourse.UpdatedDate);
+            }
         }
 
         private void ValidateStudentSemesterCourseFields(StudentSemesterCourse studentSemesterCourse)
