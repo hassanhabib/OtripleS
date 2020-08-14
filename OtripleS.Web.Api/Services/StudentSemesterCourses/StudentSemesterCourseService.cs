@@ -47,6 +47,11 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
                 return storageStudentSemesterCourses;
             });
 
+        public ValueTask<StudentSemesterCourse> ModifyStudentSemesterCourseAsync(StudentSemesterCourse studentSemesterCourse)
+        {
+            throw new NotImplementedException();
+        }
+
         public ValueTask<StudentSemesterCourse>
             DeleteStudentSemesterCourseAsync(Guid semesterCourseId, Guid studentId) =>
             TryCatch(async () =>
