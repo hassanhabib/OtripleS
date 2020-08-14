@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpDelete("{studentId}/{semesterCourseId}")]
+        [HttpDelete("students/{studentId}/semesters/{semesterId}")]
         public async ValueTask<ActionResult<StudentSemesterCourse>>
         DeleteStudentSemesterCourseAsync(Guid semesterCourseId, Guid studentId)
         {
