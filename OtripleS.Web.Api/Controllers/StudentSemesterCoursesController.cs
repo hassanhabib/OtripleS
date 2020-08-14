@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
@@ -45,6 +46,145 @@ namespace OtripleS.Web.Api.Controllers
                 string innerMessage = GetInnerMessage(studentSemesterCourseValidationException);
 
                 return BadRequest(innerMessage);
+            }
+            catch (StudentSemesterCourseDependencyException studentSemesterCourseDependencyException)
+            {
+                return Problem(studentSemesterCourseDependencyException.Message);
+            }
+            catch (StudentSemesterCourseServiceException studentSemesterCourseServiceException)
+            {
+                return Problem(studentSemesterCourseServiceException.Message);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<IQueryable<StudentSemesterCourse>> GetAllStudentSemesterCourse()
+        {
+            try
+            {
+                IQueryable storageStudentSemesterCourses =
+                    this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses();
+
+                return Ok(storageStudentSemesterCourses);
+            }
+            catch (StudentSemesterCourseDependencyException studentSemesterCourseDependencyException)
+            {
+                return Problem(studentSemesterCourseDependencyException.Message);
+            }
+            catch (StudentSemesterCourseServiceException studentSemesterCourseServiceException)
+            {
+                return Problem(studentSemesterCourseServiceException.Message);
+            }
+        }
+
+        [HttpGet(("{studentId}/{semesterCourseId}"))]
+        public async ValueTask<ActionResult<StudentSemesterCourse>>
+        GetStudentSemesterCourseByIdAsync(Guid studentId, Guid semesterCourseId)
+        {
+            try
+            {
+                StudentSemesterCourse storageStudentSemesterCourse =
+                    await this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync(semesterCourseId, studentId);
+
+                return Ok(storageStudentSemesterCourse);
+            }
+            catch (StudentSemesterCourseValidationException studentSemesterCourseValidationException)
+                when (studentSemesterCourseValidationException.InnerException is NotFoundStudentSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(studentSemesterCourseValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (StudentSemesterCourseValidationException studentSemesterCourseValidationException)
+            {
+                return BadRequest(studentSemesterCourseValidationException.Message);
+            }
+            catch (StudentSemesterCourseDependencyException studentSemesterCourseDependencyException)
+                when (studentSemesterCourseDependencyException.InnerException is LockedStudentSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(studentSemesterCourseDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (StudentSemesterCourseDependencyException studentSemesterCourseDependencyException)
+            {
+                return Problem(studentSemesterCourseDependencyException.Message);
+            }
+            catch (StudentSemesterCourseServiceException studentSemesterCourseServiceException)
+            {
+                return Problem(studentSemesterCourseServiceException.Message);
+            }
+        }
+
+        [HttpPut]
+        public async ValueTask<ActionResult<StudentSemesterCourse>> 
+            PutStudentSemesterCourseAsync(StudentSemesterCourse studentSemesterCourse)
+        {
+            try
+            {
+                StudentSemesterCourse registeredStudentSemesterCourse =
+                    await this.studentSemesterCourseService.ModifyStudentSemesterCourseAsync(studentSemesterCourse);
+
+                return Ok(registeredStudentSemesterCourse);
+            }
+            catch (StudentSemesterCourseValidationException studentSemesterCourseValidationException)
+                when (studentSemesterCourseValidationException.InnerException is NotFoundStudentSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(studentSemesterCourseValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (StudentSemesterCourseValidationException studentSemesterCourseValidationException)
+            {
+                string innerMessage = GetInnerMessage(studentSemesterCourseValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (StudentSemesterCourseDependencyException studentSemesterCourseDependencyException)
+                when (studentSemesterCourseDependencyException.InnerException is LockedStudentSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(studentSemesterCourseDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (StudentSemesterCourseDependencyException studentSemesterCourseDependencyException)
+            {
+                return Problem(studentSemesterCourseDependencyException.Message);
+            }
+            catch (StudentSemesterCourseServiceException studentSemesterCourseServiceException)
+            {
+                return Problem(studentSemesterCourseServiceException.Message);
+            }
+        }
+
+        [HttpDelete("{studentId}/{semesterCourseId}")]
+        public async ValueTask<ActionResult<StudentSemesterCourse>>
+         DeleteStudentSemesterCourseAsync(Guid semesterCourseId, Guid studentId)
+        {
+            try
+            {
+                StudentSemesterCourse storageStudentSemesterCourse =
+                    await this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(semesterCourseId, studentId);
+
+                return Ok(storageStudentSemesterCourse);
+            }
+            catch (StudentSemesterCourseValidationException studentSemesterCourseValidationException)
+                when (studentSemesterCourseValidationException.InnerException is NotFoundStudentSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(studentSemesterCourseValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (StudentSemesterCourseValidationException studentSemesterCourseValidationException)
+            {
+                return BadRequest(studentSemesterCourseValidationException.Message);
+            }
+            catch (StudentSemesterCourseDependencyException studentSemesterCourseDependencyException)
+                when (studentSemesterCourseDependencyException.InnerException is LockedStudentSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(studentSemesterCourseDependencyException);
+
+                return Locked(innerMessage);
             }
             catch (StudentSemesterCourseDependencyException studentSemesterCourseDependencyException)
             {
