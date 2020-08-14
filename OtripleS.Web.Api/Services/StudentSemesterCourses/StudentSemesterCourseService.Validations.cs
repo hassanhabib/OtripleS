@@ -27,6 +27,17 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             ValidateStudentSemesterCourseFields(studentSemesterCourse);
             ValidateInvalidAuditFields(studentSemesterCourse);
             ValidateDatesAreNotSame(studentSemesterCourse);
+            ValidateUpdatedDateIsRecent(studentSemesterCourse);
+        }
+
+        private void ValidateUpdatedDateIsRecent(StudentSemesterCourse studentSemesterCourse)
+        {
+            if (IsDateNotRecent(studentSemesterCourse.UpdatedDate))
+            {
+                throw new InvalidStudentSemesterCourseException(
+                    parameterName: nameof(StudentSemesterCourse.UpdatedDate),
+                    parameterValue: studentSemesterCourse.UpdatedDate);
+            }
         }
 
         private void ValidateDatesAreNotSame(StudentSemesterCourse studentSemesterCourse)
