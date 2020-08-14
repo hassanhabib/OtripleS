@@ -75,10 +75,6 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
 
                 throw CreateAndLogDependencyException(lockedSemesterCourseException);
             }
-            catch (DbUpdateException dbUpdateException)
-            {
-                throw CreateAndLogDependencyException(dbUpdateException);
-            }
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);
