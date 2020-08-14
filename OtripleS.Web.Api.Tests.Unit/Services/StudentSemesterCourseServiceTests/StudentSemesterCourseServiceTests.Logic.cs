@@ -8,6 +8,7 @@ using Moq;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -59,34 +60,70 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
         }
 
         [Fact]
-        public async Task ShouldRetrieveStudentSemesterCourseByIdAsync()
+        public void ShouldRetrieveAllStudentSemesterCourses()
+        {
+            //given
+            IQueryable<StudentSemesterCourse> randomSemesterCourses =
+                CreateRandomStudentSemesterCourses();
+
+            IQueryable<StudentSemesterCourse> storageStudentSemesterCourses = randomSemesterCourses;
+            IQueryable<StudentSemesterCourse> expectedStudentSemesterCourses = storageStudentSemesterCourses;
+
+            this.storageBrokerMock.Setup(broker => broker.SelectAllStudentSemesterCourses())
+                .Returns(storageStudentSemesterCourses);
+
+            // when
+            IQueryable<StudentSemesterCourse> actualStudentSemesterCourses =
+                this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses();
+
+            actualStudentSemesterCourses.Should().BeEquivalentTo(expectedStudentSemesterCourses);
+
+            this.storageBrokerMock.Verify(broker => broker.SelectAllStudentSemesterCourses(),
+                Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldDeleteStudentSemesterCourseAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
             Guid inputSemesterCourseId = randomStudentSemesterCourse.SemesterCourseId;
             Guid inputStudentId = randomStudentSemesterCourse.StudentId;
-            StudentSemesterCourse storageStudentSemesterCourse = randomStudentSemesterCourse;
+            StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
+            StudentSemesterCourse storageStudentSemesterCourse = inputStudentSemesterCourse;
             StudentSemesterCourse expectedStudentSemesterCourse = storageStudentSemesterCourse;
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId))
+                broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId, inputStudentId))
+                    .ReturnsAsync(inputStudentSemesterCourse);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteStudentSemesterCourseAsync(inputStudentSemesterCourse))
                     .ReturnsAsync(storageStudentSemesterCourse);
 
             // when
             StudentSemesterCourse actualStudentSemesterCourse =
-                await this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId);
+                await this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputSemesterCourseId, inputStudentId);
 
-            // then
             actualStudentSemesterCourse.Should().BeEquivalentTo(expectedStudentSemesterCourse);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId),
+                broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId, inputStudentId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteStudentSemesterCourseAsync(inputStudentSemesterCourse),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
     }
 }

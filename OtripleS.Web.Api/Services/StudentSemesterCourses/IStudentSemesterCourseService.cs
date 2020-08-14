@@ -3,8 +3,9 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
-using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using System;
+using System.Linq;
+using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.StudentSemesterCourses
@@ -13,6 +14,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
     {
         ValueTask<StudentSemesterCourse> RetrieveStudentSemesterCourseByIdAsync(Guid studentId, Guid semesterCourse);
         public ValueTask<StudentSemesterCourse> CreateStudentSemesterCourseAsync(StudentSemesterCourse inputStudentSemesterCourse);
+        IQueryable<StudentSemesterCourse> RetrieveAllStudentSemesterCourses();
         ValueTask<StudentSemesterCourse> DeleteStudentSemesterCourseAsync(Guid semesterCourseId, Guid studentId);
     }
 }

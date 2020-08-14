@@ -6,6 +6,7 @@
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions;
 using System;
+using System.Linq;
 
 namespace OtripleS.Web.Api.Services.StudentSemesterCourses
 {
@@ -14,10 +15,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
         private void ValidateStudentSemesterCourseOnCreate(StudentSemesterCourse studentSemesterCourse)
         {
             ValidateStudentSemesterCourseIsNull(studentSemesterCourse);
-
-            ValidateStudentSemesterCourseIdIsNull(studentSemesterCourse.StudentId, 
-                studentSemesterCourse.SemesterCourseId);
-
+            ValidateStudentSemesterCourseIdIsNull(studentSemesterCourse.StudentId, studentSemesterCourse.SemesterCourseId);
             ValidateInvalidAuditFields(studentSemesterCourse);
             ValidateAuditFieldsDataOnCreate(studentSemesterCourse);
         }
@@ -106,14 +104,42 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
-        private static void ValidateStorageStudentSemesterCourse
-            (StudentSemesterCourse storageStudentSemesterCourse, Guid studentId, Guid semesterCourseId)
+        private void ValidateStorageStudentSemesterCourses(IQueryable<StudentSemesterCourse> storageStudentSemesterCourses)
         {
-            if (storageStudentSemesterCourse == null)
+            if (!storageStudentSemesterCourses.Any())
             {
-                throw new NotFoundStudentSemesterCourseException(studentId, semesterCourseId);
+                this.loggingBroker.LogWarning("No studentSemesterSemesterCourses found in storage.");
             }
         }
 
+        private void ValidateSemesterCourseId(Guid semesterCourseId)
+        {
+            if (semesterCourseId == Guid.Empty)
+            {
+                throw new InvalidStudentSemesterCourseException(
+                    parameterName: nameof(StudentSemesterCourse.SemesterCourseId),
+                    parameterValue: semesterCourseId);
+            }
+        }
+
+        private void ValidateStudentId(Guid studentId)
+        {
+            if (studentId == Guid.Empty)
+            {
+                throw new InvalidStudentSemesterCourseException(
+                    parameterName: nameof(StudentSemesterCourse.StudentId),
+                    parameterValue: studentId);
+            }
+        }
+
+        private static void ValidateStorageStudentSemesterCourse(
+            StudentSemesterCourse storageStudentSemesterCourse,
+            Guid semesterCourseId, Guid studentId)
+        {
+            if (storageStudentSemesterCourse == null)
+            {
+                throw new NotFoundStudentSemesterCourseException(semesterCourseId, studentId);
+            }
+        }
     }
 }
