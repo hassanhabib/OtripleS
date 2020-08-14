@@ -25,6 +25,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             ValidateStudentSemesterCourseIsNull(studentSemesterCourse);
             ValidateStudentSemesterCourseIdIsNull(studentSemesterCourse.StudentId, studentSemesterCourse.SemesterCourseId);
             ValidateStudentSemesterCourseFields(studentSemesterCourse);
+            ValidateInvalidAuditFields(studentSemesterCourse);
         }
 
         private void ValidateStudentSemesterCourseFields(StudentSemesterCourse studentSemesterCourse)
