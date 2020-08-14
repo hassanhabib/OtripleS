@@ -41,7 +41,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>()),
+                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -78,7 +78,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>()),
+                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -115,7 +115,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>()),
+                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -190,7 +190,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>()),
+                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -227,7 +227,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>()),
+                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -264,7 +264,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>()),
+                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -301,7 +301,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>()),
+                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -338,7 +338,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>()),
+                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -376,7 +376,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>()),
+                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -425,7 +425,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>()),
+                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
