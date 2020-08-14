@@ -362,5 +362,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [MemberData(nameof(InvalidMinuteCases))]
+        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsNotRecentAndLogItAsync(
+            int minutes)
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
+            StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
+            inputStudentSemesterCourse.UpdatedBy = inputStudentSemesterCourse.CreatedBy;
+            inputStudentSemesterCourse.UpdatedDate = dateTime.AddMinutes(minutes);
+
+            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
+                parameterName: nameof(StudentSemesterCourse.UpdatedDate),
+                parameterValue: inputStudentSemesterCourse.UpdatedDate);
+
+            var expectedStudentSemesterCourseValidationException =
+                new StudentSemesterCourseValidationException(invalidStudentSemesterCourseInputException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            // when
+            ValueTask<StudentSemesterCourse> modifyStudentSemesterCourseTask =
+                this.studentSemesterCourseService.ModifyStudentSemesterCourseAsync(inputStudentSemesterCourse);
+
+            // then
+            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
+                modifyStudentSemesterCourseTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
