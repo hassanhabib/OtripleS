@@ -1,10 +1,14 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions
 {
-    public class NotFoundStudentSemesterCourseException : Exception
+    public class NotFoundStudentSemesterCourseException:Exception
     {
-        public NotFoundStudentSemesterCourseException(Guid semesterCourseId, Guid studentId)
-            : base($"Couldn't find StudentSemesterCourse with semesterCourseId and studentId: {semesterCourseId} and {studentId}.") { }
+        public NotFoundStudentSemesterCourseException(Guid studentId, Guid semesterCourseId)
+           : base($"Couldn't find StudentSemesterCourse with StudentId: {studentId} " +
+                  $"and SemesterCourseId: {semesterCourseId}.") { }
     }
 }
