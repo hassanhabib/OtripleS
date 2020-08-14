@@ -14,7 +14,10 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
         private void ValidateStudentSemesterCourseOnCreate(StudentSemesterCourse studentSemesterCourse)
         {
             ValidateStudentSemesterCourseIsNull(studentSemesterCourse);
-            ValidateStudentSemesterCourseIdIsNull(studentSemesterCourse.StudentId, studentSemesterCourse.SemesterCourseId);
+
+            ValidateStudentSemesterCourseIdIsNull(studentSemesterCourse.StudentId, 
+                studentSemesterCourse.SemesterCourseId);
+
             ValidateInvalidAuditFields(studentSemesterCourse);
             ValidateAuditFieldsDataOnCreate(studentSemesterCourse);
         }
@@ -103,7 +106,8 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
-        private static void ValidateStorageStudentSemesterCourse(StudentSemesterCourse storageStudentSemesterCourse, Guid studentId, Guid semesterCourseId)
+        private static void ValidateStorageStudentSemesterCourse
+            (StudentSemesterCourse storageStudentSemesterCourse, Guid studentId, Guid semesterCourseId)
         {
             if (storageStudentSemesterCourse == null)
             {

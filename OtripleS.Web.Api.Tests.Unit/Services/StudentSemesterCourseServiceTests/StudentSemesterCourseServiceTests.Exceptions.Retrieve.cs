@@ -35,7 +35,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
 
             // when
             ValueTask<StudentSemesterCourse> deleteStudentSemesterCourseTask =
-                this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId);
+                this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync
+                (inputStudentId, inputSemesterCourseId);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseDependencyException>(() =>
@@ -74,10 +75,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
 
             // when
             ValueTask<StudentSemesterCourse> deleteSemesterCourseTask =
-                this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId);
+                this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync
+                (inputStudentId, inputSemesterCourseId);
 
             // then
-            await Assert.ThrowsAsync<StudentSemesterCourseDependencyException>(() => deleteSemesterCourseTask.AsTask());
+            await Assert.ThrowsAsync<StudentSemesterCourseDependencyException>(
+                () => deleteSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseDependencyException))),

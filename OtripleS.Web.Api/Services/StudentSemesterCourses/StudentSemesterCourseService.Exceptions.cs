@@ -48,7 +48,8 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                var lockedSemesterCourseException = new LockedStudentSemesterCourseException(dbUpdateConcurrencyException);
+                var lockedSemesterCourseException = 
+                    new LockedStudentSemesterCourseException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedSemesterCourseException);
             }
