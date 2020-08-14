@@ -35,6 +35,13 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
                     parameterName: nameof(StudentSemesterCourse.Grade),
                     parameterValue: studentSemesterCourse.Grade);
             }
+
+            if (IsInvalid(studentSemesterCourse.Repeats))
+            {
+                throw new InvalidStudentSemesterCourseException(
+                    parameterName: nameof(StudentSemesterCourse.Repeats),
+                    parameterValue: studentSemesterCourse.Repeats);
+            }
         }
 
         private void ValidateStudentSemesterCourseIsNull(StudentSemesterCourse studentSemesterCourse)
@@ -91,6 +98,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
         private static bool IsInvalid(DateTimeOffset input) => input == default;
         private static bool IsInvalid(Guid input) => input == default;
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
+        private static bool IsInvalid(int input) => input <= 0;
 
         private void ValidateAuditFieldsDataOnCreate(StudentSemesterCourse studentSemesterCourse)
         {
