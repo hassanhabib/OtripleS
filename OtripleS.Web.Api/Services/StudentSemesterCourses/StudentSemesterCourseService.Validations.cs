@@ -88,11 +88,6 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
                     throw new InvalidStudentSemesterCourseException(
                     parameterName: nameof(StudentSemesterCourse.CreatedDate),
                     parameterValue: studentSemesterCourse.CreatedDate);
-
-                case { } when IsInvalid(studentSemesterCourse.UpdatedDate):
-                    throw new InvalidStudentSemesterCourseException(
-                    parameterName: nameof(StudentSemesterCourse.UpdatedDate),
-                    parameterValue: studentSemesterCourse.UpdatedDate);
             }
         }
 
