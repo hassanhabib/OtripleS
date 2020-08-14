@@ -17,26 +17,26 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
     {
         private delegate ValueTask<StudentSemesterCourse> ReturningStudentSemesterCourseFunction();
         private async ValueTask<StudentSemesterCourse> TryCatch(
-            ReturningStudentSemesterCourseFunction returningStudentStudentSemesterCourseFunction)
+            ReturningStudentSemesterCourseFunction returningStudentSemesterCourseFunction)
         {
             try
             {
-                return await returningStudentStudentSemesterCourseFunction();
+                return await returningStudentSemesterCourseFunction();
             }
-            catch (NullStudentSemesterCourseException nullStudentStudentSemesterCourseException)
+            catch (NullStudentSemesterCourseException nullStudentSemesterCourseException)
             {
-                throw CreateAndLogValidationException(nullStudentStudentSemesterCourseException);
+                throw CreateAndLogValidationException(nullStudentSemesterCourseException);
             }
-            catch (InvalidStudentSemesterCourseException invalidStudentStudentSemesterCourseInputException)
+            catch (InvalidStudentSemesterCourseException invalidStudentSemesterCourseInputException)
             {
-                throw CreateAndLogValidationException(invalidStudentStudentSemesterCourseInputException);
+                throw CreateAndLogValidationException(invalidStudentSemesterCourseInputException);
             }
             catch (DuplicateKeyException duplicateKeyException)
             {
-                var alreadyExistsStudentStudentSemesterCourseException =
+                var alreadyExistsStudentSemesterCourseException =
                     new AlreadyExistsStudentSemesterCourseException(duplicateKeyException);
 
-                throw CreateAndLogValidationException(alreadyExistsStudentStudentSemesterCourseException);
+                throw CreateAndLogValidationException(alreadyExistsStudentSemesterCourseException);
             }
             catch (SqlException sqlException)
             {
@@ -54,34 +54,34 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
 
         private StudentSemesterCourseServiceException CreateAndLogServiceException(Exception exception)
         {
-            var studentStudentSemesterCourseServiceException = new StudentSemesterCourseServiceException(exception);
-            this.loggingBroker.LogError(studentStudentSemesterCourseServiceException);
+            var StudentSemesterCourseServiceException = new StudentSemesterCourseServiceException(exception);
+            this.loggingBroker.LogError(StudentSemesterCourseServiceException);
 
-            return studentStudentSemesterCourseServiceException;
+            return StudentSemesterCourseServiceException;
         }
 
         private StudentSemesterCourseValidationException CreateAndLogValidationException(Exception exception)
         {
-            var studentStudentSemesterCourseValidationException = new StudentSemesterCourseValidationException(exception);
-            this.loggingBroker.LogError(studentStudentSemesterCourseValidationException);
+            var StudentSemesterCourseValidationException = new StudentSemesterCourseValidationException(exception);
+            this.loggingBroker.LogError(StudentSemesterCourseValidationException);
 
-            return studentStudentSemesterCourseValidationException;
+            return StudentSemesterCourseValidationException;
         }
 
         private StudentSemesterCourseDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
-            var studentStudentSemesterCourseDependencyException = new StudentSemesterCourseDependencyException(exception);
-            this.loggingBroker.LogCritical(studentStudentSemesterCourseDependencyException);
+            var StudentSemesterCourseDependencyException = new StudentSemesterCourseDependencyException(exception);
+            this.loggingBroker.LogCritical(StudentSemesterCourseDependencyException);
 
-            return studentStudentSemesterCourseDependencyException;
+            return StudentSemesterCourseDependencyException;
         }
 
         private StudentSemesterCourseDependencyException CreateAndLogDependencyException(Exception exception)
         {
-            var studentStudentSemesterCourseDependencyException = new StudentSemesterCourseDependencyException(exception);
-            this.loggingBroker.LogError(studentStudentSemesterCourseDependencyException);
+            var StudentSemesterCourseDependencyException = new StudentSemesterCourseDependencyException(exception);
+            this.loggingBroker.LogError(StudentSemesterCourseDependencyException);
 
-            return studentStudentSemesterCourseDependencyException;
+            return StudentSemesterCourseDependencyException;
         }
     }
 }
