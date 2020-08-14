@@ -6,6 +6,7 @@
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions;
 using System;
+using System.Linq;
 
 namespace OtripleS.Web.Api.Services.StudentSemesterCourses
 {
@@ -101,6 +102,44 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             TimeSpan difference = now.Subtract(dateTime);
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
+
+        private void ValidateStorageStudentSemesterCourses(IQueryable<StudentSemesterCourse> storageStudentSemesterCourses)
+        {
+            if (!storageStudentSemesterCourses.Any())
+            {
+                this.loggingBroker.LogWarning("No studentSemesterSemesterCourses found in storage.");
+            }
+        }
+
+        private void ValidateSemesterCourseId(Guid semesterCourseId)
+        {
+            if (semesterCourseId == Guid.Empty)
+            {
+                throw new InvalidStudentSemesterCourseException(
+                    parameterName: nameof(StudentSemesterCourse.SemesterCourseId),
+                    parameterValue: semesterCourseId);
+            }
+        }
+
+        private void ValidateStudentId(Guid studentId)
+        {
+            if (studentId == Guid.Empty)
+            {
+                throw new InvalidStudentSemesterCourseException(
+                    parameterName: nameof(StudentSemesterCourse.StudentId),
+                    parameterValue: studentId);
+            }
+        }
+
+        private static void ValidateStorageStudentSemesterCourse(
+            StudentSemesterCourse storageStudentSemesterCourse,
+            Guid semesterCourseId, Guid studentId)
+        {
+            if (storageStudentSemesterCourse == null)
+            {
+                throw new NotFoundStudentSemesterCourseException(semesterCourseId, studentId);
+            }
         }
     }
 }

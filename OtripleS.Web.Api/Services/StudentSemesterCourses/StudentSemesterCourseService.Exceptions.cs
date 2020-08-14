@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.StudentSemesterCourses
@@ -16,6 +17,28 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
     public partial class StudentSemesterCourseService
     {
         private delegate ValueTask<StudentSemesterCourse> ReturningStudentSemesterCourseFunction();
+        private delegate IQueryable<StudentSemesterCourse> ReturningStudentSemesterCoursesFunction();
+
+        private IQueryable<StudentSemesterCourse> TryCatch(
+            ReturningStudentSemesterCoursesFunction returningStudentSemesterCoursesFunction)
+        {
+            try
+            {
+                return returningStudentSemesterCoursesFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+        
         private async ValueTask<StudentSemesterCourse> TryCatch(
             ReturningStudentSemesterCourseFunction returningStudentStudentSemesterCourseFunction)
         {
@@ -31,6 +54,10 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             {
                 throw CreateAndLogValidationException(invalidStudentStudentSemesterCourseInputException);
             }
+            catch (NotFoundStudentSemesterCourseException nullStudentSemesterCourseException)
+            {
+                throw CreateAndLogValidationException(nullStudentSemesterCourseException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsStudentStudentSemesterCourseException =
@@ -41,6 +68,12 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedSemesterCourseException = new LockedStudentSemesterCourseException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedSemesterCourseException);
             }
             catch (DbUpdateException dbUpdateException)
             {
