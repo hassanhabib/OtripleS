@@ -28,23 +28,26 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<StudentSemesterCourse> CreateStudentSemesterCourseAsync(StudentSemesterCourse studentSemesterCourse) =>
+        public ValueTask<StudentSemesterCourse> CreateStudentSemesterCourseAsync
+            (StudentSemesterCourse studentSemesterCourse) =>
         TryCatch(async () =>
         {
             ValidateStudentSemesterCourseOnCreate(studentSemesterCourse);
             return await this.storageBroker.InsertStudentSemesterCourseAsync(studentSemesterCourse);
         });
 
-        public ValueTask<StudentSemesterCourse> DeleteStudentSemesterCourseAsync(Guid semesterCourseId, Guid studentId) =>
+        public ValueTask<StudentSemesterCourse> RetrieveStudentSemesterCourseByIdAsync
+            (Guid studentId, Guid semesterCourse) =>
         TryCatch(async () =>
         {
-            ValidateSemesterCourseId(semesterCourseId);
-            ValidateStudentId(studentId);
-            StudentSemesterCourse studentSemesterCourse =
-                await this.storageBroker.SelectStudentSemesterCourseByIdAsync(semesterCourseId, studentId);
-            ValidateStorageStudentSemesterCourse(studentSemesterCourse, semesterCourseId, studentId);
+            ValidateStudentSemesterCourseIdIsNull(studentId, semesterCourse);
 
-            return await this.storageBroker.DeleteStudentSemesterCourseAsync(studentSemesterCourse);
+            StudentSemesterCourse storageStudentSemesterCourse =
+               await this.storageBroker.SelectStudentSemesterCourseByIdAsync(studentId, semesterCourse);
+
+            ValidateStorageStudentSemesterCourse(storageStudentSemesterCourse, studentId, semesterCourse);
+
+            return storageStudentSemesterCourse;
         });
     }
 }
