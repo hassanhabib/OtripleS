@@ -24,6 +24,17 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
         {
             ValidateStudentSemesterCourseIsNull(studentSemesterCourse);
             ValidateStudentSemesterCourseIdIsNull(studentSemesterCourse.StudentId, studentSemesterCourse.SemesterCourseId);
+            ValidateStudentSemesterCourseFields(studentSemesterCourse);
+        }
+
+        private void ValidateStudentSemesterCourseFields(StudentSemesterCourse studentSemesterCourse)
+        {
+            if (IsInvalid(studentSemesterCourse.Grade))
+            {
+                throw new InvalidStudentSemesterCourseException(
+                    parameterName: nameof(StudentSemesterCourse.Grade),
+                    parameterValue: studentSemesterCourse.Grade);
+            }
         }
 
         private void ValidateStudentSemesterCourseIsNull(StudentSemesterCourse studentSemesterCourse)
@@ -79,6 +90,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
 
         private static bool IsInvalid(DateTimeOffset input) => input == default;
         private static bool IsInvalid(Guid input) => input == default;
+        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
 
         private void ValidateAuditFieldsDataOnCreate(StudentSemesterCourse studentSemesterCourse)
         {
