@@ -53,7 +53,8 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
                 ValidateStudentSemesterCourseOnModify(studentSemesterCourse);
                 StudentSemesterCourse maybeStudentSemesterCourse =
                     await this.storageBroker
-                    .SelectStudentSemesterCourseByIdAsync(studentSemesterCourse.StudentId, studentSemesterCourse.SemesterCourseId);
+                    .SelectStudentSemesterCourseByIdAsync
+                    (studentSemesterCourse.StudentId, studentSemesterCourse.SemesterCourseId);
 
                 return await this.storageBroker.UpdateStudentSemesterCourseAsync(studentSemesterCourse);
             });
