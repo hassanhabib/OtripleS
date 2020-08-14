@@ -12,6 +12,7 @@ using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using OtripleS.Web.Api.Services.StudentSemesterCourses;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using System.Text;
@@ -24,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
         private readonly Mock<IStorageBroker> storageBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
-        private readonly StudentSemesterCourseService studentSemesterCourseService;
+        private readonly IStudentSemesterCourseService studentSemesterCourseService;
 
         public StudentSemesterCourseServiceTests()
         {
@@ -43,6 +44,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
 
         private StudentSemesterCourse CreateRandomStudentSemesterCourse(DateTimeOffset dates) =>
             CreateStudentSemesterCourseFiller(dates).Create();
+        private IQueryable<StudentSemesterCourse> CreateRandomStudentSemesterCourses() =>
+            CreateStudentSemesterCourseFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static Filler<StudentSemesterCourse> CreateStudentSemesterCourseFiller(DateTimeOffset dates)
         {
