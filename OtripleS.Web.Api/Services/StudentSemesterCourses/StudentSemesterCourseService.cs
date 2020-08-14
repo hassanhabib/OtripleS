@@ -44,6 +44,8 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             StudentSemesterCourse storageStudentSemesterCourse =
                await this.storageBroker.SelectStudentSemesterCourseByIdAsync(studentId, semesterCourse);
 
+            ValidateStorageStudentSemesterCourse(storageStudentSemesterCourse, studentId, semesterCourse);
+
             return storageStudentSemesterCourse;
         });
     }
