@@ -20,6 +20,53 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             ValidateAuditFieldsDataOnCreate(studentSemesterCourse);
         }
 
+        private void ValidateStudentSemesterCourseOnModify(StudentSemesterCourse studentSemesterCourse)
+        {
+            ValidateStudentSemesterCourseIsNull(studentSemesterCourse);
+            ValidateStudentSemesterCourseIdIsNull(studentSemesterCourse.StudentId, studentSemesterCourse.SemesterCourseId);
+            ValidateStudentSemesterCourseFields(studentSemesterCourse);
+            ValidateInvalidAuditFields(studentSemesterCourse);
+            ValidateDatesAreNotSame(studentSemesterCourse);
+            ValidateUpdatedDateIsRecent(studentSemesterCourse);
+        }
+
+        private void ValidateUpdatedDateIsRecent(StudentSemesterCourse studentSemesterCourse)
+        {
+            if (IsDateNotRecent(studentSemesterCourse.UpdatedDate))
+            {
+                throw new InvalidStudentSemesterCourseException(
+                    parameterName: nameof(StudentSemesterCourse.UpdatedDate),
+                    parameterValue: studentSemesterCourse.UpdatedDate);
+            }
+        }
+
+        private void ValidateDatesAreNotSame(StudentSemesterCourse studentSemesterCourse)
+        {
+            if (studentSemesterCourse.CreatedDate == studentSemesterCourse.UpdatedDate)
+            {
+                throw new InvalidStudentSemesterCourseException(
+                    parameterName: nameof(StudentSemesterCourse.UpdatedDate),
+                    parameterValue: studentSemesterCourse.UpdatedDate);
+            }
+        }
+
+        private void ValidateStudentSemesterCourseFields(StudentSemesterCourse studentSemesterCourse)
+        {
+            if (IsInvalid(studentSemesterCourse.Grade))
+            {
+                throw new InvalidStudentSemesterCourseException(
+                    parameterName: nameof(StudentSemesterCourse.Grade),
+                    parameterValue: studentSemesterCourse.Grade);
+            }
+
+            if (IsInvalid(studentSemesterCourse.Repeats))
+            {
+                throw new InvalidStudentSemesterCourseException(
+                    parameterName: nameof(StudentSemesterCourse.Repeats),
+                    parameterValue: studentSemesterCourse.Repeats);
+            }
+        }
+
         private void ValidateStudentSemesterCourseIsNull(StudentSemesterCourse studentSemesterCourse)
         {
             if (studentSemesterCourse is null)
@@ -73,6 +120,8 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
 
         private static bool IsInvalid(DateTimeOffset input) => input == default;
         private static bool IsInvalid(Guid input) => input == default;
+        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
+        private static bool IsInvalid(int input) => input <= 0;
 
         private void ValidateAuditFieldsDataOnCreate(StudentSemesterCourse studentSemesterCourse)
         {
@@ -109,6 +158,18 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             if (!storageStudentSemesterCourses.Any())
             {
                 this.loggingBroker.LogWarning("No studentSemesterSemesterCourses found in storage.");
+            }
+        }
+
+        private void ValidateAgainstStorageStudentSemesterCourseOnModify
+            (StudentSemesterCourse inputStudentSemesterCourse, StudentSemesterCourse storageStudentSemesterCourse)
+        {
+            switch (inputStudentSemesterCourse)
+            {
+                case { } when inputStudentSemesterCourse.CreatedDate != storageStudentSemesterCourse.CreatedDate:
+                    throw new InvalidStudentSemesterCourseException(
+                        parameterName: nameof(StudentSemesterCourse.CreatedDate),
+                        parameterValue: inputStudentSemesterCourse.CreatedDate);
             }
         }
 
