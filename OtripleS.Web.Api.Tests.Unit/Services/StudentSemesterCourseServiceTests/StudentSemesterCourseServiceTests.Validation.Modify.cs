@@ -1,16 +1,14 @@
-﻿//---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
-using EFxceptions.Models.Exceptions;
+using System;
+using System.Threading.Tasks;
+using Force.DeepCloner;
 using Moq;
+using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
@@ -18,151 +16,172 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
     public partial class StudentSemesterCourseServiceTests
     {
         [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenStudentSemesterCourseIsNullAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnModifyWhenSemesterCourseIsNullAndLogItAsync()
         {
-            // given
-            StudentSemesterCourse randomStudentSemesterCourse = null;
-            StudentSemesterCourse nullStudentSemesterCourse = randomStudentSemesterCourse;
+            //given
+            StudentSemesterCourse invalidStudentSemesterCourse = null;
             var nullStudentSemesterCourseException = new NullStudentSemesterCourseException();
 
-            var expectedStudentSemesterCourseValidationException =
-                new StudentSemesterCourseValidationException(nullStudentSemesterCourseException);
-
-            // when
-            ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =
-                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(nullStudentSemesterCourse);
-
-            // then
-            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
-                createStudentSemesterCourseTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenStudentIdIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
-            StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
-            inputStudentSemesterCourse.StudentId = default;
-
-            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
-                parameterName: nameof(StudentSemesterCourse.StudentId),
-                parameterValue: inputStudentSemesterCourse.StudentId);
-
-            var expectedStudentSemesterCourseValidationException =
-                new StudentSemesterCourseValidationException(invalidStudentSemesterCourseInputException);
-
-            // when
-            ValueTask<StudentSemesterCourse> registerStudentSemesterCourseTask =
-                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(inputStudentSemesterCourse);
-
-            // then
-            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
-                registerStudentSemesterCourseTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenSemesterCourseIdIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
-            StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
-            inputStudentSemesterCourse.SemesterCourseId = default;
-
-            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
-                parameterName: nameof(StudentSemesterCourse.SemesterCourseId),
-                parameterValue: inputStudentSemesterCourse.SemesterCourseId);
-
-            var expectedStudentSemesterCourseValidationException =
-                new StudentSemesterCourseValidationException(invalidStudentSemesterCourseInputException);
-
-            // when
-            ValueTask<StudentSemesterCourse> registerStudentSemesterCourseTask =
-                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(inputStudentSemesterCourse);
-
-            // then
-            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
-                registerStudentSemesterCourseTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedDateIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
-            StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
-            inputStudentSemesterCourse.CreatedDate = default;
-
-            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
-                parameterName: nameof(StudentSemesterCourse.CreatedDate),
-                parameterValue: inputStudentSemesterCourse.CreatedDate);
-
             var expectedSemesterCourseValidationException =
-                new StudentSemesterCourseValidationException(invalidStudentSemesterCourseInputException);
+                new SemesterCourseValidationException(nullStudentSemesterCourseException);
 
-            // when
-            ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =
-                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(inputStudentSemesterCourse);
+            //when
+            ValueTask<StudentSemesterCourse> modifyStudentSemesterCourseTask =
+                this.studentSemesterCourseService.ModifyStudentSemesterCourseAsync(invalidStudentSemesterCourse);
 
-            // then
+            //then
             await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
-                createStudentSemesterCourseTask.AsTask());
+                modifyStudentSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+                Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedByInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnModifyWhenStudentIdIsInvalidAndLogItAsync()
+        {
+            //given
+            Guid invalidStudentId = Guid.Empty;
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
+            StudentSemesterCourse invalidStudentSemesterCourse = randomStudentSemesterCourse;
+            invalidStudentSemesterCourse.StudentId = invalidStudentId;
+
+            var invalidStudentSemesterCourseException = new InvalidStudentSemesterCourseException(
+                parameterName: nameof(StudentSemesterCourse.StudentId),
+                parameterValue: invalidStudentSemesterCourse.StudentId);
+
+            var expectedStudentSemesterCourseValidationException =
+                new StudentSemesterCourseValidationException(invalidStudentSemesterCourseException);
+
+            //when
+            ValueTask<StudentSemesterCourse> modifyStudentSemesterCourseTask =
+                this.studentSemesterCourseService.ModifyStudentSemesterCourseAsync(invalidStudentSemesterCourse);
+
+            //then
+            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
+                modifyStudentSemesterCourseTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
+                Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyWhenSemesterCourseIdIsInvalidAndLogItAsync()
+        {
+            //given
+            Guid invalidSemesterCourseId = Guid.Empty;
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
+            StudentSemesterCourse invalidStudentSemesterCourse = randomStudentSemesterCourse;
+            invalidStudentSemesterCourse.SemesterCourseId = invalidSemesterCourseId;
+
+            var invalidStudentSemesterCourseException = new InvalidStudentSemesterCourseException(
+                parameterName: nameof(StudentSemesterCourse.SemesterCourseId),
+                parameterValue: invalidStudentSemesterCourse.SemesterCourseId);
+
+            var expectedStudentSemesterCourseValidationException =
+                new StudentSemesterCourseValidationException(invalidStudentSemesterCourseException);
+
+            //when
+            ValueTask<StudentSemesterCourse> modifyStudentSemesterCourseTask =
+                this.studentSemesterCourseService.ModifyStudentSemesterCourseAsync(invalidStudentSemesterCourse);
+
+            //then
+            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
+                modifyStudentSemesterCourseTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
+                Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task ShouldThrowValidationExceptionOnModifyWhenStudentSemesterCourseGradeIsInvalidAndLogItAsync(
+                    string invalidStudentSemesterCourseGrade)
+        {
+            // given
+            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(DateTime.Now);
+            StudentSemesterCourse invalidStudentSemesterCourse = randomStudentSemesterCourse;
+            invalidStudentSemesterCourse.Grade = invalidStudentSemesterCourseGrade;
+
+            var invalidStudentSemesterCourseException = new InvalidStudentSemesterCourseException(
+               parameterName: nameof(StudentSemesterCourse.Grade),
+               parameterValue: invalidStudentSemesterCourse.Grade);
+
+            var expectedStudentSemesterCourseValidationException =
+                new StudentSemesterCourseValidationException(invalidStudentSemesterCourseException);
+
+            // when
+            ValueTask<StudentSemesterCourse> modifyStudentSemesterCourseTask =
+                this.studentSemesterCourseService.ModifyStudentSemesterCourseAsync(invalidStudentSemesterCourse);
+
+            // then
+            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
+                modifyStudentSemesterCourseTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyWhenRepeatsInvalidAndLogItAsync()
+        {
+            //given
+            int invalidRepeats = GetNegativeRandomNumber();
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
+            StudentSemesterCourse invalidStudentSemesterCourse = randomStudentSemesterCourse;
+            invalidStudentSemesterCourse.Repeats = invalidRepeats;
+
+            var invalidStudentSemesterCourseException = new InvalidStudentSemesterCourseException(
+                parameterName: nameof(StudentSemesterCourse.Repeats),
+                parameterValue: invalidStudentSemesterCourse.Repeats);
+
+            var expectedStudentSemesterCourseValidationException =
+                new StudentSemesterCourseValidationException(invalidStudentSemesterCourseException);
+
+            //when
+            ValueTask<StudentSemesterCourse> modifyStudentSemesterCourseTask =
+                this.studentSemesterCourseService.ModifyStudentSemesterCourseAsync(invalidStudentSemesterCourse);
+
+            //then
+            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
+                modifyStudentSemesterCourseTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
+                Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnModifyWhenCreatedByIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -178,12 +197,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                 new StudentSemesterCourseValidationException(invalidStudentSemesterCourseInputException);
 
             // when
-            ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =
-                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(inputStudentSemesterCourse);
+            ValueTask<StudentSemesterCourse> modifyStudentSemesterCourseTask =
+                this.studentSemesterCourseService.ModifyStudentSemesterCourseAsync(inputStudentSemesterCourse);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
-                createStudentSemesterCourseTask.AsTask());
+                modifyStudentSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
@@ -199,7 +218,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedByInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedByIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -215,12 +234,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                 new StudentSemesterCourseValidationException(invalidStudentSemesterCourseInputException);
 
             // when
-            ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =
-                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(inputStudentSemesterCourse);
+            ValueTask<StudentSemesterCourse> modifyStudentSemesterCourseTask =
+                this.studentSemesterCourseService.ModifyStudentSemesterCourseAsync(inputStudentSemesterCourse);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
-                createStudentSemesterCourseTask.AsTask());
+                modifyStudentSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
@@ -236,7 +255,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedDateInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnModifyWhenCreatedDateIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -252,12 +271,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                 new StudentSemesterCourseValidationException(invalidStudentSemesterCourseInputException);
 
             // when
-            ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =
-                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(inputStudentSemesterCourse);
+            ValueTask<StudentSemesterCourse> modifyStudentSemesterCourseTask =
+                this.studentSemesterCourseService.ModifyStudentSemesterCourseAsync(inputStudentSemesterCourse);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
-                createStudentSemesterCourseTask.AsTask());
+                modifyStudentSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
@@ -273,7 +292,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedDateInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -289,12 +308,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                 new StudentSemesterCourseValidationException(invalidStudentSemesterCourseInputException);
 
             // when
-            ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =
-                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(inputStudentSemesterCourse);
+            ValueTask<StudentSemesterCourse> modifyStudentSemesterCourseTask =
+                this.studentSemesterCourseService.ModifyStudentSemesterCourseAsync(inputStudentSemesterCourse);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
-                createStudentSemesterCourseTask.AsTask());
+                modifyStudentSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
@@ -310,51 +329,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedByIsNotSameToCreatedByAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsSameAsCreatedDateAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
             StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
-            inputStudentSemesterCourse.UpdatedBy = Guid.NewGuid();
-
-            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
-                parameterName: nameof(StudentSemesterCourse.UpdatedBy),
-                parameterValue: inputStudentSemesterCourse.UpdatedBy);
-
-            var expectedStudentSemesterCourseValidationException =
-                new StudentSemesterCourseValidationException(invalidStudentSemesterCourseInputException);
-
-            // when
-            ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =
-                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(inputStudentSemesterCourse);
-
-            // then
-            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
-                createStudentSemesterCourseTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedDateIsNotSameToCreatedDateAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
-            StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
-            inputStudentSemesterCourse.UpdatedBy = randomStudentSemesterCourse.CreatedBy;
-            inputStudentSemesterCourse.UpdatedDate = GetRandomDateTime();
 
             var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
                 parameterName: nameof(StudentSemesterCourse.UpdatedDate),
@@ -364,12 +344,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                 new StudentSemesterCourseValidationException(invalidStudentSemesterCourseInputException);
 
             // when
-            ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =
-                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(inputStudentSemesterCourse);
+            ValueTask<StudentSemesterCourse> modifyStudentSemesterCourseTask =
+                this.studentSemesterCourseService.ModifyStudentSemesterCourseAsync(inputStudentSemesterCourse);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
-                createStudentSemesterCourseTask.AsTask());
+                modifyStudentSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
@@ -386,7 +366,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
 
         [Theory]
         [MemberData(nameof(InvalidMinuteCases))]
-        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedDateIsNotRecentAndLogItAsync(
+        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsNotRecentAndLogItAsync(
             int minutes)
         {
             // given
@@ -394,12 +374,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
             StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
             inputStudentSemesterCourse.UpdatedBy = inputStudentSemesterCourse.CreatedBy;
-            inputStudentSemesterCourse.CreatedDate = dateTime.AddMinutes(minutes);
-            inputStudentSemesterCourse.UpdatedDate = inputStudentSemesterCourse.CreatedDate;
+            inputStudentSemesterCourse.UpdatedDate = dateTime.AddMinutes(minutes);
 
             var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
-                parameterName: nameof(StudentSemesterCourse.CreatedDate),
-                parameterValue: inputStudentSemesterCourse.CreatedDate);
+                parameterName: nameof(StudentSemesterCourse.UpdatedDate),
+                parameterValue: inputStudentSemesterCourse.UpdatedDate);
 
             var expectedStudentSemesterCourseValidationException =
                 new StudentSemesterCourseValidationException(invalidStudentSemesterCourseInputException);
@@ -409,12 +388,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                     .Returns(dateTime);
 
             // when
-            ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =
-                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(inputStudentSemesterCourse);
+            ValueTask<StudentSemesterCourse> modifyStudentSemesterCourseTask =
+                this.studentSemesterCourseService.ModifyStudentSemesterCourseAsync(inputStudentSemesterCourse);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
-                createStudentSemesterCourseTask.AsTask());
+                modifyStudentSemesterCourseTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
@@ -434,54 +413,110 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenStudentSemesterCourseAlreadyExistsAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnModifyIfStudentSemesterCourseDoesntExistAndLogItAsync()
         {
             // given
+            int randomNegativeMinutes = GetNegativeRandomNumber();
             DateTimeOffset dateTime = GetRandomDateTime();
             StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
-            StudentSemesterCourse alreadyExistsStudentSemesterCourse = randomStudentSemesterCourse;
-            alreadyExistsStudentSemesterCourse.UpdatedBy = alreadyExistsStudentSemesterCourse.CreatedBy;
-            string randomMessage = GetRandomMessage();
-            string exceptionMessage = randomMessage;
-            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
-
-            var alreadyExistsStudentSemesterCourseException =
-                new AlreadyExistsStudentSemesterCourseException(duplicateKeyException);
+            StudentSemesterCourse nonExistentStudentSemesterCourse = randomStudentSemesterCourse;
+            nonExistentStudentSemesterCourse.CreatedDate = dateTime.AddMinutes(randomNegativeMinutes);
+            StudentSemesterCourse noStudentSemesterCourse = null;
+            var notFoundStudentSemesterCourseException = new NotFoundStudentSemesterCourseException
+                (nonExistentStudentSemesterCourse.StudentId, nonExistentStudentSemesterCourse.SemesterCourseId);
 
             var expectedStudentSemesterCourseValidationException =
-                new StudentSemesterCourseValidationException(alreadyExistsStudentSemesterCourseException);
+                new StudentSemesterCourseValidationException(notFoundStudentSemesterCourseException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentSemesterCourseByIdAsync
+                (nonExistentStudentSemesterCourse.StudentId, nonExistentStudentSemesterCourse.SemesterCourseId))
+                    .ReturnsAsync(noStudentSemesterCourse);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
                     .Returns(dateTime);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentSemesterCourseAsync(alreadyExistsStudentSemesterCourse))
-                    .ThrowsAsync(duplicateKeyException);
-
             // when
-            ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =
-                this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(alreadyExistsStudentSemesterCourse);
+            ValueTask<StudentSemesterCourse> modifyStudentSemesterCourseTask =
+                this.studentSemesterCourseService.ModifyStudentSemesterCourseAsync(nonExistentStudentSemesterCourse);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
-                createStudentSemesterCourseTask.AsTask());
+                modifyStudentSemesterCourseTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentSemesterCourseAsync(alreadyExistsStudentSemesterCourse),
+                broker.SelectStudentSemesterCourseByIdAsync
+                (nonExistentStudentSemesterCourse.StudentId, nonExistentStudentSemesterCourse.SemesterCourseId),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
                     Times.Once);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedDateNotSameAsCreateDateAndLogItAsync()
+        {
+            // given
+            int randomNumber = GetRandomNumber();
+            int randomMinutes = randomNumber;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(randomDate);
+            StudentSemesterCourse invalidStudentSemesterCourse = randomStudentSemesterCourse;
+            invalidStudentSemesterCourse.UpdatedDate = randomDate;
+            StudentSemesterCourse storageStudentSemesterCourse = randomStudentSemesterCourse.DeepClone();
+            Guid studentId = invalidStudentSemesterCourse.StudentId;
+            Guid semesterCourseId = invalidStudentSemesterCourse.SemesterCourseId;
+            invalidStudentSemesterCourse.CreatedDate = storageStudentSemesterCourse.CreatedDate.AddMinutes(randomNumber);
+
+            var invalidStudentSemesterCourseException = new InvalidStudentSemesterCourseException(
+                parameterName: nameof(StudentSemesterCourse.CreatedDate),
+                parameterValue: invalidStudentSemesterCourse.CreatedDate);
+
+            var expectedStudentSemesterCourseValidationException =
+              new StudentSemesterCourseValidationException(invalidStudentSemesterCourseException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentSemesterCourseByIdAsync(studentId, semesterCourseId))
+                    .ReturnsAsync(storageStudentSemesterCourse);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
+            // when
+            ValueTask<StudentSemesterCourse> modifyStudentSemesterCourseTask =
+                this.studentSemesterCourseService.ModifyStudentSemesterCourseAsync(invalidStudentSemesterCourse);
+
+            // then
+            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
+                modifyStudentSemesterCourseTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentSemesterCourseByIdAsync
+                (invalidStudentSemesterCourse.StudentId, invalidStudentSemesterCourse.SemesterCourseId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
