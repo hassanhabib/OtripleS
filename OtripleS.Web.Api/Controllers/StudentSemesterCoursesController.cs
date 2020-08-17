@@ -84,7 +84,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 StudentSemesterCourse storageStudentSemesterCourse =
-                    await this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync(semesterCourseId, studentId);
+                    await this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync(studentId, semesterCourseId);
 
                 return Ok(storageStudentSemesterCourse);
             }
@@ -157,7 +157,7 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpDelete("{studentId}/{semesterCourseId}")]
+        [HttpDelete("{semesterCourseId}/{studentId}")]
         public async ValueTask<ActionResult<StudentSemesterCourse>>
          DeleteStudentSemesterCourseAsync(Guid semesterCourseId, Guid studentId)
         {

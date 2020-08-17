@@ -64,7 +64,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
         public ValueTask<StudentSemesterCourse> ModifyStudentSemesterCourseAsync(StudentSemesterCourse studentSemesterCourse) =>
         TryCatch(async () =>
         {
-            ValidateStudentSemesterCourseOnCreate(studentSemesterCourse);
+            ValidateStudentSemesterCourseOnModify(studentSemesterCourse);
 
             StudentSemesterCourse maybeStudentSemesterCourse =
                 await this.storageBroker.SelectStudentSemesterCourseByIdAsync
@@ -84,7 +84,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
                 ValidateSemesterCourseId(semesterCourseId);
                 ValidateStudentId(studentId);
                 StudentSemesterCourse studentSemesterCourse =
-                    await this.storageBroker.SelectStudentSemesterCourseByIdAsync(semesterCourseId, studentId);
+                    await this.storageBroker.SelectStudentSemesterCourseByIdAsync(studentId, semesterCourseId);
                 ValidateStorageStudentSemesterCourse(studentSemesterCourse, semesterCourseId, studentId);
 
                 return await this.storageBroker.DeleteStudentSemesterCourseAsync(studentSemesterCourse);

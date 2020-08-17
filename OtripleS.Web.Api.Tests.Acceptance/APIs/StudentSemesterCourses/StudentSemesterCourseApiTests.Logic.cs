@@ -36,7 +36,11 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentSemesterCourses
             // then
             actualStudentSemesterCourse.Should().BeEquivalentTo(expectedStudentSemesterCourse);
 
-            await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(actualStudentSemesterCourse.SemesterCourseId);
+            await this.otripleSApiBroker.DeleteStudentSemesterCourseAsync
+                (
+                    actualStudentSemesterCourse.SemesterCourseId,
+                    actualStudentSemesterCourse.StudentId
+                );
         }
 
         [Fact]
@@ -63,8 +67,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentSemesterCourses
 
             await this.otripleSApiBroker.DeleteStudentSemesterCourseAsync
                 (
-                    actualStudentSemesterCourse.StudentId
-                //,actualStudentSemesterCourse.SemesterCourseId
+                    actualStudentSemesterCourse.SemesterCourseId,
+                    actualStudentSemesterCourse.StudentId                    
                 );
         }
 
@@ -96,7 +100,11 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentSemesterCourses
 
                 StudentSemesterCourse expectedReturnedStudentSemesterCourse = CreateExpectedStudentSemesterCourse(expectedStudentSemesterCourse);
                 actualStudentSemesterCourse.Should().BeEquivalentTo(expectedReturnedStudentSemesterCourse);
-                await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(actualStudentSemesterCourse.StudentId);
+                await this.otripleSApiBroker.DeleteStudentSemesterCourseAsync
+                    (
+                        actualStudentSemesterCourse.SemesterCourseId,
+                        actualStudentSemesterCourse.StudentId
+                    );
             }
         }
     }

@@ -27,15 +27,14 @@ namespace OtripleS.Web.Api.Brokers.Storage
             return studentSemesterCourseEntityEntry.Entity;
         }
 
-        public IQueryable<StudentSemesterCourse> SelectAllStudentSemesterCourses() => 
+        public IQueryable<StudentSemesterCourse> SelectAllStudentSemesterCourses() =>
             this.StudentSemesterCourses.AsQueryable();
 
         public async ValueTask<StudentSemesterCourse> SelectStudentSemesterCourseByIdAsync(
             Guid studentId, Guid semesterCourseId)
         {
             this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-
-            return await StudentSemesterCourses.FindAsync(new { studentId, semesterCourseId });
+            return await StudentSemesterCourses.FindAsync(studentId, semesterCourseId);
         }
 
         public async ValueTask<StudentSemesterCourse> UpdateStudentSemesterCourseAsync(
