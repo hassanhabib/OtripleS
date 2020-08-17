@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
 using EFxceptions.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +11,7 @@ using OtripleS.Web.Api.Models.Users;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
-    public partial class StorageBroker : EFxceptionsIdentityContext<User>, IStorageBroker
+    public partial class StorageBroker : EFxceptionsIdentityContext<User, Role, Guid>, IStorageBroker
     {
         private readonly IConfiguration configuration;
 

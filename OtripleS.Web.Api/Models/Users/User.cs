@@ -8,8 +8,26 @@ using Microsoft.AspNetCore.Identity;
 
 namespace OtripleS.Web.Api.Models.Users
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<Guid>
     {
+        public override Guid Id
+        {
+            get => base.Id;
+            set => base.Id = value;
+        }
+
+        public override string UserName
+        {
+            get => base.Email;
+            set => base.Email = value;
+        }
+
+        public override string PhoneNumber
+        {
+            get => base.PhoneNumber;
+            set => base.PhoneNumber = value;
+        }
+
         public string Name { get; set; }
         public string FamilyName { get; set; }
         public UserStatus Status { get; set; }
