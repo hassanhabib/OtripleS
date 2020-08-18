@@ -34,5 +34,13 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
             return user;
         }
+
+        public async ValueTask<User> DeleteUserAsync(User user)
+        {
+            await this.userManager.DeleteAsync(user);
+            await this.SaveChangesAsync();
+
+            return user;
+        }
     }
 }
