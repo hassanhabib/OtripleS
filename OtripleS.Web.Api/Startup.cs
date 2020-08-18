@@ -5,6 +5,7 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,6 +14,7 @@ using Newtonsoft.Json;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Services.Assignments;
 using OtripleS.Web.Api.Services.Classrooms;
 using OtripleS.Web.Api.Services.Courses;
@@ -53,6 +55,8 @@ namespace OtripleS.Web.Api
             services.AddTransient<IAssignmentService, AssignmentService>();
             services.AddTransient<ISemesterCourseService, SemesterCourseService>();
             services.AddTransient<IStudentSemesterCourseService, StudentSemesterCourseService>();
+
+            services.AddIdentityCore<User>().AddRoles<Role>().AddEntityFrameworkStores<StorageBroker>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

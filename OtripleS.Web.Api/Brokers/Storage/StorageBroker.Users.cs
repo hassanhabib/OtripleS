@@ -6,22 +6,25 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using OtripleS.Web.Api.Models.Users;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
     public partial class StorageBroker
     {
-        public IQueryable<User> SelectAllUsers() => this.userManager.Users;
+        public UserManager<User> UserManager { get; set; }
+
+        public IQueryable<User> SelectAllUsers() => UserManager.Users;
 
         public async ValueTask<User> SelectUserByIdAsync(Guid userId)
         {
-            return await this.userManager.FindByIdAsync(userId.ToString());
+            return await this.UserManager.FindByIdAsync(userId.ToString());
         }
 
         public async ValueTask<User> InsertUserAsync(User user, string password)
         {
-            await this.userManager.CreateAsync(user, password);
+            await this.UserManager.CreateAsync(user, password);
             await this.SaveChangesAsync();
 
             return user;
@@ -29,7 +32,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
         public async ValueTask<User> UpdateUserAsync(User user)
         {
-            await this.userManager.UpdateAsync(user);
+            await this.UserManager.UpdateAsync(user);
             await this.SaveChangesAsync();
 
             return user;
@@ -37,7 +40,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
         public async ValueTask<User> DeleteUserAsync(User user)
         {
-            await this.userManager.DeleteAsync(user);
+            await this.UserManager.DeleteAsync(user);
             await this.SaveChangesAsync();
 
             return user;

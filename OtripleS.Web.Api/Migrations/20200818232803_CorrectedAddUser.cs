@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OtripleS.Web.Api.Migrations
 {
-    public partial class AddUser : Migration
+    public partial class CorrectedAddUser : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
