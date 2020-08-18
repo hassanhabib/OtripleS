@@ -3,13 +3,15 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using EFxceptions;
+using System;
+using EFxceptions.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using OtripleS.Web.Api.Models.Users;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
-    public partial class StorageBroker : EFxceptionsContext, IStorageBroker
+    public partial class StorageBroker : EFxceptionsIdentityContext<User, Role, Guid>, IStorageBroker
     {
         private readonly IConfiguration configuration;
 
@@ -21,6 +23,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             AddSemesterCourseReferences(modelBuilder);
             AddStudentSemesterCourseReferences(modelBuilder);
         }
