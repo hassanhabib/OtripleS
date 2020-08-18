@@ -5,7 +5,7 @@
 
 using System;
 using System.Linq;
-using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.Users;
 
 namespace OtripleS.Web.Api.Brokers.Storage
@@ -14,7 +14,12 @@ namespace OtripleS.Web.Api.Brokers.Storage
     {
         public IQueryable<User> SelectAllUsers() => this.userManager.Users;
 
-        public async System.Threading.Tasks.ValueTask<User> InsertUserAsync(User user, string password)
+        public async ValueTask<User> SelectUserByIdAsync(Guid userId)
+        {
+            return await this.userManager.FindByIdAsync(userId.ToString());
+        }
+
+        public async ValueTask<User> InsertUserAsync(User user, string password)
         {
             await this.userManager.CreateAsync(user, password);
             await this.SaveChangesAsync();
