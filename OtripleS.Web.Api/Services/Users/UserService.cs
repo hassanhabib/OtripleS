@@ -27,9 +27,9 @@ namespace OtripleS.Web.Api.Services.Users
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<User> RegisterUserAsync(User user, string password)
+        public async ValueTask<User> RegisterUserAsync(User user, string password)
         {
-            throw new NotImplementedException();
+            return await this.storageBroker.InsertUserAsync(user, password);
         }
     }
 }
