@@ -5,6 +5,7 @@
 
 using System;
 using EFxceptions.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using OtripleS.Web.Api.Models.Users;
