@@ -20,5 +20,6 @@
     <Folder Include="Services\Courses\" />
     <Folder Include="Models\Assignments\Exceptions\" />
     <Folder Include="Models\Users\" />
+    <Folder Include="Services\Users\" />
   </ItemGroup>
 </Project>
