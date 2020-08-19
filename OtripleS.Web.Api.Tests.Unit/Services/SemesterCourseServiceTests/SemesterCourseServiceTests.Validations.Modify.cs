@@ -51,12 +51,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             SemesterCourse invalidSemesterCourse = randomSemesterCourse;
             invalidSemesterCourse.Id = invalidSemesterCourseId;
 
-            var invalidSemesterCourseException = new InvalidSemesterCourseInputException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.Id),
                 parameterValue: invalidSemesterCourse.Id);
 
             var expectedSemesterCourseValidationException =
-                new SemesterCourseValidationException(invalidSemesterCourseException);
+                new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
             //when
             ValueTask<SemesterCourse> modifySemesterCourseTask =
@@ -84,12 +84,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             SemesterCourse inputSemesterCourse = randomSemesterCourse;
             inputSemesterCourse.StartDate = default;
 
-            var InvalidSemesterCourseException = new InvalidSemesterCourseInputException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.StartDate),
                 parameterValue: inputSemesterCourse.StartDate);
 
             var expectedSemesterCourseValidationException =
-                new SemesterCourseValidationException(InvalidSemesterCourseException);
+                new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
             // when
             ValueTask<SemesterCourse> modifySemesterCourseTask =
@@ -121,12 +121,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             SemesterCourse inputSemesterCourse = randomSemesterCourse;
             inputSemesterCourse.EndDate = default;
 
-            var InvalidSemesterCourseException = new InvalidSemesterCourseInputException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.EndDate),
                 parameterValue: inputSemesterCourse.EndDate);
 
             var expectedSemesterCourseValidationException =
-                new SemesterCourseValidationException(InvalidSemesterCourseException);
+                new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
             // when
             ValueTask<SemesterCourse> modifySemesterCourseTask =
@@ -158,12 +158,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             SemesterCourse inputSemesterCourse = randomSemesterCourse;
             inputSemesterCourse.CourseId = default;
 
-            var InvalidSemesterCourseException = new InvalidSemesterCourseInputException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.CourseId),
                 parameterValue: inputSemesterCourse.CourseId);
 
             var expectedSemesterCourseValidationException =
-                new SemesterCourseValidationException(InvalidSemesterCourseException);
+                new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
             // when
             ValueTask<SemesterCourse> modifySemesterCourseTask =
@@ -195,12 +195,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             SemesterCourse inputSemesterCourse = randomSemesterCourse;
             inputSemesterCourse.TeacherId = default;
 
-            var InvalidSemesterCourseException = new InvalidSemesterCourseInputException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.TeacherId),
                 parameterValue: inputSemesterCourse.TeacherId);
 
             var expectedSemesterCourseValidationException =
-                new SemesterCourseValidationException(InvalidSemesterCourseException);
+                new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
             // when
             ValueTask<SemesterCourse> modifySemesterCourseTask =
@@ -232,12 +232,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             SemesterCourse inputSemesterCourse = randomSemesterCourse;
             inputSemesterCourse.ClassroomId = default;
 
-            var InvalidSemesterCourseException = new InvalidSemesterCourseInputException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.ClassroomId),
                 parameterValue: inputSemesterCourse.ClassroomId);
 
             var expectedSemesterCourseValidationException =
-                new SemesterCourseValidationException(InvalidSemesterCourseException);
+                new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
             // when
             ValueTask<SemesterCourse> modifySemesterCourseTask =
@@ -269,12 +269,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             SemesterCourse inputSemesterCourse = randomSemesterCourse;
             inputSemesterCourse.CreatedBy = default;
 
-            var InvalidSemesterCourseException = new InvalidSemesterCourseInputException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.CreatedBy),
                 parameterValue: inputSemesterCourse.CreatedBy);
 
             var expectedSemesterCourseValidationException =
-                new SemesterCourseValidationException(InvalidSemesterCourseException);
+                new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
             // when
             ValueTask<SemesterCourse> modifySemesterCourseTask =
@@ -306,12 +306,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             SemesterCourse inputSemesterCourse = randomSemesterCourse;
             inputSemesterCourse.UpdatedBy = default;
 
-            var InvalidSemesterCourseException = new InvalidSemesterCourseInputException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.UpdatedBy),
                 parameterValue: inputSemesterCourse.UpdatedBy);
 
             var expectedSemesterCourseValidationException =
-                new SemesterCourseValidationException(InvalidSemesterCourseException);
+                new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
             // when
             ValueTask<SemesterCourse> modifySemesterCourseTask =
@@ -343,12 +343,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             SemesterCourse inputSemesterCourse = randomSemesterCourse;
             inputSemesterCourse.CreatedDate = default;
 
-            var InvalidSemesterCourseException = new InvalidSemesterCourseInputException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.CreatedDate),
                 parameterValue: inputSemesterCourse.CreatedDate);
 
             var expectedSemesterCourseValidationException =
-                new SemesterCourseValidationException(InvalidSemesterCourseException);
+                new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
             // when
             ValueTask<SemesterCourse> modifySemesterCourseTask =
@@ -380,12 +380,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             SemesterCourse inputSemesterCourse = randomSemesterCourse;
             inputSemesterCourse.UpdatedDate = default;
 
-            var InvalidSemesterCourseException = new InvalidSemesterCourseInputException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.UpdatedDate),
                 parameterValue: inputSemesterCourse.UpdatedDate);
 
             var expectedSemesterCourseValidationException =
-                new SemesterCourseValidationException(InvalidSemesterCourseException);
+                new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
             // when
             ValueTask<SemesterCourse> modifySemesterCourseTask =
@@ -421,12 +421,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             inputSemesterCourse.CreatedDate = inputSemesterCourse.CreatedDate;
             inputSemesterCourse.UpdatedDate = dateTime.AddMinutes(minutes);
 
-            var InvalidSemesterCourseException = new InvalidSemesterCourseInputException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.UpdatedDate),
                 parameterValue: inputSemesterCourse.UpdatedDate);
 
             var expectedSemesterCourseValidationException =
-                new SemesterCourseValidationException(InvalidSemesterCourseException);
+                new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -471,12 +471,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             Guid semesterCourseId = invalidSemesterCourse.Id;
             invalidSemesterCourse.CreatedDate = storageSemesterCourse.CreatedDate.AddMinutes(randomNumber);
 
-            var invalidSemesterCourseException = new InvalidSemesterCourseInputException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.CreatedDate),
                 parameterValue: invalidSemesterCourse.CreatedDate);
 
             var expectedSemesterCourseValidationException =
-              new SemesterCourseValidationException(invalidSemesterCourseException);
+              new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectSemesterCourseByIdAsync(semesterCourseId))
@@ -525,12 +525,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             SemesterCourse storageSemesterCourse = randomSemesterCourse.DeepClone();
             Guid semesterCourseId = invalidSemesterCourse.Id;
 
-            var InvalidSemesterCourseException = new InvalidSemesterCourseInputException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.UpdatedDate),
                 parameterValue: invalidSemesterCourse.UpdatedDate);
 
             var expectedSemesterCourseValidationException =
-              new SemesterCourseValidationException(InvalidSemesterCourseException);
+              new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectSemesterCourseByIdAsync(semesterCourseId))
@@ -580,12 +580,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             Guid semesterCourseId = invalidSemesterCourse.Id;
             invalidSemesterCourse.CreatedBy = invalidCreatedBy;
 
-            var InvalidSemesterCourseException = new InvalidSemesterCourseInputException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.CreatedBy),
                 parameterValue: invalidSemesterCourse.CreatedBy);
 
             var expectedSemesterCourseValidationException =
-              new SemesterCourseValidationException(InvalidSemesterCourseException);
+              new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectSemesterCourseByIdAsync(semesterCourseId))

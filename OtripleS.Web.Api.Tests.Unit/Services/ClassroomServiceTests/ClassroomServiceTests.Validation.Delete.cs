@@ -21,11 +21,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Guid randomClassroomId = default;
             Guid inputClassroomId = randomClassroomId;
 
-            var InvalidClassroomException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomInputException(
                 parameterName: nameof(Classroom.Id),
                 parameterValue: inputClassroomId);
 
-            var expectedClassroomValidationException = new ClassroomValidationException(InvalidClassroomException);
+            var expectedClassroomValidationException = new ClassroomValidationException(invalidClassroomInputException);
 
             // when
             ValueTask<Classroom> actualClassroomTask =

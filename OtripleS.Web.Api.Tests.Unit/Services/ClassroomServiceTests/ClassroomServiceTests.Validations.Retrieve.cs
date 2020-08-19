@@ -21,11 +21,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Guid randomClassroomId = default;
             Guid inputClassroomId = randomClassroomId;
 
-            var InvalidClassroomException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomInputException(
                 parameterName: nameof(Classroom.Id),
                 parameterValue: inputClassroomId);
 
-            var expectedClassroomValidationException = new ClassroomValidationException(InvalidClassroomException);
+            var expectedClassroomValidationException = 
+                new ClassroomValidationException(invalidClassroomInputException);
 
             //when
             ValueTask<Classroom> retrieveClassroomByIdTask =
@@ -36,8 +37,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
-                Times.Once
-            );
+                Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker => broker.GetCurrentDateTime(),
                 Times.Never);
@@ -61,7 +61,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
 
             var notFoundClassroomException = new NotFoundClassroomException(inputClassroomId);
 
-            var expectedClassroomValidationException = new ClassroomValidationException(notFoundClassroomException);
+            var expectedClassroomValidationException = 
+                new ClassroomValidationException(notFoundClassroomException);
 
             this.storageBrokerMock.Setup(broker =>
                     broker.SelectClassroomByIdAsync(inputClassroomId))

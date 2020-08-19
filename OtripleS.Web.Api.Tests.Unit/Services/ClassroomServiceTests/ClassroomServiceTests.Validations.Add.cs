@@ -96,12 +96,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Classroom invalidClassroom = randomClassroom;
             invalidClassroom.Name = invalidClassroomName;
 
-            var invalidClassroomException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomInputException(
                parameterName: nameof(Classroom.Name),
                parameterValue: invalidClassroom.Name);
 
             var expectedClassroomValidationException =
-                new ClassroomValidationException(invalidClassroomException);
+                new ClassroomValidationException(invalidClassroomInputException);
 
             // when
             ValueTask<Classroom> createClassroomTask =
@@ -130,12 +130,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Classroom inputClassroom = randomClassroom;
             inputClassroom.CreatedBy = default;
 
-            var InvalidClassroomException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomInputException(
                 parameterName: nameof(Classroom.CreatedBy),
                 parameterValue: inputClassroom.CreatedBy);
 
             var expectedClassroomValidationException =
-                new ClassroomValidationException(InvalidClassroomException);
+                new ClassroomValidationException(invalidClassroomInputException);
 
             // when
             ValueTask<Classroom> createClassroomTask =
@@ -167,12 +167,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Classroom inputClassroom = randomClassroom;
             inputClassroom.CreatedDate = default;
 
-            var InvalidClassroomException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomInputException(
                 parameterName: nameof(Classroom.CreatedDate),
                 parameterValue: inputClassroom.CreatedDate);
 
             var expectedClassroomValidationException =
-                new ClassroomValidationException(InvalidClassroomException);
+                new ClassroomValidationException(invalidClassroomInputException);
 
             // when
             ValueTask<Classroom> createClassroomTask =
@@ -204,12 +204,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Classroom inputClassroom = randomClassroom;
             inputClassroom.UpdatedBy = default;
 
-            var InvalidClassroomException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomInputException(
                 parameterName: nameof(Classroom.UpdatedBy),
                 parameterValue: inputClassroom.UpdatedBy);
 
             var expectedClassroomValidationException =
-                new ClassroomValidationException(InvalidClassroomException);
+                new ClassroomValidationException(invalidClassroomInputException);
 
             // when
             ValueTask<Classroom> createClassroomTask =
@@ -241,12 +241,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Classroom inputClassroom = randomClassroom;
             inputClassroom.UpdatedDate = default;
 
-            var InvalidClassroomException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomInputException(
                 parameterName: nameof(Classroom.UpdatedDate),
                 parameterValue: inputClassroom.UpdatedDate);
 
             var expectedClassroomValidationException =
-                new ClassroomValidationException(InvalidClassroomException);
+                new ClassroomValidationException(invalidClassroomInputException);
 
             // when
             ValueTask<Classroom> createClassroomTask =
@@ -278,12 +278,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Classroom inputClassroom = randomClassroom;
             inputClassroom.UpdatedBy = Guid.NewGuid();
 
-            var InvalidClassroomException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomInputException(
                 parameterName: nameof(Classroom.UpdatedBy),
                 parameterValue: inputClassroom.UpdatedBy);
 
             var expectedClassroomValidationException =
-                new ClassroomValidationException(InvalidClassroomException);
+                new ClassroomValidationException(invalidClassroomInputException);
 
             // when
             ValueTask<Classroom> createClassroomTask =
@@ -316,12 +316,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             inputClassroom.UpdatedBy = randomClassroom.CreatedBy;
             inputClassroom.UpdatedDate = GetRandomDateTime();
 
-            var InvalidClassroomException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomInputException(
                 parameterName: nameof(Classroom.UpdatedDate),
                 parameterValue: inputClassroom.UpdatedDate);
 
             var expectedClassroomValidationException =
-                new ClassroomValidationException(InvalidClassroomException);
+                new ClassroomValidationException(invalidClassroomInputException);
 
             // when
             ValueTask<Classroom> createClassroomTask =
@@ -357,12 +357,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             inputClassroom.CreatedDate = dateTime.AddMinutes(minutes);
             inputClassroom.UpdatedDate = inputClassroom.CreatedDate;
 
-            var InvalidClassroomException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomInputException(
                 parameterName: nameof(Classroom.CreatedDate),
                 parameterValue: inputClassroom.CreatedDate);
 
             var expectedClassroomValidationException =
-                new ClassroomValidationException(InvalidClassroomException);
+                new ClassroomValidationException(invalidClassroomInputException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())

@@ -21,12 +21,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             Guid randomSemesterCourseId = default;
             Guid inputSemesterCourseId = randomSemesterCourseId;
 
-            var InvalidSemesterCourseException = new InvalidSemesterCourseInputException(
+            var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.Id),
                 parameterValue: inputSemesterCourseId);
 
             var expectedSemesterCourseValidationException =
-                new SemesterCourseValidationException(InvalidSemesterCourseException);
+                new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
             // when
             ValueTask<SemesterCourse> retrieveSemesterCourseByIdTask =
