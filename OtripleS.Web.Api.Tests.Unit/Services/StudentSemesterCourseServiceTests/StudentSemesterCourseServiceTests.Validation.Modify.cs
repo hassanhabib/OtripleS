@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             StudentSemesterCourse invalidStudentSemesterCourse = randomStudentSemesterCourse;
             invalidStudentSemesterCourse.StudentId = invalidStudentId;
 
-            var invalidStudentSemesterCourseException = new InvalidStudentSemesterCourseException(
+            var invalidStudentSemesterCourseException = new InvalidStudentSemesterCourseInputException(
                 parameterName: nameof(StudentSemesterCourse.StudentId),
                 parameterValue: invalidStudentSemesterCourse.StudentId);
 
@@ -86,7 +86,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             StudentSemesterCourse invalidStudentSemesterCourse = randomStudentSemesterCourse;
             invalidStudentSemesterCourse.SemesterCourseId = invalidSemesterCourseId;
 
-            var invalidStudentSemesterCourseException = new InvalidStudentSemesterCourseException(
+            var invalidStudentSemesterCourseException = new InvalidStudentSemesterCourseInputException(
                 parameterName: nameof(StudentSemesterCourse.SemesterCourseId),
                 parameterValue: invalidStudentSemesterCourse.SemesterCourseId);
 
@@ -122,7 +122,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             StudentSemesterCourse invalidStudentSemesterCourse = randomStudentSemesterCourse;
             invalidStudentSemesterCourse.Grade = invalidStudentSemesterCourseGrade;
 
-            var invalidStudentSemesterCourseException = new InvalidStudentSemesterCourseException(
+            var invalidStudentSemesterCourseException = new InvalidStudentSemesterCourseInputException(
                parameterName: nameof(StudentSemesterCourse.Grade),
                parameterValue: invalidStudentSemesterCourse.Grade);
 
@@ -156,7 +156,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             StudentSemesterCourse invalidStudentSemesterCourse = randomStudentSemesterCourse;
             invalidStudentSemesterCourse.Repeats = invalidRepeats;
 
-            var invalidStudentSemesterCourseException = new InvalidStudentSemesterCourseException(
+            var invalidStudentSemesterCourseException = new InvalidStudentSemesterCourseInputException(
                 parameterName: nameof(StudentSemesterCourse.Repeats),
                 parameterValue: invalidStudentSemesterCourse.Repeats);
 
@@ -189,7 +189,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
             inputStudentSemesterCourse.CreatedBy = default;
 
-            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
+            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseInputException(
                 parameterName: nameof(StudentSemesterCourse.CreatedBy),
                 parameterValue: inputStudentSemesterCourse.CreatedBy);
 
@@ -226,7 +226,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
             inputStudentSemesterCourse.UpdatedBy = default;
 
-            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
+            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseInputException(
                 parameterName: nameof(StudentSemesterCourse.UpdatedBy),
                 parameterValue: inputStudentSemesterCourse.UpdatedBy);
 
@@ -263,7 +263,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
             inputStudentSemesterCourse.CreatedDate = default;
 
-            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
+            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseInputException(
                 parameterName: nameof(StudentSemesterCourse.CreatedDate),
                 parameterValue: inputStudentSemesterCourse.CreatedDate);
 
@@ -300,7 +300,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
             inputStudentSemesterCourse.UpdatedDate = default;
 
-            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
+            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseInputException(
                 parameterName: nameof(StudentSemesterCourse.UpdatedDate),
                 parameterValue: inputStudentSemesterCourse.UpdatedDate);
 
@@ -336,7 +336,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(dateTime);
             StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
 
-            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
+            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseInputException(
                 parameterName: nameof(StudentSemesterCourse.UpdatedDate),
                 parameterValue: inputStudentSemesterCourse.UpdatedDate);
 
@@ -376,7 +376,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             inputStudentSemesterCourse.UpdatedBy = inputStudentSemesterCourse.CreatedBy;
             inputStudentSemesterCourse.UpdatedDate = dateTime.AddMinutes(minutes);
 
-            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
+            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseInputException(
                 parameterName: nameof(StudentSemesterCourse.UpdatedDate),
                 parameterValue: inputStudentSemesterCourse.UpdatedDate);
 
@@ -478,7 +478,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             Guid semesterCourseId = invalidStudentSemesterCourse.SemesterCourseId;
             invalidStudentSemesterCourse.CreatedDate = storageStudentSemesterCourse.CreatedDate.AddMinutes(randomNumber);
 
-            var invalidStudentSemesterCourseException = new InvalidStudentSemesterCourseException(
+            var invalidStudentSemesterCourseException = new InvalidStudentSemesterCourseInputException(
                 parameterName: nameof(StudentSemesterCourse.CreatedDate),
                 parameterValue: invalidStudentSemesterCourse.CreatedDate);
 

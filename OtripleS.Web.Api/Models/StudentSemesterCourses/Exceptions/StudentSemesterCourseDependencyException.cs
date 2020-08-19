@@ -9,9 +9,8 @@ namespace OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions
 {
     public class StudentSemesterCourseDependencyException : Exception
     {
-        public StudentSemesterCourseDependencyException(Exception innerException) : base(
-            "Service dependency error occurred, contact support.", innerException)
-        {
-        }
+        public StudentSemesterCourseDependencyException(Exception innerException) : 
+            base("Service dependency error occurred, contact support.", innerException)
+        { }
     }
 }
