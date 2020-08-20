@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq.Expressions;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -33,19 +34,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
-        //private User CreateRandomUser() =>
-        //    CreateUserFiller(dates: DateTimeOffset.UtcNow).Create();
-
-        //private static Filler<User> CreateUserFiller(DateTimeOffset dates)
-        //{
-        //    var filler = new Filler<User>();
-
-        //    filler.Setup()
-        //        .OnType<DateTimeOffset>().Use(dates);
-
-        //    return filler;
-        //}
-
         private User CreateRandomUser()
         {
             var user = new User
@@ -63,5 +51,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
         }
 
         private static string GetRandomPassword() => new MnemonicString(1, 8, 20).GetValue();
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
     }
 }
