@@ -16,6 +16,18 @@ namespace OtripleS.Web.Api.Services.Users
             ValidateUserIsNull(user);
             ValidateUserIdIsNull(user.Id);
             ValidateUserFields(user);
+            ValidateInvalidAuditFields(user);
+        }
+
+        private void ValidateInvalidAuditFields(User user)
+        {
+            switch (user)
+            {
+                case { } when IsInvalid(user.CreatedDate):
+                    throw new InvalidUserException(
+                    parameterName: nameof(User.CreatedDate),
+                    parameterValue: user.CreatedDate);
+            }
         }
 
         private void ValidateUserFields(User user)
@@ -59,5 +71,6 @@ namespace OtripleS.Web.Api.Services.Users
         }
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
+        private static bool IsInvalid(DateTimeOffset input) => input == default;
     }
 }
