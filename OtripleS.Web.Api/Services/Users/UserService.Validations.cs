@@ -15,6 +15,17 @@ namespace OtripleS.Web.Api.Services.Users
         {
             ValidateUserIsNull(user);
             ValidateUserIdIsNull(user.Id);
+            ValidateUserFields(user);
+        }
+
+        private void ValidateUserFields(User user)
+        {
+            if (IsInvalid(user.UserName))
+            {
+                throw new InvalidUserException(
+                    parameterName: nameof(User.UserName),
+                    parameterValue: user.UserName);
+            }
         }
 
         private void ValidateUserIdIsNull(Guid userId)
@@ -34,5 +45,7 @@ namespace OtripleS.Web.Api.Services.Users
                 throw new NullUserException();
             }
         }
+
+        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
     }
 }
