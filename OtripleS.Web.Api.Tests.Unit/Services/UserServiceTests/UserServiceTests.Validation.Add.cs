@@ -120,5 +120,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task ShouldThrowValidationExceptionOnCreateWhenUsersNameIsInvalidAndLogItAsync(
+            string invalidUsersName)
+        {
+            // given
+            User randomUser = CreateRandomUser();
+            User invalidUser = randomUser;
+            invalidUser.Name = invalidUsersName;
+            string password = GetRandomPassword();
+
+            var invalidUserException = new InvalidUserException(
+               parameterName: nameof(User.Name),
+               parameterValue: invalidUser.Name);
+
+            var expectedUserValidationException =
+                new UserValidationException(invalidUserException);
+
+            // when
+            ValueTask<User> registerUserTask =
+                this.userService.RegisterUserAsync(invalidUser, password);
+
+            // then
+            await Assert.ThrowsAsync<UserValidationException>(() =>
+                registerUserTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
