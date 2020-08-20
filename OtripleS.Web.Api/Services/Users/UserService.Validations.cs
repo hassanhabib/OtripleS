@@ -32,6 +32,12 @@ namespace OtripleS.Web.Api.Services.Users
                     parameterName: nameof(User.Name),
                     parameterValue: user.Name);
             }
+            if (IsInvalid(user.FamilyName))
+            {
+                throw new InvalidUserException(
+                    parameterName: nameof(User.FamilyName),
+                    parameterValue: user.FamilyName);
+            }
         }
 
         private void ValidateUserIdIsNull(Guid userId)
