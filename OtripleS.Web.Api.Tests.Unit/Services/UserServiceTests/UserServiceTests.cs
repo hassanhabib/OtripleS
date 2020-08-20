@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
         {
             var user = new User
             {
-                Id = new Guid(),
+                Id = Guid.NewGuid(),
                 UserName = new Filler<EmailAddresses>().Create().ToString(),
                 Name = new Filler<RealNames>().Create().ToString(),
                 FamilyName = new Filler<RealNames>().Create().ToString(),
