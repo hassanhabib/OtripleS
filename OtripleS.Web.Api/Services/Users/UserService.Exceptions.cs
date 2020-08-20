@@ -29,6 +29,13 @@ namespace OtripleS.Web.Api.Services.Users
             {
                 throw CreateAndLogValidationException(invalidUserException);
             }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsUserException =
+                    new AlreadyExistsUserException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsUserException);
+            }
         }
 
         private Exception CreateAndLogValidationException(Exception exception)
