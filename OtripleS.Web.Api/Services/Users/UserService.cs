@@ -35,6 +35,8 @@ namespace OtripleS.Web.Api.Services.Users
             User maybeUser =
                await this.storageBroker.SelectUserByIdAsync(userId);
 
+            ValidateStorageUser(maybeUser, userId);
+
             return await this.storageBroker.DeleteUserAsync(maybeUser);
         });
 

@@ -56,12 +56,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
         public async Task ShouldThrowValidatonExceptionOnDeleteWhenStorageUserIsInvalidAndLogItAsync()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            User randomUser = CreateRandomUser(dateTime);
-            Guid inputUserId = randomUser.Id;
-            User inputUser = randomUser;
-            User nullStorageUser = null;
-
+            Guid randomUserId = Guid.NewGuid();
+            Guid inputUserId = randomUserId;
+            User invalidStorageUser = null;
             var notFoundUserException = new NotFoundUserException(inputUserId);
 
             var expectedUserValidationException =
@@ -69,30 +66,31 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(inputUserId))
-                    .ReturnsAsync(nullStorageUser);
+                    .ReturnsAsync(invalidStorageUser);
 
             // when
-            ValueTask<User> actualUserTask =
+            ValueTask<User> deleteUserTask =
                 this.userService.DeleteUserAsync(inputUserId);
 
             // then
-            await Assert.ThrowsAsync<UserValidationException>(() => actualUserTask.AsTask());
+            await Assert.ThrowsAsync<UserValidationException>(() =>
+                deleteUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),
                     Times.Once);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(inputUserId),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.DeleteUserAsync(It.IsAny<User>()),
-                    Times.Never);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

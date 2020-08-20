@@ -21,6 +21,14 @@ namespace OtripleS.Web.Api.Services.Users
             ValidateCreatedDateIsRecent(user);
         }
 
+        private static void ValidateStorageUser(User storageUser, Guid userId)
+        {
+            if (storageUser == null)
+            {
+                throw new NotFoundUserException(userId);
+            }
+        }
+
         private void ValidateCreatedDateIsRecent(User user)
         {
             if (IsDateNotRecent(user.CreatedDate))
