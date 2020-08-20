@@ -12,5 +12,6 @@ namespace OtripleS.Web.Api.Services.Users
     public interface IUserService
     {
         ValueTask<User> RegisterUserAsync(User user, string password);
+        ValueTask<User> DeleteUserAsync(Guid userId);
     }
 }

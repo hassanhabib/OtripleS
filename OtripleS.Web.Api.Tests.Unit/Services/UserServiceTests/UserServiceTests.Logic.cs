@@ -53,5 +53,44 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldDeleteUserAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            User randomUser = CreateRandomUser(dates: dateTime);
+            Guid inputUserId = randomUser.Id;
+            User inputUser = randomUser;
+            User storageUser = randomUser;
+            User expectedUser = randomUser;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectUserByIdAsync(inputUserId))
+                    .ReturnsAsync(inputUser);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteUserAsync(inputUser))
+                    .ReturnsAsync(storageUser);
+
+            // when
+            User actualUser =
+                await this.userService.DeleteUserAsync(inputUserId);
+
+            // then
+            actualUser.Should().BeEquivalentTo(expectedUser);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectUserByIdAsync(inputUserId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteUserAsync(inputUser),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
