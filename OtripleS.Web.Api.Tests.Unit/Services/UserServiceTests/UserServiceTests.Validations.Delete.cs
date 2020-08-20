@@ -51,5 +51,48 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidatonExceptionOnDeleteWhenStorageUserIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            User randomUser = CreateRandomUser(dateTime);
+            Guid inputUserId = randomUser.Id;
+            User inputUser = randomUser;
+            User nullStorageUser = null;
+
+            var notFoundUserException = new NotFoundUserException(inputUserId);
+
+            var expectedUserValidationException =
+                new UserValidationException(notFoundUserException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectUserByIdAsync(inputUserId))
+                    .ReturnsAsync(nullStorageUser);
+
+            // when
+            ValueTask<User> actualUserTask =
+                this.userService.DeleteUserAsync(inputUserId);
+
+            // then
+            await Assert.ThrowsAsync<UserValidationException>(() => actualUserTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectUserByIdAsync(inputUserId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteUserAsync(It.IsAny<User>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
