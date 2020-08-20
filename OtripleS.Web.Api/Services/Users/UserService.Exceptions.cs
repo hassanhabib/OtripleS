@@ -42,6 +42,10 @@ namespace OtripleS.Web.Api.Services.Users
 
                 throw CreateAndLogValidationException(alreadyExistsUserException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
