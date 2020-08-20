@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Models.Users.Exceptions;
 
@@ -41,6 +42,18 @@ namespace OtripleS.Web.Api.Services.Users
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+        }
+
+        private UserDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var userDependencyException = new UserDependencyException(exception);
+            this.loggingBroker.LogError(userDependencyException);
+
+            return userDependencyException;
         }
 
         private UserDependencyException CreateAndLogCriticalDependencyException(Exception exception)
