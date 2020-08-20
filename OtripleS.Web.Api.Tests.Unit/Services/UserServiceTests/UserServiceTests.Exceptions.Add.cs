@@ -106,5 +106,51 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnCreateWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            User randomUser = CreateRandomUser(dates: dateTime);
+            User inputUser = randomUser;
+            var exception = new Exception();
+            string password = GetRandomPassword();
+
+            var expectedAssignmentServiceException =
+                new UserServiceException(exception);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertUserAsync(inputUser, password))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<User> registerUserTask =
+                 this.userService.RegisterUserAsync(inputUser, password);
+
+            // then
+            await Assert.ThrowsAsync<UserServiceException>(() =>
+                registerUserTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertUserAsync(inputUser, password),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
