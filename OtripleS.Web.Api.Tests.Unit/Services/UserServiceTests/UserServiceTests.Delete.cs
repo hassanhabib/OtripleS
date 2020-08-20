@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Models.Users.Exceptions;
@@ -40,6 +41,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedUserDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectUserByIdAsync(inputUserId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomUserId = Guid.NewGuid();
+            Guid inputUserId = randomUserId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedUserDependencyException =
+                new UserDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectUserByIdAsync(inputUserId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<User> deleteUserTask =
+                this.userService.DeleteUserAsync(inputUserId);
+
+            // then
+            await Assert.ThrowsAsync<UserDependencyException>(() =>
+                deleteUserTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedUserDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
