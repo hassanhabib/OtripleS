@@ -27,6 +27,10 @@ namespace OtripleS.Web.Api.Services.Users
                     throw new InvalidUserException(
                     parameterName: nameof(User.CreatedDate),
                     parameterValue: user.CreatedDate);
+                case { } when IsInvalid(user.UpdatedDate):
+                    throw new InvalidUserException(
+                    parameterName: nameof(User.UpdatedDate),
+                    parameterValue: user.UpdatedDate);
             }
         }
 
