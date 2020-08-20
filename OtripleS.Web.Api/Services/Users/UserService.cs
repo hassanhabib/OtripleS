@@ -27,9 +27,12 @@ namespace OtripleS.Web.Api.Services.Users
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<User> DeleteUserAsync(Guid userId)
+        public async ValueTask<User> DeleteUserAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            User maybeUser =
+               await this.storageBroker.SelectUserByIdAsync(userId);
+
+            return await this.storageBroker.DeleteUserAsync(maybeUser);
         }
 
         public ValueTask<User> RegisterUserAsync(User user, string password) =>
