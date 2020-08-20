@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
@@ -61,5 +62,36 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
+
+        private static int GetRandomNumber() => new IntRange(min: 1, max: 90).GetValue();
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+
+        private User CreateRandomUser(DateTimeOffset dates)
+        {
+            var user = new User
+            {
+                Id = Guid.NewGuid(),
+                UserName = new Filler<EmailAddresses>().Create().ToString(),
+                Name = new Filler<RealNames>().Create().ToString(),
+                FamilyName = new Filler<RealNames>().Create().ToString(),
+                CreatedDate = dates,
+                UpdatedDate = dates
+
+            };
+
+            return user;
+        }
     }
 }
