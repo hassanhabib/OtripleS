@@ -17,6 +17,18 @@ namespace OtripleS.Web.Api.Services.Users
             ValidateUserIdIsNull(user.Id);
             ValidateUserFields(user);
             ValidateInvalidAuditFields(user);
+            ValidateAuditFieldsDataOnCreate(user);
+        }
+
+        private void ValidateAuditFieldsDataOnCreate(User user)
+        {
+            switch (user)
+            {
+                case { } when user.UpdatedDate != user.CreatedDate:
+                    throw new InvalidUserException(
+                    parameterName: nameof(User.UpdatedDate),
+                    parameterValue: user.UpdatedDate);
+            }
         }
 
         private void ValidateInvalidAuditFields(User user)
