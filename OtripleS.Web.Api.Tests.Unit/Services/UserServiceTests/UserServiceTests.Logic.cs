@@ -18,11 +18,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
         public async Task ShouldRegisterUserAsync()
         {
             // given
-            User randomUser = CreateRandomUser();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            DateTimeOffset dateTime = randomDateTime;
+            User randomUser = CreateRandomUser(dates: dateTime);
             User inputUser = randomUser;
             User storageUser = randomUser;
             User expectedUser = storageUser;
             string password = GetRandomPassword();
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertUserAsync(inputUser, password))
@@ -34,6 +40,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
 
             // then
             actualUser.Should().BeEquivalentTo(expectedUser);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertUserAsync(inputUser, password),

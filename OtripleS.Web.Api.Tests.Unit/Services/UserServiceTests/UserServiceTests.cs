@@ -93,5 +93,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
 
             return user;
         }
+
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
     }
 }
