@@ -18,6 +18,17 @@ namespace OtripleS.Web.Api.Services.Users
             ValidateUserFields(user);
             ValidateInvalidAuditFields(user);
             ValidateAuditFieldsDataOnCreate(user);
+            ValidateCreatedDateIsRecent(user);
+        }
+
+        private void ValidateCreatedDateIsRecent(User user)
+        {
+            if (IsDateNotRecent(user.CreatedDate))
+            {
+                throw new InvalidUserException(
+                    parameterName: nameof(User.CreatedDate),
+                    parameterValue: user.CreatedDate);
+            }
         }
 
         private void ValidateAuditFieldsDataOnCreate(User user)
@@ -88,5 +99,14 @@ namespace OtripleS.Web.Api.Services.Users
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(DateTimeOffset input) => input == default;
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
     }
 }
