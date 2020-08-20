@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Models.Users.Exceptions;
 
@@ -36,6 +37,18 @@ namespace OtripleS.Web.Api.Services.Users
 
                 throw CreateAndLogValidationException(alreadyExistsUserException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+        }
+
+        private UserDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var userDependencyException = new UserDependencyException(exception);
+            this.loggingBroker.LogCritical(userDependencyException);
+
+            return userDependencyException;
         }
 
         private Exception CreateAndLogValidationException(Exception exception)

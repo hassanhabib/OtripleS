@@ -18,7 +18,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
         public async Task ShouldThrowDependencyExceptionOnCreateWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            User randomUser = CreateRandomUser();
+            DateTimeOffset dateTime = GetRandomDateTime();
+            User randomUser = CreateRandomUser(dates: dateTime);
             User inputUser = randomUser;
             var sqlException = GetSqlException();
             string password = GetRandomPassword();
@@ -26,6 +27,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             var expectedUserDependencyException =
                 new UserDependencyException(sqlException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertUserAsync(inputUser, password))
@@ -38,6 +42,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             // then
             await Assert.ThrowsAsync<UserDependencyException>(() =>
                 registerUserTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedUserDependencyException))),
