@@ -9,7 +9,7 @@ namespace OtripleS.Web.Api.Models.Users.Exceptions
     public class InvalidUserException : Exception
     {
         public InvalidUserException(string parameterName, object parameterValue)
-            : base($"Invalid Assignment, " +
+            : base($"Invalid User, " +
                   $"ParameterName: {parameterName}, " +
                   $"ParameterValue: {parameterValue}.")
         { }
