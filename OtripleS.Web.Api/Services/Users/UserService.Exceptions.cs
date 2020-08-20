@@ -24,6 +24,10 @@ namespace OtripleS.Web.Api.Services.Users
             {
                 throw CreateAndLogValidationException(nullUserException);
             }
+            catch (InvalidUserException invalidUserException)
+            {
+                throw CreateAndLogValidationException(invalidUserException);
+            }
         }
 
         private Exception CreateAndLogValidationException(Exception exception)

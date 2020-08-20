@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
 using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Models.Users.Exceptions;
 
@@ -13,6 +14,17 @@ namespace OtripleS.Web.Api.Services.Users
         private void ValidateUserOnCreate(User user, string password)
         {
             ValidateUserIsNull(user);
+            ValidateUserIdIsNull(user.Id);
+        }
+
+        private void ValidateUserIdIsNull(Guid userId)
+        {
+            if (userId == default)
+            {
+                throw new InvalidUserException(
+                    parameterName: nameof(User.Id),
+                    parameterValue: userId);
+            }
         }
 
         private void ValidateUserIsNull(User user)
