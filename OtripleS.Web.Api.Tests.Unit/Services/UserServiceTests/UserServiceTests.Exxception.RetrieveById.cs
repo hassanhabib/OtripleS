@@ -87,5 +87,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomUserId = Guid.NewGuid();
+            Guid inputUserId = randomUserId;
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+            var lockedUserException = new LockedUserException(databaseUpdateConcurrencyException);
+
+            var expectedUserDependencyException =
+                new UserDependencyException(lockedUserException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectUserByIdAsync(inputUserId))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
+
+            // when
+            ValueTask<User> retrieveUserTask =
+                this.userService.RetrieveUserByIdAsync(inputUserId);
+
+            // then
+            await Assert.ThrowsAsync<UserDependencyException>(() =>
+                retrieveUserTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedUserDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectUserByIdAsync(inputUserId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
