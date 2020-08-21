@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -90,7 +91,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                 FamilyName = new Filler<RealNames>().Create().ToString(),
                 CreatedDate = dates,
                 UpdatedDate = dates
-
             };
 
             return user;
@@ -99,5 +99,26 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
         private static string GetRandomMessage() => new MnemonicString().GetValue();
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private IQueryable<User> CreateRandomUsers(DateTimeOffset dates)
+        {
+            var users = new List<User>();
+            for (int i = 0; i < GetRandomNumber(); i++)
+            {
+                var user = new User
+                {
+                    Id = Guid.NewGuid(),
+                    UserName = new Filler<EmailAddresses>().Create().ToString(),
+                    Name = new Filler<RealNames>().Create().ToString(),
+                    FamilyName = new Filler<RealNames>().Create().ToString(),
+                    CreatedDate = dates,
+                    UpdatedDate = dates
+                };
+
+                users.Add(user);
+            }
+            
+            return users.AsQueryable();
+        }
     }
 }
