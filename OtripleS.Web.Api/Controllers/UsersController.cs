@@ -109,6 +109,46 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpPut]
+        public async ValueTask<ActionResult<User>> PutUserAsync(User user)
+        {
+            try
+            {
+                User registeredUser =
+                    await this.userService.ModifyUserAsync(user);
+
+                return Ok(registeredUser);
+            }
+            catch (UserValidationException userValidationException)
+                when (userValidationException.InnerException is NotFoundUserException)
+            {
+                string innerMessage = GetInnerMessage(userValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (UserValidationException userValidationException)
+            {
+                string innerMessage = GetInnerMessage(userValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (UserDependencyException userDependencyException)
+                when (userDependencyException.InnerException is LockedUserException)
+            {
+                string innerMessage = GetInnerMessage(userDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (UserDependencyException userDependencyException)
+            {
+                return Problem(userDependencyException.Message);
+            }
+            catch (UserServiceException userServiceException)
+            {
+                return Problem(userServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
