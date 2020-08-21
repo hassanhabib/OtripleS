@@ -100,7 +100,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllCourses(),
+                broker.SelectAllUsers(),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
