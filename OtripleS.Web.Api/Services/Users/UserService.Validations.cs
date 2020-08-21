@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Models.Users.Exceptions;
 
@@ -115,6 +116,14 @@ namespace OtripleS.Web.Api.Services.Users
             TimeSpan difference = now.Subtract(dateTime);
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
+
+        private void ValidateStorageUsers(IQueryable<User> storageUsers)
+        {
+            if (storageUsers.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No users found in storage.");
+            }
         }
     }
 }

@@ -49,10 +49,14 @@ namespace OtripleS.Web.Api.Services.Users
             return await this.storageBroker.InsertUserAsync(user, password);
         });
 
-        public IQueryable<User> RetrieveAllUsers()
+        public IQueryable<User> RetrieveAllUsers() =>
+        TryCatch(() =>
         {
-            return this.storageBroker.SelectAllUsers();
-        }
+            IQueryable<User> storageUsers = this.storageBroker.SelectAllUsers();
+            ValidateStorageUsers(storageUsers);
+
+            return storageUsers;
+        });
 
         public ValueTask<User> RetrieveUserByIdAsync(Guid userId) =>
         TryCatch(async () =>
