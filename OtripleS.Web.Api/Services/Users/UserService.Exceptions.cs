@@ -52,10 +52,6 @@ namespace OtripleS.Web.Api.Services.Users
 
                 throw CreateAndLogDependencyException(lockedUserException);
             }
-            catch (DbUpdateException dbUpdateException)
-            {
-                throw CreateAndLogDependencyException(dbUpdateException);
-            }
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);
