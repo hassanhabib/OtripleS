@@ -25,6 +25,7 @@ namespace OtripleS.Web.Api.Services.Users
         private void ValidateUserOnModify(User user)
         {
             ValidateUserIsNull(user);
+            ValidateUserIdIsNull(user.Id);
         }
 
         private static void ValidateStorageUser(User storageUser, Guid userId)
