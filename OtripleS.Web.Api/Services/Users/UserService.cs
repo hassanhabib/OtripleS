@@ -52,8 +52,10 @@ namespace OtripleS.Web.Api.Services.Users
         TryCatch(async () =>
         {
             ValidateUserIdIsNull(userId);
+            User storageUser = await this.storageBroker.SelectUserByIdAsync(userId);
+            ValidateStorageUser(storageUser, userId);
 
-            return await this.storageBroker.SelectUserByIdAsync(userId);
+            return storageUser;
         });
     }
 }
