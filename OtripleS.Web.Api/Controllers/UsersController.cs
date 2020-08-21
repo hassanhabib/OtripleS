@@ -76,6 +76,39 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpPost]
+        public async ValueTask<ActionResult<User>> PostUserAsync(User user, string password)
+        {
+            try
+            {
+                User persistedUser =
+                    await this.userService.RegisterUserAsync(user, password);
+
+                return Ok(persistedUser);
+            }
+            catch (UserValidationException userValidationException)
+                when (userValidationException.InnerException is AlreadyExistsUserException)
+            {
+                string innerMessage = GetInnerMessage(userValidationException);
+
+                return Conflict(innerMessage);
+            }
+            catch (UserValidationException userValidationException)
+            {
+                string innerMessage = GetInnerMessage(userValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (UserDependencyException userDependencyException)
+            {
+                return Problem(userDependencyException.Message);
+            }
+            catch (UserServiceException userServiceException)
+            {
+                return Problem(userServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
