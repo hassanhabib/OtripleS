@@ -149,6 +149,44 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpDelete("{userId}")]
+        public async ValueTask<ActionResult<User>> DeleteUserAsync(Guid userId)
+        {
+            try
+            {
+                User storageUser =
+                    await this.userService.DeleteUserAsync(userId);
+
+                return Ok(storageUser);
+            }
+            catch (UserValidationException userValidationException)
+                when (userValidationException.InnerException is NotFoundUserException)
+            {
+                string innerMessage = GetInnerMessage(userValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (UserValidationException userValidationException)
+            {
+                return BadRequest(userValidationException.Message);
+            }
+            catch (UserDependencyException userDependencyException)
+                when (userDependencyException.InnerException is LockedUserException)
+            {
+                string innerMessage = GetInnerMessage(userDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (UserDependencyException userDependencyException)
+            {
+                return Problem(userDependencyException.Message);
+            }
+            catch (UserServiceException userServiceException)
+            {
+                return Problem(userServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
