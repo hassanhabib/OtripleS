@@ -48,12 +48,6 @@ namespace OtripleS.Web.Api.Services.Users
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
-            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
-            {
-                var lockedUserException = new LockedUserException(dbUpdateConcurrencyException);
-
-                throw CreateAndLogDependencyException(lockedUserException);
-            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
