@@ -70,6 +70,10 @@ namespace OtripleS.Web.Api.Services.Users
             {
                 return returningQueryableUserFunction();
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);
