@@ -108,7 +108,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                 .ReturnsAsync(inputUser);
 
             //when 
-            User actualUser = await this.userService.RetrieveUserById(inputUserId);
+            User actualUser = await this.userService.RetrieveUserByIdAsync(inputUserId);
 
             //then
             actualUser.Should().BeEquivalentTo(expectedUser);
