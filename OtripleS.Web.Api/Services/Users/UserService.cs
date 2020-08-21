@@ -44,8 +44,9 @@ namespace OtripleS.Web.Api.Services.Users
         public ValueTask<User> ModifyUserAsync(User user) =>
         TryCatch(async () =>
         {
+            ValidateUserOnModify(user);
             User maybeUser = await this.storageBroker.SelectUserByIdAsync(user.Id);
-            
+
             return await this.storageBroker.UpdateUserAsync(user);
         });
 
