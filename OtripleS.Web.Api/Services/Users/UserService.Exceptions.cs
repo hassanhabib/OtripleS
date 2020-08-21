@@ -44,10 +44,6 @@ namespace OtripleS.Web.Api.Services.Users
 
                 throw CreateAndLogValidationException(alreadyExistsUserException);
             }
-            catch (SqlException sqlException)
-            {
-                throw CreateAndLogCriticalDependencyException(sqlException);
-            }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
                 var lockedUserException = new LockedUserException(dbUpdateConcurrencyException);
