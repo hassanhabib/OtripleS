@@ -13,5 +13,6 @@ namespace OtripleS.Web.Api.Services.Users
     {
         ValueTask<User> RegisterUserAsync(User user, string password);
         ValueTask<User> DeleteUserAsync(Guid userId);
+        ValueTask<User> RetrieveUserById(Guid userId);
     }
 }

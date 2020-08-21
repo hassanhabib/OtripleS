@@ -47,5 +47,10 @@ namespace OtripleS.Web.Api.Services.Users
 
             return await this.storageBroker.InsertUserAsync(user, password);
         });
+
+        public ValueTask<User> RetrieveUserById(Guid userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
