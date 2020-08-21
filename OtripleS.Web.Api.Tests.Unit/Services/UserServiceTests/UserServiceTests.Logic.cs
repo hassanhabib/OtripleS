@@ -147,7 +147,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                     Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllClassrooms(),
+                broker.SelectAllUsers(),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

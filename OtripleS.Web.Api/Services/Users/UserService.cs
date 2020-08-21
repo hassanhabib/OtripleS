@@ -51,7 +51,7 @@ namespace OtripleS.Web.Api.Services.Users
 
         public IQueryable<User> RetrieveAllUsers()
         {
-            throw new NotImplementedException();
+            return this.storageBroker.SelectAllUsers();
         }
 
         public ValueTask<User> RetrieveUserByIdAsync(Guid userId) =>
