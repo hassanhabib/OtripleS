@@ -160,6 +160,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
         public async Task ShouldModifyUserAsync()
         {
             // given
+            int randomNumber = GetRandomNumber();
+            int randomDays = randomNumber;
             DateTimeOffset randomDate = GetRandomDateTime();
             DateTimeOffset randomInputDate = GetRandomDateTime();
             User randomUser = CreateRandomUser(dates: randomInputDate);
@@ -169,10 +171,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             User beforeUpdateStorageUser = randomUser.DeepClone();
             inputUser.UpdatedDate = randomDate;
             Guid userId = inputUser.Id;
-
-            this.dateTimeBrokerMock.Setup(broker =>
-               broker.GetCurrentDateTime())
-                   .Returns(randomDate);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(userId))
@@ -188,10 +186,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
 
             // then
             actualUser.Should().BeEquivalentTo(expectedUser);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(userId),

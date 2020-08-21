@@ -41,10 +41,13 @@ namespace OtripleS.Web.Api.Services.Users
             return await this.storageBroker.DeleteUserAsync(maybeUser);
         });
 
-        public ValueTask<User> ModifyUserAsync(User course)
+        public ValueTask<User> ModifyUserAsync(User user) =>
+        TryCatch(async () =>
         {
-            throw new NotImplementedException();
-        }
+            User maybeUser = await this.storageBroker.SelectUserByIdAsync(user.Id);
+            
+            return await this.storageBroker.UpdateUserAsync(user);
+        });
 
         public ValueTask<User> RegisterUserAsync(User user, string password) =>
         TryCatch(async () =>
