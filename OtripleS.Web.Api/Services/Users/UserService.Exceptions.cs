@@ -56,6 +56,10 @@ namespace OtripleS.Web.Api.Services.Users
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private UserServiceException CreateAndLogServiceException(Exception exception)
