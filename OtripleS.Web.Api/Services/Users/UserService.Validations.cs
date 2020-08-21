@@ -27,6 +27,7 @@ namespace OtripleS.Web.Api.Services.Users
             ValidateUserIsNull(user);
             ValidateUserIdIsNull(user.Id);
             ValidateUserFields(user);
+            ValidateInvalidAuditFields(user);
         }
 
         private static void ValidateStorageUser(User storageUser, Guid userId)
