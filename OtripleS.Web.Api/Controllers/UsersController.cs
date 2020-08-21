@@ -5,6 +5,7 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Models.Users.Exceptions;
@@ -41,5 +42,41 @@ namespace OtripleS.Web.Api.Controllers
                 return Problem(userServiceException.Message);
             }
         }
+
+        [HttpGet("{userId}")]
+        public async ValueTask<ActionResult<User>> GetUserByIdAsync(Guid userId)
+        {
+            try
+            {
+                User storageUser =
+                    await this.userService.RetrieveUserByIdAsync(userId);
+
+                return Ok(storageUser);
+            }
+            catch (UserValidationException userValidationException)
+                when (userValidationException.InnerException is NotFoundUserException)
+            {
+                string innerMessage = GetInnerMessage(userValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (UserValidationException userValidationException)
+            {
+                string innerMessage = GetInnerMessage(userValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (UserDependencyException userDependencyException)
+            {
+                return Problem(userDependencyException.Message);
+            }
+            catch (UserServiceException userServiceException)
+            {
+                return Problem(userServiceException.Message);
+            }
+        }
+
+        private static string GetInnerMessage(Exception exception) =>
+            exception.InnerException.Message;
     }
 }
