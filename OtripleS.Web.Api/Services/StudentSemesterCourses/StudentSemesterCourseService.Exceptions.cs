@@ -54,7 +54,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             {
                 throw CreateAndLogValidationException(notFoundStudentSemesterCourseException);
             }
-            catch (InvalidStudentSemesterCourseException invalidStudentSemesterCourseInputException)
+            catch (InvalidStudentSemesterCourseInputException invalidStudentSemesterCourseInputException)
             {
                 throw CreateAndLogValidationException(invalidStudentSemesterCourseInputException);
             }

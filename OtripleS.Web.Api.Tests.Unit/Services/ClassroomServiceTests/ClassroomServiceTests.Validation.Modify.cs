@@ -52,12 +52,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Classroom invalidClassroom = randomClassroom;
             invalidClassroom.Id = invalidClassroomId;
 
-            var invalidClassroomException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomInputException(
                 parameterName: nameof(Classroom.Id),
                 parameterValue: invalidClassroom.Id);
 
             var expectedClassroomValidationException =
-                new ClassroomValidationException(invalidClassroomException);
+                new ClassroomValidationException(invalidClassroomInputException);
 
             //when
             ValueTask<Classroom> modifyClassroomTask =
@@ -88,12 +88,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Classroom invalidClassroom = randomClassroom;
             invalidClassroom.Name = invalidClassroomName;
 
-            var invalidClassroomException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomInputException(
                parameterName: nameof(Classroom.Name),
                parameterValue: invalidClassroom.Name);
 
             var expectedClassroomValidationException =
-                new ClassroomValidationException(invalidClassroomException);
+                new ClassroomValidationException(invalidClassroomInputException);
 
             // when
             ValueTask<Classroom> modifyClassroomTask =
@@ -406,12 +406,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
             Guid classroomId = invalidClassroom.Id;
             invalidClassroom.CreatedDate = storageClassroom.CreatedDate.AddMinutes(randomNumber);
 
-            var invalidClassroomException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomInputException(
                 parameterName: nameof(Classroom.CreatedDate),
                 parameterValue: invalidClassroom.CreatedDate);
 
             var expectedClassroomValidationException =
-              new ClassroomValidationException(invalidClassroomException);
+              new ClassroomValidationException(invalidClassroomInputException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectClassroomByIdAsync(classroomId))

@@ -4,13 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
-
-namespace OtripleS.Web.Api.Models.Classrooms.Exceptions
+namespace OtripleS.Web.Api.Models.Users.Exceptions
 {
-    public class InvalidClassroomException : Exception
+    public class InvalidUserException : Exception
     {
-        public InvalidClassroomException(string parameterName, object parameterValue)
-            : base($"Invalid Classroom, " +
+        public InvalidUserException(string parameterName, object parameterValue)
+            : base($"Invalid User, " +
                   $"ParameterName: {parameterName}, " +
                   $"ParameterValue: {parameterValue}.")
         { }

@@ -35,6 +35,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             TryCatch(async () =>
             {
                 ValidateStudentSemesterCourseOnCreate(studentSemesterCourse);
+
                 return await this.storageBroker.InsertStudentSemesterCourseAsync(studentSemesterCourse);
             });
 
@@ -58,33 +59,41 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
                     this.storageBroker.SelectAllStudentSemesterCourses();
 
                 ValidateStorageStudentSemesterCourses(storageStudentSemesterCourses);
+
                 return storageStudentSemesterCourses;
             });
 
         public ValueTask<StudentSemesterCourse> ModifyStudentSemesterCourseAsync(StudentSemesterCourse studentSemesterCourse) =>
-        TryCatch(async () =>
-        {
-            ValidateStudentSemesterCourseOnModify(studentSemesterCourse);
+            TryCatch(async () =>
+            {
+                ValidateStudentSemesterCourseOnModify(studentSemesterCourse);
 
-            StudentSemesterCourse maybeStudentSemesterCourse =
-                await this.storageBroker.SelectStudentSemesterCourseByIdAsync
-                (
-                    studentSemesterCourse.StudentId,
-                    studentSemesterCourse.SemesterCourseId
-                 );
+                StudentSemesterCourse maybeStudentSemesterCourse =
+                    await this.storageBroker.SelectStudentSemesterCourseByIdAsync(
+                        studentSemesterCourse.StudentId,
+                        studentSemesterCourse.SemesterCourseId);
 
-            ValidateStorageStudentSemesterCourse(maybeStudentSemesterCourse,studentSemesterCourse.SemesterCourseId, studentSemesterCourse.SemesterCourseId);
+                ValidateStorageStudentSemesterCourse(
+                    maybeStudentSemesterCourse, 
+                    studentSemesterCourse.StudentId, 
+                    studentSemesterCourse.SemesterCourseId);
 
-            return await this.storageBroker.UpdateStudentSemesterCourseAsync(studentSemesterCourse);
-        });
+                ValidateAgainstStorageStudentSemesterCourseOnModify(
+                    inputStudentSemesterCourse: studentSemesterCourse,
+                    storageStudentSemesterCourse: maybeStudentSemesterCourse);
+
+                return await this.storageBroker.UpdateStudentSemesterCourseAsync(studentSemesterCourse);
+            });
 
         public ValueTask<StudentSemesterCourse> DeleteStudentSemesterCourseAsync(Guid studentId, Guid semesterCourseId) =>
             TryCatch(async () =>
             {
                 ValidateSemesterCourseId(semesterCourseId);
                 ValidateStudentId(studentId);
-                StudentSemesterCourse studentSemesterCourse =
-                    await this.storageBroker.SelectStudentSemesterCourseByIdAsync(studentId, semesterCourseId);
+
+                StudentSemesterCourse studentSemesterCourse = 
+                await this.storageBroker.SelectStudentSemesterCourseByIdAsync(studentId, semesterCourseId);
+                
                 ValidateStorageStudentSemesterCourse(studentSemesterCourse, semesterCourseId, studentId);
 
                 return await this.storageBroker.DeleteStudentSemesterCourseAsync(studentSemesterCourse);
