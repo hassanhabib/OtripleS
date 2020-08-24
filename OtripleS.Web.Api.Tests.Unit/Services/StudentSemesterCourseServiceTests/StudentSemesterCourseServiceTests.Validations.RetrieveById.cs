@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             Guid inputSemesterCourseId = randomSemesterCourseId;
             Guid inputStudentId = randomStudentId;
 
-            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
+            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseInputException(
                 parameterName: nameof(StudentSemesterCourse.StudentId),
                 parameterValue: inputStudentId);
 
@@ -61,7 +61,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             Guid inputSemesterCourseId = randomSemesterCourseId;
             Guid inputStudentId = randomStudentId;
 
-            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseException(
+            var invalidStudentSemesterCourseInputException = new InvalidStudentSemesterCourseInputException(
                 parameterName: nameof(StudentSemesterCourse.SemesterCourseId),
                 parameterValue: inputSemesterCourseId);
 

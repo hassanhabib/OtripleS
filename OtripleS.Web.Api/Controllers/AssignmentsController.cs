@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Controllers
     [Route("api/[controller]")]
     public class AssignmentsController : RESTFulController
     {
-        private IAssignmentService assignmentService;
+        private readonly IAssignmentService assignmentService;
 
         public AssignmentsController(IAssignmentService assignmentService) =>
             this.assignmentService = assignmentService;

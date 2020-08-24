@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Controllers
     [Route("api/[controller]")]
     public class StudentSemesterCoursesController : RESTFulController
     {
-        private IStudentSemesterCourseService studentSemesterCourseService;
+        private readonly IStudentSemesterCourseService studentSemesterCourseService;
 
         public StudentSemesterCoursesController(IStudentSemesterCourseService studentSemesterCourseService) =>
             this.studentSemesterCourseService = studentSemesterCourseService;
