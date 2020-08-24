@@ -92,5 +92,33 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldRetrieveUserById()
+        {
+            //given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            User randomUser = CreateRandomUser(dates: dateTime);
+            Guid inputUserId = randomUser.Id;
+            User inputUser = randomUser;
+            User expectedUser = randomUser;
+
+            this.storageBrokerMock.Setup(broker =>
+                    broker.SelectUserByIdAsync(inputUserId))
+                .ReturnsAsync(inputUser);
+
+            //when 
+            User actualUser = await this.userService.RetrieveUserByIdAsync(inputUserId);
+
+            //then
+            actualUser.Should().BeEquivalentTo(expectedUser);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectUserByIdAsync(inputUserId), Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
