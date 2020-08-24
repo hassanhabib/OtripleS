@@ -15,13 +15,11 @@ namespace OtripleS.Web.Api.Brokers.Storage
     public partial class StorageBroker : EFxceptionsIdentityContext<User, Role, Guid>, IStorageBroker
     {
         private readonly IConfiguration configuration;
-        private readonly UserManager<User> userManager;
 
-        public StorageBroker(IConfiguration configuration, UserManager<User> userManager)
+        public StorageBroker(IConfiguration configuration)
         {
             this.configuration = configuration;
             this.Database.Migrate();
-            this.userManager = userManager;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
