@@ -8,22 +8,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
-using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Brokers.UserManagement;
 using OtripleS.Web.Api.Models.Users;
 
 namespace OtripleS.Web.Api.Services.Users
 {
     public partial class UserService : IUserService
     {
-        private readonly IStorageBroker storageBroker;
+        private readonly IUserManagementBroker userManagementBroker;
         private readonly ILoggingBroker loggingBroker;
         private readonly IDateTimeBroker dateTimeBroker;
 
-        public UserService(IStorageBroker storageBroker,
+        public UserService(IUserManagementBroker userManagementBroker,
             ILoggingBroker loggingBroker,
             IDateTimeBroker dateTimeBroker)
         {
-            this.storageBroker = storageBroker;
+            this.userManagementBroker = userManagementBroker;
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
         }
@@ -34,20 +34,20 @@ namespace OtripleS.Web.Api.Services.Users
             ValidateUserIdIsNull(userId);
 
             User maybeUser =
-               await this.storageBroker.SelectUserByIdAsync(userId);
+               await this.userManagementBroker.SelectUserByIdAsync(userId);
 
             ValidateStorageUser(maybeUser, userId);
 
-            return await this.storageBroker.DeleteUserAsync(maybeUser);
+            return await this.userManagementBroker.DeleteUserAsync(maybeUser);
         });
 
         public ValueTask<User> ModifyUserAsync(User user) =>
         TryCatch(async () =>
         {
             ValidateUserOnModify(user);
-            User maybeUser = await this.storageBroker.SelectUserByIdAsync(user.Id);
+            User maybeUser = await this.userManagementBroker.SelectUserByIdAsync(user.Id);
 
-            return await this.storageBroker.UpdateUserAsync(user);
+            return await this.userManagementBroker.UpdateUserAsync(user);
         });
 
         public ValueTask<User> RegisterUserAsync(User user, string password) =>
@@ -55,13 +55,13 @@ namespace OtripleS.Web.Api.Services.Users
         {
             ValidateUserOnCreate(user, password);
 
-            return await this.storageBroker.InsertUserAsync(user, password);
+            return await this.userManagementBroker.InsertUserAsync(user, password);
         });
 
         public IQueryable<User> RetrieveAllUsers() =>
         TryCatch(() =>
         {
-            IQueryable<User> storageUsers = this.storageBroker.SelectAllUsers();
+            IQueryable<User> storageUsers = this.userManagementBroker.SelectAllUsers();
             ValidateStorageUsers(storageUsers);
 
             return storageUsers;
@@ -71,7 +71,7 @@ namespace OtripleS.Web.Api.Services.Users
         TryCatch(async () =>
         {
             ValidateUserIdIsNull(userId);
-            User storageUser = await this.storageBroker.SelectUserByIdAsync(userId);
+            User storageUser = await this.userManagementBroker.SelectUserByIdAsync(userId);
             ValidateStorageUser(storageUser, userId);
 
             return storageUser;

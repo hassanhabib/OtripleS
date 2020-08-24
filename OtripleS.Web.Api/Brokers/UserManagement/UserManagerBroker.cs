@@ -9,40 +9,40 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using OtripleS.Web.Api.Models.Users;
 
-namespace OtripleS.Web.Api.Brokers.UserManager
+namespace OtripleS.Web.Api.Brokers.UserManagement
 {
-    public class UserManagerBroker : IUserManagerBroker
+    public class UserManagementBroker : IUserManagementBroker
     {
-        private readonly UserManager<User> userManager;
+        private readonly UserManager<User> userManagement;
 
-        public UserManagerBroker(UserManager<User> userManager)
+        public UserManagementBroker(UserManager<User> userManager)
         {
-            this.userManager = userManager;
+            this.userManagement = userManager;
         }
-        public IQueryable<User> SelectAllUsers() => this.userManager.Users;
+        public IQueryable<User> SelectAllUsers() => this.userManagement.Users;
 
         public async ValueTask<User> SelectUserByIdAsync(Guid userId)
         {
-            return await this.userManager.FindByIdAsync(userId.ToString());
+            return await this.userManagement.FindByIdAsync(userId.ToString());
         }
 
         public async ValueTask<User> InsertUserAsync(User user, string password)
         {
-            await this.userManager.CreateAsync(user, password);
+            await this.userManagement.CreateAsync(user, password);
 
             return user;
         }
 
         public async ValueTask<User> UpdateUserAsync(User user)
         {
-            await this.userManager.UpdateAsync(user);
+            await this.userManagement.UpdateAsync(user);
 
             return user;
         }
 
         public async ValueTask<User> DeleteUserAsync(User user)
         {
-            await this.userManager.DeleteAsync(user);
+            await this.userManagement.DeleteAsync(user);
 
             return user;
         }

@@ -12,7 +12,7 @@ using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
-using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Brokers.UserManagement;
 using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Services.Users;
 using Tynamix.ObjectFiller;
@@ -21,19 +21,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
 {
     public partial class UserServiceTests
     {
-        private readonly Mock<IStorageBroker> storageBrokerMock;
+        private readonly Mock<IUserManagementBroker> userManagementBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
         private readonly IUserService userService;
 
         public UserServiceTests()
         {
-            this.storageBrokerMock = new Mock<IStorageBroker>();
+            this.userManagementBrokerMock = new Mock<IUserManagementBroker>();
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
             this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
 
             this.userService = new UserService(
-                storageBroker: this.storageBrokerMock.Object,
+                userManagementBroker: this.userManagementBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }

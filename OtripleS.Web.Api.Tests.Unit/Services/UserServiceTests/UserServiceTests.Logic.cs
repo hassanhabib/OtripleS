@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                 broker.GetCurrentDateTime())
                     .Returns(dateTime);
 
-            this.storageBrokerMock.Setup(broker =>
+            this.userManagementBrokerMock.Setup(broker =>
                 broker.InsertUserAsync(inputUser, password))
                     .ReturnsAsync(storageUser);
 
@@ -47,13 +47,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                 broker.GetCurrentDateTime(),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
+            this.userManagementBrokerMock.Verify(broker =>
                 broker.InsertUserAsync(inputUser, password),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -67,11 +67,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             User storageUser = randomUser;
             User expectedUser = randomUser;
 
-            this.storageBrokerMock.Setup(broker =>
+            this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(inputUserId))
                     .ReturnsAsync(inputUser);
 
-            this.storageBrokerMock.Setup(broker =>
+            this.userManagementBrokerMock.Setup(broker =>
                 broker.DeleteUserAsync(inputUser))
                     .ReturnsAsync(storageUser);
 
@@ -82,15 +82,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             // then
             actualUser.Should().BeEquivalentTo(expectedUser);
 
-            this.storageBrokerMock.Verify(broker =>
+            this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(inputUserId),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
+            this.userManagementBrokerMock.Verify(broker =>
                 broker.DeleteUserAsync(inputUser),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
@@ -105,7 +105,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             User inputUser = randomUser;
             User expectedUser = randomUser;
 
-            this.storageBrokerMock.Setup(broker =>
+            this.userManagementBrokerMock.Setup(broker =>
                     broker.SelectUserByIdAsync(inputUserId))
                 .ReturnsAsync(inputUser);
 
@@ -115,10 +115,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             //then
             actualUser.Should().BeEquivalentTo(expectedUser);
 
-            this.storageBrokerMock.Verify(broker =>
+            this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(inputUserId), Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
@@ -132,7 +132,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             IQueryable<User> storageUsers = randomUsers;
             IQueryable<User> expectedUsers = storageUsers;
 
-            this.storageBrokerMock.Setup(broker =>
+            this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectAllUsers())
                     .Returns(storageUsers);
 
@@ -147,12 +147,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                 broker.GetCurrentDateTime(),
                     Times.Never);
 
-            this.storageBrokerMock.Verify(broker =>
+            this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectAllUsers(),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -172,11 +172,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             inputUser.UpdatedDate = randomDate;
             Guid userId = inputUser.Id;
 
-            this.storageBrokerMock.Setup(broker =>
+            this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(userId))
                     .ReturnsAsync(beforeUpdateStorageUser);
 
-            this.storageBrokerMock.Setup(broker =>
+            this.userManagementBrokerMock.Setup(broker =>
                 broker.UpdateUserAsync(inputUser))
                     .ReturnsAsync(afterUpdateStorageUser);
 
@@ -187,15 +187,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             // then
             actualUser.Should().BeEquivalentTo(expectedUser);
 
-            this.storageBrokerMock.Verify(broker =>
+            this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(userId),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
+            this.userManagementBrokerMock.Verify(broker =>
                 broker.UpdateUserAsync(inputUser),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
