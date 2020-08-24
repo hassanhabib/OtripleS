@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -16,6 +17,7 @@ namespace OtripleS.Web.Api.Services.Users
     public partial class UserService
     {
         private delegate ValueTask<User> ReturningUserFunction();
+        private delegate IQueryable<User> ReturningQueryableUserFunction();
 
         private async ValueTask<User> TryCatch(ReturningUserFunction returningUserFunction)
         {
@@ -51,6 +53,26 @@ namespace OtripleS.Web.Api.Services.Users
                 var lockedUserException = new LockedUserException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedUserException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private IQueryable<User> TryCatch(ReturningQueryableUserFunction returningQueryableUserFunction)
+        {
+            try
+            {
+                return returningQueryableUserFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
             }
             catch (DbUpdateException dbUpdateException)
             {

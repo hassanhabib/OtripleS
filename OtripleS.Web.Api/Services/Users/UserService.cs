@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -46,6 +47,15 @@ namespace OtripleS.Web.Api.Services.Users
             ValidateUserOnCreate(user, password);
 
             return await this.storageBroker.InsertUserAsync(user, password);
+        });
+
+        public IQueryable<User> RetrieveAllUsers() =>
+        TryCatch(() =>
+        {
+            IQueryable<User> storageUsers = this.storageBroker.SelectAllUsers();
+            ValidateStorageUsers(storageUsers);
+
+            return storageUsers;
         });
 
         public ValueTask<User> RetrieveUserByIdAsync(Guid userId) =>
