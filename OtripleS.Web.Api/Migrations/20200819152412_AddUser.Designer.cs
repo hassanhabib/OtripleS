@@ -10,7 +10,7 @@ using OtripleS.Web.Api.Brokers.Storage;
 namespace OtripleS.Web.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20200817231609_AddUser")]
+    [Migration("20200819152412_AddUser")]
     partial class AddUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

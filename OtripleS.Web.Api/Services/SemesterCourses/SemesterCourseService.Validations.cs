@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
         {
             if (semesterCourseId == Guid.Empty)
             {
-                throw new InvalidSemesterCourseException(
+                throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.Id),
                     parameterValue: semesterCourseId);
             }
@@ -60,35 +60,35 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
         {
             if (IsInvalid(semesterCourse.StartDate))
             {
-                throw new InvalidSemesterCourseException(
+                throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.StartDate),
                     parameterValue: semesterCourse.StartDate);
             }
 
             if (IsInvalid(semesterCourse.EndDate))
             {
-                throw new InvalidSemesterCourseException(
+                throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.EndDate),
                     parameterValue: semesterCourse.EndDate);
             }
 
             if (IsInvalid(semesterCourse.CourseId))
             {
-                throw new InvalidSemesterCourseException(
+                throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.CourseId),
                     parameterValue: semesterCourse.CourseId);
             }
 
             if (IsInvalid(semesterCourse.TeacherId))
             {
-                throw new InvalidSemesterCourseException(
+                throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.TeacherId),
                     parameterValue: semesterCourse.TeacherId);
             }
 
             if (IsInvalid(semesterCourse.ClassroomId))
             {
-                throw new InvalidSemesterCourseException(
+                throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.ClassroomId),
                     parameterValue: semesterCourse.ClassroomId);
             }
@@ -99,22 +99,22 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             switch (semesterCourse)
             {
                 case { } when IsInvalid(semesterCourse.CreatedBy):
-                    throw new InvalidSemesterCourseException(
+                    throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.CreatedBy),
                     parameterValue: semesterCourse.CreatedBy);
 
                 case { } when IsInvalid(semesterCourse.UpdatedBy):
-                    throw new InvalidSemesterCourseException(
+                    throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.UpdatedBy),
                     parameterValue: semesterCourse.UpdatedBy);
 
                 case { } when IsInvalid(semesterCourse.CreatedDate):
-                    throw new InvalidSemesterCourseException(
+                    throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.CreatedDate),
                     parameterValue: semesterCourse.CreatedDate);
 
                 case { } when IsInvalid(semesterCourse.UpdatedDate):
-                    throw new InvalidSemesterCourseException(
+                    throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.UpdatedDate),
                     parameterValue: semesterCourse.UpdatedDate);
             }
@@ -125,17 +125,17 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             switch (semesterCourse)
             {
                 case { } when semesterCourse.UpdatedBy != semesterCourse.CreatedBy:
-                    throw new InvalidSemesterCourseException(
+                    throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.UpdatedBy),
                     parameterValue: semesterCourse.UpdatedBy);
 
                 case { } when semesterCourse.UpdatedDate != semesterCourse.CreatedDate:
-                    throw new InvalidSemesterCourseException(
+                    throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.UpdatedDate),
                     parameterValue: semesterCourse.UpdatedDate);
 
                 case { } when IsDateNotRecent(semesterCourse.CreatedDate):
-                    throw new InvalidSemesterCourseException(
+                    throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.CreatedDate),
                     parameterValue: semesterCourse.CreatedDate);
             }
@@ -160,7 +160,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
         {
             if (semesterCourseId == default)
             {
-                throw new InvalidSemesterCourseException(
+                throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.Id),
                     parameterValue: semesterCourseId);
             }
@@ -183,7 +183,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             switch (semesterCourse)
             {
                 case { } when IsDateNotRecent(semesterCourse.UpdatedDate):
-                    throw new InvalidSemesterCourseException(
+                    throw new InvalidSemesterCourseInputException(
                     parameterName: nameof(SemesterCourse.UpdatedDate),
                     parameterValue: semesterCourse.UpdatedDate);
             }
@@ -194,17 +194,17 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             switch (inputSemesterCourse)
             {
                 case { } when inputSemesterCourse.CreatedDate != storageSemesterCourse.CreatedDate:
-                    throw new InvalidSemesterCourseException(
+                    throw new InvalidSemesterCourseInputException(
                         parameterName: nameof(SemesterCourse.CreatedDate),
                         parameterValue: inputSemesterCourse.CreatedDate);
 
                 case { } when inputSemesterCourse.CreatedBy != storageSemesterCourse.CreatedBy:
-                    throw new InvalidSemesterCourseException(
+                    throw new InvalidSemesterCourseInputException(
                         parameterName: nameof(SemesterCourse.CreatedBy),
                         parameterValue: inputSemesterCourse.CreatedBy);
 
                 case { } when inputSemesterCourse.UpdatedDate == storageSemesterCourse.UpdatedDate:
-                    throw new InvalidSemesterCourseException(
+                    throw new InvalidSemesterCourseInputException(
                         parameterName: nameof(SemesterCourse.UpdatedDate),
                         parameterValue: inputSemesterCourse.UpdatedDate);
             }

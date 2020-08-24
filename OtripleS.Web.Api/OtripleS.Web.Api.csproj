@@ -15,10 +15,7 @@
     <PackageReference Include="RESTFulSense" Version="1.4.0" />
     <PackageReference Include="EFxceptions.Identity" Version="0.4.4" />
   </ItemGroup>
-    
   <ItemGroup>
-    <Folder Include="Services\Courses\" />
-    <Folder Include="Models\Assignments\Exceptions\" />
-    <Folder Include="Models\Users\" />
+    <Folder Include="Models\Users\Exceptions\" />
   </ItemGroup>
 </Project>

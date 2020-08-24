@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             {
                 throw CreateAndLogValidationException(nullSemesterCourseException);
             }
-            catch (InvalidSemesterCourseException invalidSemesterCourseInputException)
+            catch (InvalidSemesterCourseInputException invalidSemesterCourseInputException)
             {
                 throw CreateAndLogValidationException(invalidSemesterCourseInputException);
             }

@@ -34,6 +34,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             TryCatch(async () =>
             {
                 ValidateStudentSemesterCourseOnCreate(studentSemesterCourse);
+
                 return await this.storageBroker.InsertStudentSemesterCourseAsync(studentSemesterCourse);
             });
 
@@ -44,24 +45,29 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
                     this.storageBroker.SelectAllStudentSemesterCourses();
 
                 ValidateStorageStudentSemesterCourses(storageStudentSemesterCourses);
+
                 return storageStudentSemesterCourses;
             });
 
-        public ValueTask<StudentSemesterCourse> ModifyStudentSemesterCourseAsync(StudentSemesterCourse studentSemesterCourse) =>
+        public ValueTask<StudentSemesterCourse> ModifyStudentSemesterCourseAsync
+            (StudentSemesterCourse studentSemesterCourse) =>
             TryCatch(async () =>
             {
                 ValidateStudentSemesterCourseOnModify(studentSemesterCourse);
-                StudentSemesterCourse maybeStudentSemesterCourse =
-                    await this.storageBroker
-                    .SelectStudentSemesterCourseByIdAsync
-                    (studentSemesterCourse.StudentId, studentSemesterCourse.SemesterCourseId);
 
-                ValidateStorageStudentSemesterCourse
-                (maybeStudentSemesterCourse, studentSemesterCourse.StudentId, studentSemesterCourse.SemesterCourseId);
+                StudentSemesterCourse maybeStudentSemesterCourse =
+                    await this.storageBroker.SelectStudentSemesterCourseByIdAsync(
+                        studentSemesterCourse.StudentId,
+                        studentSemesterCourse.SemesterCourseId);
+
+                ValidateStorageStudentSemesterCourse(
+                    maybeStudentSemesterCourse, 
+                    studentSemesterCourse.StudentId, 
+                    studentSemesterCourse.SemesterCourseId);
 
                 ValidateAgainstStorageStudentSemesterCourseOnModify(
-                inputStudentSemesterCourse: studentSemesterCourse,
-                storageStudentSemesterCourse: maybeStudentSemesterCourse);
+                    inputStudentSemesterCourse: studentSemesterCourse,
+                    storageStudentSemesterCourse: maybeStudentSemesterCourse);
 
                 return await this.storageBroker.UpdateStudentSemesterCourseAsync(studentSemesterCourse);
             });
@@ -86,8 +92,10 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             {
                 ValidateSemesterCourseId(semesterCourseId);
                 ValidateStudentId(studentId);
+
                 StudentSemesterCourse studentSemesterCourse =
                     await this.storageBroker.SelectStudentSemesterCourseByIdAsync(semesterCourseId, studentId);
+                
                 ValidateStorageStudentSemesterCourse(studentSemesterCourse, semesterCourseId, studentId);
 
                 return await this.storageBroker.DeleteStudentSemesterCourseAsync(studentSemesterCourse);
