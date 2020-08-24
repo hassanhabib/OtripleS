@@ -31,6 +31,10 @@ namespace OtripleS.Web.Api.Services.Users
             {
                 throw CreateAndLogValidationException(invalidUserException);
             }
+            catch (NotFoundUserException nullUserException)
+            {
+                throw CreateAndLogValidationException(nullUserException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsUserException =
@@ -41,6 +45,12 @@ namespace OtripleS.Web.Api.Services.Users
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedUserException = new LockedUserException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedUserException);
             }
             catch (DbUpdateException dbUpdateException)
             {

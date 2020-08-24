@@ -4,14 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Users;
-
-namespace OtripleS.Web.Api.Services.Users
+namespace OtripleS.Web.Api.Models.Users.Exceptions
 {
-    public interface IUserService
+    public class LockedUserException : Exception
     {
-        ValueTask<User> RegisterUserAsync(User user, string password);
-        ValueTask<User> DeleteUserAsync(Guid userId);
+        public LockedUserException(Exception innerException)
+            : base("Locked user record exception, please try again later.", innerException) { }
     }
 }

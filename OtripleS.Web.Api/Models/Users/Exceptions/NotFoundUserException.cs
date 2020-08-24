@@ -4,14 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Users;
-
-namespace OtripleS.Web.Api.Services.Users
+namespace OtripleS.Web.Api.Models.Users.Exceptions
 {
-    public interface IUserService
+    public class NotFoundUserException : Exception
     {
-        ValueTask<User> RegisterUserAsync(User user, string password);
-        ValueTask<User> DeleteUserAsync(Guid userId);
+        public NotFoundUserException(Guid userId)
+            : base($"Couldn't find user with Id: {userId}.") { }
     }
 }
