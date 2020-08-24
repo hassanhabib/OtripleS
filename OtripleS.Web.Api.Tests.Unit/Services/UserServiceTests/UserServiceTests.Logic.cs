@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Users;
 using Xunit;
@@ -153,6 +154,50 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldModifyUserAsync()
+        {
+            // given
+            int randomNumber = GetRandomNumber();
+            int randomDays = randomNumber;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            DateTimeOffset randomInputDate = GetRandomDateTime();
+            User randomUser = CreateRandomUser(dates: randomInputDate);
+            User inputUser = randomUser;
+            User afterUpdateStorageUser = inputUser;
+            User expectedUser = afterUpdateStorageUser;
+            User beforeUpdateStorageUser = randomUser.DeepClone();
+            inputUser.UpdatedDate = randomDate;
+            Guid userId = inputUser.Id;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectUserByIdAsync(userId))
+                    .ReturnsAsync(beforeUpdateStorageUser);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.UpdateUserAsync(inputUser))
+                    .ReturnsAsync(afterUpdateStorageUser);
+
+            // when
+            User actualUser =
+                await this.userService.ModifyUserAsync(inputUser);
+
+            // then
+            actualUser.Should().BeEquivalentTo(expectedUser);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectUserByIdAsync(userId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateUserAsync(inputUser),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
