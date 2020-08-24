@@ -73,7 +73,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
 
             //when
             ValueTask<StudentSemesterCourse> actualStudentSemesterCourseDeleteTask =
-                this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputSemesterCourseId, inputStudentId);
+                this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputStudentId, inputSemesterCourseId);
 
             //then
             await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(
@@ -113,12 +113,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                 new StudentSemesterCourseValidationException(notFoundStudentSemesterCourseException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectStudentSemesterCourseByIdAsync(inputSemasterCourseId, inputStudentId))
+                 broker.SelectStudentSemesterCourseByIdAsync(inputStudentId,inputSemasterCourseId))
                     .ReturnsAsync(nullStorageStudentSemesterCourse);
 
             // when
             ValueTask<StudentSemesterCourse> actualStudentSemesterCourseDeleteTask =
-                this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputSemasterCourseId, inputStudentId);
+                this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputStudentId, inputSemasterCourseId);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
@@ -129,7 +129,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputSemasterCourseId, inputStudentId),
+                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemasterCourseId),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
