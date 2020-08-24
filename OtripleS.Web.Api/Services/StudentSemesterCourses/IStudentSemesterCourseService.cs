@@ -12,10 +12,13 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
 {
     public interface IStudentSemesterCourseService
     {
-        ValueTask<StudentSemesterCourse> CreateStudentSemesterCourseAsync(StudentSemesterCourse inputStudentSemesterCourse);
-        ValueTask<StudentSemesterCourse> RetrieveStudentSemesterCourseByIdAsync(Guid studentId, Guid SemesterCourseId);      
+        ValueTask<StudentSemesterCourse> RetrieveStudentSemesterCourseByIdAsync(Guid studentId, Guid semesterCourse);
+        
+        ValueTask<StudentSemesterCourse> CreateStudentSemesterCourseAsync(
+            StudentSemesterCourse inputStudentSemesterCourse);
+
         IQueryable<StudentSemesterCourse> RetrieveAllStudentSemesterCourses();
-        public ValueTask<StudentSemesterCourse> ModifyStudentSemesterCourseAsync(StudentSemesterCourse inputStudentSemesterCourse);
+        ValueTask<StudentSemesterCourse> ModifyStudentSemesterCourseAsync(StudentSemesterCourse studentSemesterCourse);
         ValueTask<StudentSemesterCourse> DeleteStudentSemesterCourseAsync(Guid semesterCourseId, Guid studentId);
     }
 }

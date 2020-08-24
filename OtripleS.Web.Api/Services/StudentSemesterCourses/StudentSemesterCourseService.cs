@@ -10,7 +10,6 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Students;
 
 namespace OtripleS.Web.Api.Services.StudentSemesterCourses
 {
@@ -39,19 +38,6 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
                 return await this.storageBroker.InsertStudentSemesterCourseAsync(studentSemesterCourse);
             });
 
-        public ValueTask<StudentSemesterCourse> RetrieveStudentSemesterCourseByIdAsync(Guid studentId, Guid semesterCourseId) =>
-        TryCatch(async () =>
-        {
-            ValidateStudentSemesterCourseIdIsNull(studentId, semesterCourseId);
-
-            StudentSemesterCourse storageStudentSemesterCourse =
-               await this.storageBroker.SelectStudentSemesterCourseByIdAsync(studentId, semesterCourseId);
-
-            ValidateStorageStudentSemesterCourse(storageStudentSemesterCourse, studentId, semesterCourseId);
-
-            return storageStudentSemesterCourse;
-        });
-
         public IQueryable<StudentSemesterCourse> RetrieveAllStudentSemesterCourses() =>
             TryCatch(() =>
             {
@@ -63,7 +49,8 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
                 return storageStudentSemesterCourses;
             });
 
-        public ValueTask<StudentSemesterCourse> ModifyStudentSemesterCourseAsync(StudentSemesterCourse studentSemesterCourse) =>
+        public ValueTask<StudentSemesterCourse> ModifyStudentSemesterCourseAsync
+            (StudentSemesterCourse studentSemesterCourse) =>
             TryCatch(async () =>
             {
                 ValidateStudentSemesterCourseOnModify(studentSemesterCourse);
@@ -85,14 +72,29 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
                 return await this.storageBroker.UpdateStudentSemesterCourseAsync(studentSemesterCourse);
             });
 
-        public ValueTask<StudentSemesterCourse> DeleteStudentSemesterCourseAsync(Guid studentId, Guid semesterCourseId) =>
+        public ValueTask<StudentSemesterCourse> RetrieveStudentSemesterCourseByIdAsync
+            (Guid studentId, Guid semesterCourse) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentSemesterCourseIdIsNull(studentId, semesterCourse);
+
+            StudentSemesterCourse storageStudentSemesterCourse =
+               await this.storageBroker.SelectStudentSemesterCourseByIdAsync(studentId, semesterCourse);
+
+            ValidateStorageStudentSemesterCourse(storageStudentSemesterCourse, studentId, semesterCourse);
+
+            return storageStudentSemesterCourse;
+        });
+
+        public ValueTask<StudentSemesterCourse>
+            DeleteStudentSemesterCourseAsync(Guid semesterCourseId, Guid studentId) =>
             TryCatch(async () =>
             {
                 ValidateSemesterCourseId(semesterCourseId);
                 ValidateStudentId(studentId);
 
-                StudentSemesterCourse studentSemesterCourse = 
-                await this.storageBroker.SelectStudentSemesterCourseByIdAsync(studentId, semesterCourseId);
+                StudentSemesterCourse studentSemesterCourse =
+                    await this.storageBroker.SelectStudentSemesterCourseByIdAsync(semesterCourseId, studentId);
                 
                 ValidateStorageStudentSemesterCourse(studentSemesterCourse, semesterCourseId, studentId);
 
