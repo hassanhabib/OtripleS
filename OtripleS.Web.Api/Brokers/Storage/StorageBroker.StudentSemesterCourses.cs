@@ -31,11 +31,10 @@ namespace OtripleS.Web.Api.Brokers.Storage
             this.StudentSemesterCourses.AsQueryable();
 
         public async ValueTask<StudentSemesterCourse> SelectStudentSemesterCourseByIdAsync(
-            Guid studentId, Guid SemesterCourseId)
+            Guid studentId, Guid semesterCourseId)
         {
             this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-
-            return await StudentSemesterCourses.FindAsync(new { studentId, SemesterCourseId });
+            return await StudentSemesterCourses.FindAsync(studentId, semesterCourseId);
         }
 
         public async ValueTask<StudentSemesterCourse> UpdateStudentSemesterCourseAsync(
