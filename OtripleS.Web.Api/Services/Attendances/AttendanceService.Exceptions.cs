@@ -20,10 +20,14 @@ namespace OtripleS.Web.Api.Services.Attendances
             {
                 return await returningAttendanceFunction();
             }
+            catch (NullAttendanceException nullAttendanceException)
+            {
+                throw CreateAndLogValidationException(nullAttendanceException);
+            }
             catch (InvalidAttendanceInputException invalidAttendanceInputException)
             {
                 throw CreateAndLogValidationException(invalidAttendanceInputException);
-            }
+            }            
         }
 
         private AttendanceValidationException CreateAndLogValidationException(Exception exception)

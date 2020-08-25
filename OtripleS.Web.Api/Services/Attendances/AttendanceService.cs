@@ -33,7 +33,12 @@ namespace OtripleS.Web.Api.Services.Attendances
         {
             ValidateAttendanceId(attendanceId);
 
-            return await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
+            Attendance storageAttendance = 
+                await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
+
+            ValidateStorageAttendance(storageAttendance);
+
+            return storageAttendance;
         });
     }
 }

@@ -13,9 +13,20 @@ namespace OtripleS.Web.Api.Services.Attendances
     {
         private void ValidateAttendanceId(Guid attendanceId)
         {
-            throw new InvalidAttendanceInputException(
-                parameterName: nameof(Attendance.Id),
-                parameterValue: attendanceId);
+            if (attendanceId == default)
+            {
+                throw new InvalidAttendanceInputException(
+                    parameterName: nameof(Attendance.Id),
+                    parameterValue: attendanceId);
+            }
+        }
+
+        private void ValidateStorageAttendance(Attendance storageAttendance)
+        {
+            if (storageAttendance is null)
+            {
+                throw new NullAttendanceException();
+            }
         }
     }
 }
