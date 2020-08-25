@@ -5,7 +5,6 @@
 
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.Attendances;
 using OtripleS.Web.Api.Models.Attendances.Exceptions;
@@ -37,7 +36,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             // then
             await Assert.ThrowsAsync<AttendanceValidationException>(() => 
                 retrieveAttendanceTask.AsTask());
-            
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedValidationException))),
+                    Times.Once);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAttendanceByIdAsync(inputAttendanceId),
                     Times.Never);

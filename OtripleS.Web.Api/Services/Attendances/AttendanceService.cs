@@ -12,15 +12,15 @@ using OtripleS.Web.Api.Models.Attendances;
 
 namespace OtripleS.Web.Api.Services.Attendances
 {
-    public class AttendanceService : IAttendanceService
+    public partial class AttendanceService : IAttendanceService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
         private readonly IDateTimeBroker dateTimeBroker;
 
         public AttendanceService(
-            IStorageBroker storageBroker, 
-            ILoggingBroker loggingBroker, 
+            IStorageBroker storageBroker,
+            ILoggingBroker loggingBroker,
             IDateTimeBroker dateTimeBroker)
         {
             this.storageBroker = storageBroker;
@@ -28,9 +28,12 @@ namespace OtripleS.Web.Api.Services.Attendances
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<Attendance> RetrieveAttendanceByIdAsync(Guid attendanceId)
+        public ValueTask<Attendance> RetrieveAttendanceByIdAsync(Guid attendanceId) =>
+        TryCatch(async () =>
         {
-            return this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
-        }
+            ValidateAttendanceId(attendanceId);
+
+            return await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
+        });
     }
 }
