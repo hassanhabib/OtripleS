@@ -38,6 +38,10 @@ namespace OtripleS.Web.Api.Services.Attendances
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private AttendanceValidationException CreateAndLogValidationException(Exception exception)
@@ -62,6 +66,14 @@ namespace OtripleS.Web.Api.Services.Attendances
             this.loggingBroker.LogError(attendanceDependencyException);
 
             return attendanceDependencyException;
+        }
+
+        private AttendanceServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var attendanceServiceException = new AttendanceServiceException(exception);
+            this.loggingBroker.LogError(attendanceServiceException);
+
+            return attendanceServiceException;
         }
     }
 }
