@@ -77,7 +77,7 @@ namespace OtripleS.Web.Api.Controllers
         }
 
         [HttpPost]
-        public async ValueTask<ActionResult<User>> PostUserAsync(User user, string password)
+        public async ValueTask<ActionResult<User>> PostUserAsync(User user, string password = "Test123@eri")
         {
             try
             {

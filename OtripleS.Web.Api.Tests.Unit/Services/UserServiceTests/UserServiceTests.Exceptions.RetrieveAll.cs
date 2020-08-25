@@ -23,7 +23,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             var expectedUserDependencyException =
                 new UserDependencyException(sqlException);
 
-            this.storageBrokerMock.Setup(broker =>
+            this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectAllUsers())
                     .Throws(sqlException);
 
@@ -35,7 +35,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                 broker.LogCritical(It.Is(SameExceptionAs(expectedUserDependencyException))),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
+            this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectAllUsers(),
                     Times.Once);
 
@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             var expectedCourseDependencyException =
                 new UserDependencyException(databaseUpdateException);
 
-            this.storageBrokerMock.Setup(broker =>
+            this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectAllUsers())
                     .Throws(databaseUpdateException);
 
@@ -69,13 +69,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseDependencyException))),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
+            this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectAllUsers(),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -87,7 +87,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             var expectedUserServiceException =
                 new UserServiceException(exception);
 
-            this.storageBrokerMock.Setup(broker =>
+            this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectAllUsers())
                     .Throws(exception);
 
@@ -99,13 +99,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                 broker.LogError(It.Is(SameExceptionAs(expectedUserServiceException))),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
+            this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectAllUsers(),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

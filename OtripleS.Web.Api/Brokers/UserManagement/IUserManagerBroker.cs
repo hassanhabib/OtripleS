@@ -8,9 +8,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.Users;
 
-namespace OtripleS.Web.Api.Brokers.Storage
+namespace OtripleS.Web.Api.Brokers.UserManagement
 {
-    public partial interface IStorageBroker
+    public interface IUserManagementBroker
     {
         ValueTask<User> InsertUserAsync(User user, string password);
         IQueryable<User> SelectAllUsers();
