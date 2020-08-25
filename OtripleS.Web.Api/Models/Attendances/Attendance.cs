@@ -7,15 +7,18 @@ using OtripleS.Web.Api.Models;
 using OtripleS.Web.Api.Models.Attendances;
 using System;
 
-public class Attendance : IAuditable
+namespace OtripleS.Web.Api.Models.Attendances
 {
-    public Guid Id { get; set; }
-    public Guid StudentSemesterCourseId { get; set; }
-    public AttendanceStatus Status { get; set; }
-    public DateTimeOffset AttendanceDate { get; set; }
-    public string Notes { get; set; }
-    public DateTimeOffset CreatedDate { get; set; }
-    public DateTimeOffset UpdatedDate { get; set; }
-    public Guid CreatedBy { get; set; }
-    public Guid UpdatedBy { get; set; }
+    public class Attendance : IAuditable
+    {
+        public Guid Id { get; set; }
+        public Guid StudentSemesterCourseId { get; set; }
+        public AttendanceStatus Status { get; set; }
+        public DateTimeOffset AttendanceDate { get; set; }
+        public string Notes { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
+        public DateTimeOffset UpdatedDate { get; set; }
+        public Guid CreatedBy { get; set; }
+        public Guid UpdatedBy { get; set; }
+    }
 }
