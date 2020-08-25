@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Attendances;
 using OtripleS.Web.Api.Models.Attendances.Exceptions;
 
@@ -33,6 +34,10 @@ namespace OtripleS.Web.Api.Services.Attendances
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
         private AttendanceValidationException CreateAndLogValidationException(Exception exception)
@@ -47,6 +52,14 @@ namespace OtripleS.Web.Api.Services.Attendances
         {
             var attendanceDependencyException = new AttendanceDependencyException(exception);
             this.loggingBroker.LogCritical(attendanceDependencyException);
+
+            return attendanceDependencyException;
+        }
+
+        private AttendanceDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var attendanceDependencyException = new AttendanceDependencyException(exception);
+            this.loggingBroker.LogError(attendanceDependencyException);
 
             return attendanceDependencyException;
         }
