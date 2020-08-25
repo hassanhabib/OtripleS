@@ -11,7 +11,6 @@ namespace OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions
     {
         public StudentSemesterCourseValidationException(Exception innerException)
             : base("Invalid input, contact support.", innerException)
-        {
-        }
+        { }
     }
 }

@@ -33,10 +33,6 @@ namespace OtripleS.Web.Api.Services.Classrooms
             {
                 throw CreateAndLogValidationException(invalidClassroomInputException);
             }
-            catch (InvalidClassroomException invalidClassroomException)
-            {
-                throw CreateAndLogValidationException(invalidClassroomException);
-            }
             catch (NotFoundClassroomException notFoundClassroomException)
             {
                 throw CreateAndLogValidationException(notFoundClassroomException);
