@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.Attendances
 
         public ValueTask<Attendance> RetrieveAttendanceByIdAsync(Guid attendanceId)
         {
-            throw new NotImplementedException();
+            return this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
         }
     }
 }

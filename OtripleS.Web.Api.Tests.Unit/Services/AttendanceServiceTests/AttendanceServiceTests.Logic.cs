@@ -6,7 +6,6 @@
 using System;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
 using OtripleS.Web.Api.Models.Attendances;
 using Xunit;
@@ -15,8 +14,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
 {
     public partial class AttendanceServiceTests
     {
-       [Fact]
-       public async Task ShouldRetrieveAttendanceByIdAsync()
+        [Fact]
+        public async Task ShouldRetrieveAttendanceByIdAsync()
         {
             // given
             DateTimeOffset dateTimeOffset = GetRandomDateTime();
@@ -32,7 +31,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
                     .ReturnsAsync(storageAttendance);
 
             // when
-            Attendance actualAttendance = 
+            Attendance actualAttendance =
                 await this.attendanceService.RetrieveAttendanceByIdAsync(inputAttendanceId);
 
             // then
@@ -49,6 +48,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }        
+        }
     }
 }
