@@ -11,6 +11,19 @@ namespace OtripleS.Web.Api.Services.Attendances
 {
     public partial class AttendanceService 
     {
+        private void ValidateAttendanceOnModify(Attendance attendance)
+        {
+            ValidateAttendanceIsNull(attendance);
+        }
+
+        private void ValidateAttendanceIsNull(Attendance attendance)
+        {
+            if (attendance is null)
+            {
+                throw new NullAttendanceException();
+            }
+        }
+
         private void ValidateAttendanceId(Guid attendanceId)
         {
             if (attendanceId == default)

@@ -29,12 +29,16 @@ namespace OtripleS.Web.Api.Services.Attendances
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<Attendance> ModifyAttendanceAsync(Attendance attendance) {
-            storageBroker.SelectAttendanceByIdAsync(attendance.Id);
+        public ValueTask<Attendance> ModifyAttendanceAsync(Attendance attendance) =>
+        TryCatch(async () =>
+        {
+            ValidateAttendanceOnModify(attendance);
+
+            await storageBroker.SelectAttendanceByIdAsync(attendance.Id);
             dateTimeBroker.GetCurrentDateTime();
-            
-            return storageBroker.UpdateAttendanceAsync(attendance);
-        }
+
+            return await storageBroker.UpdateAttendanceAsync(attendance);
+        });
 
         public ValueTask<Attendance> RetrieveAttendanceByIdAsync(Guid attendanceId) =>
         TryCatch(async () =>
