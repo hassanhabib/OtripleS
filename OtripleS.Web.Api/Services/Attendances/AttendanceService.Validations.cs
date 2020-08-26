@@ -14,6 +14,7 @@ namespace OtripleS.Web.Api.Services.Attendances
         private void ValidateAttendanceOnModify(Attendance attendance)
         {
             ValidateAttendanceIsNull(attendance);
+            ValidateAttendanceId(attendance.Id);
         }
 
         private void ValidateAttendanceIsNull(Attendance attendance)
