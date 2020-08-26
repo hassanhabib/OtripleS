@@ -34,7 +34,9 @@ namespace OtripleS.Web.Api.Services.Attendances
         {
             ValidateAttendanceOnModify(attendance);
 
-            await storageBroker.SelectAttendanceByIdAsync(attendance.Id);
+            Attendance storageAttendance = await storageBroker.SelectAttendanceByIdAsync(attendance.Id);
+
+            ValidateStorageAttendance(storageAttendance, attendance.Id);
 
             return await storageBroker.UpdateAttendanceAsync(attendance);
         });
