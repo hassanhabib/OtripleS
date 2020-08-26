@@ -38,6 +38,16 @@ namespace OtripleS.Web.Api.Services.Attendances
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedAttendanceException = new LockedAttendanceException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedAttendanceException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);
