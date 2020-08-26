@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.Attendances;
 using OtripleS.Web.Api.Models.Attendances.Exceptions;
 
@@ -18,6 +19,14 @@ namespace OtripleS.Web.Api.Services.Attendances
             ValidateInvalidAuditFields(attendance);
             ValidateDatesAreNotSame(attendance);
             ValidateUpdatedDateIsRecent(attendance);
+        }
+
+        private void ValidateStorageAttendances(IQueryable<Attendance> storageAttendances)
+        {
+            if (storageAttendances.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No Attendances found in storage.");
+            }
         }
 
         private void ValidateAttendanceIsNull(Attendance attendance)
