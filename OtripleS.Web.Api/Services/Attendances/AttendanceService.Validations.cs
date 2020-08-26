@@ -64,6 +64,17 @@ namespace OtripleS.Web.Api.Services.Attendances
             }
         }
 
+        private void ValidateAgainstStorageAttendanceOnModify(Attendance inputAttendance, Attendance storageAttendance)
+        {
+            switch (inputAttendance)
+            {
+                case { } when inputAttendance.CreatedDate != storageAttendance.CreatedDate:
+                    throw new InvalidAttendanceInputException(
+                        parameterName: nameof(Attendance.CreatedDate),
+                        parameterValue: inputAttendance.CreatedDate);
+            }
+        }
+
         private void ValidateDatesAreNotSame(Attendance attendance)
         {
             if (attendance.CreatedDate == attendance.UpdatedDate)
