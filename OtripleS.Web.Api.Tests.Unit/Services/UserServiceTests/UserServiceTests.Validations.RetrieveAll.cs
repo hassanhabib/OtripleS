@@ -22,7 +22,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             IQueryable<User> emptyStorageUsers = new List<User>().AsQueryable();
             IQueryable<User> expectedUsers = emptyStorageUsers;
 
-            this.storageBrokerMock.Setup(broker =>
+            this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectAllUsers())
                     .Returns(expectedUsers);
 
@@ -41,13 +41,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                 broker.GetCurrentDateTime(),
                     Times.Never);
 
-            this.storageBrokerMock.Verify(broker =>
+            this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectAllUsers(),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

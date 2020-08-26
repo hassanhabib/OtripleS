@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             var expectedUserDependencyException =
                 new UserDependencyException(sqlException);
 
-            this.storageBrokerMock.Setup(broker =>
+            this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(someUser.Id))
                     .ThrowsAsync(sqlException);
 
@@ -42,7 +42,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             await Assert.ThrowsAsync<UserDependencyException>(() =>
                 modifyUserTask.AsTask());
 
-            this.storageBrokerMock.Verify(broker =>
+            this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(someUser.Id),
                     Times.Once);
 
@@ -51,7 +51,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             var expectedUserDependencyException =
                 new UserDependencyException(databaseUpdateException);
 
-            this.storageBrokerMock.Setup(broker =>
+            this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(someUser.Id))
                     .ThrowsAsync(databaseUpdateException);
 
@@ -81,7 +81,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             await Assert.ThrowsAsync<UserDependencyException>(() =>
                 modifyUserTask.AsTask());
 
-            this.storageBrokerMock.Verify(broker =>
+            this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(someUser.Id),
                     Times.Once);
 
@@ -90,7 +90,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -109,7 +109,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             var expectedUserDependencyException =
                 new UserDependencyException(lockedUserException);
 
-            this.storageBrokerMock.Setup(broker =>
+            this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(someUser.Id))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
@@ -121,7 +121,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             await Assert.ThrowsAsync<UserDependencyException>(() =>
                 modifyUserTask.AsTask());
 
-            this.storageBrokerMock.Verify(broker =>
+            this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(someUser.Id),
                     Times.Once);
 
@@ -130,7 +130,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -148,7 +148,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             var expectedUserServiceException =
                 new UserServiceException(serviceException);
 
-            this.storageBrokerMock.Setup(broker =>
+            this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(someUser.Id))
                     .ThrowsAsync(serviceException);
 
@@ -160,7 +160,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
             await Assert.ThrowsAsync<UserServiceException>(() =>
                 modifyUserTask.AsTask());
 
-            this.storageBrokerMock.Verify(broker =>
+            this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(someUser.Id),
                     Times.Once);
 
@@ -169,7 +169,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }

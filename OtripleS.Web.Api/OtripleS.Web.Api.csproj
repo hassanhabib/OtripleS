@@ -17,5 +17,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\Users\Exceptions\" />
+    <Folder Include="Brokers\UserManagement\" />
   </ItemGroup>
 </Project>
