@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -28,8 +29,12 @@ namespace OtripleS.Web.Api.Services.Attendances
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<Attendance> ModifyAttendanceAsync(Attendance attendance) =>
-            throw new NotImplementedException();
+        public ValueTask<Attendance> ModifyAttendanceAsync(Attendance attendance) {
+            storageBroker.SelectAttendanceByIdAsync(attendance.Id);
+            dateTimeBroker.GetCurrentDateTime();
+            
+            return storageBroker.UpdateAttendanceAsync(attendance);
+        }
 
         public ValueTask<Attendance> RetrieveAttendanceByIdAsync(Guid attendanceId) =>
         TryCatch(async () =>
