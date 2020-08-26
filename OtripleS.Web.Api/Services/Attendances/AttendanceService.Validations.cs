@@ -16,6 +16,7 @@ namespace OtripleS.Web.Api.Services.Attendances
             ValidateAttendanceIsNull(attendance);
             ValidateAttendanceId(attendance.Id);
             ValidateInvalidAuditFields(attendance);
+            ValidateDatesAreNotSame(attendance);
         }
 
         private void ValidateAttendanceIsNull(Attendance attendance)
@@ -52,6 +53,16 @@ namespace OtripleS.Web.Api.Services.Attendances
             }
         }
 
+        private void ValidateDatesAreNotSame(Attendance attendance)
+        {
+            if (attendance.CreatedDate == attendance.UpdatedDate)
+            {
+                throw new InvalidAttendanceInputException(
+                    parameterName: nameof(Attendance.UpdatedDate),
+                    parameterValue: attendance.UpdatedDate);
+            }
+        }
+
         private void ValidateInvalidAuditFields(Attendance attendance)
         {
             switch (attendance)
@@ -79,6 +90,5 @@ namespace OtripleS.Web.Api.Services.Attendances
         }
         private static bool IsInvalid(Guid input) => input == default;
         private static bool IsInvalid(DateTimeOffset input) => input == default;
-
     }
 }
