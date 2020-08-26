@@ -306,5 +306,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldThrowValidationExceptionOnModifyIfAttendanceDoesntExistAndLogItAsync()
+		{
+			// given
+			int randomNegativeMinutes = GetNegativeRandomNumber();
+			DateTimeOffset dateTime = GetRandomDateTime();
+			Attendance randomAttendance = CreateRandomAttendance(dateTime);
+			Attendance nonExistentAttendance = randomAttendance;
+			nonExistentAttendance.CreatedDate = dateTime.AddMinutes(randomNegativeMinutes);
+			Attendance noAttendance = null;
+			var notFoundAttendanceException = new NotFoundAttendanceException(nonExistentAttendance.Id);
+
+			var expectedAttendanceValidationException =
+				new AttendanceValidationException(notFoundAttendanceException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectAttendanceByIdAsync(nonExistentAttendance.Id))
+					.ReturnsAsync(noAttendance);
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(dateTime);
+
+			// when
+			ValueTask<Attendance> modifyAttendanceTask =
+				this.attendanceService.ModifyAttendanceAsync(nonExistentAttendance);
+
+			// then
+			await Assert.ThrowsAsync<AttendanceValidationException>(() =>
+				modifyAttendanceTask.AsTask());
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectAttendanceByIdAsync(nonExistentAttendance.Id),
+					Times.Once);
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
+					Times.Once);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
