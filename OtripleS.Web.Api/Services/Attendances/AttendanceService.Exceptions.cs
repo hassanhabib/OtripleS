@@ -70,6 +70,10 @@ namespace OtripleS.Web.Api.Services.Attendances
 			{
 				throw CreateAndLogDependencyException(dbUpdateException);
 			}
+			catch (Exception exception)
+			{
+				throw CreateAndLogServiceException(exception);
+			}
 		}
 
 		private AttendanceValidationException CreateAndLogValidationException(Exception exception)
