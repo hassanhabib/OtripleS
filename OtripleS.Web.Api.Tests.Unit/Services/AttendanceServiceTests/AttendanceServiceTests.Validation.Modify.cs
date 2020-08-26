@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Attendances;
 using OtripleS.Web.Api.Models.Attendances.Exceptions;
@@ -344,6 +345,60 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
 
 			this.storageBrokerMock.Verify(broker =>
 				broker.SelectAttendanceByIdAsync(nonExistentAttendance.Id),
+					Times.Once);
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
+					Times.Once);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
+		public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedDateNotSameAsCreateDateAndLogItAsync()
+		{
+			// given
+			int randomNumber = GetRandomNumber();
+			int randomMinutes = randomNumber;
+			DateTimeOffset randomDate = GetRandomDateTime();
+			Attendance randomAttendance = CreateRandomAttendance(randomDate);
+			Attendance invalidAttendance = randomAttendance;
+			invalidAttendance.UpdatedDate = randomDate;
+			Attendance storageAttendance = randomAttendance.DeepClone();
+			Guid attendanceId = invalidAttendance.Id;
+			invalidAttendance.CreatedDate = storageAttendance.CreatedDate.AddMinutes(randomNumber);
+
+			var invalidAttendanceException = new InvalidAttendanceInputException(
+				parameterName: nameof(Attendance.CreatedDate),
+				parameterValue: invalidAttendance.CreatedDate);
+
+			var expectedAttendanceValidationException =
+			  new AttendanceValidationException(invalidAttendanceException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectAttendanceByIdAsync(attendanceId))
+					.ReturnsAsync(storageAttendance);
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(randomDate);
+
+			// when
+			ValueTask<Attendance> modifyAttendanceTask =
+				this.attendanceService.ModifyAttendanceAsync(invalidAttendance);
+
+			// then
+			await Assert.ThrowsAsync<AttendanceValidationException>(() =>
+				modifyAttendanceTask.AsTask());
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectAttendanceByIdAsync(invalidAttendance.Id),
 					Times.Once);
 
 			this.loggingBrokerMock.Verify(broker =>
