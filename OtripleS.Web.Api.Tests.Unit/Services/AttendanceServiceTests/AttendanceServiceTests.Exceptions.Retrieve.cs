@@ -27,8 +27,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
                 new AttendanceDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-              broker.SelectAttendanceByIdAsync(inputAttendanceId))
-                  .ThrowsAsync(sqlException);
+                broker.SelectAttendanceByIdAsync(inputAttendanceId))
+                    .ThrowsAsync(sqlException);
 
             // when
             ValueTask<Attendance> retrieveAttendanceTask =

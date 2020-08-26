@@ -69,8 +69,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
                 new AttendanceValidationException(nullAttendanceException);
 
             this.storageBrokerMock.Setup(broker =>
-               broker.SelectAttendanceByIdAsync(inputAttendanceId))
-                   .ReturnsAsync(nullAttendance);
+                broker.SelectAttendanceByIdAsync(inputAttendanceId))
+                    .ReturnsAsync(nullAttendance);
 
             // when
             ValueTask<Attendance> retrieveAttendanceTask =
