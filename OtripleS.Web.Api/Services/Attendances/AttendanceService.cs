@@ -35,7 +35,6 @@ namespace OtripleS.Web.Api.Services.Attendances
             ValidateAttendanceOnModify(attendance);
 
             await storageBroker.SelectAttendanceByIdAsync(attendance.Id);
-            dateTimeBroker.GetCurrentDateTime();
 
             return await storageBroker.UpdateAttendanceAsync(attendance);
         });
