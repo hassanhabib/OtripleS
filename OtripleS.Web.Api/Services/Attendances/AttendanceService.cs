@@ -60,7 +60,7 @@ namespace OtripleS.Web.Api.Services.Attendances
 		});
 
 		public IQueryable<Attendance> RetrieveAllAttendances() =>
-			throw new NotImplementedException();
+			storageBroker.SelectAllAttendances();
 
 		public ValueTask<Attendance> DeleteAttendanceAsync(Guid attendanceId) =>
 		TryCatch(async () =>
