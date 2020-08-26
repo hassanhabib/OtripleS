@@ -87,5 +87,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomAttendanceId = Guid.NewGuid();
+            Guid inputAttendanceId = randomAttendanceId;
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+            var lockedAttendanceException = new LockedAttendanceException(databaseUpdateConcurrencyException);
+
+            var expectedAttendanceDependencyException =
+                new AttendanceDependencyException(lockedAttendanceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAttendanceByIdAsync(inputAttendanceId))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
+
+            // when
+            ValueTask<Attendance> deleteAttendanceTask =
+                this.attendanceService.DeleteAttendanceAsync(inputAttendanceId);
+
+            // then
+            await Assert.ThrowsAsync<AttendanceDependencyException>(() =>
+                deleteAttendanceTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAttendanceByIdAsync(inputAttendanceId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
