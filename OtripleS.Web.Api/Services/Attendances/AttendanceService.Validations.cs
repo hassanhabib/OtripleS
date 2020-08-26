@@ -65,6 +65,11 @@ namespace OtripleS.Web.Api.Services.Attendances
                     throw new InvalidAttendanceInputException(
                     parameterName: nameof(Attendance.CreatedDate),
                     parameterValue: attendance.CreatedDate);
+
+                case { } when IsInvalid(attendance.UpdatedBy):
+                    throw new InvalidAttendanceInputException(
+                    parameterName: nameof(Attendance.UpdatedBy),
+                    parameterValue: attendance.UpdatedBy);
             }
         }
         private static bool IsInvalid(Guid input) => input == default;
