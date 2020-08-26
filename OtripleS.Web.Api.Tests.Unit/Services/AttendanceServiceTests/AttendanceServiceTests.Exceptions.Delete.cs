@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Attendances;
 using OtripleS.Web.Api.Models.Attendances.Exceptions;
@@ -40,6 +41,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedAttendanceDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAttendanceByIdAsync(inputAttendanceId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomAttendanceId = Guid.NewGuid();
+            Guid inputAttendanceId = randomAttendanceId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedAttendanceDependencyException =
+                new AttendanceDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAttendanceByIdAsync(inputAttendanceId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<Attendance> deleteAttendanceTask =
+                this.attendanceService.DeleteAttendanceAsync(inputAttendanceId);
+
+            // then
+            await Assert.ThrowsAsync<AttendanceDependencyException>(() =>
+                deleteAttendanceTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
