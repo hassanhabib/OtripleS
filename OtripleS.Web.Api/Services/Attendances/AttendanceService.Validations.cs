@@ -15,6 +15,7 @@ namespace OtripleS.Web.Api.Services.Attendances
         {
             ValidateAttendanceIsNull(attendance);
             ValidateAttendanceId(attendance.Id);
+            ValidateInvalidAuditFields(attendance);
         }
 
         private void ValidateAttendanceIsNull(Attendance attendance)
@@ -50,5 +51,19 @@ namespace OtripleS.Web.Api.Services.Attendances
                 throw new NotFoundAttendanceException(attendanceId);
             }
         }
+
+        private void ValidateInvalidAuditFields(Attendance attendance)
+        {
+            switch (attendance)
+            {
+                case { } when IsInvalid(attendance.CreatedBy):
+                    throw new InvalidAttendanceInputException(
+                    parameterName: nameof(attendance.CreatedBy),
+                    parameterValue: attendance.CreatedBy);
+
+            }
+        }
+        private static bool IsInvalid(Guid input) => input == default;
+
     }
 }
