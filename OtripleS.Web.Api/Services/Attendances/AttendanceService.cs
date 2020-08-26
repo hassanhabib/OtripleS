@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic;
 using OtripleS.Web.Api.Brokers.DateTimes;
@@ -13,61 +14,64 @@ using OtripleS.Web.Api.Models.Attendances;
 
 namespace OtripleS.Web.Api.Services.Attendances
 {
-    public partial class AttendanceService : IAttendanceService
-    {
-        private readonly IStorageBroker storageBroker;
-        private readonly ILoggingBroker loggingBroker;
-        private readonly IDateTimeBroker dateTimeBroker;
+	public partial class AttendanceService : IAttendanceService
+	{
+		private readonly IStorageBroker storageBroker;
+		private readonly ILoggingBroker loggingBroker;
+		private readonly IDateTimeBroker dateTimeBroker;
 
-        public AttendanceService(
-            IStorageBroker storageBroker,
-            ILoggingBroker loggingBroker,
-            IDateTimeBroker dateTimeBroker)
-        {
-            this.storageBroker = storageBroker;
-            this.loggingBroker = loggingBroker;
-            this.dateTimeBroker = dateTimeBroker;
-        }
+		public AttendanceService(
+			IStorageBroker storageBroker,
+			ILoggingBroker loggingBroker,
+			IDateTimeBroker dateTimeBroker)
+		{
+			this.storageBroker = storageBroker;
+			this.loggingBroker = loggingBroker;
+			this.dateTimeBroker = dateTimeBroker;
+		}
 
-        public ValueTask<Attendance> ModifyAttendanceAsync(Attendance attendance) =>
-        TryCatch(async () =>
-        {
-            ValidateAttendanceOnModify(attendance);
+		public ValueTask<Attendance> ModifyAttendanceAsync(Attendance attendance) =>
+		TryCatch(async () =>
+		{
+			ValidateAttendanceOnModify(attendance);
 
-            Attendance maybeAttendance = await storageBroker.SelectAttendanceByIdAsync(attendance.Id);
+			Attendance maybeAttendance = await storageBroker.SelectAttendanceByIdAsync(attendance.Id);
 
-            ValidateStorageAttendance(maybeAttendance, attendance.Id);
+			ValidateStorageAttendance(maybeAttendance, attendance.Id);
 
-            ValidateAgainstStorageAttendanceOnModify(
-                inputAttendance: attendance,  
-                storageAttendance: maybeAttendance);
+			ValidateAgainstStorageAttendanceOnModify(
+				inputAttendance: attendance,
+				storageAttendance: maybeAttendance);
 
-            return await storageBroker.UpdateAttendanceAsync(attendance);
-        });
+			return await storageBroker.UpdateAttendanceAsync(attendance);
+		});
 
-        public ValueTask<Attendance> RetrieveAttendanceByIdAsync(Guid attendanceId) =>
-        TryCatch(async () =>
-        {
-            ValidateAttendanceId(attendanceId);
+		public ValueTask<Attendance> RetrieveAttendanceByIdAsync(Guid attendanceId) =>
+		TryCatch(async () =>
+		{
+			ValidateAttendanceId(attendanceId);
 
-            Attendance storageAttendance = 
-                await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
+			Attendance storageAttendance =
+				await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
 
-            ValidateStorageAttendance(storageAttendance);
+			ValidateStorageAttendance(storageAttendance);
 
-            return storageAttendance;
-        });
+			return storageAttendance;
+		});
 
-        public ValueTask<Attendance> DeleteAttendanceAsync(Guid attendanceId) =>
-        TryCatch(async () =>
-        {
-            ValidateAttendanceId(attendanceId);
-            Attendance maybeAttendance =
-                 await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
+		public IQueryable<Attendance> RetrieveAllAttendances() =>
+			throw new NotImplementedException();
 
-            ValidateStorageAttendance(maybeAttendance, attendanceId);
+		public ValueTask<Attendance> DeleteAttendanceAsync(Guid attendanceId) =>
+		TryCatch(async () =>
+		{
+			ValidateAttendanceId(attendanceId);
+			Attendance maybeAttendance =
+				 await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
 
-            return await storageBroker.DeleteAttendanceAsync(maybeAttendance);
-        });
-    }
+			ValidateStorageAttendance(maybeAttendance, attendanceId);
+
+			return await storageBroker.DeleteAttendanceAsync(maybeAttendance);
+		});
+	}
 }
