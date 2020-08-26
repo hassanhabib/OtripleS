@@ -28,5 +28,13 @@ namespace OtripleS.Web.Api.Services.Attendances
                 throw new NullAttendanceException();
             }
         }
+
+        private void ValidateStorageAttendance(Attendance storageAttendance, Guid attendanceId)
+        {
+            if (storageAttendance == null)
+            {
+                throw new NotFoundAttendanceException(attendanceId);
+            }
+        }
     }
 }

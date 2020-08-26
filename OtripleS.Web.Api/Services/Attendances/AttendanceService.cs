@@ -48,6 +48,8 @@ namespace OtripleS.Web.Api.Services.Attendances
             Attendance maybeAttendance =
                  await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
 
+            ValidateStorageAttendance(maybeAttendance, attendanceId);
+
             return await storageBroker.DeleteAttendanceAsync(maybeAttendance);
         });
     }
