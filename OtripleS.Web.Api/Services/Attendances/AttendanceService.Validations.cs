@@ -77,6 +77,11 @@ namespace OtripleS.Web.Api.Services.Attendances
                     throw new InvalidAttendanceInputException(
                         parameterName: nameof(Attendance.CreatedBy),
                         parameterValue: inputAttendance.CreatedBy);
+
+                case { } when inputAttendance.UpdatedDate == storageAttendance.UpdatedDate:
+                    throw new InvalidAttendanceInputException(
+                        parameterName: nameof(Attendance.UpdatedDate),
+                        parameterValue: inputAttendance.UpdatedDate);
             }
         }
 
