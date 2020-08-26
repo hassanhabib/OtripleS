@@ -66,6 +66,10 @@ namespace OtripleS.Web.Api.Services.Attendances
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
 		}
 
 		private AttendanceValidationException CreateAndLogValidationException(Exception exception)
