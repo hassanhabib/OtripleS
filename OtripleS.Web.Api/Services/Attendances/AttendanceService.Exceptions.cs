@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.Attendances
             {
                 throw CreateAndLogValidationException(invalidAttendanceInputException);
             }
-            catch(SqlException sqlException)
+            catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
