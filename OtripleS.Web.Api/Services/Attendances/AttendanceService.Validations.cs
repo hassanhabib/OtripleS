@@ -29,28 +29,50 @@ namespace OtripleS.Web.Api.Services.Attendances
             }
         }
 
-        private static void ValidateAttendanceOnCreate(Attendance attendance)
+        private void ValidateAttendanceOnCreate(Attendance attendance)
         {
             ValidateAttendanceIsNotNull(attendance);
             ValidateMandatoryFields(attendance);
+            ValidateAttendanceDatesOnAdd(attendance);
+        }
+
+        private void ValidateAttendanceDatesOnAdd(Attendance attendance)
+        {
+            switch (attendance)
+            {
+                case { } when IsDateNotRecent(attendance.AttendanceDate):
+                    throw new InvalidAttendanceException(
+                        parameterName: nameof(attendance.AttendanceDate),
+                        parameterValue: attendance.AttendanceDate);
+            }
+        }
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
         private static void ValidateMandatoryFields(Attendance attendance)
         {
             switch (attendance)
             {
-                case { } when IsEmpty(attendance.Id):
+                case { } when IsValid(attendance.Id):
                     throw new InvalidAttendanceException(
                         parameterName: nameof(attendance.Id),
                         parameterValue: attendance.Id);
 
-                case { } when IsEmpty(attendance.StudentSemesterCourseId):
+                case { } when IsValid(attendance.StudentSemesterCourseId):
                     throw new InvalidAttendanceException(
                         parameterName: nameof(attendance.StudentSemesterCourseId),
                         parameterValue: attendance.StudentSemesterCourseId);
             }
         }
 
-        private static bool IsEmpty(Guid id) => id == default;
+        private static bool IsValid(Guid id) => id == default;
+        private static bool IsValid(DateTimeOffset dateTimeOffset) => dateTimeOffset == default;
     }
 }

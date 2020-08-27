@@ -150,6 +150,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             var expectedAttendanceValidationException =
                 new AttendanceValidationException(invalidAttendanceException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
             // when
             ValueTask<Attendance> createAttendanceTask =
                 this.attendanceService.CreateAttendanceAsync(invalidAttendance);
@@ -168,7 +172,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
-                    Times.Never);
+                    Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
