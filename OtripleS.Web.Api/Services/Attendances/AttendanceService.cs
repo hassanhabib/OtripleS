@@ -34,9 +34,7 @@ namespace OtripleS.Web.Api.Services.Attendances
 		TryCatch(async () =>
 		{
 			ValidateAttendanceOnModify(attendance);
-
 			Attendance maybeAttendance = await storageBroker.SelectAttendanceByIdAsync(attendance.Id);
-
 			ValidateStorageAttendance(maybeAttendance, attendance.Id);
 
 			ValidateAgainstStorageAttendanceOnModify(
@@ -72,6 +70,7 @@ namespace OtripleS.Web.Api.Services.Attendances
 		TryCatch(async () =>
 		{
 			ValidateAttendanceId(attendanceId);
+
 			Attendance maybeAttendance =
 				 await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
 
