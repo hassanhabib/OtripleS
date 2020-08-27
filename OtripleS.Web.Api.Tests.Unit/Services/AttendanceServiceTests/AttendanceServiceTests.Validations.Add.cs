@@ -131,5 +131,48 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [MemberData(nameof(InvalidMinuteCases))]
+        public async Task ShouldThrowValidationExceptionOnCreateWhenAttendanceDateIsInvalidAndLogItAsync(
+            int invallidMinutes)
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Attendance randomAttendance = CreateRandomAttendance(dateTime: dateTime);
+            Attendance invalidAttendance = randomAttendance;
+            invalidAttendance.AttendanceDate = dateTime.AddMinutes(invallidMinutes);
+
+            var invalidAttendanceException = new InvalidAttendanceException(
+               parameterName: nameof(Attendance.AttendanceDate),
+               parameterValue: invalidAttendance.AttendanceDate);
+
+            var expectedAttendanceValidationException =
+                new AttendanceValidationException(invalidAttendanceException);
+
+            // when
+            ValueTask<Attendance> createAttendanceTask =
+                this.attendanceService.CreateAttendanceAsync(invalidAttendance);
+
+            // then
+            await Assert.ThrowsAsync<AttendanceValidationException>(() =>
+                createAttendanceTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAttendanceByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
