@@ -6,9 +6,9 @@
 using System;
 namespace OtripleS.Web.Api.Models.Attendances.Exceptions
 {
-    public class NotFoundAttendanceException : Exception
+    public class LockedAttendanceException : Exception
     {
-        public NotFoundAttendanceException(Guid attendanceId)
-            : base($"Couldn't find attendance with Id: {attendanceId}.") { }
+        public LockedAttendanceException(Exception innerException)
+            : base("Locked attendance record exception, please try again later.", innerException) { }
     }
 }

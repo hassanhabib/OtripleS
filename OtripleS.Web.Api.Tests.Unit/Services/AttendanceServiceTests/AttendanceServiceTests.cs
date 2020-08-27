@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -39,6 +40,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
 
         private static Attendance CreateRandomAttendance(DateTimeOffset dateTime) =>
             GetAttendanceFiller(dateTime).Create();
+
+        private static IQueryable<Attendance> CreateRandomAttendances(DateTimeOffset dates) =>
+            GetAttendanceFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();

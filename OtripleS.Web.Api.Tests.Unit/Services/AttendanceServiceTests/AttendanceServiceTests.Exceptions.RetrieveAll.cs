@@ -1,17 +1,19 @@
-// ---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
 using System;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.Assignments.Exceptions;
+using OtripleS.Web.Api.Models.Attendances;
+using OtripleS.Web.Api.Models.Attendances.Exceptions;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
 {
-    public partial class AssignmentServiceTests
+    public partial class AttendanceServiceTests
     {
         [Fact]
         public void ShouldThrowDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogIt()
@@ -19,23 +21,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
             // given
             var sqlException = GetSqlException();
 
-            var expectedAssignmentDependencyException =
-                new AssignmentDependencyException(sqlException);
+            var expectedAttendanceDependencyException =
+                new AttendanceDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllAssignments())
+                broker.SelectAllAttendances())
                     .Throws(sqlException);
 
             // when . then
-            Assert.Throws<AssignmentDependencyException>(() =>
-                this.assignmentService.RetrieveAllAssignments());
+            Assert.Throws<AttendanceDependencyException>(() =>
+                this.attendanceService.RetrieveAllAttendances());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
+                broker.LogCritical(It.Is(SameExceptionAs(expectedAttendanceDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllAssignments(),
+                broker.SelectAllAttendances(),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -53,23 +55,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
             // given
             var databaseUpdateException = new DbUpdateException();
 
-            var expectedAssignmentDependencyException =
-                new AssignmentDependencyException(databaseUpdateException);
+            var expectedAttendanceDependencyException =
+                new AttendanceDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllAssignments())
+                broker.SelectAllAttendances())
                     .Throws(databaseUpdateException);
 
             // when . then
-            Assert.Throws<AssignmentDependencyException>(() =>
-                this.assignmentService.RetrieveAllAssignments());
+            Assert.Throws<AttendanceDependencyException>(() =>
+                this.attendanceService.RetrieveAllAttendances());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllAssignments(),
+                broker.SelectAllAttendances(),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -87,23 +89,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
             // given
             var exception = new Exception();
 
-            var expectedAssignmentServiceException =
-                new AssignmentServiceException(exception);
+            var expectedAttendanceServiceException =
+                new AttendanceServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllAssignments())
+                broker.SelectAllAttendances())
                     .Throws(exception);
 
             // when . then
-            Assert.Throws<AssignmentServiceException>(() =>
-                this.assignmentService.RetrieveAllAssignments());
+            Assert.Throws<AttendanceServiceException>(() =>
+                this.attendanceService.RetrieveAllAttendances());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentServiceException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceServiceException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllAssignments(),
+                broker.SelectAllAttendances(),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
