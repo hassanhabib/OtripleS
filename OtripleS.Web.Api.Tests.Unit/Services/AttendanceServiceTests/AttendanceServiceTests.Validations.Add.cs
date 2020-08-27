@@ -224,14 +224,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedDateIsInvalidAndLogItAsync()
+        [Theory]
+        [MemberData(nameof(InvalidMinuteCases))]
+        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedDateIsInvalidAndLogItAsync(
+            int invallidMinutes)
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             Attendance randomAttendance = CreateRandomAttendance(dateTime: dateTime);
             Attendance inputAttendance = randomAttendance;
-            inputAttendance.CreatedDate = default;
+            inputAttendance.CreatedDate = dateTime.AddMinutes(invallidMinutes);
 
             var invalidAttendanceInputException = new InvalidAttendanceException(
                 parameterName: nameof(Attendance.CreatedDate),
@@ -262,7 +264,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
-                    Times.Once);
+                    Times.Exactly(2));
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
