@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Attendances;
 using OtripleS.Web.Api.Models.Attendances.Exceptions;
@@ -59,12 +60,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             Attendance inputAttendance = randomAttendance;
             inputAttendance.Id = default;
 
-            var invalidAttendanceInputException = new InvalidAttendanceException(
+            var invalidAttendanceException = new InvalidAttendanceException(
                 parameterName: nameof(Attendance.Id),
                 parameterValue: inputAttendance.Id);
 
             var expectedAttendanceValidationException =
-                new AttendanceValidationException(invalidAttendanceInputException);
+                new AttendanceValidationException(invalidAttendanceException);
 
             // when
             ValueTask<Attendance> registerAttendanceTask =
@@ -92,7 +93,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnCreateWhenStudentSemesterCourseIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnCreateWhenAttendanceSemesterCourseIdIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -188,12 +189,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             Attendance inputAttendance = randomAttendance;
             inputAttendance.CreatedBy = default;
 
-            var invalidAttendanceInputException = new InvalidAttendanceException(
+            var invalidAttendanceException = new InvalidAttendanceException(
                 parameterName: nameof(Attendance.CreatedBy),
                 parameterValue: inputAttendance.CreatedBy);
 
             var expectedAttendanceValidationException =
-                new AttendanceValidationException(invalidAttendanceInputException);
+                new AttendanceValidationException(invalidAttendanceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -233,12 +234,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             Attendance inputAttendance = randomAttendance;
             inputAttendance.CreatedDate = default;
 
-            var invalidAttendanceInputException = new InvalidAttendanceException(
+            var invalidAttendanceException = new InvalidAttendanceException(
                 parameterName: nameof(Attendance.CreatedDate),
                 parameterValue: inputAttendance.CreatedDate);
 
             var expectedAttendanceValidationException =
-                new AttendanceValidationException(invalidAttendanceInputException);
+                new AttendanceValidationException(invalidAttendanceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -280,12 +281,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             Attendance inputAttendance = randomAttendance;
             inputAttendance.CreatedDate = dateTime.AddMinutes(invallidMinutes);
 
-            var invalidAttendanceInputException = new InvalidAttendanceException(
+            var invalidAttendanceException = new InvalidAttendanceException(
                 parameterName: nameof(Attendance.CreatedDate),
                 parameterValue: inputAttendance.CreatedDate);
 
             var expectedAttendanceValidationException =
-                new AttendanceValidationException(invalidAttendanceInputException);
+                new AttendanceValidationException(invalidAttendanceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -325,12 +326,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             Attendance inputAttendance = randomAttendance;
             inputAttendance.UpdatedBy = default;
 
-            var invalidAttendanceInputException = new InvalidAttendanceException(
+            var invalidAttendanceException = new InvalidAttendanceException(
                 parameterName: nameof(Attendance.UpdatedBy),
                 parameterValue: inputAttendance.UpdatedBy);
 
             var expectedAttendanceValidationException =
-                new AttendanceValidationException(invalidAttendanceInputException);
+                new AttendanceValidationException(invalidAttendanceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -370,12 +371,58 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             Attendance inputAttendance = randomAttendance;
             inputAttendance.UpdatedDate = default;
 
-            var invalidAttendanceInputException = new InvalidAttendanceException(
+            var invalidAttendanceException = new InvalidAttendanceException(
                 parameterName: nameof(Attendance.UpdatedDate),
                 parameterValue: inputAttendance.UpdatedDate);
 
             var expectedAttendanceValidationException =
-                new AttendanceValidationException(invalidAttendanceInputException);
+                new AttendanceValidationException(invalidAttendanceException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            // when
+            ValueTask<Attendance> createAttendanceTask =
+                this.attendanceService.CreateAttendanceAsync(inputAttendance);
+
+            // then
+            await Assert.ThrowsAsync<AttendanceValidationException>(() =>
+                createAttendanceTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAttendanceByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedDateIsNotSameToCreatedDateAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Attendance randomAttendance = CreateRandomAttendance(dateTime);
+            Attendance inputAttendance = randomAttendance.DeepClone();
+            inputAttendance.UpdatedBy = randomAttendance.CreatedBy;
+            inputAttendance.UpdatedDate = GetRandomDateTime();
+
+            var invalidAttendanceException = new InvalidAttendanceException(
+                parameterName: nameof(Attendance.UpdatedDate),
+                parameterValue: inputAttendance.UpdatedDate);
+
+            var expectedAttendanceValidationException =
+                new AttendanceValidationException(invalidAttendanceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
