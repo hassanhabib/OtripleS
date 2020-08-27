@@ -281,7 +281,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             Attendance randomAttendance = CreateRandomAttendance(dateTime: dateTime);
             Attendance inputAttendance = randomAttendance;
             inputAttendance.CreatedDate = dateTime.AddMinutes(invallidMinutes);
-
+            inputAttendance.UpdatedDate = inputAttendance.CreatedDate;
+            
             var invalidAttendanceException = new InvalidAttendanceException(
                 parameterName: nameof(Attendance.CreatedDate),
                 parameterValue: inputAttendance.CreatedDate);
@@ -311,7 +312,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
-                    Times.Exactly(2));
+                    Times.AtLeastOnce);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
