@@ -6,7 +6,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualBasic;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -58,7 +57,7 @@ namespace OtripleS.Web.Api.Services.Attendances
 		});
 
 		public IQueryable<Attendance> RetrieveAllAttendances() =>
-		TryCatch(() => 
+		TryCatch(() =>
 		{
 			IQueryable<Attendance> storageAttendances = this.storageBroker.SelectAllAttendances();
 			ValidateStorageAttendances(storageAttendances);
