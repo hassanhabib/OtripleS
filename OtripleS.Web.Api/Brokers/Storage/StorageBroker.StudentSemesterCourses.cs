@@ -35,7 +35,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
         {
             this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await StudentSemesterCourses.FindAsync(new { studentId, SemesterCourseId });
+            return await StudentSemesterCourses.FirstOrDefaultAsync(x => x.StudentId.Equals(studentId) && x.SemesterCourseId.Equals(SemesterCourseId));
         }
 
         public async ValueTask<StudentSemesterCourse> UpdateStudentSemesterCourseAsync(
