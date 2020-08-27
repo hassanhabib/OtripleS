@@ -55,7 +55,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Attendance randomAttendance = CreateRandomAttendance(dateTime);
+            Attendance randomAttendance = CreateRandomAttendance(dateTime: dateTime);
             Attendance inputAttendance = randomAttendance;
             inputAttendance.Id = default;
 
@@ -96,7 +96,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Attendance randomAttendance = CreateRandomAttendance(dateTime);
+            Attendance randomAttendance = CreateRandomAttendance(dateTime: dateTime);
             Attendance invalidAttendance = randomAttendance;
             invalidAttendance.StudentSemesterCourseId = default;
 

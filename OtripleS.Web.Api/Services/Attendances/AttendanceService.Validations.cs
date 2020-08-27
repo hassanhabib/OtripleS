@@ -43,6 +43,11 @@ namespace OtripleS.Web.Api.Services.Attendances
                     throw new InvalidAttendanceException(
                         parameterName: nameof(attendance.Id),
                         parameterValue: attendance.Id);
+
+                case { } when IsEmpty(attendance.StudentSemesterCourseId):
+                    throw new InvalidAttendanceException(
+                        parameterName: nameof(attendance.StudentSemesterCourseId),
+                        parameterValue: attendance.StudentSemesterCourseId);
             }
         }
 
