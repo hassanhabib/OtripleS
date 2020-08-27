@@ -28,10 +28,13 @@ namespace OtripleS.Web.Api.Services.Attendances
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async ValueTask<Attendance> CreateAttendanceAsync(Attendance attendance)
+        public ValueTask<Attendance> CreateAttendanceAsync(Attendance attendance) =>
+        TryCatch(async () =>
         {
+            ValidateAttendanceOnCreate(attendance);
+
             return await this.storageBroker.InsertAttendanceAsync(attendance);
-        }
+        });
 
         public ValueTask<Attendance> RetrieveAttendanceByIdAsync(Guid attendanceId) =>
         TryCatch(async () =>
@@ -41,7 +44,7 @@ namespace OtripleS.Web.Api.Services.Attendances
             Attendance storageAttendance = 
                 await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
 
-            ValidateStorageAttendance(storageAttendance);
+            ValidateAttendanceIsNotNull(storageAttendance);
 
             return storageAttendance;
         });
