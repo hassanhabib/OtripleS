@@ -490,7 +490,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
-                    Times.Once);
+                    Times.AtLeastOnce);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertAttendanceAsync(alreadyExistsAttendance),

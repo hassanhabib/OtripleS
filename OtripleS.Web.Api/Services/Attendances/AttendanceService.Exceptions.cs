@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Attendances;
@@ -33,6 +34,13 @@ namespace OtripleS.Web.Api.Services.Attendances
             catch(SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsAttendanceException =
+                    new AlreadyExistsAttendanceException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsAttendanceException);
             }
             catch (DbUpdateException dbUpdateException)
             {
