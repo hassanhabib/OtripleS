@@ -60,7 +60,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             randomAttendance.UpdatedBy = randomAttendance.CreatedBy;
             randomAttendance.UpdatedDate = randomAttendance.CreatedDate;
             Attendance inputAttendance = randomAttendance;
-            Attendance storageAttendance = randomAttendance;
+            Attendance storageAttendance = inputAttendance;
             Attendance expectedAttendance = storageAttendance;
 
             this.dateTimeBrokerMock.Setup(broker =>
