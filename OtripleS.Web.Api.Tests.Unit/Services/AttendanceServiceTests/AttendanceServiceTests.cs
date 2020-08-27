@@ -4,6 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -36,8 +38,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
-        private static Attendance CreateRandomAttedance(DateTimeOffset dateTime) =>
+        private static Attendance CreateRandomAttendance(DateTimeOffset dateTime) =>
             GetAttendanceFiller(dateTime).Create();
+
+        private static IQueryable<Attendance> CreateRandomAttendances(DateTimeOffset dates) =>
+            GetAttendanceFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
@@ -62,5 +67,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static int GetRandomNumber() => new IntRange(min: 1, max: 150).GetValue();
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
     }
 }
