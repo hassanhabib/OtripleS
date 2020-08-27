@@ -49,5 +49,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenIdIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Attendance randomAttendance = CreateRandomAttendance(dateTime);
+            Attendance inputAttendance = randomAttendance;
+            inputAttendance.Id = default;
+
+            var invalidAttendanceInputException = new InvalidAttendanceException(
+                parameterName: nameof(Attendance.Id),
+                parameterValue: inputAttendance.Id);
+
+            var expectedAttendanceValidationException =
+                new AttendanceValidationException(invalidAttendanceInputException);
+
+            // when
+            ValueTask<Attendance> registerAttendanceTask =
+                this.attendanceService.CreateAttendanceAsync(inputAttendance);
+
+            // then
+            await Assert.ThrowsAsync<AttendanceValidationException>(() =>
+                registerAttendanceTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAttendanceByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }

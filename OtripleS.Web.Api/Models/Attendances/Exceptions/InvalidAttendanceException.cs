@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Attendances.Exceptions
 {
-    public class InvalidAttendanceInputException : Exception
+    public class InvalidAttendanceException : Exception
     {
-        public InvalidAttendanceInputException(string parameterName, object parameterValue)
+        public InvalidAttendanceException(string parameterName, object parameterValue)
             : base($"Invalid Attendace, " +
                   $"ParameterName: {parameterName}, " +
                   $"ParameterValue: {parameterValue}.")

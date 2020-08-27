@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Services.Attendances
             {
                 throw CreateAndLogValidationException(nullAttendanceException);
             }
-            catch (InvalidAttendanceInputException invalidAttendanceInputException)
+            catch (InvalidAttendanceException invalidAttendanceInputException)
             {
                 throw CreateAndLogValidationException(invalidAttendanceInputException);
             }

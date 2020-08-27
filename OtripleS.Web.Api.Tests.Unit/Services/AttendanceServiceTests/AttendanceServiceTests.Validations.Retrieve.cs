@@ -22,7 +22,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             Guid randomAttendanceId = default;
             Guid inputAttendanceId = randomAttendanceId;
 
-            var invalidAttendanceInputException = new InvalidAttendanceInputException(
+            var invalidAttendanceInputException = new InvalidAttendanceException(
                 parameterName: nameof(Attendance.Id),
                 parameterValue: inputAttendanceId);
 
