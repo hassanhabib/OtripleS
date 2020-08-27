@@ -5,7 +5,6 @@
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.VisualBasic;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -13,7 +12,7 @@ using OtripleS.Web.Api.Models.Attendances;
 
 namespace OtripleS.Web.Api.Services.Attendances
 {
-    public partial class AttendanceService : IAttendanceService
+	public partial class AttendanceService : IAttendanceService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -33,9 +32,7 @@ namespace OtripleS.Web.Api.Services.Attendances
         TryCatch(async () =>
         {
             ValidateAttendanceOnModify(attendance);
-
             Attendance maybeAttendance = await storageBroker.SelectAttendanceByIdAsync(attendance.Id);
-
             ValidateStorageAttendance(maybeAttendance, attendance.Id);
 
             ValidateAgainstStorageAttendanceOnModify(
@@ -62,6 +59,7 @@ namespace OtripleS.Web.Api.Services.Attendances
         TryCatch(async () =>
         {
             ValidateAttendanceId(attendanceId);
+
             Attendance maybeAttendance =
                  await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
 
