@@ -61,6 +61,11 @@ namespace OtripleS.Web.Api.Services.Attendances
                         parameterName: nameof(attendance.UpdatedDate),
                         parameterValue: attendance.UpdatedDate);
 
+                case { } when attendance.CreatedDate != attendance.UpdatedDate:
+                    throw new InvalidAttendanceException(
+                        parameterName: nameof(attendance.UpdatedDate),
+                        parameterValue: attendance.UpdatedDate);
+
                 case { } when IsDateNotRecent(attendance.CreatedDate):
                     throw new InvalidAttendanceException(
                     parameterName: nameof(Attendance.CreatedDate),
