@@ -28,6 +28,11 @@ namespace OtripleS.Web.Api.Services.Attendances
             this.dateTimeBroker = dateTimeBroker;
         }
 
+        public ValueTask<Attendance> CreateAttendanceAsync(Attendance assignemnt)
+        {
+            throw new NotImplementedException();
+        }
+
         public ValueTask<Attendance> RetrieveAttendanceByIdAsync(Guid attendanceId) =>
         TryCatch(async () =>
         {

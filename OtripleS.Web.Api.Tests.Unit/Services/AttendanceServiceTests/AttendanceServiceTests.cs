@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
-        private static Attendance CreateRandomAttedance(DateTimeOffset dateTime) =>
+        private static Attendance CreateRandomAttendance(DateTimeOffset dateTime) =>
             GetAttendanceFiller(dateTime).Create();
 
         private static DateTimeOffset GetRandomDateTime() =>

@@ -11,6 +11,7 @@ namespace OtripleS.Web.Api.Services.Attendances
 {
     public interface IAttendanceService
     {
+        ValueTask<Attendance> CreateAttendanceAsync(Attendance assignemnt);
         ValueTask<Attendance> RetrieveAttendanceByIdAsync(Guid attendanceId);
     }
 }
