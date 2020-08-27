@@ -28,9 +28,9 @@ namespace OtripleS.Web.Api.Services.Attendances
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<Attendance> CreateAttendanceAsync(Attendance assignemnt)
+        public async ValueTask<Attendance> CreateAttendanceAsync(Attendance attendance)
         {
-            throw new NotImplementedException();
+            return await this.storageBroker.InsertAttendanceAsync(attendance);
         }
 
         public ValueTask<Attendance> RetrieveAttendanceByIdAsync(Guid attendanceId) =>
