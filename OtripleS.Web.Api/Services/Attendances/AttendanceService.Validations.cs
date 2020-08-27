@@ -34,6 +34,18 @@ namespace OtripleS.Web.Api.Services.Attendances
             ValidateAttendanceIsNotNull(attendance);
             ValidateMandatoryFields(attendance);
             ValidateAttendanceDatesOnAdd(attendance);
+            ValidateAttendanceAuditFields(attendance);
+        }
+
+        private void ValidateAttendanceAuditFields(Attendance attendance)
+        {
+            switch (attendance)
+            {
+                case { } when IsValid(attendance.CreatedBy):
+                    throw new InvalidAttendanceException(
+                        parameterName: nameof(attendance.CreatedBy),
+                        parameterValue: attendance.CreatedBy);
+            }
         }
 
         private void ValidateAttendanceDatesOnAdd(Attendance attendance)
