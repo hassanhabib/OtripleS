@@ -21,11 +21,11 @@ namespace OtripleS.Web.Api.Services.Attendances
             }
         }
 
-        private static void ValidateAttendanceIsNotNull(Attendance inputAttendance)
+        private static void ValidateStorageAttendanceIsNotNull(Guid attendanceId, Attendance inputAttendance)
         {
             if (inputAttendance is null)
             {
-                throw new NullAttendanceException();
+                throw new NotFoundAttendanceException(attendanceId);
             }
         }
 
@@ -35,6 +35,12 @@ namespace OtripleS.Web.Api.Services.Attendances
             ValidateMandatoryFields(attendance);
             ValidateAttendanceDatesOnAdd(attendance);
             ValidateAttendanceAuditFields(attendance);
+        }
+
+        private void ValidateAttendanceIsNotNull(Attendance attendance)
+        {
+            if (attendance == default)
+                throw new NullAttendanceException();
         }
 
         private void ValidateAttendanceAuditFields(Attendance attendance)

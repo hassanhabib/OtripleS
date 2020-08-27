@@ -62,8 +62,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             Guid randomAttendanceId = Guid.NewGuid();
             Guid inputAttendanceId = randomAttendanceId;
             Attendance nullAttendance = default;
-
-            var nullAttendanceException = new NullAttendanceException();
+            var nullAttendanceException = new NotFoundAttendanceException(attendanceId: inputAttendanceId);
 
             var expectedValidationException =
                 new AttendanceValidationException(nullAttendanceException);

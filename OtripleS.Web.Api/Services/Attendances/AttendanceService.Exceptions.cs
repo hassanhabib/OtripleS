@@ -35,6 +35,10 @@ namespace OtripleS.Web.Api.Services.Attendances
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (NotFoundAttendanceException notFoundAttendanceException)
+            {
+                throw CreateAndLogValidationException(notFoundAttendanceException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsAttendanceException =
