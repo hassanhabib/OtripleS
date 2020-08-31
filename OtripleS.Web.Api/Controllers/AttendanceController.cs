@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
+using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Attendances;
 using OtripleS.Web.Api.Models.Attendances.Exceptions;
 using OtripleS.Web.Api.Services.Attendances;
@@ -70,6 +75,40 @@ namespace OtripleS.Web.Api.Controllers
                 return Problem(attendanceServiceException.Message);
             }
         }
+
+        [HttpPost]
+        public async ValueTask<ActionResult<Attendance>> PostAttendanceAsync(Attendance attendance)
+        {
+            try
+            {
+                Attendance persistedAttendance =
+                    await this.attendanceService.CreateAttendanceAsync(attendance);
+
+                return Ok(persistedAttendance);
+            }
+            catch (AttendanceValidationException attendanceValidationException)
+                when (attendanceValidationException.InnerException is AlreadyExistsAttendanceException)
+            {
+                string innerMessage = GetInnerMessage(attendanceValidationException);
+
+                return Conflict(innerMessage);
+            }
+            catch (AttendanceValidationException attendanceValidationException)
+            {
+                string innerMessage = GetInnerMessage(attendanceValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (AttendanceDependencyException attendanceDependencyException)
+            {
+                return Problem(attendanceDependencyException.Message);
+            }
+            catch (AttendanceServiceException attendanceServiceException)
+            {
+                return Problem(attendanceServiceException.Message);
+            }
+        }
+
 
         [HttpDelete("{attendanceId}")]
         public async ValueTask<ActionResult<Attendance>> DeleteAttendanceAsync(Guid attendanceId)
