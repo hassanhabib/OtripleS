@@ -52,7 +52,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             Filler<Attendance> attendance = new Filler<Attendance>();
 
             attendance.Setup()
-                .OnProperty(attendance => attendance.StudentSemesterCourseId).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(dateTime);
 
             return attendance;
@@ -70,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
 
         private static int GetRandomNumber() => new IntRange(min: 1, max: 150).GetValue();
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
-
+        
         public static IEnumerable<object[]> InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
@@ -82,5 +81,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
                 new object[] { randomMoreThanMinuteBeforeNow }
             };
         }
+
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
     }
 }

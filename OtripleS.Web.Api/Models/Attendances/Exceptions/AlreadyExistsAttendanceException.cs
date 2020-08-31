@@ -7,12 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Attendances.Exceptions
 {
-    public class InvalidAttendanceInputException : Exception
+    public class AlreadyExistsAttendanceException : Exception
     {
-        public InvalidAttendanceInputException(string parameterName, object parameterValue)
-            : base($"Invalid Attendace, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
-        { }
+        public AlreadyExistsAttendanceException(Exception innerException)
+            : base("Attendance with the same id already exists.", innerException) { }
     }
 }

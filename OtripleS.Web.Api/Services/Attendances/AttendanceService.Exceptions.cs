@@ -29,9 +29,9 @@ namespace OtripleS.Web.Api.Services.Attendances
 			{
 				throw CreateAndLogValidationException(nullAttendanceException);
 			}
-			catch (InvalidAttendanceInputException invalidAttendanceInputException)
+			catch (InvalidAttendanceException invalidAttendanceException)
 			{
-				throw CreateAndLogValidationException(invalidAttendanceInputException);
+				throw CreateAndLogValidationException(invalidAttendanceException);
 			}
 			catch (NotFoundAttendanceException notFoundAttendanceException)
 			{
@@ -43,10 +43,10 @@ namespace OtripleS.Web.Api.Services.Attendances
 			}
 			catch (DuplicateKeyException duplicateKeyException)
 			{
-				var alreadyExistsattendanceException =
-					new AlreadyExistAttendanceException(duplicateKeyException);
+				var alreadyExistsAttendanceException =
+					new AlreadyExistsAttendanceException(duplicateKeyException);
 
-				throw CreateAndLogValidationException(alreadyExistsattendanceException);
+				throw CreateAndLogValidationException(alreadyExistsAttendanceException);
 			}
 			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
 			{

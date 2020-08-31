@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
         public StorageBroker(IConfiguration configuration)
         {
             this.configuration = configuration;
-            this.Database.Migrate();
+            //this.Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -22,12 +22,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             Guid randomAttendanceId = default;
             Guid inputAttendanceId = randomAttendanceId;
 
-            var invalidAttendanceInputException = new InvalidAttendanceInputException(
+            var invalidAttendanceException = new InvalidAttendanceException(
                 parameterName: nameof(Attendance.Id),
                 parameterValue: inputAttendanceId);
 
             var expectedValidationException = 
-                new AttendanceValidationException(invalidAttendanceInputException);
+                new AttendanceValidationException(invalidAttendanceException);
 
             // when
             ValueTask<Attendance> retrieveAttendanceTask =
@@ -61,16 +61,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             DateTimeOffset dateTimeOffset = GetRandomDateTime();
             Guid randomAttendanceId = Guid.NewGuid();
             Guid inputAttendanceId = randomAttendanceId;
-            Attendance noAttendance = null;
-
-            var nullAttendanceException = new NullAttendanceException();
+            Attendance nullAttendance = default;
+            var nullAttendanceException = new NotFoundAttendanceException(attendanceId: inputAttendanceId);
 
             var expectedValidationException =
                 new AttendanceValidationException(nullAttendanceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAttendanceByIdAsync(inputAttendanceId))
-                    .ReturnsAsync(noAttendance);
+                    .ReturnsAsync(nullAttendance);
 
             // when
             ValueTask<Attendance> retrieveAttendanceTask =

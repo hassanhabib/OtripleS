@@ -21,12 +21,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             Guid randomAttendanceId = default;
             Guid inputAttendanceId = randomAttendanceId;
 
-            var invalidAttendanceInputException = new InvalidAttendanceInputException(
+            var invalidAttendanceException = new InvalidAttendanceException(
                 parameterName: nameof(Attendance.Id),
                 parameterValue: inputAttendanceId);
 
             var expectedAttendanceValidationException =
-                new AttendanceValidationException(invalidAttendanceInputException);
+                new AttendanceValidationException(invalidAttendanceException);
 
             // when
             ValueTask<Attendance> actualAttendanceTask =

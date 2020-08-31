@@ -50,8 +50,8 @@ namespace OtripleS.Web.Api.Services.Attendances
 
 			Attendance storageAttendance =
 				await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
-
-			ValidateStorageAttendance(storageAttendance);
+			
+			ValidateStorageAttendance(storageAttendance, attendanceId);
 
 			return storageAttendance;
 		});
@@ -76,6 +76,14 @@ namespace OtripleS.Web.Api.Services.Attendances
 			ValidateStorageAttendance(maybeAttendance, attendanceId);
 
 			return await storageBroker.DeleteAttendanceAsync(maybeAttendance);
+		});
+
+		public ValueTask<Attendance> CreateAttendanceAsync(Attendance attendance) =>
+		TryCatch(async () =>
+		{
+			ValidateAttendanceOnCreate(attendance);
+
+			return await this.storageBroker.InsertAttendanceAsync(attendance);
 		});
 	}
 }
