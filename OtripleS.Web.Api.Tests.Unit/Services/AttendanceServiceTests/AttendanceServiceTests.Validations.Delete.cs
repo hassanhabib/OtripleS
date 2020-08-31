@@ -25,7 +25,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
                 parameterName: nameof(Attendance.Id),
                 parameterValue: inputAttendanceId);
 
-            var expectedAttendanceValidationException = new AttendanceValidationException(invalidAttendanceException);
+            var expectedAttendanceValidationException =
+                new AttendanceValidationException(invalidAttendanceException);
 
             // when
             ValueTask<Attendance> actualAttendanceTask =

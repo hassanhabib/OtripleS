@@ -143,8 +143,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             Attendance randomAttendance = CreateRandomAttendance(dateTime: dateTime);
             Guid inputAttendanceId = randomAttendance.Id;
             Attendance inputAttendance = randomAttendance;
-            Attendance storageAttendance = randomAttendance;
-            Attendance expectedAttendance = randomAttendance;
+            Attendance storageAttendance = inputAttendance;
+            Attendance expectedAttendance = storageAttendance;
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAttendanceByIdAsync(inputAttendanceId))
