@@ -61,7 +61,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             DateTimeOffset dateTimeOffset = GetRandomDateTime();
             Guid randomAttendanceId = Guid.NewGuid();
             Guid inputAttendanceId = randomAttendanceId;
-            Attendance nullAttendance = default;
+            Attendance noAttendance = null;
 
             var nullAttendanceException = new NullAttendanceException();
 
@@ -70,7 +70,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAttendanceByIdAsync(inputAttendanceId))
-                    .ReturnsAsync(nullAttendance);
+                    .ReturnsAsync(noAttendance);
 
             // when
             ValueTask<Attendance> retrieveAttendanceTask =
