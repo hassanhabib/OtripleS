@@ -71,6 +71,40 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpPost]
+        public async ValueTask<ActionResult<Attendance>> PostAttendanceAsync(Attendance attendance)
+        {
+            try
+            {
+                Attendance persistedAttendance =
+                    await this.attendanceService.CreateAttendanceAsync(attendance);
+
+                return Ok(persistedAttendance);
+            }
+            catch (AttendanceValidationException attendanceValidationException)
+                when (attendanceValidationException.InnerException is AlreadyExistsAttendanceException)
+            {
+                string innerMessage = GetInnerMessage(attendanceValidationException);
+
+                return Conflict(innerMessage);
+            }
+            catch (AttendanceValidationException attendanceValidationException)
+            {
+                string innerMessage = GetInnerMessage(attendanceValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (AttendanceDependencyException attendanceDependencyException)
+            {
+                return Problem(attendanceDependencyException.Message);
+            }
+            catch (AttendanceServiceException attendanceServiceException)
+            {
+                return Problem(attendanceServiceException.Message);
+            }
+        }
+
+
         [HttpDelete("{attendanceId}")]
         public async ValueTask<ActionResult<Attendance>> DeleteAttendanceAsync(Guid attendanceId)
         {
