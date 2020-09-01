@@ -3,10 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.StudentSemesterCourses;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
         public IQueryable<StudentSemesterCourse> SelectAllStudentSemesterCourses();
 
         public ValueTask<StudentSemesterCourse> SelectStudentSemesterCourseByIdAsync(
-            Guid studentSemesterCourseId);
+            Guid studentId, Guid SemesterCourseId);
 
         public ValueTask<StudentSemesterCourse> UpdateStudentSemesterCourseAsync(
             StudentSemesterCourse studentSemesterCourse);

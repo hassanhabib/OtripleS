@@ -18,7 +18,13 @@ using OtripleS.Web.Api.Services.Classrooms;
 using OtripleS.Web.Api.Services.Courses;
 using OtripleS.Web.Api.Services.SemesterCourses;
 using OtripleS.Web.Api.Services.Students;
+using OtripleS.Web.Api.Services.StudentSemesterCourses;
 using OtripleS.Web.Api.Services.Teachers;
+using OtripleS.Web.Api.Brokers.UserManagement;
+using OtripleS.Web.Api.Models.Users;
+using Microsoft.AspNetCore.Identity;
+using OtripleS.Web.Api.Services.Users;
+using OtripleS.Web.Api.Services.Attendances;
 
 namespace OtripleS.Web.Api
 {
@@ -41,6 +47,7 @@ namespace OtripleS.Web.Api
             });
 
             services.AddDbContext<StorageBroker>();
+            services.AddScoped<IUserManagementBroker, UserManagementBroker>();
             services.AddScoped<IStorageBroker, StorageBroker>();
             services.AddTransient<ILogger, Logger<LoggingBroker>>();
             services.AddTransient<ILoggingBroker, LoggingBroker>();
@@ -51,6 +58,14 @@ namespace OtripleS.Web.Api
             services.AddTransient<IClassroomService, ClassroomService>();
             services.AddTransient<IAssignmentService, AssignmentService>();
             services.AddTransient<ISemesterCourseService, SemesterCourseService>();
+            services.AddTransient<IStudentSemesterCourseService, StudentSemesterCourseService>();
+            services.AddTransient<IAttendanceService, AttendanceService>();
+            services.AddTransient<IUserService, UserService>();
+
+            services.AddIdentityCore<User>()
+                    .AddRoles<Role>()
+                    .AddEntityFrameworkStores<StorageBroker>()
+                    .AddDefaultTokenProviders();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

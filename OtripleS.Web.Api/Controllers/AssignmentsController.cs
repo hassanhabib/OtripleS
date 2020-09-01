@@ -3,14 +3,14 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Models.Assignments.Exceptions;
 using OtripleS.Web.Api.Services.Assignments;
 using RESTFulSense.Controllers;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Controllers
 {
@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Controllers
     [Route("api/[controller]")]
     public class AssignmentsController : RESTFulController
     {
-        private IAssignmentService assignmentService;
+        private readonly IAssignmentService assignmentService;
 
         public AssignmentsController(IAssignmentService assignmentService) =>
             this.assignmentService = assignmentService;

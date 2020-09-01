@@ -3,10 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
+using System;
+using System.Linq;
 
 namespace OtripleS.Web.Api.Services.Classrooms
 {
@@ -36,17 +36,17 @@ namespace OtripleS.Web.Api.Services.Classrooms
             switch (classroom)
             {
                 case { } when classroom.UpdatedBy != classroom.CreatedBy:
-                    throw new InvalidClassroomException(
+                    throw new InvalidClassroomInputException(
                     parameterName: nameof(Classroom.UpdatedBy),
                     parameterValue: classroom.UpdatedBy);
 
                 case { } when classroom.UpdatedDate != classroom.CreatedDate:
-                    throw new InvalidClassroomException(
+                    throw new InvalidClassroomInputException(
                     parameterName: nameof(Classroom.UpdatedDate),
                     parameterValue: classroom.UpdatedDate);
 
                 case { } when IsDateNotRecent(classroom.CreatedDate):
-                    throw new InvalidClassroomException(
+                    throw new InvalidClassroomInputException(
                     parameterName: nameof(Classroom.CreatedDate),
                     parameterValue: classroom.CreatedDate);
 
@@ -62,22 +62,22 @@ namespace OtripleS.Web.Api.Services.Classrooms
             switch (classroom)
             {
                 case { } when IsInvalid(classroom.CreatedBy):
-                    throw new InvalidClassroomException(
+                    throw new InvalidClassroomInputException(
                     parameterName: nameof(Classroom.CreatedBy),
                     parameterValue: classroom.CreatedBy);
 
                 case { } when IsInvalid(classroom.CreatedDate):
-                    throw new InvalidClassroomException(
+                    throw new InvalidClassroomInputException(
                     parameterName: nameof(Classroom.CreatedDate),
                     parameterValue: classroom.CreatedDate);
 
                 case { } when IsInvalid(classroom.UpdatedBy):
-                    throw new InvalidClassroomException(
+                    throw new InvalidClassroomInputException(
                     parameterName: nameof(Classroom.UpdatedBy),
                     parameterValue: classroom.UpdatedBy);
 
                 case { } when IsInvalid(classroom.UpdatedDate):
-                    throw new InvalidClassroomException(
+                    throw new InvalidClassroomInputException(
                     parameterName: nameof(Classroom.UpdatedDate),
                     parameterValue: classroom.UpdatedDate);
             }
@@ -87,7 +87,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
         {
             if (IsInvalid(classroom.Name))
             {
-                throw new InvalidClassroomException(
+                throw new InvalidClassroomInputException(
                     parameterName: nameof(Classroom.Name),
                     parameterValue: classroom.Name);
             }
@@ -105,7 +105,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
         {
             if (classroomId == default)
             {
-                throw new InvalidClassroomException(
+                throw new InvalidClassroomInputException(
                     parameterName: nameof(Classroom.Id),
                     parameterValue: classroomId);
             }
