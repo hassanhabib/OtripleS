@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Brokers\Storage\IStorageBroker.Guardians.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.5">
@@ -18,5 +22,8 @@
   <ItemGroup>
     <Folder Include="Models\Users\Exceptions\" />
     <Folder Include="Brokers\UserManagement\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Brokers\Storage\IStorageBroker.Guardians.cs" />
   </ItemGroup>
 </Project>
