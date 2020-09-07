@@ -15,7 +15,6 @@ namespace OtripleS.Web.Api.Models.Guardian
         public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string FamilyName { get; set; }
-        public GuardianRelationship Relationship { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset UpdatedDate { get; set; }
         public Guid CreatedBy { get; set; }
