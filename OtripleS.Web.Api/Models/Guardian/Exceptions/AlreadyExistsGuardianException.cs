@@ -13,6 +13,7 @@ namespace OtripleS.Web.Api.Models.Guardian.Exceptions
     public class AlreadyExistsGuardianException:Exception
     {
         public AlreadyExistsGuardianException(Exception innerException)
-        : base("Guardian with the same id already exists.", innerException) { }
+            : base("Guardian with the same id already exists.", innerException) 
+            { }
     }
 }

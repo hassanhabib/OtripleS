@@ -14,6 +14,6 @@ namespace OtripleS.Web.Api.Models.Guardian.Exceptions
     public class GuardianServiceException:Exception
     {
         public GuardianServiceException(Exception innerException)
-        : base("Service error occurred, contact support.", innerException) { }
+            : base("Service error occurred, contact support.", innerException) { }
     }
 }
