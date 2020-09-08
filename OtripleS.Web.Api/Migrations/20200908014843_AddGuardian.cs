@@ -1,8 +1,4 @@
-// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
-// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OtripleS.Web.Api.Migrations
@@ -18,7 +14,6 @@ namespace OtripleS.Web.Api.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
                     FamilyName = table.Column<string>(nullable: true),
-                    Relationship = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(nullable: false),
                     UpdatedDate = table.Column<DateTimeOffset>(nullable: false),
                     CreatedBy = table.Column<Guid>(nullable: false),

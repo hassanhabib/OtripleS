@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <Compile Remove="Brokers\Storage\IStorageBroker.Guardians.cs" />
+    <Compile Remove="Migrations\20200907054733_AddGuardian.cs" />
+    <Compile Remove="Migrations\20200907054733_AddGuardian.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
