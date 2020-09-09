@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.Guardians
 
         public IQueryable<Guardian> RetrieveAllGuardians()
         {
-            throw new NotImplementedException();
+            return this.storageBroker.SelectAllGuardians();
         }
 
         public ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId) =>
