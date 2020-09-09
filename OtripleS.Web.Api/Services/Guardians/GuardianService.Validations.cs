@@ -14,6 +14,7 @@ namespace OtripleS.Web.Api.Services.Guardians
         private void ValidateGuardian(Guardian guardian)
         {
             ValidateGuardianIdIsNotNull(guardian);
+            ValidateGuardianId(guardian.Id);
         }
 
         private void ValidateGuardianIdIsNotNull(Guardian guardian)
