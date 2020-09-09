@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Guardian;
 using OtripleS.Web.Api.Models.Guardian.Exceptions;
@@ -52,6 +53,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomGuardianId = Guid.NewGuid();
+            Guid inputGuardianId = randomGuardianId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedGuardianDependencyException =
+                new GuardianDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectGuardianByIdAsync(inputGuardianId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<Guardian> retrieveGuardianTask =
+                this.guardianService.RetrieveGuardianByIdAsync(inputGuardianId);
+
+            // then
+            await Assert.ThrowsAsync<GuardianDependencyException>(() =>
+                retrieveGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianByIdAsync(inputGuardianId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
