@@ -12,34 +12,36 @@ using OtripleS.Web.Api.Models.Guardian;
 
 namespace OtripleS.Web.Api.Services.Guardians
 {
-    public partial class GuardianService : IGuardianService
-    {
-        private readonly IStorageBroker storageBroker;
-        private readonly ILoggingBroker loggingBroker;
-        private readonly IDateTimeBroker dateTimeBroker;
+	public partial class GuardianService : IGuardianService
+	{
+		private readonly IStorageBroker storageBroker;
+		private readonly ILoggingBroker loggingBroker;
+		private readonly IDateTimeBroker dateTimeBroker;
 
-        public GuardianService(IStorageBroker storageBroker,
-            ILoggingBroker loggingBroker,
-            IDateTimeBroker dateTimeBroker)
-        {
-            this.storageBroker = storageBroker;
-            this.loggingBroker = loggingBroker;
-            this.dateTimeBroker = dateTimeBroker;
-        }
+		public GuardianService(IStorageBroker storageBroker,
+			ILoggingBroker loggingBroker,
+			IDateTimeBroker dateTimeBroker)
+		{
+			this.storageBroker = storageBroker;
+			this.loggingBroker = loggingBroker;
+			this.dateTimeBroker = dateTimeBroker;
+		}
 
-        public ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId) =>
-        TryCatch(async () =>
-        {
-            ValidateGuardianId(guardianId);
-            Guardian storageGuardian = await this.storageBroker.SelectGuardianByIdAsync(guardianId);
-            ValidateStorageGuardian(storageGuardian, guardianId);
+		public ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId) =>
+		TryCatch(async () =>
+		{
+			ValidateGuardianId(guardianId);
+			Guardian storageGuardian = await this.storageBroker.SelectGuardianByIdAsync(guardianId);
+			ValidateStorageGuardian(storageGuardian, guardianId);
 
-            return storageGuardian;
-        });
+			return storageGuardian;
+		});
 
 		public ValueTask<Guardian> ModifyGuardianAsync(Guardian guardian)
 		{
-			throw new NotImplementedException();
+			dateTimeBroker.GetCurrentDateTime();
+			storageBroker.SelectGuardianByIdAsync(guardian.Id);
+			return storageBroker.UpdateGuardianAsync(guardian);			
 		}
 	}
 }
