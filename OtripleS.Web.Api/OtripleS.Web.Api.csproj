@@ -23,5 +23,6 @@
   <ItemGroup>
     <Folder Include="Models\Users\Exceptions\" />
     <Folder Include="Brokers\UserManagement\" />
+    <Folder Include="Services\Guardians\" />
   </ItemGroup>
 </Project>
