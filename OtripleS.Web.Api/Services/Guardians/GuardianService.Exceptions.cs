@@ -34,6 +34,10 @@ namespace OtripleS.Web.Api.Services.Guardians
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private GuardianValidationException CreateAndLogValidationException(Exception exception)
@@ -68,6 +72,14 @@ namespace OtripleS.Web.Api.Services.Guardians
             this.loggingBroker.LogError(guardianDependencyException);
 
             return guardianDependencyException;
+        }
+
+        private GuardianServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var guardianServiceException = new GuardianServiceException(exception);
+            this.loggingBroker.LogError(guardianServiceException);
+
+            return guardianServiceException;
         }
     }
 }
