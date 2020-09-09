@@ -36,6 +36,7 @@ namespace OtripleS.Web.Api.Services.Guardians
 			ValidateGuardianIds(guardian);
 			ValidateGuardianDates(guardian);
 			ValidateDatesAreNotSame(guardian);
+			ValidateUpdatedDateIsRecent(guardian);
 		}
 
 		private void ValidateGuardian(Guardian guardian)
@@ -86,6 +87,25 @@ namespace OtripleS.Web.Api.Services.Guardians
 					parameterName: nameof(guardian.UpdatedDate),
 					parameterValue: guardian.UpdatedDate);
 			}
+		}
+
+		private void ValidateUpdatedDateIsRecent(Guardian guardian)
+		{
+			if (IsDateNotRecent(guardian.UpdatedDate))
+			{
+				throw new InvalidGuardianException(
+					parameterName: nameof(guardian.UpdatedDate),
+					parameterValue: guardian.UpdatedDate);
+			}
+		}
+
+		private bool IsDateNotRecent(DateTimeOffset dateTime)
+		{
+			DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+			int oneMinute = 1;
+			TimeSpan difference = now.Subtract(dateTime);
+
+			return Math.Abs(difference.TotalMinutes) > oneMinute;
 		}
 
 		private static bool IsInvalid(Guid input) => input == default;

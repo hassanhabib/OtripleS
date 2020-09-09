@@ -41,7 +41,6 @@ namespace OtripleS.Web.Api.Services.Guardians
 		TryCatch(async () =>
 		{
 			ValidateGuardianOnModify(guardian);
-			dateTimeBroker.GetCurrentDateTime();
 			await storageBroker.SelectGuardianByIdAsync(guardian.Id);
 			return await storageBroker.UpdateGuardianAsync(guardian);
 		});
