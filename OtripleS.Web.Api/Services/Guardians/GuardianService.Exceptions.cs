@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Guardian;
 using OtripleS.Web.Api.Models.Guardian.Exceptions;
 
@@ -28,6 +29,10 @@ namespace OtripleS.Web.Api.Services.Guardians
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
             }
         }
 
@@ -53,6 +58,14 @@ namespace OtripleS.Web.Api.Services.Guardians
         {
             var guardianDependencyException = new GuardianDependencyException(exception);
             this.loggingBroker.LogCritical(guardianDependencyException);
+
+            return guardianDependencyException;
+        }
+
+        private GuardianDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var guardianDependencyException = new GuardianDependencyException(exception);
+            this.loggingBroker.LogError(guardianDependencyException);
 
             return guardianDependencyException;
         }
