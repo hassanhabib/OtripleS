@@ -4,15 +4,13 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using OtripleS.Web.Api.Models.Guardian;
 
-namespace OtripleS.Web.Api.Models.Guardian.Exceptions
+namespace OtripleS.Web.Api.Services.Guardians
 {
-    public class LockedGuardianException:Exception
+    public interface IGuardianService
     {
-        public LockedGuardianException(Exception innerException)
-            : base("Locked Guardian record exception, please try again later.", innerException) { }
+        ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId);
     }
 }
