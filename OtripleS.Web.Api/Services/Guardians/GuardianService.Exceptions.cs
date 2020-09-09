@@ -20,9 +20,9 @@ namespace OtripleS.Web.Api.Services.Guardians
             {
                 return await returningGuardianFunction();
             }
-            catch (NullGuardianException nullGuardianException)
+            catch (NotFoundGuardianException notFoundGuardianException)
             {
-                throw CreateAndLogValidationException(nullGuardianException);
+                throw CreateAndLogValidationException(notFoundGuardianException);
             }
         }
 
