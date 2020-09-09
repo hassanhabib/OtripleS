@@ -60,10 +60,6 @@ namespace OtripleS.Web.Api.Services.Guardians
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
-            catch (Exception exception)
-            {
-                throw CreateAndLogServiceException(exception);
-            }
         }
 
         private GuardianValidationException CreateAndLogValidationException(Exception exception)
