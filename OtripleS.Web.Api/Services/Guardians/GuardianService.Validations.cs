@@ -69,6 +69,11 @@ namespace OtripleS.Web.Api.Services.Guardians
 					throw new InvalidGuardianException(
 						parameterName: nameof(Guardian.CreatedDate),
 						parameterValue: guardian.CreatedDate);
+
+				case { } when guardian.UpdatedDate == default:
+					throw new InvalidGuardianException(
+						parameterName: nameof(Guardian.UpdatedDate),
+						parameterValue: guardian.UpdatedDate);
 			}
 		}
 
