@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.Guardian;
 using OtripleS.Web.Api.Models.Guardian.Exceptions;
 
@@ -24,6 +25,10 @@ namespace OtripleS.Web.Api.Services.Guardians
             {
                 throw CreateAndLogValidationException(notFoundGuardianException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
         }
 
         private GuardianValidationException CreateAndLogValidationException(Exception exception)
@@ -42,6 +47,14 @@ namespace OtripleS.Web.Api.Services.Guardians
                     parameterName: nameof(Guardian.Id),
                     parameterValue: guardianId);
             }
+        }
+
+        private GuardianDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var guardianDependencyException = new GuardianDependencyException(exception);
+            this.loggingBroker.LogCritical(guardianDependencyException);
+
+            return guardianDependencyException;
         }
     }
 }
