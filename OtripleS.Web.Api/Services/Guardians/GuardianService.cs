@@ -41,7 +41,9 @@ namespace OtripleS.Web.Api.Services.Guardians
 		TryCatch(async () =>
 		{
 			ValidateGuardianOnModify(guardian);
-			await storageBroker.SelectGuardianByIdAsync(guardian.Id);
+			Guardian maybeGuardian = await storageBroker.SelectGuardianByIdAsync(guardian.Id);
+			ValidateStorageGuardian(maybeGuardian, guardian.Id);
+
 			return await storageBroker.UpdateGuardianAsync(guardian);
 		});
 	}
