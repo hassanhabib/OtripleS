@@ -26,12 +26,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                 new GuardianValidationException(nullGuardianException);
 
             // when
-            ValueTask<Guardian> registerGuardianTask =
+            ValueTask<Guardian> createGuardianTask =
                 this.guardianService.CreateGuardianAsync(nullGuardian);
 
             // then
             await Assert.ThrowsAsync<GuardianValidationException>(() =>
-                registerGuardianTask.AsTask());
+                createGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenIdIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Guardian randomGuardian = CreateRandomGuardian(dateTime);
+            Guardian inputGuardian = randomGuardian;
+            inputGuardian.Id = default;
+
+            var invalidGuardianInputException = new InvalidGuardianException(
+                parameterName: nameof(Guardian.Id),
+                parameterValue: inputGuardian.Id);
+
+            var expectedGuardianValidationException =
+                new GuardianValidationException(invalidGuardianInputException);
+
+            // when
+            ValueTask<Guardian> createGuardianTask =
+                this.guardianService.CreateGuardianAsync(inputGuardian);
+
+            // then
+            await Assert.ThrowsAsync<GuardianValidationException>(() =>
+                createGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedGuardianValidationException))),
