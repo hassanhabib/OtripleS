@@ -12,5 +12,6 @@ namespace OtripleS.Web.Api.Services.Guardians
     public interface IGuardianService
     {
         ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId);
+        ValueTask<Guardian> ModifyGuardianAsync(Guardian guardian);
     }
 }

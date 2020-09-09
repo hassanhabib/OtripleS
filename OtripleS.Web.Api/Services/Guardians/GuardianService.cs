@@ -36,5 +36,10 @@ namespace OtripleS.Web.Api.Services.Guardians
 
             return storageGuardian;
         });
-    }
+
+		public ValueTask<Guardian> ModifyGuardianAsync(Guardian guardian)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }
