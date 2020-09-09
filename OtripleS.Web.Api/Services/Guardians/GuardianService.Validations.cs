@@ -35,6 +35,7 @@ namespace OtripleS.Web.Api.Services.Guardians
 			ValidateGuardianId(guardian.Id);
 			ValidateGuardianIds(guardian);
 			ValidateGuardianDates(guardian);
+			ValidateDatesAreNotSame(guardian);
 		}
 
 		private void ValidateGuardian(Guardian guardian)
@@ -74,6 +75,16 @@ namespace OtripleS.Web.Api.Services.Guardians
 					throw new InvalidGuardianException(
 						parameterName: nameof(Guardian.UpdatedDate),
 						parameterValue: guardian.UpdatedDate);
+			}
+		}
+
+		private void ValidateDatesAreNotSame(Guardian guardian)
+		{
+			if (guardian.CreatedDate == guardian.UpdatedDate)
+			{
+				throw new InvalidGuardianException(
+					parameterName: nameof(guardian.UpdatedDate),
+					parameterValue: guardian.UpdatedDate);
 			}
 		}
 
