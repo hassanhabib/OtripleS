@@ -33,6 +33,7 @@ namespace OtripleS.Web.Api.Services.Guardians
 		{
 			ValidateGuardian(guardian);
 			ValidateGuardianId(guardian.Id);
+			ValidateGuardianIds(guardian);
 		}
 
 		private void ValidateGuardian(Guardian guardian)
@@ -42,5 +43,18 @@ namespace OtripleS.Web.Api.Services.Guardians
 				throw new NullGuardianException();
 			}
 		}
+
+		private void ValidateGuardianIds(Guardian guardian)
+		{
+			switch (guardian)
+			{
+				case { } when IsInvalid(guardian.CreatedBy):
+					throw new InvalidGuardianException(
+						parameterName: nameof(Guardian.CreatedBy),
+						parameterValue: guardian.CreatedBy);
+			}
+		}
+
+		private static bool IsInvalid(Guid input) => input == default;
 	}
 }
