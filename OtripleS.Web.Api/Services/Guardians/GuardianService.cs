@@ -28,10 +28,14 @@ namespace OtripleS.Web.Api.Services.Guardians
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public IQueryable<Guardian> RetrieveAllGuardians()
+        public IQueryable<Guardian> RetrieveAllGuardians() =>
+        TryCatch(() =>
         {
-            return this.storageBroker.SelectAllGuardians();
-        }
+            IQueryable<Guardian> storageGuardians = this.storageBroker.SelectAllGuardians();
+            ValidateStorageGuardians(storageGuardians);
+
+            return storageGuardians;
+        });
 
         public ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId) =>
         TryCatch(async () =>

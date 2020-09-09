@@ -34,7 +34,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
             actualGuardians.Should().BeEquivalentTo(emptyStorageGuardians);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogWarning("No Guardians found in storage."),
+                broker.LogWarning("No guardians found in storage."),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
