@@ -52,6 +52,10 @@ namespace OtripleS.Web.Api.Services.Guardians
             {
                 return returningQueryableGuardianFunction();
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);
