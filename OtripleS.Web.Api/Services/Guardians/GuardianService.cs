@@ -37,11 +37,13 @@ namespace OtripleS.Web.Api.Services.Guardians
 			return storageGuardian;
 		});
 
-		public ValueTask<Guardian> ModifyGuardianAsync(Guardian guardian)
+		public ValueTask<Guardian> ModifyGuardianAsync(Guardian guardian) =>
+		TryCatch(async () =>
 		{
+			ValidateGuardianOnModify(guardian);
 			dateTimeBroker.GetCurrentDateTime();
-			storageBroker.SelectGuardianByIdAsync(guardian.Id);
-			return storageBroker.UpdateGuardianAsync(guardian);			
-		}
+			await storageBroker.SelectGuardianByIdAsync(guardian.Id);
+			return await storageBroker.UpdateGuardianAsync(guardian);
+		});
 	}
 }

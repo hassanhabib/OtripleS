@@ -9,24 +9,38 @@ using OtripleS.Web.Api.Models.Guardian.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Guardians
 {
-    public partial class GuardianService
-    {
-        private void ValidateGuardianId(Guid guardianId)
-        {
-            if (guardianId == default)
-            {
-                throw new InvalidGuardianException(
-                    parameterName: nameof(Guardian.Id),
-                    parameterValue: guardianId);
-            }
-        }
+	public partial class GuardianService
+	{
+		private void ValidateGuardianId(Guid guardianId)
+		{
+			if (guardianId == default)
+			{
+				throw new InvalidGuardianException(
+					parameterName: nameof(Guardian.Id),
+					parameterValue: guardianId);
+			}
+		}
 
-        private void ValidateStorageGuardian(Guardian storageGuardian, Guid guardianId)
-        {
-            if (storageGuardian == null)
-            {
-                throw new NotFoundGuardianException(guardianId);
-            }
-        }
-    }
+		private void ValidateStorageGuardian(Guardian storageGuardian, Guid guardianId)
+		{
+			if (storageGuardian == null)
+			{
+				throw new NotFoundGuardianException(guardianId);
+			}
+		}
+
+		private void ValidateGuardianOnModify(Guardian guardian)
+		{
+			ValidateGuardian(guardian);
+
+		}
+
+		private void ValidateGuardian(Guardian guardian)
+		{
+			if (guardian == null)
+			{
+				throw new NullGuardianException();
+			}
+		}
+	}
 }
