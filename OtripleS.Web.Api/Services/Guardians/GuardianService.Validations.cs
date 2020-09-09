@@ -112,6 +112,11 @@ namespace OtripleS.Web.Api.Services.Guardians
 					throw new InvalidGuardianException(
 						parameterName: nameof(Guardian.CreatedBy),
 						parameterValue: inputGuardian.CreatedBy);
+
+				case { } when inputGuardian.UpdatedDate == storageGuardian.UpdatedDate:
+					throw new InvalidGuardianException(
+						parameterName: nameof(Guardian.UpdatedDate),
+						parameterValue: inputGuardian.UpdatedDate);
 			}
 		}
 
