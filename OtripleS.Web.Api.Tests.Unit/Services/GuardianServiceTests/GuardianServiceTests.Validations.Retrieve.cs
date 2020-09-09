@@ -53,5 +53,47 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageGuardianIsNullAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTimeOffset = GetRandomDateTime();
+            Guid randomGuardianId = Guid.NewGuid();
+            Guid inputGuardianId = randomGuardianId;
+            Guardian nullGuardian = default;
+            var nullGuardianException = new NotFoundGuardianException(guardianId: inputGuardianId);
+
+            var expectedValidationException =
+                new GuardianValidationException(nullGuardianException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectGuardianByIdAsync(inputGuardianId))
+                    .ReturnsAsync(nullGuardian);
+
+            // when
+            ValueTask<Guardian> retrieveGuardianTask =
+                this.guardianService.RetrieveGuardianByIdAsync(inputGuardianId);
+
+            // then
+            await Assert.ThrowsAsync<GuardianValidationException>(() =>
+                retrieveGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianByIdAsync(inputGuardianId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
