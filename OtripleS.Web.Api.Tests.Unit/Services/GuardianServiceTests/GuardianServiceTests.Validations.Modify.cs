@@ -9,6 +9,7 @@ using Moq;
 using OtripleS.Web.Api.Models.Guardian;
 using Xunit;
 using OtripleS.Web.Api.Models.Guardian.Exceptions;
+using Force.DeepCloner;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 {
@@ -356,5 +357,58 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedDateNotSameAsCreateDateAndLogItAsync()
+        {
+            // given
+            int randomNumber = GetRandomNumber();
+            int randomMinutes = randomNumber;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            Guardian randomGuardian = CreateRandomGuardian(randomDate);
+            Guardian invalidGuardian = randomGuardian;
+            invalidGuardian.UpdatedDate = randomDate;
+            Guardian storageGuardian = randomGuardian.DeepClone();
+            Guid guardianId = invalidGuardian.Id;
+            invalidGuardian.CreatedDate = storageGuardian.CreatedDate.AddMinutes(randomNumber);
+
+            var invalidGuardianException = new InvalidGuardianException(
+                parameterName: nameof(Guardian.CreatedDate),
+                parameterValue: invalidGuardian.CreatedDate);
+
+            var expectedGuardianValidationException =
+              new GuardianValidationException(invalidGuardianException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectGuardianByIdAsync(guardianId))
+                    .ReturnsAsync(storageGuardian);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
+            // when
+            ValueTask<Guardian> modifyGuardianTask =
+                this.guardianService.ModifyGuardianAsync(invalidGuardian);
+
+            // then
+            await Assert.ThrowsAsync<GuardianValidationException>(() =>
+                modifyGuardianTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianByIdAsync(invalidGuardian.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
