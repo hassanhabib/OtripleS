@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Services.Guardians
 
         public ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId)
         {
-            throw new NotImplementedException();
+            return storageBroker.SelectGuardianByIdAsync(guardianId);
         }
     }
 }
