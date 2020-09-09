@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Controllers
                 IQueryable storageAttendance =
                     this.attendanceService.RetrieveAllAttendances();
 
-                return Ok();
+                return Ok(storageAttendance);
             }
             catch (AttendanceDependencyException attendanceDependencyException)
             {
