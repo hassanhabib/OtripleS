@@ -25,6 +25,7 @@ using OtripleS.Web.Api.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using OtripleS.Web.Api.Services.Users;
 using OtripleS.Web.Api.Services.Attendances;
+using OtripleS.Web.Api.Services.Guardians;
 
 namespace OtripleS.Web.Api
 {
@@ -61,6 +62,7 @@ namespace OtripleS.Web.Api
             services.AddTransient<IStudentSemesterCourseService, StudentSemesterCourseService>();
             services.AddTransient<IAttendanceService, AttendanceService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IGuardianService, GuardianService>();
 
             services.AddIdentityCore<User>()
                     .AddRoles<Role>()
