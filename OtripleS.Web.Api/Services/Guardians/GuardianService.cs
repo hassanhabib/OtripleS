@@ -27,6 +27,11 @@ namespace OtripleS.Web.Api.Services.Guardians
             this.dateTimeBroker = dateTimeBroker;
         }
 
+        public ValueTask<Guardian> CreateGuardianAsync(Guardian guardian)
+        {
+            throw new NotImplementedException();
+        }
+
         public ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId) =>
         TryCatch(async () =>
         {
