@@ -307,5 +307,54 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfGuardianDoesntExistAndLogItAsync()
+        {
+            // given
+            int randomNegativeMinutes = GetNegativeRandomNumber();
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Guardian randomGuardian = CreateRandomGuardian(dateTime);
+            Guardian nonExistentGuardian = randomGuardian;
+            nonExistentGuardian.CreatedDate = dateTime.AddMinutes(randomNegativeMinutes);
+            Guardian noGuardian = null;
+            var notFoundGuardianException = new NotFoundGuardianException(nonExistentGuardian.Id);
+
+            var expectedGuardianValidationException =
+                new GuardianValidationException(notFoundGuardianException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectGuardianByIdAsync(nonExistentGuardian.Id))
+                    .ReturnsAsync(noGuardian);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            // when
+            ValueTask<Guardian> modifyGuardianTask =
+                this.guardianService.ModifyGuardianAsync(nonExistentGuardian);
+
+            // then
+            await Assert.ThrowsAsync<GuardianValidationException>(() =>
+                modifyGuardianTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianByIdAsync(nonExistentGuardian.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
