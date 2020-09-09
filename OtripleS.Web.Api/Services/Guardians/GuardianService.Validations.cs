@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Services.Guardians
 		private void ValidateGuardianOnModify(Guardian guardian)
 		{
 			ValidateGuardian(guardian);
-
+			ValidateGuardianId(guardian.Id);
 		}
 
 		private void ValidateGuardian(Guardian guardian)
