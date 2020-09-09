@@ -40,5 +40,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyWhenGuardianIdIsInvalidAndLogItAsync()
+        {
+            //given
+            Guid invalidGuardianId = Guid.Empty;
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Guardian randomGuardian = CreateRandomGuardian(dateTime);
+            Guardian invalidGuardian = randomGuardian;
+            invalidGuardian.Id = invalidGuardianId;
+
+            var invalidGuardianException = new InvalidGuardianException(
+                parameterName: nameof(Guardian.Id),
+                parameterValue: invalidGuardian.Id);
+
+            var expectedGuardianValidationException =
+                new GuardianValidationException(invalidGuardianException);
+
+            //when
+            ValueTask<Guardian> modifyGuardianTask =
+                this.guardianService.ModifyGuardianAsync(invalidGuardian);
+
+            //then
+            await Assert.ThrowsAsync<GuardianValidationException>(() =>
+                modifyGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianValidationException))),
+                Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
