@@ -15,7 +15,22 @@ namespace OtripleS.Web.Api.Services.Guardians
         {
             ValidateGuardianIdIsNotNull(guardian);
             ValidateGuardianId(guardian.Id);
+            ValidateGuardianRequiredFields(guardian);
         }
+
+        private void ValidateGuardianRequiredFields(Guardian guardian)
+        {
+            switch(guardian)
+            {
+                case { } when IsInvalid(guardian.FirstName):
+                    throw new InvalidGuardianException(
+                        parameterName: nameof(Guardian.FirstName),
+                        parameterValue: guardian.FirstName);
+            }
+        }
+
+        private bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);
+        private bool IsInvalid(Guid input) => input == default;
 
         private void ValidateGuardianIdIsNotNull(Guardian guardian)
         {
@@ -27,7 +42,7 @@ namespace OtripleS.Web.Api.Services.Guardians
 
         private void ValidateGuardianId(Guid guardianId)
         {
-            if (guardianId == default)
+            if (IsInvalid(guardianId))
             {
                 throw new InvalidGuardianException(
                     parameterName: nameof(Guardian.Id),
