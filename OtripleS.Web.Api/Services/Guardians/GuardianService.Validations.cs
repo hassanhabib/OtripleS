@@ -11,6 +11,16 @@ namespace OtripleS.Web.Api.Services.Guardians
 {
     public partial class GuardianService
     {
+        private void ValidateGuardianId(Guid guardianId)
+        {
+            if (guardianId == default)
+            {
+                throw new InvalidGuardianException(
+                    parameterName: nameof(Guardian.Id),
+                    parameterValue: guardianId);
+            }
+        }
+
         private void ValidateStorageGuardian(Guardian storageGuardian, Guid guardianId)
         {
             if (storageGuardian == null)

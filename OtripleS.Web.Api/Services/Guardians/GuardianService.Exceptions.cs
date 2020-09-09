@@ -22,6 +22,10 @@ namespace OtripleS.Web.Api.Services.Guardians
             {
                 return await returningGuardianFunction();
             }
+            catch (InvalidGuardianException invalidGuardianException)
+            {
+                throw CreateAndLogValidationException(invalidGuardianException);
+            }
             catch (NotFoundGuardianException notFoundGuardianException)
             {
                 throw CreateAndLogValidationException(notFoundGuardianException);
@@ -46,16 +50,6 @@ namespace OtripleS.Web.Api.Services.Guardians
             this.loggingBroker.LogError(GuardianValidationException);
 
             return GuardianValidationException;
-        }
-
-        private void ValidateGuardianId(Guid guardianId)
-        {
-            if (guardianId == default)
-            {
-                throw new InvalidGuardianException(
-                    parameterName: nameof(Guardian.Id),
-                    parameterValue: guardianId);
-            }
         }
 
         private GuardianDependencyException CreateAndLogCriticalDependencyException(Exception exception)
