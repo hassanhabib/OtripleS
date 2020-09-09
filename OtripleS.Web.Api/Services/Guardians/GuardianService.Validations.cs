@@ -99,6 +99,17 @@ namespace OtripleS.Web.Api.Services.Guardians
 			}
 		}
 
+		private void ValidateAgainstStorageGuardianOnModify(Guardian inputGuardian, Guardian storageGuardian)
+		{
+			switch (inputGuardian)
+			{
+				case { } when inputGuardian.CreatedDate != storageGuardian.CreatedDate:
+					throw new InvalidGuardianException(
+						parameterName: nameof(Guardian.CreatedDate),
+						parameterValue: inputGuardian.CreatedDate);
+			}
+		}
+
 		private bool IsDateNotRecent(DateTimeOffset dateTime)
 		{
 			DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
