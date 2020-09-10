@@ -43,6 +43,8 @@ namespace OtripleS.Web.Api.Services.Guardians
             Guardian maybeGuardian =
                 await this.storageBroker.SelectGuardianByIdAsync(guardianId);
 
+            ValidateStorageGuardian(maybeGuardian, guardianId);
+
             return await this.storageBroker.DeleteGuardianAsync(maybeGuardian);
         });
 
