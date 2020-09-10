@@ -35,9 +35,12 @@ namespace OtripleS.Web.Api.Services.Guardians
             return await this.storageBroker.InsertGuardianAsync(guardian);
         });
 
-        public ValueTask<Guardian> DeleteGuardianAsync(Guid guardianId)
+        public async ValueTask<Guardian> DeleteGuardianAsync(Guid guardianId)
         {
-            throw new NotImplementedException();
+            Guardian maybeGuardian =
+                await this.storageBroker.SelectGuardianByIdAsync(guardianId);
+
+            return await this.storageBroker.DeleteGuardianAsync(maybeGuardian);
         }
 
         public ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId) =>
