@@ -32,6 +32,16 @@ namespace OtripleS.Web.Api.Services.Guardians
                     throw new InvalidGuardianException(
                         parameterName: nameof(Guardian.CreatedDate),
                         parameterValue: guardian.CreatedDate);
+
+                case { } when IsInvalid(input: guardian.UpdatedBy):
+                    throw new InvalidGuardianException(
+                        parameterName: nameof(Guardian.UpdatedBy),
+                        parameterValue: guardian.UpdatedBy);
+
+                case { } when IsInvalid(input: guardian.UpdatedDate):
+                    throw new InvalidGuardianException(
+                        parameterName: nameof(Guardian.UpdatedDate),
+                        parameterValue: guardian.UpdatedDate);
             }
         }
 
@@ -47,12 +57,7 @@ namespace OtripleS.Web.Api.Services.Guardians
                 case { } when IsInvalid(input: guardian.FamilyName):
                     throw new InvalidGuardianException(
                         parameterName: nameof(Guardian.FamilyName),
-                        parameterValue: guardian.FamilyName);
-
-                case { } when IsInvalid(input: guardian.UpdatedBy):
-                    throw new InvalidGuardianException(
-                        parameterName: nameof(Guardian.UpdatedBy),
-                        parameterValue: guardian.UpdatedBy);
+                        parameterValue: guardian.FamilyName);                
             }
         }
 
