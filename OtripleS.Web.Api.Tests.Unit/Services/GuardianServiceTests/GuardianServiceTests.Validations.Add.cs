@@ -87,7 +87,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
-        public async Task ShouldThrowValidationExceptionOnCreateWhenGuardianFirstNameIsInvalidAndLogItAsync(
+        public async Task ShouldThrowValidationExceptionOnAddWhenGuardianFirstNameIsInvalidAndLogItAsync(
             string invalidGuardianFirstName)
         {
             // given
@@ -124,7 +124,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
-        public async Task ShouldThrowValidationExceptionOnCreateWhenGuardianFamilyNameIsInvalidAndLogItAsync(
+        public async Task ShouldThrowValidationExceptionOnAddWhenGuardianFamilyNameIsInvalidAndLogItAsync(
             string invalidGuardianFirstName)
         {
             // given
@@ -158,7 +158,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedByIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddWhenCreatedByIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -195,7 +195,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedDateIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddWhenCreatedDateIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -232,7 +232,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedByIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddWhenUpdatedByIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -269,7 +269,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedDateIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddWhenUpdatedDateIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -280,6 +280,43 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
             var invalidGuardianInputException = new InvalidGuardianException(
                 parameterName: nameof(Guardian.UpdatedDate),
                 parameterValue: inputGuardian.UpdatedDate);
+
+            var expectedGuardianValidationException =
+                new GuardianValidationException(invalidGuardianInputException);
+
+            // when
+            ValueTask<Guardian> createGuardianTask =
+                this.guardianService.CreateGuardianAsync(inputGuardian);
+
+            // then
+            await Assert.ThrowsAsync<GuardianValidationException>(() =>
+                createGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenUpdatedByIsNotSameToCreatedByAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Guardian randomGuardian = CreateRandomGuardian(dateTime);
+            Guardian inputGuardian = randomGuardian;
+            inputGuardian.UpdatedBy = Guid.NewGuid();
+
+            var invalidGuardianInputException = new InvalidGuardianException(
+                parameterName: nameof(Guardian.UpdatedBy),
+                parameterValue: inputGuardian.UpdatedBy);
 
             var expectedGuardianValidationException =
                 new GuardianValidationException(invalidGuardianInputException);
