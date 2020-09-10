@@ -24,6 +24,10 @@ namespace OtripleS.Web.Api.Services.Guardians
             {
                 return await returningGuardianFunction();
             }
+            catch (NullGuardianException nullGuardianException)
+            {
+                throw CreateAndLogValidationException(nullGuardianException);
+            }
             catch (InvalidGuardianException invalidGuardianException)
             {
                 throw CreateAndLogValidationException(invalidGuardianException);
@@ -35,6 +39,12 @@ namespace OtripleS.Web.Api.Services.Guardians
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedGuardianException = new LockedGuardianException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedGuardianException);
             }
             catch (DbUpdateException dbUpdateException)
             {
