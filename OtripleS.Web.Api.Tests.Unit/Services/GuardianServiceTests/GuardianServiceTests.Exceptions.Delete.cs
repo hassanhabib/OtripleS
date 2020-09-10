@@ -126,5 +126,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomGuardianId = Guid.NewGuid();
+            Guid inputGuardianId = randomGuardianId;
+            var exception = new Exception();
+
+            var expectedGuardianServiceException =
+                new GuardianServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectGuardianByIdAsync(inputGuardianId))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<Guardian> deleteGuardianTask =
+                this.guardianService.DeleteGuardianAsync(inputGuardianId);
+
+            // then
+            await Assert.ThrowsAsync<GuardianServiceException>(() =>
+                deleteGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianByIdAsync(inputGuardianId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
