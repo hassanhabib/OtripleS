@@ -16,6 +16,18 @@ namespace OtripleS.Web.Api.Services.Guardians
             ValidateGuardianIdIsNotNull(guardian);
             ValidateGuardianId(guardian.Id);
             ValidateGuardianRequiredFields(guardian);
+            ValidateGuardianAuditFieldsOnCreate(guardian);
+        }
+
+        private void ValidateGuardianAuditFieldsOnCreate(Guardian guardian)
+        {
+            switch (guardian)
+            {
+                case { } when IsInvalid(input: guardian.CreatedBy):
+                    throw new InvalidGuardianException(
+                        parameterName: nameof(Guardian.CreatedBy),
+                        parameterValue: guardian.CreatedBy);
+            }
         }
 
         private void ValidateGuardianRequiredFields(Guardian guardian)
