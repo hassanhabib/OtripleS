@@ -27,6 +27,11 @@ namespace OtripleS.Web.Api.Services.Guardians
                     throw new InvalidGuardianException(
                         parameterName: nameof(Guardian.CreatedBy),
                         parameterValue: guardian.CreatedBy);
+
+                case { } when IsInvalid(input: guardian.CreatedDate):
+                    throw new InvalidGuardianException(
+                        parameterName: nameof(Guardian.CreatedDate),
+                        parameterValue: guardian.CreatedDate);
             }
         }
 
@@ -48,6 +53,8 @@ namespace OtripleS.Web.Api.Services.Guardians
 
         private bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);
         private bool IsInvalid(Guid input) => input == default;
+        private bool IsInvalid(DateTimeOffset input) => input == default;
+
 
         private void ValidateGuardianIdIsNotNull(Guardian guardian)
         {
