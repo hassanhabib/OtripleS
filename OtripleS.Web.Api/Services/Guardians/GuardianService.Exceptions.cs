@@ -38,6 +38,12 @@ namespace OtripleS.Web.Api.Services.Guardians
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedGuardianException = new LockedGuardianException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedGuardianException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
