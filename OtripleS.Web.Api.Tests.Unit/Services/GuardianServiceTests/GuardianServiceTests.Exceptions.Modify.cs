@@ -109,5 +109,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            int randomNegativeNumber = GetNegativeRandomNumber();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Guardian randomGuardian = CreateRandomGuardian(randomDateTime);
+            Guardian someGuardian = randomGuardian;
+            someGuardian.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+            var lockedGuardianException = new LockedGuardianException(databaseUpdateConcurrencyException);
+
+            var expectedGuardianDependencyException =
+                new GuardianDependencyException(lockedGuardianException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectGuardianByIdAsync(someGuardian.Id))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
+
+            // when
+            ValueTask<Guardian> modifyGuardianTask =
+                this.guardianService.ModifyGuardianAsync(someGuardian);
+
+            // then
+            await Assert.ThrowsAsync<GuardianDependencyException>(() =>
+                modifyGuardianTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianByIdAsync(someGuardian.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianDependencyException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
