@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 
             // when
             ValueTask<Guardian> deleteGuardianTask =
-                this.guardianService.DeleteGuardianAsync(inputGuardianId);
+                this.guardianService.DeleteGuardianByIdAsync(inputGuardianId);
 
             // then
             await Assert.ThrowsAsync<GuardianValidationException>(() =>
@@ -73,7 +73,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 
             // when
             ValueTask<Guardian> deleteGuardianTask =
-                this.guardianService.DeleteGuardianAsync(inputGuardianId);
+                this.guardianService.DeleteGuardianByIdAsync(inputGuardianId);
 
             // then
             await Assert.ThrowsAsync<GuardianValidationException>(() =>
