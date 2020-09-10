@@ -9,6 +9,7 @@ using Moq;
 using OtripleS.Web.Api.Models.Guardian;
 using Xunit;
 using OtripleS.Web.Api.Models.Guardian.Exceptions;
+using EFxceptions.Models.Exceptions;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 {
@@ -379,5 +380,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
     }
 }

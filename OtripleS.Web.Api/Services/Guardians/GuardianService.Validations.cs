@@ -47,6 +47,16 @@ namespace OtripleS.Web.Api.Services.Guardians
                     throw new InvalidGuardianException(
                         parameterName: nameof(Guardian.UpdatedBy),
                         parameterValue: guardian.UpdatedBy);
+
+                case { } when guardian.UpdatedDate != guardian.CreatedDate:
+                    throw new InvalidGuardianException(
+                        parameterName: nameof(Guardian.UpdatedDate),
+                        parameterValue: guardian.UpdatedDate);
+
+                case { } when IsDateNotRecent(guardian.CreatedDate):
+                    throw new InvalidGuardianException(
+                        parameterName: nameof(Guardian.CreatedDate),
+                        parameterValue: guardian.CreatedDate);
             }
         }
 
@@ -70,6 +80,14 @@ namespace OtripleS.Web.Api.Services.Guardians
         private bool IsInvalid(Guid input) => input == default;
         private bool IsInvalid(DateTimeOffset input) => input == default;
 
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
 
         private void ValidateGuardianIdIsNotNull(Guardian guardian)
         {
