@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.Guardian;
 using OtripleS.Web.Api.Models.Guardian.Exceptions;
 
@@ -112,6 +113,14 @@ namespace OtripleS.Web.Api.Services.Guardians
             if (storageGuardian == null)
             {
                 throw new NotFoundGuardianException(guardianId);
+            }
+        }
+
+        private void ValidateStorageGuardians(IQueryable<Guardian> storageGuardians)
+        {
+            if (storageGuardians.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No guardians found in storage.");
             }
         }
     }

@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
@@ -54,6 +55,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 
         private Guardian CreateRandomGuardian(DateTimeOffset dateTime) =>
             CreateRandomGuardianFiller(dateTime).Create();
+
+        private IQueryable<Guardian> CreateRandomGuardians(DateTimeOffset dateTime) =>
+            CreateRandomGuardianFiller(dateTime).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();

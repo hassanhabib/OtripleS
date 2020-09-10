@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -26,6 +27,15 @@ namespace OtripleS.Web.Api.Services.Guardians
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
         }
+
+        public IQueryable<Guardian> RetrieveAllGuardians() =>
+        TryCatch(() =>
+        {
+            IQueryable<Guardian> storageGuardians = this.storageBroker.SelectAllGuardians();
+            ValidateStorageGuardians(storageGuardians);
+
+            return storageGuardians;
+        });
 
         public ValueTask<Guardian> CreateGuardianAsync(Guardian guardian) =>
         TryCatch(async () =>
