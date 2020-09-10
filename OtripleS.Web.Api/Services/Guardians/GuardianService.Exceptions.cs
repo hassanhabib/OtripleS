@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace OtripleS.Web.Api.Services.Guardians
     public partial class GuardianService
     {
         private delegate ValueTask<Guardian> ReturningGuardianFunction();
+        private delegate IQueryable<Guardian> ReturningQueryableGuardianFunction();
 
         private async ValueTask<Guardian> TryCatch(ReturningGuardianFunction returningGuardianFunction)
         {
@@ -29,6 +31,26 @@ namespace OtripleS.Web.Api.Services.Guardians
             catch (NotFoundGuardianException notFoundGuardianException)
             {
                 throw CreateAndLogValidationException(notFoundGuardianException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private IQueryable<Guardian> TryCatch(ReturningQueryableGuardianFunction returningQueryableGuardianFunction)
+        {
+            try
+            {
+                return returningQueryableGuardianFunction();
             }
             catch (SqlException sqlException)
             {

@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -42,6 +43,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
         private Guardian CreateRandomGuardian(DateTimeOffset dateTime) =>
             CreateRandomGuardianFiller(dateTime).Create();
 
+        private IQueryable<Guardian> CreateRandomGuardians(DateTimeOffset dateTime) =>
+            CreateRandomGuardianFiller(dateTime).Create(GetRandomNumber()).AsQueryable();
+
         private Filler<Guardian> CreateRandomGuardianFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Guardian>();
@@ -61,5 +65,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static int GetRandomNumber() => new IntRange(min: 1, max: 150).GetValue();
     }
 }
