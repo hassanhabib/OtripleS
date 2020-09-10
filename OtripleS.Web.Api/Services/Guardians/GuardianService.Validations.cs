@@ -42,6 +42,11 @@ namespace OtripleS.Web.Api.Services.Guardians
                     throw new InvalidGuardianException(
                         parameterName: nameof(Guardian.UpdatedDate),
                         parameterValue: guardian.UpdatedDate);
+
+                case { } when guardian.UpdatedBy != guardian.CreatedBy:
+                    throw new InvalidGuardianException(
+                        parameterName: nameof(Guardian.UpdatedBy),
+                        parameterValue: guardian.UpdatedBy);
             }
         }
 
