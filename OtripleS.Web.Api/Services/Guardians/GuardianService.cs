@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -27,12 +28,21 @@ namespace OtripleS.Web.Api.Services.Guardians
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-		public ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId) =>
-		TryCatch(async () =>
-		{
-			ValidateGuardianId(guardianId);
-			Guardian storageGuardian = await this.storageBroker.SelectGuardianByIdAsync(guardianId);
-			ValidateStorageGuardian(storageGuardian, guardianId);
+        public IQueryable<Guardian> RetrieveAllGuardians() =>
+        TryCatch(() =>
+        {
+            IQueryable<Guardian> storageGuardians = this.storageBroker.SelectAllGuardians();
+            ValidateStorageGuardians(storageGuardians);
+
+            return storageGuardians;
+        });
+
+        public ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId) =>
+        TryCatch(async () =>
+        {
+            ValidateGuardianId(guardianId);
+            Guardian storageGuardian = await this.storageBroker.SelectGuardianByIdAsync(guardianId);
+            ValidateStorageGuardian(storageGuardian, guardianId);
 
 			return storageGuardian;
 		});
@@ -44,7 +54,6 @@ namespace OtripleS.Web.Api.Services.Guardians
 			Guardian maybeGuardian = await storageBroker.SelectGuardianByIdAsync(guardian.Id);
 			ValidateStorageGuardian(maybeGuardian, guardian.Id);
 			ValidateAgainstStorageGuardianOnModify(inputGuardian: guardian, storageGuardian: maybeGuardian);
-
 
 			return await storageBroker.UpdateGuardianAsync(guardian);
 		});
