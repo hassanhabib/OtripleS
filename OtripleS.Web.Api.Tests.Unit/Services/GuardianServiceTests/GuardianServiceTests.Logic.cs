@@ -74,7 +74,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
-                    Times.Never);
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertGuardianAsync(inputGuardian),

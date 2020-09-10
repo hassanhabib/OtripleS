@@ -130,7 +130,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 
             // when
             ValueTask<Guardian> createGuardianTask =
-                 this.guardianService.c(inputGuardian);
+                 this.guardianService.CreateGuardianAsync(inputGuardian);
 
             // then
             await Assert.ThrowsAsync<GuardianServiceException>(() =>
