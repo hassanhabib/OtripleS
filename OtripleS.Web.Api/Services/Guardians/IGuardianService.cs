@@ -13,5 +13,6 @@ namespace OtripleS.Web.Api.Services.Guardians
     {
         ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId);
         ValueTask<Guardian> CreateGuardianAsync(Guardian guardian);
+        ValueTask<Guardian> DeleteGuardianAsync(Guid guardianId);
     }
 }
