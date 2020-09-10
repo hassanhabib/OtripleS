@@ -5,10 +5,12 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Guardian;
 using OtripleS.Web.Api.Models.Guardian.Exceptions;
+using OtripleS.Web.Api.Models.Guardians.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Guardians
 {
@@ -37,6 +39,13 @@ namespace OtripleS.Web.Api.Services.Guardians
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsGuardianException =
+                    new AlreadyExistsGuardianException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsGuardianException);
             }
             catch (DbUpdateException dbUpdateException)
             {
