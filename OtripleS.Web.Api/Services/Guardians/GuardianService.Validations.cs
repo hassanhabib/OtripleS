@@ -22,10 +22,15 @@ namespace OtripleS.Web.Api.Services.Guardians
         {
             switch(guardian)
             {
-                case { } when IsInvalid(guardian.FirstName):
+                case { } when IsInvalid(input: guardian.FirstName):
                     throw new InvalidGuardianException(
                         parameterName: nameof(Guardian.FirstName),
                         parameterValue: guardian.FirstName);
+
+                case { } when IsInvalid(input: guardian.FamilyName):
+                    throw new InvalidGuardianException(
+                        parameterName: nameof(Guardian.FamilyName),
+                        parameterValue: guardian.FamilyName);
             }
         }
 

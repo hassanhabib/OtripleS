@@ -131,7 +131,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
             DateTimeOffset dateTime = GetRandomDateTime();
             Guardian randomGuardian = CreateRandomGuardian(dateTime);
             Guardian invalidGuardian = randomGuardian;
-            invalidGuardian.FirstName = invalidGuardianFirstName;
+            invalidGuardian.FamilyName = invalidGuardianFirstName;
 
             var invalidGuardianException = new InvalidGuardianException(
                parameterName: nameof(Guardian.FamilyName),
