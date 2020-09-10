@@ -5,15 +5,15 @@
 
 using System;
 using System.Threading.Tasks;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Guardian;
-using Xunit;
 using OtripleS.Web.Api.Models.Guardian.Exceptions;
-using Force.DeepCloner;
+using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 {
-    public partial class GuardianServiceTests
+	public partial class GuardianServiceTests
     {
         [Fact]
         public async Task ShouldThrowValidationExceptionOnModifyWhenGuardianIsNullAndLogItAsync()
@@ -112,7 +112,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
-
 
         [Fact]
         public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedByIsInvalidAndLogItAsync()
