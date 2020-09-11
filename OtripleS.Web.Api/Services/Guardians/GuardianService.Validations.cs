@@ -80,6 +80,15 @@ namespace OtripleS.Web.Api.Services.Guardians
         private bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);
         private bool IsInvalid(Guid input) => input == default;
         private bool IsInvalid(DateTimeOffset input) => input == default;
+        
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
 
         private void ValidateGuardianIdIsNotNull(Guardian guardian)
         {
@@ -109,20 +118,12 @@ namespace OtripleS.Web.Api.Services.Guardians
 
 		private void ValidateGuardianOnModify(Guardian guardian)
 		{
-			ValidateGuardian(guardian);
+            ValidateGuardianIdIsNotNull(guardian);
 			ValidateGuardianId(guardian.Id);
 			ValidateGuardianIds(guardian);
 			ValidateGuardianDates(guardian);
 			ValidateDatesAreNotSame(guardian);
 			ValidateUpdatedDateIsRecent(guardian);
-		}
-
-		private void ValidateGuardian(Guardian guardian)
-		{
-			if (guardian == null)
-			{
-				throw new NullGuardianException();
-			}
 		}
 
 		private void ValidateGuardianIds(Guardian guardian)
@@ -196,15 +197,6 @@ namespace OtripleS.Web.Api.Services.Guardians
 						parameterName: nameof(Guardian.UpdatedDate),
 						parameterValue: inputGuardian.UpdatedDate);
 			}
-		}
-
-		private bool IsDateNotRecent(DateTimeOffset dateTime)
-		{
-			DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
-			int oneMinute = 1;
-			TimeSpan difference = now.Subtract(dateTime);
-
-			return Math.Abs(difference.TotalMinutes) > oneMinute;
 		}
 
 		private void ValidateStorageGuardians(IQueryable<Guardian> storageGuardians)
