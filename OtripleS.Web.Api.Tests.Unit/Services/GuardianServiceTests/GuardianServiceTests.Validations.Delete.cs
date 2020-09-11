@@ -6,15 +6,13 @@
 using System;
 using System.Threading.Tasks;
 using Moq;
-using OtripleS.Web.Api.Models.Guardian;
-using Xunit;
-using OtripleS.Web.Api.Models.Guardian.Exceptions;
-using EFxceptions.Models.Exceptions;
+using OtripleS.Web.Api.Models.Guardians;
 using OtripleS.Web.Api.Models.Guardians.Exceptions;
+using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 {
-    public partial class GuardianServiceTests
+	public partial class GuardianServiceTests
     {
         [Fact]
         public async void ShouldThrowValidationExceptionOnDeleteWhenIdIsInvalidAndLogItAsync()

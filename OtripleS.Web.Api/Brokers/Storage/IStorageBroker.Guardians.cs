@@ -3,15 +3,14 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using OtripleS.Web.Api.Models.Guardian;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OtripleS.Web.Api.Models.Guardians;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
-    public partial interface IStorageBroker
+	public partial interface IStorageBroker
     {
         ValueTask<Guardian> InsertGuardianAsync(Guardian guardian);
         IQueryable<Guardian> SelectAllGuardians();

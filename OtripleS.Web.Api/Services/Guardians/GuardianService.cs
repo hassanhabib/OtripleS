@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
-using OtripleS.Web.Api.Models.Guardian;
+using OtripleS.Web.Api.Models.Guardians;
 
 namespace OtripleS.Web.Api.Services.Guardians
 {
