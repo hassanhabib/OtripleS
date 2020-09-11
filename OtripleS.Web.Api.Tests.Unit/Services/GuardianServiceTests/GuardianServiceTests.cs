@@ -38,6 +38,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
+
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
@@ -46,6 +58,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 
         private IQueryable<Guardian> CreateRandomGuardians(DateTimeOffset dateTime) =>
             CreateRandomGuardianFiller(dateTime).Create(GetRandomNumber()).AsQueryable();
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
 
         private Filler<Guardian> CreateRandomGuardianFiller(DateTimeOffset dateTime)
         {
@@ -66,20 +82,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
-
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
-        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
-
-        public static IEnumerable<object[]> InvalidMinuteCases()
-        {
-            int randomMoreThanMinuteFromNow = GetRandomNumber();
-            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
-
-            return new List<object[]>
-            {
-                new object[] { randomMoreThanMinuteFromNow },
-                new object[] { randomMoreThanMinuteBeforeNow }
-            };
-        }
     }
 }
