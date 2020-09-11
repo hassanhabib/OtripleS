@@ -40,7 +40,7 @@ namespace OtripleS.Web.Api.Services.Guardians
         public ValueTask<Guardian> CreateGuardianAsync(Guardian guardian) =>
         TryCatch(async () =>
         {
-            ValidateGuardianOnCreate(guardian);
+			ValidateGuardianOnCreate(guardian);
 
             return await this.storageBroker.InsertGuardianAsync(guardian);
         });

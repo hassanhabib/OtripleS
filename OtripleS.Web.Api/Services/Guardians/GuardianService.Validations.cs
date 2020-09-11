@@ -10,9 +10,9 @@ using OtripleS.Web.Api.Models.Guardian.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Guardians
 {
-    public partial class GuardianService
-    {
-        private void ValidateGuardianOnCreate(Guardian guardian)
+	public partial class GuardianService
+	{
+		private void ValidateGuardianOnCreate(Guardian guardian)
         {
             ValidateGuardianIdIsNotNull(guardian);
             ValidateGuardianId(guardian.Id);
@@ -80,7 +80,7 @@ namespace OtripleS.Web.Api.Services.Guardians
         private bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);
         private bool IsInvalid(Guid input) => input == default;
         private bool IsInvalid(DateTimeOffset input) => input == default;
-
+        
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
@@ -199,7 +199,7 @@ namespace OtripleS.Web.Api.Services.Guardians
 			}
 		}
 
-        private void ValidateStorageGuardians(IQueryable<Guardian> storageGuardians)
+		private void ValidateStorageGuardians(IQueryable<Guardian> storageGuardians)
         {
             if (storageGuardians.Count() == 0)
             {
