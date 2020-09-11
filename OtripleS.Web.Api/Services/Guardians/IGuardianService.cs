@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.Guardian;
 
@@ -12,6 +13,8 @@ namespace OtripleS.Web.Api.Services.Guardians
     public interface IGuardianService
     {
         ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId);
+        IQueryable<Guardian> RetrieveAllGuardians();
+        ValueTask<Guardian> ModifyGuardianAsync(Guardian guardian);
         ValueTask<Guardian> CreateGuardianAsync(Guardian guardian);
     }
 }
