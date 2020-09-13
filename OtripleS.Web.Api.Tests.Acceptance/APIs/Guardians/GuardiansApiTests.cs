@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using OtripleS.Web.Api.Models.Guardians;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
@@ -16,6 +17,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
 
 		private Guardian CreateRandomGuardian() =>
 			CreateRandomGuardianFiller().Create();
+
+		private IEnumerable<Guardian> GetRandomGuardians() =>
+			CreateRandomGuardianFiller().Create(GetRandomNumber());
 
 		private Filler<Guardian> CreateRandomGuardianFiller()
 		{
@@ -51,5 +55,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
 
 		private static DateTimeOffset GetRandomDateTime() =>
 			new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+		private static int GetRandomNumber() => new IntRange(min: 1, max: 10).GetValue();
 	}
 }
