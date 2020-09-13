@@ -33,6 +33,22 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
 			return filler;
 		}
 
+		private Guardian UpdateGuardianRandom(Guardian guardian)
+		{
+			DateTimeOffset now = DateTimeOffset.UtcNow;
+			var filler = new Filler<Guardian>();
+
+			filler.Setup()
+				.OnProperty(guardian => guardian.Id).Use(guardian.Id)
+				.OnProperty(guardian => guardian.CreatedBy).Use(guardian.CreatedBy)
+				.OnProperty(guardian => guardian.UpdatedBy).Use(guardian.UpdatedBy)
+				.OnProperty(guardian => guardian.CreatedDate).Use(guardian.CreatedDate)
+				.OnProperty(guardian => guardian.UpdatedDate).Use(now)
+				.OnType<DateTimeOffset>().Use(GetRandomDateTime());
+
+			return filler.Create();
+		}
+
 		private static DateTimeOffset GetRandomDateTime() =>
 			new DateTimeRange(earliestDate: new DateTime()).GetValue();
 	}

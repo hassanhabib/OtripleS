@@ -26,5 +26,25 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
 
             await this.otripleSApiBroker.DeleteGuardianByIdAsync(actualGuardian.Id);
         }
+
+        [Fact]
+        public async Task ShouldPutGuardianAsync()
+        {
+            // given
+            Guardian randomGuardian = CreateRandomGuardian();
+            await this.otripleSApiBroker.PostGuardianAsync(randomGuardian);
+            Guardian modifiedGuardian = UpdateGuardianRandom(randomGuardian);
+
+            // when
+            await this.otripleSApiBroker.PutGuardianAsync(modifiedGuardian);
+
+            Guardian actualGuardian =
+                await this.otripleSApiBroker.GetGuardianByIdAsync(randomGuardian.Id);
+
+            // then
+            actualGuardian.Should().BeEquivalentTo(modifiedGuardian);
+
+            await this.otripleSApiBroker.DeleteGuardianByIdAsync(actualGuardian.Id);
+        }
     }
 }
