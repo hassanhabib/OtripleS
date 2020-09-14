@@ -4,7 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
-namespace OtripleS.Web.Api.Models.Guardian.Exceptions
+
+namespace OtripleS.Web.Api.Models.Guardians.Exceptions
 {
     public class InvalidGuardianException : Exception
     {

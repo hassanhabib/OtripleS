@@ -4,11 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
-namespace OtripleS.Web.Api.Models.Guardian.Exceptions
+
+namespace OtripleS.Web.Api.Models.Guardians.Exceptions
 {
-    public class GuardianServiceException : Exception
-    {
-        public GuardianServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
-    }
+	public class GuardianServiceException : Exception
+	{
+		public GuardianServiceException(Exception innerException)
+			: base("Service error occurred, contact support.", innerException) { }
+	}
 }
