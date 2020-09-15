@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Models.StudentGuardians.Exceptions;
 
@@ -38,6 +39,10 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
         private StudentGuardianValidationException CreateAndLogValidationException(Exception exception)
@@ -52,6 +57,14 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
         {
             var StudentGuardianDependencyException = new StudentGuardianDependencyException(exception);
             this.loggingBroker.LogCritical(StudentGuardianDependencyException);
+
+            return StudentGuardianDependencyException;
+        }
+
+        private StudentGuardianDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var StudentGuardianDependencyException = new StudentGuardianDependencyException(exception);
+            this.loggingBroker.LogError(StudentGuardianDependencyException);
 
             return StudentGuardianDependencyException;
         }
