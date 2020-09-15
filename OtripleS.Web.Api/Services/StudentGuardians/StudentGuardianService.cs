@@ -15,24 +15,26 @@ using OtripleS.Web.Api.Models.StudentGuardians;
 namespace OtripleS.Web.Api.Services.StudentGuardians
 {
 	public partial class StudentGuardianService : IStudentGuardianService
-    {
-        private readonly IStorageBroker storageBroker;
-        private readonly ILoggingBroker loggingBroker;
-        private readonly IDateTimeBroker dateTimeBroker;
+	{
+		private readonly IStorageBroker storageBroker;
+		private readonly ILoggingBroker loggingBroker;
+		private readonly IDateTimeBroker dateTimeBroker;
 
-        public StudentGuardianService(
-            IStorageBroker storageBroker,
-            ILoggingBroker loggingBroker,
-            IDateTimeBroker dateTimeBroker)
-        {
-            this.storageBroker = storageBroker;
-            this.loggingBroker = loggingBroker;
-            this.dateTimeBroker = dateTimeBroker;
-        }
+		public StudentGuardianService(
+			IStorageBroker storageBroker,
+			ILoggingBroker loggingBroker,
+			IDateTimeBroker dateTimeBroker)
+		{
+			this.storageBroker = storageBroker;
+			this.loggingBroker = loggingBroker;
+			this.dateTimeBroker = dateTimeBroker;
+		}
 
 		public ValueTask<StudentGuardian> ModifyStudentGuardianAsync(StudentGuardian studentGuardian)
 		{
-			throw new NotImplementedException();
+			dateTimeBroker.GetCurrentDateTime();
+			storageBroker.SelectStudentGuardianByIdAsync(studentGuardian.StudentId, studentGuardian.GuardianId);
+			return storageBroker.UpdateStudentGuardianAsync(studentGuardian);
 		}
 	}
 }
