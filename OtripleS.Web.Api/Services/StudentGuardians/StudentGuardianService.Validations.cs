@@ -31,6 +31,18 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			}
 		}
 
+		private void ValidateAgainstStorageStudentGuardianOnModify
+			(StudentGuardian inputStudentGuardian, StudentGuardian storageStudentGuardian)
+		{
+			switch (inputStudentGuardian)
+			{
+				case { } when inputStudentGuardian.CreatedDate != storageStudentGuardian.CreatedDate:
+					throw new InvalidStudentGuardianInputException(
+						parameterName: nameof(StudentGuardian.CreatedDate),
+						parameterValue: inputStudentGuardian.CreatedDate);
+			}
+		}
+
 		private void ValidateStudentGuardianIsNull(StudentGuardian studentGuardian)
 		{
 			if (studentGuardian is null)

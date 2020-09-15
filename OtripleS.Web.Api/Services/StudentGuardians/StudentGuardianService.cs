@@ -31,19 +31,23 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 		}
 
 		public ValueTask<StudentGuardian> ModifyStudentGuardianAsync(StudentGuardian studentGuardian) =>
-			TryCatch(async () =>
-			{
-				ValidateStudentGuardianOnModify(studentGuardian);
+		TryCatch(async () =>
+		{
+			ValidateStudentGuardianOnModify(studentGuardian);
 
-				StudentGuardian maybeStudentGuardian = 
-					await storageBroker.SelectStudentGuardianByIdAsync(studentGuardian.StudentId, studentGuardian.GuardianId);
+			StudentGuardian maybeStudentGuardian =
+				await storageBroker.SelectStudentGuardianByIdAsync(studentGuardian.StudentId, studentGuardian.GuardianId);
 
-				ValidateStorageStudentGuardian(
-					maybeStudentGuardian,
-					studentGuardian.StudentId,
-					studentGuardian.GuardianId);
+			ValidateStorageStudentGuardian(
+				maybeStudentGuardian,
+				studentGuardian.StudentId,
+				studentGuardian.GuardianId);
 
-				return await storageBroker.UpdateStudentGuardianAsync(studentGuardian);
-			});
+			ValidateAgainstStorageStudentGuardianOnModify(
+				inputStudentGuardian: studentGuardian,
+				storageStudentGuardian: maybeStudentGuardian);
+
+			return await storageBroker.UpdateStudentGuardianAsync(studentGuardian);
+		});
 	}
 }
