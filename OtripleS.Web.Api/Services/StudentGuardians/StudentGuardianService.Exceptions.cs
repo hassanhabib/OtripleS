@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Models.StudentGuardians.Exceptions;
 
@@ -33,6 +34,10 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
             {
                 throw CreateAndLogValidationException(notFoundStudentGuardianException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
         }
 
         private StudentGuardianValidationException CreateAndLogValidationException(Exception exception)
@@ -41,6 +46,14 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
             this.loggingBroker.LogError(StudentGuardianValidationException);
 
             return StudentGuardianValidationException;
+        }
+
+        private StudentGuardianDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var StudentGuardianDependencyException = new StudentGuardianDependencyException(exception);
+            this.loggingBroker.LogCritical(StudentGuardianDependencyException);
+
+            return StudentGuardianDependencyException;
         }
     }
 }
