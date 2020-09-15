@@ -14,71 +14,78 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 {
 	public partial class StudentGuardianService
 	{
-        private delegate ValueTask<StudentGuardian> ReturningStudentGuardianFunction();
+		private delegate ValueTask<StudentGuardian> ReturningStudentGuardianFunction();
 
-        private async ValueTask<StudentGuardian> TryCatch(
-           ReturningStudentGuardianFunction returningStudentGuardianFunction)
-        {
-            try
-            {
-                return await returningStudentGuardianFunction();
-            }
-            catch (NullStudentGuardianException nullStudentGuardianException)
-            {
-                throw CreateAndLogValidationException(nullStudentGuardianException);
-            }
-            catch (InvalidStudentGuardianInputException invalidStudentGuardianInputException)
-            {
-                throw CreateAndLogValidationException(invalidStudentGuardianInputException);
-            }
-            catch (NotFoundStudentGuardianException notFoundStudentGuardianException)
-            {
-                throw CreateAndLogValidationException(notFoundStudentGuardianException);
-            }
-            catch (SqlException sqlException)
-            {
-                throw CreateAndLogCriticalDependencyException(sqlException);
-            }
-            catch (DbUpdateException dbUpdateException)
-            {
-                throw CreateAndLogDependencyException(dbUpdateException);
-            }
-            catch (Exception exception)
-            {
-                throw CreateAndLogServiceException(exception);
-            }
-        }
+		private async ValueTask<StudentGuardian> TryCatch(
+		   ReturningStudentGuardianFunction returningStudentGuardianFunction)
+		{
+			try
+			{
+				return await returningStudentGuardianFunction();
+			}
+			catch (NullStudentGuardianException nullStudentGuardianException)
+			{
+				throw CreateAndLogValidationException(nullStudentGuardianException);
+			}
+			catch (InvalidStudentGuardianInputException invalidStudentGuardianInputException)
+			{
+				throw CreateAndLogValidationException(invalidStudentGuardianInputException);
+			}
+			catch (NotFoundStudentGuardianException notFoundStudentGuardianException)
+			{
+				throw CreateAndLogValidationException(notFoundStudentGuardianException);
+			}
+			catch (SqlException sqlException)
+			{
+				throw CreateAndLogCriticalDependencyException(sqlException);
+			}
+			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+			{
+				var lockedSemesterCourseException =
+					new LockedStudentGuardianException(dbUpdateConcurrencyException);
 
-        private StudentGuardianValidationException CreateAndLogValidationException(Exception exception)
-        {
-            var StudentGuardianValidationException = new StudentGuardianValidationException(exception);
-            this.loggingBroker.LogError(StudentGuardianValidationException);
+				throw CreateAndLogDependencyException(lockedSemesterCourseException);
+			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
+			catch (Exception exception)
+			{
+				throw CreateAndLogServiceException(exception);
+			}
+		}
 
-            return StudentGuardianValidationException;
-        }
+		private StudentGuardianValidationException CreateAndLogValidationException(Exception exception)
+		{
+			var StudentGuardianValidationException = new StudentGuardianValidationException(exception);
+			this.loggingBroker.LogError(StudentGuardianValidationException);
 
-        private StudentGuardianDependencyException CreateAndLogCriticalDependencyException(Exception exception)
-        {
-            var StudentGuardianDependencyException = new StudentGuardianDependencyException(exception);
-            this.loggingBroker.LogCritical(StudentGuardianDependencyException);
+			return StudentGuardianValidationException;
+		}
 
-            return StudentGuardianDependencyException;
-        }
+		private StudentGuardianDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+		{
+			var StudentGuardianDependencyException = new StudentGuardianDependencyException(exception);
+			this.loggingBroker.LogCritical(StudentGuardianDependencyException);
 
-        private StudentGuardianDependencyException CreateAndLogDependencyException(Exception exception)
-        {
-            var StudentGuardianDependencyException = new StudentGuardianDependencyException(exception);
-            this.loggingBroker.LogError(StudentGuardianDependencyException);
+			return StudentGuardianDependencyException;
+		}
 
-            return StudentGuardianDependencyException;
-        }
+		private StudentGuardianDependencyException CreateAndLogDependencyException(Exception exception)
+		{
+			var StudentGuardianDependencyException = new StudentGuardianDependencyException(exception);
+			this.loggingBroker.LogError(StudentGuardianDependencyException);
 
-        private StudentGuardianServiceException CreateAndLogServiceException(Exception exception)
-        {
-            var StudentGuardianServiceException = new StudentGuardianServiceException(exception);
-            this.loggingBroker.LogError(StudentGuardianServiceException);
+			return StudentGuardianDependencyException;
+		}
 
-            return StudentGuardianServiceException;
-        }
-    }
+		private StudentGuardianServiceException CreateAndLogServiceException(Exception exception)
+		{
+			var StudentGuardianServiceException = new StudentGuardianServiceException(exception);
+			this.loggingBroker.LogError(StudentGuardianServiceException);
+
+			return StudentGuardianServiceException;
+		}
+	}
 }
