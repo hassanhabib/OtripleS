@@ -4,23 +4,22 @@
 // ---------------------------------------------------------------
 
 using System;
-using OtripleS.Web.Api.Models.SemesterCourses;
+using OtripleS.Web.Api.Models.Guardians;
 using OtripleS.Web.Api.Models.Students;
 
-namespace OtripleS.Web.Api.Models.StudentSemesterCourses
+namespace OtripleS.Web.Api.Models.StudentGuardians
 {
-    public class StudentSemesterCourse
+    public class StudentGuardian : IAuditable
     {
+        public Guid GuardianId { get; set; }
+        public Guardian Guardian { get; set; }
+
         public Guid StudentId { get; set; }
         public Student Student { get; set; }
 
-        public Guid SemesterCourseId { get; set; }
-        public SemesterCourse SemesterCourse { get; set; }
-
-        public string Grade { get; set; }
-        public double Score { get; set; }
-        public int Repeats { get; set; }
-        public StudentSemesterCourseStatus Status { get; set; }
+        public GuardianStudentRelationship Relationship { get; set; }
+        public bool IsPrimaryContact { get; set; }
+        public string Notes { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset UpdatedDate { get; set; }
         public Guid CreatedBy { get; set; }

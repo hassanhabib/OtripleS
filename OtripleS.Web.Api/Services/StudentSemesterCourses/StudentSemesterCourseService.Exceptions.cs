@@ -3,14 +3,14 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.StudentSemesterCourses
 {
@@ -33,12 +33,13 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
-            }catch (Exception exception)
+            }
+            catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);
             }
         }
-        
+
         private async ValueTask<StudentSemesterCourse> TryCatch(
             ReturningStudentSemesterCourseFunction returningStudentSemesterCourseFunction)
         {
@@ -71,7 +72,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                var lockedSemesterCourseException = 
+                var lockedSemesterCourseException =
                     new LockedStudentSemesterCourseException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedSemesterCourseException);

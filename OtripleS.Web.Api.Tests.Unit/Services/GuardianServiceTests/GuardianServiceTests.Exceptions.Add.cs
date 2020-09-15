@@ -13,7 +13,7 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 {
-	public partial class GuardianServiceTests
+    public partial class GuardianServiceTests
     {
         [Fact]
         public async Task ShouldThrowDependencyExceptionOnAddWhenSqlExceptionOccursAndLogItAsync()

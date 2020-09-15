@@ -7,7 +7,6 @@ using System;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 using OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions;
 using Xunit;
 
@@ -87,7 +86,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
             Assert.Throws<StudentSemesterCourseServiceException>(() =>
                 this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses());
 
-            this.loggingBrokerMock.Verify(broker => 
+            this.loggingBrokerMock.Verify(broker =>
                     broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseServiceException))),
                         Times.Once);
 

@@ -7,7 +7,7 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Guardians.Exceptions
 {
-	public class LockedGuardianException : Exception
+    public class LockedGuardianException : Exception
     {
         public LockedGuardianException(Exception innerException)
             : base("Locked guardian record exception, please try again later.", innerException) { }

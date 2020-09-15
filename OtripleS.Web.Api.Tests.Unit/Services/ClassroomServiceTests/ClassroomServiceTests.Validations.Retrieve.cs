@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
                 parameterName: nameof(Classroom.Id),
                 parameterValue: inputClassroomId);
 
-            var expectedClassroomValidationException = 
+            var expectedClassroomValidationException =
                 new ClassroomValidationException(invalidClassroomInputException);
 
             //when
@@ -61,7 +61,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
 
             var notFoundClassroomException = new NotFoundClassroomException(inputClassroomId);
 
-            var expectedClassroomValidationException = 
+            var expectedClassroomValidationException =
                 new ClassroomValidationException(notFoundClassroomException);
 
             this.storageBrokerMock.Setup(broker =>

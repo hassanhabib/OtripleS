@@ -12,10 +12,10 @@ using OtripleS.Web.Api.Models.Guardians;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
-	public partial class StorageBroker
+    public partial class StorageBroker
     {
         public DbSet<Guardian> Guardians { get; set; }
-        
+
         public async ValueTask<Guardian> InsertGuardianAsync(Guardian guardian)
         {
             EntityEntry<Guardian> guardianEntityEntry = await this.Guardians.AddAsync(guardian);

@@ -4,10 +4,13 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using OtripleS.Web.Api.Models.StudentGuardians;
 
 namespace OtripleS.Web.Api.Models.Guardians
 {
-	public class Guardian : IAuditable
+    public class Guardian : IAuditable
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }
@@ -16,5 +19,8 @@ namespace OtripleS.Web.Api.Models.Guardians
         public DateTimeOffset UpdatedDate { get; set; }
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<StudentGuardian> StudentGuardians { get; set; }
     }
 }

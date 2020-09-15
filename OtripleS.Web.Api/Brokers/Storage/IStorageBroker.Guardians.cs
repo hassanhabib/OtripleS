@@ -10,7 +10,7 @@ using OtripleS.Web.Api.Models.Guardians;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
-	public partial interface IStorageBroker
+    public partial interface IStorageBroker
     {
         ValueTask<Guardian> InsertGuardianAsync(Guardian guardian);
         IQueryable<Guardian> SelectAllGuardians();

@@ -5,6 +5,7 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,19 +14,17 @@ using Newtonsoft.Json;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Brokers.UserManagement;
+using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Services.Assignments;
+using OtripleS.Web.Api.Services.Attendances;
 using OtripleS.Web.Api.Services.Classrooms;
 using OtripleS.Web.Api.Services.Courses;
 using OtripleS.Web.Api.Services.SemesterCourses;
 using OtripleS.Web.Api.Services.Students;
 using OtripleS.Web.Api.Services.StudentSemesterCourses;
 using OtripleS.Web.Api.Services.Teachers;
-using OtripleS.Web.Api.Brokers.UserManagement;
-using OtripleS.Web.Api.Models.Users;
-using Microsoft.AspNetCore.Identity;
 using OtripleS.Web.Api.Services.Users;
-using OtripleS.Web.Api.Services.Attendances;
-using OtripleS.Web.Api.Services.Guardians;
 
 namespace OtripleS.Web.Api
 {
@@ -62,7 +61,6 @@ namespace OtripleS.Web.Api
             services.AddTransient<IStudentSemesterCourseService, StudentSemesterCourseService>();
             services.AddTransient<IAttendanceService, AttendanceService>();
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IGuardianService, GuardianService>();
 
             services.AddIdentityCore<User>()
                     .AddRoles<Role>()

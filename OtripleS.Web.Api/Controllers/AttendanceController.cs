@@ -3,14 +3,14 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Attendances;
 using OtripleS.Web.Api.Models.Attendances.Exceptions;
 using OtripleS.Web.Api.Services.Attendances;
 using RESTFulSense.Controllers;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Controllers
 {
@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Controllers
                 IQueryable storageAttendance =
                     this.attendanceService.RetrieveAllAttendances();
 
-                return Ok(storageAttendance);
+                return Ok();
             }
             catch (AttendanceDependencyException attendanceDependencyException)
             {
@@ -190,6 +190,6 @@ namespace OtripleS.Web.Api.Controllers
 
         private string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
-        
+
     }
 }

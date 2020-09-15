@@ -12,8 +12,8 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
 {
-	public partial class UserServiceTests
-	{
+    public partial class UserServiceTests
+    {
         [Fact]
         public async Task ShouldThrowValidatonExceptionOnDeleteWhenUserIdIsInvalidAndLogItAsync()
         {

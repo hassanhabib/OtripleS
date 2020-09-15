@@ -14,7 +14,7 @@ using OtripleS.Web.Api.Models.Guardians.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Guardians
 {
-	public partial class GuardianService
+    public partial class GuardianService
     {
         private delegate ValueTask<Guardian> ReturningGuardianFunction();
         private delegate IQueryable<Guardian> ReturningQueryableGuardianFunction();

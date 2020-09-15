@@ -3,12 +3,12 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using OtripleS.Web.Api.Models.StudentSemesterCourses;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
@@ -31,11 +31,11 @@ namespace OtripleS.Web.Api.Brokers.Storage
             this.StudentSemesterCourses.AsQueryable();
 
         public async ValueTask<StudentSemesterCourse> SelectStudentSemesterCourseByIdAsync(
-            Guid studentId, Guid SemesterCourseId)
+            Guid studentId, Guid semesterCourseId)
         {
             this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await StudentSemesterCourses.FirstOrDefaultAsync(x => x.StudentId.Equals(studentId) && x.SemesterCourseId.Equals(SemesterCourseId));
+            return await this.StudentSemesterCourses.FindAsync(studentId, semesterCourseId);
         }
 
         public async ValueTask<StudentSemesterCourse> UpdateStudentSemesterCourseAsync(

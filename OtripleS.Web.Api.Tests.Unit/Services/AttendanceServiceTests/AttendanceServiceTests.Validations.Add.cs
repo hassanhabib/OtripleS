@@ -282,7 +282,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             Attendance inputAttendance = randomAttendance;
             inputAttendance.CreatedDate = dateTime.AddMinutes(invallidMinutes);
             inputAttendance.UpdatedDate = inputAttendance.CreatedDate;
-            
+
             var invalidAttendanceException = new InvalidAttendanceException(
                 parameterName: nameof(Attendance.CreatedDate),
                 parameterValue: inputAttendance.CreatedDate);

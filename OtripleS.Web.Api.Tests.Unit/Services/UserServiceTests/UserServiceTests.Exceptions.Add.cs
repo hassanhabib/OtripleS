@@ -5,11 +5,11 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Users;
-using Xunit;
 using OtripleS.Web.Api.Models.Users.Exceptions;
-using Microsoft.EntityFrameworkCore;
+using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
 {

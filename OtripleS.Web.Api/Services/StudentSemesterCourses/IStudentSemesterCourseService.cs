@@ -5,15 +5,15 @@
 
 using System;
 using System.Linq;
-using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using System.Threading.Tasks;
+using OtripleS.Web.Api.Models.StudentSemesterCourses;
 
 namespace OtripleS.Web.Api.Services.StudentSemesterCourses
 {
     public interface IStudentSemesterCourseService
     {
         ValueTask<StudentSemesterCourse> RetrieveStudentSemesterCourseByIdAsync(Guid studentId, Guid semesterCourse);
-        
+
         ValueTask<StudentSemesterCourse> CreateStudentSemesterCourseAsync(
             StudentSemesterCourse inputStudentSemesterCourse);
 

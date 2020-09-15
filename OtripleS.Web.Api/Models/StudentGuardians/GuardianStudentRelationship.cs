@@ -3,13 +3,12 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-
-namespace OtripleS.Web.Api.Models.Guardians.Exceptions
+namespace OtripleS.Web.Api.Models.StudentGuardians
 {
-    public class GuardianServiceException : Exception
+    public enum GuardianStudentRelationship
     {
-        public GuardianServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+        Parent,
+        Family,
+        Other
     }
 }

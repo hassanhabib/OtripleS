@@ -19,7 +19,7 @@ using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 {
-	public partial class GuardianServiceTests
+    public partial class GuardianServiceTests
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
