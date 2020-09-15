@@ -114,10 +114,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Guardian registeredGuardian =
+                Guardian storageGuardian =
                     await this.guardianService.ModifyGuardianAsync(guardian);
 
-                return Ok(registeredGuardian);
+                return Ok(storageGuardian);
             }
             catch (GuardianValidationException guardianValidationException)
                 when (guardianValidationException.InnerException is NotFoundGuardianException)

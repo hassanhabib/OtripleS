@@ -16,11 +16,11 @@ namespace OtripleS.Web.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AttendanceController : RESTFulController
+    public class AttendancesController : RESTFulController
     {
         private readonly IAttendanceService attendanceService;
 
-        public AttendanceController(IAttendanceService attendanceService) =>
+        public AttendancesController(IAttendanceService attendanceService) =>
             this.attendanceService = attendanceService;
 
         [HttpGet]
@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Controllers
                 IQueryable storageAttendance =
                     this.attendanceService.RetrieveAllAttendances();
 
-                return Ok();
+                return Ok(storageAttendance);
             }
             catch (AttendanceDependencyException attendanceDependencyException)
             {

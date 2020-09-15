@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using OtripleS.Web.Api.Migrations;
 using OtripleS.Web.Api.Models.Guardians;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
@@ -37,7 +38,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
                 .OnProperty(guardian => guardian.UpdatedBy).Use(posterId)
                 .OnProperty(guardian => guardian.CreatedDate).Use(now)
                 .OnProperty(guardian => guardian.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
+                .OnProperty(guardian => guardian.StudentGuardians).IgnoreIt();
 
             return filler;
         }
@@ -53,7 +55,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
                 .OnProperty(guardian => guardian.UpdatedBy).Use(guardian.UpdatedBy)
                 .OnProperty(guardian => guardian.CreatedDate).Use(guardian.CreatedDate)
                 .OnProperty(guardian => guardian.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
+                .OnProperty(guardian => guardian.StudentGuardians).IgnoreIt();
 
             return filler.Create();
         }
