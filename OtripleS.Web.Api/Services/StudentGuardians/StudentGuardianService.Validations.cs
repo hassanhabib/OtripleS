@@ -60,6 +60,11 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 					throw new InvalidStudentGuardianInputException(
 					parameterName: nameof(StudentGuardian.CreatedDate),
 					parameterValue: studentGuardian.CreatedDate);
+
+				case { } when IsInvalid(studentGuardian.UpdatedDate):
+					throw new InvalidStudentGuardianInputException(
+					parameterName: nameof(StudentGuardian.UpdatedDate),
+					parameterValue: studentGuardian.UpdatedDate);
 			}
 		}
 
