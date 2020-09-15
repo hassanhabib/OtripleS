@@ -33,6 +33,12 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
                     parameterName: nameof(StudentGuardian.StudentId),
                     parameterValue: studentId);
             }
+            if (guardianId == default)
+            {
+                throw new InvalidStudentGuardianInputException(
+                    parameterName: nameof(StudentGuardian.GuardianId),
+                    parameterValue: guardianId);
+            }
         }
     }
 }
