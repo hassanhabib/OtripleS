@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
             modelBuilder.Entity<StudentGuardian>()
                 .HasOne(studentGuardian => studentGuardian.Guardian)
-                .WithMany(semesterCourse => semesterCourse.StudentGuardians)
+                .WithMany(guardian => guardian.StudentGuardians)
                 .HasForeignKey(studentGuardian => studentGuardian.GuardianId)
                 .OnDelete(DeleteBehavior.NoAction);
 
