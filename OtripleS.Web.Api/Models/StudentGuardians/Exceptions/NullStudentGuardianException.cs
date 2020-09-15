@@ -7,8 +7,8 @@ using System;
 
 namespace OtripleS.Web.Api.Models.StudentGuardians.Exceptions
 {
-    public class NullStudentGuardianException : Exception
-    {
-        public NullStudentGuardianException() : base("The StudentGuardian is null.") { }
-    }
+	public class NullStudentGuardianException : Exception
+	{
+		public NullStudentGuardianException() : base("The StudentGuardian is null.") { }
+	}
 }

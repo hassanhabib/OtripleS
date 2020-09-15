@@ -7,10 +7,10 @@ using System;
 
 namespace OtripleS.Web.Api.Models.StudentGuardians.Exceptions
 {
-    public class StudentGuardianValidationException : Exception
-    {
-        public StudentGuardianValidationException(Exception innerException)
-            : base("Invalid input, contact support.", innerException)
-        { }
-    }
+	public class StudentGuardianValidationException : Exception
+	{
+		public StudentGuardianValidationException(Exception innerException)
+			: base("Invalid input, contact support.", innerException)
+		{ }
+	}
 }
