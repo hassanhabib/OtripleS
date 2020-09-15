@@ -394,5 +394,62 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedDateNotSameAsCreateDateAndLogItAsync()
+        {
+            // given
+            int randomNumber = GetRandomNumber();
+            int randomMinutes = randomNumber;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(randomDate);
+            StudentGuardian invalidStudentGuardian = randomStudentGuardian;
+            invalidStudentGuardian.UpdatedDate = randomDate;
+            StudentGuardian storageStudentGuardian = randomStudentGuardian.DeepClone();
+            Guid studentId = invalidStudentGuardian.StudentId;
+            Guid semesterCourseId = invalidStudentGuardian.GuardianId;
+            invalidStudentGuardian.CreatedDate = storageStudentGuardian.CreatedDate.AddMinutes(randomNumber);
+
+            var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
+                parameterName: nameof(StudentGuardian.CreatedDate),
+                parameterValue: invalidStudentGuardian.CreatedDate);
+
+            var expectedStudentGuardianValidationException =
+              new StudentGuardianValidationException(invalidStudentGuardianInputException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentGuardianByIdAsync(studentId, semesterCourseId))
+                    .ReturnsAsync(storageStudentGuardian);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
+            // when
+            ValueTask<StudentGuardian> modifyStudentGuardianTask =
+                this.studentGuardianService.ModifyStudentGuardianAsync(invalidStudentGuardian);
+
+            // then
+            await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
+                modifyStudentGuardianTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentGuardianByIdAsync(
+                    invalidStudentGuardian.StudentId,
+                    invalidStudentGuardian.GuardianId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
