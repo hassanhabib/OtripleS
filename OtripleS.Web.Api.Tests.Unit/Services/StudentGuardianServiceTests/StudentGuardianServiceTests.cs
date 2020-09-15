@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
@@ -57,6 +58,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
 				&& expectedException.InnerException.Message == actualException.InnerException.Message;
 		}
 
+		public static IEnumerable<object[]> InvalidMinuteCases()
+		{
+			int randomMoreThanMinuteFromNow = GetRandomNumber();
+			int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+			return new List<object[]>
+			{
+				new object[] { randomMoreThanMinuteFromNow },
+				new object[] { randomMoreThanMinuteBeforeNow }
+			};
+		}
+
 		private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+		private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
 	}
 }
