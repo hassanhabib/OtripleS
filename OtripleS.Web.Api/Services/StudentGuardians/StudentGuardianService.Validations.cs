@@ -20,6 +20,17 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			ValidateUpdatedDateIsRecent(studentGuardian);
 		}
 
+		private static void ValidateStorageStudentGuardian(
+			StudentGuardian storageStudentGuardian,
+			Guid semesterCourseId,
+			Guid studentId)
+		{
+			if (storageStudentGuardian == null)
+			{
+				throw new NotFoundStudentGuardianException(semesterCourseId, studentId);
+			}
+		}
+
 		private void ValidateStudentGuardianIsNull(StudentGuardian studentGuardian)
 		{
 			if (studentGuardian is null)

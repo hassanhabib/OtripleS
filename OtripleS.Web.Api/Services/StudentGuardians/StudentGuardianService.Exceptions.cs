@@ -29,6 +29,10 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
             {
                 throw CreateAndLogValidationException(invalidStudentGuardianInputException);
             }
+            catch (NotFoundStudentGuardianException notFoundStudentGuardianException)
+            {
+                throw CreateAndLogValidationException(notFoundStudentGuardianException);
+            }
         }
 
         private StudentGuardianValidationException CreateAndLogValidationException(Exception exception)
