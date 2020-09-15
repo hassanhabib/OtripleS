@@ -30,11 +30,13 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-		public ValueTask<StudentGuardian> ModifyStudentGuardianAsync(StudentGuardian studentGuardian)
-		{
-			dateTimeBroker.GetCurrentDateTime();
-			storageBroker.SelectStudentGuardianByIdAsync(studentGuardian.StudentId, studentGuardian.GuardianId);
-			return storageBroker.UpdateStudentGuardianAsync(studentGuardian);
-		}
+		public ValueTask<StudentGuardian> ModifyStudentGuardianAsync(StudentGuardian studentGuardian) =>
+			TryCatch(async () =>
+			{
+				ValidateStudentGuardianOnModify(studentGuardian);
+				dateTimeBroker.GetCurrentDateTime();
+				await storageBroker.SelectStudentGuardianByIdAsync(studentGuardian.StudentId, studentGuardian.GuardianId);
+				return await storageBroker.UpdateStudentGuardianAsync(studentGuardian);
+			});
 	}
 }
