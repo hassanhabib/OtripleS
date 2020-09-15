@@ -11,34 +11,49 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 {
 	public partial class StudentGuardianService
 	{
-        private void ValidateStudentGuardianOnModify(StudentGuardian studentGuardian)
-        {
-            ValidateStudentGuardianIsNull(studentGuardian);
-            ValidateStudentGuardianIdIsNull(studentGuardian.StudentId, studentGuardian.GuardianId);
-        }
+		private void ValidateStudentGuardianOnModify(StudentGuardian studentGuardian)
+		{
+			ValidateStudentGuardianIsNull(studentGuardian);
+			ValidateStudentGuardianIdIsNull(studentGuardian.StudentId, studentGuardian.GuardianId);
+			ValidateInvalidAuditFields(studentGuardian);
+		}
 
-        private void ValidateStudentGuardianIsNull(StudentGuardian studentGuardian)
-        {
-            if (studentGuardian is null)
-            {
-                throw new NullStudentGuardianException();
-            }
-        }
+		private void ValidateStudentGuardianIsNull(StudentGuardian studentGuardian)
+		{
+			if (studentGuardian is null)
+			{
+				throw new NullStudentGuardianException();
+			}
+		}
 
-        private void ValidateStudentGuardianIdIsNull(Guid studentId, Guid guardianId)
-        {
-            if (studentId == default)
-            {
-                throw new InvalidStudentGuardianInputException(
-                    parameterName: nameof(StudentGuardian.StudentId),
-                    parameterValue: studentId);
-            }
-            if (guardianId == default)
-            {
-                throw new InvalidStudentGuardianInputException(
-                    parameterName: nameof(StudentGuardian.GuardianId),
-                    parameterValue: guardianId);
-            }
-        }
-    }
+		private void ValidateStudentGuardianIdIsNull(Guid studentId, Guid guardianId)
+		{
+			if (studentId == default)
+			{
+				throw new InvalidStudentGuardianInputException(
+					parameterName: nameof(StudentGuardian.StudentId),
+					parameterValue: studentId);
+			}
+			if (guardianId == default)
+			{
+				throw new InvalidStudentGuardianInputException(
+					parameterName: nameof(StudentGuardian.GuardianId),
+					parameterValue: guardianId);
+			}
+		}
+
+		private void ValidateInvalidAuditFields(StudentGuardian studentGuardian)
+		{
+			switch (studentGuardian)
+			{
+				case { } when IsInvalid(studentGuardian.CreatedBy):
+					throw new InvalidStudentGuardianInputException(
+					parameterName: nameof(StudentGuardian.CreatedBy),
+					parameterValue: studentGuardian.CreatedBy);
+			}
+		}
+
+		private static bool IsInvalid(DateTimeOffset input) => input == default;
+		private static bool IsInvalid(Guid input) => input == default;
+	}
 }
