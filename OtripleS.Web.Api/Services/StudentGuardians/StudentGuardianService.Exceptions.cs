@@ -24,7 +24,11 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
             catch (NullStudentGuardianException nullStudentGuardianException)
             {
                 throw CreateAndLogValidationException(nullStudentGuardianException);
-            }            
+            }
+            catch (InvalidStudentGuardianInputException invalidStudentGuardianInputException)
+            {
+                throw CreateAndLogValidationException(invalidStudentGuardianInputException);
+            }
         }
 
         private StudentGuardianValidationException CreateAndLogValidationException(Exception exception)
