@@ -16,6 +16,7 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			ValidateStudentGuardianIsNull(studentGuardian);
 			ValidateStudentGuardianIdIsNull(studentGuardian.StudentId, studentGuardian.GuardianId);
 			ValidateInvalidAuditFields(studentGuardian);
+			ValidateDatesAreNotSame(studentGuardian);
 		}
 
 		private void ValidateStudentGuardianIsNull(StudentGuardian studentGuardian)
@@ -63,6 +64,16 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 
 				case { } when IsInvalid(studentGuardian.UpdatedDate):
 					throw new InvalidStudentGuardianInputException(
+					parameterName: nameof(StudentGuardian.UpdatedDate),
+					parameterValue: studentGuardian.UpdatedDate);
+			}
+		}
+
+		private void ValidateDatesAreNotSame(StudentGuardian studentGuardian)
+		{
+			if (studentGuardian.CreatedDate == studentGuardian.UpdatedDate)
+			{
+				throw new InvalidStudentGuardianInputException(
 					parameterName: nameof(StudentGuardian.UpdatedDate),
 					parameterValue: studentGuardian.UpdatedDate);
 			}
