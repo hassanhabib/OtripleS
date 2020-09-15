@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Models.StudentGuardians.Exceptions;
@@ -59,6 +60,54 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentGuardianDependencyException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateExceptionOccursAndLogItAsync()
+        {
+            // given
+            int randomNegativeNumber = GetNegativeRandomNumber();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(randomDateTime);
+            StudentGuardian someStudentGuardian = randomStudentGuardian;
+            someStudentGuardian.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedStudentGuardianDependencyException =
+                new StudentGuardianDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentGuardianByIdAsync
+                (someStudentGuardian.StudentId, someStudentGuardian.GuardianId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
+
+            // when
+            ValueTask<StudentGuardian> modifyStudentGuardianTask =
+                this.studentGuardianService.ModifyStudentGuardianAsync(someStudentGuardian);
+
+            // then
+            await Assert.ThrowsAsync<StudentGuardianDependencyException>(() =>
+                modifyStudentGuardianTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentGuardianByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianDependencyException))),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
