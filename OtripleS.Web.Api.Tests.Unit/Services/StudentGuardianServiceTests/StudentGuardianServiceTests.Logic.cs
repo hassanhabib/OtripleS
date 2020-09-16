@@ -67,5 +67,44 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.dateTimeBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldDeleteStudentGuardianAsync()
+		{
+			// given
+			DateTimeOffset dateTime = GetRandomDateTime();
+			StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(dateTime);
+			Guid inputStudentGuradianId = randomStudentGuardian.GuardianId;
+			Guid inputStudentId = randomStudentGuardian.StudentId;
+			StudentGuardian inputStudentGuardian = randomStudentGuardian;
+			StudentGuardian storageStudentGuardian = inputStudentGuardian;
+			StudentGuardian expectedStudentGuardian = storageStudentGuardian;
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectStudentGuardianByIdAsync(inputStudentGuradianId, inputStudentId))
+					.ReturnsAsync(inputStudentGuardian);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.DeleteStudentGuardianAsync(inputStudentGuardian))
+					.ReturnsAsync(storageStudentGuardian);
+
+			// when
+			StudentGuardian actualStudentGuardian =
+				await this.studentGuardianService.DeleteStudentGuardianAsync(inputStudentGuradianId, inputStudentId);
+
+			actualStudentGuardian.Should().BeEquivalentTo(expectedStudentGuardian);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectStudentGuardianByIdAsync(inputStudentGuradianId, inputStudentId),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.DeleteStudentGuardianAsync(inputStudentGuardian),
+					Times.Once);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
