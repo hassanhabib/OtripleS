@@ -38,11 +38,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
                 deleteStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentGuardianDependencyException)))
-                 );
+                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentGuardianDependencyException))),
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputStudentGuardianId, inputStudentId),
+                broker.SelectStudentGuardianByIdAsync(inputStudentGuardianId, inputStudentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
