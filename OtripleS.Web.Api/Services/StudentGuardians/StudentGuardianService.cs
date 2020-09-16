@@ -28,9 +28,9 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-        public ValueTask<StudentGuardian> AddStudentGuardianAsync(StudentGuardian studentGuardian)
+        public async ValueTask<StudentGuardian> AddStudentGuardianAsync(StudentGuardian studentGuardian)
         {
-            throw new System.NotImplementedException();
+			return await this.storageBroker.InsertStudentGuardianAsync(studentGuardian);
         }
 
         public ValueTask<StudentGuardian> ModifyStudentGuardianAsync(StudentGuardian studentGuardian) =>
