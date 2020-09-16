@@ -50,7 +50,10 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 
         public IQueryable<StudentGuardian> RetrieveAllStudentGuardians()
         {
-            throw new System.NotImplementedException();
-        }
+			IQueryable<StudentGuardian> storageStudentGuardians =
+				this.storageBroker.SelectAllStudentGuardians();
+
+			return storageStudentGuardians;
+		}
     }
 }
