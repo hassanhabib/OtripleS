@@ -126,7 +126,43 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomStudentGuardianId = Guid.NewGuid();
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputStudentGuardianId = randomStudentGuardianId;
+            Guid inputStudentId = randomStudentId;
+            var exception = new Exception();
 
+            var expectedStudentStudentGuardianException =
+                new StudentGuardianServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentGuardianByIdAsync(inputStudentGuardianId, inputStudentId))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<StudentGuardian> deleteStudentStudentGuardianTask =
+                this.studentGuardianService.DeleteStudentGuardianAsync(inputStudentGuardianId, inputStudentId);
+
+            // then
+            await Assert.ThrowsAsync<StudentGuardianServiceException>(() =>
+                deleteStudentStudentGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentStudentGuardianException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentGuardianByIdAsync(inputStudentGuardianId, inputStudentId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
 
     }
 }
