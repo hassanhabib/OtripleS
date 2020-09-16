@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Models.StudentGuardians.Exceptions;
 
@@ -18,6 +19,14 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			ValidateInvalidAuditFields(studentGuardian);
 			ValidateDatesAreNotSame(studentGuardian);
 			ValidateUpdatedDateIsRecent(studentGuardian);
+		}
+
+		private void ValidateStorageStudentGuardians(IQueryable<StudentGuardian> studentGuardians)
+		{
+			if (studentGuardians.Count() == 0)
+			{
+				this.loggingBroker.LogWarning("No studentGuardians found in storage.");
+			}
 		}
 
 		private static void ValidateStorageStudentGuardian(

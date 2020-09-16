@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -42,13 +43,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
 		private StudentGuardian CreateRandomStudentGuardian(DateTimeOffset dates) =>
 			CreateStudentGuardianFiller(dates).Create();
 
+		private IQueryable<StudentGuardian> CreateRandomStudentGuardians() =>
+			CreateStudentGuardianFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+
 		private static Filler<StudentGuardian> CreateStudentGuardianFiller(DateTimeOffset dates)
 		{
 			var filler = new Filler<StudentGuardian>();
 			filler.Setup()
-				.OnType<DateTimeOffset>().Use(dates)
-				.OnProperty(semesterCourse => semesterCourse.CreatedDate).Use(dates)
-				.OnProperty(semesterCourse => semesterCourse.UpdatedDate).Use(dates);
+				.OnType<DateTimeOffset>().Use(dates);
 
 			return filler;
 		}

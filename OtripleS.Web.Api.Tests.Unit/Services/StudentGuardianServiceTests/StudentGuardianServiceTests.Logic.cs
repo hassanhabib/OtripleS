@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
@@ -15,6 +16,36 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
 {
 	public partial class StudentGuardianServiceTests
 	{
+		[Fact]
+		public void ShouldRetireveAllStudentGuardians()
+		{
+			// given
+			IQueryable<StudentGuardian> randomStudentGuardians =
+				CreateRandomStudentGuardians();
+
+			IQueryable<StudentGuardian> storageStudentGuardians = randomStudentGuardians;
+			IQueryable<StudentGuardian> expectedStudentGuardians = storageStudentGuardians;
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectAllStudentGuardians())
+					.Returns(storageStudentGuardians);
+
+			// when
+			IQueryable<StudentGuardian> actualStudentGuardians =
+				this.studentGuardianService.RetrieveAllStudentGuardians();
+
+			// then
+			actualStudentGuardians.Should().BeEquivalentTo(expectedStudentGuardians);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectAllStudentGuardians(),
+					Times.Once);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
+
 		[Fact]
 		public async Task ShouldModifyStudentGuardianAsync()
 		{
