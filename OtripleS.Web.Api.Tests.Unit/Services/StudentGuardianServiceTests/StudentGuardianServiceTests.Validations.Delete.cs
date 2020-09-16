@@ -91,6 +91,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnDeleteWhenStorageStudentGuardianIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(randomDateTime);
+            Guid inputStudentGuardianId = randomStudentGuardian.GuardianId;
+            Guid inputStudentId = randomStudentGuardian.StudentId;
+            StudentGuardian nullStorageStudentGuardian = null;
 
+            var notFoundStudentGuardianException =
+                new NotFoundStudentGuardianException(inputStudentGuardianId, inputStudentId);
+
+            var expectedStudentGuardianValidationException =
+                new StudentGuardianValidationException(notFoundStudentGuardianException);
+
+            this.storageBrokerMock.Setup(broker =>
+                 broker.SelectStudentGuardianByIdAsync(inputStudentGuardianId, inputStudentId))
+                    .ReturnsAsync(nullStorageStudentGuardian);
+
+            // when
+            ValueTask<StudentGuardian> actualStudentGuardianDeleteTask =
+                this.studentGuardianService.DeleteStudentGuardianAsync(inputStudentGuardianId, inputStudentId);
+
+            // then
+            await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
+                actualStudentGuardianDeleteTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentSemesterCourseByIdAsync(inputStudentGuardianId, inputStudentId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteStudentGuardianAsync(It.IsAny<StudentGuardian>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
