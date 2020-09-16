@@ -98,5 +98,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.dateTimeBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldAddStudentStudentGuardianAsync()
+		{
+			// given
+			DateTimeOffset randomDateTime = GetRandomDateTime();
+			DateTimeOffset dateTime = randomDateTime;
+			StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(randomDateTime);
+			randomStudentGuardian.UpdatedBy = randomStudentGuardian.CreatedBy;
+			StudentGuardian inputStudentGuardian = randomStudentGuardian;
+			StudentGuardian storageStudentGuardian = randomStudentGuardian;
+			StudentGuardian expectedStudentGuardian = storageStudentGuardian;
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(dateTime);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.InsertStudentGuardianAsync(inputStudentGuardian))
+					.ReturnsAsync(storageStudentGuardian);
+
+			// when
+			StudentGuardian actualStudentGuardian =
+				await this.studentGuardianService.AddStudentGuardianAsync(inputStudentGuardian);
+
+			// then
+			actualStudentGuardian.Should().BeEquivalentTo(expectedStudentGuardian);
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.InsertStudentGuardianAsync(inputStudentGuardian),
+					Times.Once);
+
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
