@@ -21,6 +21,11 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			ValidateUpdatedDateIsRecent(studentGuardian);
 		}
 
+		private void ValidateStudentGuardianOnCreate(StudentGuardian studentGuardian)
+        {
+			ValidateStudentGuardianIsNull(studentGuardian);
+		}
+
 		private void ValidateStorageStudentGuardians(IQueryable<StudentGuardian> studentGuardians)
 		{
 			if (studentGuardians.Count() == 0)
