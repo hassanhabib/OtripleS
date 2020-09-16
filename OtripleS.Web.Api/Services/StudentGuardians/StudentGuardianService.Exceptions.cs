@@ -64,9 +64,9 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			{
 				return returningStudentGuardiansFunction();
 			}
-			catch (Exception exception)
+			catch (SqlException sqlException)
 			{
-				throw CreateAndLogServiceException(exception);
+				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
 		}
 
