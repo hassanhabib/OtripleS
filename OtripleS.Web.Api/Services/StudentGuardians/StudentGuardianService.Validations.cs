@@ -24,9 +24,21 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 		private void ValidateStudentGuardianOnCreate(StudentGuardian studentGuardian)
         {
 			ValidateStudentGuardianIsNull(studentGuardian);
+			ValidateStudentGuardianRequiredFields(studentGuardian);
 		}
 
-		private void ValidateStorageStudentGuardians(IQueryable<StudentGuardian> studentGuardians)
+        private void ValidateStudentGuardianRequiredFields(StudentGuardian studentGuardian)
+        {
+			switch (studentGuardian)
+			{
+				case { } when IsInvalid(studentGuardian.StudentId):
+					throw new InvalidStudentGuardianInputException(
+						parameterName: nameof(StudentGuardian.StudentId),
+						parameterValue: studentGuardian.StudentId);
+			}
+		}
+
+        private void ValidateStorageStudentGuardians(IQueryable<StudentGuardian> studentGuardians)
 		{
 			if (studentGuardians.Count() == 0)
 			{
