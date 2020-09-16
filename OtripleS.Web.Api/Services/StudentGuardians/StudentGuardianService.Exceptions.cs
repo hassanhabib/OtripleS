@@ -68,6 +68,10 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
 		}
 
 		private StudentGuardianValidationException CreateAndLogValidationException(Exception exception)
