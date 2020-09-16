@@ -48,12 +48,15 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			return await storageBroker.UpdateStudentGuardianAsync(studentGuardian);
 		});
 
-        public IQueryable<StudentGuardian> RetrieveAllStudentGuardians()
-        {
+		public IQueryable<StudentGuardian> RetrieveAllStudentGuardians() =>
+		TryCatch(() =>
+		{
 			IQueryable<StudentGuardian> storageStudentGuardians =
 				this.storageBroker.SelectAllStudentGuardians();
 
+			ValidateStorageStudentGuardians(storageStudentGuardians);
+
 			return storageStudentGuardians;
-		}
+		});
     }
 }
