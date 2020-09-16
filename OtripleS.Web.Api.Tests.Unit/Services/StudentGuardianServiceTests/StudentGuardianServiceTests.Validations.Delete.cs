@@ -110,7 +110,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
             this.storageBrokerMock.Setup(broker =>
                  broker.SelectStudentGuardianByIdAsync(inputStudentGuardianId, inputStudentId))
                     .ReturnsAsync(nullStorageStudentGuardian);
-
             // when
             ValueTask<StudentGuardian> actualStudentGuardianDeleteTask =
                 this.studentGuardianService.DeleteStudentGuardianAsync(inputStudentGuardianId, inputStudentId);
@@ -124,7 +123,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputStudentGuardianId, inputStudentId),
+                broker.SelectStudentGuardianByIdAsync(inputStudentGuardianId, inputStudentId),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
