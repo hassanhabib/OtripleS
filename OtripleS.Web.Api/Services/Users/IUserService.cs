@@ -3,10 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using OtripleS.Web.Api.Models.Users;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Users;
 
 namespace OtripleS.Web.Api.Services.Users
 {

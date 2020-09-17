@@ -7,11 +7,11 @@ using System;
 
 namespace OtripleS.Web.Api.Models.StudentGuardians.Exceptions
 {
-	public class NotFoundStudentGuardianException : Exception
-	{
-		public NotFoundStudentGuardianException(Guid studentId, Guid guardianId)
-			: base($"Couldn't find StudentGuardian with StudentId: {studentId} " +
-			   $"and Guardian: {guardianId}.")
-		{ }
-	}
+    public class NotFoundStudentGuardianException : Exception
+    {
+        public NotFoundStudentGuardianException(Guid studentId, Guid guardianId)
+            : base($"Couldn't find StudentGuardian with StudentId: {studentId} " +
+               $"and Guardian: {guardianId}.")
+        { }
+    }
 }

@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
+using System;
+using System.Collections.Generic;
 using Tynamix.ObjectFiller;
 using Xunit;
 
