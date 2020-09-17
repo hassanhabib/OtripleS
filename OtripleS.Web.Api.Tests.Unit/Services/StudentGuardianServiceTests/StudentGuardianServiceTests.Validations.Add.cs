@@ -194,5 +194,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenUpdatedByIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(dateTime);
+            StudentGuardian inputStudentGuardian = randomStudentGuardian;
+            inputStudentGuardian.UpdatedBy = default;
+
+            var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
+                parameterName: nameof(StudentGuardian.UpdatedBy),
+                parameterValue: inputStudentGuardian.UpdatedBy);
+
+            var expectedStudentGuardianValidationException =
+                new StudentGuardianValidationException(invalidStudentGuardianInputException);
+
+            // when
+            ValueTask<StudentGuardian> createStudentGuardianTask =
+                this.studentGuardianService.AddStudentGuardianAsync(inputStudentGuardian);
+
+            // then
+            await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
+                createStudentGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentGuardianAsync(It.IsAny<StudentGuardian>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
