@@ -61,7 +61,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
 
 			// when
 			StudentGuardian actualStudentGuardian = await
-				this.studentGuardianService.RetrieveStudentGuardianById(randomStudentGuardian.StudentId, randomStudentGuardian.GuardianId);
+				this.studentGuardianService.RetrieveStudentGuardianByIdAsync(randomStudentGuardian.StudentId, randomStudentGuardian.GuardianId);
 
 			// then
 			actualStudentGuardian.Should().BeEquivalentTo(expectedStudentGuardian);
