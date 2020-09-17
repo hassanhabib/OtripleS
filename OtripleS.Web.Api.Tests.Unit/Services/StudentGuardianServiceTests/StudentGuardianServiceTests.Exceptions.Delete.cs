@@ -105,7 +105,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
             var lockedStudentGuardianException =
                 new LockedStudentGuardianException(databaseUpdateConcurrencyException);
 
-            var expectedStudentStudentGuardianException =
+            var expectedStudentGuardianException =
                 new StudentGuardianDependencyException(lockedStudentGuardianException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -113,14 +113,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
-            ValueTask<StudentGuardian> deleteStudentStudentGuardianTask =
+            ValueTask<StudentGuardian> deleteStudentGuardianTask =
                 this.studentGuardianService.DeleteStudentGuardianAsync(inputStudentGuardianId, inputStudentId);
 
             // then
-            await Assert.ThrowsAsync<StudentGuardianDependencyException>(() => deleteStudentStudentGuardianTask.AsTask());
+            await Assert.ThrowsAsync<StudentGuardianDependencyException>(() => deleteStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentStudentGuardianException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
@@ -141,7 +141,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
             Guid inputStudentId = randomStudentId;
             var exception = new Exception();
 
-            var expectedStudentStudentGuardianException =
+            var expectedStudentGuardianException =
                 new StudentGuardianServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
@@ -149,15 +149,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
                     .ThrowsAsync(exception);
 
             // when
-            ValueTask<StudentGuardian> deleteStudentStudentGuardianTask =
+            ValueTask<StudentGuardian> deleteStudentGuardianTask =
                 this.studentGuardianService.DeleteStudentGuardianAsync(inputStudentGuardianId, inputStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianServiceException>(() =>
-                deleteStudentStudentGuardianTask.AsTask());
+                deleteStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentStudentGuardianException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
