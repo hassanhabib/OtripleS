@@ -23,26 +23,27 @@ namespace OtripleS.Web.Api.Controllers
         private readonly IStudentGuardianService studentGuardianService;
 
         public StudentGuardiansController(IStudentGuardianService studentGuardianService) =>
-        this.studentGuardianService = studentGuardianService;
+                        this.studentGuardianService = studentGuardianService;
 
         [HttpPost]
-        public async ValueTask<ActionResult<StudentGuardian>> PostStudentGuardianAsyn(StudentGuardian studentGuardian)
+        public async ValueTask<ActionResult<StudentGuardian>>
+                PostStudentGuardianAsyn(StudentGuardian studentGuardian)
         {
             try
             {
                 StudentGuardian persistedStudentGuardian =
-                    await studentGuardianService.AddStudentGuardianAsync(studentGuardian);
+                                await studentGuardianService.AddStudentGuardianAsync(studentGuardian);
 
                 return Ok(persistedStudentGuardian);
             }
-            catch(StudentGuardianValidationException studentGuarduanValidationException)
+            catch (StudentGuardianValidationException studentGuarduanValidationException)
             when (studentGuarduanValidationException.InnerException is AlreadyExistsStudentGuardianException)
             {
                 var innerMessage = GetInnerMessage(studentGuarduanValidationException);
 
                 return Conflict(innerMessage);
             }
-            catch(StudentGuardianValidationException studentGuarduanValidationException)
+            catch (StudentGuardianValidationException studentGuarduanValidationException)
             {
                 var innerMessage = GetInnerMessage(studentGuarduanValidationException);
 
@@ -63,7 +64,7 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                IQueryable<StudentGuardian> StoragestudentGuardians = 
+                IQueryable<StudentGuardian> StoragestudentGuardians =
                     studentGuardianService.RetrieveAllStudentGuardians();
 
                 return Ok(StoragestudentGuardians);
@@ -78,18 +79,51 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpGet]
+        public async ValueTask<ActionResult<StudentGuardian>>
+                GetStudentGuardianByIdAsync(Guid studentId, Guid guardianId)
+        {
+            try
+            {
+                StudentGuardian storageStudentGuardian =
+                            await this.studentGuardianService.RetrieveStudentGuardianByIdAsync
+                                (
+                                    studentId,
+                                    guardianId
+                                );
+
+                return Ok(storageStudentGuardian);
+            }
+            catch (StudentGuardianValidationException studentGuardianValidationException)
+            when (studentGuardianValidationException.InnerException 
+                                    is NotFoundStudentGuardianException)
+            {
+                string innerMessage = GetInnerMessage(studentGuardianValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (StudentGuardianValidationException studentGuarduanValidationException)
+            {
+                var innerMessage = GetInnerMessage(studentGuarduanValidationException);
+
+                return BadRequest(innerMessage);
+            }
+        }
+
         [HttpPut]
-        public async ValueTask<ActionResult<StudentGuardian>> PutStudentGuardianAsync(StudentGuardian studentGuardian)
+        public async ValueTask<ActionResult<StudentGuardian>>
+                PutStudentGuardianAsync(StudentGuardian studentGuardian)
         {
             try
             {
                 StudentGuardian registeredStudentGuardian =
-                await studentGuardianService.ModifyStudentGuardianAsync(studentGuardian);
+                        await studentGuardianService.ModifyStudentGuardianAsync(studentGuardian);
 
                 return Ok(registeredStudentGuardian);
             }
             catch (StudentGuardianValidationException studentGuardianValidationException)
-            when (studentGuardianValidationException.InnerException is NotFoundStudentGuardianException)
+            when (studentGuardianValidationException.InnerException 
+                            is NotFoundStudentGuardianException)
             {
                 string innerMessage = GetInnerMessage(studentGuardianValidationException);
 
@@ -102,7 +136,8 @@ namespace OtripleS.Web.Api.Controllers
                 return BadRequest(innerMessage);
             }
             catch (StudentGuardianDependencyException studentGuardianDependentcyException)
-            when (studentGuardianDependentcyException.InnerException is LockedStudentGuardianException)
+            when (studentGuardianDependentcyException.InnerException 
+                            is LockedStudentGuardianException)
             {
                 string innerMessage = GetInnerMessage(studentGuardianDependentcyException);
 
