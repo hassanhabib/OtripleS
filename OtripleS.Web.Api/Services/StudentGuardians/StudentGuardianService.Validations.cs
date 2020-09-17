@@ -26,6 +26,18 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			ValidateStudentGuardianIsNull(studentGuardian);
 			ValidateStudentGuardianRequiredFields(studentGuardian);
 			ValidateInvalidAuditFields(studentGuardian);
+			ValidateInvalidAuditFieldsOnCreate(studentGuardian);
+		}
+
+        private void ValidateInvalidAuditFieldsOnCreate(StudentGuardian studentGuardian)
+        {
+			switch (studentGuardian)
+			{
+				case { } when studentGuardian.UpdatedBy != studentGuardian.CreatedBy:
+					throw new InvalidStudentGuardianInputException(
+						parameterName: nameof(StudentGuardian.UpdatedBy),
+						parameterValue: studentGuardian.UpdatedBy);				
+			}
 		}
 
         private void ValidateStudentGuardianRequiredFields(StudentGuardian studentGuardian)
