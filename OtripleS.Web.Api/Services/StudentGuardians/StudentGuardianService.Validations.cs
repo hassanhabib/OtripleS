@@ -40,8 +40,13 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 
 				case { } when studentGuardian.UpdatedDate != studentGuardian.CreatedDate:
 					throw new InvalidStudentGuardianInputException(
-						parameterName: nameof(studentGuardian.UpdatedDate),
+						parameterName: nameof(StudentGuardian.UpdatedDate),
 						parameterValue: studentGuardian.UpdatedDate);
+
+				case { } when IsDateNotRecent(studentGuardian.CreatedDate):
+					throw new InvalidStudentGuardianInputException(
+						parameterName: nameof(StudentGuardian.CreatedDate),
+						parameterValue: studentGuardian.CreatedDate);
 			}
 		}
 
