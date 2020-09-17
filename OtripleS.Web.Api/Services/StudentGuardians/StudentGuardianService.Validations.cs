@@ -25,6 +25,7 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
         {
 			ValidateStudentGuardianIsNull(studentGuardian);
 			ValidateStudentGuardianRequiredFields(studentGuardian);
+			ValidateInvalidAuditFields(studentGuardian);
 		}
 
         private void ValidateStudentGuardianRequiredFields(StudentGuardian studentGuardian)
@@ -88,23 +89,23 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			{
 				case { } when IsInvalid(studentGuardian.CreatedBy):
 					throw new InvalidStudentGuardianInputException(
-					parameterName: nameof(StudentGuardian.CreatedBy),
-					parameterValue: studentGuardian.CreatedBy);
+						parameterName: nameof(StudentGuardian.CreatedBy),
+						parameterValue: studentGuardian.CreatedBy);
 
 				case { } when IsInvalid(studentGuardian.UpdatedBy):
 					throw new InvalidStudentGuardianInputException(
-					parameterName: nameof(StudentGuardian.UpdatedBy),
-					parameterValue: studentGuardian.UpdatedBy);
+						parameterName: nameof(StudentGuardian.UpdatedBy),
+						parameterValue: studentGuardian.UpdatedBy);
 
 				case { } when IsInvalid(studentGuardian.CreatedDate):
 					throw new InvalidStudentGuardianInputException(
-					parameterName: nameof(StudentGuardian.CreatedDate),
-					parameterValue: studentGuardian.CreatedDate);
+						parameterName: nameof(StudentGuardian.CreatedDate),
+						parameterValue: studentGuardian.CreatedDate);
 
 				case { } when IsInvalid(studentGuardian.UpdatedDate):
 					throw new InvalidStudentGuardianInputException(
-					parameterName: nameof(StudentGuardian.UpdatedDate),
-					parameterValue: studentGuardian.UpdatedDate);
+						parameterName: nameof(StudentGuardian.UpdatedDate),
+						parameterValue: studentGuardian.UpdatedDate);
 			}
 		}
 
