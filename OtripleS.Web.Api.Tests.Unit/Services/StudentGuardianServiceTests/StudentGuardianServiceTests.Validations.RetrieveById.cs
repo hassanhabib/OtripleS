@@ -92,23 +92,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
             StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(randomDateTime);
-            Guid inputSemasterCourseId = randomStudentGuardian.GuardianId;
+            Guid inputGuardianId = randomStudentGuardian.GuardianId;
             Guid inputStudentId = randomStudentGuardian.StudentId;
             StudentGuardian nullStorageStudentGuardian = null;
 
             var notFoundStudentGuardianException =
-                new NotFoundStudentGuardianException(inputStudentId, inputSemasterCourseId);
+                new NotFoundStudentGuardianException(inputStudentId, inputGuardianId);
 
             var expectedSemesterCourseValidationException =
                 new StudentGuardianValidationException(notFoundStudentGuardianException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectStudentGuardianByIdAsync(inputStudentId, inputSemasterCourseId))
+                 broker.SelectStudentGuardianByIdAsync(inputStudentId, inputGuardianId))
                     .ReturnsAsync(nullStorageStudentGuardian);
 
             // when
             ValueTask<StudentGuardian> actualStudentGuardianRetrieveTask =
-                this.studentGuardianService.RetrieveStudentGuardianByIdAsync(inputStudentId, inputSemasterCourseId);
+                this.studentGuardianService.RetrieveStudentGuardianByIdAsync(inputStudentId, inputGuardianId);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
