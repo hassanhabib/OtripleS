@@ -62,7 +62,7 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 
         public ValueTask<StudentGuardian> RetrieveStudentGuardianById(Guid studentId, Guid guardianId)
         {
-            throw new NotImplementedException();
+			return this.storageBroker.SelectStudentGuardianByIdAsync(studentId, guardianId);
         }
     }
 }
