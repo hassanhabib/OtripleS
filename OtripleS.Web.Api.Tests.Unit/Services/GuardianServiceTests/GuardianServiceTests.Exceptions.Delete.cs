@@ -47,6 +47,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                 broker.SelectGuardianByIdAsync(inputGuardianId),
                     Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteGuardianAsync(It.IsAny<Guardian>()),
+                    Times.Never);
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -82,6 +86,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectGuardianByIdAsync(inputGuardianId),
                     Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteGuardianAsync(It.IsAny<Guardian>()),
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -121,6 +129,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                 broker.SelectGuardianByIdAsync(inputGuardianId),
                     Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteGuardianAsync(It.IsAny<Guardian>()),
+                    Times.Never);
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -156,6 +168,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectGuardianByIdAsync(inputGuardianId),
                     Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteGuardianAsync(It.IsAny<Guardian>()),
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
