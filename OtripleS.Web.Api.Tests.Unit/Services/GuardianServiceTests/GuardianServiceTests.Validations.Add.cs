@@ -39,7 +39,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianByIdAsync(It.IsAny<Guid>()),
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -76,7 +76,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianByIdAsync(It.IsAny<Guid>()),
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -116,6 +116,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                 broker.LogError(It.Is(SameExceptionAs(expectedGuardianValidationException))),
                     Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
+                    Times.Never);
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -153,6 +157,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                 broker.LogError(It.Is(SameExceptionAs(expectedGuardianValidationException))),
                     Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
+                    Times.Never);
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -187,8 +195,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                 broker.InsertGuardianAsync(It.IsAny<Guardian>()),
+                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -224,7 +232,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianByIdAsync(It.IsAny<Guid>()),
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -261,7 +269,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianByIdAsync(It.IsAny<Guid>()),
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -298,7 +306,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianByIdAsync(It.IsAny<Guid>()),
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -335,7 +343,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianByIdAsync(It.IsAny<Guid>()),
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -373,7 +381,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianByIdAsync(It.IsAny<Guid>()),
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -422,7 +430,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianByIdAsync(It.IsAny<Guid>()),
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -464,16 +472,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
             await Assert.ThrowsAsync<GuardianValidationException>(() =>
                 createGuardianTask.AsTask());
 
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedGuardianValidationException))),
+                    Times.Once);
+            
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertGuardianAsync(alreadyExistsGuardian),
-                    Times.Once);
-
-            this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedGuardianValidationException))),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

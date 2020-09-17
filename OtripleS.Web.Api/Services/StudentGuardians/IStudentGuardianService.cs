@@ -15,5 +15,6 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 		IQueryable<StudentGuardian> RetrieveAllStudentGuardians();
 		ValueTask<StudentGuardian> ModifyStudentGuardianAsync(StudentGuardian studentGuardian);
         ValueTask<StudentGuardian> RetrieveStudentGuardianByIdAsync(Guid studentId, Guid guardianId);
-    }
+		ValueTask<StudentGuardian> AddStudentGuardianAsync(StudentGuardian studentGuardian);
+	}
 }
