@@ -25,6 +25,39 @@ namespace OtripleS.Web.Api.Controllers
         public StudentGuardiansController(IStudentGuardianService studentGuardianService) =>
         this.studentGuardianService = studentGuardianService;
 
+        [HttpPost]
+        public async ValueTask<ActionResult<StudentGuardian>> PostStudentGuardianAsyn(StudentGuardian studentGuardian)
+        {
+            try
+            {
+                StudentGuardian persistedStudentGuardian =
+                    await studentGuardianService.AddStudentGuardianAsync(studentGuardian);
+
+                return Ok(persistedStudentGuardian);
+            }
+            catch(StudentGuardianValidationException studentGuarduanValidationException)
+            when (studentGuarduanValidationException.InnerException is AlreadyExistsStudentGuardianException)
+            {
+                var innerMessage = GetInnerMessage(studentGuarduanValidationException);
+
+                return Conflict(innerMessage);
+            }
+            catch(StudentGuardianValidationException studentGuarduanValidationException)
+            {
+                var innerMessage = GetInnerMessage(studentGuarduanValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (StudentGuardianDependencyException studentGuardianDependentcyException)
+            {
+                return Problem(studentGuardianDependentcyException.Message);
+            }
+            catch (StudentGuardianServiceException studentGuardianServiceException)
+            {
+                return Problem(studentGuardianServiceException.Message);
+            }
+        }
+
         [HttpGet]
         public ActionResult<IQueryable<StudentGuardian>> GetAllStudentGuardians()
         {
