@@ -3,10 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Models.StudentGuardians.Exceptions;
+using System;
+using System.Linq;
 
 namespace OtripleS.Web.Api.Services.StudentGuardians
 {
@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
             ValidateStudentGuardianIsNull(studentGuardian);
             ValidateStudentGuardianRequiredFields(studentGuardian);
             ValidateInvalidAuditFields(studentGuardian);
-            ValidateInvalidAuditFieldsOnCreate(studentGuardian);            
+            ValidateInvalidAuditFieldsOnCreate(studentGuardian);
         }
 
         private void ValidateInvalidAuditFieldsOnCreate(StudentGuardian studentGuardian)
@@ -63,6 +63,22 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
                     throw new InvalidStudentGuardianInputException(
                         parameterName: nameof(StudentGuardian.GuardianId),
                         parameterValue: studentGuardian.GuardianId);
+            }
+        }
+
+        private void ValidateStudentGuardianIdIsNull(Guid studentId, Guid guardianId)
+        {
+            if (studentId == default)
+            {
+                throw new InvalidStudentGuardianInputException(
+                    parameterName: nameof(StudentGuardian.StudentId),
+                    parameterValue: studentId);
+            }
+            if (guardianId == default)
+            {
+                throw new InvalidStudentGuardianInputException(
+                    parameterName: nameof(StudentGuardian.GuardianId),
+                    parameterValue: guardianId);
             }
         }
 
