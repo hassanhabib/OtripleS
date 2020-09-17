@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentGuardians;
@@ -40,6 +41,13 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			catch (SqlException sqlException)
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
+			}
+			catch (DuplicateKeyException duplicateKeyException)
+			{
+				var alreadyExistsGuardianException =
+					new AlreadyExistsStudentGuardianException(duplicateKeyException);
+
+				throw CreateAndLogValidationException(alreadyExistsGuardianException);
 			}
 			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
 			{
