@@ -47,6 +47,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
 		}
 
 		[Fact]
+		public async Task ShouldRetireveStudentGuardianById()
+		{
+			// given
+			DateTimeOffset inputDateTime = GetRandomDateTime();
+			StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(inputDateTime);
+			StudentGuardian storageStudentGuardian = randomStudentGuardian;
+			StudentGuardian expectedStudentGuardian = storageStudentGuardian;
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectStudentGuardianByIdAsync(randomStudentGuardian.StudentId, randomStudentGuardian.GuardianId))
+					.Returns(new ValueTask<StudentGuardian>(randomStudentGuardian));
+
+			// when
+			StudentGuardian actualStudentGuardian = await
+				this.studentGuardianService.RetrieveStudentGuardianById(randomStudentGuardian.StudentId, randomStudentGuardian.GuardianId);
+
+			// then
+			actualStudentGuardian.Should().BeEquivalentTo(expectedStudentGuardian);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectStudentGuardianByIdAsync(randomStudentGuardian.StudentId, randomStudentGuardian.GuardianId),
+					Times.Once);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
 		public async Task ShouldModifyStudentGuardianAsync()
 		{
 			// given
