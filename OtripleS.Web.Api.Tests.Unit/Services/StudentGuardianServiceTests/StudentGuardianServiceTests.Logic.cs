@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
@@ -15,6 +16,36 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
 {
 	public partial class StudentGuardianServiceTests
 	{
+		[Fact]
+		public void ShouldRetireveAllStudentGuardians()
+		{
+			// given
+			IQueryable<StudentGuardian> randomStudentGuardians =
+				CreateRandomStudentGuardians();
+
+			IQueryable<StudentGuardian> storageStudentGuardians = randomStudentGuardians;
+			IQueryable<StudentGuardian> expectedStudentGuardians = storageStudentGuardians;
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectAllStudentGuardians())
+					.Returns(storageStudentGuardians);
+
+			// when
+			IQueryable<StudentGuardian> actualStudentGuardians =
+				this.studentGuardianService.RetrieveAllStudentGuardians();
+
+			// then
+			actualStudentGuardians.Should().BeEquivalentTo(expectedStudentGuardians);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectAllStudentGuardians(),
+					Times.Once);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
+
 		[Fact]
 		public async Task ShouldModifyStudentGuardianAsync()
 		{
@@ -69,42 +100,43 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
 		}
 
 		[Fact]
-		public async Task ShouldDeleteStudentGuardianAsync()
+		public async Task ShouldAddStudentStudentGuardianAsync()
 		{
 			// given
-			DateTimeOffset dateTime = GetRandomDateTime();
-			StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(dateTime);
-			Guid inputStudentGuradianId = randomStudentGuardian.GuardianId;
-			Guid inputStudentId = randomStudentGuardian.StudentId;
+			DateTimeOffset randomDateTime = GetRandomDateTime();
+			DateTimeOffset dateTime = randomDateTime;
+			StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(randomDateTime);
+			randomStudentGuardian.UpdatedBy = randomStudentGuardian.CreatedBy;
 			StudentGuardian inputStudentGuardian = randomStudentGuardian;
-			StudentGuardian storageStudentGuardian = inputStudentGuardian;
+			StudentGuardian storageStudentGuardian = randomStudentGuardian;
 			StudentGuardian expectedStudentGuardian = storageStudentGuardian;
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectStudentGuardianByIdAsync(inputStudentGuradianId, inputStudentId))
-					.ReturnsAsync(inputStudentGuardian);
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(dateTime);
 
 			this.storageBrokerMock.Setup(broker =>
-				broker.DeleteStudentGuardianAsync(inputStudentGuardian))
+				broker.InsertStudentGuardianAsync(inputStudentGuardian))
 					.ReturnsAsync(storageStudentGuardian);
 
 			// when
 			StudentGuardian actualStudentGuardian =
-				await this.studentGuardianService.DeleteStudentGuardianAsync(inputStudentGuradianId, inputStudentId);
+				await this.studentGuardianService.AddStudentGuardianAsync(inputStudentGuardian);
 
+			// then
 			actualStudentGuardian.Should().BeEquivalentTo(expectedStudentGuardian);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectStudentGuardianByIdAsync(inputStudentGuradianId, inputStudentId),
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
 					Times.Once);
 
 			this.storageBrokerMock.Verify(broker =>
-				broker.DeleteStudentGuardianAsync(inputStudentGuardian),
+				broker.InsertStudentGuardianAsync(inputStudentGuardian),
 					Times.Once);
 
-			this.storageBrokerMock.VerifyNoOtherCalls();
-			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
 	}
 }

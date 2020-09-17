@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -28,28 +29,23 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-		public ValueTask<StudentGuardian> 
-			DeleteStudentGuardianAsync(Guid GuardianId, Guid studentId) =>
-			TryCatch(async () =>
-			{
-				ValidateStudentGuardianId(GuardianId);
-				ValidateStudentId(studentId);
+		public ValueTask<StudentGuardian> AddStudentGuardianAsync(StudentGuardian studentGuardian) =>
+		TryCatch(async () =>
+		{
+			ValidateStudentGuardianOnCreate(studentGuardian);
 
-				StudentGuardian studentGuardian =
-					await this.storageBroker.SelectStudentGuardianByIdAsync(GuardianId, studentId);
+			return await this.storageBroker.InsertStudentGuardianAsync(studentGuardian);
+		});
 
-				ValidateStorageStudentGuardian(studentGuardian, GuardianId, studentId);
-
-				return await this.storageBroker.DeleteStudentGuardianAsync(studentGuardian);
-			});
-
-			public ValueTask<StudentGuardian> ModifyStudentGuardianAsync(StudentGuardian studentGuardian) =>
+        public ValueTask<StudentGuardian> ModifyStudentGuardianAsync(StudentGuardian studentGuardian) =>
 		TryCatch(async () =>
 		{
 			ValidateStudentGuardianOnModify(studentGuardian);
 
 			StudentGuardian maybeStudentGuardian =
-				await storageBroker.SelectStudentGuardianByIdAsync(studentGuardian.StudentId, studentGuardian.GuardianId);
+				await storageBroker.SelectStudentGuardianByIdAsync(
+					studentGuardian.StudentId, 
+					studentGuardian.GuardianId);
 
 			ValidateStorageStudentGuardian(
 				maybeStudentGuardian,
@@ -63,6 +59,15 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			return await storageBroker.UpdateStudentGuardianAsync(studentGuardian);
 		});
 
+		public IQueryable<StudentGuardian> RetrieveAllStudentGuardians() =>
+		TryCatch(() =>
+		{
+			IQueryable<StudentGuardian> storageStudentGuardians =
+				this.storageBroker.SelectAllStudentGuardians();
 
-	}
+			ValidateStorageStudentGuardians(storageStudentGuardians);
+
+			return storageStudentGuardians;
+		});
+    }
 }
