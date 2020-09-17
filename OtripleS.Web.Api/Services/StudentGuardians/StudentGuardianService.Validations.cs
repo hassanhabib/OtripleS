@@ -66,6 +66,22 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
             }
         }
 
+        private void ValidateStudentGuardianIdIsNull(Guid studentId, Guid guardianId)
+        {
+            if (studentId == default)
+            {
+                throw new InvalidStudentGuardianInputException(
+                    parameterName: nameof(StudentGuardian.StudentId),
+                    parameterValue: studentId);
+            }
+            if (guardianId == default)
+            {
+                throw new InvalidStudentGuardianInputException(
+                    parameterName: nameof(StudentGuardian.GuardianId),
+                    parameterValue: guardianId);
+            }
+        }
+
         private void ValidateStorageStudentGuardians(IQueryable<StudentGuardian> studentGuardians)
         {
             if (studentGuardians.Count() == 0)
