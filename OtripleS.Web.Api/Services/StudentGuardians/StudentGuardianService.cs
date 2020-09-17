@@ -61,10 +61,12 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 		});
 
 		public ValueTask<StudentGuardian> RetrieveStudentGuardianByIdAsync(Guid studentId, Guid guardianId) =>
-		TryCatch(() =>
+		TryCatch(async () =>
 		{
 			ValidateStudentGuardianIdIsNull(studentId, guardianId);
-			return this.storageBroker.SelectStudentGuardianByIdAsync(studentId, guardianId);
+			StudentGuardian storageStudentGuardian = await this.storageBroker.SelectStudentGuardianByIdAsync(studentId, guardianId);
+			ValidateStorageStudentGuardian(storageStudentGuardian, studentId, guardianId);
+			return storageStudentGuardian;
 		});
     }
 }
