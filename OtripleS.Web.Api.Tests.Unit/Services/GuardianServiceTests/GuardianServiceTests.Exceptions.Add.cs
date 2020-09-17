@@ -62,7 +62,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnCreateWhenDbExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnAddWhenDbExceptionOccursAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
