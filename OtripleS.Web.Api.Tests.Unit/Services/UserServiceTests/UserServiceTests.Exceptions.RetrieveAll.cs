@@ -12,9 +12,9 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
 {
-	public partial class UserServiceTests
-	{
-		[Fact]
+    public partial class UserServiceTests
+    {
+        [Fact]
         public void ShouldThrowDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogIt()
         {
             // given

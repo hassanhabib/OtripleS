@@ -117,7 +117,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
 
                 users.Add(user);
             }
-            
+
             return users.AsQueryable();
         }
     }

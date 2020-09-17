@@ -385,7 +385,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
 
             // when
             ValueTask<User> registerUserTask =
-                this.userService.RegisterUserAsync(alreadyExistsUser,password);
+                this.userService.RegisterUserAsync(alreadyExistsUser, password);
 
             // then
             await Assert.ThrowsAsync<UserValidationException>(() =>

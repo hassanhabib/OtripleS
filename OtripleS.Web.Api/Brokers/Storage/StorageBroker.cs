@@ -5,7 +5,6 @@
 
 using System;
 using EFxceptions.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using OtripleS.Web.Api.Models.Users;
@@ -19,7 +18,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
         public StorageBroker(IConfiguration configuration)
         {
             this.configuration = configuration;
-            //this.Database.Migrate();
+            this.Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,6 +26,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
             base.OnModelCreating(modelBuilder);
             AddSemesterCourseReferences(modelBuilder);
             AddStudentSemesterCourseReferences(modelBuilder);
+            AddStudentGuardianReferences(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

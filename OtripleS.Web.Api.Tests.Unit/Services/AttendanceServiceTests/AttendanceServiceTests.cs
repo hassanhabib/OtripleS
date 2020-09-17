@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
 
         private static int GetRandomNumber() => new IntRange(min: 1, max: 150).GetValue();
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
-        
+
         public static IEnumerable<object[]> InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();

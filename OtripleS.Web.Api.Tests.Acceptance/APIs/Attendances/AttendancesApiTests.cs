@@ -46,7 +46,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
         private Attendance UpdateAttendanceRandom(Attendance inputAttendance)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
-
             var filler = new Filler<Attendance>();
 
             filler.Setup()

@@ -6,9 +6,9 @@
 using System;
 using System.Threading.Tasks;
 using Moq;
-using OtripleS.Web.Api.Models.Guardian;
+using OtripleS.Web.Api.Models.Guardians;
+using OtripleS.Web.Api.Models.Guardians.Exceptions;
 using Xunit;
-using OtripleS.Web.Api.Models.Guardian.Exceptions;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 {

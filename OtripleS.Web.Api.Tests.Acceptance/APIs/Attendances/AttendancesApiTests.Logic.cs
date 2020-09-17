@@ -34,7 +34,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
             // then
             foreach (Attendance expectedAttendance in expectedAttendances)
             {
-                Attendance actualAttendance = actualAttendances.Single(attendance => attendance.Id == expectedAttendance.Id);
+                Attendance actualAttendance = 
+                    actualAttendances.Single(attendance => attendance.Id == expectedAttendance.Id);
+
                 actualAttendance.Should().BeEquivalentTo(expectedAttendance);
                 await this.otripleSApiBroker.DeleteAttendanceByIdAsync(actualAttendance.Id);
             }

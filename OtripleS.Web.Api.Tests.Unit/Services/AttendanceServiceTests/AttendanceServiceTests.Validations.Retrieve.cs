@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
                 parameterName: nameof(Attendance.Id),
                 parameterValue: inputAttendanceId);
 
-            var expectedValidationException = 
+            var expectedValidationException =
                 new AttendanceValidationException(invalidAttendanceException);
 
             // when
@@ -34,7 +34,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
                 this.attendanceService.RetrieveAttendanceByIdAsync(inputAttendanceId);
 
             // then
-            await Assert.ThrowsAsync<AttendanceValidationException>(() => 
+            await Assert.ThrowsAsync<AttendanceValidationException>(() =>
                 retrieveAttendanceTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>

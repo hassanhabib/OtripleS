@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Guardian;
+using OtripleS.Web.Api.Models.Guardians;
 
 namespace OtripleS.Web.Api.Services.Guardians
 {

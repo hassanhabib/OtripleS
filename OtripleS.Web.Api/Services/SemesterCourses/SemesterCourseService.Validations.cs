@@ -3,10 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using OtripleS.Web.Api.Models.SemesterCourses;
-using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 using System;
 using System.Linq;
+using OtripleS.Web.Api.Models.SemesterCourses;
+using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 
 namespace OtripleS.Web.Api.Services.SemesterCourses
 {

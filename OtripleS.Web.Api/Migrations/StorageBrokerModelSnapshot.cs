@@ -254,7 +254,7 @@ namespace OtripleS.Web.Api.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("OtripleS.Web.Api.Models.Guardian.Guardian", b =>
+            modelBuilder.Entity("OtripleS.Web.Api.Models.Guardians.Guardian", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -328,6 +328,42 @@ namespace OtripleS.Web.Api.Migrations
                     b.HasIndex("TeacherId");
 
                     b.ToTable("SemesterCourses");
+                });
+
+            modelBuilder.Entity("OtripleS.Web.Api.Models.StudentGuardians.StudentGuardian", b =>
+                {
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GuardianId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsPrimaryContact")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Relationship")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("UpdatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("StudentId", "GuardianId");
+
+                    b.HasIndex("GuardianId");
+
+                    b.ToTable("StudentGuardians");
                 });
 
             modelBuilder.Entity("OtripleS.Web.Api.Models.StudentSemesterCourses.StudentSemesterCourse", b =>
@@ -634,6 +670,21 @@ namespace OtripleS.Web.Api.Migrations
                     b.HasOne("OtripleS.Web.Api.Models.Teachers.Teacher", "Teacher")
                         .WithMany("SemesterCourses")
                         .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OtripleS.Web.Api.Models.StudentGuardians.StudentGuardian", b =>
+                {
+                    b.HasOne("OtripleS.Web.Api.Models.Guardians.Guardian", "Guardian")
+                        .WithMany("StudentGuardians")
+                        .HasForeignKey("GuardianId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("OtripleS.Web.Api.Models.Students.Student", "Student")
+                        .WithMany("StudentGuardians")
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });

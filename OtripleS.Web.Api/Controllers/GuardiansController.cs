@@ -7,8 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.Guardian;
-using OtripleS.Web.Api.Models.Guardian.Exceptions;
+using OtripleS.Web.Api.Models.Guardians;
 using OtripleS.Web.Api.Models.Guardians.Exceptions;
 using OtripleS.Web.Api.Services.Guardians;
 using RESTFulSense.Controllers;
@@ -19,9 +18,9 @@ namespace OtripleS.Web.Api.Controllers
     [ApiController]
     public class GuardiansController : RESTFulController
     {
-        private readonly GuardianService guardianService;
+        private readonly IGuardianService guardianService;
 
-        public GuardiansController(GuardianService guardianService) =>
+        public GuardiansController(IGuardianService guardianService) =>
             this.guardianService = guardianService;
 
         [HttpPost]
@@ -29,20 +28,21 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Guardian persistedGuardian = await guardianService.CreateGuardianAsync(guardian);
+                Guardian persistedGuardian =
+                    await this.guardianService.CreateGuardianAsync(guardian);
 
                 return Ok(persistedGuardian);
             }
             catch (GuardianValidationException guardianValidationException)
-            when (guardianValidationException.InnerException is AlreadyExistsGuardianException)
+                when (guardianValidationException.InnerException is AlreadyExistsGuardianException)
             {
-                string innerMessage = this.GetInnerMessage(guardianValidationException);
+                string innerMessage = GetInnerMessage(guardianValidationException);
 
                 return Conflict(innerMessage);
             }
             catch (GuardianValidationException guardianValidationException)
             {
-                string innerMessage = this.GetInnerMessage(guardianValidationException);
+                string innerMessage = GetInnerMessage(guardianValidationException);
 
                 return BadRequest(innerMessage);
             }
@@ -61,9 +61,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                IQueryable storageGuardians = this.guardianService.RetrieveAllGuardians();
+                IQueryable storageGuardian =
+                    this.guardianService.RetrieveAllGuardians();
 
-                return Ok(storageGuardians);
+                return Ok(storageGuardian);
             }
             catch (GuardianDependencyException guardianDependencyException)
             {
@@ -76,24 +77,25 @@ namespace OtripleS.Web.Api.Controllers
         }
 
         [HttpGet("{guardianId}")]
-        public async ValueTask<ActionResult<Guardian>> GetGuardianByIdAsync(Guid guardianId)
+        public async ValueTask<ActionResult<Guardian>> GetGuardianAsync(Guid guardianId)
         {
             try
             {
-                Guardian guardian = await this.guardianService.RetrieveGuardianByIdAsync(guardianId);
+                Guardian storageGuardian =
+                    await this.guardianService.RetrieveGuardianByIdAsync(guardianId);
 
-                return Ok(guardian);
+                return Ok(storageGuardian);
             }
             catch (GuardianValidationException guardianValidationException)
-            when (guardianValidationException.InnerException is NotFoundGuardianException)
+                when (guardianValidationException.InnerException is NotFoundGuardianException)
             {
-                string innerMessage = this.GetInnerMessage(guardianValidationException);
+                string innerMessage = GetInnerMessage(guardianValidationException);
 
                 return NotFound(innerMessage);
             }
             catch (GuardianValidationException guardianValidationException)
             {
-                string innerMessage = this.GetInnerMessage(guardianValidationException);
+                string innerMessage = GetInnerMessage(guardianValidationException);
 
                 return BadRequest(innerMessage);
             }
@@ -112,27 +114,28 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Guardian registeredGuardian = await this.guardianService.ModifyGuardianAsync(guardian);
+                Guardian storageGuardian =
+                    await this.guardianService.ModifyGuardianAsync(guardian);
 
-                return Ok(registeredGuardian);
+                return Ok(storageGuardian);
             }
             catch (GuardianValidationException guardianValidationException)
-            when (guardianValidationException.InnerException is NotFoundGuardianException)
+                when (guardianValidationException.InnerException is NotFoundGuardianException)
             {
-                string innerMessage = this.GetInnerMessage(guardianValidationException);
+                string innerMessage = GetInnerMessage(guardianValidationException);
 
                 return NotFound(innerMessage);
             }
             catch (GuardianValidationException guardianValidationException)
             {
-                string innerMessage = this.GetInnerMessage(guardianValidationException);
+                string innerMessage = GetInnerMessage(guardianValidationException);
 
                 return BadRequest(innerMessage);
             }
             catch (GuardianDependencyException guardianDependencyException)
-            when (guardianDependencyException.InnerException is LockedGuardianException)
+                when (guardianDependencyException.InnerException is LockedGuardianException)
             {
-                string innerMessage = this.GetInnerMessage(guardianDependencyException);
+                string innerMessage = GetInnerMessage(guardianDependencyException);
 
                 return Locked(innerMessage);
             }
@@ -151,7 +154,8 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Guardian storageGuardian = await this.guardianService.DeleteGuardianByIdAsync(guardianId);
+                Guardian storageGuardian =
+                    await this.guardianService.DeleteGuardianByIdAsync(guardianId);
 
                 return Ok(storageGuardian);
             }
@@ -184,8 +188,8 @@ namespace OtripleS.Web.Api.Controllers
                 return Problem(guardianServiceException.Message);
             }
         }
-                
-        private string GetInnerMessage(Exception exception) =>
+
+        private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
 }

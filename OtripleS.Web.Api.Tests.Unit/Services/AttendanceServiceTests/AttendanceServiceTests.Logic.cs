@@ -14,7 +14,7 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
 {
-	public partial class AttendanceServiceTests
+    public partial class AttendanceServiceTests
     {
         [Fact]
         public async Task ShouldModifyAttendanceAsync()

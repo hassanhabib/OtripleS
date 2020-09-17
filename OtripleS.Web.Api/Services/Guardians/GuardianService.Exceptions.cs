@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.Guardian;
-using OtripleS.Web.Api.Models.Guardian.Exceptions;
+using OtripleS.Web.Api.Models.Guardians;
 using OtripleS.Web.Api.Models.Guardians.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Guardians

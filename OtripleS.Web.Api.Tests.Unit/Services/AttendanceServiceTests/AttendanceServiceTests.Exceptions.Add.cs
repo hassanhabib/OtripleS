@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             inputAttendance.UpdatedBy = inputAttendance.CreatedBy;
             var sqlException = GetSqlException();
 
-            var expectedDependencyException = 
+            var expectedDependencyException =
                 new AttendanceDependencyException(sqlException);
 
             this.dateTimeBrokerMock.Setup(broker =>

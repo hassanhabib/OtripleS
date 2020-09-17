@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
-using OtripleS.Web.Api.Models.Guardian;
+using OtripleS.Web.Api.Models.Guardians;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
 {
-	public partial class GuardianServiceTests
+    public partial class GuardianServiceTests
     {
         [Fact]
         public async Task ShouldRetrieveGuardianByIdAsync()

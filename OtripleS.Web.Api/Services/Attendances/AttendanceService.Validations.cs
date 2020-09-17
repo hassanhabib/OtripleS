@@ -194,7 +194,7 @@ namespace OtripleS.Web.Api.Services.Attendances
         }
         private static bool IsInvalid(Guid inputId) => inputId == default;
         private static bool IsInvalid(DateTimeOffset inputDateTimeOffset) => inputDateTimeOffset == default;
-        
+
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();

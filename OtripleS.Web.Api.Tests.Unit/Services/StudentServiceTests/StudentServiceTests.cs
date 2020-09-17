@@ -83,7 +83,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentServiceTests
                 .OnProperty(student => student.BirthDate).Use(GetRandomDateTime())
                 .OnProperty(student => student.CreatedDate).Use(dates)
                 .OnProperty(student => student.UpdatedDate).Use(dates)
-                .OnProperty(student => student.StudentSemesterCourses).IgnoreIt();
+                .OnProperty(student => student.StudentSemesterCourses).IgnoreIt()
+                .OnProperty(student => student.StudentGuardians).IgnoreIt();
 
             return filler;
         }

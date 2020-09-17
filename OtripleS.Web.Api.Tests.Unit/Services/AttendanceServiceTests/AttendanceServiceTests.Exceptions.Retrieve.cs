@@ -23,7 +23,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
             Guid inputAttendanceId = randomAttendanceId;
             var sqlException = GetSqlException();
 
-            var expectedDependencyException = 
+            var expectedDependencyException =
                 new AttendanceDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -35,7 +35,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
                 this.attendanceService.RetrieveAttendanceByIdAsync(inputAttendanceId);
 
             // then
-            await Assert.ThrowsAsync<AttendanceDependencyException>(() => 
+            await Assert.ThrowsAsync<AttendanceDependencyException>(() =>
                 retrieveAttendanceTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
