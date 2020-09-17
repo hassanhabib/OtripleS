@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 		private void ValidateStudentGuardianOnModify(StudentGuardian studentGuardian)
 		{
 			ValidateStudentGuardianIsNull(studentGuardian);
-			ValidateStudentGuardianIdIsNull(studentGuardian.StudentId, studentGuardian.GuardianId);
+			ValidateStudentGuardianRequiredFields(studentGuardian);
 			ValidateInvalidAuditFields(studentGuardian);
 			ValidateDatesAreNotSame(studentGuardian);
 			ValidateUpdatedDateIsRecent(studentGuardian);
@@ -79,22 +79,6 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 			if (studentGuardian is null)
 			{
 				throw new NullStudentGuardianException();
-			}
-		}
-
-		private void ValidateStudentGuardianIdIsNull(Guid studentId, Guid guardianId)
-		{
-			if (studentId == default)
-			{
-				throw new InvalidStudentGuardianInputException(
-					parameterName: nameof(StudentGuardian.StudentId),
-					parameterValue: studentId);
-			}
-			if (guardianId == default)
-			{
-				throw new InvalidStudentGuardianInputException(
-					parameterName: nameof(StudentGuardian.GuardianId),
-					parameterValue: guardianId);
 			}
 		}
 
