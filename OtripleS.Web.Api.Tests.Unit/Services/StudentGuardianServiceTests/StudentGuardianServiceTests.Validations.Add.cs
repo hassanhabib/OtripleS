@@ -27,12 +27,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
                 new StudentGuardianValidationException(nullStudentGuardianException);
 
             // when
-            ValueTask<StudentGuardian> createStudentGuardianTask =
+            ValueTask<StudentGuardian> addStudentGuardianTask =
                 this.studentGuardianService.AddStudentGuardianAsync(nullStudentGuardian);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
-                createStudentGuardianTask.AsTask());
+                addStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianValidationException))),
@@ -64,12 +64,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
                 new StudentGuardianValidationException(invalidStudentGuardianInputException);
 
             // when
-            ValueTask<StudentGuardian> createStudentGuardianTask =
+            ValueTask<StudentGuardian> addStudentGuardianTask =
                 this.studentGuardianService.AddStudentGuardianAsync(inputStudentGuardian);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
-                createStudentGuardianTask.AsTask());
+                addStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianValidationException))),
@@ -101,12 +101,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
                 new StudentGuardianValidationException(invalidStudentGuardianInputException);
 
             // when
-            ValueTask<StudentGuardian> createStudentGuardianTask =
+            ValueTask<StudentGuardian> addStudentGuardianTask =
                 this.studentGuardianService.AddStudentGuardianAsync(inputStudentGuardian);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
-                createStudentGuardianTask.AsTask());
+                addStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianValidationException))),
@@ -138,12 +138,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
                 new StudentGuardianValidationException(invalidStudentGuardianInputException);
 
             // when
-            ValueTask<StudentGuardian> createStudentGuardianTask =
+            ValueTask<StudentGuardian> addStudentGuardianTask =
                 this.studentGuardianService.AddStudentGuardianAsync(inputStudentGuardian);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
-                createStudentGuardianTask.AsTask());
+                addStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianValidationException))),
@@ -175,12 +175,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
                 new StudentGuardianValidationException(invalidStudentGuardianInputException);
 
             // when
-            ValueTask<StudentGuardian> createStudentGuardianTask =
+            ValueTask<StudentGuardian> addStudentGuardianTask =
                 this.studentGuardianService.AddStudentGuardianAsync(inputStudentGuardian);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
-                createStudentGuardianTask.AsTask());
+                addStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianValidationException))),
@@ -212,12 +212,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
                 new StudentGuardianValidationException(invalidStudentGuardianInputException);
 
             // when
-            ValueTask<StudentGuardian> createStudentGuardianTask =
+            ValueTask<StudentGuardian> addStudentGuardianTask =
                 this.studentGuardianService.AddStudentGuardianAsync(inputStudentGuardian);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
-                createStudentGuardianTask.AsTask());
+                addStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianValidationException))),
@@ -249,12 +249,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
                 new StudentGuardianValidationException(invalidStudentGuardianInputException);
 
             // when
-            ValueTask<StudentGuardian> createStudentGuardianTask =
+            ValueTask<StudentGuardian> addStudentGuardianTask =
                 this.studentGuardianService.AddStudentGuardianAsync(inputStudentGuardian);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
-                createStudentGuardianTask.AsTask());
+                addStudentGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentGuardianAsync(It.IsAny<StudentGuardian>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenUpdatedByIsNotSameToCreatedByAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(dateTime);
+            StudentGuardian inputStudentGuardian = randomStudentGuardian;
+            inputStudentGuardian.UpdatedBy = Guid.NewGuid();
+
+            var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
+                parameterName: nameof(StudentGuardian.UpdatedBy),
+                parameterValue: inputStudentGuardian.UpdatedBy);
+
+            var expectedStudentGuardianValidationException =
+                new StudentGuardianValidationException(invalidStudentGuardianInputException);
+
+            // when
+            ValueTask<StudentGuardian> addStudentGuardianTask =
+                this.studentGuardianService.AddStudentGuardianAsync(inputStudentGuardian);
+
+            // then
+            await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
+                addStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianValidationException))),
