@@ -28,8 +28,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
             Guid inputStudentId = randomStudentId;
             SqlException sqlException = GetSqlException();
 
-            var expectedStudentGuardianDependencyException
-                = new StudentGuardianDependencyException(sqlException);
+            var expectedStudentGuardianDependencyException = 
+                new StudentGuardianDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
                  broker.SelectStudentGuardianByIdAsync(inputStudentGuardianId, inputStudentId))
