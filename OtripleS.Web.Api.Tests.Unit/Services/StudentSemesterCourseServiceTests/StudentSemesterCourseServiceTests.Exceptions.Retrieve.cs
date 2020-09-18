@@ -3,11 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
-using System;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions;
+using System;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests

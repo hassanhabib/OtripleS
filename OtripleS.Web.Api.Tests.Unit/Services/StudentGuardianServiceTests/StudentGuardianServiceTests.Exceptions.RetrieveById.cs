@@ -15,47 +15,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
 {
     public partial class StudentGuardianServiceTests
     {
-
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnAddWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(dateTime);
-            StudentGuardian inputStudentGuardian = randomStudentGuardian;
-            inputStudentGuardian.UpdatedBy = inputStudentGuardian.CreatedBy;
+            Guid randomStudentId = Guid.NewGuid();
+            Guid randomGuardianId = Guid.NewGuid();
+            Guid inputGuardianId = randomGuardianId;
+            Guid inputStudentId = randomStudentId;
             var sqlException = GetSqlException();
 
             var expectedStudentGuardianDependencyException =
                 new StudentGuardianDependencyException(sqlException);
 
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentGuardianAsync(inputStudentGuardian))
+                broker.SelectStudentGuardianByIdAsync(inputStudentId, inputGuardianId))
                     .ThrowsAsync(sqlException);
 
             // when
-            ValueTask<StudentGuardian> addStudentGuardianTask =
-                this.studentGuardianService.AddStudentGuardianAsync(inputStudentGuardian);
+            ValueTask<StudentGuardian> retrieveStudentGuardianByIdTask =
+                this.studentGuardianService.RetrieveStudentGuardianByIdAsync(inputStudentId, inputGuardianId);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianDependencyException>(() =>
-                addStudentGuardianTask.AsTask());
+                retrieveStudentGuardianByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentGuardianDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentGuardianAsync(inputStudentGuardian),
+                broker.SelectStudentGuardianByIdAsync(inputStudentId, inputGuardianId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
-                    Times.Once);
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -63,45 +58,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnAddWhenDbExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(dateTime);
-            StudentGuardian inputStudentGuardian = randomStudentGuardian;
-            inputStudentGuardian.UpdatedBy = inputStudentGuardian.CreatedBy;
+            Guid randomStudentId = Guid.NewGuid();
+            Guid randomGuardianId = Guid.NewGuid();
+            Guid inputGuardianId = randomGuardianId;
+            Guid inputStudentId = randomStudentId;
             var databaseUpdateException = new DbUpdateException();
 
             var expectedStudentGuardianDependencyException =
                 new StudentGuardianDependencyException(databaseUpdateException);
 
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentGuardianAsync(inputStudentGuardian))
+                broker.SelectStudentGuardianByIdAsync(inputStudentId, inputGuardianId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
-            ValueTask<StudentGuardian> addStudentGuardianTask =
-                this.studentGuardianService.AddStudentGuardianAsync(inputStudentGuardian);
+            ValueTask<StudentGuardian> retrieveStudentGuardianByIdTask =
+                this.studentGuardianService.RetrieveStudentGuardianByIdAsync(inputStudentId, inputGuardianId);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianDependencyException>(() =>
-                addStudentGuardianTask.AsTask());
+                retrieveStudentGuardianByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentGuardianAsync(inputStudentGuardian),
+                broker.SelectStudentGuardianByIdAsync(inputStudentId, inputGuardianId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
-                    Times.Once);
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -109,45 +100,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardianServiceTests
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnAddWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(dateTime);
-            StudentGuardian inputStudentGuardian = randomStudentGuardian;
-            inputStudentGuardian.UpdatedBy = inputStudentGuardian.CreatedBy;
+            Guid randomStudentId = Guid.NewGuid();
+            Guid randomGuardianId = Guid.NewGuid();
+            Guid inputGuardianId = randomGuardianId;
+            Guid inputStudentId = randomStudentId;
             var exception = new Exception();
 
             var expectedStudentGuardianServiceException =
                 new StudentGuardianServiceException(exception);
 
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentGuardianAsync(inputStudentGuardian))
+                broker.SelectStudentGuardianByIdAsync(inputStudentId, inputGuardianId))
                     .ThrowsAsync(exception);
 
             // when
-            ValueTask<StudentGuardian> addStudentGuardianTask =
-                 this.studentGuardianService.AddStudentGuardianAsync(inputStudentGuardian);
+            ValueTask<StudentGuardian> retrieveStudentGuardianByIdTask =
+                this.studentGuardianService.RetrieveStudentGuardianByIdAsync(inputStudentId, inputGuardianId);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianServiceException>(() =>
-                addStudentGuardianTask.AsTask());
+                retrieveStudentGuardianByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianServiceException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentGuardianAsync(inputStudentGuardian),
+                broker.SelectStudentGuardianByIdAsync(inputStudentId, inputGuardianId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
-                    Times.Once);
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
