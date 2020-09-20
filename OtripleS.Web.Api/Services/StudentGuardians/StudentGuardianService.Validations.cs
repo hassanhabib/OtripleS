@@ -120,6 +120,24 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
                 throw new NullStudentGuardianException();
             }
         }
+        private void ValidateStudentGuardianId(Guid studentGuardianId)
+        {
+            if (studentGuardianId == Guid.Empty)
+            {
+                throw new InvalidStudentGuardianInputException(
+                    parameterName: nameof(StudentGuardian.GuardianId),
+                    parameterValue: studentGuardianId);
+            }
+        }
+        private void ValidateStudentId(Guid studentId)
+        {
+            if (studentId == Guid.Empty)
+            {
+                throw new InvalidStudentGuardianInputException(
+                    parameterName: nameof(StudentGuardian.StudentId),
+                    parameterValue: studentId);
+            }
+        }
 
         private void ValidateInvalidAuditFields(StudentGuardian studentGuardian)
         {
