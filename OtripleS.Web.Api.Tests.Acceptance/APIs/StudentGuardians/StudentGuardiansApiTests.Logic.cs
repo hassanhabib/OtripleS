@@ -11,6 +11,7 @@ using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Tynamix.ObjectFiller;
 using Xunit;
@@ -78,6 +79,48 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
                 actualStudentGuardian.GuardianId);
             await this.otripleSApiBroker.DeleteGuardianByIdAsync(actualStudentGuardian.GuardianId);
             await this.otripleSApiBroker.DeleteStudentByIdAsync(actualStudentGuardian.StudentId);
+        }
+
+        [Fact]
+        public async Task ShouldGetAllStudentGuardiansAsync()
+        {
+            // given
+            IEnumerable<StudentGuardian> randomStudentGuardians = GetRandomStudentGuardians();
+            IEnumerable<StudentGuardian> inputStudentGuardians = randomStudentGuardians;
+            List<Student> inputStudents = new List<Student>();
+            List<Guardian> inputGuardians = new List<Guardian>();
+
+            foreach (StudentGuardian studentGuardian in inputStudentGuardians)
+            {
+                Student randomStudent = CreateRandomStudent();
+                Student inputStudent = randomStudent;
+                Guardian randomGuardian = CreateRandomGuardian();
+                Guardian inputGuardian = randomGuardian;
+                studentGuardian.StudentId = inputStudent.Id;
+                studentGuardian.GuardianId = inputGuardian.Id;
+                inputStudents.Add(inputStudent);
+                inputGuardians.Add(inputGuardian);
+
+                await this.otripleSApiBroker.PostStudentAsync(inputStudent);
+                await this.otripleSApiBroker.PostGuardianAsync(inputGuardian);
+                await this.otripleSApiBroker.PostStudentGuardianAsync(studentGuardian);
+            }
+
+            List<StudentGuardian> expectedStudentGuardians = inputStudentGuardians.ToList();
+
+            // when
+            List<StudentGuardian> actualStudentGuardians = await this.otripleSApiBroker.GetAllStudentGuardiansAsync();
+
+            // then
+            foreach (StudentGuardian expectedStudentGuardian in expectedStudentGuardians)
+            {
+                StudentGuardian actualStudentGuardian = actualStudentGuardians.Single(studentGuardian => studentGuardian.StudentId == expectedStudentGuardian.StudentId);
+                actualStudentGuardian.Should().BeEquivalentTo(expectedStudentGuardian);
+
+                await this.otripleSApiBroker.DeleteStudentGuardianAsync(actualStudentGuardian.StudentId, actualStudentGuardian.GuardianId);
+                await this.otripleSApiBroker.DeleteGuardianByIdAsync(actualStudentGuardian.GuardianId);
+                await this.otripleSApiBroker.DeleteStudentByIdAsync(actualStudentGuardian.StudentId);
+            }
         }
 
         private async Task<Student> PostStudentAsync()
