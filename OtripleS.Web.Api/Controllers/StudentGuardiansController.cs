@@ -100,6 +100,14 @@ namespace OtripleS.Web.Api.Controllers
 
                 return BadRequest(innerMessage);
             }
+            catch (StudentGuardianDependencyException studentGuardianDependentcyException)
+            {
+                return Problem(studentGuardianDependentcyException.Message);
+            }
+            catch (StudentGuardianServiceException studentGuardianServiceException)
+            {
+                return Problem(studentGuardianServiceException.Message);
+            }
         }
 
         [HttpPut]
