@@ -15,7 +15,7 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
 {
     [Collection(nameof(ApiTestCollection))]
-    public partial class StudentGuardiansApiTests    
+    public partial class StudentGuardiansApiTests
     {
         private readonly OtripleSApiBroker otripleSApiBroker;
 
@@ -24,6 +24,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
 
         private StudentGuardian CreateRandomStudentGuardian() =>
             CreateRandomStudentGuardianFiller().Create();
+
+        private StudentGuardian CreateRandomStudentGuardian(Guid studentId, Guid guardianId) =>
+            CreateRandomStudentGuardianFiller(studentId, guardianId).Create();
 
         private IEnumerable<StudentGuardian> GetRandomStudentGuardians() =>
             CreateRandomStudentGuardianFiller().Create(GetRandomNumber());
@@ -43,6 +46,25 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
                 .OnProperty(studentGuardian => studentGuardian.Guardian).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
+            return filler;
+        }
+
+        private Filler<StudentGuardian> CreateRandomStudentGuardianFiller(Guid studentId, Guid guardianId)
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            Guid posterId = Guid.NewGuid();
+            var filler = new Filler<StudentGuardian>();
+
+            filler.Setup()
+                .OnProperty(studentGuardian => studentGuardian.CreatedBy).Use(posterId)
+                .OnProperty(studentGuardian => studentGuardian.UpdatedBy).Use(posterId)
+                .OnProperty(studentGuardian => studentGuardian.CreatedDate).Use(now)
+                .OnProperty(studentGuardian => studentGuardian.UpdatedDate).Use(now)
+                .OnProperty(studentGuardian => studentGuardian.Student).IgnoreIt()
+                .OnProperty(studentGuardian => studentGuardian.Guardian).IgnoreIt()
+                .OnProperty(studentGuardian => studentGuardian.StudentId).Use(studentId)
+                .OnProperty(studentGuardian => studentGuardian.GuardianId).Use(guardianId)
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
         }
