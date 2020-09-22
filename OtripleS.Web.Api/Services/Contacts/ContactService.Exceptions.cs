@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -33,6 +34,10 @@ namespace OtripleS.Web.Api.Services.Contacts
             {
                 throw CreateAndLogValidationException(invalidContactException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsContactException =
@@ -48,6 +53,14 @@ namespace OtripleS.Web.Api.Services.Contacts
             this.loggingBroker.LogError(contactValidationException);
 
             return contactValidationException;
+        }
+
+        private ContactDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var contactDependencyException = new ContactDependencyException(exception);
+            this.loggingBroker.LogCritical(contactDependencyException);
+
+            return contactDependencyException;
         }
     }
 }
