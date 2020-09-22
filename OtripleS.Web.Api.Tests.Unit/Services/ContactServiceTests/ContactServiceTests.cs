@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -16,7 +17,7 @@ using OtripleS.Web.Api.Models.Contacts;
 using OtripleS.Web.Api.Services.Contacts;
 using Tynamix.ObjectFiller;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
+namespace OtripleS.Web.Api.Tests.Unit.Services.ContactServiceTests
 {
     public partial class ContactServiceTests
     {
@@ -39,6 +40,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
 
         private static Contact CreateRandomContact(DateTimeOffset dateTime) =>
             CreateRandomContactFiller(dateTime).Create();
+
+        private IQueryable<Contact> CreateRandomContacts(DateTimeOffset dateTime) =>
+            CreateRandomContactFiller(dateTime).Create(GetRandomNumber()).AsQueryable();
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();

@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -20,6 +21,7 @@ namespace OtripleS.Web.Api.Services.Contacts
     {
 
         private delegate ValueTask<Contact> ReturningContactFunction();
+        private delegate IQueryable<Contact> ReturningQueryableContactFunction();
 
         private async ValueTask<Contact> TryCatch(ReturningContactFunction returningContactFunction)
         {
@@ -51,6 +53,26 @@ namespace OtripleS.Web.Api.Services.Contacts
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
             catch(Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private IQueryable<Contact> TryCatch(ReturningQueryableContactFunction returningQueryableContactFunction)
+        {
+            try
+            {
+                return returningQueryableContactFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);
             }
