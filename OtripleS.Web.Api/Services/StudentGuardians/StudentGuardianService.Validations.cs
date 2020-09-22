@@ -177,7 +177,7 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 
         private void ValidateUpdatedDateIsRecent(StudentGuardian studentGuardian)
         {
-            if (!IsDateNotRecent(studentGuardian.UpdatedDate))
+            if (IsDateNotRecent(studentGuardian.UpdatedDate))
             {
                 throw new InvalidStudentGuardianInputException(
                     parameterName: nameof(StudentGuardian.UpdatedDate),
