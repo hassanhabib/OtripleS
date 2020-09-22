@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+//---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+//----------------------------------------------------------------
 
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -12,12 +12,12 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourses
 {
     public partial class StudentSemesterCourseServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
             Guid randomSemesterCourseId = Guid.NewGuid();
@@ -30,13 +30,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                 = new StudentSemesterCourseDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId))
+                 broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId, inputStudentId))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<StudentSemesterCourse> deleteStudentSemesterCourseTask =
-                this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync
-                (inputStudentId, inputSemesterCourseId);
+                this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputSemesterCourseId, inputStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseDependencyException>(() =>
@@ -47,7 +46,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId),
+                broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId, inputStudentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -57,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
         {
             // given
             Guid randomSemesterCourseId = Guid.NewGuid();
@@ -70,24 +69,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                 new StudentSemesterCourseDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId))
+                broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId, inputStudentId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<StudentSemesterCourse> deleteSemesterCourseTask =
-                this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync
-                (inputStudentId, inputSemesterCourseId);
+                this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputSemesterCourseId, inputStudentId);
 
             // then
-            await Assert.ThrowsAsync<StudentSemesterCourseDependencyException>(
-                () => deleteSemesterCourseTask.AsTask());
+            await Assert.ThrowsAsync<StudentSemesterCourseDependencyException>(() => deleteSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId),
+                broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId, inputStudentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -96,7 +93,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
             Guid randomSemesterCourseId = Guid.NewGuid();
@@ -112,12 +109,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                 new StudentSemesterCourseDependencyException(lockedSemesterCourseException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId))
+                broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId, inputStudentId))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
             ValueTask<StudentSemesterCourse> deleteStudentSemesterCourseTask =
-                this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId);
+                this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputSemesterCourseId, inputStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseDependencyException>(() => deleteStudentSemesterCourseTask.AsTask());
@@ -127,7 +124,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId),
+                broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId, inputStudentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -136,7 +133,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
         {
             // given
             Guid randomSemesterCourseId = Guid.NewGuid();
@@ -149,13 +146,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                 new StudentSemesterCourseServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId))
+                broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId, inputStudentId))
                     .ThrowsAsync(exception);
 
             // when
             ValueTask<StudentSemesterCourse> deleteStudentSemesterCourseTask =
-                this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync
-                (inputStudentId, inputSemesterCourseId);
+                this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputSemesterCourseId, inputStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseServiceException>(() =>
@@ -166,7 +162,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId),
+                broker.SelectStudentSemesterCourseByIdAsync(inputSemesterCourseId, inputStudentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

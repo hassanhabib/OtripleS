@@ -11,7 +11,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourseServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourses
 {
     public partial class StudentSemesterCourseServiceTests
     {
