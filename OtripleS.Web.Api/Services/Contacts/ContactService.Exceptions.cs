@@ -72,6 +72,10 @@ namespace OtripleS.Web.Api.Services.Contacts
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private ContactValidationException CreateAndLogValidationException(Exception exception)
