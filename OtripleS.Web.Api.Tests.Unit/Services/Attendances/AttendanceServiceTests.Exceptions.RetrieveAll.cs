@@ -5,85 +5,71 @@
 
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.Attendances;
 using OtripleS.Web.Api.Models.Attendances.Exceptions;
 using System;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.Attendances
 {
     public partial class AttendanceServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
+        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogIt()
         {
             // given
-            Guid randomAttendanceId = Guid.NewGuid();
-            Guid inputAttendanceId = randomAttendanceId;
             var sqlException = GetSqlException();
 
-            var expectedDependencyException =
+            var expectedAttendanceDependencyException =
                 new AttendanceDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttendanceByIdAsync(inputAttendanceId))
-                    .ThrowsAsync(sqlException);
+                broker.SelectAllAttendances())
+                    .Throws(sqlException);
 
-            // when
-            ValueTask<Attendance> retrieveAttendanceTask =
-                this.attendanceService.RetrieveAttendanceByIdAsync(inputAttendanceId);
-
-            // then
-            await Assert.ThrowsAsync<AttendanceDependencyException>(() =>
-                retrieveAttendanceTask.AsTask());
+            // when . then
+            Assert.Throws<AttendanceDependencyException>(() =>
+                this.attendanceService.RetrieveAllAttendances());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedDependencyException))),
+                broker.LogCritical(It.Is(SameExceptionAs(expectedAttendanceDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttendanceByIdAsync(inputAttendanceId),
+                broker.SelectAllAttendances(),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Never);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenDbExceptionOccursAndLogIt()
         {
             // given
-            Guid randomAttendanceId = Guid.NewGuid();
-            Guid inputAttendanceId = randomAttendanceId;
             var databaseUpdateException = new DbUpdateException();
 
             var expectedAttendanceDependencyException =
                 new AttendanceDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttendanceByIdAsync(inputAttendanceId))
-                    .ThrowsAsync(databaseUpdateException);
+                broker.SelectAllAttendances())
+                    .Throws(databaseUpdateException);
 
-            // when
-            ValueTask<Attendance> retrieveAttendanceTask =
-                this.attendanceService.RetrieveAttendanceByIdAsync(inputAttendanceId);
-
-            // then
-            await Assert.ThrowsAsync<AttendanceDependencyException>(() =>
-                retrieveAttendanceTask.AsTask());
+            // when . then
+            Assert.Throws<AttendanceDependencyException>(() =>
+                this.attendanceService.RetrieveAllAttendances());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAttendanceDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttendanceByIdAsync(inputAttendanceId),
+                broker.SelectAllAttendances(),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -96,34 +82,28 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
+        public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            Guid randomAttendanceId = Guid.NewGuid();
-            Guid inputAttendanceId = randomAttendanceId;
             var exception = new Exception();
 
             var expectedAttendanceServiceException =
                 new AttendanceServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttendanceByIdAsync(inputAttendanceId))
-                    .ThrowsAsync(exception);
+                broker.SelectAllAttendances())
+                    .Throws(exception);
 
-            // when
-            ValueTask<Attendance> retrieveAttendanceByIdTask =
-                this.attendanceService.RetrieveAttendanceByIdAsync(inputAttendanceId);
-
-            // then
-            await Assert.ThrowsAsync<AttendanceServiceException>(() =>
-                retrieveAttendanceByIdTask.AsTask());
+            // when . then
+            Assert.Throws<AttendanceServiceException>(() =>
+                this.attendanceService.RetrieveAllAttendances());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAttendanceServiceException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttendanceByIdAsync(inputAttendanceId),
+                broker.SelectAllAttendances(),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>

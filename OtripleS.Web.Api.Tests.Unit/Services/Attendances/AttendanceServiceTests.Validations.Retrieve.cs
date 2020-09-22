@@ -10,14 +10,15 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.Attendances
 {
     public partial class AttendanceServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnDeleteWhenIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveWhenIdIsNullAndLogItAsync()
         {
             // given
+            DateTimeOffset dateTimeOffset = GetRandomDateTime();
             Guid randomAttendanceId = default;
             Guid inputAttendanceId = randomAttendanceId;
 
@@ -25,26 +26,27 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
                 parameterName: nameof(Attendance.Id),
                 parameterValue: inputAttendanceId);
 
-            var expectedAttendanceValidationException =
+            var expectedValidationException =
                 new AttendanceValidationException(invalidAttendanceException);
 
             // when
-            ValueTask<Attendance> actualAttendanceTask =
-                this.attendanceService.DeleteAttendanceAsync(inputAttendanceId);
+            ValueTask<Attendance> retrieveAttendanceTask =
+                this.attendanceService.RetrieveAttendanceByIdAsync(inputAttendanceId);
 
             // then
-            await Assert.ThrowsAsync<AttendanceValidationException>(() => actualAttendanceTask.AsTask());
+            await Assert.ThrowsAsync<AttendanceValidationException>(() =>
+                retrieveAttendanceTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttendanceByIdAsync(It.IsAny<Guid>()),
+                broker.SelectAttendanceByIdAsync(inputAttendanceId),
                     Times.Never);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.DeleteAttendanceAsync(It.IsAny<Attendance>()),
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -53,41 +55,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AttendanceServiceTests
         }
 
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnDeleteWhenStorageAttendanceIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageAttendanceIsNullAndLogItAsync()
         {
             // given
             DateTimeOffset dateTimeOffset = GetRandomDateTime();
-            Attendance randomAttendance = CreateRandomAttendance(dateTime: dateTimeOffset);
-            Guid inputAttendanceId = randomAttendance.Id;
-            Attendance inputAttendance = randomAttendance;
-            Attendance nullStorageAttendance = null;
+            Guid randomAttendanceId = Guid.NewGuid();
+            Guid inputAttendanceId = randomAttendanceId;
+            Attendance nullAttendance = default;
+            var nullAttendanceException = new NotFoundAttendanceException(attendanceId: inputAttendanceId);
 
-            var notFoundAttendanceException = new NotFoundAttendanceException(inputAttendanceId);
-
-            var expectedAttendanceValidationException =
-                new AttendanceValidationException(notFoundAttendanceException);
+            var expectedValidationException =
+                new AttendanceValidationException(nullAttendanceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAttendanceByIdAsync(inputAttendanceId))
-                    .ReturnsAsync(nullStorageAttendance);
+                    .ReturnsAsync(nullAttendance);
 
             // when
-            ValueTask<Attendance> actualAttendanceTask =
-                this.attendanceService.DeleteAttendanceAsync(inputAttendanceId);
+            ValueTask<Attendance> retrieveAttendanceTask =
+                this.attendanceService.RetrieveAttendanceByIdAsync(inputAttendanceId);
 
             // then
-            await Assert.ThrowsAsync<AttendanceValidationException>(() => actualAttendanceTask.AsTask());
+            await Assert.ThrowsAsync<AttendanceValidationException>(() =>
+                retrieveAttendanceTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAttendanceByIdAsync(inputAttendanceId),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.DeleteAttendanceAsync(It.IsAny<Attendance>()),
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
