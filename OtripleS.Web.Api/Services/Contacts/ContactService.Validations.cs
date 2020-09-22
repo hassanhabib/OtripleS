@@ -31,6 +31,11 @@ namespace OtripleS.Web.Api.Services.Contacts
                     throw new InvalidContactException(
                         parameterName: nameof(Contact.CreatedBy), 
                         parameterValue: contact.CreatedBy);
+
+                case { } when IsInvalid(contact.CreatedDate):
+                    throw new InvalidContactException(
+                        parameterName: nameof(Contact.CreatedDate),
+                        parameterValue: contact.CreatedDate);
             }
         }
 
@@ -52,6 +57,7 @@ namespace OtripleS.Web.Api.Services.Contacts
             }
         }
 
+        private static bool IsInvalid(DateTimeOffset inputDate) => inputDate == default;
         private static bool IsInvalid(Guid input) => input == Guid.Empty;
     }
 }
