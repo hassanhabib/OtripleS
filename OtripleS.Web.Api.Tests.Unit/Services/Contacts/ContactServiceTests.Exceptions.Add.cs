@@ -88,15 +88,61 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
                     .ThrowsAsync(databaseUpdateException);
 
             // when
-            ValueTask<Contact> registerContactTask =
+            ValueTask<Contact> addContactTask =
                 this.contactService.AddContactAsync(inputContact);
 
             // then
             await Assert.ThrowsAsync<ContactDependencyException>(() =>
-                registerContactTask.AsTask());
+                addContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedContactDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertContactAsync(inputContact),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnAddWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Contact randomContact = CreateRandomContact(dateTime);
+            Contact inputContact = randomContact;
+            inputContact.UpdatedBy = inputContact.CreatedBy;
+            var exception = new Exception();
+
+            var expectedContactServiceException =
+                new ContactServiceException(exception);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertContactAsync(inputContact))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<Contact> registerContactTask =
+                 this.contactService.AddContactAsync(inputContact);
+
+            // then
+            await Assert.ThrowsAsync<ContactServiceException>(() =>
+                registerContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedContactServiceException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
