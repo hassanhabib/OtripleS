@@ -50,6 +50,10 @@ namespace OtripleS.Web.Api.Services.Contacts
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch(Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private ContactValidationException CreateAndLogValidationException(Exception exception)
@@ -74,6 +78,14 @@ namespace OtripleS.Web.Api.Services.Contacts
             this.loggingBroker.LogError(contactDependencyException);
 
             return contactDependencyException;
+        }
+
+        private ContactServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var contactServiceException = new ContactServiceException(exception);
+            this.loggingBroker.LogError(contactServiceException);
+
+            return contactServiceException;
         }
     }
 }
