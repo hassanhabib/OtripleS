@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Services.Contacts
 
         public IQueryable<Contact> RetrieveAllContacts()
         {
-            throw new System.NotImplementedException();
+            return storageBroker.SelectAllContacts();
         }
     }
 }
