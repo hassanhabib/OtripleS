@@ -17,7 +17,7 @@ using OtripleS.Web.Api.Models.Contacts;
 using OtripleS.Web.Api.Services.Contacts;
 using Tynamix.ObjectFiller;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
+namespace OtripleS.Web.Api.Tests.Unit.Services.ContactServiceTests
 {
     public partial class ContactServiceTests
     {
