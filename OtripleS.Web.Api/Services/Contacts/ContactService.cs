@@ -36,11 +36,13 @@ namespace OtripleS.Web.Api.Services.Contacts
             return await this.storageBroker.InsertContactAsync(contact);
         });
 
-        public IQueryable<Contact> RetrieveAllContacts()
+        public IQueryable<Contact> RetrieveAllContacts() =>
+        TryCatch(() =>
         {
             IQueryable<Contact> storageContacts = this.storageBroker.SelectAllContacts();
             ValidateStorageContacts(storageContacts);
+
             return storageContacts;
-        }
+        });
     }
 }
