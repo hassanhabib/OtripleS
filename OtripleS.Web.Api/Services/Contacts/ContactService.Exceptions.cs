@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -31,6 +32,13 @@ namespace OtripleS.Web.Api.Services.Contacts
             catch (InvalidContactException invalidContactException)
             {
                 throw CreateAndLogValidationException(invalidContactException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsContactException =
+                new AlreadyExistsContactException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsContactException);
             }
         }
 
