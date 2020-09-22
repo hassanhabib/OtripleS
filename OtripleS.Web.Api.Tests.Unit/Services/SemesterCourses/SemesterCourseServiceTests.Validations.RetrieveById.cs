@@ -1,4 +1,4 @@
-// ---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
@@ -10,12 +10,12 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourses
 {
     public partial class SemesterCourseServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnDeleteWhenIdIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveWhenIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomSemesterCourseId = default;
@@ -24,74 +24,74 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
             var invalidSemesterCourseInputException = new InvalidSemesterCourseInputException(
                 parameterName: nameof(SemesterCourse.Id),
                 parameterValue: inputSemesterCourseId);
+
             var expectedSemesterCourseValidationException =
                 new SemesterCourseValidationException(invalidSemesterCourseInputException);
 
-            //when
-            ValueTask<SemesterCourse> actualSemesterCourseDeleteTask =
-                this.semesterCourseService.DeleteSemesterCourseAsync(inputSemesterCourseId);
+            // when
+            ValueTask<SemesterCourse> retrieveSemesterCourseByIdTask =
+                this.semesterCourseService.RetrieveSemesterCourseByIdAsync(inputSemesterCourseId);
 
-            //then
-            await Assert.ThrowsAsync<SemesterCourseValidationException>(
-                () => actualSemesterCourseDeleteTask.AsTask());
+            // then
+            await Assert.ThrowsAsync<SemesterCourseValidationException>(() =>
+                retrieveSemesterCourseByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
                     Times.Once);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.DeleteSemesterCourseAsync(It.IsAny<SemesterCourse>()),
-                    Times.Never);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnDeleteWhenStorageSemesterCourseIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveWhenStorageSemesterCourseIsNullAndLogItAsync()
         {
             // given
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            SemesterCourse randomSemesterCourse = CreateRandomSemesterCourse(randomDateTime);
-            Guid inputSemesterCourseId = randomSemesterCourse.Id;
-            SemesterCourse nullStorageSemesterCourse = null;
-
+            Guid randomSemesterCourseId = Guid.NewGuid();
+            Guid inputSemesterCourseId = randomSemesterCourseId;
+            SemesterCourse invalidStorageSemesterCourse = null;
             var notFoundSemesterCourseException = new NotFoundSemesterCourseException(inputSemesterCourseId);
 
             var expectedSemesterCourseValidationException =
                 new SemesterCourseValidationException(notFoundSemesterCourseException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
-                    .ReturnsAsync(nullStorageSemesterCourse);
+                broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
+                    .ReturnsAsync(invalidStorageSemesterCourse);
 
             // when
-            ValueTask<SemesterCourse> actualSemesterCourseDeleteTask =
-                this.semesterCourseService.DeleteSemesterCourseAsync(inputSemesterCourseId);
+            ValueTask<SemesterCourse> retrieveSemesterCourseByIdTask =
+                this.semesterCourseService.RetrieveSemesterCourseByIdAsync(inputSemesterCourseId);
 
             // then
-            await Assert.ThrowsAsync<SemesterCourseValidationException>(() => actualSemesterCourseDeleteTask.AsTask());
+            await Assert.ThrowsAsync<SemesterCourseValidationException>(() =>
+                retrieveSemesterCourseByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
                     Times.Once);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.DeleteSemesterCourseAsync(It.IsAny<SemesterCourse>()),
-                    Times.Never);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

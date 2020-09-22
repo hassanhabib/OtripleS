@@ -10,7 +10,7 @@ using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 using System;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourseServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourses
 {
     public partial class SemesterCourseServiceTests
     {
