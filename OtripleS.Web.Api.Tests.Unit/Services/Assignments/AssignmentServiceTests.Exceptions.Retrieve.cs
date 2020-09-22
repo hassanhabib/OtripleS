@@ -5,16 +5,18 @@
 
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Models.Assignments.Exceptions;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
 {
     public partial class AssignmentServiceTests
     {
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogIt()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogIt()
         {
             // given
             var sqlException = GetSqlException();
@@ -22,20 +24,24 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
             var expectedAssignmentDependencyException =
                 new AssignmentDependencyException(sqlException);
 
+            var badGuid = Guid.NewGuid();
+
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllAssignments())
+                broker.SelectAssignmentByIdAsync(badGuid))
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<AssignmentDependencyException>(() =>
-                this.assignmentService.RetrieveAllAssignments());
+            // when 
+            ValueTask<Assignment> retrieveTask = this.assignmentService.RetrieveAssignmentById(badGuid);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentDependencyException>(() => retrieveTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllAssignments(),
+                broker.SelectAssignmentByIdAsync(badGuid),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -48,28 +54,33 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
         }
 
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenDbExceptionOccursAndLogIt()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogIt()
         {
             // given
             var databaseUpdateException = new DbUpdateException();
+
+            var guid = Guid.NewGuid();
 
             var expectedAssignmentDependencyException =
                 new AssignmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllAssignments())
+                broker.SelectAssignmentByIdAsync(guid))
                     .Throws(databaseUpdateException);
 
-            // when . then
-            Assert.Throws<AssignmentDependencyException>(() =>
-                this.assignmentService.RetrieveAllAssignments());
+            // when 
+
+            ValueTask<Assignment> retrieveTask = this.assignmentService.RetrieveAssignmentById(guid);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentDependencyException>(() => retrieveTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllAssignments(),
+                broker.SelectAssignmentByIdAsync(guid),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -80,9 +91,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
-
         [Fact]
-        public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
+        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogIt()
         {
             // given
             var exception = new Exception();
@@ -90,20 +100,24 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
             var expectedAssignmentServiceException =
                 new AssignmentServiceException(exception);
 
+            var guid = Guid.NewGuid();
+
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllAssignments())
+                broker.SelectAssignmentByIdAsync(guid))
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<AssignmentServiceException>(() =>
-                this.assignmentService.RetrieveAllAssignments());
+            // when 
+            ValueTask<Assignment> retrieveTask = this.assignmentService.RetrieveAssignmentById(guid);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentServiceException>(() => retrieveTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAssignmentServiceException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllAssignments(),
+                broker.SelectAssignmentByIdAsync(guid),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>

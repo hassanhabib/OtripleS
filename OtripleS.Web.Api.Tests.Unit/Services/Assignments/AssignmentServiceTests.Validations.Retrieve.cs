@@ -10,7 +10,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
 {
     public partial class AssignmentServiceTests
     {
