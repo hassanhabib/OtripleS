@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -358,6 +359,57 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenContactAlreadyExistsAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Contact randomContact = CreateRandomContact(dateTime);
+            Contact alreadyExistsContact = randomContact;
+            alreadyExistsContact.UpdatedBy = alreadyExistsContact.CreatedBy;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsContactException =
+                new AlreadyExistsContactException(duplicateKeyException);
+
+            var expectedContactValidationException =
+                new ContactValidationException(alreadyExistsContactException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertContactAsync(alreadyExistsContact))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<Contact> addContactTask =
+                this.contactService.AddContactAsync(alreadyExistsContact);
+
+            // then
+            await Assert.ThrowsAsync<ContactValidationException>(() =>
+                addContactTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertContactAsync(alreadyExistsContact),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
