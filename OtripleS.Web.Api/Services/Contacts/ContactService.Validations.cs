@@ -41,6 +41,11 @@ namespace OtripleS.Web.Api.Services.Contacts
                     throw new InvalidContactException(
                         parameterName: nameof(Contact.UpdatedBy),
                         parameterValue: contact.UpdatedBy);
+
+                case { } when IsInvalid(contact.UpdatedDate):
+                    throw new InvalidContactException(
+                        parameterName: nameof(Contact.UpdatedDate),
+                        parameterValue: contact.UpdatedDate);
             }
         }
 
