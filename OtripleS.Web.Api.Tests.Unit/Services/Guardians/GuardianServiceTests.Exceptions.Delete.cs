@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Guardians;
@@ -11,19 +12,19 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.Guardians
 {
     public partial class GuardianServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
             Guid randomGuardianId = Guid.NewGuid();
             Guid inputGuardianId = randomGuardianId;
-            var sqlException = GetSqlException();
+            SqlException sqlException = GetSqlException();
 
-            var expectedDependencyException =
+            var expectedGuardianDependencyException =
                 new GuardianDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -31,32 +32,32 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                     .ThrowsAsync(sqlException);
 
             // when
-            ValueTask<Guardian> retrieveGuardianTask =
-                this.guardianService.RetrieveGuardianByIdAsync(inputGuardianId);
+            ValueTask<Guardian> deleteGuardianTask =
+                this.guardianService.DeleteGuardianByIdAsync(inputGuardianId);
 
             // then
             await Assert.ThrowsAsync<GuardianDependencyException>(() =>
-                retrieveGuardianTask.AsTask());
+                deleteGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedDependencyException))),
+                broker.LogCritical(It.Is(SameExceptionAs(expectedGuardianDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectGuardianByIdAsync(inputGuardianId),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteGuardianAsync(It.IsAny<Guardian>()),
                     Times.Never);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
         {
             // given
             Guid randomGuardianId = Guid.NewGuid();
@@ -71,12 +72,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                     .ThrowsAsync(databaseUpdateException);
 
             // when
-            ValueTask<Guardian> retrieveGuardianTask =
-                this.guardianService.RetrieveGuardianByIdAsync(inputGuardianId);
+            ValueTask<Guardian> deleteGuardianTask =
+                this.guardianService.DeleteGuardianByIdAsync(inputGuardianId);
 
             // then
             await Assert.ThrowsAsync<GuardianDependencyException>(() =>
-                retrieveGuardianTask.AsTask());
+                deleteGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedGuardianDependencyException))),
@@ -86,8 +87,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                 broker.SelectGuardianByIdAsync(inputGuardianId),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteGuardianAsync(It.IsAny<Guardian>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -96,7 +97,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomGuardianId = Guid.NewGuid();
+            Guid inputGuardianId = randomGuardianId;
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+            var lockedGuardianException = new LockedGuardianException(databaseUpdateConcurrencyException);
+
+            var expectedGuardianDependencyException =
+                new GuardianDependencyException(lockedGuardianException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectGuardianByIdAsync(inputGuardianId))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
+
+            // when
+            ValueTask<Guardian> deleteGuardianTask =
+                this.guardianService.DeleteGuardianByIdAsync(inputGuardianId);
+
+            // then
+            await Assert.ThrowsAsync<GuardianDependencyException>(() =>
+                deleteGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianByIdAsync(inputGuardianId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteGuardianAsync(It.IsAny<Guardian>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
         {
             // given
             Guid randomGuardianId = Guid.NewGuid();
@@ -111,12 +154,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                     .ThrowsAsync(exception);
 
             // when
-            ValueTask<Guardian> retrieveGuardianByIdTask =
-                this.guardianService.RetrieveGuardianByIdAsync(inputGuardianId);
+            ValueTask<Guardian> deleteGuardianTask =
+                this.guardianService.DeleteGuardianByIdAsync(inputGuardianId);
 
             // then
             await Assert.ThrowsAsync<GuardianServiceException>(() =>
-                retrieveGuardianByIdTask.AsTask());
+                deleteGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedGuardianServiceException))),
@@ -126,8 +169,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianServiceTests
                 broker.SelectGuardianByIdAsync(inputGuardianId),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteGuardianAsync(It.IsAny<Guardian>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
