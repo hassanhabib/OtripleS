@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -17,10 +18,28 @@ namespace OtripleS.Web.Api.Services.Contacts
 
         private static void ValidateContactOnCreate(Contact contact)
         {
+            ValidateContactIsNotNull(contact);
+            ValidateContactId(contact);
+        }
+
+        private static void ValidateContactId(Contact contact)
+        {
+            if (IsInvalid(contact.Id))
+            {
+                throw new InvalidContactException(
+                    parameterName: nameof(Contact.Id),
+                    parameterValue: contact.Id);
+            }
+        }
+        
+        private static void ValidateContactIsNotNull(Contact contact)
+        {
             if (contact is null)
             {
                 throw new NullContactException();
             }
         }
+
+        private static bool IsInvalid(Guid input) => input == Guid.Empty;
     }
 }

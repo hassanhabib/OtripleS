@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectContactByIdAsync(It.IsAny<Guid>()),
+                broker.InsertContactAsync(It.IsAny<Contact>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -58,7 +58,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
             DateTimeOffset dateTime = GetRandomDateTime();
             Contact randomContact = CreateRandomContact(dateTime);
             Contact inputContact = randomContact;
-            inputContact.Id = default;
+            inputContact.Id = Guid.Empty;
 
             var invalidContactException = new InvalidContactException(
                 parameterName: nameof(Contact.Id),
@@ -80,7 +80,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectContactByIdAsync(It.IsAny<Guid>()),
+                broker.InsertContactAsync(It.IsAny<Contact>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
