@@ -15,7 +15,7 @@ using OtripleS.Web.Api.Models.Contacts.Exceptions;
 using OtripleS.Web.Api.Services.Contacts;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.ContactServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
 {
     public partial class ContactServiceTests
     {
