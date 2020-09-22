@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.Users
 {
     public partial class UserServiceTests
     {

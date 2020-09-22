@@ -10,12 +10,12 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.Users
 {
     public partial class UserServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnDeleteWhenUserIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenUserIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomUserId = default;
@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
 
             // when
             ValueTask<User> actualUserTask =
-                this.userService.DeleteUserAsync(inputUserId);
+                this.userService.RetrieveUserByIdAsync(inputUserId);
 
             // then
             await Assert.ThrowsAsync<UserValidationException>(() => actualUserTask.AsTask());
@@ -43,17 +43,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                 broker.SelectUserByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
-            this.userManagementBrokerMock.Verify(broker =>
-                broker.DeleteUserAsync(It.IsAny<User>()),
-                    Times.Never);
-
             this.userManagementBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnDeleteWhenStorageUserIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenStorageUserIsInvalidAndLogItAsync()
         {
             // given
             Guid randomUserId = Guid.NewGuid();
@@ -69,12 +65,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                     .ReturnsAsync(invalidStorageUser);
 
             // when
-            ValueTask<User> deleteUserTask =
-                this.userService.DeleteUserAsync(inputUserId);
+            ValueTask<User> retrieveUserTask =
+                this.userService.RetrieveUserByIdAsync(inputUserId);
 
             // then
             await Assert.ThrowsAsync<UserValidationException>(() =>
-                deleteUserTask.AsTask());
+                retrieveUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),

@@ -12,12 +12,12 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.Users
 {
     public partial class UserServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
             Guid randomUserId = Guid.NewGuid();
@@ -32,12 +32,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                     .ThrowsAsync(sqlException);
 
             // when
-            ValueTask<User> retrieveUserTask =
-                this.userService.RetrieveUserByIdAsync(inputUserId);
+            ValueTask<User> deleteUserTask =
+                this.userService.DeleteUserAsync(inputUserId);
 
             // then
             await Assert.ThrowsAsync<UserDependencyException>(() =>
-                retrieveUserTask.AsTask());
+                deleteUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedUserDependencyException))),
@@ -53,7 +53,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
         {
             // given
             Guid randomUserId = Guid.NewGuid();
@@ -68,12 +68,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                     .ThrowsAsync(databaseUpdateException);
 
             // when
-            ValueTask<User> retrieveUserTask =
-                this.userService.RetrieveUserByIdAsync(inputUserId);
+            ValueTask<User> deleteUserTask =
+                this.userService.DeleteUserAsync(inputUserId);
 
             // then
             await Assert.ThrowsAsync<UserDependencyException>(() =>
-                retrieveUserTask.AsTask());
+                deleteUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedUserDependencyException))),
@@ -89,7 +89,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
             Guid randomUserId = Guid.NewGuid();
@@ -105,12 +105,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
-            ValueTask<User> retrieveUserTask =
-                this.userService.RetrieveUserByIdAsync(inputUserId);
+            ValueTask<User> deleteUserTask =
+                this.userService.DeleteUserAsync(inputUserId);
 
             // then
             await Assert.ThrowsAsync<UserDependencyException>(() =>
-                retrieveUserTask.AsTask());
+                deleteUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedUserDependencyException))),
@@ -126,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
         {
             // given
             Guid randomUserId = Guid.NewGuid();
@@ -141,12 +141,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
                     .ThrowsAsync(exception);
 
             // when
-            ValueTask<User> retrieveUserTask =
-                this.userService.RetrieveUserByIdAsync(inputUserId);
+            ValueTask<User> deleteUserTask =
+                this.userService.DeleteUserAsync(inputUserId);
 
             // then
             await Assert.ThrowsAsync<UserServiceException>(() =>
-                retrieveUserTask.AsTask());
+                deleteUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedUserServiceException))),

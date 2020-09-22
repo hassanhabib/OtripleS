@@ -10,7 +10,7 @@ using OtripleS.Web.Api.Models.Users.Exceptions;
 using System;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.UserServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.Users
 {
     public partial class UserServiceTests
     {
