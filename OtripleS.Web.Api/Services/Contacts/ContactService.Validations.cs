@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -101,5 +102,13 @@ namespace OtripleS.Web.Api.Services.Contacts
 
         private static bool IsInvalid(DateTimeOffset inputDate) => inputDate == default;
         private static bool IsInvalid(Guid input) => input == Guid.Empty;
+
+        private void ValidateStorageContacts(IQueryable<Contact> storageContacts)
+        {
+            if (storageContacts.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No contacts found in storage.");
+            }
+        }
     }
 }

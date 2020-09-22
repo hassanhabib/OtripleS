@@ -38,7 +38,9 @@ namespace OtripleS.Web.Api.Services.Contacts
 
         public IQueryable<Contact> RetrieveAllContacts()
         {
-            return storageBroker.SelectAllContacts();
+            IQueryable<Contact> storageContacts = this.storageBroker.SelectAllContacts();
+            ValidateStorageContacts(storageContacts);
+            return storageContacts;
         }
     }
 }
