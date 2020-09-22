@@ -17,7 +17,7 @@ using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.ClassroomServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.Classrooms
 {
     public partial class ClassroomServiceTests
     {
