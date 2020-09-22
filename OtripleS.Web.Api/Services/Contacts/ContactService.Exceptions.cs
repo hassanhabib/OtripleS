@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -45,6 +46,10 @@ namespace OtripleS.Web.Api.Services.Contacts
 
                 throw CreateAndLogValidationException(alreadyExistsContactException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
         private ContactValidationException CreateAndLogValidationException(Exception exception)
@@ -59,6 +64,14 @@ namespace OtripleS.Web.Api.Services.Contacts
         {
             var contactDependencyException = new ContactDependencyException(exception);
             this.loggingBroker.LogCritical(contactDependencyException);
+
+            return contactDependencyException;
+        }
+
+        private ContactDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var contactDependencyException = new ContactDependencyException(exception);
+            this.loggingBroker.LogError(contactDependencyException);
 
             return contactDependencyException;
         }
