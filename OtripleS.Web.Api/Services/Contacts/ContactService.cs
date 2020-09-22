@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -34,5 +35,10 @@ namespace OtripleS.Web.Api.Services.Contacts
 
             return await this.storageBroker.InsertContactAsync(contact);
         });
+
+        public IQueryable<Contact> RetrieveAllContacts()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
