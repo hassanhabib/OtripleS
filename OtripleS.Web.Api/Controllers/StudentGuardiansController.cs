@@ -48,9 +48,9 @@ namespace OtripleS.Web.Api.Controllers
 
                 return BadRequest(innerMessage);
             }
-            catch (StudentGuardianDependencyException studentGuardianDependentcyException)
+            catch (StudentGuardianDependencyException studentGuardianDependencyException)
             {
-                return Problem(studentGuardianDependentcyException.Message);
+                return Problem(studentGuardianDependencyException.Message);
             }
             catch (StudentGuardianServiceException studentGuardianServiceException)
             {
@@ -67,9 +67,9 @@ namespace OtripleS.Web.Api.Controllers
 
                 return Ok(StoragestudentGuardians);
             }
-            catch (StudentGuardianDependencyException studentGuardianDependentcyException)
+            catch (StudentGuardianDependencyException studentGuardianDependencyException)
             {
-                return Problem(studentGuardianDependentcyException.Message);
+                return Problem(studentGuardianDependencyException.Message);
             }
             catch (StudentGuardianServiceException studentGuardianServiceException)
             {
@@ -107,7 +107,7 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                StudentGuardian registeredStudentGuardian = 
+                StudentGuardian registeredStudentGuardian =
                     await studentGuardianService.ModifyStudentGuardianAsync(studentGuardian);
 
                 return Ok(registeredStudentGuardian);
@@ -125,16 +125,16 @@ namespace OtripleS.Web.Api.Controllers
 
                 return BadRequest(innerMessage);
             }
-            catch (StudentGuardianDependencyException studentGuardianDependentcyException)
-                when (studentGuardianDependentcyException.InnerException is LockedStudentGuardianException)
+            catch (StudentGuardianDependencyException studentGuardianDependencyException)
+                when (studentGuardianDependencyException.InnerException is LockedStudentGuardianException)
             {
-                string innerMessage = GetInnerMessage(studentGuardianDependentcyException);
+                string innerMessage = GetInnerMessage(studentGuardianDependencyException);
 
                 return Locked(innerMessage);
             }
-            catch (StudentGuardianDependencyException studentGuardianDependentcyException)
+            catch (StudentGuardianDependencyException studentGuardianDependencyException)
             {
-                return Problem(studentGuardianDependentcyException.Message);
+                return Problem(studentGuardianDependencyException.Message);
             }
             catch (StudentGuardianServiceException studentGuardianServiceException)
             {
@@ -142,13 +142,13 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpDelete("{GuardianId}/{studentId}")]
-        public async ValueTask<ActionResult<bool>> DeleteStudentGuardianAsync(Guid GuardianId, Guid studentId)
+        [HttpDelete("students/{studentId}/guardians/{guardianId}")]
+        public async ValueTask<ActionResult<bool>> DeleteStudentGuardianAsync(Guid studentId, Guid guardianId)
         {
             try
             {
                 StudentGuardian storageStudentGuardian =
-                    await this.studentGuardianService.DeleteStudentGuardianAsync(GuardianId, studentId);
+                    await this.studentGuardianService.DeleteStudentGuardianAsync(studentId,guardianId);
 
                 return Ok(storageStudentGuardian);
             }
@@ -172,9 +172,9 @@ namespace OtripleS.Web.Api.Controllers
 
                 return Locked(innerMessage);
             }
-            catch (StudentGuardianDependencyException studentGuardianDependentcyException)
+            catch (StudentGuardianDependencyException studentGuardianDependencyException)
             {
-                return Problem(studentGuardianDependentcyException.Message);
+                return Problem(studentGuardianDependencyException.Message);
             }
             catch (StudentGuardianServiceException studentGuardianServiceException)
             {
