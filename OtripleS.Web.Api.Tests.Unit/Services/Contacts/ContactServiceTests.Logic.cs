@@ -54,6 +54,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-
     }
 }
