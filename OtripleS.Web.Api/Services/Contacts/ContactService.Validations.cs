@@ -21,6 +21,7 @@ namespace OtripleS.Web.Api.Services.Contacts
             ValidateContactIsNotNull(contact);
             ValidateContactId(contact);
             ValidateContactAuditFields(contact);
+            ValidateContactAuditFieldsOnCreate(contact);
         }
 
         private static void ValidateContactAuditFields(Contact contact)
@@ -48,7 +49,17 @@ namespace OtripleS.Web.Api.Services.Contacts
                         parameterValue: contact.UpdatedDate);
             }
         }
-
+        
+        private static void ValidateContactAuditFieldsOnCreate(Contact contact)
+        {
+            switch (contact)
+            {
+                case { } when contact.UpdatedBy != contact.CreatedBy:
+                    throw new InvalidContactException(
+                        parameterName: nameof(Contact.UpdatedBy),
+                        parameterValue: contact.UpdatedBy);
+            }
+        }
         private static void ValidateContactId(Contact contact)
         {
             if (IsInvalid(contact.Id))
