@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Services.Contacts
     public partial class ContactService
     {
 
-        private static void ValidateContactOnCreate(Contact contact)
+        private void ValidateContactOnCreate(Contact contact)
         {
             ValidateContactIsNotNull(contact);
             ValidateContactId(contact);
@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Services.Contacts
             }
         }
         
-        private static void ValidateContactAuditFieldsOnCreate(Contact contact)
+        private void ValidateContactAuditFieldsOnCreate(Contact contact)
         {
             switch (contact)
             {
@@ -63,8 +63,14 @@ namespace OtripleS.Web.Api.Services.Contacts
                     throw new InvalidContactException(
                         parameterName: nameof(Contact.UpdatedDate),
                         parameterValue: contact.UpdatedDate);
+
+                case { } when IsDateNotRecent(contact.CreatedDate):
+                    throw new InvalidContactException(
+                        parameterName: nameof(Contact.CreatedDate),
+                        parameterValue: contact.CreatedDate);
             }
         }
+
         private static void ValidateContactId(Contact contact)
         {
             if (IsInvalid(contact.Id))
@@ -81,6 +87,16 @@ namespace OtripleS.Web.Api.Services.Contacts
             {
                 throw new NullContactException();
             }
+        }
+
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
         private static bool IsInvalid(DateTimeOffset inputDate) => inputDate == default;
