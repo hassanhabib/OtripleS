@@ -77,7 +77,7 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("students/{studentId}/guardians/{guardianId}")]
         public async ValueTask<ActionResult<StudentGuardian>> GetStudentGuardianByIdAsync(Guid studentId, Guid guardianId)
         {
             try
