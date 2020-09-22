@@ -3,7 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using Force.DeepCloner;
+using EFxceptions.Models.Exceptions;
 using Moq;
 using OtripleS.Web.Api.Models.Teachers;
 using OtripleS.Web.Api.Models.Teachers.Exceptions;
@@ -11,76 +11,15 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.Teachers
 {
     public partial class TeacherServiceTests
     {
-        [Fact]
-        public async Task ShouldThorwValidationExceptionOnModifyWhenTeacherIsNullAndLogItAsync()
-        {
-            // given
-            Teacher invalidTeacher = null;
-            var nullTeacherException = new NullTeacherException();
-
-            var expectedTeacherValidationException =
-                new TeacherValidationException(nullTeacherException);
-
-            // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(invalidTeacher);
-
-            // then
-            await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
-                    Times.Once);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenTeacherIdIsInvalidAndLogItAsync()
-        {
-            // given
-            Guid invalidTeacherId = Guid.Empty;
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(dateTime);
-            Teacher invalidTeacher = randomTeacher;
-            invalidTeacher.Id = invalidTeacherId;
-
-            var invalidTeacherInputException = new InvalidTeacherInputException(
-                parameterName: nameof(Teacher.Id),
-                parameterValue: invalidTeacher.Id);
-
-            var expectedTeacherValidationException =
-                new TeacherValidationException(invalidTeacherInputException);
-
-            // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(invalidTeacher);
-
-            // then
-            await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
-                    Times.Once);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenTeacherUserIdIsInvalidAndLogItAsync(
+        public async Task ShouldThrowValidationExceptionOnCreateWhenTeacherUserIdIsInvalidAndLogItAsync(
             string invalidTeacherUserId)
         {
             // given
@@ -89,20 +28,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             Teacher invalidTeacher = randomTeacher;
             invalidTeacher.UserId = invalidTeacherUserId;
 
-            var invalidTeacherInputException = new InvalidTeacherInputException(
+            var invalidTeacherException = new InvalidTeacherInputException(
                parameterName: nameof(Teacher.UserId),
                parameterValue: invalidTeacher.UserId);
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(invalidTeacherInputException);
+                new TeacherValidationException(invalidTeacherException);
 
             // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(invalidTeacher);
+            ValueTask<Teacher> createTeacherTask =
+                this.teacherService.CreateTeacherAsync(invalidTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
+                createTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
@@ -118,7 +57,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenTeacherFirstNameIsInvalidAndLogItAsync(
+        public async Task ShouldThrowValidationExceptionOnCreateWhenTeacherFirstNameIsInvalidAndLogItAsync(
             string invalidTeacherFirstName)
         {
             // given
@@ -127,20 +66,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             Teacher invalidTeacher = randomTeacher;
             invalidTeacher.FirstName = invalidTeacherFirstName;
 
-            var invalidTeacherInputException = new InvalidTeacherInputException(
+            var invalidTeacherException = new InvalidTeacherInputException(
                parameterName: nameof(Teacher.FirstName),
                parameterValue: invalidTeacher.FirstName);
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(invalidTeacherInputException);
+                new TeacherValidationException(invalidTeacherException);
 
             // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(invalidTeacher);
+            ValueTask<Teacher> createTeacherTask =
+                this.teacherService.CreateTeacherAsync(invalidTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
+                createTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
@@ -155,7 +94,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenTeacherEmployeeNumberIsInvalidAndLogItAsync(
+        public async Task ShouldThrowValidationExceptionOnCreateWhenTeacherEmployeeNumberIsInvalidAndLogItAsync(
             string invalidTeacherEmployeeNumber)
         {
             // given
@@ -172,12 +111,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                 new TeacherValidationException(invalidTeacherException);
 
             // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(invalidTeacher);
+            ValueTask<Teacher> createTeacherTask =
+                this.teacherService.CreateTeacherAsync(invalidTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
+                createTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
@@ -192,7 +131,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenTeacherLastNameIsInvalidAndLogItAsync(
+        public async Task ShouldThrowValidationExceptionOnCreateWhenTeacherLastNameIsInvalidAndLogItAsync(
             string invalidTeacherLastName)
         {
             // given
@@ -209,12 +148,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                 new TeacherValidationException(invalidTeacherException);
 
             // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(invalidTeacher);
+            ValueTask<Teacher> createTeacherTask =
+                this.teacherService.CreateTeacherAsync(invalidTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
+                createTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
@@ -226,7 +165,76 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenCreatedByIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnCreateWhenTeacherIsNullAndLogItAsync()
+        {
+            // given
+            Teacher randomTeacher = null;
+            Teacher nullTeacher = randomTeacher;
+            var nullTeacherException = new NullTeacherException();
+
+            var expectedTeacherValidationException =
+                new TeacherValidationException(nullTeacherException);
+
+            // when
+            ValueTask<Teacher> createTeacherTask =
+                this.teacherService.CreateTeacherAsync(nullTeacher);
+
+            // then
+            await Assert.ThrowsAsync<TeacherValidationException>(() =>
+                createTeacherTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenIdIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Teacher randomTeacher = CreateRandomTeacher(dateTime);
+            Teacher inputTeacher = randomTeacher;
+            inputTeacher.Id = default;
+
+            var invalidTeacherInputException = new InvalidTeacherInputException(
+                parameterName: nameof(Teacher.Id),
+                parameterValue: inputTeacher.Id);
+
+            var expectedTeacherValidationException =
+                new TeacherValidationException(invalidTeacherInputException);
+
+            // when
+            ValueTask<Teacher> createTeacherTask =
+                this.teacherService.CreateTeacherAsync(inputTeacher);
+
+            // then
+            await Assert.ThrowsAsync<TeacherValidationException>(() =>
+                createTeacherTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedByIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -242,12 +250,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                 new TeacherValidationException(invalidTeacherInputException);
 
             // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(inputTeacher);
+            ValueTask<Teacher> createTeacherTask =
+                this.teacherService.CreateTeacherAsync(inputTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
+                createTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
@@ -263,44 +271,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedByIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(dateTime);
-            Teacher inputTeacher = randomTeacher;
-            inputTeacher.UpdatedBy = default;
-
-            var invalidTeacherInputException = new InvalidTeacherInputException(
-                parameterName: nameof(Teacher.UpdatedBy),
-                parameterValue: inputTeacher.UpdatedBy);
-
-            var expectedTeacherValidationException =
-                new TeacherValidationException(invalidTeacherInputException);
-
-            // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(inputTeacher);
-
-            // then
-            await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenCreatedDateIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedDateIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -316,12 +287,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                 new TeacherValidationException(invalidTeacherInputException);
 
             // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(inputTeacher);
+            ValueTask<Teacher> createTeacherTask =
+                this.teacherService.CreateTeacherAsync(inputTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
+                createTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
@@ -337,7 +308,44 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedByIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Teacher randomTeacher = CreateRandomTeacher(dateTime);
+            Teacher inputTeacher = randomTeacher;
+            inputTeacher.UpdatedBy = default;
+
+            var invalidTeacherInputException = new InvalidTeacherInputException(
+                parameterName: nameof(Teacher.UpdatedBy),
+                parameterValue: inputTeacher.UpdatedBy);
+
+            var expectedTeacherValidationException =
+                new TeacherValidationException(invalidTeacherInputException);
+
+            // when
+            ValueTask<Teacher> createTeacherTask =
+                this.teacherService.CreateTeacherAsync(inputTeacher);
+
+            // then
+            await Assert.ThrowsAsync<TeacherValidationException>(() =>
+                createTeacherTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedDateIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -353,12 +361,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                 new TeacherValidationException(invalidTeacherInputException);
 
             // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(inputTeacher);
+            ValueTask<Teacher> createTeacherTask =
+                this.teacherService.CreateTeacherAsync(inputTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
+                createTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
@@ -374,12 +382,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsSameToCreatedDateAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedDateIsNotSameToCreatedDateAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             Teacher randomTeacher = CreateRandomTeacher(dateTime);
             Teacher inputTeacher = randomTeacher;
+            inputTeacher.UpdatedBy = randomTeacher.CreatedBy;
+            inputTeacher.UpdatedDate = GetRandomDateTime();
 
             var invalidTeacherInputException = new InvalidTeacherInputException(
                 parameterName: nameof(Teacher.UpdatedDate),
@@ -389,12 +399,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                 new TeacherValidationException(invalidTeacherInputException);
 
             // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(inputTeacher);
+            ValueTask<Teacher> createTeacherTask =
+                this.teacherService.CreateTeacherAsync(inputTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
+                createTeacherTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedByIsNotSameToCreatedByAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Teacher randomTeacher = CreateRandomTeacher(dateTime);
+            Teacher inputTeacher = randomTeacher;
+            inputTeacher.UpdatedBy = Guid.NewGuid();
+
+            var invalidTeacherInputException = new InvalidTeacherInputException(
+                parameterName: nameof(Teacher.UpdatedBy),
+                parameterValue: inputTeacher.UpdatedBy);
+
+            var expectedTeacherValidationException =
+                new TeacherValidationException(invalidTeacherInputException);
+
+            // when
+            ValueTask<Teacher> createTeacherTask =
+                this.teacherService.CreateTeacherAsync(inputTeacher);
+
+            // then
+            await Assert.ThrowsAsync<TeacherValidationException>(() =>
+                createTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
@@ -411,7 +458,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
 
         [Theory]
         [MemberData(nameof(InvalidMinuteCases))]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsNotRecentAndLogItAsync(
+        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedDateIsNotRecentAndLogItAsync(
             int minutes)
         {
             // given
@@ -419,11 +466,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
             Teacher randomTeacher = CreateRandomTeacher(dateTime);
             Teacher inputTeacher = randomTeacher;
             inputTeacher.UpdatedBy = inputTeacher.CreatedBy;
-            inputTeacher.UpdatedDate = dateTime.AddMinutes(minutes);
+            inputTeacher.CreatedDate = dateTime.AddMinutes(minutes);
+            inputTeacher.UpdatedDate = inputTeacher.CreatedDate;
 
             var invalidTeacherInputException = new InvalidTeacherInputException(
-                parameterName: nameof(Teacher.UpdatedDate),
-                parameterValue: inputTeacher.UpdatedDate);
+                parameterName: nameof(Teacher.CreatedDate),
+                parameterValue: inputTeacher.CreatedDate);
 
             var expectedTeacherValidationException =
                 new TeacherValidationException(invalidTeacherInputException);
@@ -433,12 +481,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
                     .Returns(dateTime);
 
             // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(inputTeacher);
+            ValueTask<Teacher> createTeacherTask =
+                this.teacherService.CreateTeacherAsync(inputTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
+                createTeacherTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
@@ -458,214 +506,54 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
         }
 
         [Fact]
-        public async Task ShouldThorwValidationExceptionOnModifyIfTeacherDoesntExistAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnCreateWhenTeacherAlreadyExistsAndLogItAsync()
         {
             // given
-            int randomNegativeMinutes = GetNegativeRandomNumber();
             DateTimeOffset dateTime = GetRandomDateTime();
             Teacher randomTeacher = CreateRandomTeacher(dateTime);
-            Teacher nonExistentTeacher = randomTeacher;
-            nonExistentTeacher.CreatedDate = dateTime.AddMinutes(randomNegativeMinutes);
-            Teacher noTeacher = null;
-            var notFoundTeacherException = new NotFoundTeacherException(nonExistentTeacher.Id);
+            Teacher alreadyExistsTeacher = randomTeacher;
+            alreadyExistsTeacher.UpdatedBy = alreadyExistsTeacher.CreatedBy;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsTeacherException =
+                new AlreadyExistsTeacherException(duplicateKeyException);
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(notFoundTeacherException);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectTeacherByIdAsync(nonExistentTeacher.Id))
-                    .ReturnsAsync(noTeacher);
+                new TeacherValidationException(alreadyExistsTeacherException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
                     .Returns(dateTime);
 
-            // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(nonExistentTeacher);
-
-            // then
-            await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherByIdAsync(nonExistentTeacher.Id),
-                    Times.Once);
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
-                    Times.Once);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedDateNotSameAsCreateDateAndLogItAsync()
-        {
-            // given
-            int randomNumber = GetRandomNumber();
-            int randomMinutes = randomNumber;
-            DateTimeOffset randomDate = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(randomDate);
-            Teacher invalidTeacher = randomTeacher;
-            invalidTeacher.UpdatedDate = randomDate;
-            Teacher storageTeacher = randomTeacher.DeepClone();
-            Guid studentId = invalidTeacher.Id;
-            invalidTeacher.CreatedDate = storageTeacher.CreatedDate.AddMinutes(randomNumber);
-
-            var invalidTeacherException = new InvalidTeacherInputException(
-                parameterName: nameof(Teacher.CreatedDate),
-                parameterValue: invalidTeacher.CreatedDate);
-
-            var expectedTeacherValidationException =
-              new TeacherValidationException(invalidTeacherException);
-
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectTeacherByIdAsync(studentId))
-                    .ReturnsAsync(storageTeacher);
-
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(randomDate);
+                broker.InsertTeacherAsync(alreadyExistsTeacher))
+                    .ThrowsAsync(duplicateKeyException);
 
             // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(invalidTeacher);
+            ValueTask<Teacher> registerTeacherTask =
+                this.teacherService.CreateTeacherAsync(alreadyExistsTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
+                registerTeacherTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherByIdAsync(invalidTeacher.Id),
+                broker.InsertTeacherAsync(alreadyExistsTeacher),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
+               broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedByNotSameAsCreatedByAndLogItAsync()
-        {
-            // given
-            int randomNegativeMinutes = GetNegativeRandomNumber();
-            Guid differentId = Guid.NewGuid();
-            Guid invalidCreatedBy = differentId;
-            DateTimeOffset randomDate = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(randomDate);
-            Teacher invalidTeacher = randomTeacher;
-            invalidTeacher.CreatedDate = randomDate.AddMinutes(randomNegativeMinutes);
-            Teacher storageTeacher = randomTeacher.DeepClone();
-            Guid studentId = invalidTeacher.Id;
-            invalidTeacher.CreatedBy = invalidCreatedBy;
-
-            var invalidTeacherInputException = new InvalidTeacherInputException(
-                parameterName: nameof(Teacher.CreatedBy),
-                parameterValue: invalidTeacher.CreatedBy);
-
-            var expectedTeacherValidationException =
-              new TeacherValidationException(invalidTeacherInputException);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectTeacherByIdAsync(studentId))
-                    .ReturnsAsync(storageTeacher);
-
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(randomDate);
-
-            // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(invalidTeacher);
-
-            // then
-            await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherByIdAsync(invalidTeacher.Id),
-                    Times.Once);
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
-                    Times.Once);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async Task ShouldThrowValidationExceptionOnModifyIfStorageUpdatedDateSameAsUpdatedDateAndLogItAsync()
-        {
-            // given
-            int randomNegativeMinutes = GetNegativeRandomNumber();
-            int minutesInThePast = randomNegativeMinutes;
-            DateTimeOffset randomDate = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(randomDate);
-            randomTeacher.CreatedDate = randomTeacher.CreatedDate.AddMinutes(minutesInThePast);
-            Teacher invalidTeacher = randomTeacher;
-            invalidTeacher.UpdatedDate = randomDate;
-            Teacher storageTeacher = randomTeacher.DeepClone();
-            Guid studentId = invalidTeacher.Id;
-
-            var invalidTeacherInputException = new InvalidTeacherInputException(
-                parameterName: nameof(Teacher.UpdatedDate),
-                parameterValue: invalidTeacher.UpdatedDate);
-
-            var expectedTeacherValidationException =
-              new TeacherValidationException(invalidTeacherInputException);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectTeacherByIdAsync(studentId))
-                    .ReturnsAsync(storageTeacher);
-
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(randomDate);
-
-            // when
-            ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(invalidTeacher);
-
-            // then
-            await Assert.ThrowsAsync<TeacherValidationException>(() =>
-                modifyTeacherTask.AsTask());
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherByIdAsync(invalidTeacher.Id),
-                    Times.Once);
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
-                    Times.Once);
-
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
