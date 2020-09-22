@@ -20,6 +20,18 @@ namespace OtripleS.Web.Api.Services.Contacts
         {
             ValidateContactIsNotNull(contact);
             ValidateContactId(contact);
+            ValidateContactAuditFields(contact);
+        }
+
+        private static void ValidateContactAuditFields(Contact contact)
+        {
+            switch(contact)
+            {
+                case { } when IsInvalid(contact.CreatedBy):
+                    throw new InvalidContactException(
+                        parameterName: nameof(Contact.CreatedBy), 
+                        parameterValue: contact.CreatedBy);
+            }
         }
 
         private static void ValidateContactId(Contact contact)
