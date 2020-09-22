@@ -25,6 +25,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
             DateTimeOffset dateTime = randomDateTime;
             Contact randomContact = CreateRandomContact(dateTime);
             Contact inputContact = randomContact;
+            inputContact.UpdatedBy = inputContact.CreatedBy;
+            inputContact.UpdatedDate = inputContact.CreatedDate;
             Contact expectedContact = inputContact;
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -44,7 +46,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
-                    Times.Never);
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertContactAsync(inputContact),
