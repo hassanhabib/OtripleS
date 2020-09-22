@@ -11,7 +11,7 @@ using OtripleS.Web.Api.Models.Contacts;
 
 namespace OtripleS.Web.Api.Services.Contacts
 {
-    public class ContactService : IContactService
+    public partial class ContactService : IContactService
     {
         private readonly IStorageBroker storageBroker;
         private readonly IDateTimeBroker dateTimeBroker;
@@ -27,8 +27,12 @@ namespace OtripleS.Web.Api.Services.Contacts
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<Contact> AddContactAsync(Contact contact) =>
-            await this.storageBroker.InsertContactAsync(contact);
-        
+        public ValueTask<Contact> AddContactAsync(Contact contact) =>
+        TryCatch(async () =>
+        {
+            ValidateContactOnCreate(contact);
+
+            return await this.storageBroker.InsertContactAsync(contact);
+        });
     }
 }
