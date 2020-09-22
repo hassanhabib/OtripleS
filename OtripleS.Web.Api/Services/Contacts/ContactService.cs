@@ -27,9 +27,8 @@ namespace OtripleS.Web.Api.Services.Contacts
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<Contact> AddContactAsync(Contact contact)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async ValueTask<Contact> AddContactAsync(Contact contact) =>
+            await this.storageBroker.InsertContactAsync(contact);
+        
     }
 }
