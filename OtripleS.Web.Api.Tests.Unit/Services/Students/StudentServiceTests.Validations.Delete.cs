@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Students
                     Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentByIdAsync(It.IsAny<Guid>()),
+                broker.DeleteStudentAsync(It.IsAny<Student>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -88,6 +88,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Students
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentByIdAsync(inputStudentId),
                     Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteStudentAsync(It.IsAny<Student>()),
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
