@@ -161,5 +161,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenUpdatedByIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Contact randomContact = CreateRandomContact(dateTime);
+            Contact inputContact = randomContact;
+            inputContact.UpdatedBy = default;
+
+            var invalidContactInputException = new InvalidContactException(
+                parameterName: nameof(Contact.UpdatedBy),
+                parameterValue: inputContact.UpdatedBy);
+
+            var expectedContactValidationException =
+                new ContactValidationException(invalidContactInputException);
+
+            // when
+            ValueTask<Contact> addContactTask =
+                this.contactService.AddContactAsync(inputContact);
+
+            // then
+            await Assert.ThrowsAsync<ContactValidationException>(() =>
+                addContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertContactAsync(It.IsAny<Contact>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
