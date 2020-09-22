@@ -12,7 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.CourseServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
 {
     public partial class CourseServiceTests
     {
