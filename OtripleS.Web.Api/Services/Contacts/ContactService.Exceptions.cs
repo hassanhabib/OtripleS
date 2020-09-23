@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Models.Assignments.Exceptions;
 using OtripleS.Web.Api.Models.Contacts;
 using OtripleS.Web.Api.Models.Contacts.Exceptions;
 
@@ -47,9 +48,16 @@ namespace OtripleS.Web.Api.Services.Contacts
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsContactException =
-                new AlreadyExistsContactException(duplicateKeyException);
+                    new AlreadyExistsContactException(duplicateKeyException);
 
                 throw CreateAndLogValidationException(alreadyExistsContactException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedContactException = 
+                    new LockedContactException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedContactException);
             }
             catch (DbUpdateException dbUpdateException)
             {
