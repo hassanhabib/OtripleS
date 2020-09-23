@@ -33,6 +33,14 @@ namespace OtripleS.Web.Api.Services.Contacts
             ValidateUpdatedDateIsRecent(contact);
         }
 
+        private void ValidateStorageContact(Contact storageContact, Guid contactId)
+        {
+            if (storageContact == null)
+            {
+                throw new NotFoundContactException(contactId);
+            }
+        }
+
         private void ValidateDatesAreNotSame(Contact contact)
         {
             if (contact.CreatedDate == contact.UpdatedDate)

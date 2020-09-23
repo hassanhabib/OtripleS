@@ -46,12 +46,14 @@ namespace OtripleS.Web.Api.Services.Contacts
 		});
 
 		public ValueTask<Contact> ModifyContactAsync(Contact contact) =>
-		TryCatch(() =>
+		TryCatch(async () =>
 		{
 			ValidateContactOnModify(contact);
 
-			storageBroker.SelectContactByIdAsync(contact.Id);
-			return storageBroker.UpdateContactAsync(contact);
+			Contact maybeContact = await storageBroker.SelectContactByIdAsync(contact.Id);
+			ValidateStorageContact(maybeContact, contact.Id);
+
+			return await storageBroker.UpdateContactAsync(contact);
 		});
 	}
 }
