@@ -29,7 +29,18 @@ namespace OtripleS.Web.Api.Services.Contacts
             ValidateContactIsNotNull(contact);
             ValidateContactId(contact);
             ValidateContactAuditFields(contact);
+            ValidateDatesAreNotSame(contact);
 
+        }
+
+        private void ValidateDatesAreNotSame(Contact contact)
+        {
+            if (contact.CreatedDate == contact.UpdatedDate)
+            {
+                throw new InvalidContactException(
+                    parameterName: nameof(Contact.UpdatedDate),
+                    parameterValue: contact.UpdatedDate);
+            }
         }
 
         private static void ValidateContactAuditFields(Contact contact)
