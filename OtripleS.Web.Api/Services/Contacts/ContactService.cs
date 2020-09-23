@@ -50,7 +50,6 @@ namespace OtripleS.Web.Api.Services.Contacts
 		{
 			ValidateContactOnModify(contact);
 
-			dateTimeBroker.GetCurrentDateTime();
 			storageBroker.SelectContactByIdAsync(contact.Id);
 			return storageBroker.UpdateContactAsync(contact);
 		});

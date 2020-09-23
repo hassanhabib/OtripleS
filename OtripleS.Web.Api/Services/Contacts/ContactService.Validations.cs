@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.Contacts
             ValidateContactId(contact);
             ValidateContactAuditFields(contact);
             ValidateDatesAreNotSame(contact);
-
+            ValidateUpdatedDateIsRecent(contact);
         }
 
         private void ValidateDatesAreNotSame(Contact contact)
@@ -39,6 +39,16 @@ namespace OtripleS.Web.Api.Services.Contacts
             {
                 throw new InvalidContactException(
                     parameterName: nameof(Contact.UpdatedDate),
+                    parameterValue: contact.UpdatedDate);
+            }
+        }
+
+        private void ValidateUpdatedDateIsRecent(Contact contact)
+        {
+            if (IsDateNotRecent(contact.UpdatedDate))
+            {
+                throw new InvalidContactException(
+                    parameterName: nameof(contact.UpdatedDate),
                     parameterValue: contact.UpdatedDate);
             }
         }
