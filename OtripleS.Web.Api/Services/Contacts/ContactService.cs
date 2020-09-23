@@ -44,5 +44,10 @@ namespace OtripleS.Web.Api.Services.Contacts
 
             return storageContacts;
         });
-    }
+
+		public ValueTask<Contact> ModifyContactAsync(Contact contact)
+		{
+			throw new System.NotImplementedException();
+		}
+	}
 }
