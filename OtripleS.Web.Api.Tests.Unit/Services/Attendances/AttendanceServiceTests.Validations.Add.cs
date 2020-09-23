@@ -143,6 +143,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attendances
             DateTimeOffset dateTime = GetRandomDateTime();
             Attendance randomAttendance = CreateRandomAttendance(dateTime: dateTime);
             Attendance invalidAttendance = randomAttendance;
+            invalidAttendance.UpdatedBy = invalidAttendance.CreatedBy;
+            invalidAttendance.UpdatedDate = invalidAttendance.CreatedDate;
             invalidAttendance.AttendanceDate = dateTime.AddMinutes(invallidMinutes);
 
             var invalidAttendanceException = new InvalidAttendanceException(
@@ -280,6 +282,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attendances
             DateTimeOffset dateTime = GetRandomDateTime();
             Attendance randomAttendance = CreateRandomAttendance(dateTime: dateTime);
             Attendance inputAttendance = randomAttendance;
+            inputAttendance.UpdatedBy = inputAttendance.CreatedBy;
             inputAttendance.CreatedDate = dateTime.AddMinutes(invallidMinutes);
             inputAttendance.UpdatedDate = inputAttendance.CreatedDate;
 

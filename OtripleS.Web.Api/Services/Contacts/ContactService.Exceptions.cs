@@ -19,7 +19,6 @@ namespace OtripleS.Web.Api.Services.Contacts
 {
     public partial class ContactService
     {
-
         private delegate ValueTask<Contact> ReturningContactFunction();
         private delegate IQueryable<Contact> ReturningQueryableContactFunction();
 

@@ -16,7 +16,6 @@ namespace OtripleS.Web.Api.Services.Contacts
 {
     public partial class ContactService
     {
-
         private void ValidateContactOnCreate(Contact contact)
         {
             ValidateContactIsNotNull(contact);
@@ -89,7 +88,6 @@ namespace OtripleS.Web.Api.Services.Contacts
                 throw new NullContactException();
             }
         }
-
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
