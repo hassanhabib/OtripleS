@@ -49,6 +49,11 @@ namespace OtripleS.Web.Api.Services.Contacts
                     throw new InvalidContactException(
                         parameterName: nameof(Contact.CreatedDate),
                         parameterValue: inputContact.CreatedDate);
+
+                case { } when inputContact.CreatedBy != storageContact.CreatedBy:
+                    throw new InvalidContactException(
+                        parameterName: nameof(Contact.CreatedBy),
+                        parameterValue: inputContact.CreatedBy);
             }
         }
 
