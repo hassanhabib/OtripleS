@@ -24,6 +24,11 @@ namespace OtripleS.Web.Api.Services.Contacts
             ValidateContactAuditFieldsOnCreate(contact);
         }
 
+        private void ValidateContactOnModify(Contact contact)
+        {
+            ValidateContactIsNotNull(contact);
+        }
+
         private static void ValidateContactAuditFields(Contact contact)
         {
             switch(contact)
