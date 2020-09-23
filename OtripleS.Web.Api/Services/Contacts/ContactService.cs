@@ -49,9 +49,9 @@ namespace OtripleS.Web.Api.Services.Contacts
 		TryCatch(async () =>
 		{
 			ValidateContactOnModify(contact);
-
 			Contact maybeContact = await storageBroker.SelectContactByIdAsync(contact.Id);
 			ValidateStorageContact(maybeContact, contact.Id);
+			ValidateAgainstStorageContactOnModify(inputContact: contact, storageContact: maybeContact);
 
 			return await storageBroker.UpdateContactAsync(contact);
 		});

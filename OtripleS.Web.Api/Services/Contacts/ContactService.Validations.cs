@@ -41,6 +41,17 @@ namespace OtripleS.Web.Api.Services.Contacts
             }
         }
 
+        private void ValidateAgainstStorageContactOnModify(Contact inputContact, Contact storageContact)
+        {
+            switch (inputContact)
+            {
+                case { } when inputContact.CreatedDate != storageContact.CreatedDate:
+                    throw new InvalidContactException(
+                        parameterName: nameof(Contact.CreatedDate),
+                        parameterValue: inputContact.CreatedDate);
+            }
+        }
+
         private void ValidateDatesAreNotSame(Contact contact)
         {
             if (contact.CreatedDate == contact.UpdatedDate)
