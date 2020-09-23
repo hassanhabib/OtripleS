@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Contacts;
 using OtripleS.Web.Api.Models.Contacts.Exceptions;
@@ -344,6 +345,60 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
 
 			this.storageBrokerMock.Verify(broker =>
 				broker.SelectContactByIdAsync(nonExistentContact.Id),
+					Times.Once);
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
+					Times.Once);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
+		public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedDateNotSameAsCreateDateAndLogItAsync()
+		{
+			// given
+			int randomNumber = GetRandomNumber();
+			int randomMinutes = randomNumber;
+			DateTimeOffset randomDate = GetRandomDateTime();
+			Contact randomContact = CreateRandomContact(randomDate);
+			Contact invalidContact = randomContact;
+			invalidContact.UpdatedDate = randomDate;
+			Contact storageContact = randomContact.DeepClone();
+			Guid contactId = invalidContact.Id;
+			invalidContact.CreatedDate = storageContact.CreatedDate.AddMinutes(randomNumber);
+
+			var invalidContactException = new InvalidContactException(
+				parameterName: nameof(Contact.CreatedDate),
+				parameterValue: invalidContact.CreatedDate);
+
+			var expectedContactValidationException =
+			  new ContactValidationException(invalidContactException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectContactByIdAsync(contactId))
+					.ReturnsAsync(storageContact);
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(randomDate);
+
+			// when
+			ValueTask<Contact> modifyContactTask =
+				this.contactService.ModifyContactAsync(invalidContact);
+
+			// then
+			await Assert.ThrowsAsync<ContactValidationException>(() =>
+				modifyContactTask.AsTask());
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectContactByIdAsync(invalidContact.Id),
 					Times.Once);
 
 			this.loggingBrokerMock.Verify(broker =>
