@@ -9,7 +9,7 @@ using Moq;
 using OtripleS.Web.Api.Models.Contacts.Exceptions;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.ContactServiceTests
+namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
 {
     public partial class ContactServiceTests
     {
