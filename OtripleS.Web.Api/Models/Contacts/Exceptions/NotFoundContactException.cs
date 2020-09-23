@@ -6,9 +6,9 @@
 using System;
 namespace OtripleS.Web.Api.Models.Contacts.Exceptions
 {
-    public class NotFoundContactException : Exception
-    {
-        public NotFoundContactException(Guid contactId)
-            : base($"Couldn't find contact with Id: {contactId}.") { }
-    }
+	public class NotFoundContactException : Exception
+	{
+		public NotFoundContactException(Guid contactId)
+			: base($"Couldn't find contact with Id: {contactId}.") { }
+	}
 }
