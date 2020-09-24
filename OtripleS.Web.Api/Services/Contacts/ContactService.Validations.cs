@@ -5,10 +5,6 @@
 
 using System;
 using System.Linq;
-using System.Threading.Tasks;
-using OtripleS.Web.Api.Brokers.DateTimes;
-using OtripleS.Web.Api.Brokers.Loggings;
-using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Contacts;
 using OtripleS.Web.Api.Models.Contacts.Exceptions;
 
@@ -126,5 +122,55 @@ namespace OtripleS.Web.Api.Services.Contacts
                 throw new NotFoundContactException(contactId);
             }
         }
-    }
+		
+		private void ValidateContactOnModify(Contact contact)
+		{
+			ValidateContactIsNotNull(contact);
+			ValidateContactId(contact);
+			ValidateContactAuditFields(contact);
+			ValidateDatesAreNotSame(contact);
+			ValidateUpdatedDateIsRecent(contact);
+		}
+
+		private void ValidateAgainstStorageContactOnModify(Contact inputContact, Contact storageContact)
+		{
+			switch (inputContact)
+			{
+				case { } when inputContact.CreatedDate != storageContact.CreatedDate:
+					throw new InvalidContactException(
+						parameterName: nameof(Contact.CreatedDate),
+						parameterValue: inputContact.CreatedDate);
+
+				case { } when inputContact.CreatedBy != storageContact.CreatedBy:
+					throw new InvalidContactException(
+						parameterName: nameof(Contact.CreatedBy),
+						parameterValue: inputContact.CreatedBy);
+
+				case { } when inputContact.UpdatedDate == storageContact.UpdatedDate:
+					throw new InvalidContactException(
+						parameterName: nameof(Contact.UpdatedDate),
+						parameterValue: inputContact.UpdatedDate);
+			}
+		}
+
+		private void ValidateDatesAreNotSame(Contact contact)
+		{
+			if (contact.CreatedDate == contact.UpdatedDate)
+			{
+				throw new InvalidContactException(
+					parameterName: nameof(Contact.UpdatedDate),
+					parameterValue: contact.UpdatedDate);
+			}
+		}
+
+		private void ValidateUpdatedDateIsRecent(Contact contact)
+		{
+			if (IsDateNotRecent(contact.UpdatedDate))
+			{
+				throw new InvalidContactException(
+					parameterName: nameof(contact.UpdatedDate),
+					parameterValue: contact.UpdatedDate);
+			}
+		}
+	}
 }

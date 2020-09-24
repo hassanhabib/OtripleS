@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Contacts.Exceptions
 {
-	public class ContactDependencyException : Exception
+	public class LockedContactException : Exception
 	{
-		public ContactDependencyException(Exception innerException)
-			: base("Service dependency error occurred, contact support.", innerException) { }
+		public LockedContactException(Exception innerException)
+			: base("Locked contact record exception, please try again later.", innerException) { }
 	}
 }
