@@ -3,15 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using FluentAssertions;
+using Force.DeepCloner;
+using Moq;
+using OtripleS.Web.Api.Models.Contacts;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using FluentAssertions;
-using Moq;
-using OtripleS.Web.Api.Brokers.Loggings;
-using OtripleS.Web.Api.Brokers.Storage;
-using OtripleS.Web.Api.Models.Contacts;
-using OtripleS.Web.Api.Services.Contacts;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
@@ -39,7 +37,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
                     .ReturnsAsync(expectedContact);
 
             // when
-            Contact actualContact = 
+            Contact actualContact =
                 await this.contactService.AddContactAsync(inputContact);
 
             // then
@@ -89,6 +87,86 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldRetrieveContactById()
+        {
+            //given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Contact randomContact = CreateRandomContact(dateTime);
+            Guid inputContactId = randomContact.Id;
+            Contact inputContact = randomContact;
+            Contact expectedContact = randomContact;
+
+            this.storageBrokerMock.Setup(broker =>
+                    broker.SelectContactByIdAsync(inputContactId))
+                .ReturnsAsync(inputContact);
+
+            //when 
+            Contact actualContact = await this.contactService.RetrieveContactById(inputContactId);
+
+            //then
+            actualContact.Should().BeEquivalentTo(expectedContact);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectContactByIdAsync(inputContactId), Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldModifyContactAsync()
+        {
+            // given
+            int randomNumber = GetRandomNumber();
+            int randomDays = randomNumber;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            DateTimeOffset randomInputDate = GetRandomDateTime();
+            Contact randomContact = CreateRandomContact(randomInputDate);
+            Contact inputContact = randomContact;
+            Contact afterUpdateStorageContact = inputContact;
+            Contact expectedContact = afterUpdateStorageContact;
+            Contact beforeUpdateStorageContact = randomContact.DeepClone();
+            inputContact.UpdatedDate = randomDate;
+            Guid contactId = inputContact.Id;
+
+            this.dateTimeBrokerMock.Setup(broker =>
+               broker.GetCurrentDateTime())
+                   .Returns(randomDate);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectContactByIdAsync(contactId))
+                    .ReturnsAsync(beforeUpdateStorageContact);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.UpdateContactAsync(inputContact))
+                    .ReturnsAsync(afterUpdateStorageContact);
+
+            // when
+            Contact actualContact =
+                await this.contactService.ModifyContactAsync(inputContact);
+
+            // then
+            actualContact.Should().BeEquivalentTo(expectedContact);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectContactByIdAsync(contactId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateContactAsync(inputContact),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

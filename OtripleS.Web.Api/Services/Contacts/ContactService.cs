@@ -3,12 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System.Linq;
-using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Contacts;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.Contacts
 {
@@ -43,6 +44,26 @@ namespace OtripleS.Web.Api.Services.Contacts
             ValidateStorageContacts(storageContacts);
 
             return storageContacts;
+        });
+
+        public ValueTask<Contact> RetrieveContactById(Guid inputContactId) =>
+        TryCatch(async () =>
+        {
+            ValidateIdIsNull(inputContactId);
+            Contact contact = await this.storageBroker.SelectContactByIdAsync(inputContactId);
+            ValidateStorageContact(contact, inputContactId);
+            return contact;
+        });
+
+        public ValueTask<Contact> ModifyContactAsync(Contact contact) =>
+        TryCatch(async () =>
+        {
+            ValidateContactOnModify(contact);
+            Contact maybeContact = await storageBroker.SelectContactByIdAsync(contact.Id);
+            ValidateStorageContact(maybeContact, contact.Id);
+            ValidateAgainstStorageContactOnModify(inputContact: contact, storageContact: maybeContact);
+
+            return await storageBroker.UpdateContactAsync(contact);
         });
     }
 }

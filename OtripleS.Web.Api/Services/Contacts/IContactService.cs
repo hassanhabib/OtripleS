@@ -3,9 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using OtripleS.Web.Api.Models.Contacts;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Contacts;
 
 namespace OtripleS.Web.Api.Services.Contacts
 {
@@ -13,5 +14,7 @@ namespace OtripleS.Web.Api.Services.Contacts
     {
         ValueTask<Contact> AddContactAsync(Contact contact);
         IQueryable<Contact> RetrieveAllContacts();
+        ValueTask<Contact> RetrieveContactById(Guid inputContactId);
+        ValueTask<Contact> ModifyContactAsync(Contact contact);
     }
 }

@@ -3,14 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using OtripleS.Web.Api.Brokers.DateTimes;
-using OtripleS.Web.Api.Brokers.Loggings;
-using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Contacts;
 using OtripleS.Web.Api.Models.Contacts.Exceptions;
+using System;
+using System.Linq;
 
 namespace OtripleS.Web.Api.Services.Contacts
 {
@@ -26,11 +22,11 @@ namespace OtripleS.Web.Api.Services.Contacts
 
         private static void ValidateContactAuditFields(Contact contact)
         {
-            switch(contact)
+            switch (contact)
             {
                 case { } when IsInvalid(contact.CreatedBy):
                     throw new InvalidContactException(
-                        parameterName: nameof(Contact.CreatedBy), 
+                        parameterName: nameof(Contact.CreatedBy),
                         parameterValue: contact.CreatedBy);
 
                 case { } when IsInvalid(contact.CreatedDate):
@@ -49,7 +45,7 @@ namespace OtripleS.Web.Api.Services.Contacts
                         parameterValue: contact.UpdatedDate);
             }
         }
-        
+
         private void ValidateContactAuditFieldsOnCreate(Contact contact)
         {
             switch (contact)
@@ -80,7 +76,17 @@ namespace OtripleS.Web.Api.Services.Contacts
                     parameterValue: contact.Id);
             }
         }
-        
+
+        private static void ValidateIdIsNull(Guid contactId)
+        {
+            if (IsInvalid(contactId))
+            {
+                throw new InvalidContactException(
+                    parameterName: nameof(Contact.Id),
+                    parameterValue: contactId);
+            }
+        }
+
         private static void ValidateContactIsNotNull(Contact contact)
         {
             if (contact is null)
@@ -106,6 +112,64 @@ namespace OtripleS.Web.Api.Services.Contacts
             if (storageContacts.Count() == 0)
             {
                 this.loggingBroker.LogWarning("No contacts found in storage.");
+            }
+        }
+
+        private void ValidateStorageContact(Contact storageContact, Guid contactId)
+        {
+            if (storageContact is null)
+            {
+                throw new NotFoundContactException(contactId);
+            }
+        }
+
+        private void ValidateContactOnModify(Contact contact)
+        {
+            ValidateContactIsNotNull(contact);
+            ValidateContactId(contact);
+            ValidateContactAuditFields(contact);
+            ValidateDatesAreNotSame(contact);
+            ValidateUpdatedDateIsRecent(contact);
+        }
+
+        private void ValidateAgainstStorageContactOnModify(Contact inputContact, Contact storageContact)
+        {
+            switch (inputContact)
+            {
+                case { } when inputContact.CreatedDate != storageContact.CreatedDate:
+                    throw new InvalidContactException(
+                        parameterName: nameof(Contact.CreatedDate),
+                        parameterValue: inputContact.CreatedDate);
+
+                case { } when inputContact.CreatedBy != storageContact.CreatedBy:
+                    throw new InvalidContactException(
+                        parameterName: nameof(Contact.CreatedBy),
+                        parameterValue: inputContact.CreatedBy);
+
+                case { } when inputContact.UpdatedDate == storageContact.UpdatedDate:
+                    throw new InvalidContactException(
+                        parameterName: nameof(Contact.UpdatedDate),
+                        parameterValue: inputContact.UpdatedDate);
+            }
+        }
+
+        private void ValidateDatesAreNotSame(Contact contact)
+        {
+            if (contact.CreatedDate == contact.UpdatedDate)
+            {
+                throw new InvalidContactException(
+                    parameterName: nameof(Contact.UpdatedDate),
+                    parameterValue: contact.UpdatedDate);
+            }
+        }
+
+        private void ValidateUpdatedDateIsRecent(Contact contact)
+        {
+            if (IsDateNotRecent(contact.UpdatedDate))
+            {
+                throw new InvalidContactException(
+                    parameterName: nameof(contact.UpdatedDate),
+                    parameterValue: contact.UpdatedDate);
             }
         }
     }

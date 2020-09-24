@@ -3,17 +3,14 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Brokers.DateTimes;
-using OtripleS.Web.Api.Brokers.Loggings;
-using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Contacts;
 using OtripleS.Web.Api.Models.Contacts.Exceptions;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.Contacts
 {
@@ -32,6 +29,10 @@ namespace OtripleS.Web.Api.Services.Contacts
             {
                 throw CreateAndLogValidationException(nullContactException);
             }
+            catch (NotFoundContactException notFoundContactException)
+            {
+                throw CreateAndLogValidationException(notFoundContactException);
+            }
             catch (InvalidContactException invalidContactException)
             {
                 throw CreateAndLogValidationException(invalidContactException);
@@ -47,11 +48,18 @@ namespace OtripleS.Web.Api.Services.Contacts
 
                 throw CreateAndLogValidationException(alreadyExistsContactException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedContactException =
+                    new LockedContactException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedContactException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);
             }

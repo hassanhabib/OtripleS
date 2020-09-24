@@ -3,13 +3,12 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-namespace OtripleS.Web.Api.Models.Contacts
+using System;
+namespace OtripleS.Web.Api.Models.Contacts.Exceptions
 {
-    public enum ContactType
+    public class NotFoundContactException : Exception
     {
-        Email,
-        Phone,
-        CellPhone,
-        Other
+        public NotFoundContactException(Guid contactId)
+            : base($"Couldn't find contact with Id: {contactId}.") { }
     }
 }
