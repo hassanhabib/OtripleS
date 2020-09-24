@@ -92,27 +92,27 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
         }
 
         [Fact]
-        public async Task ShouldRetrieveAssignmentById()
+        public async Task ShouldRetrieveContactById()
         {
             //given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Assignment randomAssignment = CreateRandomAssignment(dateTime);
-            Guid inputAssignmentId = randomAssignment.Id;
-            Assignment inputAssignment = randomAssignment;
-            Assignment expectedAssignment = randomAssignment;
+            Contact randomContact = CreateRandomContact(dateTime);
+            Guid inputContactId = randomContact.Id;
+            Contact inputContact = randomContact;
+            Contact expectedContact = randomContact;
 
             this.storageBrokerMock.Setup(broker =>
-                    broker.SelectAssignmentByIdAsync(inputAssignmentId))
-                .ReturnsAsync(inputAssignment);
+                    broker.SelectContactByIdAsync(inputContactId))
+                .ReturnsAsync(inputContact);
 
             //when 
-            Assignment actualAssignment = await this.assignmentService.RetrieveAssignmentById(inputAssignmentId);
+            Contact actualContact = await this.contactService.RetrieveContactById(inputContactId);
 
             //then
-            actualAssignment.Should().BeEquivalentTo(expectedAssignment);
+            actualContact.Should().BeEquivalentTo(expectedContact);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(inputAssignmentId), Times.Once);
+                broker.SelectContactByIdAsync(inputContactId), Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

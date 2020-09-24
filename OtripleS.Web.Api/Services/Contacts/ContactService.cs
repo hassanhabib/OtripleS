@@ -46,9 +46,9 @@ namespace OtripleS.Web.Api.Services.Contacts
             return storageContacts;
         });
 
-        public Task<Contact> RetrieveContactById(Guid inputContactId)
+        public ValueTask<Contact> RetrieveContactById(Guid inputContactId)
         {
-            throw new NotImplementedException();
+            return this.storageBroker.SelectContactByIdAsync(inputContactId);
         }
     }
 }
