@@ -5,6 +5,8 @@
 
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Contacts;
@@ -50,7 +52,30 @@ namespace OtripleS.Web.Api.Controllers
 
                 return Problem(innerMessage);
             }
-            catch(ContactServiceException contactServiceException)
+            catch (ContactServiceException contactServiceException)
+            {
+                string innerMessage = GetInnerMessage(contactServiceException);
+
+                return Problem(innerMessage);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<IQueryable<Contact>> GetAllContacts()
+        {
+            try
+            {
+                IQueryable<Contact> storageContacts = contactService.RetrieveAllContacts();
+
+                return Ok(storageContacts);
+            }
+            catch (ContactDependencyException contactDependencyException)
+            {
+                string innerMessage = GetInnerMessage(contactDependencyException);
+
+                return Problem(innerMessage);
+            }
+            catch (ContactServiceException contactServiceException)
             {
                 string innerMessage = GetInnerMessage(contactServiceException);
 
