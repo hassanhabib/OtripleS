@@ -9,6 +9,7 @@ namespace OtripleS.Web.Api.Models.Contacts
     {
         Email,
         Phone,
+        CellPhone,
         Other
     }
 }
