@@ -7,16 +7,16 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Contacts
 {
-	public class Contact : IAuditable
-	{
-		public Guid Id { get; set; }
-		public bool IsPrimary { get; set; }
-		public ContactType Type { get; set; }
-		public string Information { get; set; }
-		public string Notes { get; set; }
-		public DateTimeOffset CreatedDate { get; set; }
-		public DateTimeOffset UpdatedDate { get; set; }
-		public Guid CreatedBy { get; set; }
-		public Guid UpdatedBy { get; set; }
-	}
+    public class Contact : IAuditable
+    {
+        public Guid Id { get; set; }
+        public bool IsPrimary { get; set; }
+        public ContactType Type { get; set; }
+        public string Information { get; set; }
+        public string Notes { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
+        public DateTimeOffset UpdatedDate { get; set; }
+        public Guid CreatedBy { get; set; }
+        public Guid UpdatedBy { get; set; }
+    }
 }

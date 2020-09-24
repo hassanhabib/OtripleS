@@ -5,10 +5,11 @@
 
 namespace OtripleS.Web.Api.Models.Contacts
 {
-	public enum ContactType
-	{
-		Email,
-		Phone,
-		Other
-	}
+    public enum ContactType
+    {
+        Email,
+        Phone,
+        CellPhone,
+        Other
+    }
 }

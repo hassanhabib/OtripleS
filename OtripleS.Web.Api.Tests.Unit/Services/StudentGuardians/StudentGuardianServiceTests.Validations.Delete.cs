@@ -7,14 +7,12 @@ using Moq;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Models.StudentGuardians.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
 {
-   public partial class StudentGuardianServiceTests
+    public partial class StudentGuardianServiceTests
     {
         [Fact]
         public async Task ShouldThrowValidationExceptionOnDeleteWhenStudentGuardianIdIsInvalidAndLogItAsync()

@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Contacts.Exceptions
 {
-	public class ContactDependencyException : Exception
-	{
-		public ContactDependencyException(Exception innerException)
-			: base("Service dependency error occurred, contact support.", innerException) { }
-	}
+    public class ContactDependencyException : Exception
+    {
+        public ContactDependencyException(Exception innerException)
+            : base("Service dependency error occurred, contact support.", innerException) { }
+    }
 }

@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Contacts.Exceptions
 {
-	public class ContactValidationException : Exception
-	{
-		public ContactValidationException(Exception innerException)
-			: base("Invalid input, contact support.", innerException) { }
-	}
+    public class ContactValidationException : Exception
+    {
+        public ContactValidationException(Exception innerException)
+            : base("Invalid input, contact support.", innerException) { }
+    }
 }
