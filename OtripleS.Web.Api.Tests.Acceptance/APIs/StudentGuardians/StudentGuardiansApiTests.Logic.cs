@@ -8,17 +8,15 @@ using Force.DeepCloner;
 using OtripleS.Web.Api.Models.Guardians;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Models.Students;
-using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Tynamix.ObjectFiller;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
 {
-    public partial class StudentGuardiansApiTests    
+    public partial class StudentGuardiansApiTests
     {
         [Fact]
         public async Task ShouldPostStudentGuardianAsync()
@@ -28,7 +26,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
             Guardian persistedGuardian = await PostGuardianAsync();
 
             StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(
-                persistedStudent.Id, 
+                persistedStudent.Id,
                 persistedGuardian.Id);
 
             StudentGuardian inputStudentGuardian = randomStudentGuardian;
@@ -127,8 +125,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
         {
             Student randomStudent = CreateRandomStudent();
             Student inputStudent = randomStudent;
-            
-            return await this.otripleSApiBroker.PostStudentAsync(inputStudent);            
+
+            return await this.otripleSApiBroker.PostStudentAsync(inputStudent);
         }
 
         private async Task<Guardian> PostGuardianAsync()
@@ -136,7 +134,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
             Guardian randomGuardian = CreateRandomGuardian();
             Guardian inputGuardian = randomGuardian;
 
-           return await this.otripleSApiBroker.PostGuardianAsync(inputGuardian);
+            return await this.otripleSApiBroker.PostGuardianAsync(inputGuardian);
         }
     }
 }

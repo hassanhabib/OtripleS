@@ -3,16 +3,14 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Models.StudentGuardians.Exceptions;
 using OtripleS.Web.Api.Services.StudentGuardians;
 using RESTFulSense.Controllers;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Controllers
 {
@@ -156,7 +154,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 StudentGuardian storageStudentGuardian =
-                    await this.studentGuardianService.DeleteStudentGuardianAsync(studentId,guardianId);
+                    await this.studentGuardianService.DeleteStudentGuardianAsync(studentId, guardianId);
 
                 return Ok(storageStudentGuardian);
             }

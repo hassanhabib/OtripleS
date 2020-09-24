@@ -74,7 +74,7 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
         TryCatch(async () =>
         {
             ValidateStudentGuardianIdIsNull(studentId, guardianId);
-            StudentGuardian storageStudentGuardian = 
+            StudentGuardian storageStudentGuardian =
                 await this.storageBroker.SelectStudentGuardianByIdAsync(studentId, guardianId);
             ValidateStorageStudentGuardian(storageStudentGuardian, studentId, guardianId);
             return storageStudentGuardian;
