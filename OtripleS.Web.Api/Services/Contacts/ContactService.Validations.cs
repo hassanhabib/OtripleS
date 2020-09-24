@@ -80,7 +80,17 @@ namespace OtripleS.Web.Api.Services.Contacts
                     parameterValue: contact.Id);
             }
         }
-        
+
+        private static void ValidateIdIsNull(Guid contactId)
+        {
+            if (IsInvalid(contactId))
+            {
+                throw new InvalidContactException(
+                    parameterName: nameof(Contact.Id),
+                    parameterValue: contactId);
+            }
+        }
+
         private static void ValidateContactIsNotNull(Contact contact)
         {
             if (contact is null)
@@ -106,6 +116,14 @@ namespace OtripleS.Web.Api.Services.Contacts
             if (storageContacts.Count() == 0)
             {
                 this.loggingBroker.LogWarning("No contacts found in storage.");
+            }
+        }
+
+        private void ValidateStorageContact(Contact storageContact, Guid contactId)
+        {
+            if (storageContact is null)
+            {
+                throw new NotFoundContactException(contactId);
             }
         }
     }

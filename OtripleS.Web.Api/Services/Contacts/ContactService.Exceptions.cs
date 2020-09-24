@@ -32,6 +32,10 @@ namespace OtripleS.Web.Api.Services.Contacts
             {
                 throw CreateAndLogValidationException(nullContactException);
             }
+            catch (NotFoundContactException notFoundContactException)
+            {
+                throw CreateAndLogValidationException(notFoundContactException);
+            }
             catch (InvalidContactException invalidContactException)
             {
                 throw CreateAndLogValidationException(invalidContactException);

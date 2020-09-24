@@ -49,7 +49,10 @@ namespace OtripleS.Web.Api.Services.Contacts
         public ValueTask<Contact> RetrieveContactById(Guid inputContactId) =>
         TryCatch(async () =>
         {
-            return await this.storageBroker.SelectContactByIdAsync(inputContactId);
+            ValidateIdIsNull(inputContactId);
+            Contact contact = await this.storageBroker.SelectContactByIdAsync(inputContactId);
+            ValidateStorageContact(contact, inputContactId);
+            return contact;
         });
     }
 }
