@@ -119,6 +119,39 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpPut]
+        public async ValueTask<ActionResult<Contact>> PutContactAsync(Contact contact)
+        {
+            try
+            {
+                Contact storageContact = await this.contactService.ModifyContactAsync(contact);
+
+                return Ok(storageContact);
+            }
+            catch (ContactValidationException contactValidationException)
+               when (contactValidationException.InnerException is NotFoundContactException)
+            {
+                string innerMessage = GetInnerMessage(contactValidationException);
+
+                return NotFound(innerMessage);
+            }
+            
+            catch (ContactValidationException contactValidationException)
+            {
+                string innerMessage = GetInnerMessage(contactValidationException);
+
+                return NotFound(innerMessage);
+            }
+            
+            catch (ContactDependencyException contactDependencyException)
+                when (contactDependencyException.InnerException is LockedContactException)
+            {
+                string innerMessage = GetInnerMessage(contactDependencyException);
+
+                return NotFound(innerMessage);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
