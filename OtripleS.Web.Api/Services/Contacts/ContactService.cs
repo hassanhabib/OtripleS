@@ -66,9 +66,11 @@ namespace OtripleS.Web.Api.Services.Contacts
             return await storageBroker.UpdateContactAsync(contact);
         });
 
-        public ValueTask<Contact> RemoveContactByIdAsync(Guid contactId)
+        public async ValueTask<Contact> RemoveContactByIdAsync(Guid contactId)
         {
-            throw new NotImplementedException();
+            Contact storageContact = await this.storageBroker.SelectContactByIdAsync(contactId);
+
+            return await this.storageBroker.DeleteContactAsync(storageContact);
         }
     }
 }
