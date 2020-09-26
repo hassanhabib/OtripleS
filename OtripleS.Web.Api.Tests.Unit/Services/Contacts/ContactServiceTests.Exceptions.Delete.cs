@@ -102,7 +102,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
             // given
             Guid randomContactId = Guid.NewGuid();
             Guid inputContactId = randomContactId;
-            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+            var databaseUpdateConcurrencyException = new DbUpdateException();
             var lockedContactException = new LockedContactException(databaseUpdateConcurrencyException);
 
             var expectedContactDependencyException =
@@ -122,6 +122,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedContactDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectContactByIdAsync(inputContactId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteContactAsync(It.IsAny<Contact>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomContactId = Guid.NewGuid();
+            Guid inputContactId = randomContactId;
+            var exception = new Exception();
+
+            var expectedContactServiceException =
+                new ContactServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectContactByIdAsync(inputContactId))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<Contact> deleteContactTask =
+                this.contactService.RemoveContactByIdAsync(inputContactId);
+
+            // then
+            await Assert.ThrowsAsync<ContactServiceException>(() =>
+                deleteContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedContactServiceException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
