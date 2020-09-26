@@ -104,7 +104,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
                 .ReturnsAsync(inputContact);
 
             //when 
-            Contact actualContact = await this.contactService.RetrieveContactById(inputContactId);
+            Contact actualContact = await this.contactService.RetrieveContactByIdAsync(inputContactId);
 
             //then
             actualContact.Should().BeEquivalentTo(expectedContact);
@@ -167,6 +167,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldDeleteContactByIdAsync()
+        {
+            // given
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            DateTimeOffset dateTime = randomDateTime;
+            Contact randomContact = CreateRandomContact(dateTime);
+            Contact inputContact = randomContact;
+            Guid inputContactId = inputContact.Id;
+            inputContact.UpdatedBy = inputContact.CreatedBy;
+            inputContact.UpdatedDate = inputContact.CreatedDate;
+            Contact storageContact = inputContact;
+            Contact expectedContact = inputContact;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectContactByIdAsync(inputContactId))
+                    .ReturnsAsync(inputContact);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteContactAsync(inputContact))
+                    .ReturnsAsync(storageContact);
+
+            // when
+            Contact actualContact =
+                await this.contactService.RemoveContactByIdAsync(inputContactId);
+
+            // then
+            actualContact.Should().BeEquivalentTo(expectedContact);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectContactByIdAsync(inputContactId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteContactAsync(inputContact),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();            
         }
     }
 }

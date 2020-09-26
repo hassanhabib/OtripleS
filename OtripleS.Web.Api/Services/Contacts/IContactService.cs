@@ -14,7 +14,8 @@ namespace OtripleS.Web.Api.Services.Contacts
     {
         ValueTask<Contact> AddContactAsync(Contact contact);
         IQueryable<Contact> RetrieveAllContacts();
-        ValueTask<Contact> RetrieveContactById(Guid inputContactId);
+        ValueTask<Contact> RetrieveContactByIdAsync(Guid contactId);
         ValueTask<Contact> ModifyContactAsync(Contact contact);
+        ValueTask<Contact> RemoveContactByIdAsync(Guid contactId);
     }
 }

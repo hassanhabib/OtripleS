@@ -46,12 +46,12 @@ namespace OtripleS.Web.Api.Services.Contacts
             return storageContacts;
         });
 
-        public ValueTask<Contact> RetrieveContactById(Guid inputContactId) =>
+        public ValueTask<Contact> RetrieveContactByIdAsync(Guid contactId) =>
         TryCatch(async () =>
         {
-            ValidateIdIsNull(inputContactId);
-            Contact contact = await this.storageBroker.SelectContactByIdAsync(inputContactId);
-            ValidateStorageContact(contact, inputContactId);
+            ValidateContactId(contactId);
+            Contact contact = await this.storageBroker.SelectContactByIdAsync(contactId);
+            ValidateStorageContact(contact, contactId);
             return contact;
         });
 
@@ -64,6 +64,16 @@ namespace OtripleS.Web.Api.Services.Contacts
             ValidateAgainstStorageContactOnModify(inputContact: contact, storageContact: maybeContact);
 
             return await storageBroker.UpdateContactAsync(contact);
+        });
+
+        public ValueTask<Contact> RemoveContactByIdAsync(Guid contactId) =>
+        TryCatch(async () =>
+        {
+            ValidateContactId(contactId);
+            Contact maybeContact = await this.storageBroker.SelectContactByIdAsync(contactId);
+            ValidateStorageContact(maybeContact, contactId);
+
+            return await this.storageBroker.DeleteContactAsync(maybeContact);
         });
     }
 }

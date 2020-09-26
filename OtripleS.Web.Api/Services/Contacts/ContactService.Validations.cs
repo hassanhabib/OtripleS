@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Services.Contacts
         private void ValidateContactOnCreate(Contact contact)
         {
             ValidateContactIsNotNull(contact);
-            ValidateContactId(contact);
+            ValidateContactId(contact.Id);
             ValidateContactAuditFields(contact);
             ValidateContactAuditFieldsOnCreate(contact);
         }
@@ -67,17 +67,7 @@ namespace OtripleS.Web.Api.Services.Contacts
             }
         }
 
-        private static void ValidateContactId(Contact contact)
-        {
-            if (IsInvalid(contact.Id))
-            {
-                throw new InvalidContactException(
-                    parameterName: nameof(Contact.Id),
-                    parameterValue: contact.Id);
-            }
-        }
-
-        private static void ValidateIdIsNull(Guid contactId)
+        private static void ValidateContactId(Guid contactId)
         {
             if (IsInvalid(contactId))
             {
@@ -126,7 +116,7 @@ namespace OtripleS.Web.Api.Services.Contacts
         private void ValidateContactOnModify(Contact contact)
         {
             ValidateContactIsNotNull(contact);
-            ValidateContactId(contact);
+            ValidateContactId(contact.Id);
             ValidateContactAuditFields(contact);
             ValidateDatesAreNotSame(contact);
             ValidateUpdatedDateIsRecent(contact);

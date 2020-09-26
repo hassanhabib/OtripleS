@@ -88,7 +88,7 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Contact storageContact = await this.contactService.RetrieveContactById(contactId);
+                Contact storageContact = await this.contactService.RetrieveContactByIdAsync(contactId);
 
                 return Ok(storageContact);
             }
@@ -149,6 +149,46 @@ namespace OtripleS.Web.Api.Controllers
                 string innerMessage = GetInnerMessage(contactDependencyException);
 
                 return NotFound(innerMessage);
+            }
+        }
+
+        [HttpDelete("{contactId}")]
+        public async ValueTask<ActionResult<Contact>> DeleteContactAsync(Guid contactId)
+        {
+            try
+            {
+                Contact storageContact = 
+                    await this.contactService.RemoveContactByIdAsync(contactId);
+
+                return Ok(storageContact);
+            }
+            catch (ContactValidationException contactValidationException)
+                when (contactValidationException.InnerException is NotFoundContactException)
+            {
+                string innerMessage = GetInnerMessage(contactValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (ContactValidationException contactValidationException)
+            {
+                string innerMessage = GetInnerMessage(contactValidationException);
+
+                return BadRequest(contactValidationException);
+            }
+            catch (ContactDependencyException contactDependencyException)
+               when (contactDependencyException.InnerException is LockedContactException)
+            {
+                string innerMessage = GetInnerMessage(contactDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (ContactDependencyException contactDependencyException)
+            {
+                return Problem(contactDependencyException.Message);
+            }
+            catch (ContactServiceException contactServiceException)
+            {
+                return Problem(contactServiceException.Message);
             }
         }
 
