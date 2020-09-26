@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
 
             //when
             ValueTask<Contact> retrieveContactByIdTask =
-                this.contactService.RetrieveContactById(inputContactId);
+                this.contactService.RetrieveContactByIdAsync(inputContactId);
 
             //then
             await Assert.ThrowsAsync<ContactValidationException>(() => retrieveContactByIdTask.AsTask());
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
 
             //when
             ValueTask<Contact> retrieveContactByIdTask =
-                this.contactService.RetrieveContactById(inputContactId);
+                this.contactService.RetrieveContactByIdAsync(inputContactId);
 
             //then
             await Assert.ThrowsAsync<ContactValidationException>(() =>

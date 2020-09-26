@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
                     .Throws(sqlException);
 
             // when 
-            ValueTask<Contact> retrieveTask = this.contactService.RetrieveContactById(badGuid);
+            ValueTask<Contact> retrieveTask = this.contactService.RetrieveContactByIdAsync(badGuid);
 
             // then
             await Assert.ThrowsAsync<ContactDependencyException>(() => retrieveTask.AsTask());
@@ -70,7 +70,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
 
             // when 
 
-            ValueTask<Contact> retrieveTask = this.contactService.RetrieveContactById(guid);
+            ValueTask<Contact> retrieveTask = this.contactService.RetrieveContactByIdAsync(guid);
 
             // then
             await Assert.ThrowsAsync<ContactDependencyException>(() => retrieveTask.AsTask());
@@ -107,7 +107,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
                     .Throws(exception);
 
             // when 
-            ValueTask<Contact> retrieveTask = this.contactService.RetrieveContactById(guid);
+            ValueTask<Contact> retrieveTask = this.contactService.RetrieveContactByIdAsync(guid);
 
             // then
             await Assert.ThrowsAsync<ContactServiceException>(() => retrieveTask.AsTask());
