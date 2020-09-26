@@ -70,9 +70,10 @@ namespace OtripleS.Web.Api.Services.Contacts
         TryCatch(async () =>
         {
             ValidateContactId(contactId);
-            Contact storageContact = await this.storageBroker.SelectContactByIdAsync(contactId);
+            Contact maybeContact = await this.storageBroker.SelectContactByIdAsync(contactId);
+            ValidateStorageContact(maybeContact, contactId);
 
-            return await this.storageBroker.DeleteContactAsync(storageContact);
+            return await this.storageBroker.DeleteContactAsync(maybeContact);
         });
     }
 }
