@@ -102,7 +102,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
             // given
             Guid randomContactId = Guid.NewGuid();
             Guid inputContactId = randomContactId;
-            var databaseUpdateConcurrencyException = new DbUpdateException();
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
             var lockedContactException = new LockedContactException(databaseUpdateConcurrencyException);
 
             var expectedContactDependencyException =
