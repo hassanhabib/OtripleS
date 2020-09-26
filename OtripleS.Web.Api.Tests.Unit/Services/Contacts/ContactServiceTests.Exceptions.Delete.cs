@@ -47,9 +47,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
                 broker.SelectContactByIdAsync(inputContactId),
                     Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteContactAsync(It.IsAny<Contact>()),
+                    Times.Never);
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-        }        
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomContactId = Guid.NewGuid();
+            Guid inputContactId = randomContactId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedContactDependencyException =
+                new ContactDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectContactByIdAsync(inputContactId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<Contact> deleteContactTask =
+                this.contactService.RemoveContactByIdAsync(inputContactId);
+
+            // then
+            await Assert.ThrowsAsync<ContactDependencyException>(() =>
+                deleteContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedContactDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectContactByIdAsync(inputContactId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteContactAsync(It.IsAny<Contact>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
