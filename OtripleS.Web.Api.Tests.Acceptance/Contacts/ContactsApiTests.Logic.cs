@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using OtripleS.Web.Api.Models.Contacts;
@@ -45,6 +47,32 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
             actualContact.Should().BeEquivalentTo(modifiedContact);
 
             await this.otripleSApiBroker.DeleteContactByIdAsync(actualContact.Id);
+        }
+        
+        [Fact]
+        public async Task ShouldGetAllContactsAsync()
+        {
+            // given
+            IEnumerable<Contact> randomContacts = CreateRandomContacts();
+            IEnumerable<Contact> inputContacts = randomContacts;
+
+            foreach (Contact contact in inputContacts)
+            {
+                await this.otripleSApiBroker.PostContactAsync(contact);
+            }
+
+            List<Contact> expectedContacts = inputContacts.ToList();
+
+            // when
+            List<Contact> actualContacts = await this.otripleSApiBroker.GetAllContactsAsync();
+
+            // then
+            foreach (Contact expectedContact in expectedContacts)
+            {
+                Contact actualContact = actualContacts.Single(contact => contact.Id == expectedContact.Id);
+                actualContact.Should().BeEquivalentTo(expectedContact);
+                await this.otripleSApiBroker.DeleteContactByIdAsync(actualContact.Id);
+            }
         }
     }
 }
