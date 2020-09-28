@@ -26,5 +26,25 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
 
             await this.otripleSApiBroker.DeleteContactByIdAsync(actualContact.Id);
         }
+        
+        [Fact]
+        public async Task ShouldPutContactAsync()
+        {
+            // given
+            Contact randomContact = CreateRandomContact();
+            await this.otripleSApiBroker.PostContactAsync(randomContact);
+            Contact modifiedContact = UpdateContactRandom(randomContact);
+
+            // when
+            await this.otripleSApiBroker.PutContactAsync(modifiedContact);
+
+            Contact actualContact =
+                await this.otripleSApiBroker.GetContactByIdAsync(randomContact.Id);
+
+            // then
+            actualContact.Should().BeEquivalentTo(modifiedContact);
+
+            await this.otripleSApiBroker.DeleteContactByIdAsync(actualContact.Id);
+        }
     }
 }
