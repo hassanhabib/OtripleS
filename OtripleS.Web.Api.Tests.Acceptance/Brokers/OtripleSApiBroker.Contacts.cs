@@ -23,6 +23,5 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
 
         public async ValueTask<List<Contact>> GetAllContactsAsync() =>
             await this.apiFactoryClient.GetContentAsync<List<Contact>>($"{ContactsRelativeUrl}/");
-         
     }
 }
