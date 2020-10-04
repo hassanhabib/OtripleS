@@ -9,7 +9,8 @@ pool:
 variables:
   buildConfiguration: 'Release'
 steps:
-- script: displayName: 'dotnet build $(buildConfiguration)'
+- script: 
+  displayName: 'dotnet build $(buildConfiguration)'
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
