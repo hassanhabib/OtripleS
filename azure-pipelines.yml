@@ -9,8 +9,12 @@ pool:
 variables:
   buildConfiguration: 'Release'
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+- script: displayName: 'dotnet build $(buildConfiguration)'
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '5.0.100-rc.1.20452.10'
+    includePreviewVersions: true
 - task: DotNetCoreCLI@2
   displayName: 'Restore'
   inputs:
