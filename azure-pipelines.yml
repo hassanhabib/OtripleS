@@ -13,7 +13,7 @@ steps:
   displayName: 'dotnet build $(buildConfiguration)'
 - task: UseDotNet@2
   inputs: 
-    packageType: 'runtime'
+    packageType: 'sdk'
     version: '5.0.100-rc.1.20452.10'
     includePreviewVersions: true
 - task: DotNetCoreCLI@2
