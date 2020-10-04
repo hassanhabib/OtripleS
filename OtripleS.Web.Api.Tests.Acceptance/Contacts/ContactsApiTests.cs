@@ -23,17 +23,20 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static Contact CreateRandomContact() =>
-            CreateRandomContactFiller(GetRandomDateTime()).Create();
+            CreateRandomContactFiller().Create();
 
         private IEnumerable<Contact> CreateRandomContacts() =>
-            CreateRandomContactFiller(GetRandomDateTime()).Create(GetRandomNumber());
+            CreateRandomContactFiller().Create(GetRandomNumber());
 
-        private static Filler<Contact> CreateRandomContactFiller(DateTimeOffset dateTime)
+        private static Filler<Contact> CreateRandomContactFiller()
         {
             Filler<Contact> filler = new Filler<Contact>();
+            Guid randomCreatedUpdatedById = Guid.NewGuid();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(dateTime);
+                .OnProperty(contact => contact.CreatedBy).Use(randomCreatedUpdatedById)
+                .OnProperty(contact => contact.UpdatedBy).Use(randomCreatedUpdatedById)
+                .OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow);
 
             return filler;
         }
