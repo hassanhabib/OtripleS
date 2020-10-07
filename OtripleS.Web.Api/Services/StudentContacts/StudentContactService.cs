@@ -11,7 +11,7 @@ using OtripleS.Web.Api.Models.StudentContacts;
 
 namespace OtripleS.Web.Api.Services.StudentContacts
 {
-    public class StudentContactService : IStudentContactService
+    public partial class StudentContactService : IStudentContactService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -24,9 +24,13 @@ namespace OtripleS.Web.Api.Services.StudentContacts
             this.loggingBroker = loggingBroker;
         }
 
-        public IQueryable<StudentContact> RetrieveAllStudentContacts()
-        {
-            return storageBroker.SelectAllStudentContacts();
-        }
+        public IQueryable<StudentContact> RetrieveAllStudentContacts() =>
+            TryCatch(() =>
+            {
+                IQueryable<StudentContact> studentContacts =
+                    this.storageBroker.SelectAllStudentContacts();
+
+                return studentContacts;
+            });
     }
 }
