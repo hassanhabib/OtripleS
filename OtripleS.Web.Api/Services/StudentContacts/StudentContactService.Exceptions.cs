@@ -31,6 +31,10 @@ namespace OtripleS.Web.Api.Services.StudentContacts
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private StudentContactServiceException CreateAndLogServiceException(Exception exception)
