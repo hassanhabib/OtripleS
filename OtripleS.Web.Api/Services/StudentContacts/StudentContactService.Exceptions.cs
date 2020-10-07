@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentContacts;
 using OtripleS.Web.Api.Models.StudentContacts.Exceptions;
 
@@ -26,6 +27,10 @@ namespace OtripleS.Web.Api.Services.StudentContacts
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
         private StudentContactServiceException CreateAndLogServiceException(Exception exception)
@@ -40,6 +45,14 @@ namespace OtripleS.Web.Api.Services.StudentContacts
         {
             var StudentContactDependencyException = new StudentContactDependencyException(exception);
             this.loggingBroker.LogCritical(StudentContactDependencyException);
+
+            return StudentContactDependencyException;
+        }
+
+        private StudentContactDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var StudentContactDependencyException = new StudentContactDependencyException(exception);
+            this.loggingBroker.LogError(StudentContactDependencyException);
 
             return StudentContactDependencyException;
         }
