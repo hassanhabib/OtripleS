@@ -5,6 +5,7 @@
 
 using System;
 using System.Linq;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.StudentContacts;
 using OtripleS.Web.Api.Models.StudentContacts.Exceptions;
 
@@ -21,9 +22,9 @@ namespace OtripleS.Web.Api.Services.StudentContacts
             {
                 return returningStudentContactsFunction();
             }
-            catch (Exception exception)
+            catch (SqlException sqlException)
             {
-                throw CreateAndLogServiceException(exception);
+                throw CreateAndLogCriticalDependencyException(sqlException);
             }
         }
 
@@ -33,6 +34,14 @@ namespace OtripleS.Web.Api.Services.StudentContacts
             this.loggingBroker.LogError(StudentContactServiceException);
 
             return StudentContactServiceException;
+        }
+
+        private StudentContactDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var StudentContactDependencyException = new StudentContactDependencyException(exception);
+            this.loggingBroker.LogCritical(StudentContactDependencyException);
+
+            return StudentContactDependencyException;
         }
     }
 }
