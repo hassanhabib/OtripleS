@@ -67,5 +67,32 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
+        {
+            // given
+            var exception = new Exception();
+
+            var expectedStudentContactServiceException =
+                new StudentContactServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker => broker.SelectAllStudentContacts())
+                .Throws(exception);
+
+            // when . then
+            Assert.Throws<StudentContactServiceException>(() =>
+                this.studentContactService.RetrieveAllStudentContacts());
+
+            this.loggingBrokerMock.Verify(broker =>
+                    broker.LogError(It.Is(SameExceptionAs(expectedStudentContactServiceException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker => broker.SelectAllStudentContacts(),
+                Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
