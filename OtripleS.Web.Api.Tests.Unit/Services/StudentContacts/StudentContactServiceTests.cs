@@ -1,0 +1,47 @@
+﻿//---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+//----------------------------------------------------------------
+
+using System;
+using System.Linq;
+using Moq;
+using OtripleS.Web.Api.Brokers.Loggings;
+using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Models.StudentContacts;
+using OtripleS.Web.Api.Services.StudentContacts;
+using Tynamix.ObjectFiller;
+
+namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
+{
+    public partial class StudentContactServiceTests
+    {
+        private readonly Mock<IStorageBroker> storageBrokerMock;
+        private readonly Mock<ILoggingBroker> loggingBrokerMock;
+        private readonly IStudentContactService studentContactService;
+
+        public StudentContactServiceTests()
+        {
+            this.storageBrokerMock = new Mock<IStorageBroker>();
+            this.loggingBrokerMock = new Mock<ILoggingBroker>();
+
+            this.studentContactService = new StudentContactService(
+                storageBroker: this.storageBrokerMock.Object,
+                loggingBroker: this.loggingBrokerMock.Object);
+        }
+
+        private IQueryable<StudentContact> CreateRandomStudentContacts() =>
+            CreateStudentContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+
+        private static Filler<StudentContact> CreateStudentContactFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<StudentContact>();
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates);
+
+            return filler;
+        }
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+    }
+}
