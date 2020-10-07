@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using Newtonsoft.Json;
+using OtripleS.Web.Api.Models.StudentContacts;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using System;
@@ -31,5 +32,8 @@ namespace OtripleS.Web.Api.Models.Students
 
         [JsonIgnore]
         public IEnumerable<StudentGuardian> StudentGuardians { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<StudentContact> StudentContacts { get; set; }
     }
 }
