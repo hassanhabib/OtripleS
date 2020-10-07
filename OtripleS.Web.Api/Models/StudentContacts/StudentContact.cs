@@ -9,17 +9,12 @@ using OtripleS.Web.Api.Models.Students;
 
 namespace OtripleS.Web.Api.Models.StudentContacts
 {
-    public class StudentContact : IAuditable
+    public class StudentContact
     {
         public Guid ContactId { get; set; }
         public Contact Contact { get; set; }
 
         public Guid StudentId { get; set; }
         public Student Student { get; set; }
-
-        public DateTimeOffset CreatedDate { get; set; }
-        public DateTimeOffset UpdatedDate { get; set; }
-        public Guid CreatedBy { get; set; }
-        public Guid UpdatedBy { get; set; }
     }
 }
