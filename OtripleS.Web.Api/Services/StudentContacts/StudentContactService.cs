@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 
         public IQueryable<StudentContact> RetrieveAllStudentContacts()
         {
-            throw new NotImplementedException();
+            return storageBroker.SelectAllStudentContacts();
         }
     }
 }
