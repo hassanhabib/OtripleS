@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using OtripleS.Web.Api.Models.Contacts;
+using OtripleS.Web.Api.Models.StudentContacts;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
@@ -36,6 +37,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
             filler.Setup()
                 .OnProperty(contact => contact.CreatedBy).Use(randomCreatedUpdatedById)
                 .OnProperty(contact => contact.UpdatedBy).Use(randomCreatedUpdatedById)
+                .OnProperty(contact => contact.StudentContacts).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow);
 
             return filler;
@@ -56,6 +58,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
                 .OnProperty(contact => contact.UpdatedBy).Use(contact.UpdatedBy)
                 .OnProperty(contact => contact.CreatedDate).Use(contact.CreatedDate)
                 .OnProperty(contact => contact.UpdatedDate).Use(now)
+                .OnProperty(contact => contact.StudentContacts).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler.Create();

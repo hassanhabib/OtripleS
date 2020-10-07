@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using OtripleS.Web.Api.Migrations;
+using OtripleS.Web.Api.Models.StudentContacts;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using System;
@@ -44,7 +45,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
                 .OnProperty(student => student.UpdatedDate).Use(now)
                 .OnProperty(student => student.StudentSemesterCourses).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(student => student.StudentGuardians).IgnoreIt();
+                .OnProperty(student => student.StudentGuardians).IgnoreIt()
+                .OnProperty(student => student.StudentContacts).IgnoreIt();
 
             return filler;
         }
@@ -61,8 +63,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
                 .OnProperty(student => student.CreatedDate).Use(student.CreatedDate)
                 .OnProperty(student => student.UpdatedDate).Use(now)
                 .OnProperty(student => student.StudentSemesterCourses).IgnoreIt()
+                .OnProperty(student => student.StudentContacts).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnType<StudentGuardian>().IgnoreIt()
                 .OnProperty(student => student.StudentGuardians).IgnoreIt(); ;
 
             return filler.Create();

@@ -64,7 +64,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
             List<Contact> expectedContacts = inputContacts.ToList();
 
             // when
-            List<Contact> actualContacts = await this.otripleSApiBroker.GetAllContactsAsync();
+            List<Contact> actualContacts = 
+                await this.otripleSApiBroker.GetAllContactsAsync();
 
             // then
             foreach (Contact expectedContact in expectedContacts)
