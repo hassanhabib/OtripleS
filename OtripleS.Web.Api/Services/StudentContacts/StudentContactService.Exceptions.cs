@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using OtripleS.Web.Api.Models.StudentContacts;
+using OtripleS.Web.Api.Models.StudentContacts.Exceptions;
 
 namespace OtripleS.Web.Api.Services.StudentContacts
 {
@@ -16,7 +17,22 @@ namespace OtripleS.Web.Api.Services.StudentContacts
         private IQueryable<StudentContact> TryCatch(
             ReturningStudentContactsFunction returningStudentContactsFunction)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return returningStudentContactsFunction();
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private StudentContactServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var StudentContactServiceException = new StudentContactServiceException(exception);
+            this.loggingBroker.LogError(StudentContactServiceException);
+
+            return StudentContactServiceException;
         }
     }
 }

@@ -27,10 +27,12 @@ namespace OtripleS.Web.Api.Services.StudentContacts
         public IQueryable<StudentContact> RetrieveAllStudentContacts() =>
             TryCatch(() =>
             {
-                IQueryable<StudentContact> studentContacts =
+                IQueryable<StudentContact> storageStudentContacts =
                     this.storageBroker.SelectAllStudentContacts();
 
-                return studentContacts;
+                ValidateStorageStudentContacts(storageStudentContacts);
+
+                return storageStudentContacts;
             });
     }
 }
