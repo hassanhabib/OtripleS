@@ -46,9 +46,9 @@ namespace OtripleS.Web.Api.Services.StudentContacts
             {
                 return await returningStudentContactFunction();
             }
-            catch (InvalidStudentContactInputException invalidStudentContactInputException)
+            catch (Exception exception)
             {
-                throw CreateAndLogValidationException(invalidStudentContactInputException);
+                throw CreateAndLogServiceException(exception);
             }
         }
 
