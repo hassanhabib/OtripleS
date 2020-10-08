@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 
         public ValueTask<StudentContact> RetrieveStudentContactByIdAsync(Guid studentId, Guid contactId)
         {
-            throw new NotImplementedException();
+            return storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
         }
     }
 }
