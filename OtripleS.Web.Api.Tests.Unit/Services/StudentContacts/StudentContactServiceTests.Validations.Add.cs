@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.StudentContacts;
@@ -116,6 +117,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenStudentContactAlreadyExistsAndLogItAsync()
+        {
+            // given
+            StudentContact randomStudentContact = CreateRandomStudentContact();
+            StudentContact alreadyExistsStudentContact = randomStudentContact;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsStudentContactException =
+                new AlreadyExistsStudentContactException(duplicateKeyException);
+
+            var expectedStudentContactValidationException =
+                new StudentContactValidationException(alreadyExistsStudentContactException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertStudentContactAsync(alreadyExistsStudentContact))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<StudentContact> createStudentContactTask =
+                this.studentContactService.AddStudentContactAsync(alreadyExistsStudentContact);
+
+            // then
+            await Assert.ThrowsAsync<StudentContactValidationException>(() =>
+                createStudentContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedStudentContactValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentContactAsync(alreadyExistsStudentContact),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
