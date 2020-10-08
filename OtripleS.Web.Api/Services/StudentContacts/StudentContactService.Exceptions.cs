@@ -29,6 +29,10 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 			{
 				throw CreateAndLogValidationException(nullStudentContactException);
 			}
+			catch (InvalidStudentContactInputException invalidStudentContactInputException)
+			{
+				throw CreateAndLogValidationException(invalidStudentContactInputException);
+			}
 		}
 
 		private IQueryable<StudentContact> TryCatch(
