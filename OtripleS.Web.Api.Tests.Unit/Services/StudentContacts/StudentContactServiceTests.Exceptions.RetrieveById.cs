@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.StudentContacts;
 using OtripleS.Web.Api.Models.StudentContacts.Exceptions;
@@ -43,6 +44,44 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentContactDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomContactId = Guid.NewGuid();
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputContactId = randomContactId;
+            Guid inputStudentId = randomStudentId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedStudentContactDependencyException =
+                new StudentContactDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<StudentContact> deleteContactTask =
+                this.studentContactService.RetrieveStudentContactByIdAsync
+                (inputStudentId, inputContactId);
+
+            // then
+            await Assert.ThrowsAsync<StudentContactDependencyException>(
+                () => deleteContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentContactDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
