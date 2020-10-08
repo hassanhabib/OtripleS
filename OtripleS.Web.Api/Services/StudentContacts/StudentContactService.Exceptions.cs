@@ -5,6 +5,7 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentContacts;
@@ -12,53 +13,75 @@ using OtripleS.Web.Api.Models.StudentContacts.Exceptions;
 
 namespace OtripleS.Web.Api.Services.StudentContacts
 {
-    public partial class StudentContactService
-    {
-        private delegate IQueryable<StudentContact> ReturningStudentContactsFunction();
+	public partial class StudentContactService
+	{
+		private delegate ValueTask<StudentContact> ReturningStudentContactFunction();
+		private delegate IQueryable<StudentContact> ReturningStudentContactsFunction();
 
-        private IQueryable<StudentContact> TryCatch(
-            ReturningStudentContactsFunction returningStudentContactsFunction)
-        {
-            try
-            {
-                return returningStudentContactsFunction();
-            }
-            catch (SqlException sqlException)
-            {
-                throw CreateAndLogCriticalDependencyException(sqlException);
-            }
-            catch (DbUpdateException dbUpdateException)
-            {
-                throw CreateAndLogDependencyException(dbUpdateException);
-            }
-            catch (Exception exception)
-            {
-                throw CreateAndLogServiceException(exception);
-            }
-        }
+		private async ValueTask<StudentContact> TryCatch(
+		  ReturningStudentContactFunction returningStudentContactFunction)
+		{
+			try
+			{
+				return await returningStudentContactFunction();
+			}
+			catch (NullStudentContactException nullStudentContactException)
+			{
+				throw CreateAndLogValidationException(nullStudentContactException);
+			}
+		}
 
-        private StudentContactServiceException CreateAndLogServiceException(Exception exception)
-        {
-            var StudentContactServiceException = new StudentContactServiceException(exception);
-            this.loggingBroker.LogError(StudentContactServiceException);
+		private IQueryable<StudentContact> TryCatch(
+			ReturningStudentContactsFunction returningStudentContactsFunction)
+		{
+			try
+			{
+				return returningStudentContactsFunction();
+			}
+			catch (SqlException sqlException)
+			{
+				throw CreateAndLogCriticalDependencyException(sqlException);
+			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
+			catch (Exception exception)
+			{
+				throw CreateAndLogServiceException(exception);
+			}
+		}
 
-            return StudentContactServiceException;
-        }
+		private StudentContactValidationException CreateAndLogValidationException(Exception exception)
+		{
+			var StudentContactValidationException = new StudentContactValidationException(exception);
+			this.loggingBroker.LogError(StudentContactValidationException);
 
-        private StudentContactDependencyException CreateAndLogCriticalDependencyException(Exception exception)
-        {
-            var StudentContactDependencyException = new StudentContactDependencyException(exception);
-            this.loggingBroker.LogCritical(StudentContactDependencyException);
+			return StudentContactValidationException;
+		}
 
-            return StudentContactDependencyException;
-        }
+		private StudentContactServiceException CreateAndLogServiceException(Exception exception)
+		{
+			var StudentContactServiceException = new StudentContactServiceException(exception);
+			this.loggingBroker.LogError(StudentContactServiceException);
 
-        private StudentContactDependencyException CreateAndLogDependencyException(Exception exception)
-        {
-            var StudentContactDependencyException = new StudentContactDependencyException(exception);
-            this.loggingBroker.LogError(StudentContactDependencyException);
+			return StudentContactServiceException;
+		}
 
-            return StudentContactDependencyException;
-        }
-    }
+		private StudentContactDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+		{
+			var StudentContactDependencyException = new StudentContactDependencyException(exception);
+			this.loggingBroker.LogCritical(StudentContactDependencyException);
+
+			return StudentContactDependencyException;
+		}
+
+		private StudentContactDependencyException CreateAndLogDependencyException(Exception exception)
+		{
+			var StudentContactDependencyException = new StudentContactDependencyException(exception);
+			this.loggingBroker.LogError(StudentContactDependencyException);
+
+			return StudentContactDependencyException;
+		}
+	}
 }
