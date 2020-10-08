@@ -36,5 +36,15 @@ namespace OtripleS.Web.Api.Services.StudentContacts
                     parameterValue: contactId);
             }
         }
+
+        private static void ValidateStorageStudentContact(
+            StudentContact storageStudentContact,
+            Guid studentId, Guid contactId)
+        {
+            if (storageStudentContact == null)
+            {
+                throw new NotFoundStudentContactException(studentId, contactId);
+            }
+        }
     }
 }

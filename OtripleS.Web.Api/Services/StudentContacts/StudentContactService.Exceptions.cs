@@ -50,6 +50,10 @@ namespace OtripleS.Web.Api.Services.StudentContacts
             {
                 throw CreateAndLogValidationException(invalidStudentContactInputException);
             }
+            catch (NotFoundStudentContactException notFoundStudentContactException)
+            {
+                throw CreateAndLogValidationException(notFoundStudentContactException);
+            }
         }
 
         private StudentContactServiceException CreateAndLogServiceException(Exception exception)

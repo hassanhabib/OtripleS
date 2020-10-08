@@ -43,6 +43,8 @@ namespace OtripleS.Web.Api.Services.StudentContacts
                 StudentContact storageStudentContact =
                     await this.storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
 
+                ValidateStorageStudentContact(storageStudentContact, studentId, contactId);
+
                 return storageStudentContact;
             });
     }
