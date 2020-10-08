@@ -5,6 +5,7 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.StudentContacts;
@@ -34,5 +35,10 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 
                 return storageStudentContacts;
             });
+
+        public ValueTask<StudentContact> RetrieveStudentContactByIdAsync(Guid studentId, Guid contactId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
