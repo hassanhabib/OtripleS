@@ -34,6 +34,11 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 					throw new InvalidStudentContactInputException(
 						parameterName: nameof(StudentContact.StudentId),
 						parameterValue: studentContact.StudentId);
+
+				case { } when IsInvalid(studentContact.ContactId):
+					throw new InvalidStudentContactInputException(
+						parameterName: nameof(StudentContact.ContactId),
+						parameterValue: studentContact.ContactId);
 			}
 		}
 
