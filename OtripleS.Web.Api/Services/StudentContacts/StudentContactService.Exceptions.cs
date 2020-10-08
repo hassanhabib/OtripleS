@@ -36,10 +36,10 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 			}
 			catch (DuplicateKeyException duplicateKeyException)
 			{
-				var alreadyExistsGuardianException =
+				var alreadyExistsStudentContactException =
 					new AlreadyExistsStudentContactException(duplicateKeyException);
 
-				throw CreateAndLogValidationException(alreadyExistsGuardianException);
+				throw CreateAndLogValidationException(alreadyExistsStudentContactException);
 			}
 			catch (SqlException sqlException)
 			{

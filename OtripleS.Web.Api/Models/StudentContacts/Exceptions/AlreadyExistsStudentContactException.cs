@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.StudentContacts.Exceptions
     public class AlreadyExistsStudentContactException : Exception
     {
         public AlreadyExistsStudentContactException(Exception innerException)
-            : base("Student Guardian with the same id already exists.", innerException) { }
+            : base("Student Contact with the same id already exists.", innerException) { }
     }
 }
