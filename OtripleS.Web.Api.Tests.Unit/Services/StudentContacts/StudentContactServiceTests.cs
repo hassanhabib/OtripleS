@@ -17,48 +17,48 @@ using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 {
-    public partial class StudentContactServiceTests
-    {
-        private readonly Mock<IStorageBroker> storageBrokerMock;
-        private readonly Mock<ILoggingBroker> loggingBrokerMock;
-        private readonly IStudentContactService studentContactService;
+	public partial class StudentContactServiceTests
+	{
+		private readonly Mock<IStorageBroker> storageBrokerMock;
+		private readonly Mock<ILoggingBroker> loggingBrokerMock;
+		private readonly IStudentContactService studentContactService;
 
-        public StudentContactServiceTests()
-        {
-            this.storageBrokerMock = new Mock<IStorageBroker>();
-            this.loggingBrokerMock = new Mock<ILoggingBroker>();
+		public StudentContactServiceTests()
+		{
+			this.storageBrokerMock = new Mock<IStorageBroker>();
+			this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
-            this.studentContactService = new StudentContactService(
-                storageBroker: this.storageBrokerMock.Object,
-                loggingBroker: this.loggingBrokerMock.Object);
-        }
+			this.studentContactService = new StudentContactService(
+				storageBroker: this.storageBrokerMock.Object,
+				loggingBroker: this.loggingBrokerMock.Object);
+		}
 
-        private StudentContact CreateRandomStudentContact() =>
-            CreateStudentContactFiller(DateTimeOffset.UtcNow).Create();
+		private StudentContact CreateRandomStudentContact() =>
+			CreateStudentContactFiller(DateTimeOffset.UtcNow).Create();
 
-        private IQueryable<StudentContact> CreateRandomStudentContacts() =>
-            CreateStudentContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+		private IQueryable<StudentContact> CreateRandomStudentContacts() =>
+			CreateStudentContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
-        private static Filler<StudentContact> CreateStudentContactFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<StudentContact>();
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates);
+		private static Filler<StudentContact> CreateStudentContactFiller(DateTimeOffset dates)
+		{
+			var filler = new Filler<StudentContact>();
+			filler.Setup()
+				.OnType<DateTimeOffset>().Use(dates);
 
-            return filler;
-        }
+			return filler;
+		}
 
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
-        private static string GetRandomMessage() => new MnemonicString().GetValue();
+		private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+		private static string GetRandomMessage() => new MnemonicString().GetValue();
 
-        private static SqlException GetSqlException() =>
-            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+		private static SqlException GetSqlException() =>
+			(SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
-        {
-            return actualException =>
-                expectedException.Message == actualException.Message
-                && expectedException.InnerException.Message == actualException.InnerException.Message;
-        }
-    }
+		private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+		{
+			return actualException =>
+				expectedException.Message == actualException.Message
+				&& expectedException.InnerException.Message == actualException.InnerException.Message;
+		}
+	}
 }

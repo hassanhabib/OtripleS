@@ -12,60 +12,60 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 {
-    public partial class StudentContactServiceTests
-    {
-        [Fact]
-        public async Task ShouldAddStudentStudentContactAsync()
-        {
-            // given
-            StudentContact randomStudentContact = CreateRandomStudentContact();
-            StudentContact inputStudentContact = randomStudentContact;
-            StudentContact storageStudentContact = randomStudentContact;
-            StudentContact expectedStudentContact = storageStudentContact;
+	public partial class StudentContactServiceTests
+	{
+		[Fact]
+		public async Task ShouldAddStudentStudentContactAsync()
+		{
+			// given
+			StudentContact randomStudentContact = CreateRandomStudentContact();
+			StudentContact inputStudentContact = randomStudentContact;
+			StudentContact storageStudentContact = randomStudentContact;
+			StudentContact expectedStudentContact = storageStudentContact;
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentContactAsync(inputStudentContact))
-                    .ReturnsAsync(storageStudentContact);
+			this.storageBrokerMock.Setup(broker =>
+				broker.InsertStudentContactAsync(inputStudentContact))
+					.ReturnsAsync(storageStudentContact);
 
-            // when
-            StudentContact actualStudentContact =
-                await this.studentContactService.AddStudentContactAsync(inputStudentContact);
+			// when
+			StudentContact actualStudentContact =
+				await this.studentContactService.AddStudentContactAsync(inputStudentContact);
 
-            // then
-            actualStudentContact.Should().BeEquivalentTo(expectedStudentContact);
+			// then
+			actualStudentContact.Should().BeEquivalentTo(expectedStudentContact);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentContactAsync(inputStudentContact),
-                    Times.Once);
+			this.storageBrokerMock.Verify(broker =>
+				broker.InsertStudentContactAsync(inputStudentContact),
+					Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 
-        [Fact]
-        public void ShouldRetrieveAllStudentContacts()
-        {
-            //given
-            IQueryable<StudentContact> randomSemesterCourses =
-                CreateRandomStudentContacts();
+		[Fact]
+		public void ShouldRetrieveAllStudentContacts()
+		{
+			//given
+			IQueryable<StudentContact> randomSemesterCourses =
+				CreateRandomStudentContacts();
 
-            IQueryable<StudentContact> storageStudentContacts = randomSemesterCourses;
-            IQueryable<StudentContact> expectedStudentContacts = storageStudentContacts;
+			IQueryable<StudentContact> storageStudentContacts = randomSemesterCourses;
+			IQueryable<StudentContact> expectedStudentContacts = storageStudentContacts;
 
-            this.storageBrokerMock.Setup(broker => broker.SelectAllStudentContacts())
-                .Returns(storageStudentContacts);
+			this.storageBrokerMock.Setup(broker => broker.SelectAllStudentContacts())
+				.Returns(storageStudentContacts);
 
-            // when
-            IQueryable<StudentContact> actualStudentContacts =
-                this.studentContactService.RetrieveAllStudentContacts();
+			// when
+			IQueryable<StudentContact> actualStudentContacts =
+				this.studentContactService.RetrieveAllStudentContacts();
 
-            actualStudentContacts.Should().BeEquivalentTo(expectedStudentContacts);
+			actualStudentContacts.Should().BeEquivalentTo(expectedStudentContacts);
 
-            this.storageBrokerMock.Verify(broker => broker.SelectAllStudentContacts(),
-                Times.Once);
+			this.storageBrokerMock.Verify(broker => broker.SelectAllStudentContacts(),
+				Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-        }
-    }
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+		}
+	}
 }
