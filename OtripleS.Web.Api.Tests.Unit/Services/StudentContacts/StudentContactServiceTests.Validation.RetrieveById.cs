@@ -83,5 +83,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageStudentContactIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            StudentContact randomStudentContact = CreateRandomStudentContact(randomDateTime);
+            Guid inputContactId = randomStudentContact.ContactId;
+            Guid inputStudentId = randomStudentContact.StudentId;
+            StudentContact nullStorageStudentContact = null;
+
+            var notFoundStudentContactException =
+                new NotFoundStudentContactException(inputStudentId, inputContactId);
+
+            var expectedSemesterCourseValidationException =
+                new StudentContactValidationException(notFoundStudentContactException);
+
+            this.storageBrokerMock.Setup(broker =>
+                 broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId))
+                    .ReturnsAsync(nullStorageStudentContact);
+
+            // when
+            ValueTask<StudentContact> actualStudentContactRetrieveTask =
+                this.studentContactService.RetrieveStudentContactByIdAsync(inputStudentId, inputContactId);
+
+            // then
+            await Assert.ThrowsAsync<StudentContactValidationException>(() =>
+                actualStudentContactRetrieveTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentContactByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
