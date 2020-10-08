@@ -91,5 +91,44 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomContactId = Guid.NewGuid();
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputContactId = randomContactId;
+            Guid inputStudentId = randomStudentId;
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+            var lockedContactException =
+                new LockedStudentContactException(databaseUpdateConcurrencyException);
+
+            var expectedStudentContactException =
+                new StudentContactDependencyException(lockedContactException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
+
+            // when
+            ValueTask<StudentContact> deleteStudentContactTask =
+                this.studentContactService.RetrieveStudentContactByIdAsync(inputStudentId, inputContactId);
+
+            // then
+            await Assert.ThrowsAsync<StudentContactDependencyException>(() => deleteStudentContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentContactException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
