@@ -54,6 +54,10 @@ namespace OtripleS.Web.Api.Services.StudentContacts
             {
                 throw CreateAndLogValidationException(notFoundStudentContactException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
         }
 
         private StudentContactServiceException CreateAndLogServiceException(Exception exception)
