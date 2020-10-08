@@ -5,6 +5,7 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentContacts;
@@ -14,6 +15,7 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 {
     public partial class StudentContactService
     {
+        private delegate ValueTask<StudentContact> ReturningStudentContactFunction();
         private delegate IQueryable<StudentContact> ReturningStudentContactsFunction();
 
         private IQueryable<StudentContact> TryCatch(
@@ -34,6 +36,19 @@ namespace OtripleS.Web.Api.Services.StudentContacts
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private async ValueTask<StudentContact> TryCatch(
+            ReturningStudentContactFunction returningStudentContactFunction)
+        {
+            try
+            {
+                return await returningStudentContactFunction();
+            }
+            catch (InvalidStudentContactInputException invalidStudentContactInputException)
+            {
+                throw CreateAndLogValidationException(invalidStudentContactInputException);
             }
         }
 
@@ -59,6 +74,14 @@ namespace OtripleS.Web.Api.Services.StudentContacts
             this.loggingBroker.LogError(StudentContactDependencyException);
 
             return StudentContactDependencyException;
+        }
+
+        private StudentContactValidationException CreateAndLogValidationException(Exception exception)
+        {
+            var StudentContactValidationException = new StudentContactValidationException(exception);
+            this.loggingBroker.LogError(StudentContactValidationException);
+
+            return StudentContactValidationException;
         }
     }
 }

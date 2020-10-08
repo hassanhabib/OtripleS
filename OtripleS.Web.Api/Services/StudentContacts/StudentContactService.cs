@@ -36,9 +36,14 @@ namespace OtripleS.Web.Api.Services.StudentContacts
                 return storageStudentContacts;
             });
 
-        public ValueTask<StudentContact> RetrieveStudentContactByIdAsync(Guid studentId, Guid contactId)
-        {
-            return storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
-        }
+        public ValueTask<StudentContact> RetrieveStudentContactByIdAsync(Guid studentId, Guid contactId) =>
+            TryCatch(async () =>
+            {
+                ValidateStudentContactIdIsNull(studentId, contactId);
+                StudentContact storageStudentContact =
+                    await this.storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
+
+                return storageStudentContact;
+            });
     }
 }
