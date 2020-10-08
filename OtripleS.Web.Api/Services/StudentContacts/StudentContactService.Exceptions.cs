@@ -45,6 +45,10 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
 		}
 
 		private IQueryable<StudentContact> TryCatch(
