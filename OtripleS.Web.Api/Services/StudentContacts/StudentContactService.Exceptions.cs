@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentContacts;
@@ -32,6 +33,13 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 			catch (InvalidStudentContactInputException invalidStudentContactInputException)
 			{
 				throw CreateAndLogValidationException(invalidStudentContactInputException);
+			}
+			catch (DuplicateKeyException duplicateKeyException)
+			{
+				var alreadyExistsGuardianException =
+					new AlreadyExistsStudentContactException(duplicateKeyException);
+
+				throw CreateAndLogValidationException(alreadyExistsGuardianException);
 			}
 		}
 
