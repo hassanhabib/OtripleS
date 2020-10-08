@@ -58,6 +58,13 @@ namespace OtripleS.Web.Api.Services.StudentContacts
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedStudentContactException =
+                    new LockedStudentContactException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedStudentContactException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
