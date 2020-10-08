@@ -41,6 +41,10 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 
 				throw CreateAndLogValidationException(alreadyExistsGuardianException);
 			}
+			catch (SqlException sqlException)
+			{
+				throw CreateAndLogCriticalDependencyException(sqlException);
+			}
 		}
 
 		private IQueryable<StudentContact> TryCatch(
