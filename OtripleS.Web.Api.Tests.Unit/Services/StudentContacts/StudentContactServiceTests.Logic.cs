@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.StudentContacts;
@@ -13,6 +14,34 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 {
     public partial class StudentContactServiceTests
     {
+        [Fact]
+        public async Task ShouldAddStudentStudentContactAsync()
+        {
+            // given
+            StudentContact randomStudentContact = CreateRandomStudentContact();
+            StudentContact inputStudentContact = randomStudentContact;
+            StudentContact storageStudentContact = randomStudentContact;
+            StudentContact expectedStudentContact = storageStudentContact;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertStudentContactAsync(inputStudentContact))
+                    .ReturnsAsync(storageStudentContact);
+
+            // when
+            StudentContact actualStudentContact =
+                await this.studentContactService.AddStudentContactAsync(inputStudentContact);
+
+            // then
+            actualStudentContact.Should().BeEquivalentTo(expectedStudentContact);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentContactAsync(inputStudentContact),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Fact]
         public void ShouldRetrieveAllStudentContacts()
         {

@@ -5,34 +5,40 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.StudentContacts;
 
 namespace OtripleS.Web.Api.Services.StudentContacts
 {
-    public partial class StudentContactService : IStudentContactService
-    {
-        private readonly IStorageBroker storageBroker;
-        private readonly ILoggingBroker loggingBroker;
+	public partial class StudentContactService : IStudentContactService
+	{
+		private readonly IStorageBroker storageBroker;
+		private readonly ILoggingBroker loggingBroker;
 
-        public StudentContactService(
-            IStorageBroker storageBroker,
-            ILoggingBroker loggingBroker)
-        {
-            this.storageBroker = storageBroker;
-            this.loggingBroker = loggingBroker;
-        }
+		public StudentContactService(
+			IStorageBroker storageBroker,
+			ILoggingBroker loggingBroker)
+		{
+			this.storageBroker = storageBroker;
+			this.loggingBroker = loggingBroker;
+		}
 
-        public IQueryable<StudentContact> RetrieveAllStudentContacts() =>
-            TryCatch(() =>
-            {
-                IQueryable<StudentContact> storageStudentContacts =
-                    this.storageBroker.SelectAllStudentContacts();
+		public ValueTask<StudentContact> AddStudentContactAsync(StudentContact studentContact)
+		{
+			throw new NotImplementedException();
+		}
 
-                ValidateStorageStudentContacts(storageStudentContacts);
+		public IQueryable<StudentContact> RetrieveAllStudentContacts() =>
+			TryCatch(() =>
+			{
+				IQueryable<StudentContact> storageStudentContacts =
+					this.storageBroker.SelectAllStudentContacts();
 
-                return storageStudentContacts;
-            });
-    }
+				ValidateStorageStudentContacts(storageStudentContacts);
+
+				return storageStudentContacts;
+			});
+	}
 }

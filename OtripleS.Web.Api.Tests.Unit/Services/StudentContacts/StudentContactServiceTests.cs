@@ -33,6 +33,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
                 loggingBroker: this.loggingBrokerMock.Object);
         }
 
+        private StudentContact CreateRandomStudentContact() =>
+            CreateStudentContactFiller(DateTimeOffset.UtcNow).Create();
+
         private IQueryable<StudentContact> CreateRandomStudentContacts() =>
             CreateStudentContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 

@@ -4,12 +4,14 @@
 //----------------------------------------------------------------
 
 using System.Linq;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.StudentContacts;
 
 namespace OtripleS.Web.Api.Services.StudentContacts
 {
-    public interface IStudentContactService
-    {
-        IQueryable<StudentContact> RetrieveAllStudentContacts();
-    }
+	public interface IStudentContactService
+	{
+		ValueTask<StudentContact> AddStudentContactAsync(StudentContact studentContact);
+		IQueryable<StudentContact> RetrieveAllStudentContacts();
+	}
 }
