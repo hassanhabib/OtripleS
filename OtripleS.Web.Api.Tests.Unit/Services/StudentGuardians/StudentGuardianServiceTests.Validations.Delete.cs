@@ -65,9 +65,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
 
             var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
                 parameterName: nameof(StudentGuardian.StudentId),
-                parameterValue: inputStudentId
-            );
-            var expectedStudentSemesterCourseValidationException =
+                parameterValue: inputStudentId);
+
+            var expectedStudentGuardianCourseValidationException =
                 new StudentGuardianValidationException(invalidStudentGuardianInputException);
 
             //when
@@ -79,11 +79,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
                 () => actualStudentGuardianDeleteTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseValidationException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianCourseValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                broker.SelectStudentGuardianByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
 
             this.storageBrokerMock.Verify(broker =>

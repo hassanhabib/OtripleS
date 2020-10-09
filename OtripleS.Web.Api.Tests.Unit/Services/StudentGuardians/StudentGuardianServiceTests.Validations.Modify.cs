@@ -22,7 +22,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
             StudentGuardian invalidStudentGuardian = null;
             var nullStudentGuardianException = new NullStudentGuardianException();
 
-            var expectedSemesterCourseValidationException =
+            var expectedStudentGuardianValidationException =
                 new StudentGuardianValidationException(nullStudentGuardianException);
 
             //when
@@ -34,7 +34,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
                 modifyStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianValidationException))),
                 Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -80,11 +80,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
         public async Task ShouldThrowValidationExceptionOnModifyWhenGuardianIdIsInvalidAndLogItAsync()
         {
             //given
-            Guid invalidSemesterCourseId = Guid.Empty;
+            Guid invalidStudentGuardianId = Guid.Empty;
             DateTimeOffset dateTime = GetRandomDateTime();
             StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(dateTime);
             StudentGuardian invalidStudentGuardian = randomStudentGuardian;
-            invalidStudentGuardian.GuardianId = invalidSemesterCourseId;
+            invalidStudentGuardian.GuardianId = invalidStudentGuardianId;
 
             var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
                 parameterName: nameof(StudentGuardian.GuardianId),
@@ -413,7 +413,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
                 parameterValue: invalidStudentGuardian.CreatedDate);
 
             var expectedStudentGuardianValidationException =
-              new StudentGuardianValidationException(invalidStudentGuardianInputException);
+                new StudentGuardianValidationException(invalidStudentGuardianInputException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentGuardianByIdAsync(studentId, semesterCourseId))
