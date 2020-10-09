@@ -38,6 +38,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 
 		private IQueryable<StudentContact> CreateRandomStudentContacts() =>
 			CreateStudentContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+		private StudentContact CreateRandomStudentContact(DateTimeOffset dates) =>
+			CreateStudentContactFiller(dates).Create();
 
 		private static Filler<StudentContact> CreateStudentContactFiller(DateTimeOffset dates)
 		{
@@ -50,6 +52,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 
 		private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 		private static string GetRandomMessage() => new MnemonicString().GetValue();
+		private static DateTimeOffset GetRandomDateTime() =>
+			new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
 		private static SqlException GetSqlException() =>
 			(SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));

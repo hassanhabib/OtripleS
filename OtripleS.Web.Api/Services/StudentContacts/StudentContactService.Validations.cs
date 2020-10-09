@@ -50,6 +50,33 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 			}
 		}
 
+		private void ValidateStudentContactIdIsNull(Guid studentId, Guid contactId)
+		{
+			if (studentId == default)
+			{
+				throw new InvalidStudentContactInputException(
+					parameterName: nameof(StudentContact.StudentId),
+					parameterValue: studentId);
+			}
+
+			if (contactId == default)
+			{
+				throw new InvalidStudentContactInputException(
+					parameterName: nameof(StudentContact.ContactId),
+					parameterValue: contactId);
+			}
+		}
+
+		private static void ValidateStorageStudentContact(
+			StudentContact storageStudentContact,
+			Guid studentId, Guid contactId)
+		{
+			if (storageStudentContact == null)
+			{
+				throw new NotFoundStudentContactException(studentId, contactId);
+			}
+		}
+
 		private static bool IsInvalid(Guid input) => input == default;
 	}
 }

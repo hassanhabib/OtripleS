@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -25,12 +26,12 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 		}
 
 		public ValueTask<StudentContact> AddStudentContactAsync(StudentContact studentContact) =>
-		TryCatch(async () =>
-		{
-			ValidateStudentContactOnCreate(studentContact);
+			TryCatch(async () =>
+			{
+				ValidateStudentContactOnCreate(studentContact);
 
-			return await this.storageBroker.InsertStudentContactAsync(studentContact);
-		});
+				return await this.storageBroker.InsertStudentContactAsync(studentContact);
+			});
 
 		public IQueryable<StudentContact> RetrieveAllStudentContacts() =>
 			TryCatch(() =>
@@ -41,6 +42,18 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 				ValidateStorageStudentContacts(storageStudentContacts);
 
 				return storageStudentContacts;
+			});
+
+		public ValueTask<StudentContact> RetrieveStudentContactByIdAsync(Guid studentId, Guid contactId) =>
+			TryCatch(async () =>
+			{
+				ValidateStudentContactIdIsNull(studentId, contactId);
+				StudentContact storageStudentContact =
+					await this.storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
+
+				ValidateStorageStudentContact(storageStudentContact, studentId, contactId);
+
+				return storageStudentContact;
 			});
 	}
 }

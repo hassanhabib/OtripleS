@@ -34,12 +34,23 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 			{
 				throw CreateAndLogValidationException(invalidStudentContactInputException);
 			}
+			catch (NotFoundStudentContactException notFoundStudentContactException)
+			{
+				throw CreateAndLogValidationException(notFoundStudentContactException);
+			}
 			catch (DuplicateKeyException duplicateKeyException)
 			{
 				var alreadyExistsStudentContactException =
 					new AlreadyExistsStudentContactException(duplicateKeyException);
 
 				throw CreateAndLogValidationException(alreadyExistsStudentContactException);
+			}
+			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+			{
+				var lockedStudentContactException =
+					new LockedStudentContactException(dbUpdateConcurrencyException);
+
+				throw CreateAndLogDependencyException(lockedStudentContactException);
 			}
 			catch (SqlException sqlException)
 			{
