@@ -33,6 +33,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
                 loggingBroker: this.loggingBrokerMock.Object);
         }
 
+        private StudentContact CreateRandomStudentContact(DateTimeOffset dates) =>
+            CreateStudentContactFiller(dates).Create();
+
         private IQueryable<StudentContact> CreateRandomStudentContacts() =>
             CreateStudentContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
@@ -56,5 +59,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
+
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
     }
 }
