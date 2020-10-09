@@ -4,13 +4,14 @@
 //----------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.StudentContacts.Exceptions
 {
-    public class NotFoundStudentContactException : Exception
-    {
-        public NotFoundStudentContactException(Guid studentId, Guid contactId)
-           : base($"Couldn't find StudentContact with StudentId: {studentId} " +
-                  $"and ContactId: {contactId}.")
-        { }
-    }
+	public class NotFoundStudentContactException : Exception
+	{
+		public NotFoundStudentContactException(Guid studentId, Guid contactId)
+		   : base($"Couldn't find StudentContact with StudentId: {studentId} " +
+				  $"and ContactId: {contactId}.")
+		{ }
+	}
 }

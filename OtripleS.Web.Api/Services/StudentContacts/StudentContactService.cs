@@ -12,40 +12,48 @@ using OtripleS.Web.Api.Models.StudentContacts;
 
 namespace OtripleS.Web.Api.Services.StudentContacts
 {
-    public partial class StudentContactService : IStudentContactService
-    {
-        private readonly IStorageBroker storageBroker;
-        private readonly ILoggingBroker loggingBroker;
+	public partial class StudentContactService : IStudentContactService
+	{
+		private readonly IStorageBroker storageBroker;
+		private readonly ILoggingBroker loggingBroker;
 
-        public StudentContactService(
-            IStorageBroker storageBroker,
-            ILoggingBroker loggingBroker)
-        {
-            this.storageBroker = storageBroker;
-            this.loggingBroker = loggingBroker;
-        }
+		public StudentContactService(
+			IStorageBroker storageBroker,
+			ILoggingBroker loggingBroker)
+		{
+			this.storageBroker = storageBroker;
+			this.loggingBroker = loggingBroker;
+		}
 
-        public IQueryable<StudentContact> RetrieveAllStudentContacts() =>
-            TryCatch(() =>
-            {
-                IQueryable<StudentContact> storageStudentContacts =
-                    this.storageBroker.SelectAllStudentContacts();
+		public ValueTask<StudentContact> AddStudentContactAsync(StudentContact studentContact) =>
+			TryCatch(async () =>
+			{
+				ValidateStudentContactOnCreate(studentContact);
 
-                ValidateStorageStudentContacts(storageStudentContacts);
+				return await this.storageBroker.InsertStudentContactAsync(studentContact);
+			});
 
-                return storageStudentContacts;
-            });
+		public IQueryable<StudentContact> RetrieveAllStudentContacts() =>
+			TryCatch(() =>
+			{
+				IQueryable<StudentContact> storageStudentContacts =
+					this.storageBroker.SelectAllStudentContacts();
 
-        public ValueTask<StudentContact> RetrieveStudentContactByIdAsync(Guid studentId, Guid contactId) =>
-            TryCatch(async () =>
-            {
-                ValidateStudentContactIdIsNull(studentId, contactId);
-                StudentContact storageStudentContact =
-                    await this.storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
+				ValidateStorageStudentContacts(storageStudentContacts);
 
-                ValidateStorageStudentContact(storageStudentContact, studentId, contactId);
+				return storageStudentContacts;
+			});
 
-                return storageStudentContact;
-            });
-    }
+		public ValueTask<StudentContact> RetrieveStudentContactByIdAsync(Guid studentId, Guid contactId) =>
+			TryCatch(async () =>
+			{
+				ValidateStudentContactIdIsNull(studentId, contactId);
+				StudentContact storageStudentContact =
+					await this.storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
+
+				ValidateStorageStudentContact(storageStudentContact, studentId, contactId);
+
+				return storageStudentContact;
+			});
+	}
 }
