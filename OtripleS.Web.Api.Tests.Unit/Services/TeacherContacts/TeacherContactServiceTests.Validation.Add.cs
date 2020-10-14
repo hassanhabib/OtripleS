@@ -43,5 +43,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async void ShouldThrowValidationExceptionOnAddWhenTeacherIdIsInvalidAndLogItAsync()
+		{
+			// given
+			TeacherContact randomTeacherContact = CreateRandomTeacherContact();
+			TeacherContact inputTeacherContact = randomTeacherContact;
+			inputTeacherContact.TeacherId = default;
+
+			var invalidTeacherContactInputException = new InvalidTeacherContactInputException(
+				parameterName: nameof(TeacherContact.TeacherId),
+				parameterValue: inputTeacherContact.TeacherId);
+
+			var expectedTeacherContactValidationException =
+				new TeacherContactValidationException(invalidTeacherContactInputException);
+
+			// when
+			ValueTask<TeacherContact> addTeacherContactTask =
+				this.teacherContactService.AddTeacherContactAsync(inputTeacherContact);
+
+			// then
+			await Assert.ThrowsAsync<TeacherContactValidationException>(() =>
+				addTeacherContactTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactValidationException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.InsertTeacherContactAsync(It.IsAny<TeacherContact>()),
+					Times.Never);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
