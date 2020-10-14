@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -13,7 +14,7 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 {
 	public partial class TeacherContactServiceTests
-    {
+	{
 		[Fact]
 		public async Task ShouldThrowDependencyExceptionOnAddWhenSqlExceptionOccursAndLogItAsync()
 		{
@@ -74,6 +75,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactDependencyException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.InsertTeacherContactAsync(inputTeacherContact),
+					Times.Once);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
+		public async Task ShouldThrowServiceExceptionOnAddWhenExceptionOccursAndLogItAsync()
+		{
+			// given
+			TeacherContact randomTeacherContact = CreateRandomTeacherContact();
+			TeacherContact inputTeacherContact = randomTeacherContact;
+			var exception = new Exception();
+
+			var expectedTeacherContactServiceException =
+				new TeacherContactServiceException(exception);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.InsertTeacherContactAsync(inputTeacherContact))
+					.ThrowsAsync(exception);
+
+			// when
+			ValueTask<TeacherContact> addTeacherContactTask =
+				 this.teacherContactService.AddTeacherContactAsync(inputTeacherContact);
+
+			// then
+			await Assert.ThrowsAsync<TeacherContactServiceException>(() =>
+				addTeacherContactTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactServiceException))),
 					Times.Once);
 
 			this.storageBrokerMock.Verify(broker =>
