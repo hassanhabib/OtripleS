@@ -45,6 +45,13 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 
 				throw CreateAndLogValidationException(alreadyExistsTeacherContactException);
 			}
+			catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+			{
+				var invalidTeacherContactReferenceException =
+					new InvalidTeacherContactReferenceException(foreignKeyConstraintConflictException);
+
+				throw CreateAndLogValidationException(invalidTeacherContactReferenceException);
+			}
 			catch (SqlException sqlException)
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
