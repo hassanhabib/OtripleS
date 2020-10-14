@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 			SqlException sqlException = GetSqlException();
 
 			var expectedTeacherContactDependencyException
-				= new TeacherContactDependencyException(sqlException);
+				= new teacherContactDependencyException(sqlException);
 
 			this.storageBrokerMock.Setup(broker =>
 				 broker.SelectTeacherContactByIdAsync(someTeacherId, someContactId))
@@ -40,7 +40,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 					someContactId);
 
 			// then
-			await Assert.ThrowsAsync<TeacherContactDependencyException>(() =>
+			await Assert.ThrowsAsync<teacherContactDependencyException>(() =>
 				removeTeacherContactTask.AsTask());
 
 			this.loggingBrokerMock.Verify(broker =>
