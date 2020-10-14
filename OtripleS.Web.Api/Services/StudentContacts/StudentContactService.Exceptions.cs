@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 		private delegate IQueryable<StudentContact> ReturningStudentContactsFunction();
 
 		private async ValueTask<StudentContact> TryCatch(
-		  ReturningStudentContactFunction returningStudentContactFunction)
+			ReturningStudentContactFunction returningStudentContactFunction)
 		{
 			try
 			{
@@ -44,6 +44,13 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 					new AlreadyExistsStudentContactException(duplicateKeyException);
 
 				throw CreateAndLogValidationException(alreadyExistsStudentContactException);
+			}
+			catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+			{
+				var invalidStudentContactReferenceException =
+					new InvalidStudentContactReferenceException(foreignKeyConstraintConflictException);
+
+				throw CreateAndLogValidationException(invalidStudentContactReferenceException);
 			}
 			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
 			{

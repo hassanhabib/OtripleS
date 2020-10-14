@@ -154,5 +154,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 			this.storageBrokerMock.VerifyNoOtherCalls();
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async void ShouldThrowValidationExceptionOnAddWhenReferneceExceptionAndLogItAsync()
+		{
+			// given
+			StudentContact randomStudentContact = CreateRandomStudentContact();
+			StudentContact invalidStudentContact = randomStudentContact;
+			string randomMessage = GetRandomMessage();
+			string exceptionMessage = randomMessage;
+			var foreignKeyConstraintConflictException = new ForeignKeyConstraintConflictException(exceptionMessage);
+			
+			var invalidStudentContactReferenceException = 
+				new InvalidStudentContactReferenceException(foreignKeyConstraintConflictException);
+
+			var expectedStudentContactValidationException =
+				new StudentContactValidationException(invalidStudentContactReferenceException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.InsertStudentContactAsync(invalidStudentContact))
+					.ThrowsAsync(foreignKeyConstraintConflictException);
+
+			// when
+			ValueTask<StudentContact> addStudentContactTask =
+				this.studentContactService.AddStudentContactAsync(invalidStudentContact);
+
+			// then
+			await Assert.ThrowsAsync<StudentContactValidationException>(() =>
+				addStudentContactTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+			   broker.LogError(It.Is(SameExceptionAs(expectedStudentContactValidationException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.InsertStudentContactAsync(invalidStudentContact),
+					Times.Once);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
