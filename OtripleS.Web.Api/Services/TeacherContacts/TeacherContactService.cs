@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 
 		public IQueryable<TeacherContact> RetrieveAllTeacherContacts()
 		{
-			throw new NotImplementedException();
+			return storageBroker.SelectAllTeacherContacts();
 		}
 
 		public ValueTask<TeacherContact> RemoveTeacherContactByIdAsync(Guid teacherId, Guid contactId) =>
