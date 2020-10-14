@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 			SqlException sqlException = GetSqlException();
 
 			var expectedTeacherContactDependencyException
-				= new teacherContactDependencyException(sqlException);
+				= new TeacherContactDependencyException(sqlException);
 
 			this.storageBrokerMock.Setup(broker =>
 				 broker.SelectTeacherContactByIdAsync(someTeacherId, someContactId))
@@ -40,7 +40,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 					someContactId);
 
 			// then
-			await Assert.ThrowsAsync<teacherContactDependencyException>(() =>
+			await Assert.ThrowsAsync<TeacherContactDependencyException>(() =>
 				removeTeacherContactTask.AsTask());
 
 			this.loggingBrokerMock.Verify(broker =>
@@ -57,6 +57,48 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
-		}		
+		}
+
+		[Fact]
+		public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbExceptionOccursAndLogItAsync()
+		{
+			// given
+			var randomContactId = Guid.NewGuid();
+			var randomTeacherId = Guid.NewGuid();
+			Guid someContactId = randomContactId;
+			Guid someTeacherId = randomTeacherId;
+			var databaseUpdateException = new DbUpdateException();
+
+			var expectedTeacherContactDependencyException =
+				new TeacherContactDependencyException(databaseUpdateException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectTeacherContactByIdAsync(someTeacherId, someContactId))
+					.ThrowsAsync(databaseUpdateException);
+
+			// when
+			ValueTask<TeacherContact> removeTeacherContactTask =
+				this.teacherContactService.RemoveTeacherContactByIdAsync
+				(someTeacherId, someContactId);
+
+			// then
+			await Assert.ThrowsAsync<TeacherContactDependencyException>(
+				() => removeTeacherContactTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactDependencyException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectTeacherContactByIdAsync(someTeacherId, someContactId),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.DeleteTeacherContactAsync(It.IsAny<TeacherContact>()),
+					Times.Never);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
