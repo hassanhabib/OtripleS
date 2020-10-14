@@ -31,6 +31,8 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			IQueryable<TeacherContact> storageTeacherContacts =
 				this.storageBroker.SelectAllTeacherContacts();
 
+			ValidateStorageTeacherContacts(storageTeacherContacts);
+
 			return storageTeacherContacts;
 		});
 

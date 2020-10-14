@@ -38,5 +38,13 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 				throw new NotFoundTeacherContactException(teacherId, contactId);
 			}
 		}
+
+		private void ValidateStorageTeacherContacts(IQueryable<TeacherContact> storageTeacherContacts)
+		{
+			if (!storageTeacherContacts.Any())
+			{
+				this.loggingBroker.LogWarning("No teacherContacts found in storage.");
+			}
+		}
 	}
 }
