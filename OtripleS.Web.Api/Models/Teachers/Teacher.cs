@@ -4,8 +4,10 @@
 // ---------------------------------------------------------------
 
 using OtripleS.Web.Api.Models.SemesterCourses;
+using OtripleS.Web.Api.Models.TeacherContacts;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace OtripleS.Web.Api.Models.Teachers
 {
@@ -24,6 +26,10 @@ namespace OtripleS.Web.Api.Models.Teachers
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
 
+        [JsonIgnore]
         public IEnumerable<SemesterCourse> SemesterCourses { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<TeacherContact> TeacherContacts { get; set; }
     }
 }
