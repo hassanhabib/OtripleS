@@ -61,9 +61,9 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			{
 				return returningTeacherContactsFunction();
 			}
-			catch (Exception exception)
+			catch (SqlException sqlException)
 			{
-				throw CreateAndLogServiceException(exception);
+				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
 		}
 
