@@ -21,13 +21,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
             // given
             IQueryable<StudentContact> emptyStorageStudentContacts =
                 new List<StudentContact>().AsQueryable();
+
             IQueryable<StudentContact> expectedStudentContacts =
                 emptyStorageStudentContacts;
 
             string expectedMessage = "No studentContacts found in storage.";
 
-            this.storageBrokerMock.Setup(broker => broker.SelectAllStudentContacts())
-                .Returns(expectedStudentContacts);
+            this.storageBrokerMock.Setup(broker => 
+                broker.SelectAllStudentContacts())
+                    .Returns(expectedStudentContacts);
 
             // when
             IQueryable<StudentContact> actualSemesterCourses =
@@ -36,11 +38,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
             // then
             actualSemesterCourses.Should().BeEquivalentTo(emptyStorageStudentContacts);
 
-            this.loggingBrokerMock.Verify(broker => broker.LogWarning(expectedMessage),
-                Times.Once);
+            this.loggingBrokerMock.Verify(broker => 
+                broker.LogWarning(expectedMessage),
+                    Times.Once);
 
-            this.storageBrokerMock.Verify(broker => broker.SelectAllStudentContacts(),
-                Times.Once);
+            this.storageBrokerMock.Verify(broker => 
+                broker.SelectAllStudentContacts(),
+                    Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();

@@ -47,9 +47,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 		public void ShouldRetrieveAllStudentContacts()
 		{
 			//given
-			IQueryable<StudentContact> randomSemesterCourses =
-				CreateRandomStudentContacts();
-
+			IQueryable<StudentContact> randomSemesterCourses = CreateRandomStudentContacts();
 			IQueryable<StudentContact> storageStudentContacts = randomSemesterCourses;
 			IQueryable<StudentContact> expectedStudentContacts = storageStudentContacts;
 
@@ -84,7 +82,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 
 			// when
 			StudentContact actualStudentContact = await
-				this.studentContactService.RetrieveStudentContactByIdAsync(randomStudentContact.StudentId, randomStudentContact.ContactId);
+				this.studentContactService.RetrieveStudentContactByIdAsync(
+					randomStudentContact.StudentId, randomStudentContact.ContactId);
 
 			// then
 			actualStudentContact.Should().BeEquivalentTo(expectedStudentContact);

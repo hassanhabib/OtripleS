@@ -79,6 +79,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Students
         private static Filler<Student> CreateStudentFiller(DateTimeOffset dates)
         {
             var filler = new Filler<Student>();
+            
             filler.Setup()
                 .OnProperty(student => student.BirthDate).Use(GetRandomDateTime())
                 .OnProperty(student => student.CreatedDate).Use(dates)

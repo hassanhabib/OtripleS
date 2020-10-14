@@ -38,6 +38,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 
 		private IQueryable<StudentContact> CreateRandomStudentContacts() =>
 			CreateStudentContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+
 		private StudentContact CreateRandomStudentContact(DateTimeOffset dates) =>
 			CreateStudentContactFiller(dates).Create();
 

@@ -31,11 +31,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 				new StudentContactValidationException(invalidStudentContactInputException);
 
 			// when
-			ValueTask<StudentContact> actualStudentContactTask =
+			ValueTask<StudentContact> retrieveStudentContactTask =
 				this.studentContactService.RetrieveStudentContactByIdAsync(inputStudentId, inputContactId);
 
 			// then
-			await Assert.ThrowsAsync<StudentContactValidationException>(() => actualStudentContactTask.AsTask());
+			await Assert.ThrowsAsync<StudentContactValidationException>(() => retrieveStudentContactTask.AsTask());
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogError(It.Is(SameExceptionAs(expectedStudentContactValidationException))),
@@ -66,11 +66,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 				new StudentContactValidationException(invalidStudentContactInputException);
 
 			// when
-			ValueTask<StudentContact> actualStudentContactTask =
+			ValueTask<StudentContact> retrieveStudentContactTask =
 				this.studentContactService.RetrieveStudentContactByIdAsync(inputStudentId, inputContactId);
 
 			// then
-			await Assert.ThrowsAsync<StudentContactValidationException>(() => actualStudentContactTask.AsTask());
+			await Assert.ThrowsAsync<StudentContactValidationException>(() => retrieveStudentContactTask.AsTask());
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogError(It.Is(SameExceptionAs(expectedStudentContactValidationException))),
@@ -105,12 +105,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 					.ReturnsAsync(nullStorageStudentContact);
 
 			// when
-			ValueTask<StudentContact> actualStudentContactRetrieveTask =
+			ValueTask<StudentContact> retrieveStudentContactTask =
 				this.studentContactService.RetrieveStudentContactByIdAsync(inputStudentId, inputContactId);
 
 			// then
 			await Assert.ThrowsAsync<StudentContactValidationException>(() =>
-				actualStudentContactRetrieveTask.AsTask());
+				retrieveStudentContactTask.AsTask());
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
