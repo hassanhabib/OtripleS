@@ -15,5 +15,6 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 		ValueTask<StudentContact> AddStudentContactAsync(StudentContact studentContact);
 		IQueryable<StudentContact> RetrieveAllStudentContacts();
 		ValueTask<StudentContact> RetrieveStudentContactByIdAsync(Guid studentId, Guid contactId);
+		ValueTask<StudentContact> RemoveStudentContactByIdAsync(Guid studentId, Guid contactId);
 	}
 }

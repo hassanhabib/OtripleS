@@ -110,6 +110,46 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpDelete("student/{studentId}/contact/{contactId}")]
+        public async ValueTask<ActionResult<bool>> DeleteStudentContactAsync(Guid studentId, Guid contactId)
+        {
+            try
+            {
+                StudentContact deletedStudentContact =
+                    await this.studentContactService.RemoveStudentContactByIdAsync(studentId, contactId);
+
+                return Ok(deletedStudentContact);
+            }
+            catch (StudentContactValidationException studentContactValidationException)
+                when (studentContactValidationException.InnerException is NotFoundStudentContactException)
+            {
+                string innerMessage = GetInnerMessage(studentContactValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (StudentContactValidationException studentContactValidationException)
+            {
+                string innerMessage = GetInnerMessage(studentContactValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (StudentContactDependencyException studentContactValidationException)
+               when (studentContactValidationException.InnerException is LockedStudentContactException)
+            {
+                string innerMessage = GetInnerMessage(studentContactValidationException);
+
+                return Locked(innerMessage);
+            }
+            catch (StudentContactDependencyException studentContactDependencyException)
+            {
+                return Problem(studentContactDependencyException.Message);
+            }
+            catch (StudentContactServiceException studentContactServiceException)
+            {
+                return Problem(studentContactServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
