@@ -70,7 +70,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
             var filler = new Filler<Course>();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(dateTime);
+                .OnType<DateTimeOffset>().Use(dateTime)
+                .OnProperty(course => course.SemesterCourses).IgnoreIt();
 
             return filler;
         }

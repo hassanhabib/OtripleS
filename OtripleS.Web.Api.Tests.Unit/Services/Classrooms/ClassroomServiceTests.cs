@@ -52,7 +52,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Classrooms
             var filler = new Filler<Classroom>();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates);
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt();
 
             return filler;
         }

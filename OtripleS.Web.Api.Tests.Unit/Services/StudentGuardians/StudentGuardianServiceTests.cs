@@ -50,7 +50,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
         {
             var filler = new Filler<StudentGuardian>();
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates);
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(studentguardian => studentguardian.Student).IgnoreIt()
+                .OnProperty(studentguardian => studentguardian.Guardian).IgnoreIt();
 
             return filler;
         }
