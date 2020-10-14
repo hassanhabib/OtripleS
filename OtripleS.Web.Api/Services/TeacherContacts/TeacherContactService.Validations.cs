@@ -34,6 +34,11 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 					throw new InvalidTeacherContactInputException(
 						parameterName: nameof(TeacherContact.TeacherId),
 						parameterValue: teacherContact.TeacherId);
+
+				case { } when IsInvalid(teacherContact.ContactId):
+					throw new InvalidTeacherContactInputException(
+						parameterName: nameof(TeacherContact.ContactId),
+						parameterValue: teacherContact.ContactId);
 			}
 		}
 
