@@ -13,9 +13,9 @@ using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
 
 namespace OtripleS.Web.Api.Services.TeacherContacts
 {
-    public partial class TeacherContactService
+	public partial class TeacherContactService
 	{
-        private delegate ValueTask<TeacherContact> ReturningTeacherContactFunction();
+		private delegate ValueTask<TeacherContact> ReturningTeacherContactFunction();
 		private delegate IQueryable<TeacherContact> ReturningTeacherContactsFunction();
 
 		private async ValueTask<TeacherContact> TryCatch(
@@ -24,6 +24,10 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			try
 			{
 				return await returningTeacherContactFunction();
+			}
+			catch (NullTeacherContactException nullTeacherContactException)
+			{
+				throw CreateAndLogValidationException(nullTeacherContactException);
 			}
 			catch (InvalidTeacherContactInputException invalidTeacherContactInputException)
 			{

@@ -10,8 +10,21 @@ using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
 
 namespace OtripleS.Web.Api.Services.TeacherContacts
 {
-    public partial class TeacherContactService
+	public partial class TeacherContactService
 	{
+		private void ValidateTeacherContactOnAdd(TeacherContact teacherContact)
+		{
+			ValidateTeacherContactIsNull(teacherContact);
+		}
+
+		private void ValidateTeacherContactIsNull(TeacherContact teacherContact)
+		{
+			if (teacherContact is null)
+			{
+				throw new NullTeacherContactException();
+			}
+		}
+
 		private void ValidateTeacherContactIdIsNull(Guid teacherId, Guid contactId)
 		{
 			if (teacherId == default)

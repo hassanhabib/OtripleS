@@ -25,10 +25,13 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			this.loggingBroker = loggingBroker;
 		}
 
-		public ValueTask<TeacherContact> AddTeacherContactAsync(TeacherContact teacherContact)
+		public ValueTask<TeacherContact> AddTeacherContactAsync(TeacherContact teacherContact) =>
+		TryCatch(() =>
 		{
+			ValidateTeacherContactOnAdd(teacherContact);
+
 			return this.storageBroker.InsertTeacherContactAsync(teacherContact);
-		}
+		});
 
 		public IQueryable<TeacherContact> RetrieveAllTeacherContacts() =>
 		TryCatch(() =>
