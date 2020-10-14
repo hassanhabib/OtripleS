@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 
 		public ValueTask<TeacherContact> AddTeacherContactAsync(TeacherContact teacherContact)
 		{
-			throw new NotImplementedException();
+			return this.storageBroker.InsertTeacherContactAsync(teacherContact);
 		}
 
 		public IQueryable<TeacherContact> RetrieveAllTeacherContacts() =>
