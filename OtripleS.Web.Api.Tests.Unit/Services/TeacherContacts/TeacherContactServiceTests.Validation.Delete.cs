@@ -52,5 +52,44 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 			this.storageBrokerMock.VerifyNoOtherCalls();
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldThrowValidatonExceptionOnRemoveWhenContactIdIsInvalidAndLogItAsync()
+		{
+			// given
+			Guid randomContactId = default;
+			Guid randomTeacherId = Guid.NewGuid();
+			Guid inputContactId = randomContactId;
+			Guid inputTeacherId = randomTeacherId;
+
+			var invalidTeacherContactInputException = new InvalidTeacherContactInputException(
+				parameterName: nameof(TeacherContact.ContactId),
+				parameterValue: inputContactId);
+
+			var expectedTeacherContactValidationException =
+				new TeacherContactValidationException(invalidTeacherContactInputException);
+
+			// when
+			ValueTask<TeacherContact> removeTeacherContactTask =
+				this.teacherContactService.RemoveTeacherContactByIdAsync(inputTeacherId, inputContactId);
+
+			// then
+			await Assert.ThrowsAsync<TeacherContactValidationException>(() => removeTeacherContactTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactValidationException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectTeacherContactByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+					Times.Never);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.DeleteTeacherContactAsync(It.IsAny<TeacherContact>()),
+					Times.Never);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
