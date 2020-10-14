@@ -35,10 +35,18 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
+			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+			{
+				var lockedTeacherContactException =
+					new LockedTeacherContactException(dbUpdateConcurrencyException);
+
+				throw CreateAndLogDependencyException(lockedTeacherContactException);
+			}
 			catch (DbUpdateException dbUpdateException)
 			{
 				throw CreateAndLogDependencyException(dbUpdateException);
 			}
+			
 		}
 
 
