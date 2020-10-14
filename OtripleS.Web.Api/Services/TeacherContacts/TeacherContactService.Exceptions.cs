@@ -24,7 +24,11 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			catch (InvalidTeacherContactInputException invalidTeacherContactInputException)
 			{
 				throw CreateAndLogValidationException(invalidTeacherContactInputException);
-			}			
+			}
+			catch (NotFoundTeacherContactException notFoundTeacherContactException)
+			{
+				throw CreateAndLogValidationException(notFoundTeacherContactException);
+			}
 		}
 
 

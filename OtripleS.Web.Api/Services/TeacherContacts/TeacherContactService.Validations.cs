@@ -27,5 +27,15 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 					parameterValue: contactId);
 			}
 		}
+
+		private static void ValidateStorageTeacherContact(
+			TeacherContact storageTeacherContact,
+			Guid teacherId, Guid contactId)
+		{
+			if (storageTeacherContact == null)
+			{
+				throw new NotFoundTeacherContactException(teacherId, contactId);
+			}
+		}
 	}
 }
