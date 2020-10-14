@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.TeacherContacts;
 using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
@@ -38,6 +39,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherContactDependencyException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.InsertTeacherContactAsync(inputTeacherContact),
+					Times.Once);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
+		public async Task ShouldThrowDependencyExceptionOnAddWhenDbExceptionOccursAndLogItAsync()
+		{
+			// given
+			TeacherContact randomTeacherContact = CreateRandomTeacherContact();
+			TeacherContact inputTeacherContact = randomTeacherContact;
+			var databaseUpdateException = new DbUpdateException();
+
+			var expectedTeacherContactDependencyException =
+				new TeacherContactDependencyException(databaseUpdateException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.InsertTeacherContactAsync(inputTeacherContact))
+					.ThrowsAsync(databaseUpdateException);
+
+			// when
+			ValueTask<TeacherContact> addTeacherContactTask =
+				this.teacherContactService.AddTeacherContactAsync(inputTeacherContact);
+
+			// then
+			await Assert.ThrowsAsync<TeacherContactDependencyException>(() =>
+				addTeacherContactTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactDependencyException))),
 					Times.Once);
 
 			this.storageBrokerMock.Verify(broker =>
