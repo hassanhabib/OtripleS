@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -22,6 +23,11 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 		{
 			this.storageBroker = storageBroker;
 			this.loggingBroker = loggingBroker;
+		}
+
+		public IQueryable<TeacherContact> RetrieveAllTeacherContacts()
+		{
+			throw new NotImplementedException();
 		}
 
 		public ValueTask<TeacherContact> RemoveTeacherContactByIdAsync(Guid teacherId, Guid contactId) =>

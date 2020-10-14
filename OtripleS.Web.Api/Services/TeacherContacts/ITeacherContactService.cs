@@ -12,6 +12,7 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 {
 	public interface ITeacherContactService
 	{
+		IQueryable<TeacherContact> RetrieveAllTeacherContacts();
 		ValueTask<TeacherContact> RemoveTeacherContactByIdAsync(Guid teacherId, Guid contactId);
 	}
 }
