@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.TeacherContacts;
@@ -36,6 +37,13 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			catch (NotFoundTeacherContactException notFoundTeacherContactException)
 			{
 				throw CreateAndLogValidationException(notFoundTeacherContactException);
+			}
+			catch (DuplicateKeyException duplicateKeyException)
+			{
+				var alreadyExistsTeacherContactException =
+					new AlreadyExistsTeacherContactException(duplicateKeyException);
+
+				throw CreateAndLogValidationException(alreadyExistsTeacherContactException);
 			}
 			catch (SqlException sqlException)
 			{
