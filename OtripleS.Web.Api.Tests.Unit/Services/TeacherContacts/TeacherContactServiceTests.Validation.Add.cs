@@ -154,5 +154,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 			this.storageBrokerMock.VerifyNoOtherCalls();
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async void ShouldThrowValidationExceptionOnAddWhenReferneceExceptionAndLogItAsync()
+		{
+			// given
+			TeacherContact randomTeacherContact = CreateRandomTeacherContact();
+			TeacherContact invalidTeacherContact = randomTeacherContact;
+			string randomMessage = GetRandomMessage();
+			string exceptionMessage = randomMessage;
+			var foreignKeyConstraintConflictException = new ForeignKeyConstraintConflictException(exceptionMessage);
+
+			var invalidTeacherContactReferenceException =
+				new InvalidTeacherContactReferenceException(foreignKeyConstraintConflictException);
+
+			var expectedTeacherContactValidationException =
+				new TeacherContactValidationException(invalidTeacherContactReferenceException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.InsertTeacherContactAsync(invalidTeacherContact))
+					.ThrowsAsync(foreignKeyConstraintConflictException);
+
+			// when
+			ValueTask<TeacherContact> addTeacherContactTask =
+				this.teacherContactService.AddTeacherContactAsync(invalidTeacherContact);
+
+			// then
+			await Assert.ThrowsAsync<TeacherContactValidationException>(() =>
+				addTeacherContactTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+			   broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactValidationException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.InsertTeacherContactAsync(invalidTeacherContact),
+					Times.Once);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
