@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.TeacherContacts;
 using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
 
@@ -34,6 +35,10 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
 		}
 
 
@@ -44,17 +49,17 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 
 			return teacherContactValidationException;
 		}
-		private teacherContactDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+		private TeacherContactDependencyException CreateAndLogCriticalDependencyException(Exception exception)
 		{
-			var teacherContactDependencyException = new teacherContactDependencyException(exception);
+			var teacherContactDependencyException = new TeacherContactDependencyException(exception);
 			this.loggingBroker.LogCritical(teacherContactDependencyException);
 
 			return teacherContactDependencyException;
 		}
 
-		private teacherContactDependencyException CreateAndLogDependencyException(Exception exception)
+		private TeacherContactDependencyException CreateAndLogDependencyException(Exception exception)
 		{
-			var TeacherContactDependencyException = new teacherContactDependencyException(exception);
+			var TeacherContactDependencyException = new TeacherContactDependencyException(exception);
 			this.loggingBroker.LogError(TeacherContactDependencyException);
 
 			return TeacherContactDependencyException;
