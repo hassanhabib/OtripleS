@@ -41,6 +41,8 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 			StudentContact mayBeStudentContact =
 				await this.storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
 
+			ValidateStorageStudentContact(mayBeStudentContact, studentId, contactId);
+
 			return await this.storageBroker.DeleteStudentContactAsync(mayBeStudentContact);
 		});
 

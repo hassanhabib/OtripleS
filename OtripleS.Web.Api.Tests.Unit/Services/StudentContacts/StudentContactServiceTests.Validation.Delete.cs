@@ -127,7 +127,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 
 			this.storageBrokerMock.Verify(broker =>
 				broker.SelectStudentContactByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
-					Times.Never);
+					Times.Once);
 
 			this.storageBrokerMock.Verify(broker =>
 				broker.DeleteStudentContactAsync(It.IsAny<StudentContact>()),
