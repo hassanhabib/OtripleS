@@ -33,13 +33,16 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 			return await this.storageBroker.InsertStudentContactAsync(studentContact);
 		});
 
-        public async ValueTask<StudentContact> RemoveStudentContactByIdAsync(Guid studentId, Guid contactId)
-        {
-			StudentContact mayBeStudentContact = 
+		public ValueTask<StudentContact> RemoveStudentContactByIdAsync(Guid studentId, Guid contactId) =>
+		TryCatch(async () =>
+		{
+			ValidateStudentContactIdIsNull(studentId, contactId);
+
+			StudentContact mayBeStudentContact =
 				await this.storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
 
 			return await this.storageBroker.DeleteStudentContactAsync(mayBeStudentContact);
-        }
+		});
 
         public IQueryable<StudentContact> RetrieveAllStudentContacts() =>
 		TryCatch(() =>
