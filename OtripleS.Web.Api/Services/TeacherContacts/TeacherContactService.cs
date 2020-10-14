@@ -12,7 +12,7 @@ using OtripleS.Web.Api.Models.TeacherContacts;
 
 namespace OtripleS.Web.Api.Services.TeacherContacts
 {
-    public partial class TeacherContactService : ITeacherContactService
+	public partial class TeacherContactService : ITeacherContactService
 	{
 		private readonly IStorageBroker storageBroker;
 		private readonly ILoggingBroker loggingBroker;
@@ -23,6 +23,11 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 		{
 			this.storageBroker = storageBroker;
 			this.loggingBroker = loggingBroker;
+		}
+
+		public ValueTask<TeacherContact> AddTeacherContactAsync(TeacherContact teacherContact)
+		{
+			throw new NotImplementedException();
 		}
 
 		public IQueryable<TeacherContact> RetrieveAllTeacherContacts() =>
@@ -48,5 +53,5 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 
 			return await this.storageBroker.DeleteTeacherContactAsync(mayBeTeacherContact);
 		});
-    }
+	}
 }
