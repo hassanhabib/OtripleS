@@ -91,5 +91,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 			this.storageBrokerMock.VerifyNoOtherCalls();
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldThrowValidationExceptionOnRemoveWhenStorageTeacherContactIsInvalidAndLogItAsync()
+		{
+			// given
+			DateTimeOffset randomDateTime = GetRandomDateTime();
+			TeacherContact randomTeacherContact = CreateRandomTeacherContact(randomDateTime);
+			Guid inputContactId = randomTeacherContact.ContactId;
+			Guid inputTeacherId = randomTeacherContact.TeacherId;
+			TeacherContact nullStorageTeacherContact = null;
+
+			var notFoundTeacherContactException =
+				new NotFoundTeacherContactException(inputTeacherId, inputContactId);
+
+			var expectedSemesterCourseValidationException =
+				new TeacherContactValidationException(notFoundTeacherContactException);
+
+			this.storageBrokerMock.Setup(broker =>
+				 broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId))
+					.ReturnsAsync(nullStorageTeacherContact);
+
+			// when
+			ValueTask<TeacherContact> removeTeacherContactTask =
+				this.teacherContactService.RemoveTeacherContactByIdAsync(inputTeacherId, inputContactId);
+
+			// then
+			await Assert.ThrowsAsync<TeacherContactValidationException>(() =>
+				removeTeacherContactTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectTeacherContactByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.DeleteTeacherContactAsync(It.IsAny<TeacherContact>()),
+					Times.Never);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
