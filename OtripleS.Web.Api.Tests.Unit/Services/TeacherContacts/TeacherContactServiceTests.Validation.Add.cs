@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Moq;
 using OtripleS.Web.Api.Models.TeacherContacts;
 using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
@@ -112,6 +113,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
+		public async void ShouldThrowValidationExceptionOnAddWhenTeacherContactAlreadyExistsAndLogItAsync()
+		{
+			// given
+			TeacherContact randomTeacherContact = CreateRandomTeacherContact();
+			TeacherContact alreadyExistsTeacherContact = randomTeacherContact;
+			string randomMessage = GetRandomMessage();
+			string exceptionMessage = randomMessage;
+			var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+			var alreadyExistsTeacherContactException =
+				new AlreadyExistsTeacherContactException(duplicateKeyException);
+
+			var expectedTeacherContactValidationException =
+				new TeacherContactValidationException(alreadyExistsTeacherContactException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.InsertTeacherContactAsync(alreadyExistsTeacherContact))
+					.ThrowsAsync(duplicateKeyException);
+
+			// when
+			ValueTask<TeacherContact> addTeacherContactTask =
+				this.teacherContactService.AddTeacherContactAsync(alreadyExistsTeacherContact);
+
+			// then
+			await Assert.ThrowsAsync<TeacherContactValidationException>(() =>
+				addTeacherContactTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+			   broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactValidationException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.InsertTeacherContactAsync(alreadyExistsTeacherContact),
+					Times.Once);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
 		}
 	}
 }
