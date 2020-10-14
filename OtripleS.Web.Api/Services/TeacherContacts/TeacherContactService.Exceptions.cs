@@ -65,6 +65,10 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
 		}
 
 		private TeacherContactValidationException CreateAndLogValidationException(Exception exception)
