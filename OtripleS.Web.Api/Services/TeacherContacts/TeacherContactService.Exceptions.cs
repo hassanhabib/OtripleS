@@ -46,7 +46,10 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			{
 				throw CreateAndLogDependencyException(dbUpdateException);
 			}
-			
+			catch (Exception exception)
+			{
+				throw CreateAndLogServiceException(exception);
+			}
 		}
 
 
@@ -71,6 +74,14 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			this.loggingBroker.LogError(TeacherContactDependencyException);
 
 			return TeacherContactDependencyException;
+		}
+
+		private TeacherContactServiceException CreateAndLogServiceException(Exception exception)
+		{
+			var teacherContactServiceException = new TeacherContactServiceException(exception);
+			this.loggingBroker.LogError(teacherContactServiceException);
+
+			return teacherContactServiceException;
 		}
 	}
 }
