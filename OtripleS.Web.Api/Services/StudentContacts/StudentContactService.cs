@@ -26,34 +26,35 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 		}
 
 		public ValueTask<StudentContact> AddStudentContactAsync(StudentContact studentContact) =>
-			TryCatch(async () =>
-			{
-				ValidateStudentContactOnCreate(studentContact);
+		TryCatch(async () =>
+		{
+			ValidateStudentContactOnCreate(studentContact);
 
-				return await this.storageBroker.InsertStudentContactAsync(studentContact);
-			});
+			return await this.storageBroker.InsertStudentContactAsync(studentContact);
+		});
 
 		public IQueryable<StudentContact> RetrieveAllStudentContacts() =>
-			TryCatch(() =>
-			{
-				IQueryable<StudentContact> storageStudentContacts =
-					this.storageBroker.SelectAllStudentContacts();
+		TryCatch(() =>
+		{
+			IQueryable<StudentContact> storageStudentContacts =
+				this.storageBroker.SelectAllStudentContacts();
 
-				ValidateStorageStudentContacts(storageStudentContacts);
+			ValidateStorageStudentContacts(storageStudentContacts);
 
-				return storageStudentContacts;
-			});
+			return storageStudentContacts;
+		});
 
 		public ValueTask<StudentContact> RetrieveStudentContactByIdAsync(Guid studentId, Guid contactId) =>
-			TryCatch(async () =>
-			{
-				ValidateStudentContactIdIsNull(studentId, contactId);
-				StudentContact storageStudentContact =
-					await this.storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
+		TryCatch(async () =>
+		{
+			ValidateStudentContactIdIsNull(studentId, contactId);
 
-				ValidateStorageStudentContact(storageStudentContact, studentId, contactId);
+			StudentContact storageStudentContact =
+				await this.storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
 
-				return storageStudentContact;
-			});
+			ValidateStorageStudentContact(storageStudentContact, studentId, contactId);
+
+			return storageStudentContact;
+		});
 	}
 }

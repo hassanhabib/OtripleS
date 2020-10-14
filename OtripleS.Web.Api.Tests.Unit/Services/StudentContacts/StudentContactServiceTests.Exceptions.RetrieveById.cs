@@ -20,8 +20,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 		public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
 		{
 			// given
-			Guid randomContactId = Guid.NewGuid();
-			Guid inputContactId = randomContactId;
+			var randomContactId = Guid.NewGuid();
+			var inputContactId = randomContactId;
 			Guid randomStudentId = Guid.NewGuid();
 			Guid inputStudentId = randomStudentId;
 			SqlException sqlException = GetSqlException();
@@ -34,13 +34,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 					.ThrowsAsync(sqlException);
 
 			// when
-			ValueTask<StudentContact> deleteStudentContactTask =
-				this.studentContactService.RetrieveStudentContactByIdAsync
-				(inputStudentId, inputContactId);
+			ValueTask<StudentContact> retrieveStudentContactTask =
+				this.studentContactService.RetrieveStudentContactByIdAsync(
+					inputStudentId, 
+					inputContactId);
 
 			// then
 			await Assert.ThrowsAsync<StudentContactDependencyException>(() =>
-				deleteStudentContactTask.AsTask());
+				retrieveStudentContactTask.AsTask());
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogCritical(It.Is(SameExceptionAs(expectedStudentContactDependencyException))),
@@ -58,8 +59,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 		public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
 		{
 			// given
-			Guid randomContactId = Guid.NewGuid();
-			Guid randomStudentId = Guid.NewGuid();
+			var randomContactId = Guid.NewGuid();
+			var randomStudentId = Guid.NewGuid();
 			Guid inputContactId = randomContactId;
 			Guid inputStudentId = randomStudentId;
 			var databaseUpdateException = new DbUpdateException();
@@ -72,13 +73,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 					.ThrowsAsync(databaseUpdateException);
 
 			// when
-			ValueTask<StudentContact> deleteContactTask =
+			ValueTask<StudentContact> retrieveStudentContactTask =
 				this.studentContactService.RetrieveStudentContactByIdAsync
 				(inputStudentId, inputContactId);
 
 			// then
 			await Assert.ThrowsAsync<StudentContactDependencyException>(
-				() => deleteContactTask.AsTask());
+				() => retrieveStudentContactTask.AsTask());
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogError(It.Is(SameExceptionAs(expectedStudentContactDependencyException))),
@@ -96,8 +97,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 		public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
 		{
 			// given
-			Guid randomContactId = Guid.NewGuid();
-			Guid randomStudentId = Guid.NewGuid();
+			var randomContactId = Guid.NewGuid();
+			var randomStudentId = Guid.NewGuid();
 			Guid inputContactId = randomContactId;
 			Guid inputStudentId = randomStudentId;
 			var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
@@ -113,11 +114,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 					.ThrowsAsync(databaseUpdateConcurrencyException);
 
 			// when
-			ValueTask<StudentContact> deleteStudentContactTask =
+			ValueTask<StudentContact> retrieveStudentContactTask =
 				this.studentContactService.RetrieveStudentContactByIdAsync(inputStudentId, inputContactId);
 
 			// then
-			await Assert.ThrowsAsync<StudentContactDependencyException>(() => deleteStudentContactTask.AsTask());
+			await Assert.ThrowsAsync<StudentContactDependencyException>(() => 
+				retrieveStudentContactTask.AsTask());
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogError(It.Is(SameExceptionAs(expectedStudentContactException))),
@@ -135,8 +137,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 		public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
 		{
 			// given
-			Guid randomContactId = Guid.NewGuid();
-			Guid randomStudentId = Guid.NewGuid();
+			var randomContactId = Guid.NewGuid();
+			var randomStudentId = Guid.NewGuid();
 			Guid inputContactId = randomContactId;
 			Guid inputStudentId = randomStudentId;
 			var exception = new Exception();
@@ -149,13 +151,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 					.ThrowsAsync(exception);
 
 			// when
-			ValueTask<StudentContact> deleteStudentContactTask =
-				this.studentContactService.RetrieveStudentContactByIdAsync
-				(inputStudentId, inputContactId);
+			ValueTask<StudentContact> retrieveStudentContactTask =
+				this.studentContactService.RetrieveStudentContactByIdAsync(
+					inputStudentId, 
+					inputContactId);
 
 			// then
 			await Assert.ThrowsAsync<StudentContactServiceException>(() =>
-				deleteStudentContactTask.AsTask());
+				retrieveStudentContactTask.AsTask());
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogError(It.Is(SameExceptionAs(expectedStudentContactException))),

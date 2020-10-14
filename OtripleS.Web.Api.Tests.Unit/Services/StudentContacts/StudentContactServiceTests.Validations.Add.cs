@@ -136,12 +136,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 					.ThrowsAsync(duplicateKeyException);
 
 			// when
-			ValueTask<StudentContact> createStudentContactTask =
+			ValueTask<StudentContact> addStudentContactTask =
 				this.studentContactService.AddStudentContactAsync(alreadyExistsStudentContact);
 
 			// then
 			await Assert.ThrowsAsync<StudentContactValidationException>(() =>
-				createStudentContactTask.AsTask());
+				addStudentContactTask.AsTask());
 
 			this.loggingBrokerMock.Verify(broker =>
 			   broker.LogError(It.Is(SameExceptionAs(expectedStudentContactValidationException))),
