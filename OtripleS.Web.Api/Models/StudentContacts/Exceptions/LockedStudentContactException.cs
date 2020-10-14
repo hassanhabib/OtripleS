@@ -4,11 +4,12 @@
 //----------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.StudentContacts.Exceptions
 {
-    public class LockedStudentContactException : Exception
-    {
-        public LockedStudentContactException(Exception innerException)
-            : base("Locked StudentContact record exception, please try again later.", innerException) { }
-    }
+	public class LockedStudentContactException : Exception
+	{
+		public LockedStudentContactException(Exception innerException)
+			: base("Locked StudentContact record exception, please try again later.", innerException) { }
+	}
 }

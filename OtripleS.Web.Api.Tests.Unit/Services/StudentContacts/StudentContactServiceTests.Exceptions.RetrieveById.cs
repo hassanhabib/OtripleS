@@ -14,159 +14,159 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 {
-    public partial class StudentContactServiceTests
-    {
-        [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
-        {
-            // given
-            Guid randomContactId = Guid.NewGuid();
-            Guid inputContactId = randomContactId;
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputStudentId = randomStudentId;
-            SqlException sqlException = GetSqlException();
+	public partial class StudentContactServiceTests
+	{
+		[Fact]
+		public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
+		{
+			// given
+			Guid randomContactId = Guid.NewGuid();
+			Guid inputContactId = randomContactId;
+			Guid randomStudentId = Guid.NewGuid();
+			Guid inputStudentId = randomStudentId;
+			SqlException sqlException = GetSqlException();
 
-            var expectedStudentContactDependencyException
-                = new StudentContactDependencyException(sqlException);
+			var expectedStudentContactDependencyException
+				= new StudentContactDependencyException(sqlException);
 
-            this.storageBrokerMock.Setup(broker =>
-                 broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId))
-                    .ThrowsAsync(sqlException);
+			this.storageBrokerMock.Setup(broker =>
+				 broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId))
+					.ThrowsAsync(sqlException);
 
-            // when
-            ValueTask<StudentContact> deleteStudentContactTask =
-                this.studentContactService.RetrieveStudentContactByIdAsync
-                (inputStudentId, inputContactId);
+			// when
+			ValueTask<StudentContact> deleteStudentContactTask =
+				this.studentContactService.RetrieveStudentContactByIdAsync
+				(inputStudentId, inputContactId);
 
-            // then
-            await Assert.ThrowsAsync<StudentContactDependencyException>(() =>
-                deleteStudentContactTask.AsTask());
+			// then
+			await Assert.ThrowsAsync<StudentContactDependencyException>(() =>
+				deleteStudentContactTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentContactDependencyException))),
-                    Times.Once);
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogCritical(It.Is(SameExceptionAs(expectedStudentContactDependencyException))),
+					Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId),
-                    Times.Once);
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId),
+					Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 
-        [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
-        {
-            // given
-            Guid randomContactId = Guid.NewGuid();
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputContactId = randomContactId;
-            Guid inputStudentId = randomStudentId;
-            var databaseUpdateException = new DbUpdateException();
+		[Fact]
+		public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+		{
+			// given
+			Guid randomContactId = Guid.NewGuid();
+			Guid randomStudentId = Guid.NewGuid();
+			Guid inputContactId = randomContactId;
+			Guid inputStudentId = randomStudentId;
+			var databaseUpdateException = new DbUpdateException();
 
-            var expectedStudentContactDependencyException =
-                new StudentContactDependencyException(databaseUpdateException);
+			var expectedStudentContactDependencyException =
+				new StudentContactDependencyException(databaseUpdateException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId))
-                    .ThrowsAsync(databaseUpdateException);
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId))
+					.ThrowsAsync(databaseUpdateException);
 
-            // when
-            ValueTask<StudentContact> deleteContactTask =
-                this.studentContactService.RetrieveStudentContactByIdAsync
-                (inputStudentId, inputContactId);
+			// when
+			ValueTask<StudentContact> deleteContactTask =
+				this.studentContactService.RetrieveStudentContactByIdAsync
+				(inputStudentId, inputContactId);
 
-            // then
-            await Assert.ThrowsAsync<StudentContactDependencyException>(
-                () => deleteContactTask.AsTask());
+			// then
+			await Assert.ThrowsAsync<StudentContactDependencyException>(
+				() => deleteContactTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentContactDependencyException))),
-                    Times.Once);
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedStudentContactDependencyException))),
+					Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId),
-                    Times.Once);
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId),
+					Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 
-        [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
-        {
-            // given
-            Guid randomContactId = Guid.NewGuid();
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputContactId = randomContactId;
-            Guid inputStudentId = randomStudentId;
-            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+		[Fact]
+		public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+		{
+			// given
+			Guid randomContactId = Guid.NewGuid();
+			Guid randomStudentId = Guid.NewGuid();
+			Guid inputContactId = randomContactId;
+			Guid inputStudentId = randomStudentId;
+			var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
-            var lockedContactException =
-                new LockedStudentContactException(databaseUpdateConcurrencyException);
+			var lockedContactException =
+				new LockedStudentContactException(databaseUpdateConcurrencyException);
 
-            var expectedStudentContactException =
-                new StudentContactDependencyException(lockedContactException);
+			var expectedStudentContactException =
+				new StudentContactDependencyException(lockedContactException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId))
-                    .ThrowsAsync(databaseUpdateConcurrencyException);
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId))
+					.ThrowsAsync(databaseUpdateConcurrencyException);
 
-            // when
-            ValueTask<StudentContact> deleteStudentContactTask =
-                this.studentContactService.RetrieveStudentContactByIdAsync(inputStudentId, inputContactId);
+			// when
+			ValueTask<StudentContact> deleteStudentContactTask =
+				this.studentContactService.RetrieveStudentContactByIdAsync(inputStudentId, inputContactId);
 
-            // then
-            await Assert.ThrowsAsync<StudentContactDependencyException>(() => deleteStudentContactTask.AsTask());
+			// then
+			await Assert.ThrowsAsync<StudentContactDependencyException>(() => deleteStudentContactTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentContactException))),
-                    Times.Once);
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedStudentContactException))),
+					Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId),
-                    Times.Once);
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId),
+					Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 
-        [Fact]
-        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
-        {
-            // given
-            Guid randomContactId = Guid.NewGuid();
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputContactId = randomContactId;
-            Guid inputStudentId = randomStudentId;
-            var exception = new Exception();
+		[Fact]
+		public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
+		{
+			// given
+			Guid randomContactId = Guid.NewGuid();
+			Guid randomStudentId = Guid.NewGuid();
+			Guid inputContactId = randomContactId;
+			Guid inputStudentId = randomStudentId;
+			var exception = new Exception();
 
-            var expectedStudentContactException =
-                new StudentContactServiceException(exception);
+			var expectedStudentContactException =
+				new StudentContactServiceException(exception);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId))
-                    .ThrowsAsync(exception);
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId))
+					.ThrowsAsync(exception);
 
-            // when
-            ValueTask<StudentContact> deleteStudentContactTask =
-                this.studentContactService.RetrieveStudentContactByIdAsync
-                (inputStudentId, inputContactId);
+			// when
+			ValueTask<StudentContact> deleteStudentContactTask =
+				this.studentContactService.RetrieveStudentContactByIdAsync
+				(inputStudentId, inputContactId);
 
-            // then
-            await Assert.ThrowsAsync<StudentContactServiceException>(() =>
-                deleteStudentContactTask.AsTask());
+			// then
+			await Assert.ThrowsAsync<StudentContactServiceException>(() =>
+				deleteStudentContactTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentContactException))),
-                    Times.Once);
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedStudentContactException))),
+					Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId),
-                    Times.Once);
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectStudentContactByIdAsync(inputStudentId, inputContactId),
+					Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-    }
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
+	}
 }
