@@ -15,6 +15,7 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 		private void ValidateTeacherContactOnAdd(TeacherContact teacherContact)
 		{
 			ValidateTeacherContactIsNull(teacherContact);
+			ValidateTeacherContactRequiredFields(teacherContact);
 		}
 
 		private void ValidateTeacherContactIsNull(TeacherContact teacherContact)
@@ -22,6 +23,17 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			if (teacherContact is null)
 			{
 				throw new NullTeacherContactException();
+			}
+		}
+
+		private void ValidateTeacherContactRequiredFields(TeacherContact teacherContact)
+		{
+			switch (teacherContact)
+			{
+				case { } when IsInvalid(teacherContact.TeacherId):
+					throw new InvalidTeacherContactInputException(
+						parameterName: nameof(TeacherContact.TeacherId),
+						parameterValue: teacherContact.TeacherId);
 			}
 		}
 
@@ -59,5 +71,7 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 				this.loggingBroker.LogWarning("No teacherContacts found in storage.");
 			}
 		}
+
+		private static bool IsInvalid(Guid input) => input == default;
 	}
 }
