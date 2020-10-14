@@ -78,7 +78,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
             Filler<Contact> filler = new Filler<Contact>();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(dateTime);
+                .OnType<DateTimeOffset>().Use(dateTime)
+                .OnProperty(contact => contact.StudentContacts).IgnoreIt()
+                .OnProperty(contact => contact.TeacherContacts).IgnoreIt();
 
             return filler;
         }

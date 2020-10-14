@@ -11,44 +11,44 @@ using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
-using OtripleS.Web.Api.Models.StudentContacts;
-using OtripleS.Web.Api.Services.StudentContacts;
+using OtripleS.Web.Api.Models.TeacherContacts;
+using OtripleS.Web.Api.Services.TeacherContacts;
 using Tynamix.ObjectFiller;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
+namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 {
-	public partial class StudentContactServiceTests
+	public partial class TeacherContactServiceTests
 	{
 		private readonly Mock<IStorageBroker> storageBrokerMock;
 		private readonly Mock<ILoggingBroker> loggingBrokerMock;
-		private readonly IStudentContactService studentContactService;
+		private readonly ITeacherContactService teacherContactService;
 
-		public StudentContactServiceTests()
+		public TeacherContactServiceTests()
 		{
 			this.storageBrokerMock = new Mock<IStorageBroker>();
 			this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
-			this.studentContactService = new StudentContactService(
+			this.teacherContactService = new TeacherContactService(
 				storageBroker: this.storageBrokerMock.Object,
 				loggingBroker: this.loggingBrokerMock.Object);
 		}
 
-		private StudentContact CreateRandomStudentContact() =>
-			CreateStudentContactFiller(DateTimeOffset.UtcNow).Create();
+		private TeacherContact CreateRandomTeacherContact() =>
+			CreateTeacherContactFiller(DateTimeOffset.UtcNow).Create();
 
-		private IQueryable<StudentContact> CreateRandomStudentContacts() =>
-			CreateStudentContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+		private IQueryable<TeacherContact> CreateRandomTeacherContacts() =>
+			CreateTeacherContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
-		private StudentContact CreateRandomStudentContact(DateTimeOffset dates) =>
-			CreateStudentContactFiller(dates).Create();
+		private TeacherContact CreateRandomTeacherContact(DateTimeOffset dates) =>
+			CreateTeacherContactFiller(dates).Create();
 
-		private static Filler<StudentContact> CreateStudentContactFiller(DateTimeOffset dates)
+		private static Filler<TeacherContact> CreateTeacherContactFiller(DateTimeOffset dates)
 		{
-			var filler = new Filler<StudentContact>();
+			var filler = new Filler<TeacherContact>();
 			filler.Setup()
 				.OnType<DateTimeOffset>().Use(dates)
-				.OnProperty(studentcontact => studentcontact.Student).IgnoreIt()
-				.OnProperty(studentcontact => studentcontact.Contact).IgnoreIt();
+				.OnProperty(teacher => teacher.Teacher).IgnoreIt()
+				.OnProperty(teacher => teacher.Contact).IgnoreIt();
 
 			return filler;
 		}

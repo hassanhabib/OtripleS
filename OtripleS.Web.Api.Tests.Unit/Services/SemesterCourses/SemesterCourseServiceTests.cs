@@ -56,7 +56,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourses
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates)
                 .OnProperty(semesterCourse => semesterCourse.CreatedDate).Use(dates)
-                .OnProperty(semesterCourse => semesterCourse.UpdatedDate).Use(dates);
+                .OnProperty(semesterCourse => semesterCourse.UpdatedDate).Use(dates)
+                .OnProperty(semestercourse => semestercourse.Teacher).IgnoreIt()
+                .OnProperty(semestercourse => semestercourse.Course).IgnoreIt()
+                .OnProperty(semestercourse => semestercourse.Classroom).IgnoreIt()
+                .OnProperty(semestercourse => semestercourse.StudentSemesterCourses).IgnoreIt();
 
             return filler;
         }
