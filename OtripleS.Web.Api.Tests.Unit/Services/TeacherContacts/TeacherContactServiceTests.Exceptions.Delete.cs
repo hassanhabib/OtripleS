@@ -100,5 +100,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+		{
+			// given
+			var randomContactId = Guid.NewGuid();
+			var randomTeacherId = Guid.NewGuid();
+			Guid someContactId = randomContactId;
+			Guid someTeacherId = randomTeacherId;
+			var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+			var lockedContactException =
+				new LockedTeacherContactException(databaseUpdateConcurrencyException);
+
+			var expectedTeacherContactException =
+				new TeacherContactDependencyException(lockedContactException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectTeacherContactByIdAsync(someTeacherId, someContactId))
+					.ThrowsAsync(databaseUpdateConcurrencyException);
+
+			// when
+			ValueTask<TeacherContact> removeTeacherContactTask =
+				this.teacherContactService.RemoveTeacherContactByIdAsync(someTeacherId, someContactId);
+
+			// then
+			await Assert.ThrowsAsync<TeacherContactDependencyException>(() =>
+				removeTeacherContactTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectTeacherContactByIdAsync(someTeacherId, someContactId),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.DeleteTeacherContactAsync(It.IsAny<TeacherContact>()),
+					Times.Never);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
