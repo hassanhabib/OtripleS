@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.TeacherContacts;
 using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
 
@@ -35,6 +36,14 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			if (storageTeacherContact == null)
 			{
 				throw new NotFoundTeacherContactException(teacherId, contactId);
+			}
+		}
+
+		private void ValidateStorageTeacherContacts(IQueryable<TeacherContact> storageTeacherContacts)
+		{
+			if (!storageTeacherContacts.Any())
+			{
+				this.loggingBroker.LogWarning("No teacherContacts found in storage.");
 			}
 		}
 	}

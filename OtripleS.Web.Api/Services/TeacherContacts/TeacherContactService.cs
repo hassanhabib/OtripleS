@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -23,6 +24,17 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			this.storageBroker = storageBroker;
 			this.loggingBroker = loggingBroker;
 		}
+
+		public IQueryable<TeacherContact> RetrieveAllTeacherContacts() =>
+		TryCatch(() =>
+		{
+			IQueryable<TeacherContact> storageTeacherContacts =
+				this.storageBroker.SelectAllTeacherContacts();
+
+			ValidateStorageTeacherContacts(storageTeacherContacts);
+
+			return storageTeacherContacts;
+		});
 
 		public ValueTask<TeacherContact> RemoveTeacherContactByIdAsync(Guid teacherId, Guid contactId) =>
 		TryCatch(async () =>

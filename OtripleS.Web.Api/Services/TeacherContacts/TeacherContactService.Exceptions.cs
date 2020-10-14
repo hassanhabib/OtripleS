@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
     public partial class TeacherContactService
 	{
         private delegate ValueTask<TeacherContact> ReturningTeacherContactFunction();
+		private delegate IQueryable<TeacherContact> ReturningTeacherContactsFunction();
 
 		private async ValueTask<TeacherContact> TryCatch(
 			ReturningTeacherContactFunction returningTeacherContactFunction)
@@ -52,6 +54,26 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			}
 		}
 
+		private IQueryable<TeacherContact> TryCatch(
+			ReturningTeacherContactsFunction returningTeacherContactsFunction)
+		{
+			try
+			{
+				return returningTeacherContactsFunction();
+			}
+			catch (SqlException sqlException)
+			{
+				throw CreateAndLogCriticalDependencyException(sqlException);
+			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
+			catch (Exception exception)
+			{
+				throw CreateAndLogServiceException(exception);
+			}
+		}
 
 		private TeacherContactValidationException CreateAndLogValidationException(Exception exception)
 		{
