@@ -10,8 +10,38 @@ using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
 
 namespace OtripleS.Web.Api.Services.TeacherContacts
 {
-    public partial class TeacherContactService
+	public partial class TeacherContactService
 	{
+		private void ValidateTeacherContactOnAdd(TeacherContact teacherContact)
+		{
+			ValidateTeacherContactIsNull(teacherContact);
+			ValidateTeacherContactRequiredFields(teacherContact);
+		}
+
+		private void ValidateTeacherContactIsNull(TeacherContact teacherContact)
+		{
+			if (teacherContact is null)
+			{
+				throw new NullTeacherContactException();
+			}
+		}
+
+		private void ValidateTeacherContactRequiredFields(TeacherContact teacherContact)
+		{
+			switch (teacherContact)
+			{
+				case { } when IsInvalid(teacherContact.TeacherId):
+					throw new InvalidTeacherContactInputException(
+						parameterName: nameof(TeacherContact.TeacherId),
+						parameterValue: teacherContact.TeacherId);
+
+				case { } when IsInvalid(teacherContact.ContactId):
+					throw new InvalidTeacherContactInputException(
+						parameterName: nameof(TeacherContact.ContactId),
+						parameterValue: teacherContact.ContactId);
+			}
+		}
+
 		private void ValidateTeacherContactIdIsNull(Guid teacherId, Guid contactId)
 		{
 			if (teacherId == default)
@@ -46,5 +76,7 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 				this.loggingBroker.LogWarning("No teacherContacts found in storage.");
 			}
 		}
+
+		private static bool IsInvalid(Guid input) => input == default;
 	}
 }

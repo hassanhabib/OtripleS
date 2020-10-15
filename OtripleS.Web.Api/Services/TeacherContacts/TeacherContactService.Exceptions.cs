@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.TeacherContacts;
@@ -13,9 +14,9 @@ using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
 
 namespace OtripleS.Web.Api.Services.TeacherContacts
 {
-    public partial class TeacherContactService
+	public partial class TeacherContactService
 	{
-        private delegate ValueTask<TeacherContact> ReturningTeacherContactFunction();
+		private delegate ValueTask<TeacherContact> ReturningTeacherContactFunction();
 		private delegate IQueryable<TeacherContact> ReturningTeacherContactsFunction();
 
 		private async ValueTask<TeacherContact> TryCatch(
@@ -25,6 +26,10 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			{
 				return await returningTeacherContactFunction();
 			}
+			catch (NullTeacherContactException nullTeacherContactException)
+			{
+				throw CreateAndLogValidationException(nullTeacherContactException);
+			}
 			catch (InvalidTeacherContactInputException invalidTeacherContactInputException)
 			{
 				throw CreateAndLogValidationException(invalidTeacherContactInputException);
@@ -32,6 +37,20 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			catch (NotFoundTeacherContactException notFoundTeacherContactException)
 			{
 				throw CreateAndLogValidationException(notFoundTeacherContactException);
+			}
+			catch (DuplicateKeyException duplicateKeyException)
+			{
+				var alreadyExistsTeacherContactException =
+					new AlreadyExistsTeacherContactException(duplicateKeyException);
+
+				throw CreateAndLogValidationException(alreadyExistsTeacherContactException);
+			}
+			catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+			{
+				var invalidTeacherContactReferenceException =
+					new InvalidTeacherContactReferenceException(foreignKeyConstraintConflictException);
+
+				throw CreateAndLogValidationException(invalidTeacherContactReferenceException);
 			}
 			catch (SqlException sqlException)
 			{
