@@ -44,6 +44,11 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			return storageTeacherContacts;
 		});
 
+		public ValueTask<TeacherContact> RetrieveTeacherContactByIdAsync(Guid teacherId, Guid contactId)
+		{
+			throw new NotImplementedException();
+		}
+
 		public ValueTask<TeacherContact> RemoveTeacherContactByIdAsync(Guid teacherId, Guid contactId) =>
 		TryCatch(async () =>
 		{
