@@ -77,7 +77,7 @@ namespace OtripleS.Web.Api.Controllers
 			}
 		}
 
-		[HttpGet("teacher/{teacherId}/contact/{contactId}")]
+		[HttpGet("teachers/{teacherId}/contacts/{contactId}")]
 		public async ValueTask<ActionResult<TeacherContact>> GetTeacherContactAsync(Guid teacherId, Guid contactId)
 		{
 			try
@@ -110,7 +110,7 @@ namespace OtripleS.Web.Api.Controllers
 			}
 		}
 
-		[HttpDelete("teacher/{teacherId}/contact/{contactId}")]
+		[HttpDelete("teachers/{teacherId}/contacts/{contactId}")]
 		public async ValueTask<ActionResult<bool>> DeleteTeacherContactAsync(Guid teacherId, Guid contactId)
 		{
 			try
