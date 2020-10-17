@@ -44,11 +44,6 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 			return storageTeacherContacts;
 		});
 
-		public ValueTask<TeacherContact> RetrieveTeacherContactByIdAsync(Guid teacherId, Guid contactId)
-		{
-			throw new NotImplementedException();
-		}
-
 		public ValueTask<TeacherContact> RemoveTeacherContactByIdAsync(Guid teacherId, Guid contactId) =>
 		TryCatch(async () =>
 		{
@@ -61,5 +56,18 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 
 			return await this.storageBroker.DeleteTeacherContactAsync(mayBeTeacherContact);
 		});
-	}
+
+		public ValueTask<TeacherContact> RetrieveTeacherContactByIdAsync(Guid teacherId, Guid contactId) =>
+		TryCatch(async () =>
+		{
+			ValidateTeacherContactIdIsNull(teacherId, contactId);
+
+			TeacherContact storageTeacherContact = 
+				await this.storageBroker.SelectTeacherContactByIdAsync(teacherId, contactId);
+
+			ValidateStorageTeacherContact(storageTeacherContact, teacherId, contactId);
+
+			return storageTeacherContact;
+		});
+    }
 }
