@@ -56,5 +56,10 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 
 			return await this.storageBroker.DeleteTeacherContactAsync(mayBeTeacherContact);
 		});
-	}
+
+        public ValueTask<TeacherContact> RetrieveTeacherContactByIdAsync(Guid teacherId, Guid contactId)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
