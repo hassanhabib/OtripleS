@@ -62,7 +62,12 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 		{
 			ValidateTeacherContactIdIsNull(teacherId, contactId);
 
-			return await this.storageBroker.SelectTeacherContactByIdAsync(teacherId, contactId);
+			TeacherContact storageTeacherContact = 
+				await this.storageBroker.SelectTeacherContactByIdAsync(teacherId, contactId);
+
+			ValidateStorageTeacherContact(storageTeacherContact, teacherId, contactId);
+
+			return storageTeacherContact;
 		});
     }
 }
