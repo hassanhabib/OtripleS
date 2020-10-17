@@ -27,6 +27,7 @@ using OtripleS.Web.Api.Services.StudentContacts;
 using OtripleS.Web.Api.Services.StudentGuardians;
 using OtripleS.Web.Api.Services.Students;
 using OtripleS.Web.Api.Services.StudentSemesterCourses;
+using OtripleS.Web.Api.Services.TeacherContacts;
 using OtripleS.Web.Api.Services.Teachers;
 using OtripleS.Web.Api.Services.Users;
 
@@ -69,6 +70,7 @@ namespace OtripleS.Web.Api
             services.AddTransient<IStudentGuardianService, StudentGuardianService>();
             services.AddTransient<IContactService, ContactService>();
             services.AddTransient<IStudentContactService, StudentContactService>();
+            services.AddTransient<ITeacherContactService, TeacherContactService>();
 
             services.AddIdentityCore<User>()
                     .AddRoles<Role>()
