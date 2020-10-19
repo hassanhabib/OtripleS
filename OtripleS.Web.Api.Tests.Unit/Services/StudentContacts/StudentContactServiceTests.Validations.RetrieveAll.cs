@@ -3,7 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
@@ -27,7 +26,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 
             string expectedMessage = "No studentContacts found in storage.";
 
-            this.storageBrokerMock.Setup(broker => 
+            this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudentContacts())
                     .Returns(expectedStudentContacts);
 
@@ -38,11 +37,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
             // then
             actualSemesterCourses.Should().BeEquivalentTo(emptyStorageStudentContacts);
 
-            this.loggingBrokerMock.Verify(broker => 
+            this.loggingBrokerMock.Verify(broker =>
                 broker.LogWarning(expectedMessage),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker => 
+            this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentContacts(),
                     Times.Once);
 

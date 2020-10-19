@@ -8,8 +8,8 @@ using System;
 namespace OtripleS.Web.Api.Models.TeacherContacts.Exceptions
 {
     public class LockedTeacherContactException : Exception
-	{
-		public LockedTeacherContactException(Exception innerException)
-			: base("Locked TeacherContact record exception, please try again later.", innerException) { }
-	}
+    {
+        public LockedTeacherContactException(Exception innerException)
+            : base("Locked TeacherContact record exception, please try again later.", innerException) { }
+    }
 }

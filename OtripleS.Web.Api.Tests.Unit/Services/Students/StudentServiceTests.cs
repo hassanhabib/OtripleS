@@ -3,6 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
@@ -10,11 +15,6 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Services.Students;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Students
@@ -79,7 +79,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Students
         private static Filler<Student> CreateStudentFiller(DateTimeOffset dates)
         {
             var filler = new Filler<Student>();
-            
+
             filler.Setup()
                 .OnProperty(student => student.BirthDate).Use(GetRandomDateTime())
                 .OnProperty(student => student.CreatedDate).Use(dates)

@@ -3,8 +3,8 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using Microsoft.AspNetCore.Identity;
 using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace OtripleS.Web.Api.Models.Users
 {

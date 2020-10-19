@@ -10,73 +10,73 @@ using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
 
 namespace OtripleS.Web.Api.Services.TeacherContacts
 {
-	public partial class TeacherContactService
-	{
-		private void ValidateTeacherContactOnAdd(TeacherContact teacherContact)
-		{
-			ValidateTeacherContactIsNull(teacherContact);
-			ValidateTeacherContactRequiredFields(teacherContact);
-		}
+    public partial class TeacherContactService
+    {
+        private void ValidateTeacherContactOnAdd(TeacherContact teacherContact)
+        {
+            ValidateTeacherContactIsNull(teacherContact);
+            ValidateTeacherContactRequiredFields(teacherContact);
+        }
 
-		private void ValidateTeacherContactIsNull(TeacherContact teacherContact)
-		{
-			if (teacherContact is null)
-			{
-				throw new NullTeacherContactException();
-			}
-		}
+        private void ValidateTeacherContactIsNull(TeacherContact teacherContact)
+        {
+            if (teacherContact is null)
+            {
+                throw new NullTeacherContactException();
+            }
+        }
 
-		private void ValidateTeacherContactRequiredFields(TeacherContact teacherContact)
-		{
-			switch (teacherContact)
-			{
-				case { } when IsInvalid(teacherContact.TeacherId):
-					throw new InvalidTeacherContactInputException(
-						parameterName: nameof(TeacherContact.TeacherId),
-						parameterValue: teacherContact.TeacherId);
+        private void ValidateTeacherContactRequiredFields(TeacherContact teacherContact)
+        {
+            switch (teacherContact)
+            {
+                case { } when IsInvalid(teacherContact.TeacherId):
+                    throw new InvalidTeacherContactInputException(
+                        parameterName: nameof(TeacherContact.TeacherId),
+                        parameterValue: teacherContact.TeacherId);
 
-				case { } when IsInvalid(teacherContact.ContactId):
-					throw new InvalidTeacherContactInputException(
-						parameterName: nameof(TeacherContact.ContactId),
-						parameterValue: teacherContact.ContactId);
-			}
-		}
+                case { } when IsInvalid(teacherContact.ContactId):
+                    throw new InvalidTeacherContactInputException(
+                        parameterName: nameof(TeacherContact.ContactId),
+                        parameterValue: teacherContact.ContactId);
+            }
+        }
 
-		private void ValidateTeacherContactIdIsNull(Guid teacherId, Guid contactId)
-		{
-			if (teacherId == default)
-			{
-				throw new InvalidTeacherContactInputException(
-					parameterName: nameof(TeacherContact.TeacherId),
-					parameterValue: teacherId);
-			}
+        private void ValidateTeacherContactIdIsNull(Guid teacherId, Guid contactId)
+        {
+            if (teacherId == default)
+            {
+                throw new InvalidTeacherContactInputException(
+                    parameterName: nameof(TeacherContact.TeacherId),
+                    parameterValue: teacherId);
+            }
 
-			if (contactId == default)
-			{
-				throw new InvalidTeacherContactInputException(
-					parameterName: nameof(TeacherContact.ContactId),
-					parameterValue: contactId);
-			}
-		}
+            if (contactId == default)
+            {
+                throw new InvalidTeacherContactInputException(
+                    parameterName: nameof(TeacherContact.ContactId),
+                    parameterValue: contactId);
+            }
+        }
 
-		private static void ValidateStorageTeacherContact(
-			TeacherContact storageTeacherContact,
-			Guid teacherId, Guid contactId)
-		{
-			if (storageTeacherContact == null)
-			{
-				throw new NotFoundTeacherContactException(teacherId, contactId);
-			}
-		}
+        private static void ValidateStorageTeacherContact(
+            TeacherContact storageTeacherContact,
+            Guid teacherId, Guid contactId)
+        {
+            if (storageTeacherContact == null)
+            {
+                throw new NotFoundTeacherContactException(teacherId, contactId);
+            }
+        }
 
-		private void ValidateStorageTeacherContacts(IQueryable<TeacherContact> storageTeacherContacts)
-		{
-			if (!storageTeacherContacts.Any())
-			{
-				this.loggingBroker.LogWarning("No teacherContacts found in storage.");
-			}
-		}
+        private void ValidateStorageTeacherContacts(IQueryable<TeacherContact> storageTeacherContacts)
+        {
+            if (!storageTeacherContacts.Any())
+            {
+                this.loggingBroker.LogWarning("No teacherContacts found in storage.");
+            }
+        }
 
-		private static bool IsInvalid(Guid input) => input == default;
-	}
+        private static bool IsInvalid(Guid input) => input == default;
+    }
 }

@@ -33,66 +33,66 @@ using OtripleS.Web.Api.Services.Users;
 
 namespace OtripleS.Web.Api
 {
-	public class Startup
-	{
-		public Startup(IConfiguration configuration) =>
-			Configuration = configuration;
+    public class Startup
+    {
+        public Startup(IConfiguration configuration) =>
+            Configuration = configuration;
 
-		public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-		public void ConfigureServices(IServiceCollection services)
-		{
-			services.AddControllers();
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
 
-			services.AddMvc().AddNewtonsoftJson(options =>
-			{
-				options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-				options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-				options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-			});
+            services.AddMvc().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            });
 
-			services.AddDbContext<StorageBroker>();
-			services.AddScoped<IUserManagementBroker, UserManagementBroker>();
-			services.AddScoped<IStorageBroker, StorageBroker>();
-			services.AddTransient<ILogger, Logger<LoggingBroker>>();
-			services.AddTransient<ILoggingBroker, LoggingBroker>();
-			services.AddTransient<IDateTimeBroker, DateTimeBroker>();
-			services.AddTransient<IStudentService, StudentService>();
-			services.AddTransient<ITeacherService, TeacherService>();
-			services.AddTransient<ICourseService, CourseService>();
-			services.AddTransient<IClassroomService, ClassroomService>();
-			services.AddTransient<IAssignmentService, AssignmentService>();
-			services.AddTransient<ISemesterCourseService, SemesterCourseService>();
-			services.AddTransient<IStudentSemesterCourseService, StudentSemesterCourseService>();
-			services.AddTransient<IAttendanceService, AttendanceService>();
-			services.AddTransient<IUserService, UserService>();
-			services.AddTransient<IGuardianService, GuardianService>();
-			services.AddTransient<IStudentGuardianService, StudentGuardianService>();
-			services.AddTransient<IContactService, ContactService>();
-			services.AddTransient<IStudentContactService, StudentContactService>();
-			services.AddTransient<ITeacherContactService, TeacherContactService>();
+            services.AddDbContext<StorageBroker>();
+            services.AddScoped<IUserManagementBroker, UserManagementBroker>();
+            services.AddScoped<IStorageBroker, StorageBroker>();
+            services.AddTransient<ILogger, Logger<LoggingBroker>>();
+            services.AddTransient<ILoggingBroker, LoggingBroker>();
+            services.AddTransient<IDateTimeBroker, DateTimeBroker>();
+            services.AddTransient<IStudentService, StudentService>();
+            services.AddTransient<ITeacherService, TeacherService>();
+            services.AddTransient<ICourseService, CourseService>();
+            services.AddTransient<IClassroomService, ClassroomService>();
+            services.AddTransient<IAssignmentService, AssignmentService>();
+            services.AddTransient<ISemesterCourseService, SemesterCourseService>();
+            services.AddTransient<IStudentSemesterCourseService, StudentSemesterCourseService>();
+            services.AddTransient<IAttendanceService, AttendanceService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IGuardianService, GuardianService>();
+            services.AddTransient<IStudentGuardianService, StudentGuardianService>();
+            services.AddTransient<IContactService, ContactService>();
+            services.AddTransient<IStudentContactService, StudentContactService>();
+            services.AddTransient<ITeacherContactService, TeacherContactService>();
 
-			services.AddIdentityCore<User>()
-					.AddRoles<Role>()
-					.AddEntityFrameworkStores<StorageBroker>()
-					.AddDefaultTokenProviders();
-		}
+            services.AddIdentityCore<User>()
+                    .AddRoles<Role>()
+                    .AddEntityFrameworkStores<StorageBroker>()
+                    .AddDefaultTokenProviders();
+        }
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
-			app.UseHttpsRedirection();
-			app.UseRouting();
-			app.UseAuthorization();
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseAuthorization();
 
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapControllers();
-			});
-		}
-	}
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+    }
 }

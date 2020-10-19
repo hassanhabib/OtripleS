@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
             this.StudentContacts.AsQueryable();
 
         public async ValueTask<StudentContact> SelectStudentContactByIdAsync(
-            Guid studentId, 
+            Guid studentId,
             Guid contactId)
         {
             this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;

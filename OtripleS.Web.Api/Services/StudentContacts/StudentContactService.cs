@@ -12,62 +12,62 @@ using OtripleS.Web.Api.Models.StudentContacts;
 
 namespace OtripleS.Web.Api.Services.StudentContacts
 {
-	public partial class StudentContactService : IStudentContactService
-	{
-		private readonly IStorageBroker storageBroker;
-		private readonly ILoggingBroker loggingBroker;
+    public partial class StudentContactService : IStudentContactService
+    {
+        private readonly IStorageBroker storageBroker;
+        private readonly ILoggingBroker loggingBroker;
 
-		public StudentContactService(
-			IStorageBroker storageBroker,
-			ILoggingBroker loggingBroker)
-		{
-			this.storageBroker = storageBroker;
-			this.loggingBroker = loggingBroker;
-		}
+        public StudentContactService(
+            IStorageBroker storageBroker,
+            ILoggingBroker loggingBroker)
+        {
+            this.storageBroker = storageBroker;
+            this.loggingBroker = loggingBroker;
+        }
 
-		public ValueTask<StudentContact> AddStudentContactAsync(StudentContact studentContact) =>
-		TryCatch(async () =>
-		{
-			ValidateStudentContactOnCreate(studentContact);
+        public ValueTask<StudentContact> AddStudentContactAsync(StudentContact studentContact) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentContactOnCreate(studentContact);
 
-			return await this.storageBroker.InsertStudentContactAsync(studentContact);
-		});
+            return await this.storageBroker.InsertStudentContactAsync(studentContact);
+        });
 
-		public ValueTask<StudentContact> RemoveStudentContactByIdAsync(Guid studentId, Guid contactId) =>
-		TryCatch(async () =>
-		{
-			ValidateStudentContactIdIsNull(studentId, contactId);
+        public ValueTask<StudentContact> RemoveStudentContactByIdAsync(Guid studentId, Guid contactId) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentContactIdIsNull(studentId, contactId);
 
-			StudentContact mayBeStudentContact =
-				await this.storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
+            StudentContact mayBeStudentContact =
+                await this.storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
 
-			ValidateStorageStudentContact(mayBeStudentContact, studentId, contactId);
+            ValidateStorageStudentContact(mayBeStudentContact, studentId, contactId);
 
-			return await this.storageBroker.DeleteStudentContactAsync(mayBeStudentContact);
-		});
+            return await this.storageBroker.DeleteStudentContactAsync(mayBeStudentContact);
+        });
 
         public IQueryable<StudentContact> RetrieveAllStudentContacts() =>
-		TryCatch(() =>
-		{
-			IQueryable<StudentContact> storageStudentContacts =
-				this.storageBroker.SelectAllStudentContacts();
+        TryCatch(() =>
+        {
+            IQueryable<StudentContact> storageStudentContacts =
+                this.storageBroker.SelectAllStudentContacts();
 
-			ValidateStorageStudentContacts(storageStudentContacts);
+            ValidateStorageStudentContacts(storageStudentContacts);
 
-			return storageStudentContacts;
-		});
+            return storageStudentContacts;
+        });
 
-		public ValueTask<StudentContact> RetrieveStudentContactByIdAsync(Guid studentId, Guid contactId) =>
-		TryCatch(async () =>
-		{
-			ValidateStudentContactIdIsNull(studentId, contactId);
+        public ValueTask<StudentContact> RetrieveStudentContactByIdAsync(Guid studentId, Guid contactId) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentContactIdIsNull(studentId, contactId);
 
-			StudentContact storageStudentContact =
-				await this.storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
+            StudentContact storageStudentContact =
+                await this.storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
 
-			ValidateStorageStudentContact(storageStudentContact, studentId, contactId);
+            ValidateStorageStudentContact(storageStudentContact, studentId, contactId);
 
-			return storageStudentContact;
-		});
-	}
+            return storageStudentContact;
+        });
+    }
 }

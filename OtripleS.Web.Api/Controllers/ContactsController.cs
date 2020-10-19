@@ -5,7 +5,6 @@
 
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -135,14 +134,14 @@ namespace OtripleS.Web.Api.Controllers
 
                 return NotFound(innerMessage);
             }
-            
+
             catch (ContactValidationException contactValidationException)
             {
                 string innerMessage = GetInnerMessage(contactValidationException);
 
                 return NotFound(innerMessage);
             }
-            
+
             catch (ContactDependencyException contactDependencyException)
                 when (contactDependencyException.InnerException is LockedContactException)
             {
@@ -157,7 +156,7 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Contact storageContact = 
+                Contact storageContact =
                     await this.contactService.RemoveContactByIdAsync(contactId);
 
                 return Ok(storageContact);

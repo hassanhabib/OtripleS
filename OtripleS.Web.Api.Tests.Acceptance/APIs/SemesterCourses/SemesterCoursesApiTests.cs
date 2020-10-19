@@ -3,15 +3,15 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Force.DeepCloner;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Models.Teachers;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Tynamix.ObjectFiller;
 using Xunit;
 

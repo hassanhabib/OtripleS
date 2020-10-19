@@ -7,8 +7,8 @@ using System;
 
 namespace OtripleS.Web.Api.Models.TeacherContacts.Exceptions
 {
-	public class NullTeacherContactException : Exception
-	{
-		public NullTeacherContactException() : base("The TeacherContact is null.") { }
-	}
+    public class NullTeacherContactException : Exception
+    {
+        public NullTeacherContactException() : base("The TeacherContact is null.") { }
+    }
 }

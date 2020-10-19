@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.TeacherContacts.Exceptions
 {
-	public class InvalidTeacherContactReferenceException : Exception
-	{
-		public InvalidTeacherContactReferenceException(Exception innerException)
-			: base("Invalid teacher contact reference error occurred.", innerException) { }
-	}
+    public class InvalidTeacherContactReferenceException : Exception
+    {
+        public InvalidTeacherContactReferenceException(Exception innerException)
+            : base("Invalid teacher contact reference error occurred.", innerException) { }
+    }
 }

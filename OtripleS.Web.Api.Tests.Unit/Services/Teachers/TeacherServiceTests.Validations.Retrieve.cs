@@ -3,14 +3,14 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using FluentAssertions;
-using Moq;
-using OtripleS.Web.Api.Models.Teachers;
-using OtripleS.Web.Api.Models.Teachers.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
+using Moq;
+using OtripleS.Web.Api.Models.Teachers;
+using OtripleS.Web.Api.Models.Teachers.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Teachers

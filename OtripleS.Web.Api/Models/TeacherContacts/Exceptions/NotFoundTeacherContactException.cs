@@ -7,11 +7,11 @@ using System;
 
 namespace OtripleS.Web.Api.Models.TeacherContacts.Exceptions
 {
-	public class NotFoundTeacherContactException : Exception
-	{
-		public NotFoundTeacherContactException(Guid teacherId, Guid contactId)
-		   : base($"Couldn't find TeacherContact with TeacherId: {teacherId} " +
-				  $"and ContactId: {contactId}.")
-		{ }
-	}
+    public class NotFoundTeacherContactException : Exception
+    {
+        public NotFoundTeacherContactException(Guid teacherId, Guid contactId)
+           : base($"Couldn't find TeacherContact with TeacherId: {teacherId} " +
+                  $"and ContactId: {contactId}.")
+        { }
+    }
 }

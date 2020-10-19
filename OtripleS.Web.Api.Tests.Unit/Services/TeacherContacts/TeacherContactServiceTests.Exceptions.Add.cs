@@ -13,111 +13,111 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 {
-	public partial class TeacherContactServiceTests
-	{
-		[Fact]
-		public async Task ShouldThrowDependencyExceptionOnAddWhenSqlExceptionOccursAndLogItAsync()
-		{
-			// given
-			TeacherContact randomTeacherContact = CreateRandomTeacherContact();
-			TeacherContact inputTeacherContact = randomTeacherContact;
-			var sqlException = GetSqlException();
+    public partial class TeacherContactServiceTests
+    {
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnAddWhenSqlExceptionOccursAndLogItAsync()
+        {
+            // given
+            TeacherContact randomTeacherContact = CreateRandomTeacherContact();
+            TeacherContact inputTeacherContact = randomTeacherContact;
+            var sqlException = GetSqlException();
 
-			var expectedTeacherContactDependencyException =
-				new TeacherContactDependencyException(sqlException);
+            var expectedTeacherContactDependencyException =
+                new TeacherContactDependencyException(sqlException);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.InsertTeacherContactAsync(inputTeacherContact))
-					.ThrowsAsync(sqlException);
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertTeacherContactAsync(inputTeacherContact))
+                    .ThrowsAsync(sqlException);
 
-			// when
-			ValueTask<TeacherContact> addTeacherContactTask =
-				this.teacherContactService.AddTeacherContactAsync(inputTeacherContact);
+            // when
+            ValueTask<TeacherContact> addTeacherContactTask =
+                this.teacherContactService.AddTeacherContactAsync(inputTeacherContact);
 
-			// then
-			await Assert.ThrowsAsync<TeacherContactDependencyException>(() =>
-				addTeacherContactTask.AsTask());
+            // then
+            await Assert.ThrowsAsync<TeacherContactDependencyException>(() =>
+                addTeacherContactTask.AsTask());
 
-			this.loggingBrokerMock.Verify(broker =>
-				broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherContactDependencyException))),
-					Times.Once);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherContactDependencyException))),
+                    Times.Once);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.InsertTeacherContactAsync(inputTeacherContact),
-					Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTeacherContactAsync(inputTeacherContact),
+                    Times.Once);
 
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-		}
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
 
-		[Fact]
-		public async Task ShouldThrowDependencyExceptionOnAddWhenDbExceptionOccursAndLogItAsync()
-		{
-			// given
-			TeacherContact randomTeacherContact = CreateRandomTeacherContact();
-			TeacherContact inputTeacherContact = randomTeacherContact;
-			var databaseUpdateException = new DbUpdateException();
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnAddWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            TeacherContact randomTeacherContact = CreateRandomTeacherContact();
+            TeacherContact inputTeacherContact = randomTeacherContact;
+            var databaseUpdateException = new DbUpdateException();
 
-			var expectedTeacherContactDependencyException =
-				new TeacherContactDependencyException(databaseUpdateException);
+            var expectedTeacherContactDependencyException =
+                new TeacherContactDependencyException(databaseUpdateException);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.InsertTeacherContactAsync(inputTeacherContact))
-					.ThrowsAsync(databaseUpdateException);
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertTeacherContactAsync(inputTeacherContact))
+                    .ThrowsAsync(databaseUpdateException);
 
-			// when
-			ValueTask<TeacherContact> addTeacherContactTask =
-				this.teacherContactService.AddTeacherContactAsync(inputTeacherContact);
+            // when
+            ValueTask<TeacherContact> addTeacherContactTask =
+                this.teacherContactService.AddTeacherContactAsync(inputTeacherContact);
 
-			// then
-			await Assert.ThrowsAsync<TeacherContactDependencyException>(() =>
-				addTeacherContactTask.AsTask());
+            // then
+            await Assert.ThrowsAsync<TeacherContactDependencyException>(() =>
+                addTeacherContactTask.AsTask());
 
-			this.loggingBrokerMock.Verify(broker =>
-				broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactDependencyException))),
-					Times.Once);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactDependencyException))),
+                    Times.Once);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.InsertTeacherContactAsync(inputTeacherContact),
-					Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTeacherContactAsync(inputTeacherContact),
+                    Times.Once);
 
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-		}
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
 
-		[Fact]
-		public async Task ShouldThrowServiceExceptionOnAddWhenExceptionOccursAndLogItAsync()
-		{
-			// given
-			TeacherContact randomTeacherContact = CreateRandomTeacherContact();
-			TeacherContact inputTeacherContact = randomTeacherContact;
-			var exception = new Exception();
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnAddWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            TeacherContact randomTeacherContact = CreateRandomTeacherContact();
+            TeacherContact inputTeacherContact = randomTeacherContact;
+            var exception = new Exception();
 
-			var expectedTeacherContactServiceException =
-				new TeacherContactServiceException(exception);
+            var expectedTeacherContactServiceException =
+                new TeacherContactServiceException(exception);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.InsertTeacherContactAsync(inputTeacherContact))
-					.ThrowsAsync(exception);
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertTeacherContactAsync(inputTeacherContact))
+                    .ThrowsAsync(exception);
 
-			// when
-			ValueTask<TeacherContact> addTeacherContactTask =
-				 this.teacherContactService.AddTeacherContactAsync(inputTeacherContact);
+            // when
+            ValueTask<TeacherContact> addTeacherContactTask =
+                 this.teacherContactService.AddTeacherContactAsync(inputTeacherContact);
 
-			// then
-			await Assert.ThrowsAsync<TeacherContactServiceException>(() =>
-				addTeacherContactTask.AsTask());
+            // then
+            await Assert.ThrowsAsync<TeacherContactServiceException>(() =>
+                addTeacherContactTask.AsTask());
 
-			this.loggingBrokerMock.Verify(broker =>
-				broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactServiceException))),
-					Times.Once);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactServiceException))),
+                    Times.Once);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.InsertTeacherContactAsync(inputTeacherContact),
-					Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTeacherContactAsync(inputTeacherContact),
+                    Times.Once);
 
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-		}
-	}
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+    }
 }

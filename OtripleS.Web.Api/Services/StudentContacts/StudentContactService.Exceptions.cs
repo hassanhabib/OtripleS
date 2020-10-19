@@ -14,116 +14,116 @@ using OtripleS.Web.Api.Models.StudentContacts.Exceptions;
 
 namespace OtripleS.Web.Api.Services.StudentContacts
 {
-	public partial class StudentContactService
-	{
-		private delegate ValueTask<StudentContact> ReturningStudentContactFunction();
-		private delegate IQueryable<StudentContact> ReturningStudentContactsFunction();
+    public partial class StudentContactService
+    {
+        private delegate ValueTask<StudentContact> ReturningStudentContactFunction();
+        private delegate IQueryable<StudentContact> ReturningStudentContactsFunction();
 
-		private async ValueTask<StudentContact> TryCatch(
-			ReturningStudentContactFunction returningStudentContactFunction)
-		{
-			try
-			{
-				return await returningStudentContactFunction();
-			}
-			catch (NullStudentContactException nullStudentContactException)
-			{
-				throw CreateAndLogValidationException(nullStudentContactException);
-			}
-			catch (InvalidStudentContactInputException invalidStudentContactInputException)
-			{
-				throw CreateAndLogValidationException(invalidStudentContactInputException);
-			}
-			catch (NotFoundStudentContactException notFoundStudentContactException)
-			{
-				throw CreateAndLogValidationException(notFoundStudentContactException);
-			}
-			catch (DuplicateKeyException duplicateKeyException)
-			{
-				var alreadyExistsStudentContactException =
-					new AlreadyExistsStudentContactException(duplicateKeyException);
+        private async ValueTask<StudentContact> TryCatch(
+            ReturningStudentContactFunction returningStudentContactFunction)
+        {
+            try
+            {
+                return await returningStudentContactFunction();
+            }
+            catch (NullStudentContactException nullStudentContactException)
+            {
+                throw CreateAndLogValidationException(nullStudentContactException);
+            }
+            catch (InvalidStudentContactInputException invalidStudentContactInputException)
+            {
+                throw CreateAndLogValidationException(invalidStudentContactInputException);
+            }
+            catch (NotFoundStudentContactException notFoundStudentContactException)
+            {
+                throw CreateAndLogValidationException(notFoundStudentContactException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsStudentContactException =
+                    new AlreadyExistsStudentContactException(duplicateKeyException);
 
-				throw CreateAndLogValidationException(alreadyExistsStudentContactException);
-			}
-			catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
-			{
-				var invalidStudentContactReferenceException =
-					new InvalidStudentContactReferenceException(foreignKeyConstraintConflictException);
+                throw CreateAndLogValidationException(alreadyExistsStudentContactException);
+            }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidStudentContactReferenceException =
+                    new InvalidStudentContactReferenceException(foreignKeyConstraintConflictException);
 
-				throw CreateAndLogValidationException(invalidStudentContactReferenceException);
-			}
-			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
-			{
-				var lockedStudentContactException =
-					new LockedStudentContactException(dbUpdateConcurrencyException);
+                throw CreateAndLogValidationException(invalidStudentContactReferenceException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedStudentContactException =
+                    new LockedStudentContactException(dbUpdateConcurrencyException);
 
-				throw CreateAndLogDependencyException(lockedStudentContactException);
-			}
-			catch (SqlException sqlException)
-			{
-				throw CreateAndLogCriticalDependencyException(sqlException);
-			}
-			catch (DbUpdateException dbUpdateException)
-			{
-				throw CreateAndLogDependencyException(dbUpdateException);
-			}
-			catch (Exception exception)
-			{
-				throw CreateAndLogServiceException(exception);
-			}
-		}
+                throw CreateAndLogDependencyException(lockedStudentContactException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
 
-		private IQueryable<StudentContact> TryCatch(
-			ReturningStudentContactsFunction returningStudentContactsFunction)
-		{
-			try
-			{
-				return returningStudentContactsFunction();
-			}
-			catch (SqlException sqlException)
-			{
-				throw CreateAndLogCriticalDependencyException(sqlException);
-			}
-			catch (DbUpdateException dbUpdateException)
-			{
-				throw CreateAndLogDependencyException(dbUpdateException);
-			}
-			catch (Exception exception)
-			{
-				throw CreateAndLogServiceException(exception);
-			}
-		}
+        private IQueryable<StudentContact> TryCatch(
+            ReturningStudentContactsFunction returningStudentContactsFunction)
+        {
+            try
+            {
+                return returningStudentContactsFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
 
-		private StudentContactValidationException CreateAndLogValidationException(Exception exception)
-		{
-			var StudentContactValidationException = new StudentContactValidationException(exception);
-			this.loggingBroker.LogError(StudentContactValidationException);
+        private StudentContactValidationException CreateAndLogValidationException(Exception exception)
+        {
+            var StudentContactValidationException = new StudentContactValidationException(exception);
+            this.loggingBroker.LogError(StudentContactValidationException);
 
-			return StudentContactValidationException;
-		}
+            return StudentContactValidationException;
+        }
 
-		private StudentContactServiceException CreateAndLogServiceException(Exception exception)
-		{
-			var StudentContactServiceException = new StudentContactServiceException(exception);
-			this.loggingBroker.LogError(StudentContactServiceException);
+        private StudentContactServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var StudentContactServiceException = new StudentContactServiceException(exception);
+            this.loggingBroker.LogError(StudentContactServiceException);
 
-			return StudentContactServiceException;
-		}
+            return StudentContactServiceException;
+        }
 
-		private StudentContactDependencyException CreateAndLogCriticalDependencyException(Exception exception)
-		{
-			var StudentContactDependencyException = new StudentContactDependencyException(exception);
-			this.loggingBroker.LogCritical(StudentContactDependencyException);
+        private StudentContactDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var StudentContactDependencyException = new StudentContactDependencyException(exception);
+            this.loggingBroker.LogCritical(StudentContactDependencyException);
 
-			return StudentContactDependencyException;
-		}
+            return StudentContactDependencyException;
+        }
 
-		private StudentContactDependencyException CreateAndLogDependencyException(Exception exception)
-		{
-			var StudentContactDependencyException = new StudentContactDependencyException(exception);
-			this.loggingBroker.LogError(StudentContactDependencyException);
+        private StudentContactDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var StudentContactDependencyException = new StudentContactDependencyException(exception);
+            this.loggingBroker.LogError(StudentContactDependencyException);
 
-			return StudentContactDependencyException;
-		}
-	}
+            return StudentContactDependencyException;
+        }
+    }
 }

@@ -10,11 +10,11 @@ using OtripleS.Web.Api.Models.TeacherContacts;
 
 namespace OtripleS.Web.Api.Services.TeacherContacts
 {
-	public interface ITeacherContactService
-	{
-		ValueTask<TeacherContact> AddTeacherContactAsync(TeacherContact teacherContact);
-		IQueryable<TeacherContact> RetrieveAllTeacherContacts();
-		ValueTask<TeacherContact> RetrieveTeacherContactByIdAsync(Guid teacherId, Guid contactId);
-		ValueTask<TeacherContact> RemoveTeacherContactByIdAsync(Guid teacherId, Guid contactId);
-	}
+    public interface ITeacherContactService
+    {
+        ValueTask<TeacherContact> AddTeacherContactAsync(TeacherContact teacherContact);
+        IQueryable<TeacherContact> RetrieveAllTeacherContacts();
+        ValueTask<TeacherContact> RetrieveTeacherContactByIdAsync(Guid teacherId, Guid contactId);
+        ValueTask<TeacherContact> RemoveTeacherContactByIdAsync(Guid teacherId, Guid contactId);
+    }
 }

@@ -1,7 +1,7 @@
-using OtripleS.Web.Api.Models.Attendances;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using OtripleS.Web.Api.Models.Attendances;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
 {
