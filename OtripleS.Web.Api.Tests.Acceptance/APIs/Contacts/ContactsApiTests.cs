@@ -33,21 +33,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
         private IEnumerable<Contact> CreateRandomContacts() =>
             CreateRandomContactFiller().Create(GetRandomNumber());
 
-        private static Filler<Contact> CreateRandomContactFiller()
-        {
-            Filler<Contact> filler = new Filler<Contact>();
-            Guid randomCreatedUpdatedById = Guid.NewGuid();
-
-            filler.Setup()
-                .OnProperty(contact => contact.CreatedBy).Use(randomCreatedUpdatedById)
-                .OnProperty(contact => contact.UpdatedBy).Use(randomCreatedUpdatedById)
-                .OnProperty(contact => contact.StudentContacts).IgnoreIt()
-                .OnProperty(contact => contact.TeacherContacts).IgnoreIt()
-                .OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow);
-
-            return filler;
-        }
-
         private Contact UpdateContactRandom(Contact contact)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -68,6 +53,21 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler.Create();
+        }
+
+        private static Filler<Contact> CreateRandomContactFiller()
+        {
+            Filler<Contact> filler = new Filler<Contact>();
+            Guid randomCreatedUpdatedById = Guid.NewGuid();
+
+            filler.Setup()
+                .OnProperty(contact => contact.CreatedBy).Use(randomCreatedUpdatedById)
+                .OnProperty(contact => contact.UpdatedBy).Use(randomCreatedUpdatedById)
+                .OnProperty(contact => contact.StudentContacts).IgnoreIt()
+                .OnProperty(contact => contact.TeacherContacts).IgnoreIt()
+                .OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow);
+
+            return filler;
         }
     }
 }

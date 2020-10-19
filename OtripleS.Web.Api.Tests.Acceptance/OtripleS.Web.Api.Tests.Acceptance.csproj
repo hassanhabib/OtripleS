@@ -28,8 +28,4 @@
     <ProjectReference Include="..\OtripleS.Web.Api\OtripleS.Web.Api.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="APIs\TeacherContacts\" />
-  </ItemGroup>
-
 </Project>

@@ -15,17 +15,17 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
         private const string TeacherContactsRelativeUrl = "api/teachercontacts";
 
         public async ValueTask<TeacherContact> PostTeacherContactAsync(TeacherContact teacher) =>
-            await this.apiFactoryClient.PostContentAsync(TeachersRelativeUrl, teacher);
+            await this.apiFactoryClient.PostContentAsync(TeacherContactsRelativeUrl, teacher);
 
         public async ValueTask<TeacherContact> GetTeacherContactByIdAsync(Guid teacherId, Guid contactId) =>
             await this.apiFactoryClient.GetContentAsync<TeacherContact>(
-                $"{TeachersRelativeUrl}/teachers/{teacherId}/contacts/{contactId}");
+                $"{TeacherContactsRelativeUrl}/teachers/{teacherId}/contacts/{contactId}");
 
         public async ValueTask<TeacherContact> DeleteTeacherContactByIdAsync(Guid teacherId, Guid contactId) =>
             await this.apiFactoryClient.DeleteContentAsync<TeacherContact>(
-                $"{TeachersRelativeUrl}/teachers/{teacherId}/contacts/{contactId}");
+                $"{TeacherContactsRelativeUrl}/teachers/{teacherId}/contacts/{contactId}");
 
         public async ValueTask<List<TeacherContact>> GetAllTeacherContactsAsync() =>
-            await this.apiFactoryClient.GetContentAsync<List<TeacherContact>>($"{TeachersRelativeUrl}/");
+            await this.apiFactoryClient.GetContentAsync<List<TeacherContact>>($"{TeacherContactsRelativeUrl}/");
     }
 }
