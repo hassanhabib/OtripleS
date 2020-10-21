@@ -40,9 +40,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
                     && studentContact.ContactId == expectedStudentContact.ContactId
                     );
 
-                StudentContact expectedReturnedCourse = CreateExpectedStudentContact(expectedStudentContact);
+                StudentContact expectedReturnedStudentContact = CreateExpectedStudentContact(expectedStudentContact);
 
-                actualStudentContact.Should().BeEquivalentTo(expectedReturnedCourse);
+                actualStudentContact.Should().BeEquivalentTo(expectedReturnedStudentContact);
                 await this.otripleSApiBroker.DeleteStudentContactAsync(actualStudentContact.StudentId, actualStudentContact.ContactId);
             }
         }
