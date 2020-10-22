@@ -32,12 +32,15 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
 			return await this.storageBroker.InsertGuardianContactAsync(guardianContact);
 		});
 
-		public async ValueTask<GuardianContact> RemoveGuardianContactByIdAsync(Guid guardianId, Guid contactId)
+		public ValueTask<GuardianContact> RemoveGuardianContactByIdAsync(Guid guardianId, Guid contactId) =>
+		TryCatch(async () =>
 		{
+			ValidateGuardianContactIdIsNull(guardianId, contactId);
+
 			GuardianContact mayBeGuardianContact =
 				await this.storageBroker.SelectGuardianContactByIdAsync(guardianId, contactId);
 
 			return await this.storageBroker.DeleteGuardianContactAsync(mayBeGuardianContact);
-		}
+		});
 	}
 }
