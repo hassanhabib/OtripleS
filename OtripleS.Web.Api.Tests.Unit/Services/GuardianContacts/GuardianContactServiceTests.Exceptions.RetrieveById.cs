@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.GuardianContacts;
 using OtripleS.Web.Api.Models.GuardianContacts.Exceptions;
@@ -44,6 +45,44 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedGuardianContactDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianContactByIdAsync(inputGuardianId, inputContactId),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateExceptionOccursAndLogItAsync()
+        {
+            // given
+            var randomContactId = Guid.NewGuid();
+            var randomGuardianId = Guid.NewGuid();
+            Guid inputContactId = randomContactId;
+            Guid inputGuardianId = randomGuardianId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedGuardianContactDependencyException =
+                new GuardianContactDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectGuardianContactByIdAsync(inputGuardianId, inputContactId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<GuardianContact> retrieveGuardianContactTask =
+                this.guardianContactService.RetrieveGuardianContactByIdAsync
+                (inputGuardianId, inputContactId);
+
+            // then
+            await Assert.ThrowsAsync<GuardianContactDependencyException>(
+                () => retrieveGuardianContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
