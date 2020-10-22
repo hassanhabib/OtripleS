@@ -25,9 +25,9 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<GuardianContact> AddGuardianContactAsync(GuardianContact guardianContact)
+        public async ValueTask<GuardianContact> AddGuardianContactAsync(GuardianContact guardianContact)
         {
-            throw new NotImplementedException();
+            return await this.storageBroker.InsertGuardianContactAsync(guardianContact);
         }
     }
 }
