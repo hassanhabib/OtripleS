@@ -33,6 +33,12 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
 					parameterName: nameof(GuardianContact.GuardianId),
 					parameterValue: guardianId);
 			}
+			if (contactId == default)
+			{
+				throw new InvalidGuardianContactInputException(
+					parameterName: nameof(GuardianContact.ContactId),
+					parameterValue: contactId);
+			}
 		}
 
 		private void ValidateGuardianContactRequiredFields(GuardianContact guardianContact)
