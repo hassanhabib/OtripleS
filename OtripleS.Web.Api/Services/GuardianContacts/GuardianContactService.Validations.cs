@@ -59,5 +59,11 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
                     parameterValue: contactId);
             }
         }
+
+        private static void ValidateStorageGuardianContact
+            (GuardianContact storageGuardianContact, Guid GuardianId, Guid contactId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

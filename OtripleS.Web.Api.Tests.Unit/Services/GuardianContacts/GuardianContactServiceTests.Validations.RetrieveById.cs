@@ -83,5 +83,44 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageGuardianContactIsInvalidAndLogItAsync()
+        {
+            // given
+            GuardianContact randomGuardianContact = CreateRandomGuardianContact();
+            Guid inputContactId = randomGuardianContact.ContactId;
+            Guid inputGuardianId = randomGuardianContact.GuardianId;
+            GuardianContact nullStorageGuardianContact = null;
+
+            var notFoundGuardianContactException =
+                new NotFoundGuardianContactException(inputGuardianId, inputContactId);
+
+            var expectedSemesterCourseValidationException =
+                new GuardianContactValidationException(notFoundGuardianContactException);
+
+            this.storageBrokerMock.Setup(broker =>
+                 broker.SelectGuardianContactByIdAsync(inputGuardianId, inputContactId))
+                    .ReturnsAsync(nullStorageGuardianContact);
+
+            // when
+            ValueTask<GuardianContact> retrieveGuardianContactTask =
+                this.guardianContactService.RetrieveGuardianContactByIdAsync(inputGuardianId, inputContactId);
+
+            // then
+            await Assert.ThrowsAsync<GuardianContactValidationException>(() =>
+                retrieveGuardianContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianContactByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
