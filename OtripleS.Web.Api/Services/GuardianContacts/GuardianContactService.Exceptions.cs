@@ -32,6 +32,10 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
             {
                 throw CreateAndLogValidationException(invalidGuardianContactInputException);
             }
+            catch (NotFoundGuardianContactException notFoundGuardianContactException)
+            {
+                throw CreateAndLogValidationException(notFoundGuardianContactException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsGuardianContactException =

@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -29,6 +30,19 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
             ValidateGuardianContactOnCreate(guardianContact);
 
             return await this.storageBroker.InsertGuardianContactAsync(guardianContact);
+        });
+
+        public ValueTask<GuardianContact> RetrieveGuardianContactByIdAsync(Guid guardianId, Guid contactId) =>
+        TryCatch(async () =>
+        {
+            ValidateGuardianContactIdIsNull(guardianId, contactId);
+
+            GuardianContact storageGuardianContact =
+                await this.storageBroker.SelectGuardianContactByIdAsync(guardianId, contactId);
+
+            ValidateStorageGuardianContact(storageGuardianContact, guardianId, contactId);
+
+            return storageGuardianContact;
         });
     }
 }
