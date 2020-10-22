@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -44,5 +45,15 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
 
 			return await this.storageBroker.DeleteGuardianContactAsync(mayBeGuardianContact);
 		});
+
+		public IQueryable<GuardianContact> RetrieveAllGuardianContacts()
+		{
+			throw new NotImplementedException();
+		}
+
+		public ValueTask<GuardianContact> RetrieveGuardianContactByIdAsync(Guid guardianId, Guid contactId)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
