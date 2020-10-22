@@ -42,5 +42,10 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
         }
 
         private static bool IsInvalid(Guid input) => input == default;
+
+        private void ValidateGuardianContactIdIsNull(Guid GuardianId, Guid contactId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
