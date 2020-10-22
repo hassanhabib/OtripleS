@@ -57,6 +57,10 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
 
                 throw CreateAndLogDependencyException(lockedGuardianContactException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
