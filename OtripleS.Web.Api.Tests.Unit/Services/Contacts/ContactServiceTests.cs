@@ -80,7 +80,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dateTime)
                 .OnProperty(contact => contact.StudentContacts).IgnoreIt()
-                .OnProperty(contact => contact.TeacherContacts).IgnoreIt();
+                .OnProperty(contact => contact.TeacherContacts).IgnoreIt()
+                .OnProperty(contact => contact.GuardianContacts).IgnoreIt();
+
 
             return filler;
         }
