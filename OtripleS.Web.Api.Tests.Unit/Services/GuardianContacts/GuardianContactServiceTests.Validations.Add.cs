@@ -44,5 +44,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenGuardianIdIsInvalidAndLogItAsync()
+        {
+            // given
+            GuardianContact randomGuardianContact = CreateRandomGuardianContact();
+            GuardianContact inputGuardianContact = randomGuardianContact;
+            inputGuardianContact.GuardianId = default;
+
+            var invalidGuardianContactInputException = new InvalidGuardianContactInputException(
+                parameterName: nameof(GuardianContact.GuardianId),
+                parameterValue: inputGuardianContact.GuardianId);
+
+            var expectedGuardianContactValidationException =
+                new GuardianContactValidationException(invalidGuardianContactInputException);
+
+            // when
+            ValueTask<GuardianContact> addGuardianContactTask =
+                this.guardianContactService.AddGuardianContactAsync(inputGuardianContact);
+
+            // then
+            await Assert.ThrowsAsync<GuardianContactValidationException>(() =>
+                addGuardianContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianContactAsync(It.IsAny<GuardianContact>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
