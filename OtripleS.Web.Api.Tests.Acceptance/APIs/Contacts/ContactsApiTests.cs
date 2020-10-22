@@ -50,6 +50,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
                 .OnProperty(contact => contact.UpdatedDate).Use(now)
                 .OnProperty(contact => contact.StudentContacts).IgnoreIt()
                 .OnProperty(contact => contact.TeacherContacts).IgnoreIt()
+                .OnProperty(contact => contact.GuardianContacts).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler.Create();
@@ -65,6 +66,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
                 .OnProperty(contact => contact.UpdatedBy).Use(randomCreatedUpdatedById)
                 .OnProperty(contact => contact.StudentContacts).IgnoreIt()
                 .OnProperty(contact => contact.TeacherContacts).IgnoreIt()
+                .OnProperty(contact => contact.GuardianContacts).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow);
 
             return filler;

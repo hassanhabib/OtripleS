@@ -38,7 +38,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
                 .OnProperty(guardian => guardian.CreatedDate).Use(now)
                 .OnProperty(guardian => guardian.UpdatedDate).Use(now)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(guardian => guardian.StudentGuardians).IgnoreIt();
+                .OnProperty(guardian => guardian.StudentGuardians).IgnoreIt()
+                .OnProperty(guardian => guardian.GuardianContacts).IgnoreIt();
 
             return filler;
         }
@@ -55,7 +56,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
                 .OnProperty(guardian => guardian.CreatedDate).Use(guardian.CreatedDate)
                 .OnProperty(guardian => guardian.UpdatedDate).Use(now)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(guardian => guardian.StudentGuardians).IgnoreIt();
+                .OnProperty(guardian => guardian.StudentGuardians).IgnoreIt()
+                .OnProperty(guardian => guardian.GuardianContacts).IgnoreIt();
 
             return filler.Create();
         }
