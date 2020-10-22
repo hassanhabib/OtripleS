@@ -115,5 +115,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenGuardianContactAlreadyExistsAndLogItAsync()
+        {
+            // given
+            GuardianContact randomGuardianContact = CreateRandomGuardianContact();
+            GuardianContact alreadyExistsGuardianContact = randomGuardianContact;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsGuardianContactException =
+                new AlreadyExistsGuardianContactException(duplicateKeyException);
+
+            var expectedGuardianContactValidationException =
+                new GuardianContactValidationException(alreadyExistsGuardianContactException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertGuardianContactAsync(alreadyExistsGuardianContact))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<GuardianContact> addGuardianContactTask =
+                this.guardianContactService.AddGuardianContactAsync(alreadyExistsGuardianContact);
+
+            // then
+            await Assert.ThrowsAsync<GuardianContactValidationException>(() =>
+                addGuardianContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianContactAsync(alreadyExistsGuardianContact),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
