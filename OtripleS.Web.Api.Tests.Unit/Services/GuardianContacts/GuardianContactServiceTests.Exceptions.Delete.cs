@@ -100,5 +100,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+		{
+			// given
+			var randomContactId = Guid.NewGuid();
+			var randomGuardianId = Guid.NewGuid();
+			Guid someContactId = randomContactId;
+			Guid someGuardianId = randomGuardianId;
+			var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+			var lockedContactException =
+				new LockedGuardianContactException(databaseUpdateConcurrencyException);
+
+			var expectedGuardianContactException =
+				new GuardianContactDependencyException(lockedContactException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectGuardianContactByIdAsync(someGuardianId, someContactId))
+					.ThrowsAsync(databaseUpdateConcurrencyException);
+
+			// when
+			ValueTask<GuardianContact> removeGuardianContactTask =
+				this.guardianContactService.RemoveGuardianContactByIdAsync(someGuardianId, someContactId);
+
+			// then
+			await Assert.ThrowsAsync<GuardianContactDependencyException>(() =>
+				removeGuardianContactTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectGuardianContactByIdAsync(someGuardianId, someContactId),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.DeleteGuardianContactAsync(It.IsAny<GuardianContact>()),
+					Times.Never);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
