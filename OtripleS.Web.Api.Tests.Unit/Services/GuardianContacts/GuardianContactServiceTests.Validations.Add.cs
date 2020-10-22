@@ -155,5 +155,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenReferneceExceptionAndLogItAsync()
+        {
+            // given
+            GuardianContact randomGuardianContact = CreateRandomGuardianContact();
+            GuardianContact invalidGuardianContact = randomGuardianContact;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var foreignKeyConstraintConflictException = new ForeignKeyConstraintConflictException(exceptionMessage);
+
+            var invalidGuardianContactReferenceException =
+                new InvalidGuardianContactReferenceException(foreignKeyConstraintConflictException);
+
+            var expectedGuardianContactValidationException =
+                new GuardianContactValidationException(invalidGuardianContactReferenceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertGuardianContactAsync(invalidGuardianContact))
+                    .ThrowsAsync(foreignKeyConstraintConflictException);
+
+            // when
+            ValueTask<GuardianContact> addGuardianContactTask =
+                this.guardianContactService.AddGuardianContactAsync(invalidGuardianContact);
+
+            // then
+            await Assert.ThrowsAsync<GuardianContactValidationException>(() =>
+                addGuardianContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianContactAsync(invalidGuardianContact),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
