@@ -96,7 +96,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
             var notFoundGuardianContactException =
                 new NotFoundGuardianContactException(inputGuardianId, inputContactId);
 
-            var expectedSemesterCourseValidationException =
+            var expectedGuardianContactValidationException =
                 new GuardianContactValidationException(notFoundGuardianContactException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -112,7 +112,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
                 retrieveGuardianContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>

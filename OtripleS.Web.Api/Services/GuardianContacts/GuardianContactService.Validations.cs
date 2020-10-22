@@ -61,9 +61,12 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
         }
 
         private static void ValidateStorageGuardianContact
-            (GuardianContact storageGuardianContact, Guid GuardianId, Guid contactId)
+            (GuardianContact storageGuardianContact, Guid guardianId, Guid contactId)
         {
-            throw new NotImplementedException();
+            if (storageGuardianContact == null)
+            {
+                throw new NotFoundGuardianContactException(guardianId, contactId);
+            }
         }
     }
 }
