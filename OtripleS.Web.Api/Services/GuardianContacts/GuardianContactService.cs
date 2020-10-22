@@ -40,6 +40,8 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
 			GuardianContact mayBeGuardianContact =
 				await this.storageBroker.SelectGuardianContactByIdAsync(guardianId, contactId);
 
+			ValidateStorageGuardianContact(mayBeGuardianContact, guardianId, contactId);
+
 			return await this.storageBroker.DeleteGuardianContactAsync(mayBeGuardianContact);
 		});
 	}
