@@ -84,7 +84,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
                 .OnProperty(student => student.CreatedDate).Use(now)
                 .OnProperty(student => student.UpdatedDate).Use(now)
                 .OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow)
-                //.OnProperty(classroom => classroom.StudentSemesterCourses).IgnoreIt()
                 .OnProperty(student => student.StudentContacts).IgnoreIt();
 
             return filler;
