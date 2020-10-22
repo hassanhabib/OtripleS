@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.GuardianContacts;
 using OtripleS.Web.Api.Models.GuardianContacts.Exceptions;
@@ -44,6 +45,48 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogCritical(It.Is(SameExceptionAs(expectedGuardianContactDependencyException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectGuardianContactByIdAsync(someGuardianId, someContactId),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.DeleteGuardianContactAsync(It.IsAny<GuardianContact>()),
+					Times.Never);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
+		public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbExceptionOccursAndLogItAsync()
+		{
+			// given
+			var randomContactId = Guid.NewGuid();
+			var randomGuardianId = Guid.NewGuid();
+			Guid someContactId = randomContactId;
+			Guid someGuardianId = randomGuardianId;
+			var databaseUpdateException = new DbUpdateException();
+
+			var expectedGuardianContactDependencyException =
+				new GuardianContactDependencyException(databaseUpdateException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectGuardianContactByIdAsync(someGuardianId, someContactId))
+					.ThrowsAsync(databaseUpdateException);
+
+			// when
+			ValueTask<GuardianContact> removeGuardianContactTask =
+				this.guardianContactService.RemoveGuardianContactByIdAsync
+				(someGuardianId, someContactId);
+
+			// then
+			await Assert.ThrowsAsync<GuardianContactDependencyException>(
+				() => removeGuardianContactTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactDependencyException))),
 					Times.Once);
 
 			this.storageBrokerMock.Verify(broker =>
