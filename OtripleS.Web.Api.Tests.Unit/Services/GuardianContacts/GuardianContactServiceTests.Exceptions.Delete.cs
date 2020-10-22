@@ -144,5 +144,48 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
+		{
+			// given
+			var randomContactId = Guid.NewGuid();
+			var randomGuardianId = Guid.NewGuid();
+			Guid someContactId = randomContactId;
+			Guid someGuardianId = randomGuardianId;
+			var exception = new Exception();
+
+			var expectedGuardianContactException =
+				new GuardianContactServiceException(exception);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectGuardianContactByIdAsync(someGuardianId, someContactId))
+					.ThrowsAsync(exception);
+
+			// when
+			ValueTask<GuardianContact> removeGuardianContactTask =
+				this.guardianContactService.RemoveGuardianContactByIdAsync(
+					someGuardianId,
+					someContactId);
+
+			// then
+			await Assert.ThrowsAsync<GuardianContactServiceException>(() =>
+				removeGuardianContactTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectGuardianContactByIdAsync(someGuardianId, someContactId),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.DeleteGuardianContactAsync(It.IsAny<GuardianContact>()),
+					Times.Never);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
