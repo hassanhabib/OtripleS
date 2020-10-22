@@ -34,7 +34,7 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
 
         public ValueTask<GuardianContact> RetrieveGuardianContactByIdAsync(Guid guardianId, Guid contactId)
         {
-            throw new NotImplementedException();
+            return storageBroker.SelectGuardianContactByIdAsync(guardianId, contactId);
         }
     }
 }
