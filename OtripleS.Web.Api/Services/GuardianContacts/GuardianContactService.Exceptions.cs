@@ -4,7 +4,6 @@
 //----------------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
