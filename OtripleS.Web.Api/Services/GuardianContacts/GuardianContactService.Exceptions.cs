@@ -65,10 +65,6 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
-            catch (Exception exception)
-            {
-                throw CreateAndLogServiceException(exception);
-            }
         }
 
         private GuardianContactValidationException CreateAndLogValidationException(Exception exception)
