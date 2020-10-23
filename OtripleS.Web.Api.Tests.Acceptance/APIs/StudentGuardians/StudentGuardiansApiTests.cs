@@ -3,12 +3,12 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using OtripleS.Web.Api.Models.Guardians;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
-using System;
-using System.Collections.Generic;
 using Tynamix.ObjectFiller;
 using Xunit;
 
@@ -85,7 +85,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
                 .OnProperty(student => student.UpdatedDate).Use(now)
                 .OnProperty(student => student.StudentSemesterCourses).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(student => student.StudentGuardians).IgnoreIt();
+                .OnProperty(student => student.StudentGuardians).IgnoreIt()
+                .OnProperty(student => student.StudentContacts).IgnoreIt();
 
             return filler;
         }
@@ -105,7 +106,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
                 .OnProperty(guardian => guardian.CreatedDate).Use(now)
                 .OnProperty(guardian => guardian.UpdatedDate).Use(now)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(guardian => guardian.StudentGuardians).IgnoreIt();
+                .OnProperty(guardian => guardian.StudentGuardians).IgnoreIt()
+                .OnProperty(guardian => guardian.GuardianContacts).IgnoreIt();
 
             return filler;
         }
@@ -113,6 +115,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private static int GetRandomNumber() => new IntRange(min: 1, max: 10).GetValue();
+        private static int GetRandomNumber() => new IntRange(min: 1, max: 5).GetValue();
     }
 }

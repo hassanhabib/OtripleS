@@ -3,13 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Attendances;
 using OtripleS.Web.Api.Models.Attendances.Exceptions;
-using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Attendances

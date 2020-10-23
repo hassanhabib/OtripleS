@@ -3,6 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
@@ -10,11 +15,6 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Contacts;
 using OtripleS.Web.Api.Services.Contacts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
@@ -78,7 +78,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
             Filler<Contact> filler = new Filler<Contact>();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(dateTime);
+                .OnType<DateTimeOffset>().Use(dateTime)
+                .OnProperty(contact => contact.StudentContacts).IgnoreIt()
+                .OnProperty(contact => contact.TeacherContacts).IgnoreIt()
+                .OnProperty(contact => contact.GuardianContacts).IgnoreIt();
+
 
             return filler;
         }

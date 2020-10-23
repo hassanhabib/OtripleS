@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
 
             await this.otripleSApiBroker.DeleteContactByIdAsync(actualContact.Id);
         }
-        
+
         [Fact]
         public async Task ShouldPutContactAsync()
         {
@@ -48,7 +48,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
 
             await this.otripleSApiBroker.DeleteContactByIdAsync(actualContact.Id);
         }
-        
+
         [Fact]
         public async Task ShouldGetAllContactsAsync()
         {
@@ -64,7 +64,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
             List<Contact> expectedContacts = inputContacts.ToList();
 
             // when
-            List<Contact> actualContacts = 
+            List<Contact> actualContacts =
                 await this.otripleSApiBroker.GetAllContactsAsync();
 
             // then

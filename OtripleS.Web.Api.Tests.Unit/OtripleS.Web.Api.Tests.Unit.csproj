@@ -20,7 +20,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Moq" Version="4.14.6" />
+    <PackageReference Include="Moq" Version="4.14.7" />
     <PackageReference Include="Tynamix.ObjectFiller" Version="1.5.5" />
   </ItemGroup>
 

@@ -3,11 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.SemesterCourses;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourses

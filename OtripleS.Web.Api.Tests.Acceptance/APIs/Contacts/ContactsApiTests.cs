@@ -1,7 +1,11 @@
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
 using System;
 using System.Collections.Generic;
 using OtripleS.Web.Api.Models.Contacts;
-using OtripleS.Web.Api.Models.StudentContacts;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
@@ -29,20 +33,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
         private IEnumerable<Contact> CreateRandomContacts() =>
             CreateRandomContactFiller().Create(GetRandomNumber());
 
-        private static Filler<Contact> CreateRandomContactFiller()
-        {
-            Filler<Contact> filler = new Filler<Contact>();
-            Guid randomCreatedUpdatedById = Guid.NewGuid();
-
-            filler.Setup()
-                .OnProperty(contact => contact.CreatedBy).Use(randomCreatedUpdatedById)
-                .OnProperty(contact => contact.UpdatedBy).Use(randomCreatedUpdatedById)
-                .OnProperty(contact => contact.StudentContacts).IgnoreIt()
-                .OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow);
-
-            return filler;
-        }
-
         private Contact UpdateContactRandom(Contact contact)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -59,9 +49,27 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
                 .OnProperty(contact => contact.CreatedDate).Use(contact.CreatedDate)
                 .OnProperty(contact => contact.UpdatedDate).Use(now)
                 .OnProperty(contact => contact.StudentContacts).IgnoreIt()
+                .OnProperty(contact => contact.TeacherContacts).IgnoreIt()
+                .OnProperty(contact => contact.GuardianContacts).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler.Create();
+        }
+
+        private static Filler<Contact> CreateRandomContactFiller()
+        {
+            Filler<Contact> filler = new Filler<Contact>();
+            Guid randomCreatedUpdatedById = Guid.NewGuid();
+
+            filler.Setup()
+                .OnProperty(contact => contact.CreatedBy).Use(randomCreatedUpdatedById)
+                .OnProperty(contact => contact.UpdatedBy).Use(randomCreatedUpdatedById)
+                .OnProperty(contact => contact.StudentContacts).IgnoreIt()
+                .OnProperty(contact => contact.TeacherContacts).IgnoreIt()
+                .OnProperty(contact => contact.GuardianContacts).IgnoreIt()
+                .OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow);
+
+            return filler;
         }
     }
 }

@@ -3,10 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using OtripleS.Web.Api.Models.Teachers;
-using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using System;
 using System.Collections.Generic;
+using OtripleS.Web.Api.Models.Teachers;
+using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
 
@@ -38,7 +38,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
                 .OnProperty(teacher => teacher.CreatedDate).Use(teacher.CreatedDate)
                 .OnProperty(teacher => teacher.UpdatedDate).Use(now)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt();
+                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt()
+                .OnProperty(teacher => teacher.TeacherContacts).IgnoreIt();
 
             return filler.Create();
         }
@@ -62,7 +63,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
                 .OnProperty(teacher => teacher.CreatedDate).Use(now)
                 .OnProperty(teacher => teacher.UpdatedDate).Use(now)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt();
+                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt()
+                .OnProperty(teacher => teacher.TeacherContacts).IgnoreIt();
 
             return filler;
         }

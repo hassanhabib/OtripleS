@@ -3,12 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using EFxceptions.Models.Exceptions;
+using System;
+using System.Threading.Tasks;
 using Moq;
 using OtripleS.Web.Api.Models.Contacts;
 using OtripleS.Web.Api.Models.Contacts.Exceptions;
-using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts

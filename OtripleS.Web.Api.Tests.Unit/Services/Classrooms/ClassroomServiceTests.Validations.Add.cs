@@ -3,12 +3,12 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Moq;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
-using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Classrooms

@@ -3,10 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using OtripleS.Web.Api.Models.StudentGuardians;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using OtripleS.Web.Api.Models.GuardianContacts;
+using OtripleS.Web.Api.Models.StudentGuardians;
 
 namespace OtripleS.Web.Api.Models.Guardians
 {
@@ -22,5 +23,8 @@ namespace OtripleS.Web.Api.Models.Guardians
 
         [JsonIgnore]
         public IEnumerable<StudentGuardian> StudentGuardians { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<GuardianContact> GuardianContacts { get; set; }
     }
 }
