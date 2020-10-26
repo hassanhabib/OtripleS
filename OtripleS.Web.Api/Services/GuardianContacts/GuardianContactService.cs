@@ -51,9 +51,17 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
 			throw new NotImplementedException();
 		}
 
-		public ValueTask<GuardianContact> RetrieveGuardianContactByIdAsync(Guid guardianId, Guid contactId)
-		{
-			throw new NotImplementedException();
-		}
+		public ValueTask<GuardianContact> RetrieveGuardianContactByIdAsync(Guid guardianId, Guid contactId) =>
+        TryCatch(async () =>
+        {
+            ValidateGuardianContactIdIsNull(guardianId, contactId);
+
+            GuardianContact storageGuardianContact =
+                await this.storageBroker.SelectGuardianContactByIdAsync(guardianId, contactId);
+
+            ValidateStorageGuardianContact(storageGuardianContact, guardianId, contactId);
+
+            return storageGuardianContact;
+        });
 	}
 }
