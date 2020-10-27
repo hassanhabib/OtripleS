@@ -30,6 +30,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
             AddStudentContactReferences(modelBuilder);
             AddTeacherContactReferences(modelBuilder);
             AddGuardianContactReferences(modelBuilder);
+            AddUserContactReferences(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
