@@ -4,7 +4,9 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
+using OtripleS.Web.Api.Models.UserContacts;
 
 namespace OtripleS.Web.Api.Models.Users
 {
@@ -33,5 +35,7 @@ namespace OtripleS.Web.Api.Models.Users
         public UserStatus Status { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset UpdatedDate { get; set; }
+
+        public IEnumerable<UserContact> UserContacts { get; set; }
     }
 }
