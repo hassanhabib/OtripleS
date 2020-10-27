@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -45,17 +46,22 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
 			return await this.storageBroker.DeleteGuardianContactAsync(mayBeGuardianContact);
 		});
 
-        public ValueTask<GuardianContact> RetrieveGuardianContactByIdAsync(Guid guardianId, Guid contactId) =>
-        TryCatch(async () =>
-        {
-            ValidateGuardianContactIdIsNull(guardianId, contactId);
+		public IQueryable<GuardianContact> RetrieveAllGuardianContacts()
+		{
+			throw new NotImplementedException();
+		}
 
-            GuardianContact storageGuardianContact =
-                await this.storageBroker.SelectGuardianContactByIdAsync(guardianId, contactId);
+		public ValueTask<GuardianContact> RetrieveGuardianContactByIdAsync(Guid guardianId, Guid contactId) =>
+		TryCatch(async () =>
+		{
+			ValidateGuardianContactIdIsNull(guardianId, contactId);
 
-            ValidateStorageGuardianContact(storageGuardianContact, guardianId, contactId);
+			GuardianContact storageGuardianContact =
+				await this.storageBroker.SelectGuardianContactByIdAsync(guardianId, contactId);
 
-            return storageGuardianContact;
-        });
-    }
+			ValidateStorageGuardianContact(storageGuardianContact, guardianId, contactId);
+
+			return storageGuardianContact;
+		});
+	}
 }
