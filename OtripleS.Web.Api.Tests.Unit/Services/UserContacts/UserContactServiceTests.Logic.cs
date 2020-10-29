@@ -54,5 +54,33 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
 			this.storageBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldRetrieveUserContactById()
+		{
+			// given
+			UserContact randomUserContact = CreateRandomUserContact();
+			UserContact storageUserContact = randomUserContact;
+			UserContact expectedUserContact = storageUserContact;
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectUserContactByIdAsync(randomUserContact.UserId, randomUserContact.ContactId))
+					.Returns(new ValueTask<UserContact>(randomUserContact));
+
+			// when
+			UserContact actualUserContact = await
+				this.userContactService.RetrieveUserContactByIdAsync(
+					randomUserContact.UserId, randomUserContact.ContactId);
+
+			// then
+			actualUserContact.Should().BeEquivalentTo(expectedUserContact);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectUserContactByIdAsync(randomUserContact.UserId, randomUserContact.ContactId),
+					Times.Once);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
