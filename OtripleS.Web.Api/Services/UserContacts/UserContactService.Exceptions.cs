@@ -34,6 +34,10 @@ namespace OtripleS.Web.Api.Services.UserContacts
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
 		}
 
 		private UserContactValidationException CreateAndLogValidationException(Exception exception)
