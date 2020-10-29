@@ -56,6 +56,8 @@ namespace OtripleS.Web.Api.Services.UserContacts
 			UserContact storageUserContact =
 				await this.storageBroker.SelectUserContactByIdAsync(userId, contactId);
 
+			ValidateStorageUserContact(storageUserContact, userId, contactId);
+
 			return storageUserContact;
 		});
 	}
