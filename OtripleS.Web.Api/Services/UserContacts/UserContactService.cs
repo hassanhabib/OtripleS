@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Services.UserContacts
 
 		public ValueTask<UserContact> RetrieveUserContactByIdAsync(Guid userId, Guid contactId)
 		{
-			throw new NotImplementedException();
+			return storageBroker.SelectUserContactByIdAsync(userId, contactId);
 		}
 	}
 }
