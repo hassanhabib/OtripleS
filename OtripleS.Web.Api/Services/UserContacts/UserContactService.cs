@@ -30,9 +30,12 @@ namespace OtripleS.Web.Api.Services.UserContacts
 			throw new NotImplementedException();
 		}
 
-		public ValueTask<UserContact> RemoveUserContactByIdAsync(Guid userId, Guid contactId)
+		public async ValueTask<UserContact> RemoveUserContactByIdAsync(Guid userId, Guid contactId)
 		{
-			throw new NotImplementedException();
+			UserContact mayBeUserContact =
+				await this.storageBroker.SelectUserContactByIdAsync(userId, contactId);
+
+			return await this.storageBroker.DeleteUserContactAsync(mayBeUserContact);
 		}
 
 		public IQueryable<UserContact> RetrieveAllUserContacts()
