@@ -48,5 +48,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenContactIdIsInvalidAndLogItAsync()
+        {
+            // given
+            Guid randomContactId = default;
+            Guid randomUserId = Guid.NewGuid();
+            Guid inputContactId = randomContactId;
+            Guid inputUserId = randomUserId;
+
+            var invalidUserContactInputException = new InvalidUserContactInputException(
+                parameterName: nameof(UserContact.ContactId),
+                parameterValue: inputContactId);
+
+            var expectedUserContactValidationException =
+                new UserContactValidationException(invalidUserContactInputException);
+
+            // when
+            ValueTask<UserContact> retrieveUserContactTask =
+                this.userContactService.RetrieveUserContactByIdAsync(inputUserId, inputContactId);
+
+            // then
+            await Assert.ThrowsAsync<UserContactValidationException>(() => retrieveUserContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedUserContactValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectUserContactByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
