@@ -27,5 +27,13 @@ namespace OtripleS.Web.Api.Services.UserContacts
 					parameterValue: contactId);
 			}
 		}
+
+		private static void ValidateStorageUserContact(UserContact storageUserContact, Guid userId, Guid contactId)
+		{
+			if (storageUserContact == null)
+			{
+				throw new NotFoundUserContactException(userId, contactId);
+			}
+		}
 	}
 }

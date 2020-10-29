@@ -24,6 +24,10 @@ namespace OtripleS.Web.Api.Services.UserContacts
 			{
 				throw CreateAndLogValidationException(invalidUserContactInputException);
 			}
+			catch (NotFoundUserContactException notFoundUserContactException)
+			{
+				throw CreateAndLogValidationException(notFoundUserContactException);
+			}
 		}
 
 		private UserContactValidationException CreateAndLogValidationException(Exception exception)

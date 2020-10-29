@@ -38,6 +38,8 @@ namespace OtripleS.Web.Api.Services.UserContacts
 			UserContact mayBeUserContact =
 				await this.storageBroker.SelectUserContactByIdAsync(userId, contactId);
 
+			ValidateStorageUserContact(mayBeUserContact, userId, contactId);
+
 			return await this.storageBroker.DeleteUserContactAsync(mayBeUserContact);
 		});
 
