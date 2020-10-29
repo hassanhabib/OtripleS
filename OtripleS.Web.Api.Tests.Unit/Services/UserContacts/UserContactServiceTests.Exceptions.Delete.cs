@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.UserContacts;
 using OtripleS.Web.Api.Models.UserContacts.Exceptions;
@@ -44,6 +45,48 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogCritical(It.Is(SameExceptionAs(expectedUserContactDependencyException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectUserContactByIdAsync(someUserId, someContactId),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.DeleteUserContactAsync(It.IsAny<UserContact>()),
+					Times.Never);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
+		public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbExceptionOccursAndLogItAsync()
+		{
+			// given
+			var randomContactId = Guid.NewGuid();
+			var randomUserId = Guid.NewGuid();
+			Guid someContactId = randomContactId;
+			Guid someUserId = randomUserId;
+			var databaseUpdateException = new DbUpdateException();
+
+			var expectedUserContactDependencyException =
+				new UserContactDependencyException(databaseUpdateException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectUserContactByIdAsync(someUserId, someContactId))
+					.ThrowsAsync(databaseUpdateException);
+
+			// when
+			ValueTask<UserContact> removeUserContactTask =
+				this.userContactService.RemoveUserContactByIdAsync
+				(someUserId, someContactId);
+
+			// then
+			await Assert.ThrowsAsync<UserContactDependencyException>(
+				() => removeUserContactTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedUserContactDependencyException))),
 					Times.Once);
 
 			this.storageBrokerMock.Verify(broker =>
