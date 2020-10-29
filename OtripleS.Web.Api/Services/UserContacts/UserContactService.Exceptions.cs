@@ -30,6 +30,13 @@ namespace OtripleS.Web.Api.Services.UserContacts
 			{
 				throw CreateAndLogValidationException(notFoundUserContactException);
 			}
+			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+			{
+				var lockedUserContactException =
+					new LockedUserContactException(dbUpdateConcurrencyException);
+
+				throw CreateAndLogDependencyException(lockedUserContactException);
+			}
 			catch (SqlException sqlException)
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
