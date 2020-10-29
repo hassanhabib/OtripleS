@@ -5,6 +5,8 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
+using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -42,6 +44,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
 
 			return filler;
 		}
+
+		private static SqlException GetSqlException() =>
+			(SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
 		private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
 		{
