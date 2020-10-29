@@ -3,6 +3,8 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Linq.Expressions;
 using Moq;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -39,6 +41,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
 				.OnProperty(usercontact => usercontact.Contact).IgnoreIt();
 
 			return filler;
+		}
+
+		private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+		{
+			return actualException =>
+				expectedException.Message == actualException.Message
+				&& expectedException.InnerException.Message == actualException.InnerException.Message;
 		}
 	}
 }
