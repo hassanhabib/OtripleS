@@ -19,6 +19,13 @@ namespace OtripleS.Web.Api.Services.UserContacts
 					parameterName: nameof(UserContact.UserId),
 					parameterValue: userId);
 			}
+
+			if (contactId == default)
+			{
+				throw new InvalidUserContactInputException(
+					parameterName: nameof(UserContact.ContactId),
+					parameterValue: contactId);
+			}
 		}
 	}
 }
