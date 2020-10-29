@@ -22,10 +22,10 @@ namespace OtripleS.Web.Api.Services.UserContacts
 			{
 				return await returningUserContactFunction();
 			}
-			catch
-            {
-				throw new NotImplementedException();
-            }
+			catch (InvalidUserContactInputException invalidUserContactInputException)
+			{
+				throw CreateAndLogValidationException(invalidUserContactInputException);
+			}
 		}
 
 		private UserContactValidationException CreateAndLogValidationException(Exception exception)
