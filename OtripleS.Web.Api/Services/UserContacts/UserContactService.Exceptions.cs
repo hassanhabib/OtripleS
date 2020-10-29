@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.UserContacts;
 using OtripleS.Web.Api.Models.UserContacts.Exceptions;
 
@@ -28,6 +29,10 @@ namespace OtripleS.Web.Api.Services.UserContacts
 			{
 				throw CreateAndLogValidationException(notFoundUserContactException);
 			}
+			catch (SqlException sqlException)
+			{
+				throw CreateAndLogCriticalDependencyException(sqlException);
+			}
 		}
 
 		private UserContactValidationException CreateAndLogValidationException(Exception exception)
@@ -36,6 +41,14 @@ namespace OtripleS.Web.Api.Services.UserContacts
 			this.loggingBroker.LogError(UserContactValidationException);
 
 			return UserContactValidationException;
+		}
+
+		private UserContactDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+		{
+			var UserContactDependencyException = new UserContactDependencyException(exception);
+			this.loggingBroker.LogCritical(UserContactDependencyException);
+
+			return UserContactDependencyException;
 		}
 	}
 }
