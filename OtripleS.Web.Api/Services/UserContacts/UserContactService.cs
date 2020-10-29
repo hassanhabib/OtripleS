@@ -48,9 +48,15 @@ namespace OtripleS.Web.Api.Services.UserContacts
 			throw new NotImplementedException();
 		}
 
-		public ValueTask<UserContact> RetrieveUserContactByIdAsync(Guid userId, Guid contactId)
+		public ValueTask<UserContact> RetrieveUserContactByIdAsync(Guid userId, Guid contactId) =>
+		TryCatch( async() =>
 		{
-			return storageBroker.SelectUserContactByIdAsync(userId, contactId);
-		}
+			ValidateUserContactIdIsNull(userId, contactId);
+
+			UserContact storageUserContact =
+				await this.storageBroker.SelectUserContactByIdAsync(userId, contactId);
+
+			return storageUserContact;
+		});
 	}
 }

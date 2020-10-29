@@ -22,33 +22,10 @@ namespace OtripleS.Web.Api.Services.UserContacts
 			{
 				return await returningUserContactFunction();
 			}
-			catch (InvalidUserContactInputException invalidUserContactInputException)
-			{
-				throw CreateAndLogValidationException(invalidUserContactInputException);
-			}
-			catch (NotFoundUserContactException notFoundUserContactException)
-			{
-				throw CreateAndLogValidationException(notFoundUserContactException);
-			}
-			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
-			{
-				var lockedUserContactException =
-					new LockedUserContactException(dbUpdateConcurrencyException);
-
-				throw CreateAndLogDependencyException(lockedUserContactException);
-			}
-			catch (SqlException sqlException)
-			{
-				throw CreateAndLogCriticalDependencyException(sqlException);
-			}
-			catch (DbUpdateException dbUpdateException)
-			{
-				throw CreateAndLogDependencyException(dbUpdateException);
-			}
-			catch (Exception exception)
-			{
-				throw CreateAndLogServiceException(exception);
-			}
+			catch
+            {
+				throw new NotImplementedException();
+            }
 		}
 
 		private UserContactValidationException CreateAndLogValidationException(Exception exception)
