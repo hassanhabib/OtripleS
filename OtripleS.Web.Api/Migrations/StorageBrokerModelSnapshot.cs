@@ -17,7 +17,7 @@ namespace OtripleS.Web.Api.Migrations
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.0-rc.2.20475.6");
+                .HasAnnotation("ProductVersion", "5.0.0-rc.1.20451.13");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
@@ -573,21 +573,6 @@ namespace OtripleS.Web.Api.Migrations
                     b.ToTable("Teachers");
                 });
 
-            modelBuilder.Entity("OtripleS.Web.Api.Models.UserContacts.UserContact", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ContactId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("UserId", "ContactId");
-
-                    b.HasIndex("ContactId");
-
-                    b.ToTable("UserContacts");
-                });
-
             modelBuilder.Entity("OtripleS.Web.Api.Models.Users.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -870,25 +855,6 @@ namespace OtripleS.Web.Api.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("OtripleS.Web.Api.Models.UserContacts.UserContact", b =>
-                {
-                    b.HasOne("OtripleS.Web.Api.Models.Contacts.Contact", "Contact")
-                        .WithMany("UserContacts")
-                        .HasForeignKey("ContactId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("OtripleS.Web.Api.Models.Users.User", "User")
-                        .WithMany("UserContacts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Contact");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("OtripleS.Web.Api.Models.Classrooms.Classroom", b =>
                 {
                     b.Navigation("SemesterCourses");
@@ -901,8 +867,6 @@ namespace OtripleS.Web.Api.Migrations
                     b.Navigation("StudentContacts");
 
                     b.Navigation("TeacherContacts");
-
-                    b.Navigation("UserContacts");
                 });
 
             modelBuilder.Entity("OtripleS.Web.Api.Models.Courses.Course", b =>
@@ -936,11 +900,6 @@ namespace OtripleS.Web.Api.Migrations
                     b.Navigation("SemesterCourses");
 
                     b.Navigation("TeacherContacts");
-                });
-
-            modelBuilder.Entity("OtripleS.Web.Api.Models.Users.User", b =>
-                {
-                    b.Navigation("UserContacts");
                 });
 #pragma warning restore 612, 618
         }
