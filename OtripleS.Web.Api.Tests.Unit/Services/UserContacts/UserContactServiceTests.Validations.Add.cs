@@ -154,5 +154,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenReferneceExceptionAndLogItAsync()
+        {
+            // given
+            UserContact randomUserContact = CreateRandomUserContact();
+            UserContact invalidUserContact = randomUserContact;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var foreignKeyConstraintConflictException = 
+                new ForeignKeyConstraintConflictException(exceptionMessage);
+
+            var invalidUserContactReferenceException =
+                new InvalidUserContactReferenceException(foreignKeyConstraintConflictException);
+
+            var expectedUserContactValidationException =
+                new UserContactValidationException(invalidUserContactReferenceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertUserContactAsync(invalidUserContact))
+                    .ThrowsAsync(foreignKeyConstraintConflictException);
+
+            // when
+            ValueTask<UserContact> addUserContactTask =
+                this.userContactService.AddUserContactAsync(invalidUserContact);
+
+            // then
+            await Assert.ThrowsAsync<UserContactValidationException>(() =>
+                addUserContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedUserContactValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertUserContactAsync(invalidUserContact),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }

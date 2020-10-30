@@ -46,7 +46,13 @@ namespace OtripleS.Web.Api.Services.UserContacts
 
 				throw CreateAndLogValidationException(alreadyExistsUserContactException);
 			}
+			catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+			{
+				var invalidUserContactReferenceException =
+					new InvalidUserContactReferenceException(foreignKeyConstraintConflictException);
 
+				throw CreateAndLogValidationException(invalidUserContactReferenceException);
+			}
 			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
                 var lockedUserContactException =
