@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.UserContacts;
@@ -18,29 +19,47 @@ namespace OtripleS.Web.Api.Services.UserContacts
 
 		private async ValueTask<UserContact> TryCatch(ReturningUserContactFunction returningUserContactFunction)
 		{
-			try
-			{
-				return await returningUserContactFunction();
-			}
-			catch (InvalidUserContactInputException invalidUserContactInputException)
-			{
-				throw CreateAndLogValidationException(invalidUserContactInputException);
-			}
-			catch (NotFoundUserContactException notFoundUserContactException)
-			{
-				throw CreateAndLogValidationException(notFoundUserContactException);
-			}
-			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
-			{
-				var lockedUserContactException =
-					new LockedUserContactException(dbUpdateConcurrencyException);
-
-				throw CreateAndLogDependencyException(lockedUserContactException);
-			}
+            try
+            {
+                return await returningUserContactFunction();
+            }
+            catch (NullUserContactException nullUserContactException)
+            {
+                throw CreateAndLogValidationException(nullUserContactException);
+            }
+            catch (InvalidUserContactInputException invalidUserContactInputException)
+            {
+                throw CreateAndLogValidationException(invalidUserContactInputException);
+            }
 			catch (SqlException sqlException)
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
+			catch (NotFoundUserContactException notFoundUserContactException)
+            {
+                throw CreateAndLogValidationException(notFoundUserContactException);
+            }
+			catch (DuplicateKeyException duplicateKeyException)
+			{
+				var alreadyExistsUserContactException =
+					new AlreadyExistsUserContactException(duplicateKeyException);
+
+				throw CreateAndLogValidationException(alreadyExistsUserContactException);
+			}
+			catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+			{
+				var invalidUserContactReferenceException =
+					new InvalidUserContactReferenceException(foreignKeyConstraintConflictException);
+
+				throw CreateAndLogValidationException(invalidUserContactReferenceException);
+			}
+			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedUserContactException =
+                    new LockedUserContactException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedUserContactException);
+            }           
 			catch (DbUpdateException dbUpdateException)
 			{
 				throw CreateAndLogDependencyException(dbUpdateException);

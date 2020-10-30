@@ -15,6 +15,34 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
 	public partial class UserContactServiceTests
 	{
 		[Fact]
+		public async Task ShouldAddUserContactAsync()
+		{
+			// given
+			UserContact randomUserContact = CreateRandomUserContact();
+			UserContact inputUserContact = randomUserContact;
+			UserContact storageUserContact = randomUserContact;
+			UserContact expectedUserContact = storageUserContact;
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.InsertUserContactAsync(inputUserContact))
+					.ReturnsAsync(storageUserContact);
+
+			// when
+			UserContact actualUserContact =
+				await this.userContactService.AddUserContactAsync(inputUserContact);
+
+			// then
+			actualUserContact.Should().BeEquivalentTo(expectedUserContact);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.InsertUserContactAsync(inputUserContact),
+					Times.Once);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
 		public async Task ShouldRemoveUserContactAsync()
 		{
 			// given

@@ -1,4 +1,4 @@
-﻿// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
@@ -12,7 +12,7 @@ using OtripleS.Web.Api.Models.UserContacts;
 
 namespace OtripleS.Web.Api.Services.UserContacts
 {
-	public partial class UserContactService : IUserContactService
+    public partial class UserContactService : IUserContactService
 	{
 		private readonly IStorageBroker storageBroker;
 		private readonly ILoggingBroker loggingBroker;
@@ -25,12 +25,15 @@ namespace OtripleS.Web.Api.Services.UserContacts
 			this.loggingBroker = loggingBroker;
 		}
 
-		public ValueTask<UserContact> AddUserContactAsync(UserContact userContact)
+		public ValueTask<UserContact> AddUserContactAsync(UserContact userContact) =>
+		TryCatch(async () =>
 		{
-			throw new NotImplementedException();
-		}
+			ValidateUserContactOnAdd(userContact);
 
-		public ValueTask<UserContact> RemoveUserContactByIdAsync(Guid userId, Guid contactId) =>
+			return await this.storageBroker.InsertUserContactAsync(userContact);
+		});
+
+        public ValueTask<UserContact> RemoveUserContactByIdAsync(Guid userId, Guid contactId) =>
 		TryCatch(async () =>
 		{
 			ValidateUserContactIdIsNull(userId, contactId);

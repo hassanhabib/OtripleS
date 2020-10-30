@@ -7,11 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.UserContacts.Exceptions
 {
-	public class NotFoundUserContactException : Exception
-	{
-        public NotFoundUserContactException(Guid userId, Guid contactId)
-           : base($"Couldn't find UserContact with UserId: {userId} " +
-				  $"and ContactId: {contactId}.")
-		{ }
-	}
+    public class InvalidUserContactReferenceException : Exception
+    {
+        public InvalidUserContactReferenceException(Exception innerException)
+            : base("Invalid student contact reference error occurred.", innerException) { }
+    }
 }
