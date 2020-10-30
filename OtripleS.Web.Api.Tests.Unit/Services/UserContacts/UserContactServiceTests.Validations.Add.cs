@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Moq;
 using OtripleS.Web.Api.Models.UserContacts;
 using OtripleS.Web.Api.Models.UserContacts.Exceptions;
@@ -112,6 +113,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenUserContactAlreadyExistsAndLogItAsync()
+        {
+            // given
+            UserContact randomUserContact = CreateRandomUserContact();
+            UserContact alreadyExistsUserContact = randomUserContact;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsUserContactException =
+                new AlreadyExistsUserContactException(duplicateKeyException);
+
+            var expectedUserContactValidationException =
+                new UserContactValidationException(alreadyExistsUserContactException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertUserContactAsync(alreadyExistsUserContact))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<UserContact> addUserContactTask =
+                this.userContactService.AddUserContactAsync(alreadyExistsUserContact);
+
+            // then
+            await Assert.ThrowsAsync<UserContactValidationException>(() =>
+                addUserContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedUserContactValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertUserContactAsync(alreadyExistsUserContact),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
