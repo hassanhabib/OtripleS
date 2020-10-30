@@ -7,12 +7,12 @@ using System;
 
 namespace OtripleS.Web.Api.Models.UserContacts.Exceptions
 {
-    public class InvalidUserContactInputException : Exception
-    {
-        public InvalidUserContactInputException(string parameterName, object parameterValue)
-            : base($"Invalid UserContact, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
-        { }
-    }
+	public class InvalidUserContactInputException : Exception
+	{
+		public InvalidUserContactInputException(string parameterName, object parameterValue)
+			: base($"Invalid UserContact, " +
+				  $"ParameterName: {parameterName}, " +
+				  $"ParameterValue: {parameterValue}.")
+		{ }
+	}
 }

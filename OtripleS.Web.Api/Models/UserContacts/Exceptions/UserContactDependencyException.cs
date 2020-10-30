@@ -4,12 +4,13 @@
 //----------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.UserContacts.Exceptions
 {
-    public class UserContactDependencyException : Exception
-    {
-        public UserContactDependencyException(Exception innerException) :
-            base("Service dependency error occurred, contact support.", innerException)
-        { }
-    }
+	public class UserContactDependencyException : Exception
+	{
+		public UserContactDependencyException(Exception innerException) :
+			base("Service dependency error occurred, contact support.", innerException)
+		{ }
+	}
 }

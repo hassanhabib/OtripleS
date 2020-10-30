@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -11,7 +12,7 @@ using OtripleS.Web.Api.Models.UserContacts;
 
 namespace OtripleS.Web.Api.Services.UserContacts
 {
-    public partial class UserContactService : IUserContactService
+	public partial class UserContactService : IUserContactService
 	{
 		private readonly IStorageBroker storageBroker;
 		private readonly ILoggingBroker loggingBroker;
@@ -24,9 +25,40 @@ namespace OtripleS.Web.Api.Services.UserContacts
 			this.loggingBroker = loggingBroker;
 		}
 
-        public async ValueTask<UserContact> AddUserContactAsync(UserContact userContact)
-        {
-			return await this.storageBroker.InsertUserContactAsync(userContact);
+		public ValueTask<UserContact> AddUserContactAsync(UserContact userContact)
+		{
+			throw new NotImplementedException();
 		}
-    }
+
+		public ValueTask<UserContact> RemoveUserContactByIdAsync(Guid userId, Guid contactId) =>
+		TryCatch(async () =>
+		{
+			ValidateUserContactIdIsNull(userId, contactId);
+
+			UserContact mayBeUserContact =
+				await this.storageBroker.SelectUserContactByIdAsync(userId, contactId);
+
+			ValidateStorageUserContact(mayBeUserContact, userId, contactId);
+
+			return await this.storageBroker.DeleteUserContactAsync(mayBeUserContact);
+		});
+
+		public IQueryable<UserContact> RetrieveAllUserContacts()
+		{
+			throw new NotImplementedException();
+		}
+
+		public ValueTask<UserContact> RetrieveUserContactByIdAsync(Guid userId, Guid contactId) =>
+		TryCatch( async() =>
+		{
+			ValidateUserContactIdIsNull(userId, contactId);
+
+			UserContact storageUserContact =
+				await this.storageBroker.SelectUserContactByIdAsync(userId, contactId);
+
+			ValidateStorageUserContact(storageUserContact, userId, contactId);
+
+			return storageUserContact;
+		});
+	}
 }

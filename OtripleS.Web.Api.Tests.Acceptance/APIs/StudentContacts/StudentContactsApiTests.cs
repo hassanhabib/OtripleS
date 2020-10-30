@@ -75,6 +75,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
 				.OnProperty(contact => contact.StudentContacts).IgnoreIt()
 				.OnProperty(contact => contact.GuardianContacts).IgnoreIt()
 				.OnProperty(contact => contact.TeacherContacts).IgnoreIt()
+				.OnProperty(contact => contact.UserContacts).IgnoreIt()
 				.OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow);
 
 			return filler;
