@@ -84,5 +84,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnAddWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            UserContact randomUserContact = CreateRandomUserContact();
+            UserContact inputUserContact = randomUserContact;
+            var exception = new Exception();
+
+            var expectedUserContactServiceException =
+                new UserContactServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertUserContactAsync(inputUserContact))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<UserContact> addUserContactTask =
+                 this.userContactService.AddUserContactAsync(inputUserContact);
+
+            // then
+            await Assert.ThrowsAsync<UserContactServiceException>(() =>
+                addUserContactTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedUserContactServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertUserContactAsync(inputUserContact),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
