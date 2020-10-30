@@ -25,12 +25,15 @@ namespace OtripleS.Web.Api.Services.UserContacts
 			this.loggingBroker = loggingBroker;
 		}
 
-        public async ValueTask<UserContact> AddUserContactAsync(UserContact userContact)
-        {
+		public ValueTask<UserContact> AddUserContactAsync(UserContact userContact) =>
+		TryCatch(async () =>
+		{
+			ValidateUserContactOnAdd(userContact);
+
 			return await this.storageBroker.InsertUserContactAsync(userContact);
-		}
-		
-		public ValueTask<UserContact> RemoveUserContactByIdAsync(Guid userId, Guid contactId) =>
+		});
+
+        public ValueTask<UserContact> RemoveUserContactByIdAsync(Guid userId, Guid contactId) =>
 		TryCatch(async () =>
 		{
 			ValidateUserContactIdIsNull(userId, contactId);
