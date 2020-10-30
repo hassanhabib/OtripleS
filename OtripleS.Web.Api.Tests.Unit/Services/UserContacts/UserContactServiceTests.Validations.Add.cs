@@ -78,5 +78,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
     }
 }

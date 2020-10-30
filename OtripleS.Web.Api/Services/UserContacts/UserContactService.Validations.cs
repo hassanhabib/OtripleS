@@ -15,6 +15,7 @@ namespace OtripleS.Web.Api.Services.UserContacts
         private void ValidateUserContactOnAdd(UserContact userContact)
         {
             ValidateUserContactIsNull(userContact);
+            ValidateUserContactRequiredFields(userContact);
         }
 
         private void ValidateUserContactIsNull(UserContact userContact)
@@ -22,6 +23,22 @@ namespace OtripleS.Web.Api.Services.UserContacts
             if (userContact is null)
             {
                 throw new NullUserContactException();
+            }
+        }
+
+        private void ValidateUserContactRequiredFields(UserContact userContact)
+        {
+            switch (userContact)
+            {
+                case { } when IsInvalid(userContact.UserId):
+                    throw new InvalidUserContactInputException(
+                        parameterName: nameof(UserContact.UserId),
+                        parameterValue: userContact.UserId);
+
+                case { } when IsInvalid(userContact.ContactId):
+                    throw new InvalidUserContactInputException(
+                        parameterName: nameof(UserContact.ContactId),
+                        parameterValue: userContact.ContactId);
             }
         }
 
@@ -49,5 +66,8 @@ namespace OtripleS.Web.Api.Services.UserContacts
                 throw new NotFoundUserContactException(userId, contactId);
             }
         }
+
+        private bool IsInvalid(Guid input) => input == default;
+
     }
 }

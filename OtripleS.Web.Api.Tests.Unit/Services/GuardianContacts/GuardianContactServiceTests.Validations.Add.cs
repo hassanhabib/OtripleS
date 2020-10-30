@@ -45,7 +45,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
-
         [Fact]
         public async void ShouldThrowValidationExceptionOnAddWhenGuardianIdIsInvalidAndLogItAsync()
         {
