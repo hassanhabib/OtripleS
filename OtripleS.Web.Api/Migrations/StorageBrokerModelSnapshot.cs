@@ -289,6 +289,21 @@ namespace OtripleS.Web.Api.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("OtripleS.Web.Api.Models.GuardianContacts.GuardianContact", b =>
+                {
+                    b.Property<Guid>("GuardianId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ContactId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("GuardianId", "ContactId");
+
+                    b.HasIndex("ContactId");
+
+                    b.ToTable("GuardianContacts");
+                });
+
             modelBuilder.Entity("OtripleS.Web.Api.Models.Guardians.Guardian", b =>
                 {
                     b.Property<Guid>("Id")
@@ -718,6 +733,25 @@ namespace OtripleS.Web.Api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("OtripleS.Web.Api.Models.GuardianContacts.GuardianContact", b =>
+                {
+                    b.HasOne("OtripleS.Web.Api.Models.Contacts.Contact", "Contact")
+                        .WithMany("GuardianContacts")
+                        .HasForeignKey("ContactId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("OtripleS.Web.Api.Models.Guardians.Guardian", "Guardian")
+                        .WithMany("GuardianContacts")
+                        .HasForeignKey("GuardianId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Contact");
+
+                    b.Navigation("Guardian");
+                });
+
             modelBuilder.Entity("OtripleS.Web.Api.Models.SemesterCourses.SemesterCourse", b =>
                 {
                     b.HasOne("OtripleS.Web.Api.Models.Classrooms.Classroom", "Classroom")
@@ -828,6 +862,8 @@ namespace OtripleS.Web.Api.Migrations
 
             modelBuilder.Entity("OtripleS.Web.Api.Models.Contacts.Contact", b =>
                 {
+                    b.Navigation("GuardianContacts");
+
                     b.Navigation("StudentContacts");
 
                     b.Navigation("TeacherContacts");
@@ -840,6 +876,8 @@ namespace OtripleS.Web.Api.Migrations
 
             modelBuilder.Entity("OtripleS.Web.Api.Models.Guardians.Guardian", b =>
                 {
+                    b.Navigation("GuardianContacts");
+
                     b.Navigation("StudentGuardians");
                 });
 
