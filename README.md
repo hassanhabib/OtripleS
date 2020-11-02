@@ -5,8 +5,6 @@ Open Source Schooling System
 
 [![Build Status](https://dev.azure.com/OtripleS/OtripleS/_apis/build/status/OtripleS%20BUILD?branchName=master)](https://dev.azure.com/OtripleS/OtripleS/_build/latest?definitionId=1&branchName=master)
 
-
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/OtripleS/community)
 [<img src="https://img.shields.io/badge/chat-Teams-blueviolet" alt="Chat on Teams!">](https://teams.microsoft.com/join/nh8zj7qeaf3q)
 
 This is an open source schooling system, dedicated to provide a better experience for schools needing a management and communication and tutoring system all in one place.
