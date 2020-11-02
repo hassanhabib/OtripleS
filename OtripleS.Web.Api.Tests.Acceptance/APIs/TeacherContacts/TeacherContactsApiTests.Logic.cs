@@ -27,15 +27,15 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
 
             TeacherContact actualTeacherContact =
                 await this.otripleSApiBroker.GetTeacherContactByIdAsync(
-                    inputTeacherContact.TeacherId, 
+                    inputTeacherContact.TeacherId,
                     inputTeacherContact.ContactId);
 
             // then
-            actualTeacherContact.Should().BeEquivalentTo(expectedTeacherContact, 
+            actualTeacherContact.Should().BeEquivalentTo(expectedTeacherContact,
                 options => options
                     .Excluding(teacherContact => teacherContact.Teacher)
                     .Excluding(teacherContact => teacherContact.Contact));
-            
+
             await this.otripleSApiBroker.DeleteTeacherContactByIdAsync(
                 actualTeacherContact.TeacherId,
                 actualTeacherContact.ContactId);
@@ -62,7 +62,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
             foreach (TeacherContact expectedTeacherContact in expectedTeacherContacts)
             {
                 TeacherContact actualTeacherContact =
-                    actualTeacherContacts.FirstOrDefault(teacherContact => 
+                    actualTeacherContacts.FirstOrDefault(teacherContact =>
                         teacherContact.TeacherId == expectedTeacherContact.TeacherId
                         && teacherContact.ContactId == expectedTeacherContact.ContactId);
 

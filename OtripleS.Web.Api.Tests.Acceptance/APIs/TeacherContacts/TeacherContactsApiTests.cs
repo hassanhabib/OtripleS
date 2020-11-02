@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
         private static Contact CreateRandomContact() =>
             CreateContactFiller().Create();
 
-        private static int GetRandomNumber() => 
+        private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
 
         private static Filler<TeacherContact> CreateTeacherContactFiller()
