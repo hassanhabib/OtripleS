@@ -163,7 +163,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
             UserContact invalidUserContact = randomUserContact;
             string randomMessage = GetRandomMessage();
             string exceptionMessage = randomMessage;
-            var foreignKeyConstraintConflictException = 
+            var foreignKeyConstraintConflictException =
                 new ForeignKeyConstraintConflictException(exceptionMessage);
 
             var invalidUserContactReferenceException =

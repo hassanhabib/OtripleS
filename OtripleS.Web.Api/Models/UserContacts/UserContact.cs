@@ -1,6 +1,6 @@
-﻿using OtripleS.Web.Api.Models.Contacts;
+﻿using System;
+using OtripleS.Web.Api.Models.Contacts;
 using OtripleS.Web.Api.Models.Users;
-using System;
 
 namespace OtripleS.Web.Api.Models.UserContacts
 {

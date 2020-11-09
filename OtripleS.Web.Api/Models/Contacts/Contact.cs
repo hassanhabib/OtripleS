@@ -32,8 +32,8 @@ namespace OtripleS.Web.Api.Models.Contacts
         public IEnumerable<TeacherContact> TeacherContacts { get; set; }
 
         [JsonIgnore]
-        public IEnumerable<GuardianContact> GuardianContacts { get; set; } 
-        
+        public IEnumerable<GuardianContact> GuardianContacts { get; set; }
+
         [JsonIgnore]
         public IEnumerable<UserContact> UserContacts { get; set; }
     }

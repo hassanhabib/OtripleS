@@ -7,11 +7,11 @@ using System;
 
 namespace OtripleS.Web.Api.Models.UserContacts.Exceptions
 {
-	public class NotFoundUserContactException : Exception
-	{
+    public class NotFoundUserContactException : Exception
+    {
         public NotFoundUserContactException(Guid userId, Guid contactId)
            : base($"Couldn't find UserContact with UserId: {userId} " +
-				  $"and ContactId: {contactId}.")
-		{ }
-	}
+                  $"and ContactId: {contactId}.")
+        { }
+    }
 }

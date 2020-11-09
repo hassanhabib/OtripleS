@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.UserContacts.Exceptions
 {
-	public class LockedUserContactException : Exception
-	{
-		public LockedUserContactException(Exception innerException)
-			: base("Locked UserContact record exception, please try again later.", innerException) { }
-	}
+    public class LockedUserContactException : Exception
+    {
+        public LockedUserContactException(Exception innerException)
+            : base("Locked UserContact record exception, please try again later.", innerException) { }
+    }
 }
