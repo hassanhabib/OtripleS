@@ -793,7 +793,7 @@ namespace OtripleS.Web.Api.Migrations
                     b.HasOne("OtripleS.Web.Api.Models.SemesterCourses.SemesterCourse", "SemesterCourse")
                         .WithMany("Exams")
                         .HasForeignKey("SemesterCourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("SemesterCourse");

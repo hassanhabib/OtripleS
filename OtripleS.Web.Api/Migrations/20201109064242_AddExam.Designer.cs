@@ -10,8 +10,8 @@ using OtripleS.Web.Api.Brokers.Storage;
 namespace OtripleS.Web.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20201109063642_ExamMigration")]
-    partial class ExamMigration
+    [Migration("20201109064242_AddExam")]
+    partial class AddExam
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -795,7 +795,7 @@ namespace OtripleS.Web.Api.Migrations
                     b.HasOne("OtripleS.Web.Api.Models.SemesterCourses.SemesterCourse", "SemesterCourse")
                         .WithMany("Exams")
                         .HasForeignKey("SemesterCourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("SemesterCourse");
