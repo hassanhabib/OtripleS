@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Exams;
 using OtripleS.Web.Api.Models.Exams.Exceptions;
 
@@ -33,6 +34,10 @@ namespace OtripleS.Web.Api.Services.Exams
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
 		}
 
 		private ExamValidationException CreateAndLogValidationException(Exception exception)
@@ -47,6 +52,14 @@ namespace OtripleS.Web.Api.Services.Exams
 		{
 			var examDependencyException = new ExamDependencyException(exception);
 			this.loggingBroker.LogCritical(examDependencyException);
+
+			return examDependencyException;
+		}
+
+		private ExamDependencyException CreateAndLogDependencyException(Exception exception)
+		{
+			var examDependencyException = new ExamDependencyException(exception);
+			this.loggingBroker.LogError(examDependencyException);
 
 			return examDependencyException;
 		}
