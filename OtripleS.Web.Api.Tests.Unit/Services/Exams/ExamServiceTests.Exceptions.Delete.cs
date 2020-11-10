@@ -87,5 +87,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+		{
+			// given
+			Guid randomExamId = Guid.NewGuid();
+			Guid inputExamId = randomExamId;
+			var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+			var lockedExamException = new LockedExamException(databaseUpdateConcurrencyException);
+
+			var expectedExamDependencyException =
+				new ExamDependencyException(lockedExamException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectExamByIdAsync(inputExamId))
+					.ThrowsAsync(databaseUpdateConcurrencyException);
+
+			// when
+			ValueTask<Exam> deleteExamTask =
+				this.examService.DeleteExamByIdAsync(inputExamId);
+
+			// then
+			await Assert.ThrowsAsync<ExamDependencyException>(() =>
+				deleteExamTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedExamDependencyException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectExamByIdAsync(inputExamId),
+					Times.Once);
+
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
