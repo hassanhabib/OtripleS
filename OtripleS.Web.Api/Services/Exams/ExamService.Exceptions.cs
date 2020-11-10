@@ -34,6 +34,12 @@ namespace OtripleS.Web.Api.Services.Exams
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
+			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+			{
+				var lockedCourseException = new LockedExamException(dbUpdateConcurrencyException);
+
+				throw CreateAndLogDependencyException(lockedCourseException);
+			}
 			catch (DbUpdateException dbUpdateException)
 			{
 				throw CreateAndLogDependencyException(dbUpdateException);
