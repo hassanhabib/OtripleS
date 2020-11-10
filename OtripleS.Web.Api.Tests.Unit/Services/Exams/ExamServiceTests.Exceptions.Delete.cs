@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Exams;
 using OtripleS.Web.Api.Models.Exams.Exceptions;
@@ -40,6 +41,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogCritical(It.Is(SameExceptionAs(expectedExamDependencyException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectExamByIdAsync(inputExamId),
+					Times.Once);
+
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
+		public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
+		{
+			// given
+			Guid randomExamId = Guid.NewGuid();
+			Guid inputExamId = randomExamId;
+			var databaseUpdateException = new DbUpdateException();
+
+			var expectedExamDependencyException =
+				new ExamDependencyException(databaseUpdateException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectExamByIdAsync(inputExamId))
+					.ThrowsAsync(databaseUpdateException);
+
+			// when
+			ValueTask<Exam> deleteExamTask =
+				this.examService.DeleteExamByIdAsync(inputExamId);
+
+			// then
+			await Assert.ThrowsAsync<ExamDependencyException>(() =>
+				deleteExamTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedExamDependencyException))),
 					Times.Once);
 
 			this.storageBrokerMock.Verify(broker =>
