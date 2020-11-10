@@ -12,7 +12,7 @@ using OtripleS.Web.Api.Models.Exams;
 
 namespace OtripleS.Web.Api.Services.Exams
 {
-	public class ExamService : IExamService
+	public partial class ExamService : IExamService
 	{
 		private readonly IStorageBroker storageBroker;
 		private readonly ILoggingBroker loggingBroker;
@@ -27,10 +27,13 @@ namespace OtripleS.Web.Api.Services.Exams
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-		public async ValueTask<Exam> DeleteExamByIdAsync(Guid ExamId)
+		public ValueTask<Exam> DeleteExamByIdAsync(Guid examId) =>
+		TryCatch(async () =>
 		{
-			Exam exam = await storageBroker.SelectExamByIdAsync(ExamId);
+			ValidateExamId(examId);
+
+			Exam exam = await storageBroker.SelectExamByIdAsync(examId);
 			return await storageBroker.DeleteExamAsync(exam);
-		}
+		});
 	}
 }
