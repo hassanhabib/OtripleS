@@ -32,8 +32,11 @@ namespace OtripleS.Web.Api.Services.Exams
 		{
 			ValidateExamId(examId);
 
-			Exam exam = await storageBroker.SelectExamByIdAsync(examId);
-			return await storageBroker.DeleteExamAsync(exam);
+			Exam maybeExam = await storageBroker.SelectExamByIdAsync(examId);
+
+			ValidateStorageExam(maybeExam, examId);
+
+			return await storageBroker.DeleteExamAsync(maybeExam);
 		});
 	}
 }

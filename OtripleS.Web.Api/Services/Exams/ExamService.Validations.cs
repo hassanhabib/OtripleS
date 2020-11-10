@@ -21,6 +21,14 @@ namespace OtripleS.Web.Api.Services.Exams
 			}
 		}
 
+		private void ValidateStorageExam(Exam storageExam, Guid examId)
+		{
+			if (storageExam == null)
+			{
+				throw new NotFoundExamException(examId);
+			}
+		}
+
 		private static bool IsInvalid(Guid input) => input == default;
 	}
 }
