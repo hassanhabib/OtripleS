@@ -36,13 +36,17 @@ namespace OtripleS.Web.Api.Services.Exams
 			}
 			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
 			{
-				var lockedCourseException = new LockedExamException(dbUpdateConcurrencyException);
+				var lockedExamException = new LockedExamException(dbUpdateConcurrencyException);
 
-				throw CreateAndLogDependencyException(lockedCourseException);
+				throw CreateAndLogDependencyException(lockedExamException);
 			}
 			catch (DbUpdateException dbUpdateException)
 			{
 				throw CreateAndLogDependencyException(dbUpdateException);
+			}
+			catch (Exception exception)
+			{
+				throw CreateAndLogServiceException(exception);
 			}
 		}
 
@@ -68,6 +72,14 @@ namespace OtripleS.Web.Api.Services.Exams
 			this.loggingBroker.LogError(examDependencyException);
 
 			return examDependencyException;
+		}
+
+		private ExamServiceException CreateAndLogServiceException(Exception exception)
+		{
+			var examServiceException = new ExamServiceException(exception);
+			this.loggingBroker.LogError(examServiceException);
+
+			return examServiceException;
 		}
 	}
 }
