@@ -44,6 +44,10 @@ namespace OtripleS.Web.Api.Services.Exams
 			{
 				throw CreateAndLogDependencyException(dbUpdateException);
 			}
+			catch (Exception exception)
+			{
+				throw CreateAndLogServiceException(exception);
+			}
 		}
 
 		private ExamValidationException CreateAndLogValidationException(Exception exception)
