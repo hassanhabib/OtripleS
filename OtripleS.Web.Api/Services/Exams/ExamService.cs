@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Services.Exams
 
 		public ValueTask<Exam> RetrieveExamByIdAsync(Guid examId)
 		{
-			throw new NotImplementedException();
+			return storageBroker.SelectExamByIdAsync(examId);
 		}
 
 		public ValueTask<Exam> DeleteExamByIdAsync(Guid examId) =>
