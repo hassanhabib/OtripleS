@@ -15,6 +15,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
 	public partial class ExamServiceTests
 	{
 		[Fact]
+		public async Task ShouldRetrieveExamByIdAsync()
+		{
+			// given
+			Guid randomExamId = Guid.NewGuid();
+			Guid inputExamId = randomExamId;
+			DateTimeOffset randomDateTime = GetRandomDateTime();
+			Exam randomExam = CreateRandomExam(randomDateTime);
+			Exam storageExam = randomExam;
+			Exam expectedExam = storageExam;
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectExamByIdAsync(inputExamId))
+					.ReturnsAsync(storageExam);
+
+			// when
+			Exam actualExam =
+				await this.examService.RetrieveExamByIdAsync(inputExamId);
+
+			// then
+			actualExam.Should().BeEquivalentTo(expectedExam);
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Never);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectExamByIdAsync(inputExamId),
+					Times.Once);
+
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
 		public async Task ShouldDeleteExamByIdAsync()
 		{
 			// given
