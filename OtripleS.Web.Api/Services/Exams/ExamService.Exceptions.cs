@@ -40,6 +40,10 @@ namespace OtripleS.Web.Api.Services.Exams
 
 				throw CreateAndLogDependencyException(lockedExamException);
 			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
 			catch (Exception exception)
 			{
 				throw CreateAndLogServiceException(exception);
