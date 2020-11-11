@@ -32,6 +32,7 @@ namespace OtripleS.Web.Api.Services.Exams
 		{
 			ValidateExamId(examId);
 			Exam storageExam = await this.storageBroker.SelectExamByIdAsync(examId);
+			ValidateStorageExam(storageExam, examId);
 
 			return storageExam;
 		});
