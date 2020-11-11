@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Exams;
 using OtripleS.Web.Api.Models.Exams.Exceptions;
@@ -52,6 +53,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomExamId = Guid.NewGuid();
+            Guid inputExamId = randomExamId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedExamDependencyException =
+                new ExamDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectExamByIdAsync(inputExamId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<Exam> retrieveExamTask =
+                this.examService.RetrieveExamByIdAsync(inputExamId);
+
+            // then
+            await Assert.ThrowsAsync<ExamDependencyException>(() =>
+                retrieveExamTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(inputExamId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
