@@ -27,7 +27,15 @@ namespace OtripleS.Web.Api.Services.Exams
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-		public ValueTask<Exam> RetrieveExamByIdAsync(Guid examId) =>
+		public ValueTask<Exam> AddExamAsync(Exam exam) =>
+		TryCatch(async () =>
+		{
+			ValidateExamOnAdd(exam);
+
+			return await this.storageBroker.InsertExamAsync(exam);
+		});
+
+        public ValueTask<Exam> RetrieveExamByIdAsync(Guid examId) =>
 		TryCatch(async () =>
 		{
 			ValidateExamId(examId);
@@ -48,5 +56,6 @@ namespace OtripleS.Web.Api.Services.Exams
 
 			return await storageBroker.DeleteExamAsync(maybeExam);
 		});
+
     }
 }

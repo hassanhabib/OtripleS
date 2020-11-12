@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Exams;
@@ -22,6 +23,10 @@ namespace OtripleS.Web.Api.Services.Exams
 			{
 				return await returningExamFunction();
 			}
+			catch (NullExamException nullExamException)
+			{
+				throw CreateAndLogValidationException(nullExamException);
+			}
 			catch (InvalidExamInputException invalidExamInputException)
 			{
 				throw CreateAndLogValidationException(invalidExamInputException);
@@ -33,6 +38,13 @@ namespace OtripleS.Web.Api.Services.Exams
 			catch (SqlException sqlException)
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
+			}
+			catch (DuplicateKeyException duplicateKeyException)
+			{
+				var alreadyExistsExamException =
+					new AlreadyExistsExamException(duplicateKeyException);
+
+				throw CreateAndLogValidationException(alreadyExistsExamException);
 			}
 			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
 			{
