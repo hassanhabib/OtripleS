@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -35,6 +36,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
 				loggingBroker: this.loggingBrokerMock.Object,
 				dateTimeBroker: this.dateTimeBrokerMock.Object);
 		}
+
+		public static IEnumerable<object[]> InvalidMinuteCases()
+		{
+			int randomMoreThanMinuteFromNow = GetRandomNumber();
+			int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+			return new List<object[]>
+			{
+				new object[] { randomMoreThanMinuteFromNow },
+				new object[] { randomMoreThanMinuteBeforeNow }
+			};
+		}
+
+		private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+		private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
 
 		private static DateTimeOffset GetRandomDateTime() =>
 			new DateTimeRange(earliestDate: new DateTime()).GetValue();
