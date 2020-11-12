@@ -156,5 +156,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenUpdatedByIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Exam randomExam = CreateRandomExam(dateTime);
+            Exam inputExam = randomExam;
+            inputExam.UpdatedBy = default;
+
+            var invalidExamInputException = new InvalidExamInputException(
+                parameterName: nameof(Exam.UpdatedBy),
+                parameterValue: inputExam.UpdatedBy);
+
+            var expectedExamValidationException =
+                new ExamValidationException(invalidExamInputException);
+
+            // when
+            ValueTask<Exam> createExamTask =
+                this.examService.AddExamAsync(inputExam);
+
+            // then
+            await Assert.ThrowsAsync<ExamValidationException>(() =>
+                createExamTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertExamAsync(It.IsAny<Exam>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
