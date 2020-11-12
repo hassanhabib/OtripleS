@@ -11,6 +11,7 @@ namespace OtripleS.Web.Api.Services.Exams
 {
 	public interface IExamService
 	{
+		ValueTask<Exam> AddExamAsync(Exam exam);
 		ValueTask<Exam> RetrieveExamByIdAsync(Guid examId);
 		ValueTask<Exam> DeleteExamByIdAsync(Guid examId);
 	}

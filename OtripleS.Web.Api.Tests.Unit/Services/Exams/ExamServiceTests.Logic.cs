@@ -50,6 +50,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
 		}
 
 		[Fact]
+		public async Task ShouldAddExamAsync()
+		{
+			// given
+			DateTimeOffset randomDateTime = GetRandomDateTime();
+			DateTimeOffset dateTime = randomDateTime;
+			Exam randomExam = CreateRandomExam(randomDateTime);
+			randomExam.UpdatedBy = randomExam.CreatedBy;
+			Exam inputExam = randomExam;
+			Exam storageExam = randomExam;
+			Exam expectedExam = storageExam;
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(dateTime);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.InsertExamAsync(inputExam))
+					.ReturnsAsync(storageExam);
+
+			// when
+			Exam actualExam =
+				await this.examService.AddExamAsync(inputExam);
+
+			// then
+			actualExam.Should().BeEquivalentTo(expectedExam);
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.InsertExamAsync(inputExam),
+					Times.Once);
+
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
 		public async Task ShouldDeleteExamByIdAsync()
 		{
 			// given
