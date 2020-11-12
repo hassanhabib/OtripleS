@@ -27,9 +27,9 @@ namespace OtripleS.Web.Api.Services.Exams
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-		public ValueTask<Exam> AddExamAsync(Exam exam)
+		public async ValueTask<Exam> AddExamAsync(Exam exam)
 		{
-			throw new NotImplementedException();
+			return await this.storageBroker.InsertExamAsync(exam);
 		}
 
 		public ValueTask<Exam> RetrieveExamByIdAsync(Guid examId) =>
