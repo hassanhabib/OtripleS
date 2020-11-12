@@ -15,8 +15,20 @@ namespace OtripleS.Web.Api.Services.Exams
         {
             ValidateExamIdIsNotNull(exam);
             ValidateExamId(exam.Id);
+            ValidateExamType(exam);
             ValidateExamAuditFieldsOnCreate(exam);
         }
+
+        private void ValidateExamType(Exam exam)
+        {
+            if(IsInvalid(exam.Type))
+            {
+                throw new InvalidExamInputException(
+                   parameterName: nameof(Exam.Type),
+                   parameterValue: exam.Type);
+            }
+        }
+
         private void ValidateExamId(Guid examId)
         {
             if (IsInvalid(examId))
@@ -87,6 +99,7 @@ namespace OtripleS.Web.Api.Services.Exams
         private bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);
         private bool IsInvalid(Guid input) => input == default;
         private bool IsInvalid(DateTimeOffset input) => input == default;
+        private static bool IsInvalid(ExamType type) => Enum.IsDefined(type) == false;
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
