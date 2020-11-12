@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using Moq;
 using OtripleS.Web.Api.Models.Exams;
@@ -44,5 +45,43 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenIdIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Exam randomExam = CreateRandomExam(dateTime);
+            Exam inputExam = randomExam;
+            inputExam.Id = default;
+
+            var invalidExamInputException = new InvalidExamInputException(
+                parameterName: nameof(Exam.Id),
+                parameterValue: inputExam.Id);
+
+            var expectedExamValidationException =
+                new ExamValidationException(invalidExamInputException);
+
+            // when
+            ValueTask<Exam> createExamTask =
+                this.examService.AddExamAsync(inputExam);
+
+            // then
+            await Assert.ThrowsAsync<ExamValidationException>(() =>
+                createExamTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertExamAsync(It.IsAny<Exam>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
