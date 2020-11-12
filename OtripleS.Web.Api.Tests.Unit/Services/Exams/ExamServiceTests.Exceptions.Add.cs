@@ -1,0 +1,65 @@
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
+using System;
+using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Moq;
+using OtripleS.Web.Api.Models.Exams;
+using OtripleS.Web.Api.Models.Exams.Exceptions;
+using Xunit;
+
+namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
+{
+	public partial class ExamServiceTests
+	{
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnAddWhenSqlExceptionOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Exam randomExam = CreateRandomExam(dateTime);
+            Exam inputExam = randomExam;
+            inputExam.UpdatedBy = inputExam.CreatedBy;
+            var sqlException = GetSqlException();
+
+            var expectedExamDependencyException =
+                new ExamDependencyException(sqlException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertExamAsync(inputExam))
+                    .ThrowsAsync(sqlException);
+
+            // when
+            ValueTask<Exam> createExamTask =
+                this.examService.AddExamAsync(inputExam);
+
+            // then
+            await Assert.ThrowsAsync<ExamDependencyException>(() =>
+                createExamTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(expectedExamDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertExamAsync(inputExam),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+    }
+}
