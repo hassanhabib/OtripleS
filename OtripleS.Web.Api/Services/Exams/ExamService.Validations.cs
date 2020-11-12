@@ -29,6 +29,21 @@ namespace OtripleS.Web.Api.Services.Exams
 			}
 		}
 
+
+		private void ValidateExamOnAdd(Exam exam)
+		{
+			ValidateExamIdIsNotNull(exam);
+		}
+
+
+		private void ValidateExamIdIsNotNull(Exam exam)
+		{
+			if (exam == default)
+			{
+				throw new NullExamException();
+			}
+		}
+
 		private static bool IsInvalid(Guid input) => input == default;
 	}
 }

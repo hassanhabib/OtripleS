@@ -27,12 +27,15 @@ namespace OtripleS.Web.Api.Services.Exams
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-		public async ValueTask<Exam> AddExamAsync(Exam exam)
+		public ValueTask<Exam> AddExamAsync(Exam exam) =>
+		TryCatch(async () =>
 		{
-			return await this.storageBroker.InsertExamAsync(exam);
-		}
+			ValidateExamOnAdd(exam);
 
-		public ValueTask<Exam> RetrieveExamByIdAsync(Guid examId) =>
+			return await this.storageBroker.InsertExamAsync(exam);
+		});
+
+        public ValueTask<Exam> RetrieveExamByIdAsync(Guid examId) =>
 		TryCatch(async () =>
 		{
 			ValidateExamId(examId);

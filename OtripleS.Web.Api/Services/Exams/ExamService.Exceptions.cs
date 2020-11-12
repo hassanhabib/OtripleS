@@ -22,6 +22,10 @@ namespace OtripleS.Web.Api.Services.Exams
 			{
 				return await returningExamFunction();
 			}
+			catch (NullExamException nullExamException)
+			{
+				throw CreateAndLogValidationException(nullExamException);
+			}
 			catch (InvalidExamInputException invalidExamInputException)
 			{
 				throw CreateAndLogValidationException(invalidExamInputException);
