@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Exams.Exceptions;
 using Xunit;
@@ -30,6 +31,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedExamDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllExams(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenDbExceptionOccursAndLogIt()
+        {
+            // given
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedExamDependencyException =
+                new ExamDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllExams())
+                    .Throws(databaseUpdateException);
+
+            // when . then
+            Assert.Throws<ExamDependencyException>(() =>
+                this.examService.RetrieveAllExams());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
