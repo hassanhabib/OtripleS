@@ -5,7 +5,7 @@
 
 using System;
 using System.Collections.Generic;
-using OtripleS.Web.Api.Models.Students;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
@@ -33,18 +33,15 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
         private Filler<Student> CreateRandomStudentFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid posterId = Guid.NewGuid();
+            Guid userId = Guid.NewGuid();
             var filler = new Filler<Student>();
 
             filler.Setup()
-                .OnProperty(student => student.CreatedBy).Use(posterId)
-                .OnProperty(student => student.UpdatedBy).Use(posterId)
+                .OnProperty(student => student.CreatedBy).Use(userId)
+                .OnProperty(student => student.UpdatedBy).Use(userId)
                 .OnProperty(student => student.CreatedDate).Use(now)
                 .OnProperty(student => student.UpdatedDate).Use(now)
-                .OnProperty(student => student.StudentSemesterCourses).IgnoreIt()
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(student => student.StudentGuardians).IgnoreIt()
-                .OnProperty(student => student.StudentContacts).IgnoreIt();
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
         }
@@ -60,10 +57,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
                 .OnProperty(student => student.UpdatedBy).Use(student.UpdatedBy)
                 .OnProperty(student => student.CreatedDate).Use(student.CreatedDate)
                 .OnProperty(student => student.UpdatedDate).Use(now)
-                .OnProperty(student => student.StudentSemesterCourses).IgnoreIt()
-                .OnProperty(student => student.StudentContacts).IgnoreIt()
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(student => student.StudentGuardians).IgnoreIt(); ;
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler.Create();
         }
