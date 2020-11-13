@@ -57,6 +57,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
 		private static DateTimeOffset GetRandomDateTime() =>
 			new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
+		private IQueryable<Exam> CreateRandomExams(DateTimeOffset dateTime) =>
+			CreateRandomExamFiller(dateTime: dateTime).Create(GetRandomNumber()).AsQueryable();
+
 		private Exam CreateRandomExam(DateTimeOffset dateTime) =>
 			CreateRandomExamFiller(dateTime).Create();
 

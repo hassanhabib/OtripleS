@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.Exams;
 using OtripleS.Web.Api.Models.Exams.Exceptions;
 
@@ -19,13 +20,12 @@ namespace OtripleS.Web.Api.Services.Exams
             ValidateExamAuditFieldsOnCreate(exam);
         }
 
-        private void ValidateExamType(Exam exam)
+
+        private void ValidateStorageExams(IQueryable<Exam> storageExams)
         {
-            if(IsInvalid(exam.Type))
+            if (storageExams.Count() == 0)
             {
-                throw new InvalidExamInputException(
-                   parameterName: nameof(Exam.Type),
-                   parameterValue: exam.Type);
+                this.loggingBroker.LogWarning("No exams found in storage.");
             }
         }
 
@@ -44,6 +44,16 @@ namespace OtripleS.Web.Api.Services.Exams
             if (storageExam == null)
             {
                 throw new NotFoundExamException(examId);
+            }
+        }
+
+        private void ValidateExamType(Exam exam)
+        {
+            if (IsInvalid(exam.Type))
+            {
+                throw new InvalidExamInputException(
+                   parameterName: nameof(Exam.Type),
+                   parameterValue: exam.Type);
             }
         }
 

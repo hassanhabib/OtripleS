@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -16,7 +17,8 @@ namespace OtripleS.Web.Api.Services.Exams
 	public partial class ExamService
 	{
 		private delegate ValueTask<Exam> ReturningExamFunction();
-
+		private delegate IQueryable<Exam> ReturningQueryableExamFunction();
+		
 		private async ValueTask<Exam> TryCatch(ReturningExamFunction returningExamFunction)
 		{
 			try
@@ -51,6 +53,26 @@ namespace OtripleS.Web.Api.Services.Exams
 				var lockedExamException = new LockedExamException(dbUpdateConcurrencyException);
 
 				throw CreateAndLogDependencyException(lockedExamException);
+			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
+			catch (Exception exception)
+			{
+				throw CreateAndLogServiceException(exception);
+			}
+		}
+
+		private IQueryable<Exam> TryCatch(ReturningQueryableExamFunction returningQueryableExamFunction)
+        {
+			try
+			{
+				return returningQueryableExamFunction();
+			}
+			catch (SqlException sqlException)
+			{
+				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
 			catch (DbUpdateException dbUpdateException)
 			{

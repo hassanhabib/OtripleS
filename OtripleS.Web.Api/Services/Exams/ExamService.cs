@@ -13,55 +13,60 @@ using OtripleS.Web.Api.Models.Exams;
 
 namespace OtripleS.Web.Api.Services.Exams
 {
-	public partial class ExamService : IExamService
-	{
-		private readonly IStorageBroker storageBroker;
-		private readonly ILoggingBroker loggingBroker;
-		private readonly IDateTimeBroker dateTimeBroker;
+    public partial class ExamService : IExamService
+    {
+        private readonly IStorageBroker storageBroker;
+        private readonly ILoggingBroker loggingBroker;
+        private readonly IDateTimeBroker dateTimeBroker;
 
-		public ExamService(IStorageBroker storageBroker,
-			ILoggingBroker loggingBroker,
-			IDateTimeBroker dateTimeBroker)
-		{
-			this.storageBroker = storageBroker;
-			this.loggingBroker = loggingBroker;
-			this.dateTimeBroker = dateTimeBroker;
-		}
+        public ExamService(IStorageBroker storageBroker,
+            ILoggingBroker loggingBroker,
+            IDateTimeBroker dateTimeBroker)
+        {
+            this.storageBroker = storageBroker;
+            this.loggingBroker = loggingBroker;
+            this.dateTimeBroker = dateTimeBroker;
+        }
 
-		public ValueTask<Exam> AddExamAsync(Exam exam) =>
-		TryCatch(async () =>
-		{
-			ValidateExamOnAdd(exam);
-
-			return await this.storageBroker.InsertExamAsync(exam);
-		});
 
         public ValueTask<Exam> RetrieveExamByIdAsync(Guid examId) =>
-		TryCatch(async () =>
-		{
-			ValidateExamId(examId);
-			Exam storageExam = await this.storageBroker.SelectExamByIdAsync(examId);
-			ValidateStorageExam(storageExam, examId);
-
-			return storageExam;
-		});
-
-		public ValueTask<Exam> DeleteExamByIdAsync(Guid examId) =>
-		TryCatch(async () =>
-		{
-			ValidateExamId(examId);
-
-			Exam maybeExam = await storageBroker.SelectExamByIdAsync(examId);
-
-			ValidateStorageExam(maybeExam, examId);
-
-			return await storageBroker.DeleteExamAsync(maybeExam);
-		});
-
-        public IQueryable<Exam> RetrieveAllExams()
+        TryCatch(async () =>
         {
-            throw new NotImplementedException();
-        }
+            ValidateExamId(examId);
+            Exam storageExam = await this.storageBroker.SelectExamByIdAsync(examId);
+            ValidateStorageExam(storageExam, examId);
+
+            return storageExam;
+        });
+
+        public IQueryable<Exam> RetrieveAllExams() =>
+        TryCatch(() =>
+        {
+            IQueryable<Exam> storageExams = this.storageBroker.SelectAllExams();
+            ValidateStorageExams(storageExams);
+
+            return storageExams;
+        });
+
+        public ValueTask<Exam> AddExamAsync(Exam exam) =>
+        TryCatch(async () =>
+        {
+            ValidateExamOnAdd(exam);
+
+            return await this.storageBroker.InsertExamAsync(exam);
+        });
+
+        public ValueTask<Exam> DeleteExamByIdAsync(Guid examId) =>
+        TryCatch(async () =>
+        {
+            ValidateExamId(examId);
+
+            Exam maybeExam = await storageBroker.SelectExamByIdAsync(examId);
+
+            ValidateStorageExam(maybeExam, examId);
+
+            return await storageBroker.DeleteExamAsync(maybeExam);
+        });
 
         public ValueTask<Exam> ModifyExamAsync(Exam exam)
         {
