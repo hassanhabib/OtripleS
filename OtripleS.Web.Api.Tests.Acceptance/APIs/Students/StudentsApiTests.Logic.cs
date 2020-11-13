@@ -30,7 +30,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
 
             // then
             actualStudent.Should().BeEquivalentTo(expectedStudent);
-
             await this.otripleSApiBroker.DeleteStudentByIdAsync(actualStudent.Id);
         }
 
@@ -50,7 +49,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
 
             // then
             actualStudent.Should().BeEquivalentTo(modifiedStudent);
-
             await this.otripleSApiBroker.DeleteStudentByIdAsync(actualStudent.Id);
         }
 

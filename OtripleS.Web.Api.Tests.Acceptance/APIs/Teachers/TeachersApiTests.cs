@@ -5,7 +5,7 @@
 
 using System;
 using System.Collections.Generic;
-using OtripleS.Web.Api.Models.Teachers;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
@@ -37,9 +37,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
                 .OnProperty(teacher => teacher.UpdatedBy).Use(teacher.UpdatedBy)
                 .OnProperty(teacher => teacher.CreatedDate).Use(teacher.CreatedDate)
                 .OnProperty(teacher => teacher.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt()
-                .OnProperty(teacher => teacher.TeacherContacts).IgnoreIt();
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler.Create();
         }
@@ -53,18 +51,16 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
         private Filler<Teacher> CreateRandomTeacherFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid posterId = Guid.NewGuid();
+            Guid userId = Guid.NewGuid();
 
             var filler = new Filler<Teacher>();
 
             filler.Setup()
-                .OnProperty(teacher => teacher.CreatedBy).Use(posterId)
-                .OnProperty(teacher => teacher.UpdatedBy).Use(posterId)
+                .OnProperty(teacher => teacher.CreatedBy).Use(userId)
+                .OnProperty(teacher => teacher.UpdatedBy).Use(userId)
                 .OnProperty(teacher => teacher.CreatedDate).Use(now)
                 .OnProperty(teacher => teacher.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt()
-                .OnProperty(teacher => teacher.TeacherContacts).IgnoreIt();
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
         }
