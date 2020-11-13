@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -57,5 +58,14 @@ namespace OtripleS.Web.Api.Services.Exams
 			return await storageBroker.DeleteExamAsync(maybeExam);
 		});
 
+        public IQueryable<Exam> RetrieveAllExams()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ValueTask<Exam> ModifyExamAsync(Exam exam)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
