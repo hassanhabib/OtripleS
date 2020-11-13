@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
             actualExams.Should().BeEquivalentTo(emptyStorageExams);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogWarning("No guardians found in storage."),
+                broker.LogWarning("No exams found in storage."),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
