@@ -28,15 +28,8 @@ namespace OtripleS.Web.Api.Services.Exams
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-		public ValueTask<Exam> AddExamAsync(Exam exam) =>
-		TryCatch(async () =>
-		{
-			ValidateExamOnAdd(exam);
 
-			return await this.storageBroker.InsertExamAsync(exam);
-		});
-
-        public ValueTask<Exam> RetrieveExamByIdAsync(Guid examId) =>
+		public ValueTask<Exam> RetrieveExamByIdAsync(Guid examId) =>
 		TryCatch(async () =>
 		{
 			ValidateExamId(examId);
@@ -44,6 +37,22 @@ namespace OtripleS.Web.Api.Services.Exams
 			ValidateStorageExam(storageExam, examId);
 
 			return storageExam;
+		});
+
+
+		public IQueryable<Exam> RetrieveAllExams()
+		{
+			IQueryable<Exam> storageExams = this.storageBroker.SelectAllExams();
+			
+			return storageExams;
+		}
+
+		public ValueTask<Exam> AddExamAsync(Exam exam) =>
+		TryCatch(async () =>
+		{
+			ValidateExamOnAdd(exam);
+
+			return await this.storageBroker.InsertExamAsync(exam);
 		});
 
 		public ValueTask<Exam> DeleteExamByIdAsync(Guid examId) =>
@@ -57,11 +66,6 @@ namespace OtripleS.Web.Api.Services.Exams
 
 			return await storageBroker.DeleteExamAsync(maybeExam);
 		});
-
-        public IQueryable<Exam> RetrieveAllExams()
-        {
-            throw new NotImplementedException();
-        }
 
         public ValueTask<Exam> ModifyExamAsync(Exam exam)
         {
