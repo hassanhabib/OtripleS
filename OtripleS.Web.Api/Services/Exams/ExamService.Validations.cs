@@ -140,6 +140,11 @@ namespace OtripleS.Web.Api.Services.Exams
                     throw new InvalidExamInputException(
                         parameterName: nameof(Exam.UpdatedBy),
                         parameterValue: exam.UpdatedBy);
+
+                case { } when IsInvalid(exam.CreatedDate):
+                    throw new InvalidExamInputException(
+                        parameterName: nameof(Exam.CreatedDate),
+                        parameterValue: exam.CreatedDate);
             }
         }
 
