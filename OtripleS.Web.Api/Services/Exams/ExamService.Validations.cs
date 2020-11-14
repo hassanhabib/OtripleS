@@ -126,6 +126,17 @@ namespace OtripleS.Web.Api.Services.Exams
             ValidateExamId(exam.Id);
             ValidateExamtAuditFields(exam);
             ValidateDatesAreNotSame(exam);
+            ValidateUpdatedDateIsRecent(exam);
+        }
+
+        private void ValidateUpdatedDateIsRecent(Exam exam)
+        {
+            if (IsDateNotRecent(exam.UpdatedDate))
+            {
+                throw new InvalidExamInputException(
+                    parameterName: nameof(Exam.UpdatedDate),
+                    parameterValue: exam.UpdatedDate);
+            }
         }
 
         private void ValidateDatesAreNotSame(Exam exam)
