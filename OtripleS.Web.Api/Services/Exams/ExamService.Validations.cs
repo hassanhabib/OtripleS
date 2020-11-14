@@ -123,6 +123,7 @@ namespace OtripleS.Web.Api.Services.Exams
         private void ValidateExamOnModify(Exam exam)
         {
             ValidateExamIsNotNull(exam);
+            ValidateExamId(exam.Id);
         }
 
         private void ValidateExamIsNotNull(Exam exam)
