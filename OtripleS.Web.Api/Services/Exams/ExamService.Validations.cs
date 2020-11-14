@@ -124,6 +124,18 @@ namespace OtripleS.Web.Api.Services.Exams
         {
             ValidateExamIsNotNull(exam);
             ValidateExamId(exam.Id);
+            ValidateExamtAuditFields(exam);
+        }
+
+        private void ValidateExamtAuditFields(Exam exam)
+        {
+            switch (exam)
+            {
+                case { } when IsInvalid(exam.CreatedBy):
+                    throw new InvalidExamInputException(
+                        parameterName: nameof(Exam.CreatedBy),
+                        parameterValue: exam.CreatedBy);
+            }
         }
 
         private void ValidateExamIsNotNull(Exam exam)
