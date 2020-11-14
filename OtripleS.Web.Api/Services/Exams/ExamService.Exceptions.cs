@@ -48,12 +48,6 @@ namespace OtripleS.Web.Api.Services.Exams
 
 				throw CreateAndLogValidationException(alreadyExistsExamException);
 			}
-			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
-			{
-				var lockedExamException = new LockedExamException(dbUpdateConcurrencyException);
-
-				throw CreateAndLogDependencyException(lockedExamException);
-			}
 			catch (DbUpdateException dbUpdateException)
 			{
 				throw CreateAndLogDependencyException(dbUpdateException);
