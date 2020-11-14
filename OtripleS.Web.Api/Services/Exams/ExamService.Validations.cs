@@ -119,5 +119,18 @@ namespace OtripleS.Web.Api.Services.Exams
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
+
+        private void ValidateExamOnModify(Exam exam)
+        {
+            ValidateExamIsNotNull(exam);
+        }
+
+        private void ValidateExamIsNotNull(Exam exam)
+        {
+            if (exam is null)
+            {
+                throw new NullExamException();
+            }
+        }
     }
 }

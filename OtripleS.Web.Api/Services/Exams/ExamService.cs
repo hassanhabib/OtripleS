@@ -68,11 +68,13 @@ namespace OtripleS.Web.Api.Services.Exams
             return await storageBroker.DeleteExamAsync(maybeExam);
         });
 
-        public ValueTask<Exam> ModifyExamAsync(Exam exam)
+        public ValueTask<Exam> ModifyExamAsync(Exam exam) =>
+        TryCatch(async () =>
         {
-            dateTimeBroker.GetCurrentDateTime();
-            storageBroker.SelectExamByIdAsync(exam.Id);
-            return storageBroker.UpdateExamAsync(exam);
-        }
+            ValidateExamOnModify(exam);
+            Exam maybeExam = await storageBroker.SelectExamByIdAsync(exam.Id);
+
+            return await storageBroker.UpdateExamAsync(exam);
+        });
     }
 }
