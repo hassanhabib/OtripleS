@@ -138,14 +138,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
 			Exam expectedExam = afterUpdateStorageExam;
 			Exam beforeUpdateStorageExam = randomExam.DeepClone();
 			inputExam.UpdatedDate = randomDate;
-			Guid ExamId = inputExam.Id;
+			Guid examId = inputExam.Id;
 
 			this.dateTimeBrokerMock.Setup(broker =>
 			   broker.GetCurrentDateTime())
 				   .Returns(randomDate);
 
 			this.storageBrokerMock.Setup(broker =>
-				broker.SelectExamByIdAsync(ExamId))
+				broker.SelectExamByIdAsync(examId))
 					.ReturnsAsync(beforeUpdateStorageExam);
 
 			this.storageBrokerMock.Setup(broker =>
@@ -164,7 +164,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
 					Times.Once);
 
 			this.storageBrokerMock.Verify(broker =>
-				broker.SelectExamByIdAsync(ExamId),
+				broker.SelectExamByIdAsync(examId),
 					Times.Once);
 
 			this.storageBrokerMock.Verify(broker =>

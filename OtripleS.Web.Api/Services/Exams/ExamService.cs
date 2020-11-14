@@ -70,7 +70,9 @@ namespace OtripleS.Web.Api.Services.Exams
 
         public ValueTask<Exam> ModifyExamAsync(Exam exam)
         {
-            throw new NotImplementedException();
+            dateTimeBroker.GetCurrentDateTime();
+            storageBroker.SelectExamByIdAsync(exam.Id);
+            return storageBroker.UpdateExamAsync(exam);
         }
     }
 }
