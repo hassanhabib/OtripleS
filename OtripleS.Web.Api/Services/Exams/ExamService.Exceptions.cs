@@ -37,6 +37,10 @@ namespace OtripleS.Web.Api.Services.Exams
 			{
 				throw CreateAndLogValidationException(nullExamException);
 			}
+			catch (SqlException sqlException)
+			{
+				throw CreateAndLogCriticalDependencyException(sqlException);
+			}
 			catch (DuplicateKeyException duplicateKeyException)
 			{
 				var alreadyExistsExamException =
