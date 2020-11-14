@@ -464,5 +464,59 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfStorageUpdatedDateSameAsUpdatedDateAndLogItAsync()
+        {
+            // given
+            int randomNegativeMinutes = GetNegativeRandomNumber();
+            int minutesInThePast = randomNegativeMinutes;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            Exam randomExam = CreateRandomExam(randomDate);
+            randomExam.CreatedDate = randomExam.CreatedDate.AddMinutes(minutesInThePast);
+            Exam invalidExam = randomExam;
+            invalidExam.UpdatedDate = randomDate;
+            Exam storageExam = randomExam.DeepClone();
+            Guid ExamId = invalidExam.Id;
+
+            var invalidExamInputException = new InvalidExamInputException(
+                parameterName: nameof(Exam.UpdatedDate),
+                parameterValue: invalidExam.UpdatedDate);
+
+            var expectedExamValidationException =
+              new ExamValidationException(invalidExamInputException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectExamByIdAsync(ExamId))
+                    .ReturnsAsync(storageExam);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
+            // when
+            ValueTask<Exam> modifyExamTask =
+                this.examService.ModifyExamAsync(invalidExam);
+
+            // then
+            await Assert.ThrowsAsync<ExamValidationException>(() =>
+                modifyExamTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(invalidExam.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
