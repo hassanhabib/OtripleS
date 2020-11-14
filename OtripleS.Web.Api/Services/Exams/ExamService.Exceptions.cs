@@ -58,6 +58,10 @@ namespace OtripleS.Web.Api.Services.Exams
 			{
 				throw CreateAndLogDependencyException(dbUpdateException);
 			}
+			catch (Exception exception)
+			{
+				throw CreateAndLogServiceException(exception);
+			}
 		}
 
 		private IQueryable<Exam> TryCatch(ReturningQueryableExamFunction returningQueryableExamFunction)
