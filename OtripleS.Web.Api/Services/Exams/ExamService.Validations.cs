@@ -196,6 +196,11 @@ namespace OtripleS.Web.Api.Services.Exams
                     throw new InvalidExamInputException(
                         parameterName: nameof(Exam.CreatedBy),
                         parameterValue: inputExam.CreatedBy);
+
+                case { } when inputExam.UpdatedDate == storageExam.UpdatedDate:
+                    throw new InvalidExamInputException(
+                        parameterName: nameof(Exam.UpdatedDate),
+                        parameterValue: inputExam.UpdatedDate);
             }
         }
     }
