@@ -40,5 +40,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyWhenExamIdIsInvalidAndLogItAsync()
+        {
+            //given
+            Guid invalidExamId = Guid.Empty;
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Exam randomExam = CreateRandomExam(dateTime);
+            Exam invalidExam = randomExam;
+            invalidExam.Id = invalidExamId;
+
+            var invalidExamException = new InvalidExamInputException(
+                parameterName: nameof(Exam.Id),
+                parameterValue: invalidExam.Id);
+
+            var expectedExamValidationException =
+                new ExamValidationException(invalidExamException);
+
+            //when
+            ValueTask<Exam> modifyExamTask =
+                this.examService.ModifyExamAsync(invalidExam);
+
+            //then
+            await Assert.ThrowsAsync<ExamValidationException>(() =>
+                modifyExamTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamValidationException))),
+                Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
