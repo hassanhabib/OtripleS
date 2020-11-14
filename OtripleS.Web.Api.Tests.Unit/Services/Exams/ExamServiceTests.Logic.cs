@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Exams;
 using Xunit;
@@ -121,6 +122,58 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
 			this.dateTimeBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
+		public async Task ShouldModifyExamAsync()
+		{
+			// given
+			int randomNumber = GetRandomNumber();
+			int randomDays = randomNumber;
+			DateTimeOffset randomDate = GetRandomDateTime();
+			DateTimeOffset randomInputDate = GetRandomDateTime();
+			Exam randomExam = CreateRandomExam(randomInputDate);
+			Exam inputExam = randomExam;
+			Exam afterUpdateStorageExam = inputExam;
+			Exam expectedExam = afterUpdateStorageExam;
+			Exam beforeUpdateStorageExam = randomExam.DeepClone();
+			inputExam.UpdatedDate = randomDate;
+			Guid ExamId = inputExam.Id;
+
+			this.dateTimeBrokerMock.Setup(broker =>
+			   broker.GetCurrentDateTime())
+				   .Returns(randomDate);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectExamByIdAsync(ExamId))
+					.ReturnsAsync(beforeUpdateStorageExam);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.UpdateExamAsync(inputExam))
+					.ReturnsAsync(afterUpdateStorageExam);
+
+			// when
+			Exam actualExam =
+				await this.examService.ModifyExamAsync(inputExam);
+
+			// then
+			actualExam.Should().BeEquivalentTo(expectedExam);
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectExamByIdAsync(ExamId),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.UpdateExamAsync(inputExam),
+					Times.Once);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
 		}
 
 		[Fact]
