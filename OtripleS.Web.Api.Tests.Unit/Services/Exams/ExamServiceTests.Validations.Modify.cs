@@ -306,5 +306,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfExamDoesntExistAndLogItAsync()
+        {
+            // given
+            int randomNegativeMinutes = GetNegativeRandomNumber();
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Exam randomExam = CreateRandomExam(dateTime);
+            Exam nonExistentExam = randomExam;
+            nonExistentExam.CreatedDate = dateTime.AddMinutes(randomNegativeMinutes);
+            Exam noExam = null;
+            var notFoundExamException = new NotFoundExamException(nonExistentExam.Id);
+
+            var expectedExamValidationException =
+                new ExamValidationException(notFoundExamException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectExamByIdAsync(nonExistentExam.Id))
+                    .ReturnsAsync(noExam);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            // when
+            ValueTask<Exam> modifyExamTask =
+                this.examService.ModifyExamAsync(nonExistentExam);
+
+            // then
+            await Assert.ThrowsAsync<ExamValidationException>(() =>
+                modifyExamTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(nonExistentExam.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
