@@ -182,5 +182,16 @@ namespace OtripleS.Web.Api.Services.Exams
                 throw new NullExamException();
             }
         }
+
+        private void ValidateAgainstStorageExamOnModify(Exam inputExam, Exam storageExam)
+        {
+            switch (inputExam)
+            {
+                case { } when inputExam.CreatedDate != storageExam.CreatedDate:
+                    throw new InvalidExamInputException(
+                        parameterName: nameof(Exam.CreatedDate),
+                        parameterValue: inputExam.CreatedDate);
+            }
+        }
     }
 }
