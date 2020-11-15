@@ -119,5 +119,89 @@ namespace OtripleS.Web.Api.Services.Exams
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
+
+        private void ValidateExamOnModify(Exam exam)
+        {
+            ValidateExamIsNotNull(exam);
+            ValidateExamId(exam.Id);
+            ValidateExamtAuditFields(exam);
+            ValidateDatesAreNotSame(exam);
+            ValidateUpdatedDateIsRecent(exam);
+        }
+
+        private void ValidateUpdatedDateIsRecent(Exam exam)
+        {
+            if (IsDateNotRecent(exam.UpdatedDate))
+            {
+                throw new InvalidExamInputException(
+                    parameterName: nameof(Exam.UpdatedDate),
+                    parameterValue: exam.UpdatedDate);
+            }
+        }
+
+        private void ValidateDatesAreNotSame(Exam exam)
+        {
+            if (exam.CreatedDate == exam.UpdatedDate)
+            {
+                throw new InvalidExamInputException(
+                    parameterName: nameof(Exam.UpdatedDate),
+                    parameterValue: exam.UpdatedDate);
+            }
+        }
+
+        private void ValidateExamtAuditFields(Exam exam)
+        {
+            switch (exam)
+            {
+                case { } when IsInvalid(exam.CreatedBy):
+                    throw new InvalidExamInputException(
+                        parameterName: nameof(Exam.CreatedBy),
+                        parameterValue: exam.CreatedBy);
+
+                case { } when IsInvalid(exam.UpdatedBy):
+                    throw new InvalidExamInputException(
+                        parameterName: nameof(Exam.UpdatedBy),
+                        parameterValue: exam.UpdatedBy);
+
+                case { } when IsInvalid(exam.CreatedDate):
+                    throw new InvalidExamInputException(
+                        parameterName: nameof(Exam.CreatedDate),
+                        parameterValue: exam.CreatedDate);
+
+                case { } when IsInvalid(exam.UpdatedDate):
+                    throw new InvalidExamInputException(
+                        parameterName: nameof(Exam.UpdatedDate),
+                        parameterValue: exam.UpdatedDate);
+            }
+        }
+
+        private void ValidateExamIsNotNull(Exam exam)
+        {
+            if (exam is null)
+            {
+                throw new NullExamException();
+            }
+        }
+
+        private void ValidateAgainstStorageExamOnModify(Exam inputExam, Exam storageExam)
+        {
+            switch (inputExam)
+            {
+                case { } when inputExam.CreatedDate != storageExam.CreatedDate:
+                    throw new InvalidExamInputException(
+                        parameterName: nameof(Exam.CreatedDate),
+                        parameterValue: inputExam.CreatedDate);
+
+                case { } when inputExam.CreatedBy != storageExam.CreatedBy:
+                    throw new InvalidExamInputException(
+                        parameterName: nameof(Exam.CreatedBy),
+                        parameterValue: inputExam.CreatedBy);
+
+                case { } when inputExam.UpdatedDate == storageExam.UpdatedDate:
+                    throw new InvalidExamInputException(
+                        parameterName: nameof(Exam.UpdatedDate),
+                        parameterValue: inputExam.UpdatedDate);
+            }
+        }
     }
 }
