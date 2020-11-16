@@ -7,7 +7,7 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Exams.Exceptions
 {
-	public class ExamDependencyException : Exception
+    public class ExamDependencyException : Exception
 	{
 		public ExamDependencyException(Exception innerException)
 			: base("Service dependency error occurred, contact support.", innerException) { }

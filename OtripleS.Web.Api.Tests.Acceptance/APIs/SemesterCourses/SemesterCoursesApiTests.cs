@@ -127,7 +127,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
                 .OnProperty(teacher => teacher.UpdatedDate).Use(now)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
                 .OnProperty(teacher => teacher.SemesterCourses).IgnoreIt()
-                .OnProperty(teacher => teacher.TeacherContacts).IgnoreIt();
+                .OnProperty(teacher => teacher.TeacherContacts).IgnoreIt()
+                .OnProperty(teacher => teacher.ReviewedStudentExams).IgnoreIt();
 
             return filler;
         }

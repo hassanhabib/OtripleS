@@ -36,7 +36,7 @@ using OtripleS.Web.Api.Services.Users;
 
 namespace OtripleS.Web.Api
 {
-	public class Startup
+    public class Startup
 	{
 		public Startup(IConfiguration configuration) =>
 			Configuration = configuration;

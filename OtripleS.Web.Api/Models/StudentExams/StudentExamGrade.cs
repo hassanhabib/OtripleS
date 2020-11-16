@@ -3,13 +3,16 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-
-namespace OtripleS.Web.Api.Models.Exams.Exceptions
+namespace OtripleS.Web.Api.Models.StudentExams
 {
-    public class ExamValidationException : Exception
-	{
-		public ExamValidationException(Exception innerException)
-			: base("Invalid input, contact support.", innerException) { }
-	}
+    public enum StudentExamGrade
+    {
+        NoGrade,
+        A,
+        B,
+        C,
+        D,
+        E,
+        F
+    }
 }

@@ -39,7 +39,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
                 .OnProperty(teacher => teacher.UpdatedDate).Use(now)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
                 .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt()
-                .OnProperty(teacher => teacher.TeacherContacts).IgnoreIt();
+                .OnProperty(teacher => teacher.TeacherContacts).IgnoreIt()
+                .OnProperty(teacher => teacher.ReviewedStudentExams).IgnoreIt();
 
             return filler.Create();
         }
@@ -64,7 +65,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
                 .OnProperty(teacher => teacher.UpdatedDate).Use(now)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
                 .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt()
-                .OnProperty(teacher => teacher.TeacherContacts).IgnoreIt();
+                .OnProperty(teacher => teacher.TeacherContacts).IgnoreIt()
+                .OnProperty(teacher => teacher.ReviewedStudentExams).IgnoreIt();
 
             return filler;
         }

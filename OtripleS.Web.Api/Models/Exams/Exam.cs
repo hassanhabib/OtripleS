@@ -4,7 +4,10 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using OtripleS.Web.Api.Models.SemesterCourses;
+using OtripleS.Web.Api.Models.StudentExams;
 
 namespace OtripleS.Web.Api.Models.Exams
 {
@@ -23,5 +26,8 @@ namespace OtripleS.Web.Api.Models.Exams
         public DateTimeOffset UpdatedDate { get; set; }
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<StudentExam> StudentExams { get; set; }
     }
 }

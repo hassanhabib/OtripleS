@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using OtripleS.Web.Api.Models.SemesterCourses;
+using OtripleS.Web.Api.Models.StudentExams;
 using OtripleS.Web.Api.Models.TeacherContacts;
 
 namespace OtripleS.Web.Api.Models.Teachers
@@ -31,5 +32,8 @@ namespace OtripleS.Web.Api.Models.Teachers
 
         [JsonIgnore]
         public IEnumerable<TeacherContact> TeacherContacts { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<StudentExam> ReviewedStudentExams { get; set; }
     }
 }

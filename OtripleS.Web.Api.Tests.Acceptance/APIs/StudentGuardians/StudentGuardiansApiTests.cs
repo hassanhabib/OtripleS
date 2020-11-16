@@ -86,7 +86,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
                 .OnProperty(student => student.StudentSemesterCourses).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
                 .OnProperty(student => student.StudentGuardians).IgnoreIt()
-                .OnProperty(student => student.StudentContacts).IgnoreIt();
+                .OnProperty(student => student.StudentContacts).IgnoreIt()
+                .OnProperty(student => student.StudentExams).IgnoreIt();
 
             return filler;
         }

@@ -10,7 +10,7 @@ using OtripleS.Web.Api.Models.Exams;
 
 namespace OtripleS.Web.Api.Services.Exams
 {
-	public interface IExamService
+    public interface IExamService
 	{
 		ValueTask<Exam> AddExamAsync(Exam exam);
 		IQueryable<Exam> RetrieveAllExams();
