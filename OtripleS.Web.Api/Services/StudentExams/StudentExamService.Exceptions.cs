@@ -23,7 +23,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
             }
             catch (InvalidStudentExamInputException invalidStudentExamInputException)
             {
-                throw new NotImplementedException();
+                throw CreateAndLogValidationException(invalidStudentExamInputException);
             }
         }
 
