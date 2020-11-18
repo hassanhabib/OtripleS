@@ -94,5 +94,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomStudentExamId = Guid.NewGuid();
+            Guid inputStudentExamId = randomStudentExamId;
+            var exception = new Exception();
+
+            var expectedStudentExamServiceException =
+                new StudentExamServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentExamByIdAsync(inputStudentExamId))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<StudentExam> retrieveStudentExamByIdTask =
+                this.studentExamService.RetrieveStudentExamByIdAsync(inputStudentExamId);
+
+            // then
+            await Assert.ThrowsAsync<StudentExamServiceException>(() =>
+                retrieveStudentExamByIdTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentExamByIdAsync(inputStudentExamId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
