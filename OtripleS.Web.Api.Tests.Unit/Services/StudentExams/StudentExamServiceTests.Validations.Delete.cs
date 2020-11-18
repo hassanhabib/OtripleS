@@ -51,5 +51,47 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.dateTimeBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldThrowValidationExceptionOnDeleteWhenStorageStudentExamIsInvalidAndLogItAsync()
+		{
+			// given
+			DateTimeOffset randomDateTime = GetRandomDateTime();
+			StudentExam randomStudentExam = CreateRandomStudentExam(randomDateTime);
+			Guid inputStudentExamId = randomStudentExam.Id;
+			StudentExam nullStorageStudentExam = null;
+
+			var notFoundStudentExamException = new NotFoundStudentExamException(inputStudentExamId);
+
+			var expectedStudentExamValidationException =
+				new StudentExamValidationException(notFoundStudentExamException);
+
+			this.storageBrokerMock.Setup(broker =>
+				 broker.SelectStudentExamByIdAsync(inputStudentExamId))
+					.ReturnsAsync(nullStorageStudentExam);
+
+			// when
+			ValueTask<StudentExam> actualStudentExamDeleteTask =
+				this.studentExamService.DeleteStudentExamByIdAsync(inputStudentExamId);
+
+			// then
+			await Assert.ThrowsAsync<StudentExamValidationException>(() => actualStudentExamDeleteTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedStudentExamValidationException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectStudentExamByIdAsync(inputStudentExamId),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.DeleteStudentExamAsync(It.IsAny<StudentExam>()),
+					Times.Never);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
