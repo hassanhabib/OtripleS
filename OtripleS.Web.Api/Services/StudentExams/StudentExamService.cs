@@ -41,9 +41,12 @@ namespace OtripleS.Web.Api.Services.StudentExams
 			return storageStudentExam;
 		});
 
-		public ValueTask<StudentExam> DeleteStudentExamByIdAsync(Guid studentExamId)
+		public async ValueTask<StudentExam> DeleteStudentExamByIdAsync(Guid studentExamId)
 		{
-			throw new NotImplementedException();
+			StudentExam maybeStudentExam =
+			   await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
+
+			return await this.storageBroker.DeleteStudentExamAsync(maybeStudentExam);
 		}
 	}
 }
