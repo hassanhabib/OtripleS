@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.StudentExams;
 using OtripleS.Web.Api.Models.StudentExams.Exceptions;
@@ -39,6 +40,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentExamDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentExamByIdAsync(inputStudentExamId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomStudentExamId = Guid.NewGuid();
+            Guid inputStudentExamId = randomStudentExamId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedStudentExamDependencyException =
+                new StudentExamDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentExamByIdAsync(inputStudentExamId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<StudentExam> retrieveStudentExamByIdTask =
+                this.studentExamService.RetrieveStudentExamByIdAsync(inputStudentExamId);
+
+            // then
+            await Assert.ThrowsAsync<StudentExamDependencyException>(() =>
+                retrieveStudentExamByIdTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
