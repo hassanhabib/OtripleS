@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
 
         public ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId)
         {
-            throw new NotImplementedException();
+            return storageBroker.SelectStudentExamByIdAsync(studentExamId);
         }
     }
 }
