@@ -12,33 +12,38 @@ using OtripleS.Web.Api.Models.StudentExams;
 
 namespace OtripleS.Web.Api.Services.StudentExams
 {
-    public partial class StudentExamService : IStudentExamService
-    {
-        private readonly IStorageBroker storageBroker;
-        private readonly ILoggingBroker loggingBroker;
-        private readonly IDateTimeBroker dateTimeBroker;
+	public partial class StudentExamService : IStudentExamService
+	{
+		private readonly IStorageBroker storageBroker;
+		private readonly ILoggingBroker loggingBroker;
+		private readonly IDateTimeBroker dateTimeBroker;
 
-        public StudentExamService(
-            IStorageBroker storageBroker,
-            ILoggingBroker loggingBroker,
-            IDateTimeBroker dateTimeBroker)
-        {
-            this.storageBroker = storageBroker;
-            this.loggingBroker = loggingBroker;
-            this.dateTimeBroker = dateTimeBroker;
-        }
+		public StudentExamService(
+			IStorageBroker storageBroker,
+			ILoggingBroker loggingBroker,
+			IDateTimeBroker dateTimeBroker)
+		{
+			this.storageBroker = storageBroker;
+			this.loggingBroker = loggingBroker;
+			this.dateTimeBroker = dateTimeBroker;
+		}
 
-        public ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId) =>
-        TryCatch(async () =>
-        {
-            ValidateStudentExamId(studentExamId);
+		public ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId) =>
+		TryCatch(async () =>
+		{
+			ValidateStudentExamId(studentExamId);
 
-            StudentExam storageStudentExam =
-                await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
+			StudentExam storageStudentExam =
+				await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
 
-            ValidateStorageStudentExam(storageStudentExam, studentExamId);
+			ValidateStorageStudentExam(storageStudentExam, studentExamId);
 
-            return storageStudentExam;
-        });
-    }
+			return storageStudentExam;
+		});
+
+		public ValueTask<StudentExam> DeleteStudentExamByIdAsync(Guid studentExamId)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

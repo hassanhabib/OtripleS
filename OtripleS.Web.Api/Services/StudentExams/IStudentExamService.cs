@@ -9,8 +9,9 @@ using OtripleS.Web.Api.Models.StudentExams;
 
 namespace OtripleS.Web.Api.Services.StudentExams
 {
-    public interface IStudentExamService
-    {
-        ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId);
-    }
+	public interface IStudentExamService
+	{
+		ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId);
+		ValueTask<StudentExam> DeleteStudentExamByIdAsync(Guid studentExamId);
+	}
 }
