@@ -36,6 +36,8 @@ namespace OtripleS.Web.Api.Services.StudentExams
             StudentExam storageStudentExam =
                 await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
 
+            ValidateStorageStudentExam(storageStudentExam, studentExamId);
+
             return storageStudentExam;
         });
     }

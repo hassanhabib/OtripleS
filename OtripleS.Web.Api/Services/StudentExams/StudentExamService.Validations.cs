@@ -20,5 +20,13 @@ namespace OtripleS.Web.Api.Services.StudentExams
                     parameterValue: studentExamId);
             }
         }
+
+        private static void ValidateStorageStudentExam(StudentExam storageStudentExam, Guid studentExamId)
+        {
+            if (storageStudentExam == null)
+            {
+                throw new NotFoundStudentExamException(studentExamId);
+            }
+        }
     }
 }

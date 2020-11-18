@@ -52,5 +52,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnRetrieveWhenStorageStudentExamIsNullAndLogItAsync()
+        {
+            // given
+            Guid randomStudentExamId = Guid.NewGuid();
+            Guid inputStudentExamId = randomStudentExamId;
+            StudentExam invalidStorageStudentExam = null;
+            var notFoundStudentExamException = new NotFoundStudentExamException(inputStudentExamId);
+
+            var expectedStudentExamValidationException =
+                new StudentExamValidationException(notFoundStudentExamException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentExamByIdAsync(inputStudentExamId))
+                    .ReturnsAsync(invalidStorageStudentExam);
+
+            // when
+            ValueTask<StudentExam> retrieveStudentExamByIdTask =
+                this.studentExamService.RetrieveStudentExamByIdAsync(inputStudentExamId);
+
+            // then
+            await Assert.ThrowsAsync<StudentExamValidationException>(() =>
+                retrieveStudentExamByIdTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentExamByIdAsync(inputStudentExamId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
