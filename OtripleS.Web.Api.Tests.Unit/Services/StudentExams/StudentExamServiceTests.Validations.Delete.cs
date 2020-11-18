@@ -93,5 +93,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.dateTimeBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
+		{
+			// given
+			Guid randomStudentExamId = Guid.NewGuid();
+			Guid inputStudentExamId = randomStudentExamId;
+			var exception = new Exception();
+
+			var expectedStudentExamServiceException = new StudentExamServiceException(exception);
+
+			this.storageBrokerMock.Setup(broker =>
+				 broker.SelectStudentExamByIdAsync(inputStudentExamId))
+					.ThrowsAsync(exception);
+
+			// when
+			ValueTask<StudentExam> deleteStudentExamTask =
+				this.studentExamService.DeleteStudentExamByIdAsync(inputStudentExamId);
+
+			// then
+			await Assert.ThrowsAsync<StudentExamServiceException>(() =>
+				deleteStudentExamTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedStudentExamServiceException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectStudentExamByIdAsync(inputStudentExamId),
+					Times.Once);
+
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
