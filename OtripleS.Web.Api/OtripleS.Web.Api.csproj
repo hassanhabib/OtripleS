@@ -26,6 +26,5 @@
     <Folder Include="Services\Guardians\" />
     <Folder Include="Services\StudentContacts\" />
     <Folder Include="Services\StudentExams\" />
-    <Folder Include="Models\StudentExams\Exceptions\" />
   </ItemGroup>
 </Project>
