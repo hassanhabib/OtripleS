@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.StudentExams;
 using OtripleS.Web.Api.Models.StudentExams.Exceptions;
 
@@ -29,6 +30,10 @@ namespace OtripleS.Web.Api.Services.StudentExams
             {
                 throw CreateAndLogValidationException(nullStudentExamException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
         }
 
         private StudentExamValidationException CreateAndLogValidationException(Exception exception)
@@ -37,6 +42,14 @@ namespace OtripleS.Web.Api.Services.StudentExams
             this.loggingBroker.LogError(StudentExamValidationException);
 
             return StudentExamValidationException;
+        }
+
+        private StudentExamDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var StudentExamDependencyException = new StudentExamDependencyException(exception);
+            this.loggingBroker.LogCritical(StudentExamDependencyException);
+
+            return StudentExamDependencyException;
         }
     }
 }
