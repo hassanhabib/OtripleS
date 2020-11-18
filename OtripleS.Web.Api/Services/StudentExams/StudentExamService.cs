@@ -28,9 +28,15 @@ namespace OtripleS.Web.Api.Services.StudentExams
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId)
+        public ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId) =>
+        TryCatch(async () =>
         {
-            return storageBroker.SelectStudentExamByIdAsync(studentExamId);
-        }
+            ValidateStudentExamId(studentExamId);
+
+            StudentExam storageStudentExam =
+                await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
+
+            return storageStudentExam;
+        });
     }
 }
