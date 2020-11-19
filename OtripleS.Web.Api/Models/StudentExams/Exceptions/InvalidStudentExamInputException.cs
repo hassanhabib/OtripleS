@@ -4,12 +4,14 @@
 // ---------------------------------------------------------------
 
 using System;
-
 namespace OtripleS.Web.Api.Models.StudentExams.Exceptions
 {
-   public class StudentExamServiceException : Exception
+    public class InvalidStudentExamInputException : Exception
     {
-        public StudentExamServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+        public InvalidStudentExamInputException(string parameterName, object parameterValue)
+            : base($"Invalid StudentExam, " +
+                  $"ParameterName: {parameterName}, " +
+                  $"ParameterValue: {parameterValue}.")
+        { }
     }
 }

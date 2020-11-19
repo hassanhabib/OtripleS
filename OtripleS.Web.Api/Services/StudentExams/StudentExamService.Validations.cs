@@ -10,7 +10,7 @@ using OtripleS.Web.Api.Models.StudentExams.Exceptions;
 
 namespace OtripleS.Web.Api.Services.StudentExams
 {
-    public partial class StudentExamService
+     public partial class StudentExamService
     {
         private void ValidateStudentExamId(Guid studentExamId)
         {
