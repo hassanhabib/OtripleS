@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.StudentExams.Exceptions
 {
-    public class InvalidStudentExamException : Exception
+    public class InvalidStudentExamInputException : Exception
     {
-        public InvalidStudentExamException(string parameterName, object parameterValue)
+        public InvalidStudentExamInputException(string parameterName, object parameterValue)
             : base($"Invalid Student exam, " +
                   $"ParameterName: {parameterName}, " +
                   $"ParameterValue: {parameterValue}.")

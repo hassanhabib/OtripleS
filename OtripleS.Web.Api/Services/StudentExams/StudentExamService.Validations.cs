@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
         {
             if (studentExamId == Guid.Empty)
             {
-                throw new InvalidStudentExamException(
+                throw new InvalidStudentExamInputException(
                     parameterName: nameof(StudentExam.Id),
                     parameterValue: studentExamId);
             }
@@ -57,17 +57,17 @@ namespace OtripleS.Web.Api.Services.StudentExams
             switch (inputStudentExam)
             {
                 case { } when inputStudentExam.CreatedDate != storageStudentExam.CreatedDate:
-                    throw new InvalidStudentExamException(
+                    throw new InvalidStudentExamInputException(
                         parameterName: nameof(StudentExam.CreatedDate),
                         parameterValue: inputStudentExam.CreatedDate);
 
                 case { } when inputStudentExam.CreatedBy != storageStudentExam.CreatedBy:
-                    throw new InvalidStudentExamException(
+                    throw new InvalidStudentExamInputException(
                         parameterName: nameof(StudentExam.CreatedBy),
                         parameterValue: inputStudentExam.CreatedBy);
 
                 case { } when inputStudentExam.UpdatedDate == storageStudentExam.UpdatedDate:
-                    throw new InvalidStudentExamException(
+                    throw new InvalidStudentExamInputException(
                         parameterName: nameof(StudentExam.UpdatedDate),
                         parameterValue: inputStudentExam.UpdatedDate);
             }
@@ -78,17 +78,17 @@ namespace OtripleS.Web.Api.Services.StudentExams
             switch (studentExam)
             {
                 case { } when IsInvalid(studentExam.CreatedBy):
-                    throw new InvalidStudentExamException(
+                    throw new InvalidStudentExamInputException(
                         parameterName: nameof(studentExam.CreatedBy),
                         parameterValue: studentExam.CreatedBy);
 
                 case { } when IsInvalid(studentExam.Id):
-                    throw new InvalidStudentExamException(
+                    throw new InvalidStudentExamInputException(
                         parameterName: nameof(studentExam.Id),
                         parameterValue: studentExam.Id);
 
                 case { } when IsInvalid(studentExam.StudentId):
-                    throw new InvalidStudentExamException(
+                    throw new InvalidStudentExamInputException(
                         parameterName: nameof(studentExam.Student),
                         parameterValue: studentExam.Student);
             }
@@ -98,7 +98,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
         {
             if (StudentExam.CreatedDate == StudentExam.UpdatedDate)
             {
-                throw new InvalidStudentExamException(
+                throw new InvalidStudentExamInputException(
                     parameterName: nameof(StudentExam.CreatedDate),
                     parameterValue: StudentExam.CreatedDate);
             }
@@ -108,7 +108,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
         {
             if (IsDateNotRecent(StudentExam.CreatedDate))
             {
-                throw new InvalidStudentExamException(
+                throw new InvalidStudentExamInputException(
                     parameterName: nameof(StudentExam.CreatedDate),
                     parameterValue: StudentExam.CreatedDate);
             }
@@ -118,7 +118,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
         {
             if (IsDateNotRecent(StudentExam.UpdatedDate))
             {
-                throw new InvalidStudentExamException(
+                throw new InvalidStudentExamInputException(
                     parameterName: nameof(StudentExam.UpdatedDate),
                     parameterValue: StudentExam.UpdatedDate);
             }
@@ -137,13 +137,13 @@ namespace OtripleS.Web.Api.Services.StudentExams
         {
             if (StudentExam.CreatedBy != StudentExam.UpdatedBy)
             {
-                throw new InvalidStudentExamException(
+                throw new InvalidStudentExamInputException(
                     parameterName: nameof(StudentExam.UpdatedBy),
                     parameterValue: StudentExam.UpdatedBy);
             }
             else if (StudentExam.CreatedDate != StudentExam.UpdatedDate)
             {
-                throw new InvalidStudentExamException(
+                throw new InvalidStudentExamInputException(
                     parameterName: nameof(StudentExam.UpdatedDate),
                     parameterValue: StudentExam.UpdatedDate);
             }
@@ -154,12 +154,12 @@ namespace OtripleS.Web.Api.Services.StudentExams
             switch (StudentExam)
             {
                 case { } when StudentExam.CreatedDate == default:
-                    throw new InvalidStudentExamException(
+                    throw new InvalidStudentExamInputException(
                         parameterName: nameof(StudentExam.CreatedDate),
                         parameterValue: StudentExam.CreatedDate);
 
                 case { } when StudentExam.UpdatedDate == default:
-                    throw new InvalidStudentExamException(
+                    throw new InvalidStudentExamInputException(
                         parameterName: nameof(StudentExam.UpdatedDate),
                         parameterValue: StudentExam.UpdatedDate);
             }
@@ -170,12 +170,12 @@ namespace OtripleS.Web.Api.Services.StudentExams
             switch (StudentExam)
             {
                 case { } when IsInvalid(StudentExam.CreatedBy):
-                    throw new InvalidStudentExamException(
+                    throw new InvalidStudentExamInputException(
                         parameterName: nameof(StudentExam.CreatedBy),
                         parameterValue: StudentExam.CreatedBy);
 
                 case { } when IsInvalid(StudentExam.UpdatedBy):
-                    throw new InvalidStudentExamException(
+                    throw new InvalidStudentExamInputException(
                         parameterName: nameof(StudentExam.UpdatedBy),
                         parameterValue: StudentExam.UpdatedBy);
             }
