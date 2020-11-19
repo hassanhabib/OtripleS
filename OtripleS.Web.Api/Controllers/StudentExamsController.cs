@@ -110,6 +110,46 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpPut]
+        public async ValueTask<ActionResult<StudentExam>> PutStudentExamAsync(StudentExam studentExam)
+        {
+            try
+            {
+                StudentExam registeredStudentExam =
+                    await this.studentExamService.ModifyStudentExamAsync(studentExam);
+
+                return Ok(registeredStudentExam);
+            }
+            catch (StudentExamValidationException studentExamValidationException)
+                when (studentExamValidationException.InnerException is NotFoundStudentExamException)
+            {
+                string innerMessage = GetInnerMessage(studentExamValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (StudentExamValidationException studentExamValidationException)
+            {
+                string innerMessage = GetInnerMessage(studentExamValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (StudentExamDependencyException studentExamDependencyException)
+                when (studentExamDependencyException.InnerException is LockedStudentExamException)
+            {
+                string innerMessage = GetInnerMessage(studentExamDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (StudentExamDependencyException studentExamDependencyException)
+            {
+                return Problem(studentExamDependencyException.Message);
+            }
+            catch (StudentExamServiceException studentExamServiceException)
+            {
+                return Problem(studentExamServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
