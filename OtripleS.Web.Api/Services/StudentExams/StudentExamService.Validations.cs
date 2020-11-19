@@ -40,18 +40,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
             ValidateCreatedDateIsRecent(studentExam);
         }
 
-        private void ValidateStudentExamOnModify(StudentExam StudentExam)
-        {
-            ValidateStudentExam(StudentExam);
-            ValidateStudentExamId(StudentExam.Id);
-            ValidateStudentExamStrings(StudentExam);
-            ValidateStudentExamDates(StudentExam);
-            ValidateStudentExamIds(StudentExam);
-            ValidateDatesAreNotSame(StudentExam);
-            ValidateUpdatedDateIsRecent(StudentExam);
-        }
-
-        public void ValidateAginstStorageStudentExamOnModify(StudentExam inputStudentExam, StudentExam storageStudentExam)
+        public void ValidateAgianstStorageStudentExamOnModify(StudentExam inputStudentExam, StudentExam storageStudentExam)
         {
             switch (inputStudentExam)
             {
@@ -90,16 +79,16 @@ namespace OtripleS.Web.Api.Services.StudentExams
                     throw new InvalidStudentExamInputException(
                         parameterName: nameof(studentExam.Student),
                         parameterValue: studentExam.Student);
-            }
-        }
 
-        private void ValidateDatesAreNotSame(StudentExam StudentExam)
-        {
-            if (StudentExam.CreatedDate == StudentExam.UpdatedDate)
-            {
-                throw new InvalidStudentExamInputException(
-                    parameterName: nameof(StudentExam.CreatedDate),
-                    parameterValue: StudentExam.CreatedDate);
+                case { } when IsInvalid(studentExam.ExamId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.Exam),
+                        parameterValue: studentExam.ExamId);
+
+                case { } when IsInvalid(studentExam.TeacherId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.ReviewingTeacher),
+                        parameterValue: studentExam.TeacherId);
             }
         }
 
@@ -113,16 +102,6 @@ namespace OtripleS.Web.Api.Services.StudentExams
             }
         }
 
-        private void ValidateUpdatedDateIsRecent(StudentExam StudentExam)
-        {
-            if (IsDateNotRecent(StudentExam.UpdatedDate))
-            {
-                throw new InvalidStudentExamInputException(
-                    parameterName: nameof(StudentExam.UpdatedDate),
-                    parameterValue: StudentExam.UpdatedDate);
-            }
-        }
-
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
@@ -130,22 +109,6 @@ namespace OtripleS.Web.Api.Services.StudentExams
             TimeSpan difference = now.Subtract(dateTime);
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
-        }
-
-        private void ValidateCreatedSignature(StudentExam StudentExam)
-        {
-            if (StudentExam.CreatedBy != StudentExam.UpdatedBy)
-            {
-                throw new InvalidStudentExamInputException(
-                    parameterName: nameof(StudentExam.UpdatedBy),
-                    parameterValue: StudentExam.UpdatedBy);
-            }
-            else if (StudentExam.CreatedDate != StudentExam.UpdatedDate)
-            {
-                throw new InvalidStudentExamInputException(
-                    parameterName: nameof(StudentExam.UpdatedDate),
-                    parameterValue: StudentExam.UpdatedDate);
-            }
         }
 
         private void ValidateStudentExamDates(StudentExam StudentExam)
@@ -164,19 +127,39 @@ namespace OtripleS.Web.Api.Services.StudentExams
             }
         }
 
-        private void ValidateStudentExamIds(StudentExam StudentExam)
+        private void ValidateStudentExamIds(StudentExam studentExam)
         {
-            switch (StudentExam)
+            switch (studentExam)
             {
-                case { } when IsInvalid(StudentExam.CreatedBy):
+                case { } when IsInvalid(studentExam.CreatedBy):
                     throw new InvalidStudentExamInputException(
-                        parameterName: nameof(StudentExam.CreatedBy),
-                        parameterValue: StudentExam.CreatedBy);
+                        parameterName: nameof(studentExam.CreatedBy),
+                        parameterValue: studentExam.CreatedBy);
 
-                case { } when IsInvalid(StudentExam.UpdatedBy):
+                case { } when IsInvalid(studentExam.UpdatedBy):
                     throw new InvalidStudentExamInputException(
-                        parameterName: nameof(StudentExam.UpdatedBy),
-                        parameterValue: StudentExam.UpdatedBy);
+                        parameterName: nameof(studentExam.UpdatedBy),
+                        parameterValue: studentExam.UpdatedBy);
+
+                case { } when IsInvalid(studentExam.Id):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.Id),
+                        parameterValue: studentExam.Id);
+
+                case { } when IsInvalid(studentExam.StudentId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.Student),
+                        parameterValue: studentExam.Student);
+
+                case { } when IsInvalid(studentExam.ExamId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.Exam),
+                        parameterValue: studentExam.ExamId);
+
+                case { } when IsInvalid(studentExam.TeacherId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.ReviewingTeacher),
+                        parameterValue: studentExam.TeacherId);
             }
         }
 
@@ -185,14 +168,6 @@ namespace OtripleS.Web.Api.Services.StudentExams
             if (StudentExam is null)
             {
                 throw new NullStudentExamException();
-            }
-        }
-
-        private void ValidateStorageStudentExams(IQueryable<StudentExam> storageStudents)
-        {
-            if (storageStudents.Count() == 0)
-            {
-                this.loggingBroker.LogWarning("No students found in storage.");
             }
         }
 
