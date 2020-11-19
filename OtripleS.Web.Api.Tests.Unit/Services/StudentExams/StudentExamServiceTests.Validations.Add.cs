@@ -4,11 +4,11 @@
 // ---------------------------------------------------------------
 
 using Moq;
+using OtripleS.Web.Api.Models.StudentExams;
 using OtripleS.Web.Api.Models.StudentExams.Exceptions;
 using System;
 using System.Threading.Tasks;
 using Xunit;
-using StudentExam = OtripleS.Web.Api.Models.StudentExams.StudentExam;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 {
@@ -21,7 +21,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             DateTimeOffset randomDateTime = GetRandomDateTime();
             DateTimeOffset dateTime = randomDateTime;
 
-            StudentExam randomStudentExam = CreateRandomStudentExam(dateTime); ;
+            StudentExam randomStudentExam = CreateRandomStudentExam(dateTime);
             StudentExam nullStudentExam = randomStudentExam;
             var nullStudentExamException = new NullStudentExamException();
 

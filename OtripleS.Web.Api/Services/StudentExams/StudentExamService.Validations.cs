@@ -37,7 +37,6 @@ namespace OtripleS.Web.Api.Services.StudentExams
             ValidateStudentExamIds(studentExam);
             ValidateStudentExamStrings(studentExam);
             ValidateStudentExamDates(studentExam);
-            ValidateCreatedSignature(studentExam);
             ValidateCreatedDateIsRecent(studentExam);
         }
 

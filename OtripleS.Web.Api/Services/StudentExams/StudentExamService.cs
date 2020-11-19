@@ -3,12 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
-using System;
-using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.StudentExams;
+using System;
 using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.StudentExams
@@ -32,6 +31,8 @@ namespace OtripleS.Web.Api.Services.StudentExams
       public ValueTask<StudentExam> AddStudentExamAsync(StudentExam studentExam) =>
         TryCatch(async () =>
         {
+            ValidateStudentExamOnCreate(studentExam);
+
             return await this.storageBroker.InsertStudentExamAsync(studentExam);
         });
         

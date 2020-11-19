@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 {
     public partial class StudentExamServiceTests
     {
-        
+
         private readonly Mock<IStorageBroker> storageBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
@@ -42,7 +42,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 
         private IQueryable<StudentExam> CreateRandomStudentGuardians() =>
            CreateStudentExamFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
-
 
         private StudentExam CreateRandomStudentExam(DateTimeOffset dateTime) =>
             CreateStudentExamFiller(dateTime).Create();
