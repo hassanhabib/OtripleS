@@ -7,7 +7,6 @@ using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.StudentExams;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -21,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
             DateTimeOffset dateTime = randomDateTime;
-            StudentExam randomStudentExam = CreateRandomStudentExam(dateTime);
+            StudentExam randomStudentExam = default; //CreateRandomStudentExam(dateTime);
             StudentExam inputStudentExam = randomStudentExam;
             StudentExam storageStudentExam = randomStudentExam;
             StudentExam expectedStudentExam = storageStudentExam;

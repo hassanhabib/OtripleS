@@ -10,6 +10,7 @@ using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.StudentExams;
 using OtripleS.Web.Api.Services.StudentExams;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using Tynamix.ObjectFiller;
 
@@ -35,6 +36,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
         }
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private IQueryable<StudentExam> CreateRandomStudentGuardians() =>
+           CreateStudentExamFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+
 
         private StudentExam CreateRandomStudentExam(DateTimeOffset dateTime) =>
             CreateStudentExamFiller(dateTime).Create();
