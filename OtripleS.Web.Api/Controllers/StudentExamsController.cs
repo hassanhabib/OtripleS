@@ -150,6 +150,44 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpDelete("{studentExamId}")]
+        public async ValueTask<ActionResult<StudentExam>> DeleteStudentExamAsync(Guid studentExamId)
+        {
+            try
+            {
+                StudentExam storageStudentExam =
+                    await this.studentExamService.DeleteStudentExamByIdAsync(studentExamId);
+
+                return Ok(storageStudentExam);
+            }
+            catch (StudentExamValidationException studentExamValidationException)
+                when (studentExamValidationException.InnerException is NotFoundStudentExamException)
+            {
+                string innerMessage = GetInnerMessage(studentExamValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (StudentExamValidationException studentExamValidationException)
+            {
+                return BadRequest(studentExamValidationException.Message);
+            }
+            catch (StudentExamDependencyException studentExamDependencyException)
+                when (studentExamDependencyException.InnerException is LockedStudentExamException)
+            {
+                string innerMessage = GetInnerMessage(studentExamDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (StudentExamDependencyException studentExamDependencyException)
+            {
+                return Problem(studentExamDependencyException.Message);
+            }
+            catch (StudentExamServiceException studentExamServiceException)
+            {
+                return Problem(studentExamServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
