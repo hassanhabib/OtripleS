@@ -3,13 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using Moq;
+using OtripleS.Web.Api.Models.StudentExams.Exceptions;
 using System;
 using System.Threading.Tasks;
-using EFxceptions.Models.Exceptions;
-using Moq;
-using OtripleS.Web.Api.Models.StudentExams;
-using OtripleS.Web.Api.Models.StudentGuardians;
-using OtripleS.Web.Api.Models.StudentGuardians.Exceptions;
 using Xunit;
 using StudentExam = OtripleS.Web.Api.Models.StudentExams.StudentExam;
 
@@ -21,19 +18,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
         public async void ShouldThrowValidationExceptionOnAddWhenStudentExamIsNullAndLogItAsync()
         {
             // given
-            StudentExam randomStudentExam = default;
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            DateTimeOffset dateTime = randomDateTime;
+
+            StudentExam randomStudentExam = CreateRandomStudentExam(dateTime); ;
             StudentExam nullStudentExam = randomStudentExam;
-            var nullStudentExamException = new NullStudentGuardianException();
+            var nullStudentExamException = new NullStudentExamException();
 
             var expectedStudentGuardianValidationException =
-                new StudentGuardianValidationException(nullStudentExamException);
+                new StudentExamValidationException(nullStudentExamException);
 
             // when
             ValueTask<StudentExam> addStudentGuardianTask =
                 this.studentEaxmService.AddStudentExamAsync(nullStudentExam);
 
             // then
-            await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
+            await Assert.ThrowsAsync<StudentExamValidationException>(() =>
                 addStudentGuardianTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>

@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
             DateTimeOffset dateTime = randomDateTime;
-            StudentExam randomStudentExam = default; //CreateRandomStudentExam(dateTime);
+            StudentExam randomStudentExam = CreateRandomStudentExam(dateTime);
             StudentExam inputStudentExam = randomStudentExam;
             StudentExam storageStudentExam = randomStudentExam;
             StudentExam expectedStudentExam = storageStudentExam;
