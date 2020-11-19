@@ -60,7 +60,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
             throw new NotImplementedException();
         }
 
-        public IQueryable<StudentExam> RetrieveAllStudentExam()
+        public IQueryable<StudentExam> RetrieveAllStudentExams()
         {
             throw new NotImplementedException();
         }
