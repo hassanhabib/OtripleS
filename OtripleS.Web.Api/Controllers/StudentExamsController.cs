@@ -77,6 +77,39 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpGet("{studentExamId}")]
+        public async ValueTask<ActionResult<StudentExam>> GetStudentExamAsync(Guid studentExamId)
+        {
+            try
+            {
+                StudentExam storageStudentExam =
+                    await this.studentExamService.RetrieveStudentExamByIdAsync(studentExamId);
+
+                return Ok(storageStudentExam);
+            }
+            catch (StudentExamValidationException studentExamValidationException)
+                when (studentExamValidationException.InnerException is NotFoundStudentExamException)
+            {
+                string innerMessage = GetInnerMessage(studentExamValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (StudentExamValidationException studentExamValidationException)
+            {
+                string innerMessage = GetInnerMessage(studentExamValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (StudentExamDependencyException studentExamDependencyException)
+            {
+                return Problem(studentExamDependencyException.Message);
+            }
+            catch (StudentExamServiceException studentExamServiceException)
+            {
+                return Problem(studentExamServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
