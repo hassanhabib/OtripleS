@@ -1,4 +1,4 @@
-﻿// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
@@ -20,6 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 {
     public partial class StudentExamServiceTests
     {
+        
         private readonly Mock<IStorageBroker> storageBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
@@ -66,9 +67,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
-
-        private static SqlException GetSqlException() =>
-            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
     }
 }

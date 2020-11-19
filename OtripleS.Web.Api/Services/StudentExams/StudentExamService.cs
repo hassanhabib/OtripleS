@@ -1,8 +1,10 @@
-//?---------------------------------------------------------------
-//?Copyright?(c)?Coalition of the Good-Hearted Engineers
+//---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//?---------------------------------------------------------------
+//----------------------------------------------------------------
 
+using System;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -27,10 +29,23 @@ namespace OtripleS.Web.Api.Services.StudentExams
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<StudentExam> AddStudentExamAsync(StudentExam studentExam) =>
+      public ValueTask<StudentExam> AddStudentExamAsync(StudentExam studentExam) =>
         TryCatch(async () =>
         {
             return await this.storageBroker.InsertStudentExamAsync(studentExam);
+        });
+        
+       public ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentExamId(studentExamId);
+
+            StudentExam storageStudentExam =
+                await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
+
+            ValidateStorageStudentExam(storageStudentExam, studentExamId);
+
+            return storageStudentExam;
         });
     }
 }
