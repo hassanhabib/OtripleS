@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 
             // when
             StudentExam actualStudentExam =
-                await this.studentEaxmService.AddStudentExamAsync(inputStudentExam);
+                await this.studentExamService.AddStudentExamAsync(inputStudentExam);
 
             // then
             actualStudentExam.Should().BeEquivalentTo(expectedStudentExam);

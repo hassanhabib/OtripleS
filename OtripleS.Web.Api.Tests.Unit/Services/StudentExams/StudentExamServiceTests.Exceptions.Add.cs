@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 
             // when
             ValueTask<StudentExam> addStudentExamTask =
-                this.studentEaxmService.AddStudentExamAsync(inputStudentExam);
+                this.studentExamService.AddStudentExamAsync(inputStudentExam);
 
             // then
 
@@ -73,7 +73,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 
             // when
             ValueTask<StudentExam> addStudentGuardianTask =
-                this.studentEaxmService.AddStudentExamAsync(inputStudentExam);
+                this.studentExamService.AddStudentExamAsync(inputStudentExam);
 
             // then
             await Assert.ThrowsAsync<StudentExamDependencyException>(() =>
@@ -119,7 +119,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 
             // when
             ValueTask<StudentExam> addStudentGuardianTask =
-                 this.studentEaxmService.AddStudentExamAsync(inputStudentGuardian);
+                 this.studentExamService.AddStudentExamAsync(inputStudentGuardian);
 
             // then
             await Assert.ThrowsAsync<StudentExamServiceException>(() =>

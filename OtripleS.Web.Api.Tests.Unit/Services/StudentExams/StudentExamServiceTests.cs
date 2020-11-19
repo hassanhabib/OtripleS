@@ -24,7 +24,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
         private readonly Mock<IStorageBroker> storageBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
-        private readonly IStudentExamService studentEaxmService;
+        private readonly IStudentExamService studentExamService;
 
         public StudentExamServiceTests()
         {
@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
             this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
 
-            this.studentEaxmService = new StudentExamService(
+            this.studentExamService = new StudentExamService(
                 storageBroker: this.storageBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
@@ -61,11 +61,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             return filler;
         }
 
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
+
+        private static SqlException GetSqlException() =>
+           (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
     }
 }

@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 
             // when
             ValueTask<StudentExam> addStudentGuardianTask =
-                this.studentEaxmService.AddStudentExamAsync(nullStudentExam);
+                this.studentExamService.AddStudentExamAsync(nullStudentExam);
 
             // then
             await Assert.ThrowsAsync<StudentExamValidationException>(() =>
