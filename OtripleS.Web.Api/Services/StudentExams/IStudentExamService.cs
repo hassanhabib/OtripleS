@@ -9,6 +9,7 @@ using OtripleS.Web.Api.Models.StudentExams;
 
 namespace OtripleS.Web.Api.Services.StudentExams
 {
+<<<<<<<<< Temporary merge branch 1
     public interface IStudentExamService
     {
         ValueTask<StudentExam> AddStudentExamAsync(StudentExam studentExam);
