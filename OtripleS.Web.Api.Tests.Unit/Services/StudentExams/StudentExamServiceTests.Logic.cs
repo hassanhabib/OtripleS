@@ -14,7 +14,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 {
     public partial class StudentExamServiceTests
     {
-      [Fact]
+        [Fact]
         public async Task ShouldAddStudentStudentExamAsync()
         {
             // given
@@ -43,8 +43,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
-      
-      [Fact]
+
+        [Fact]
         public async Task ShouldRetrieveStudentExamByIdAsync()
         {
             // given
@@ -77,6 +77,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldDeleteStudentExamByIdAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentExam randomStudentExam = CreateRandomStudentExam(dateTime);
+            Guid inputStudentExamId = randomStudentExam.Id;
+            StudentExam inputStudentExam = randomStudentExam;
+            StudentExam storageStudentExam = inputStudentExam;
+            StudentExam expectedStudentExam = storageStudentExam;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentExamByIdAsync(inputStudentExamId))
+                    .ReturnsAsync(inputStudentExam);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteStudentExamAsync(inputStudentExam))
+                    .ReturnsAsync(storageStudentExam);
+
+            // when
+            StudentExam actualStudentExam =
+                await this.studentExamService.DeleteStudentExamByIdAsync(inputStudentExamId);
+
+            //then
+            actualStudentExam.Should().BeEquivalentTo(expectedStudentExam);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentExamByIdAsync(inputStudentExamId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteStudentExamAsync(inputStudentExam),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

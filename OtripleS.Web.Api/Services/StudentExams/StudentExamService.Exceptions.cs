@@ -3,14 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentExams;
 using OtripleS.Web.Api.Models.StudentExams.Exceptions;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.StudentExams
 {
@@ -19,15 +18,12 @@ namespace OtripleS.Web.Api.Services.StudentExams
         private delegate ValueTask<StudentExam> ReturningStudentExamFunction();
         private delegate IQueryable<StudentExam> ReturningQueryableStudentExamFunction();
 
-        private async ValueTask<StudentExam> TryCatch(ReturningStudentExamFunction returningStudentExamFunction)
+        private async ValueTask<StudentExam> TryCatch(
+            ReturningStudentExamFunction returningStudentExamFunction)
         {
             try
             {
                 return await returningStudentExamFunction();
-            }
-            catch (NullStudentExamException nullStudentExamException)
-            {
-                throw CreateAndLogValidationException(nullStudentExamException);
             }
             catch (InvalidStudentExamInputException invalidStudentExamInputException)
             {
@@ -40,13 +36,6 @@ namespace OtripleS.Web.Api.Services.StudentExams
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
-            }
-            catch (DuplicateKeyException duplicateKeyException)
-            {
-                var alreadyExistsStudentExamException =
-                    new AlreadyExistsStudentExamException(duplicateKeyException);
-
-                throw CreateAndLogValidationException(alreadyExistsStudentExamException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
@@ -64,36 +53,36 @@ namespace OtripleS.Web.Api.Services.StudentExams
             }
         }
 
-        private StudentExamServiceException CreateAndLogServiceException(Exception exception)
+        private StudentExamValidationException CreateAndLogValidationException(Exception exception)
         {
-            var studentServiceException = new StudentExamServiceException(exception);
-            this.loggingBroker.LogError(studentServiceException);
+            var StudentExamValidationException = new StudentExamValidationException(exception);
+            this.loggingBroker.LogError(StudentExamValidationException);
 
-            return studentServiceException;
-        }
-
-        private StudentExamDependencyException CreateAndLogDependencyException(Exception exception)
-        {
-            var studentDependencyException = new StudentExamDependencyException(exception);
-            this.loggingBroker.LogError(studentDependencyException);
-
-            return studentDependencyException;
+            return StudentExamValidationException;
         }
 
         private StudentExamDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
-            var studentDependencyException = new StudentExamDependencyException(exception);
-            this.loggingBroker.LogCritical(studentDependencyException);
+            var StudentExamDependencyException = new StudentExamDependencyException(exception);
+            this.loggingBroker.LogCritical(StudentExamDependencyException);
 
-            return studentDependencyException;
+            return StudentExamDependencyException;
         }
 
-        private StudentExamValidationException CreateAndLogValidationException(Exception exception)
+        private StudentExamDependencyException CreateAndLogDependencyException(Exception exception)
         {
-            var studentValidationException = new StudentExamValidationException(exception);
-            this.loggingBroker.LogError(studentValidationException);
+            var StudentExamDependencyException = new StudentExamDependencyException(exception);
+            this.loggingBroker.LogError(StudentExamDependencyException);
 
-            return studentValidationException;
+            return StudentExamDependencyException;
+        }
+
+        private StudentExamServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var studentExamServiceException = new StudentExamServiceException(exception);
+            this.loggingBroker.LogError(studentExamServiceException);
+
+            return studentExamServiceException;
         }
     }
 }

@@ -35,18 +35,31 @@ namespace OtripleS.Web.Api.Services.StudentExams
 
             return await this.storageBroker.InsertStudentExamAsync(studentExam);
         });
-        
-       public ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId) =>
-        TryCatch(async () =>
-        {
-            ValidateStudentExamId(studentExamId);
 
-            StudentExam storageStudentExam =
-                await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
+		public ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId) =>
+		TryCatch(async () =>
+		{
+			ValidateStudentExamId(studentExamId);
 
-            ValidateStorageStudentExam(storageStudentExam, studentExamId);
+			StudentExam storageStudentExam =
+				await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
 
-            return storageStudentExam;
-        });
-    }
+			ValidateStorageStudentExam(storageStudentExam, studentExamId);
+
+			return storageStudentExam;
+		});
+
+		public ValueTask<StudentExam> DeleteStudentExamByIdAsync(Guid studentExamId) =>
+		TryCatch(async () =>
+		{
+			ValidateStudentExamId(studentExamId);
+
+			StudentExam maybeStudentExam =
+			   await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
+
+			ValidateStorageStudentExam(maybeStudentExam, studentExamId);
+
+			return await this.storageBroker.DeleteStudentExamAsync(maybeStudentExam);
+		});
+	}
 }
