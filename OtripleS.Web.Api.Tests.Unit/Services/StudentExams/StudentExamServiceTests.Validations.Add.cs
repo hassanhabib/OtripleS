@@ -26,12 +26,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
                 new StudentExamValidationException(nullStudentExamException);
 
             // when
-            ValueTask<StudentExam> addStudentGuardianTask =
+            ValueTask<StudentExam> addStudentExamTask =
                 this.studentExamService.AddStudentExamAsync(nullStudentExam);
 
             // then
             await Assert.ThrowsAsync<StudentExamValidationException>(() =>
-                addStudentGuardianTask.AsTask());
+                addStudentExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentExamValidationException))),
