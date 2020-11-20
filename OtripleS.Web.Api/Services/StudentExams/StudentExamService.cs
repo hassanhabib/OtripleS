@@ -72,11 +72,6 @@ namespace OtripleS.Web.Api.Services.StudentExams
         {
             throw new NotImplementedException();
         }
-                
-        public IQueryable<StudentExam> RetrieveAllStudentExams()
-        {
-            throw new NotImplementedException();
-        }
 
         public ValueTask<StudentExam> ModifyStudentExamAsync(StudentExam studentExam)
         {
