@@ -3,6 +3,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.StudentExams;
 
@@ -14,7 +15,11 @@ namespace OtripleS.Web.Api.Services.StudentExams
         
         ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId);
 
+        IQueryable<StudentExam> RetrieveAllStudentExams();
+
         ValueTask<StudentExam> DeleteStudentExamByIdAsync(Guid studentExamId);
+                
+        ValueTask<StudentExam> ModifyStudentExamAsync(StudentExam studentExam);
 
     }
 }
