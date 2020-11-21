@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using OtripleS.Web.Api.Models.Students;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
@@ -30,7 +30,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
 
             // then
             actualStudent.Should().BeEquivalentTo(expectedStudent);
-
             await this.otripleSApiBroker.DeleteStudentByIdAsync(actualStudent.Id);
         }
 
@@ -50,7 +49,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
 
             // then
             actualStudent.Should().BeEquivalentTo(modifiedStudent);
-
             await this.otripleSApiBroker.DeleteStudentByIdAsync(actualStudent.Id);
         }
 

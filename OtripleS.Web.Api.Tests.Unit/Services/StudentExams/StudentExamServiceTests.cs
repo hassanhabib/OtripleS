@@ -3,6 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
@@ -10,17 +15,12 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.StudentExams;
 using OtripleS.Web.Api.Services.StudentExams;
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 {
     public partial class StudentExamServiceTests
     {
-
         private readonly Mock<IStorageBroker> storageBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
@@ -47,6 +47,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
         private StudentExam CreateRandomStudentExam(DateTimeOffset dateTime) =>
             CreateStudentExamFiller(dateTime).Create();
 
+        private IQueryable<StudentExam> CreateRandomStudentExams() =>
+           CreateStudentExamFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+
         private static Filler<StudentExam> CreateStudentExamFiller(DateTimeOffset dates)
         {
             var filler = new Filler<StudentExam>();
@@ -61,7 +64,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             return filler;
         }
 
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
@@ -69,6 +82,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
 
         private static SqlException GetSqlException() =>
            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));

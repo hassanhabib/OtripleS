@@ -4,8 +4,10 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.StudentExams;
 using Xunit;
@@ -20,10 +22,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
             DateTimeOffset dateTime = randomDateTime;
-            StudentExam randomStudentExam = CreateRandomStudentExam(dateTime);
+            StudentExam randomStudentExam = CreateRandomStudentExam(randomDateTime);
+            randomStudentExam.UpdatedBy = randomStudentExam.CreatedBy;
             StudentExam inputStudentExam = randomStudentExam;
             StudentExam storageStudentExam = randomStudentExam;
             StudentExam expectedStudentExam = storageStudentExam;
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertStudentExamAsync(inputStudentExam))
@@ -36,10 +43,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             // then
             actualStudentExam.Should().BeEquivalentTo(expectedStudentExam);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentExamAsync(inputStudentExam),
                     Times.Once);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
@@ -54,7 +66,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             StudentExam randomStudentExam = CreateRandomStudentExam(randomDateTime);
             StudentExam storageStudentExam = randomStudentExam;
             StudentExam expectedStudentExam = storageStudentExam;
-
+	
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentExamByIdAsync(inputStudentExamId))
                     .ReturnsAsync(storageStudentExam);
@@ -79,16 +91,69 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
-        [Fact]
-        public async Task ShouldDeleteStudentExamByIdAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            StudentExam randomStudentExam = CreateRandomStudentExam(dateTime);
-            Guid inputStudentExamId = randomStudentExam.Id;
-            StudentExam inputStudentExam = randomStudentExam;
-            StudentExam storageStudentExam = inputStudentExam;
-            StudentExam expectedStudentExam = storageStudentExam;
+		[Fact]
+		public async Task ShouldModifyStudentExamAsync()
+		{
+			// given
+			int randomNumber = GetRandomNumber();
+			int randomDays = randomNumber;
+			DateTimeOffset randomDate = GetRandomDateTime();
+			DateTimeOffset randomInputDate = GetRandomDateTime();
+			StudentExam randomStudentExam = CreateRandomStudentExam(randomInputDate);
+			StudentExam inputStudentExam = randomStudentExam;
+			StudentExam afterUpdateStorageStudentExam = inputStudentExam;
+			StudentExam expectedStudentExam = afterUpdateStorageStudentExam;
+			StudentExam beforeUpdateStorageStudentExam = randomStudentExam.DeepClone();
+			inputStudentExam.UpdatedDate = randomDate;
+			Guid studentId = inputStudentExam.StudentId;
+			Guid guardianId = inputStudentExam.ExamId;
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(randomDate);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectStudentExamByIdAsync(inputStudentExam.Id))
+					.ReturnsAsync(beforeUpdateStorageStudentExam);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.UpdateStudentExamAsync(inputStudentExam))
+					.ReturnsAsync(afterUpdateStorageStudentExam);
+
+			// when
+			StudentExam actualStudentExam =
+				await this.studentExamService.ModifyStudentExamAsync(inputStudentExam);
+
+			// then
+			actualStudentExam.Should().BeEquivalentTo(expectedStudentExam);
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectStudentExamByIdAsync(inputStudentExam.Id),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.UpdateStudentExamAsync(inputStudentExam),
+					Times.Once);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
+		public async Task ShouldDeleteStudentExamByIdAsync()
+		{
+			// given
+			DateTimeOffset dateTime = GetRandomDateTime();
+			StudentExam randomStudentExam = CreateRandomStudentExam(dateTime);
+			Guid inputStudentExamId = randomStudentExam.Id;
+			StudentExam inputStudentExam = randomStudentExam;
+			StudentExam storageStudentExam = inputStudentExam;
+			StudentExam expectedStudentExam = storageStudentExam;
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentExamByIdAsync(inputStudentExamId))
