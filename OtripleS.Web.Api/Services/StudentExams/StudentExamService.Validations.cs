@@ -41,8 +41,23 @@ namespace OtripleS.Web.Api.Services.StudentExams
         private void ValidateStudentExamOnModify(StudentExam studentExam)
         {
             ValidateStudentExamIsNotNull(studentExam);
+            ValidateStudentExamId(studentExam.Id);
+            ValidateStudentExam(studentExam);
         }
 
+        private void ValidateStudentExam(StudentExam studentExam)
+        {
+            switch (studentExam)
+            {
+                case { } when IsInvalid(studentExam.StudentId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(StudentExam.StudentId),
+                        parameterValue: studentExam.StudentId);
+            }
+        }
+
+        private bool IsInvalid(Guid input) => input == default;
+ 
         private void ValidateStudentExamIsNotNull(StudentExam studentExam)
         {
             if (studentExam is null)
