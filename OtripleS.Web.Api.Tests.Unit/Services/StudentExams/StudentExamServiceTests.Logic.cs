@@ -91,7 +91,37 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
-		[Fact]
+        [Fact]
+        public void ShouldRetrieveAllStudentExams()
+        {
+            // given
+            IQueryable<StudentExam> randomStudentExams =
+                CreateRandomStudentExams();
+
+            IQueryable<StudentExam> storageStudentExams = randomStudentExams;
+            IQueryable<StudentExam> expectedStudentExams = storageStudentExams;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllStudentExams())
+                    .Returns(storageStudentExams);
+
+            // when
+            IQueryable<StudentExam> actualStudentExams =
+                this.studentExamService.RetrieveAllStudentExams();
+
+            // then
+            actualStudentExams.Should().BeEquivalentTo(expectedStudentExams);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllStudentExams(),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
 		public async Task ShouldModifyStudentExamAsync()
 		{
 			// given

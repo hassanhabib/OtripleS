@@ -17,6 +17,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
 	{
 		private delegate ValueTask<StudentExam> ReturningStudentExamFunction();
 		private delegate IQueryable<StudentExam> ReturningStudentExamsFunction();
+
 		private async ValueTask<StudentExam> TryCatch(
 			ReturningStudentExamFunction returningStudentExamFunction)
 		{

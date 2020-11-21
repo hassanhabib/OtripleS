@@ -38,32 +38,6 @@ namespace OtripleS.Web.Api.Services.StudentExams
             }
         }
 
-        private void ValidateStudentExamOnModify(StudentExam studentExam)
-        {
-            ValidateStudentExamIsNotNull(studentExam);
-            ValidateStudentExamId(studentExam.Id);
-            ValidateStudentExamFieldsOnModify(studentExam);
-            ValidateInvalidAuditFields(studentExam);
-            ValidateDatesAreNotSame(studentExam);
-            ValidateUpdatedDateIsRecent(studentExam);
-        }
-
-        private void ValidateStudentExamFieldsOnModify(StudentExam studentExam)
-        {
-            switch (studentExam)
-            {
-                case { } when IsInvalid(studentExam.StudentId):
-                    throw new InvalidStudentExamInputException(
-                        parameterName: nameof(StudentExam.StudentId),
-                        parameterValue: studentExam.StudentId);
-
-                case { } when IsInvalid(studentExam.ExamId):
-                    throw new InvalidStudentExamInputException(
-                        parameterName: nameof(StudentExam.ExamId),
-                        parameterValue: studentExam.ExamId);
-            }
-        }
-
         private void ValidateInvalidAuditFields(StudentExam studentExam)
         {
             switch (studentExam)
@@ -111,16 +85,16 @@ namespace OtripleS.Web.Api.Services.StudentExams
         }
 
         private void ValidateAgainstStorageStudentExamOnModify(
-            StudentExam inputStudentExam,
+            StudentExam inputStudentExam, 
             StudentExam storageStudentExam)
         {
-            if (inputStudentExam.CreatedDate != storageStudentExam.CreatedDate)
+            if(inputStudentExam.CreatedDate != storageStudentExam.CreatedDate)
                 throw new InvalidStudentExamInputException(
                     parameterName: nameof(StudentExam.CreatedDate),
                     parameterValue: inputStudentExam.CreatedDate);
         }
 
-        private static bool IsInvalid(DateTimeOffset inputDate) => inputDate == default;
+        private static bool IsInvalid(DateTimeOffset input) => input == default;
         private static bool IsInvalid(Guid input) => input == default;
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
@@ -137,6 +111,32 @@ namespace OtripleS.Web.Api.Services.StudentExams
             if (studentExam is null)
             {
                 throw new NullStudentExamException();
+            }
+        }
+
+        private void ValidateStudentExamOnModify(StudentExam studentExam)
+        {
+            ValidateStudentExamIsNotNull(studentExam);
+            ValidateStudentExamId(studentExam.Id);
+            ValidateStudentExamFieldsOnModify(studentExam);
+            ValidateInvalidAuditFields(studentExam);
+            ValidateDatesAreNotSame(studentExam);
+            ValidateUpdatedDateIsRecent(studentExam);
+        }
+
+        private void ValidateStudentExamFieldsOnModify(StudentExam studentExam)
+        {
+            switch (studentExam)
+            {
+                case { } when IsInvalid(studentExam.StudentId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(StudentExam.StudentId),
+                        parameterValue: studentExam.StudentId);
+
+                case { } when IsInvalid(studentExam.ExamId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(StudentExam.ExamId),
+                        parameterValue: studentExam.ExamId);
             }
         }
 
