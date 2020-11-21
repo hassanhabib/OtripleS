@@ -377,5 +377,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfStudentExamDoesntExistAndLogItAsync()
+        {
+            // given
+            int randomNegativeMinutes = GetNegativeRandomNumber();
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentExam randomStudentExam = CreateRandomStudentExam(dateTime);
+            StudentExam nonExistentStudentExam = randomStudentExam;
+            nonExistentStudentExam.CreatedDate = dateTime.AddMinutes(randomNegativeMinutes);
+            StudentExam noStudentExam = null;
+            var notFoundStudentExamException = new NotFoundStudentExamException(nonExistentStudentExam.Id);
+
+            var expectedStudentExamValidationException =
+                new StudentExamValidationException(notFoundStudentExamException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentExamByIdAsync(nonExistentStudentExam.Id))
+                    .ReturnsAsync(noStudentExam);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            // when
+            ValueTask<StudentExam> modifyStudentExamTask =
+                this.studentExamService.ModifyStudentExamAsync(nonExistentStudentExam);
+
+            // then
+            await Assert.ThrowsAsync<StudentExamValidationException>(() =>
+                modifyStudentExamTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentExamByIdAsync(nonExistentStudentExam.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
