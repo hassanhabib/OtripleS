@@ -44,6 +44,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
             ValidateStudentExamId(studentExam.Id);
             ValidateStudentExam(studentExam);
             ValidateInvalidAuditFields(studentExam);
+            ValidateDatesAreNotSame(studentExam);
         }
 
         private void ValidateStudentExam(StudentExam studentExam)
@@ -85,6 +86,16 @@ namespace OtripleS.Web.Api.Services.StudentExams
                     throw new InvalidStudentExamInputException(
                         parameterName: nameof(StudentExam.UpdatedDate),
                         parameterValue: studentExam.UpdatedDate);
+            }
+        }
+
+        private void ValidateDatesAreNotSame(StudentExam studentExam)
+        {
+            if (studentExam.CreatedDate == studentExam.UpdatedDate)
+            {
+                throw new InvalidStudentExamInputException(
+                    parameterName: nameof(StudentExam.UpdatedDate),
+                    parameterValue: studentExam.UpdatedDate);
             }
         }
 
