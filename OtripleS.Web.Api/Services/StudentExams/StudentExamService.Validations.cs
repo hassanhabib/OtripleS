@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.StudentExams;
 using OtripleS.Web.Api.Models.StudentExams.Exceptions;
 
@@ -26,6 +27,14 @@ namespace OtripleS.Web.Api.Services.StudentExams
             if (storageStudentExam == null)
             {
                 throw new NotFoundStudentExamException(studentExamId);
+            }
+        }
+
+        private void ValidateStorageStudentExams(IQueryable<StudentExam> studentExams)
+        {
+            if (studentExams.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No Student Exams found in storage.");
             }
         }
     }
