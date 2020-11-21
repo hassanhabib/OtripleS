@@ -37,5 +37,18 @@ namespace OtripleS.Web.Api.Services.StudentExams
                 this.loggingBroker.LogWarning("No Student Exams found in storage.");
             }
         }
+
+        private void ValidateStudentExamOnModify(StudentExam studentExam)
+        {
+            ValidateStudentExamIsNotNull(studentExam);
+        }
+
+        private void ValidateStudentExamIsNotNull(StudentExam studentExam)
+        {
+            if (studentExam is null)
+            {
+                throw new NullStudentExamException();
+            }
+        }
     }
 }
