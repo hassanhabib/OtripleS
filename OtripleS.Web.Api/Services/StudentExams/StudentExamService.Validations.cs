@@ -43,6 +43,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
             ValidateStudentExamIsNotNull(studentExam);
             ValidateStudentExamId(studentExam.Id);
             ValidateStudentExam(studentExam);
+            ValidateInvalidAuditFields(studentExam);
         }
 
         private void ValidateStudentExam(StudentExam studentExam)
@@ -60,6 +61,34 @@ namespace OtripleS.Web.Api.Services.StudentExams
                         parameterValue: studentExam.ExamId);
             }
         }
+
+        private void ValidateInvalidAuditFields(StudentExam studentExam)
+        {
+            switch (studentExam)
+            {
+                case { } when IsInvalid(studentExam.CreatedBy):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(StudentExam.CreatedBy),
+                        parameterValue: studentExam.CreatedBy);
+
+                case { } when IsInvalid(studentExam.UpdatedBy):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(StudentExam.UpdatedBy),
+                        parameterValue: studentExam.UpdatedBy);
+
+                case { } when IsInvalid(studentExam.CreatedDate):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(StudentExam.CreatedDate),
+                        parameterValue: studentExam.CreatedDate);
+
+                case { } when IsInvalid(studentExam.UpdatedDate):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(StudentExam.UpdatedDate),
+                        parameterValue: studentExam.UpdatedDate);
+            }
+        }
+
+        private bool IsInvalid(DateTimeOffset inputDate) => inputDate == default;
 
         private bool IsInvalid(Guid input) => input == default;
  
