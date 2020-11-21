@@ -14,7 +14,7 @@ using OtripleS.Web.Api.Models.Exams.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Exams
 {
-	public partial class ExamService
+    public partial class ExamService
 	{
 		private delegate ValueTask<Exam> ReturningExamFunction();
 		private delegate IQueryable<Exam> ReturningQueryableExamFunction();

@@ -26,6 +26,7 @@ using OtripleS.Web.Api.Services.GuardianContacts;
 using OtripleS.Web.Api.Services.Guardians;
 using OtripleS.Web.Api.Services.SemesterCourses;
 using OtripleS.Web.Api.Services.StudentContacts;
+using OtripleS.Web.Api.Services.StudentExams;
 using OtripleS.Web.Api.Services.StudentGuardians;
 using OtripleS.Web.Api.Services.Students;
 using OtripleS.Web.Api.Services.StudentSemesterCourses;
@@ -36,7 +37,7 @@ using OtripleS.Web.Api.Services.Users;
 
 namespace OtripleS.Web.Api
 {
-	public class Startup
+    public class Startup
 	{
 		public Startup(IConfiguration configuration) =>
 			Configuration = configuration;
@@ -77,6 +78,7 @@ namespace OtripleS.Web.Api
 			services.AddTransient<IGuardianContactService, GuardianContactService>();
 			services.AddTransient<IUserContactService, UserContactService>();
 			services.AddTransient<IExamService, ExamService>();
+			services.AddTransient<IStudentExamService, StudentExamService>();
 
 			services.AddIdentityCore<User>()
 					.AddRoles<Role>()

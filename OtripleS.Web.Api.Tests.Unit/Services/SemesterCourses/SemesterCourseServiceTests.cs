@@ -60,7 +60,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourses
                 .OnProperty(semestercourse => semestercourse.Teacher).IgnoreIt()
                 .OnProperty(semestercourse => semestercourse.Course).IgnoreIt()
                 .OnProperty(semestercourse => semestercourse.Classroom).IgnoreIt()
-                .OnProperty(semestercourse => semestercourse.StudentSemesterCourses).IgnoreIt();
+                .OnProperty(semestercourse => semestercourse.StudentSemesterCourses).IgnoreIt()
+                .OnProperty(semestercourse => semestercourse.Exams).IgnoreIt();
 
             return filler;
         }

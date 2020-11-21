@@ -4,12 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
-
-namespace OtripleS.Web.Api.Models.Exams.Exceptions
+namespace OtripleS.Web.Api.Models.StudentExams.Exceptions
 {
-    public class ExamValidationException : Exception
-	{
-		public ExamValidationException(Exception innerException)
-			: base("Invalid input, contact support.", innerException) { }
-	}
+    public class NotFoundStudentExamException : Exception
+    {
+        public NotFoundStudentExamException(Guid studentExamId)
+            : base($"Couldn't find StudentExam with Id: {studentExamId}.") { }
+    }
 }

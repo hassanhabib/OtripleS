@@ -12,7 +12,7 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
 {
-	public partial class ExamServiceTests
+    public partial class ExamServiceTests
 	{
 		[Fact]
 		public async Task ShouldThrowValidatonExceptionOnDeleteWhenIdIsInvalidAndLogItAsync()

@@ -19,7 +19,7 @@ using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
 {
-	public partial class ExamServiceTests
+    public partial class ExamServiceTests
 	{
 		private readonly Mock<IStorageBroker> storageBrokerMock;
 		private readonly Mock<ILoggingBroker> loggingBrokerMock;
@@ -93,7 +93,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
 
 			filler.Setup()
 				.OnType<DateTimeOffset>().Use(dateTime)
-				.OnProperty(exam => exam.SemesterCourse).IgnoreIt();
+				.OnProperty(exam => exam.SemesterCourse).IgnoreIt()
+				.OnProperty(exam => exam.StudentExams).IgnoreIt();
 
 			return filler;
 		}

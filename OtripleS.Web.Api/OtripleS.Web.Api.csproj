@@ -25,5 +25,6 @@
     <Folder Include="Brokers\UserManagement\" />
     <Folder Include="Services\Guardians\" />
     <Folder Include="Services\StudentContacts\" />
+    <Folder Include="Services\StudentExams\" />
   </ItemGroup>
 </Project>
