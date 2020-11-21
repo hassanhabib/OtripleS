@@ -14,6 +14,7 @@ using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
 {
@@ -27,10 +28,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private IEnumerable<SemesterCourse> CreateRandomSemesterCourses() =>
-            Enumerable.Range(start: 0, count: GetRandomNumber())
-                .Select(item => CreateRandomSemesterCourse());
-
         private SemesterCourse CreateExpectedSemesterCourse(SemesterCourse semesterCourse)
         {
             SemesterCourse expectedSemesterCourse = semesterCourse.DeepClone();
@@ -38,21 +35,18 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             return expectedSemesterCourse;
         }
 
-        private SemesterCourse CreateRandomSemesterCourse() =>
-            CreateRandomSemesterCourseFiller().Create();
-
-        private Filler<SemesterCourse> CreateRandomSemesterCourseFiller()
+        private async ValueTask<SemesterCourse> CreateRandomSemesterCourseAsync()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
-            Teacher randomTeacher = CreateRandomTeacherFiller().Create();
-            Classroom randomClassroom = CreateRandomClassroomFiller().Create();
-            Course randomCourse = CreateRandomCourseFiller().Create();
-            Guid posterId = Guid.NewGuid();
+            Teacher randomTeacher = await PostTeacherAsync();
+            Classroom randomClassroom = await PostClassRoomAsync();
+            Course randomCourse = await PostCourseAsync();
+            Guid userId = Guid.NewGuid();
             var filler = new Filler<SemesterCourse>();
 
             filler.Setup()
-                .OnProperty(semesterCourse => semesterCourse.CreatedBy).Use(posterId)
-                .OnProperty(semesterCourse => semesterCourse.UpdatedBy).Use(posterId)
+                .OnProperty(semesterCourse => semesterCourse.CreatedBy).Use(userId)
+                .OnProperty(semesterCourse => semesterCourse.UpdatedBy).Use(userId)
                 .OnProperty(semesterCourse => semesterCourse.CreatedDate).Use(now)
                 .OnProperty(semesterCourse => semesterCourse.UpdatedDate).Use(now)
                 .OnProperty(semesterCourse => semesterCourse.TeacherId).Use(randomTeacher.Id)
@@ -60,7 +54,53 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
                 .OnProperty(semesterCourse => semesterCourse.CourseId).Use(randomCourse.Id)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
-            return filler;
+            SemesterCourse semesterCourse = filler.Create();
+
+            return semesterCourse;
+        }
+
+        private async ValueTask<SemesterCourse> CreateRandomSemesterCourseAsync(
+            Teacher teacher, Classroom classroom, Course course)
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            Guid userId = Guid.NewGuid();
+            var filler = new Filler<SemesterCourse>();
+
+            filler.Setup()
+                .OnProperty(semesterCourse => semesterCourse.CreatedBy).Use(userId)
+                .OnProperty(semesterCourse => semesterCourse.UpdatedBy).Use(userId)
+                .OnProperty(semesterCourse => semesterCourse.CreatedDate).Use(now)
+                .OnProperty(semesterCourse => semesterCourse.UpdatedDate).Use(now)
+                .OnProperty(semesterCourse => semesterCourse.TeacherId).Use(teacher.Id)
+                .OnProperty(semesterCourse => semesterCourse.ClassroomId).Use(classroom.Id)
+                .OnProperty(semesterCourse => semesterCourse.CourseId).Use(course.Id)
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+
+            SemesterCourse semesterCourse = filler.Create();
+
+            return await this.otripleSApiBroker.PostSemesterCourseAsync(semesterCourse); ;
+        }
+
+        private async ValueTask<Course> PostCourseAsync()
+        {
+            Course randomCourse = CreateRandomCourseFiller().Create();
+
+            return await this.otripleSApiBroker.PostCourseAsync(randomCourse);
+        }
+
+        private async ValueTask<Classroom> PostClassRoomAsync()
+        {
+            Classroom randomClassroom = CreateRandomClassroomFiller().Create();
+
+            return await this.otripleSApiBroker.PostClassroomAsync(randomClassroom);
+        }
+
+        private async Task DeleteSemesterCourseAsync(SemesterCourse semesterCourse)
+        {
+            await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(semesterCourse.Id);
+            await this.otripleSApiBroker.DeleteCourseByIdAsync(semesterCourse.CourseId);
+            await this.otripleSApiBroker.DeleteClassroomByIdAsync(semesterCourse.ClassroomId);
+            await this.otripleSApiBroker.DeleteTeacherByIdAsync(semesterCourse.TeacherId);
         }
 
         private SemesterCourse UpdateSemesterCourseRandom(SemesterCourse semesterCourse)
@@ -80,6 +120,13 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler.Create();
+        }
+
+        private async ValueTask<Teacher> PostTeacherAsync()
+        {
+            Teacher randomTeacher = CreateRandomTeacherFiller().Create();
+
+            return await this.otripleSApiBroker.PostTeacherAsync(randomTeacher);
         }
 
         private Filler<Classroom> CreateRandomClassroomFiller()
