@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.StudentExams;
 using OtripleS.Web.Api.Models.StudentExams.Exceptions;
@@ -415,6 +416,61 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentExamByIdAsync(nonExistentStudentExam.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedDateNotSameAsCreateDateAndLogItAsync()
+        {
+            // given
+            int randomNumber = GetRandomNumber();
+            int randomMinutes = randomNumber;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            StudentExam randomStudentExam = CreateRandomStudentExam(randomDate);
+            StudentExam invalidStudentExam = randomStudentExam;
+            invalidStudentExam.UpdatedDate = randomDate;
+            StudentExam storageStudentExam = randomStudentExam.DeepClone();
+            Guid studentId = invalidStudentExam.StudentId;
+            Guid semesterCourseId = invalidStudentExam.ExamId;
+            invalidStudentExam.CreatedDate = storageStudentExam.CreatedDate.AddMinutes(randomNumber);
+
+            var invalidStudentExamInputException = new InvalidStudentExamInputException(
+                parameterName: nameof(StudentExam.CreatedDate),
+                parameterValue: invalidStudentExam.CreatedDate);
+
+            var expectedStudentExamValidationException =
+                new StudentExamValidationException(invalidStudentExamInputException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentExamByIdAsync(invalidStudentExam.Id))
+                    .ReturnsAsync(storageStudentExam);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
+            // when
+            ValueTask<StudentExam> modifyStudentExamTask =
+                this.studentExamService.ModifyStudentExamAsync(invalidStudentExam);
+
+            // then
+            await Assert.ThrowsAsync<StudentExamValidationException>(() =>
+                modifyStudentExamTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentExamByIdAsync(invalidStudentExam.Id),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
