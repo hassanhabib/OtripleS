@@ -45,6 +45,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
         }
 
         [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyWhenIdIsInvalidAndLogItAsync()
+        {
+            //given
+            Guid invalidStudentId = Guid.Empty;
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentExam randomStudentExam = CreateRandomStudentExam(dateTime);
+            StudentExam invalidStudentExam = randomStudentExam;
+            invalidStudentExam.Id = invalidStudentId;
+
+            var invalidStudentExamInputException = new InvalidStudentExamInputException(
+                parameterName: nameof(StudentExam.Id),
+                parameterValue: invalidStudentExam.Id);
+
+            var expectedStudentExamValidationException =
+                new StudentExamValidationException(invalidStudentExamInputException);
+
+            //when
+            ValueTask<StudentExam> modifyStudentExamTask =
+                this.studentExamService.ModifyStudentExamAsync(invalidStudentExam);
+
+            //then
+            await Assert.ThrowsAsync<StudentExamValidationException>(() =>
+                modifyStudentExamTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamValidationException))),
+                Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public async Task ShouldThrowValidationExceptionOnModifyWhenStudentIdIsInvalidAndLogItAsync()
         {
             //given
