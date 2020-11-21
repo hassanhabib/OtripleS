@@ -120,21 +120,5 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
                 await this.otripleSApiBroker.DeleteStudentByIdAsync(actualStudentGuardian.StudentId);
             }
         }
-
-        private async Task<Student> PostStudentAsync()
-        {
-            Student randomStudent = CreateRandomStudent();
-            Student inputStudent = randomStudent;
-
-            return await this.otripleSApiBroker.PostStudentAsync(inputStudent);
-        }
-
-        private async Task<Guardian> PostGuardianAsync()
-        {
-            Guardian randomGuardian = CreateRandomGuardian();
-            Guardian inputGuardian = randomGuardian;
-
-            return await this.otripleSApiBroker.PostGuardianAsync(inputGuardian);
-        }
     }
 }

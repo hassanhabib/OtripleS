@@ -11,6 +11,7 @@ using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
 {
@@ -103,6 +104,21 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
             return filler;
         }
 
+        private async ValueTask<Student> PostStudentAsync()
+        {
+            Student randomStudent = CreateRandomStudent();
+            Student inputStudent = randomStudent;
+
+            return await this.otripleSApiBroker.PostStudentAsync(inputStudent);
+        }
+
+        private async ValueTask<Guardian> PostGuardianAsync()
+        {
+            Guardian randomGuardian = CreateRandomGuardian();
+            Guardian inputGuardian = randomGuardian;
+
+            return await this.otripleSApiBroker.PostGuardianAsync(inputGuardian);
+        }
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
