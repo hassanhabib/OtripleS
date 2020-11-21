@@ -7,10 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Force.DeepCloner;
-using OtripleS.Web.Api.Models.Classrooms;
-using OtripleS.Web.Api.Models.Courses;
-using OtripleS.Web.Api.Models.SemesterCourses;
-using OtripleS.Web.Api.Models.Teachers;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Classrooms;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
+using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
@@ -34,9 +34,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
         private SemesterCourse CreateExpectedSemesterCourse(SemesterCourse semesterCourse)
         {
             SemesterCourse expectedSemesterCourse = semesterCourse.DeepClone();
-            expectedSemesterCourse.Teacher = null;
-            expectedSemesterCourse.Classroom = null;
-            expectedSemesterCourse.Course = null;
 
             return expectedSemesterCourse;
         }
@@ -58,14 +55,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
                 .OnProperty(semesterCourse => semesterCourse.UpdatedBy).Use(posterId)
                 .OnProperty(semesterCourse => semesterCourse.CreatedDate).Use(now)
                 .OnProperty(semesterCourse => semesterCourse.UpdatedDate).Use(now)
-                .OnProperty(semesterCourse => semesterCourse.Teacher).Use(randomTeacher)
-                .OnProperty(semesterCourse => semesterCourse.Classroom).Use(randomClassroom)
-                .OnProperty(semesterCourse => semesterCourse.Course).Use(randomCourse)
                 .OnProperty(semesterCourse => semesterCourse.TeacherId).Use(randomTeacher.Id)
                 .OnProperty(semesterCourse => semesterCourse.ClassroomId).Use(randomClassroom.Id)
                 .OnProperty(semesterCourse => semesterCourse.CourseId).Use(randomCourse.Id)
-                .OnProperty(semesterCourse => semesterCourse.StudentSemesterCourses).IgnoreIt()
-                .OnProperty(semesterCourse => semesterCourse.Exams).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
@@ -85,11 +77,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
                 .OnProperty(semesterCourse => semesterCourse.TeacherId).Use(semesterCourse.TeacherId)
                 .OnProperty(semesterCourse => semesterCourse.ClassroomId).Use(semesterCourse.ClassroomId)
                 .OnProperty(semesterCourse => semesterCourse.CourseId).Use(semesterCourse.CourseId)
-                .OnProperty(semesterCourse => semesterCourse.Teacher).Use(semesterCourse.Teacher)
-                .OnProperty(semesterCourse => semesterCourse.Classroom).Use(semesterCourse.Classroom)
-                .OnProperty(semesterCourse => semesterCourse.Course).Use(semesterCourse.Course)
-                .OnProperty(semesterCourse => semesterCourse.StudentSemesterCourses).IgnoreIt()
-                .OnProperty(semesterCourse => semesterCourse.Exams).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler.Create();
@@ -107,8 +94,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
                 .OnProperty(classroom => classroom.UpdatedBy).Use(posterId)
                 .OnProperty(classroom => classroom.CreatedDate).Use(now)
                 .OnProperty(classroom => classroom.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt();
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
         }
@@ -125,9 +111,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
                 .OnProperty(teacher => teacher.UpdatedBy).Use(posterId)
                 .OnProperty(teacher => teacher.CreatedDate).Use(now)
                 .OnProperty(teacher => teacher.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(teacher => teacher.SemesterCourses).IgnoreIt()
-                .OnProperty(teacher => teacher.TeacherContacts).IgnoreIt();
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
         }
@@ -143,8 +127,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
                 .OnProperty(course => course.UpdatedBy).Use(posterId)
                 .OnProperty(course => course.CreatedDate).Use(now)
                 .OnProperty(course => course.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt();
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
         }

@@ -5,7 +5,7 @@
 
 using System;
 using System.Collections.Generic;
-using OtripleS.Web.Api.Models.Courses;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
@@ -39,8 +39,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
                 .OnProperty(course => course.UpdatedBy).Use(posterId)
                 .OnProperty(course => course.CreatedDate).Use(now)
                 .OnProperty(course => course.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt();
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
         }
@@ -56,8 +55,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
                 .OnProperty(course => course.UpdatedBy).Use(course.UpdatedBy)
                 .OnProperty(course => course.CreatedDate).Use(course.CreatedDate)
                 .OnProperty(course => course.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt();
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler.Create();
         }
