@@ -45,6 +45,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
             ValidateStudentExam(studentExam);
             ValidateInvalidAuditFields(studentExam);
             ValidateDatesAreNotSame(studentExam);
+            ValidateUpdatedDateIsRecent(studentExam);
         }
 
         private void ValidateStudentExam(StudentExam studentExam)
@@ -99,10 +100,28 @@ namespace OtripleS.Web.Api.Services.StudentExams
             }
         }
 
-        private bool IsInvalid(DateTimeOffset inputDate) => inputDate == default;
+        private void ValidateUpdatedDateIsRecent(StudentExam studentExam)
+        {
+            if (IsDateNotRecent(studentExam.UpdatedDate))
+            {
+                throw new InvalidStudentExamInputException(
+                    parameterName: nameof(StudentExam.UpdatedDate),
+                    parameterValue: studentExam.UpdatedDate);
+            }
+        }
 
-        private bool IsInvalid(Guid input) => input == default;
- 
+        private static bool IsInvalid(DateTimeOffset input) => input == default;
+        private static bool IsInvalid(Guid input) => input == default;
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
+
         private void ValidateStudentExamIsNotNull(StudentExam studentExam)
         {
             if (studentExam is null)
