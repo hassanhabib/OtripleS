@@ -13,61 +13,78 @@ using OtripleS.Web.Api.Models.StudentExams;
 
 namespace OtripleS.Web.Api.Services.StudentExams
 {
-	public partial class StudentExamService : IStudentExamService
-	{
-		private readonly IStorageBroker storageBroker;
-		private readonly ILoggingBroker loggingBroker;
-		private readonly IDateTimeBroker dateTimeBroker;
+    public partial class StudentExamService : IStudentExamService
+    {
+        private readonly IStorageBroker storageBroker;
+        private readonly ILoggingBroker loggingBroker;
+        private readonly IDateTimeBroker dateTimeBroker;
 
-		public StudentExamService(
-			IStorageBroker storageBroker,
-			ILoggingBroker loggingBroker,
-			IDateTimeBroker dateTimeBroker)
-		{
-			this.storageBroker = storageBroker;
-			this.loggingBroker = loggingBroker;
-			this.dateTimeBroker = dateTimeBroker;
-		}
+        public StudentExamService(
+            IStorageBroker storageBroker,
+            ILoggingBroker loggingBroker,
+            IDateTimeBroker dateTimeBroker)
+        {
+            this.storageBroker = storageBroker;
+            this.loggingBroker = loggingBroker;
+            this.dateTimeBroker = dateTimeBroker;
+        }
 
-		public ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId) =>
-		TryCatch(async () =>
-		{
-			ValidateStudentExamId(studentExamId);
+        public ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentExamId(studentExamId);
 
-			StudentExam storageStudentExam =
-				await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
+            StudentExam storageStudentExam =
+                await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
 
-			ValidateStorageStudentExam(storageStudentExam, studentExamId);
+            ValidateStorageStudentExam(storageStudentExam, studentExamId);
 
-			return storageStudentExam;
-		});
+            return storageStudentExam;
+        });
 
-		public ValueTask<StudentExam> DeleteStudentExamByIdAsync(Guid studentExamId) =>
-		TryCatch(async () =>
-		{
-			ValidateStudentExamId(studentExamId);
+        public ValueTask<StudentExam> DeleteStudentExamByIdAsync(Guid studentExamId) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentExamId(studentExamId);
 
-			StudentExam maybeStudentExam =
-			   await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
+            StudentExam maybeStudentExam =
+               await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
 
-			ValidateStorageStudentExam(maybeStudentExam, studentExamId);
+            ValidateStorageStudentExam(maybeStudentExam, studentExamId);
 
-			return await this.storageBroker.DeleteStudentExamAsync(maybeStudentExam);
-		});
+            return await this.storageBroker.DeleteStudentExamAsync(maybeStudentExam);
+        });
 
         public ValueTask<StudentExam> CreateStudentExamAsync(StudentExam studentExam)
         {
             throw new NotImplementedException();
         }
 
-        public IQueryable<StudentExam> RetrieveAllStudentExams()
+        public IQueryable<StudentExam> RetrieveAllStudentExams() =>
+        TryCatch(() =>
         {
-            throw new NotImplementedException();
-        }
+            IQueryable<StudentExam> storageStudentExams =
+                this.storageBroker.SelectAllStudentExams();
 
-        public ValueTask<StudentExam> ModifyStudentExamAsync(StudentExam studentExam)
+            ValidateStorageStudentExams(storageStudentExams);
+
+            return storageStudentExams;
+        });
+
+        public ValueTask<StudentExam> ModifyStudentExamAsync(StudentExam studentExam) =>
+        TryCatch(async () =>
         {
-            throw new NotImplementedException();
-        }
+            ValidateStudentExamOnModify(studentExam);
+
+            StudentExam maybeStudentExam =
+               await storageBroker.SelectStudentExamByIdAsync(studentExam.Id);
+
+            ValidateStorageStudentExam(maybeStudentExam, studentExam.Id);
+            
+            ValidateAgainstStorageStudentExamOnModify(
+                inputStudentExam: studentExam, storageStudentExam: maybeStudentExam);
+
+            return await storageBroker.UpdateStudentExamAsync(studentExam);
+        });
     }
 }

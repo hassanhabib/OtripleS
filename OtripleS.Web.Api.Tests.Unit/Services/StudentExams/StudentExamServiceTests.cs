@@ -4,6 +4,8 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -42,6 +44,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
         private StudentExam CreateRandomStudentExam(DateTimeOffset dates) =>
             CreateStudentExamFiller(dates).Create();
 
+        private IQueryable<StudentExam> CreateRandomStudentExams() =>
+           CreateStudentExamFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+
         private static Filler<StudentExam> CreateStudentExamFiller(DateTimeOffset dates)
         {
             var filler = new Filler<StudentExam>();
@@ -56,12 +61,27 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             return filler;
         }
 
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
+
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));

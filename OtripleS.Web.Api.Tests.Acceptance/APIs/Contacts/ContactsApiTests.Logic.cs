@@ -1,8 +1,13 @@
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using OtripleS.Web.Api.Models.Contacts;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Contacts;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
@@ -25,7 +30,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
 
             // then
             actualContact.Should().BeEquivalentTo(expectedContact);
-
             await this.otripleSApiBroker.DeleteContactByIdAsync(actualContact.Id);
         }
 
@@ -45,7 +49,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
 
             // then
             actualContact.Should().BeEquivalentTo(modifiedContact);
-
             await this.otripleSApiBroker.DeleteContactByIdAsync(actualContact.Id);
         }
 

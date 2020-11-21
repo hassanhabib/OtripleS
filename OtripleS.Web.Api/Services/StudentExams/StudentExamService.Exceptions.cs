@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -15,13 +16,17 @@ namespace OtripleS.Web.Api.Services.StudentExams
 	public partial class StudentExamService
 	{
 		private delegate ValueTask<StudentExam> ReturningStudentExamFunction();
-
+		private delegate IQueryable<StudentExam> ReturningStudentExamsFunction();
 		private async ValueTask<StudentExam> TryCatch(
 			ReturningStudentExamFunction returningStudentExamFunction)
 		{
 			try
 			{
 				return await returningStudentExamFunction();
+			}
+			catch (NullStudentExamException nullStudentExamException)
+			{
+				throw CreateAndLogValidationException(nullStudentExamException);
 			}
 			catch (InvalidStudentExamInputException invalidStudentExamInputException)
 			{
@@ -40,6 +45,26 @@ namespace OtripleS.Web.Api.Services.StudentExams
 				var lockedStudentExamException = new LockedStudentExamException(dbUpdateConcurrencyException);
 
 				throw CreateAndLogDependencyException(lockedStudentExamException);
+			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
+			catch (Exception exception)
+			{
+				throw CreateAndLogServiceException(exception);
+			}
+		}
+
+		private IQueryable<StudentExam> TryCatch(ReturningStudentExamsFunction returningStudentExamsFunction)
+		{
+			try
+			{
+				return returningStudentExamsFunction();
+			}
+			catch (SqlException sqlException)
+			{
+				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
 			catch (DbUpdateException dbUpdateException)
 			{

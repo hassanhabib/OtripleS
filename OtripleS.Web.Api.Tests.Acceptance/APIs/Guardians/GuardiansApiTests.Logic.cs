@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using OtripleS.Web.Api.Models.Guardians;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Guardians;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
