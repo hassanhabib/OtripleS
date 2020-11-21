@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 StudentExam persistedStudentExam =
-                    await this.studentExamService.CreateStudentExamAsync(studentExam);
+                    await this.studentExamService.AddStudentExamAsync(studentExam);
 
                 return Ok(persistedStudentExam);
             }

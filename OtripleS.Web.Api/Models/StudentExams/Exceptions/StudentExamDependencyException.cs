@@ -4,13 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.StudentExams.Exceptions
 {
     public class StudentExamDependencyException : Exception
     {
-        public StudentExamDependencyException(Exception innerException) : base(
-            "Service dependency error occurred, contact support.", innerException)
-        {
-        }
+        public StudentExamDependencyException(Exception innerException)
+            : base("Service dependency error occurred, contact support.", innerException) { }
     }
 }

@@ -38,32 +38,6 @@ namespace OtripleS.Web.Api.Services.StudentExams
             }
         }
 
-        private void ValidateStudentExamOnModify(StudentExam studentExam)
-        {
-            ValidateStudentExamIsNotNull(studentExam);
-            ValidateStudentExamId(studentExam.Id);
-            ValidateStudentExam(studentExam);
-            ValidateInvalidAuditFields(studentExam);
-            ValidateDatesAreNotSame(studentExam);
-            ValidateUpdatedDateIsRecent(studentExam);
-        }
-
-        private void ValidateStudentExam(StudentExam studentExam)
-        {
-            switch (studentExam)
-            {
-                case { } when IsInvalid(studentExam.StudentId):
-                    throw new InvalidStudentExamInputException(
-                        parameterName: nameof(StudentExam.StudentId),
-                        parameterValue: studentExam.StudentId);
-
-                case { } when IsInvalid(studentExam.ExamId):
-                    throw new InvalidStudentExamInputException(
-                        parameterName: nameof(StudentExam.ExamId),
-                        parameterValue: studentExam.ExamId);
-            }
-        }
-
         private void ValidateInvalidAuditFields(StudentExam studentExam)
         {
             switch (studentExam)
@@ -135,6 +109,165 @@ namespace OtripleS.Web.Api.Services.StudentExams
         private void ValidateStudentExamIsNotNull(StudentExam studentExam)
         {
             if (studentExam is null)
+            {
+                throw new NullStudentExamException();
+            }
+        }
+
+        private void ValidateStudentExamOnModify(StudentExam studentExam)
+        {
+            ValidateStudentExamIsNotNull(studentExam);
+            ValidateStudentExamId(studentExam.Id);
+            ValidateStudentExamFieldsOnModify(studentExam);
+            ValidateInvalidAuditFields(studentExam);
+            ValidateDatesAreNotSame(studentExam);
+            ValidateUpdatedDateIsRecent(studentExam);
+        }
+
+        private void ValidateStudentExamFieldsOnModify(StudentExam studentExam)
+        {
+            switch (studentExam)
+            {
+                case { } when IsInvalid(studentExam.StudentId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(StudentExam.StudentId),
+                        parameterValue: studentExam.StudentId);
+
+                case { } when IsInvalid(studentExam.ExamId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(StudentExam.ExamId),
+                        parameterValue: studentExam.ExamId);
+            }
+        }
+
+        private void ValidateStudentExamOnCreate(StudentExam studentExam)
+        {
+            ValidateStudentExam(studentExam);
+            ValidateStudentExamId(studentExam.Id);
+            ValidateStudentExamIds(studentExam);
+            ValidateStudentExamStrings(studentExam);
+            ValidateStudentExamDates(studentExam);
+            ValidateCreatedDateIsRecent(studentExam);
+        }
+
+        public void ValidateAgianstStorageStudentExamOnModify(StudentExam inputStudentExam, StudentExam storageStudentExam)
+        {
+            switch (inputStudentExam)
+            {
+                case { } when inputStudentExam.CreatedDate != storageStudentExam.CreatedDate:
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(StudentExam.CreatedDate),
+                        parameterValue: inputStudentExam.CreatedDate);
+
+                case { } when inputStudentExam.CreatedBy != storageStudentExam.CreatedBy:
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(StudentExam.CreatedBy),
+                        parameterValue: inputStudentExam.CreatedBy);
+
+                case { } when inputStudentExam.UpdatedDate == storageStudentExam.UpdatedDate:
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(StudentExam.UpdatedDate),
+                        parameterValue: inputStudentExam.UpdatedDate);
+            }
+        }
+
+        private void ValidateStudentExamStrings(StudentExam studentExam)
+        {
+            switch (studentExam)
+            {
+                case { } when IsInvalid(studentExam.CreatedBy):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.CreatedBy),
+                        parameterValue: studentExam.CreatedBy);
+
+                case { } when IsInvalid(studentExam.Id):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.Id),
+                        parameterValue: studentExam.Id);
+
+                case { } when IsInvalid(studentExam.StudentId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.Student),
+                        parameterValue: studentExam.Student);
+
+                case { } when IsInvalid(studentExam.ExamId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.Exam),
+                        parameterValue: studentExam.ExamId);
+
+                case { } when IsInvalid(studentExam.TeacherId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.ReviewingTeacher),
+                        parameterValue: studentExam.TeacherId);
+            }
+        }
+
+        private void ValidateCreatedDateIsRecent(StudentExam StudentExam)
+        {
+            if (IsDateNotRecent(StudentExam.CreatedDate))
+            {
+                throw new InvalidStudentExamInputException(
+                    parameterName: nameof(StudentExam.CreatedDate),
+                    parameterValue: StudentExam.CreatedDate);
+            }
+        }
+
+
+        private void ValidateStudentExamDates(StudentExam StudentExam)
+        {
+            switch (StudentExam)
+            {
+                case { } when StudentExam.CreatedDate == default:
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(StudentExam.CreatedDate),
+                        parameterValue: StudentExam.CreatedDate);
+
+                case { } when StudentExam.UpdatedDate == default:
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(StudentExam.UpdatedDate),
+                        parameterValue: StudentExam.UpdatedDate);
+            }
+        }
+
+        private void ValidateStudentExamIds(StudentExam studentExam)
+        {
+            switch (studentExam)
+            {
+                case { } when IsInvalid(studentExam.CreatedBy):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.CreatedBy),
+                        parameterValue: studentExam.CreatedBy);
+
+                case { } when IsInvalid(studentExam.UpdatedBy):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.UpdatedBy),
+                        parameterValue: studentExam.UpdatedBy);
+
+                case { } when IsInvalid(studentExam.Id):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.Id),
+                        parameterValue: studentExam.Id);
+
+                case { } when IsInvalid(studentExam.StudentId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.Student),
+                        parameterValue: studentExam.Student);
+
+                case { } when IsInvalid(studentExam.ExamId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.Exam),
+                        parameterValue: studentExam.ExamId);
+
+                case { } when IsInvalid(studentExam.TeacherId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(studentExam.ReviewingTeacher),
+                        parameterValue: studentExam.TeacherId);
+            }
+        }
+
+        private void ValidateStudentExam(StudentExam StudentExam)
+        {
+            if (StudentExam is null)
             {
                 throw new NullStudentExamException();
             }

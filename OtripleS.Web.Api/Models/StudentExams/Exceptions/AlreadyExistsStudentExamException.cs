@@ -4,11 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.StudentExams.Exceptions
 {
     public class AlreadyExistsStudentExamException : Exception
     {
         public AlreadyExistsStudentExamException(Exception innerException)
-            : base("StudentExam with the same id already exists.", innerException) { }
+            : base("Student exam with the same id already exists.", innerException) { }
     }
 }

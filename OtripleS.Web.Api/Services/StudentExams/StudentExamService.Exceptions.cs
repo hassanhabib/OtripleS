@@ -17,6 +17,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
 	{
 		private delegate ValueTask<StudentExam> ReturningStudentExamFunction();
 		private delegate IQueryable<StudentExam> ReturningStudentExamsFunction();
+
 		private async ValueTask<StudentExam> TryCatch(
 			ReturningStudentExamFunction returningStudentExamFunction)
 		{
@@ -44,17 +45,17 @@ namespace OtripleS.Web.Api.Services.StudentExams
 			{
 				var lockedStudentExamException = new LockedStudentExamException(dbUpdateConcurrencyException);
 
-				throw CreateAndLogDependencyException(lockedStudentExamException);
-			}
-			catch (DbUpdateException dbUpdateException)
-			{
-				throw CreateAndLogDependencyException(dbUpdateException);
-			}
-			catch (Exception exception)
-			{
-				throw CreateAndLogServiceException(exception);
-			}
-		}
+                throw CreateAndLogDependencyException(lockedStudentExamException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
 
 		private IQueryable<StudentExam> TryCatch(ReturningStudentExamsFunction returningStudentExamsFunction)
 		{
@@ -81,31 +82,31 @@ namespace OtripleS.Web.Api.Services.StudentExams
 			var StudentExamValidationException = new StudentExamValidationException(exception);
 			this.loggingBroker.LogError(StudentExamValidationException);
 
-			return StudentExamValidationException;
-		}
+            return StudentExamValidationException;
+        }
 
-		private StudentExamDependencyException CreateAndLogCriticalDependencyException(Exception exception)
-		{
-			var StudentExamDependencyException = new StudentExamDependencyException(exception);
-			this.loggingBroker.LogCritical(StudentExamDependencyException);
+        private StudentExamDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var StudentExamDependencyException = new StudentExamDependencyException(exception);
+            this.loggingBroker.LogCritical(StudentExamDependencyException);
 
-			return StudentExamDependencyException;
-		}
+            return StudentExamDependencyException;
+        }
 
-		private StudentExamDependencyException CreateAndLogDependencyException(Exception exception)
-		{
-			var StudentExamDependencyException = new StudentExamDependencyException(exception);
-			this.loggingBroker.LogError(StudentExamDependencyException);
+        private StudentExamDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var StudentExamDependencyException = new StudentExamDependencyException(exception);
+            this.loggingBroker.LogError(StudentExamDependencyException);
 
-			return StudentExamDependencyException;
-		}
+            return StudentExamDependencyException;
+        }
 
-		private StudentExamServiceException CreateAndLogServiceException(Exception exception)
-		{
-			var studentExamServiceException = new StudentExamServiceException(exception);
-			this.loggingBroker.LogError(studentExamServiceException);
+        private StudentExamServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var studentExamServiceException = new StudentExamServiceException(exception);
+            this.loggingBroker.LogError(studentExamServiceException);
 
-			return studentExamServiceException;
-		}
-	}
+            return studentExamServiceException;
+        }
+    }
 }

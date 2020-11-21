@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
@@ -41,8 +41,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private StudentExam CreateRandomStudentExam(DateTimeOffset dates) =>
-            CreateStudentExamFiller(dates).Create();
+        private IQueryable<StudentExam> CreateRandomStudentGuardians() =>
+           CreateStudentExamFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+
+        private StudentExam CreateRandomStudentExam(DateTimeOffset dateTime) =>
+            CreateStudentExamFiller(dateTime).Create();
 
         private IQueryable<StudentExam> CreateRandomStudentExams() =>
            CreateStudentExamFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
@@ -84,6 +87,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
 
         private static SqlException GetSqlException() =>
-            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+           (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
     }
 }
