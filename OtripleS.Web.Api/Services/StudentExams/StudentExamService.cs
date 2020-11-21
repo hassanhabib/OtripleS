@@ -80,6 +80,9 @@ namespace OtripleS.Web.Api.Services.StudentExams
                await storageBroker.SelectStudentExamByIdAsync(studentExam.Id);
 
             ValidateStorageStudentExam(maybeStudentExam, studentExam.Id);
+            
+            ValidateAgainstStorageStudentExamOnModify(
+                inputStudentExam: studentExam, storageStudentExam: maybeStudentExam);
 
             return await storageBroker.UpdateStudentExamAsync(studentExam);
         });
