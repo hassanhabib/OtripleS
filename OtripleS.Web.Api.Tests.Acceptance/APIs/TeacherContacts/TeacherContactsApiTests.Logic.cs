@@ -7,7 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using OtripleS.Web.Api.Models.TeacherContacts;
+using OtripleS.Web.Api.Tests.Acceptance.Models.TeacherContacts;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
@@ -18,7 +19,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
         public async Task ShouldPostTeacherContactAsync()
         {
             // given
-            TeacherContact randomTeacherContact = CreateRandomTeacherContact();
+            TeacherContact randomTeacherContact = await CreateRandomTeacherContactAsync();
             TeacherContact inputTeacherContact = randomTeacherContact;
             TeacherContact expectedTeacherContact = inputTeacherContact;
 
@@ -31,28 +32,25 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
                     inputTeacherContact.ContactId);
 
             // then
-            actualTeacherContact.Should().BeEquivalentTo(expectedTeacherContact,
-                options => options
-                    .Excluding(teacherContact => teacherContact.Teacher)
-                    .Excluding(teacherContact => teacherContact.Contact));
+            actualTeacherContact.Should().BeEquivalentTo(expectedTeacherContact);
 
-            await this.otripleSApiBroker.DeleteTeacherContactByIdAsync(
-                actualTeacherContact.TeacherId,
-                actualTeacherContact.ContactId);
+            await DeleteTeacherContactAsync(actualTeacherContact);
         }
 
         [Fact]
-        public async Task ShouldGetAllTeachersAsync()
+        public async Task ShouldGetAllTeacherContactsAsync()
         {
             // given
-            IEnumerable<TeacherContact> randomTeacherContacts = CreateRandomTeacherContacts();
+            Teacher randomTeacher = await PostRandomTeacherAsync();
+            List<TeacherContact> randomTeacherContacts = new List<TeacherContact>();
+
+            for (int i = 0; i < GetRandomNumber(); i++)
+            {
+                randomTeacherContacts.Add(await CreateRandomTeacherContactAsync(randomTeacher));
+            }
+
             List<TeacherContact> inputTeacherContacts = randomTeacherContacts.ToList();
             List<TeacherContact> expectedTeacherContacts = inputTeacherContacts;
-
-            foreach (TeacherContact inputTeacherContact in inputTeacherContacts)
-            {
-                await this.otripleSApiBroker.PostTeacherContactAsync(inputTeacherContact);
-            }
 
             // when
             IEnumerable<TeacherContact> actualTeacherContacts =
@@ -62,19 +60,19 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
             foreach (TeacherContact expectedTeacherContact in expectedTeacherContacts)
             {
                 TeacherContact actualTeacherContact =
-                    actualTeacherContacts.FirstOrDefault(teacherContact =>
+                    actualTeacherContacts.Single(teacherContact =>
                         teacherContact.TeacherId == expectedTeacherContact.TeacherId
                         && teacherContact.ContactId == expectedTeacherContact.ContactId);
 
-                actualTeacherContact.Should().BeEquivalentTo(expectedTeacherContact,
-                    options => options
-                        .Excluding(teacherContact => teacherContact.Teacher)
-                        .Excluding(teacherContact => teacherContact.Contact));
+                actualTeacherContact.Should().BeEquivalentTo(expectedTeacherContact);
 
                 await this.otripleSApiBroker.DeleteTeacherContactByIdAsync(
-                    actualTeacherContact.TeacherId,
-                    actualTeacherContact.ContactId);
+                    actualTeacherContact.TeacherId, actualTeacherContact.ContactId);
+
+                await this.otripleSApiBroker.DeleteContactByIdAsync(actualTeacherContact.ContactId);                
             }
+
+            await this.otripleSApiBroker.DeleteTeacherByIdAsync(randomTeacher.Id);
         }
     }
 }
