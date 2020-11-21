@@ -53,6 +53,11 @@ namespace OtripleS.Web.Api.Services.StudentExams
                     throw new InvalidStudentExamInputException(
                         parameterName: nameof(StudentExam.StudentId),
                         parameterValue: studentExam.StudentId);
+
+                case { } when IsInvalid(studentExam.ExamId):
+                    throw new InvalidStudentExamInputException(
+                        parameterName: nameof(StudentExam.ExamId),
+                        parameterValue: studentExam.ExamId);
             }
         }
 
