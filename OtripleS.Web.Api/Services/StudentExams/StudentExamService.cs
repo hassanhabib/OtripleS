@@ -60,15 +60,16 @@ namespace OtripleS.Web.Api.Services.StudentExams
             throw new NotImplementedException();
         }
 
-        public IQueryable<StudentExam> RetrieveAllStudentExams()
-        {
+		public IQueryable<StudentExam> RetrieveAllStudentExams() =>
+		TryCatch(() =>
+		{
 			IQueryable<StudentExam> storageStudentExams =
 				this.storageBroker.SelectAllStudentExams();
 
 			ValidateStorageStudentExams(storageStudentExams);
 
 			return storageStudentExams;
-		}
+		});
 
         public ValueTask<StudentExam> ModifyStudentExamAsync(StudentExam studentExam)
         {
