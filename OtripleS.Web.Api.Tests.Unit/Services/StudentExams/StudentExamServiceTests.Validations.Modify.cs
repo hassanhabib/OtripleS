@@ -48,11 +48,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
         public async Task ShouldThrowValidationExceptionOnModifyWhenIdIsInvalidAndLogItAsync()
         {
             //given
-            Guid invalidStudentId = Guid.Empty;
+            Guid invalidId = Guid.Empty;
             DateTimeOffset dateTime = GetRandomDateTime();
             StudentExam randomStudentExam = CreateRandomStudentExam(dateTime);
             StudentExam invalidStudentExam = randomStudentExam;
-            invalidStudentExam.Id = invalidStudentId;
+            invalidStudentExam.Id = invalidId;
 
             var invalidStudentExamInputException = new InvalidStudentExamInputException(
                 parameterName: nameof(StudentExam.Id),
@@ -91,6 +91,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             var invalidStudentExamInputException = new InvalidStudentExamInputException(
                 parameterName: nameof(StudentExam.StudentId),
                 parameterValue: invalidStudentExam.StudentId);
+
+            var expectedStudentExamValidationException =
+                new StudentExamValidationException(invalidStudentExamInputException);
+
+            //when
+            ValueTask<StudentExam> modifyStudentExamTask =
+                this.studentExamService.ModifyStudentExamAsync(invalidStudentExam);
+
+            //then
+            await Assert.ThrowsAsync<StudentExamValidationException>(() =>
+                modifyStudentExamTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamValidationException))),
+                Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyWhenExamIdIsInvalidAndLogItAsync()
+        {
+            //given
+            Guid invalidExamId = Guid.Empty;
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentExam randomStudentExam = CreateRandomStudentExam(dateTime);
+            StudentExam invalidStudentExam = randomStudentExam;
+            invalidStudentExam.ExamId = invalidExamId;
+
+            var invalidStudentExamInputException = new InvalidStudentExamInputException(
+                parameterName: nameof(StudentExam.ExamId),
+                parameterValue: invalidStudentExam.ExamId);
 
             var expectedStudentExamValidationException =
                 new StudentExamValidationException(invalidStudentExamInputException);
