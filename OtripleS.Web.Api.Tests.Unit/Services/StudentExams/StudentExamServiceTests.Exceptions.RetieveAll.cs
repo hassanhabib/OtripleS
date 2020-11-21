@@ -49,5 +49,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenDbExceptionOccursAndLogIt()
+        {
+            // given
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedStudentExamDependencyException =
+                new StudentExamDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllStudentExams())
+                    .Throws(databaseUpdateException);
+
+            // when . then
+            Assert.Throws<StudentExamDependencyException>(() =>
+                this.studentExamService.RetrieveAllStudentExams());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllStudentExams(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
