@@ -30,17 +30,12 @@ namespace OtripleS.Web.Api.Services.StudentExams
         }
 
         public ValueTask<StudentExam> AddStudentExamAsync(StudentExam studentExam) =>
-            TryCatch(async () =>
-            {
-                ValidateStudentExamOnCreate(studentExam);
-
-                return await this.storageBroker.InsertStudentExamAsync(studentExam);
-            });
-
-        public IQueryable<StudentExam> RetrieveAllStudentExams()
+        TryCatch(async () =>
         {
-            throw new NotImplementedException();
-        }
+            ValidateStudentExamOnCreate(studentExam);
+            
+            return await this.storageBroker.InsertStudentExamAsync(studentExam);
+        });
 
         public ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId) =>
         TryCatch(async () =>
@@ -55,27 +50,44 @@ namespace OtripleS.Web.Api.Services.StudentExams
             return storageStudentExam;
         });
 
+        public IQueryable<StudentExam> RetrieveAllStudentExams() =>
+        TryCatch(() =>
+        {
+            IQueryable<StudentExam> storageStudentExams =
+                this.storageBroker.SelectAllStudentExams();
+
+            ValidateStorageStudentExams(storageStudentExams);
+
+            return storageStudentExams;
+        });
+
+        public ValueTask<StudentExam> ModifyStudentExamAsync(StudentExam studentExam) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentExamOnModify(studentExam);
+
+            StudentExam maybeStudentExam =
+               await storageBroker.SelectStudentExamByIdAsync(studentExam.Id);
+
+            ValidateStorageStudentExam(maybeStudentExam, studentExam.Id);
+
+            ValidateAgainstStorageStudentExamOnModify(
+                inputStudentExam: studentExam, storageStudentExam: maybeStudentExam);
+
+            return await storageBroker.UpdateStudentExamAsync(studentExam);
+        });
+
         public ValueTask<StudentExam> DeleteStudentExamByIdAsync(Guid studentExamId) =>
         TryCatch(async () =>
         {
             ValidateStudentExamId(studentExamId);
 
             StudentExam maybeStudentExam =
-                await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
+               await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
 
             ValidateStorageStudentExam(maybeStudentExam, studentExamId);
 
             return await this.storageBroker.DeleteStudentExamAsync(maybeStudentExam);
         });
-
-        public ValueTask<StudentExam> CreateStudentExamAsync(StudentExam studentExam)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ValueTask<StudentExam> ModifyStudentExamAsync(StudentExam studentExam)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

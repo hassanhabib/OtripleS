@@ -6,12 +6,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OtripleS.Web.Api.Models.Contacts;
-using OtripleS.Web.Api.Models.TeacherContacts;
-using OtripleS.Web.Api.Models.Teachers;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Contacts;
+using OtripleS.Web.Api.Tests.Acceptance.Models.TeacherContacts;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
 {
@@ -23,13 +24,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
         public TeacherContactsApiTests(OtripleSApiBroker otripleSApiBroker) =>
             this.otripleSApiBroker = otripleSApiBroker;
 
-        private static TeacherContact CreateRandomTeacherContact() =>
-            CreateTeacherContactFiller().Create();
-
-        private static IEnumerable<TeacherContact> CreateRandomTeacherContacts() =>
-            Enumerable.Range(start: 0, count: GetRandomNumber())
-                .Select(item => CreateRandomTeacherContact());
-
         private static Teacher CreateRandomTeacher() =>
             CreateTeacherFiller().Create();
 
@@ -39,19 +33,47 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
 
-        private static Filler<TeacherContact> CreateTeacherContactFiller()
+        private async ValueTask<TeacherContact> CreateRandomTeacherContactAsync()
         {
-            Contact randomContact = CreateRandomContact();
-            Teacher randomTeacher = CreateRandomTeacher();
+            Contact randomContact = await PostRandomContactAsync();
+            Teacher randomTeacher = await PostRandomTeacherAsync();
             var filler = new Filler<TeacherContact>();
 
             filler.Setup()
-                .OnProperty(teacherContact => teacherContact.Teacher).Use(randomTeacher)
                 .OnProperty(teacherContact => teacherContact.TeacherId).Use(randomTeacher.Id)
-                .OnProperty(teacherContact => teacherContact.Contact).Use(randomContact)
                 .OnProperty(teacherContact => teacherContact.ContactId).Use(randomContact.Id);
 
-            return filler;
+            TeacherContact teacherContact = filler.Create();
+
+            return teacherContact;
+        }
+
+        private async ValueTask<TeacherContact> CreateRandomTeacherContactAsync(Teacher teacher)
+        {
+            Contact randomContact = await PostRandomContactAsync();
+            var filler = new Filler<TeacherContact>();
+
+            filler.Setup()
+                .OnProperty(teacherContact => teacherContact.TeacherId).Use(teacher.Id)
+                .OnProperty(teacherContact => teacherContact.ContactId).Use(randomContact.Id);
+
+            TeacherContact teacherContact = filler.Create();
+
+            return await this.otripleSApiBroker.PostTeacherContactAsync(teacherContact);
+        }
+
+        private async ValueTask<Teacher> PostRandomTeacherAsync()
+        {
+            Teacher randomTeacher = CreateRandomTeacher();
+
+            return await this.otripleSApiBroker.PostTeacherAsync(randomTeacher);
+        }
+
+        private async ValueTask<Contact> PostRandomContactAsync()
+        {
+            Contact randomContact = CreateRandomContact();
+
+            return await this.otripleSApiBroker.PostContactAsync(randomContact);
         }
 
         private static Filler<Contact> CreateContactFiller()
@@ -62,13 +84,18 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
             filler.Setup()
                 .OnProperty(contact => contact.CreatedBy).Use(randomCreatedUpdatedById)
                 .OnProperty(contact => contact.UpdatedBy).Use(randomCreatedUpdatedById)
-                .OnProperty(contact => contact.StudentContacts).IgnoreIt()
-                .OnProperty(contact => contact.TeacherContacts).IgnoreIt()
-                .OnProperty(contact => contact.GuardianContacts).IgnoreIt()
-                .OnProperty(contact => contact.UserContacts).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow);
 
             return filler;
+        }
+
+        private async ValueTask DeleteTeacherContactAsync(TeacherContact teacherContact)
+        {
+            await this.otripleSApiBroker.DeleteTeacherContactByIdAsync(
+                teacherContact.TeacherId, teacherContact.ContactId);
+
+            await this.otripleSApiBroker.DeleteContactByIdAsync(teacherContact.ContactId);
+            await this.otripleSApiBroker.DeleteTeacherByIdAsync(teacherContact.TeacherId);
         }
 
         private static Filler<Teacher> CreateTeacherFiller()
@@ -83,10 +110,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
                 .OnProperty(teacher => teacher.UpdatedBy).Use(posterId)
                 .OnProperty(teacher => teacher.CreatedDate).Use(now)
                 .OnProperty(teacher => teacher.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow)
-                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt()
-                .OnProperty(teacher => teacher.TeacherContacts).IgnoreIt()
-                .OnProperty(teacher => teacher.ReviewedStudentExams).IgnoreIt();
+                .OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow);
 
             return filler;
         }

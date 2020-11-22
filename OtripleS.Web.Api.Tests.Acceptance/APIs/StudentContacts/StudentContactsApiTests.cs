@@ -4,13 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Force.DeepCloner;
-using OtripleS.Web.Api.Models.Contacts;
-using OtripleS.Web.Api.Models.StudentContacts;
-using OtripleS.Web.Api.Models.Students;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Contacts;
+using OtripleS.Web.Api.Tests.Acceptance.Models.StudentContacts;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 using Tynamix.ObjectFiller;
 using Xunit;
 
@@ -24,22 +22,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
         public StudentContactsApiTests(OtripleSApiBroker otripleSApiBroker) =>
             this.otripleSApiBroker = otripleSApiBroker;
 
-        private static StudentContact CreateRandomStudentContact() =>
-            CreateStudentContactFiller().Create();
-
-        private static IEnumerable<StudentContact> CreateRandomStudentContacts() =>
-            Enumerable.Range(start: 0, count: GetRandomNumber())
-                .Select(item => CreateRandomStudentContact());
-
-        private StudentContact CreateExpectedStudentContact(StudentContact studentContact)
-        {
-            StudentContact expectedStudentContact = studentContact.DeepClone();
-            expectedStudentContact.Contact = null;
-            expectedStudentContact.Student = null;
-
-            return expectedStudentContact;
-        }
-
         private static Student CreateRandomStudent() =>
             CreateStudentFiller().Create();
 
@@ -49,19 +31,47 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
 
-        private static Filler<StudentContact> CreateStudentContactFiller()
+        private async ValueTask<StudentContact> CreateRandomStudentContactAsync()
         {
-            Contact randomContact = CreateRandomContact();
-            Student randomStudent = CreateRandomStudent();
+            Contact randomContact = await PostRandomContactAsync();
+            Student randomStudent = await PostRandomStudentAsync();
             var filler = new Filler<StudentContact>();
 
             filler.Setup()
-                .OnProperty(studentContact => studentContact.Student).Use(randomStudent)
                 .OnProperty(studentContact => studentContact.StudentId).Use(randomStudent.Id)
-                .OnProperty(studentContact => studentContact.Contact).Use(randomContact)
                 .OnProperty(studentContact => studentContact.ContactId).Use(randomContact.Id);
 
-            return filler;
+            StudentContact studentContact = filler.Create();
+
+            return studentContact;
+        }
+
+        private async ValueTask<StudentContact> CreateRandomStudentContactAsync(Student student)
+        {
+            Contact randomContact = await PostRandomContactAsync();
+            var filler = new Filler<StudentContact>();
+
+            filler.Setup()
+                .OnProperty(studentContact => studentContact.StudentId).Use(student.Id)
+                .OnProperty(studentContact => studentContact.ContactId).Use(randomContact.Id);
+
+            StudentContact studentContact = filler.Create();
+
+            return await this.otripleSApiBroker.PostStudentContactAsync(studentContact);
+        }
+
+        private async ValueTask<Student> PostRandomStudentAsync()
+        {
+            Student randomStudent = CreateRandomStudent();
+
+            return await this.otripleSApiBroker.PostStudentAsync(randomStudent);
+        }
+
+        private async ValueTask<Contact> PostRandomContactAsync()
+        {
+            Contact randomContact = CreateRandomContact();
+
+            return await this.otripleSApiBroker.PostContactAsync(randomContact);
         }
 
         private static Filler<Contact> CreateContactFiller()
@@ -72,13 +82,18 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
             filler.Setup()
                 .OnProperty(contact => contact.CreatedBy).Use(randomCreatedUpdatedById)
                 .OnProperty(contact => contact.UpdatedBy).Use(randomCreatedUpdatedById)
-                .OnProperty(contact => contact.StudentContacts).IgnoreIt()
-                .OnProperty(contact => contact.GuardianContacts).IgnoreIt()
-                .OnProperty(contact => contact.TeacherContacts).IgnoreIt()
-                .OnProperty(contact => contact.UserContacts).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow);
 
             return filler;
+        }
+
+        private async ValueTask DeleteStudentContactAsync(StudentContact studentContact)
+        {
+            await this.otripleSApiBroker.DeleteStudentContactAsync(
+                studentContact.StudentId, studentContact.ContactId);
+
+            await this.otripleSApiBroker.DeleteContactByIdAsync(studentContact.ContactId);
+            await this.otripleSApiBroker.DeleteStudentByIdAsync(studentContact.StudentId);
         }
 
         private static Filler<Student> CreateStudentFiller()
@@ -93,11 +108,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
                 .OnProperty(student => student.UpdatedBy).Use(posterId)
                 .OnProperty(student => student.CreatedDate).Use(now)
                 .OnProperty(student => student.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow)
-                .OnProperty(student => student.StudentSemesterCourses).IgnoreIt()
-                .OnProperty(student => student.StudentGuardians).IgnoreIt()
-                .OnProperty(student => student.StudentContacts).IgnoreIt()
-                .OnProperty(student => student.StudentExams).IgnoreIt();
+                .OnType<DateTimeOffset>().Use(DateTimeOffset.UtcNow);
 
             return filler;
         }

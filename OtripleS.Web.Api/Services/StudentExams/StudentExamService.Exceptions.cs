@@ -3,43 +3,47 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentExams;
 using OtripleS.Web.Api.Models.StudentExams.Exceptions;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.StudentExams
 {
-    public partial class StudentExamService
-    {
-        private delegate ValueTask<StudentExam> ReturningStudentExamFunction();
-        private delegate IQueryable<StudentExam> ReturningQueryableStudentExamFunction();
+	public partial class StudentExamService
+	{
+		private delegate ValueTask<StudentExam> ReturningStudentExamFunction();
+		private delegate IQueryable<StudentExam> ReturningStudentExamsFunction();
 
-        private async ValueTask<StudentExam> TryCatch(
-            ReturningStudentExamFunction returningStudentExamFunction)
-        {
-            try
-            {
-                return await returningStudentExamFunction();
-            }
-            catch (InvalidStudentExamInputException invalidStudentExamInputException)
-            {
-                throw CreateAndLogValidationException(invalidStudentExamInputException);
-            }
-            catch (NotFoundStudentExamException nullStudentExamException)
-            {
-                throw CreateAndLogValidationException(nullStudentExamException);
-            }
-            catch (SqlException sqlException)
-            {
-                throw CreateAndLogCriticalDependencyException(sqlException);
-            }
-            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
-            {
-                var lockedStudentExamException = new LockedStudentExamException(dbUpdateConcurrencyException);
+		private async ValueTask<StudentExam> TryCatch(
+			ReturningStudentExamFunction returningStudentExamFunction)
+		{
+			try
+			{
+				return await returningStudentExamFunction();
+			}
+			catch (NullStudentExamException nullStudentExamException)
+			{
+				throw CreateAndLogValidationException(nullStudentExamException);
+			}
+			catch (InvalidStudentExamInputException invalidStudentExamInputException)
+			{
+				throw CreateAndLogValidationException(invalidStudentExamInputException);
+			}
+			catch (NotFoundStudentExamException nullStudentExamException)
+			{
+				throw CreateAndLogValidationException(nullStudentExamException);
+			}
+			catch (SqlException sqlException)
+			{
+				throw CreateAndLogCriticalDependencyException(sqlException);
+			}
+			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+			{
+				var lockedStudentExamException = new LockedStudentExamException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedStudentExamException);
             }
@@ -53,10 +57,30 @@ namespace OtripleS.Web.Api.Services.StudentExams
             }
         }
 
-        private StudentExamValidationException CreateAndLogValidationException(Exception exception)
-        {
-            var StudentExamValidationException = new StudentExamValidationException(exception);
-            this.loggingBroker.LogError(StudentExamValidationException);
+		private IQueryable<StudentExam> TryCatch(ReturningStudentExamsFunction returningStudentExamsFunction)
+		{
+			try
+			{
+				return returningStudentExamsFunction();
+			}
+			catch (SqlException sqlException)
+			{
+				throw CreateAndLogCriticalDependencyException(sqlException);
+			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
+			catch (Exception exception)
+			{
+				throw CreateAndLogServiceException(exception);
+			}
+		}
+
+		private StudentExamValidationException CreateAndLogValidationException(Exception exception)
+		{
+			var StudentExamValidationException = new StudentExamValidationException(exception);
+			this.loggingBroker.LogError(StudentExamValidationException);
 
             return StudentExamValidationException;
         }
