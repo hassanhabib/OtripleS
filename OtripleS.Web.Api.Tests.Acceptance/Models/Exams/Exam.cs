@@ -5,7 +5,7 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Tests.Acceptance.Tests.Acceptance.Models.Exams
+namespace OtripleS.Web.Api.Tests.Acceptance.Tests.Models.Exams
 {
     public class Exam
     {
