@@ -4,11 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using OtripleS.Web.Api.Tests.Acceptance.Models.StudentContacts;
-using OtripleS.Web.Api.Tests.Acceptance.Models.StudentGuardians;
-using OtripleS.Web.Api.Tests.Acceptance.Models.StudentSemesterCourses;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Models.Students
 {
