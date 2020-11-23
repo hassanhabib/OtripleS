@@ -7,7 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using OtripleS.Web.Api.Models.StudentContacts;
+using OtripleS.Web.Api.Tests.Acceptance.Models.StudentContacts;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
@@ -18,14 +19,15 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
         public async Task ShouldGetAllStudentContactAsync()
         {
             // given
-            IEnumerable<StudentContact> randomStudentContacts = CreateRandomStudentContacts();
-            List<StudentContact> inputStudentContacts = randomStudentContacts.ToList();
+            Student randomStudent = await PostRandomStudentAsync();
+            List<StudentContact> randomStudentContacts = new List<StudentContact>();
 
-            foreach (StudentContact studentContact in inputStudentContacts)
+            for (int i = 0; i < GetRandomNumber(); i++)
             {
-                await this.otripleSApiBroker.PostStudentContactAsync(studentContact);
+                randomStudentContacts.Add(await CreateRandomStudentContactAsync(randomStudent));
             }
 
+            List<StudentContact> inputStudentContacts = randomStudentContacts.ToList();
             List<StudentContact> expectedStudentContacts = inputStudentContacts;
 
             // when
@@ -40,18 +42,22 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
                     && studentContact.ContactId == expectedStudentContact.ContactId
                     );
 
-                StudentContact expectedReturnedStudentContact = CreateExpectedStudentContact(expectedStudentContact);
+                actualStudentContact.Should().BeEquivalentTo(expectedStudentContact);
 
-                actualStudentContact.Should().BeEquivalentTo(expectedReturnedStudentContact);
-                await this.otripleSApiBroker.DeleteStudentContactAsync(actualStudentContact.StudentId, actualStudentContact.ContactId);
+                await this.otripleSApiBroker.DeleteStudentContactAsync(
+                    actualStudentContact.StudentId, actualStudentContact.ContactId);
+
+                await this.otripleSApiBroker.DeleteContactByIdAsync(actualStudentContact.ContactId);
             }
+
+            await this.otripleSApiBroker.DeleteStudentByIdAsync(randomStudent.Id);
         }
 
         [Fact]
         public async Task ShouldPostStudentContactAsync()
         {
             // given
-            StudentContact randomStudentContact = CreateRandomStudentContact();
+            StudentContact randomStudentContact = await CreateRandomStudentContactAsync();
             StudentContact inputStudentContact = randomStudentContact;
             StudentContact expectedStudentContact = inputStudentContact;
 
@@ -64,14 +70,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
                     inputStudentContact.ContactId);
 
             // then
-            actualStudentContact.Should().BeEquivalentTo(expectedStudentContact,
-                options => options
-                    .Excluding(StudentContact => StudentContact.Student)
-                    .Excluding(StudentContact => StudentContact.Contact));
+            actualStudentContact.Should().BeEquivalentTo(expectedStudentContact);
 
-            await this.otripleSApiBroker.DeleteStudentContactAsync(
-                actualStudentContact.StudentId,
-                actualStudentContact.ContactId);
+            await DeleteStudentContactAsync(actualStudentContact);
         }
     }
 }

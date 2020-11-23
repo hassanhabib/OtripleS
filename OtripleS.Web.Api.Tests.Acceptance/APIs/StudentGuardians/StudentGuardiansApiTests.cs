@@ -5,10 +5,11 @@
 
 using System;
 using System.Collections.Generic;
-using OtripleS.Web.Api.Models.Guardians;
-using OtripleS.Web.Api.Models.StudentGuardians;
-using OtripleS.Web.Api.Models.Students;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Guardians;
+using OtripleS.Web.Api.Tests.Acceptance.Models.StudentGuardians;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 using Tynamix.ObjectFiller;
 using Xunit;
 
@@ -42,8 +43,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
                 .OnProperty(studentGuardian => studentGuardian.UpdatedBy).Use(posterId)
                 .OnProperty(studentGuardian => studentGuardian.CreatedDate).Use(now)
                 .OnProperty(studentGuardian => studentGuardian.UpdatedDate).Use(now)
-                .OnProperty(studentGuardian => studentGuardian.Student).IgnoreIt()
-                .OnProperty(studentGuardian => studentGuardian.Guardian).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
@@ -60,8 +59,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
                 .OnProperty(studentGuardian => studentGuardian.UpdatedBy).Use(posterId)
                 .OnProperty(studentGuardian => studentGuardian.CreatedDate).Use(now)
                 .OnProperty(studentGuardian => studentGuardian.UpdatedDate).Use(now)
-                .OnProperty(studentGuardian => studentGuardian.Student).IgnoreIt()
-                .OnProperty(studentGuardian => studentGuardian.Guardian).IgnoreIt()
                 .OnProperty(studentGuardian => studentGuardian.StudentId).Use(studentId)
                 .OnProperty(studentGuardian => studentGuardian.GuardianId).Use(guardianId)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
@@ -83,11 +80,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
                 .OnProperty(student => student.UpdatedBy).Use(posterId)
                 .OnProperty(student => student.CreatedDate).Use(now)
                 .OnProperty(student => student.UpdatedDate).Use(now)
-                .OnProperty(student => student.StudentSemesterCourses).IgnoreIt()
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(student => student.StudentGuardians).IgnoreIt()
-                .OnProperty(student => student.StudentContacts).IgnoreIt()
-                .OnProperty(student => student.StudentExams).IgnoreIt();
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
         }
@@ -106,13 +99,26 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
                 .OnProperty(guardian => guardian.UpdatedBy).Use(posterId)
                 .OnProperty(guardian => guardian.CreatedDate).Use(now)
                 .OnProperty(guardian => guardian.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(guardian => guardian.StudentGuardians).IgnoreIt()
-                .OnProperty(guardian => guardian.GuardianContacts).IgnoreIt();
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
         }
 
+        private async ValueTask<Student> PostStudentAsync()
+        {
+            Student randomStudent = CreateRandomStudent();
+            Student inputStudent = randomStudent;
+
+            return await this.otripleSApiBroker.PostStudentAsync(inputStudent);
+        }
+
+        private async ValueTask<Guardian> PostGuardianAsync()
+        {
+            Guardian randomGuardian = CreateRandomGuardian();
+            Guardian inputGuardian = randomGuardian;
+
+            return await this.otripleSApiBroker.PostGuardianAsync(inputGuardian);
+        }
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 

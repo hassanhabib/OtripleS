@@ -9,9 +9,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
-using OtripleS.Web.Api.Models.Guardians;
-using OtripleS.Web.Api.Models.StudentGuardians;
-using OtripleS.Web.Api.Models.Students;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Guardians;
+using OtripleS.Web.Api.Tests.Acceptance.Models.StudentGuardians;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
@@ -119,22 +119,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
                 await this.otripleSApiBroker.DeleteGuardianByIdAsync(actualStudentGuardian.GuardianId);
                 await this.otripleSApiBroker.DeleteStudentByIdAsync(actualStudentGuardian.StudentId);
             }
-        }
-
-        private async Task<Student> PostStudentAsync()
-        {
-            Student randomStudent = CreateRandomStudent();
-            Student inputStudent = randomStudent;
-
-            return await this.otripleSApiBroker.PostStudentAsync(inputStudent);
-        }
-
-        private async Task<Guardian> PostGuardianAsync()
-        {
-            Guardian randomGuardian = CreateRandomGuardian();
-            Guardian inputGuardian = randomGuardian;
-
-            return await this.otripleSApiBroker.PostGuardianAsync(inputGuardian);
         }
     }
 }
