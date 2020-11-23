@@ -15,7 +15,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Models.StudentExams
         public Guid TeacherId { get; set; }
         public double Score { get; set; }
         public StudentExamGrade Grade { get; set; }
-
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset UpdatedDate { get; set; }
         public Guid CreatedBy { get; set; }
