@@ -4,8 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Models.StudentSemesterCourses
 {
@@ -13,7 +11,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Models.StudentSemesterCourses
     {
         public Guid StudentId { get; set; }
         public Guid SemesterCourseId { get; set; }
-  
+
         public string Grade { get; set; }
         public double Score { get; set; }
         public int Repeats { get; set; }

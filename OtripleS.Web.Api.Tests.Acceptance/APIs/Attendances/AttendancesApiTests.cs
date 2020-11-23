@@ -5,8 +5,8 @@
 
 using System;
 using System.Collections.Generic;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Attendances;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Attendances;
 using Tynamix.ObjectFiller;
 using Xunit;
 

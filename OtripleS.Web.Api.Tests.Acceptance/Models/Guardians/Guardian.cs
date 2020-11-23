@@ -4,14 +4,10 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using OtripleS.Web.Api.Tests.Acceptance.Models.GuardianContacts;
-using OtripleS.Web.Api.Tests.Acceptance.Models.StudentGuardians;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Models.Guardians
 {
-    public class Guardian 
+    public class Guardian
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }

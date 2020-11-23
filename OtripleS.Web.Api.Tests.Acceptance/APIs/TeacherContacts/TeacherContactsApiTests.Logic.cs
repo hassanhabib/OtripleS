@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
                 await this.otripleSApiBroker.DeleteTeacherContactByIdAsync(
                     actualTeacherContact.TeacherId, actualTeacherContact.ContactId);
 
-                await this.otripleSApiBroker.DeleteContactByIdAsync(actualTeacherContact.ContactId);                
+                await this.otripleSApiBroker.DeleteContactByIdAsync(actualTeacherContact.ContactId);
             }
 
             await this.otripleSApiBroker.DeleteTeacherByIdAsync(randomTeacher.Id);

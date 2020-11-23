@@ -4,10 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
-using OtripleS.Web.Api.Tests.Acceptance.Models.TeacherContacts;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Models.Teachers
 {

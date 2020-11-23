@@ -4,12 +4,10 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Models.Courses
 {
-    public class Course 
+    public class Course
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
