@@ -89,6 +89,60 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             return await this.otripleSApiBroker.PostTeacherAsync(teacher);
         }
 
+        private async ValueTask<Exam> PostRandomExam(
+            Teacher teacher,
+            Course course,
+            Classroom classroom)
+        {
+            SemesterCourse semesterCourse = await PostRandomSemesterCourse(teacher, course, classroom);
+            Exam exam = CreateRandomExamFiller(semesterCourse).Create();
+
+            return await this.otripleSApiBroker.PostExamAsync(exam);
+        }
+
+        private async ValueTask<SemesterCourse> PostRandomSemesterCourse(
+            Teacher teacher,
+            Course course,
+            Classroom classroom)
+        {
+            SemesterCourse semesterCourse =
+                CreateRandomSemesterCourseFiller(teacher, course, classroom).Create();
+
+            return await this.otripleSApiBroker.PostSemesterCourseAsync(semesterCourse);
+        }
+
+        private async ValueTask<Course> PostRandomCourse()
+        {
+            Course course = CreateRandomCourseFiller().Create();
+
+            return await this.otripleSApiBroker.PostCourseAsync(course);
+        }
+
+        private async ValueTask<Classroom> PostRandomClassroom()
+        {
+            Classroom classroom = CreateRandomClassroomFiller().Create();
+
+            return await this.otripleSApiBroker.PostClassroomAsync(classroom);
+        }
+
+        private async ValueTask<Student> PostRandomStudent()
+        {
+            Student student = CreateRandomStudentFiller().Create();
+
+            return await this.otripleSApiBroker.PostStudentAsync(student);
+        }
+
+        private async ValueTask<StudentExam> UpdateStudentExamRandom(StudentExam studentExam)
+        {
+            studentExam.Score = GetRandomNumber();
+            studentExam.UpdatedDate = DateTimeOffset.UtcNow;
+
+            return studentExam;
+        }
+
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
         private Filler<Teacher> CreateRandomTeacherFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -104,17 +158,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
-        }
-
-        private async ValueTask<Exam> PostRandomExam(
-            Teacher teacher,
-            Course course,
-            Classroom classroom)
-        {
-            SemesterCourse semesterCourse = await PostRandomSemesterCourse(teacher, course, classroom);
-            Exam exam = CreateRandomExamFiller(semesterCourse).Create();
-
-            return await this.otripleSApiBroker.PostExamAsync(exam);
         }
 
         private Filler<Exam> CreateRandomExamFiller(SemesterCourse semesterCourse)
@@ -133,17 +176,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
-        }
-
-        private async ValueTask<SemesterCourse> PostRandomSemesterCourse(
-            Teacher teacher,
-            Course course,
-            Classroom classroom)
-        {
-            SemesterCourse semesterCourse =
-                CreateRandomSemesterCourseFiller(teacher, course, classroom).Create();
-
-            return await this.otripleSApiBroker.PostSemesterCourseAsync(semesterCourse);
         }
 
         private Filler<SemesterCourse> CreateRandomSemesterCourseFiller(
@@ -169,13 +201,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             return filler;
         }
 
-        private async ValueTask<Course> PostRandomCourse()
-        {
-            Course course = CreateRandomCourseFiller().Create();
-
-            return await this.otripleSApiBroker.PostCourseAsync(course);
-        }
-
         private Filler<Course> CreateRandomCourseFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -191,13 +216,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
-        }
-
-        private async ValueTask<Classroom> PostRandomClassroom()
-        {
-            Classroom classroom = CreateRandomClassroomFiller().Create();
-
-            return await this.otripleSApiBroker.PostClassroomAsync(classroom);
         }
 
         private Filler<Classroom> CreateRandomClassroomFiller()
@@ -217,13 +235,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             return filler;
         }
 
-        private async ValueTask<Student> PostRandomStudent()
-        {
-            Student student = CreateRandomStudentFiller().Create();
-
-            return await this.otripleSApiBroker.PostStudentAsync(student);
-        }
-
         private Filler<Student> CreateRandomStudentFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -240,16 +251,5 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
 
             return filler;
         }
-
-        private async ValueTask<StudentExam> UpdateStudentExamRandom(StudentExam studentExam)
-        {
-            studentExam.Score = GetRandomNumber();
-            studentExam.UpdatedDate = DateTimeOffset.UtcNow;
-
-            return studentExam;
-        }
-
-        private static DateTimeOffset GetRandomDateTime() =>
-            new DateTimeRange(earliestDate: new DateTime()).GetValue();
     }
 }
