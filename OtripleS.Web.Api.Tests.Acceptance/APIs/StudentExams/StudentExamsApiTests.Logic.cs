@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using OtripleS.Web.Api.Tests.Acceptance.Models.StudentExams;
+using RESTFulSense.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
@@ -74,6 +75,27 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
                 actualStudentExam.Should().BeEquivalentTo(expectedStudentExam);
                 await DeleteStudentExam(actualStudentExam);
             }
+        }
+
+        [Fact]
+        public async Task ShouldDeleteStudentExamAsync()
+        {
+            // given
+            StudentExam randomStudentExam = await PostRandomStudentExamAsync();
+            StudentExam inputStudentExam = randomStudentExam;
+            StudentExam expectedStudentExam = inputStudentExam;
+
+            // when 
+            StudentExam deletedStudentExam = await DeleteStudentExam(inputStudentExam);
+
+            ValueTask<StudentExam> getStudentExamByIdTask =
+                this.otripleSApiBroker.GetStudentExamByIdAsync(inputStudentExam.Id);
+
+            // then
+            deletedStudentExam.Should().BeEquivalentTo(expectedStudentExam);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getStudentExamByIdTask.AsTask());
         }
     }
 }
