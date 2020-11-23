@@ -9,8 +9,8 @@
   <ItemGroup>
     <PackageReference Include="DeepCloner" Version="0.10.2" />
     <PackageReference Include="FluentAssertions" Version="6.0.0-alpha0001" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.0-rc.2.20475.17" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0-preview-20200921-01" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
     <PackageReference Include="RESTFulSense" Version="1.7.0" />
     <PackageReference Include="Tynamix.ObjectFiller" Version="1.5.5" />
     <PackageReference Include="xunit" Version="2.4.1" />
