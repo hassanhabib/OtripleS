@@ -5,13 +5,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Guardians;
 using OtripleS.Web.Api.Tests.Acceptance.Models.StudentGuardians;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
-using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
-using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
 {

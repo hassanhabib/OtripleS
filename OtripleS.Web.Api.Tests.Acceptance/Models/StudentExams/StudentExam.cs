@@ -5,17 +5,16 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Tests.Acceptance.Models.StudentSemesterCourses
+namespace OtripleS.Web.Api.Tests.Acceptance.Models.StudentExams
 {
-    public class StudentSemesterCourse
+    public class StudentExam
     {
+        public Guid Id { get; set; }
         public Guid StudentId { get; set; }
-        public Guid SemesterCourseId { get; set; }
-
-        public string Grade { get; set; }
+        public Guid ExamId { get; set; }
+        public Guid TeacherId { get; set; }
         public double Score { get; set; }
-        public int Repeats { get; set; }
-        public StudentSemesterCourseStatus Status { get; set; }
+        public StudentExamGrade Grade { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset UpdatedDate { get; set; }
         public Guid CreatedBy { get; set; }

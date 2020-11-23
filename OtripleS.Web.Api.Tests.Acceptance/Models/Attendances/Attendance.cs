@@ -7,7 +7,7 @@ using System;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Models.Attendances
 {
-    public class Attendance 
+    public class Attendance
     {
         public Guid Id { get; set; }
         public Guid StudentSemesterCourseId { get; set; }

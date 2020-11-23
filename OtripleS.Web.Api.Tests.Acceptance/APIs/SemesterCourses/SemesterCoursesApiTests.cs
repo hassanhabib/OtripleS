@@ -4,17 +4,15 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using Force.DeepCloner;
+using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Classrooms;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
 using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
-using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
-using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
 {

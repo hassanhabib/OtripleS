@@ -7,7 +7,7 @@ using System;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses
 {
-    public class SemesterCourse 
+    public class SemesterCourse
     {
         public Guid Id { get; set; }
         public DateTimeOffset StartDate { get; set; }

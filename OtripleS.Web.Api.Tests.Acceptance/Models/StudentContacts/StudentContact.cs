@@ -4,14 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Contacts;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Models.StudentContacts
 {
     public class StudentContact
     {
         public Guid ContactId { get; set; }
-        public Guid StudentId { get; set; }        
+        public Guid StudentId { get; set; }
     }
 }

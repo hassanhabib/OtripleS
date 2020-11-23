@@ -69,8 +69,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             Classroom randomClassroom = await PostClassRoomAsync();
             Course randomCourse = await PostCourseAsync();
             List<SemesterCourse> randomSemesterCourses = new List<SemesterCourse>();
-            
-            for (int i =0; i<= GetRandomNumber(); i++)
+
+            for (int i = 0; i <= GetRandomNumber(); i++)
             {
                 randomSemesterCourses.Add(
                     await CreateRandomSemesterCourseAsync(randomTeacher, randomClassroom, randomCourse));

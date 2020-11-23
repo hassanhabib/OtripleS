@@ -7,7 +7,7 @@ using System;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Models.Classrooms
 {
-    public class Classroom 
+    public class Classroom
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

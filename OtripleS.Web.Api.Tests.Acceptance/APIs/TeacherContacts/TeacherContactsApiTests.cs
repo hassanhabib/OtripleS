@@ -4,15 +4,13 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
+using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Contacts;
 using OtripleS.Web.Api.Tests.Acceptance.Models.TeacherContacts;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
-using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
-using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
 {

@@ -3,13 +3,16 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-
-namespace OtripleS.Web.Api.Tests.Acceptance.Models.TeacherContacts
+namespace OtripleS.Web.Api.Tests.Acceptance.Models.StudentExams
 {
-    public class TeacherContact
+    public enum StudentExamGrade
     {
-        public Guid ContactId { get; set; }
-        public Guid TeacherId { get; set; }
+        NoGrade,
+        A,
+        B,
+        C,
+        D,
+        E,
+        F
     }
 }
