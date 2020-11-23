@@ -12,7 +12,7 @@ using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
 using OtripleS.Web.Api.Tests.Acceptance.Models.StudentExams;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
-using OtripleS.Web.Api.Tests.Acceptance.Tests.Acceptance.Models.Exams;
+using OtripleS.Web.Api.Tests.Acceptance.Tests.Models.Exams;
 using Tynamix.ObjectFiller;
 using Xunit;
 
@@ -40,11 +40,11 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
         private async ValueTask<StudentExam> CreateRandomStudentExamAsync()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
-            Teacher randomTeacher = await PostRandomTeacher();
-            Student randomStudent = await PostRandomStudent();
-            Course randomCourse = await PostRandomCourse();
-            Classroom randomClassroom = await PostRandomClassroom();
-            Exam randomExam = await PostRandomExam(randomTeacher, randomCourse, randomClassroom);
+            Teacher randomTeacher = await PostRandomTeacherAsync();
+            Student randomStudent = await PostRandomStudentAsync();
+            Course randomCourse = await PostRandomCourseAsync();
+            Classroom randomClassroom = await PostRandomClassroomAsync();
+            Exam randomExam = await PostRandomExamAsync(randomTeacher, randomCourse, randomClassroom);
 
             Guid userId = Guid.NewGuid();
             var filler = new Filler<StudentExam>();
@@ -82,25 +82,25 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             return deletedStudentExam;
         }
 
-        private async ValueTask<Teacher> PostRandomTeacher()
+        private async ValueTask<Teacher> PostRandomTeacherAsync()
         {
             Teacher teacher = CreateRandomTeacherFiller().Create();
 
             return await this.otripleSApiBroker.PostTeacherAsync(teacher);
         }
 
-        private async ValueTask<Exam> PostRandomExam(
+        private async ValueTask<Exam> PostRandomExamAsync(
             Teacher teacher,
             Course course,
             Classroom classroom)
         {
-            SemesterCourse semesterCourse = await PostRandomSemesterCourse(teacher, course, classroom);
+            SemesterCourse semesterCourse = await PostRandomSemesterCourseAsync(teacher, course, classroom);
             Exam exam = CreateRandomExamFiller(semesterCourse).Create();
 
             return await this.otripleSApiBroker.PostExamAsync(exam);
         }
 
-        private async ValueTask<SemesterCourse> PostRandomSemesterCourse(
+        private async ValueTask<SemesterCourse> PostRandomSemesterCourseAsync(
             Teacher teacher,
             Course course,
             Classroom classroom)
@@ -111,28 +111,28 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             return await this.otripleSApiBroker.PostSemesterCourseAsync(semesterCourse);
         }
 
-        private async ValueTask<Course> PostRandomCourse()
+        private async ValueTask<Course> PostRandomCourseAsync()
         {
             Course course = CreateRandomCourseFiller().Create();
 
             return await this.otripleSApiBroker.PostCourseAsync(course);
         }
 
-        private async ValueTask<Classroom> PostRandomClassroom()
+        private async ValueTask<Classroom> PostRandomClassroomAsync()
         {
             Classroom classroom = CreateRandomClassroomFiller().Create();
 
             return await this.otripleSApiBroker.PostClassroomAsync(classroom);
         }
 
-        private async ValueTask<Student> PostRandomStudent()
+        private async ValueTask<Student> PostRandomStudentAsync()
         {
             Student student = CreateRandomStudentFiller().Create();
 
             return await this.otripleSApiBroker.PostStudentAsync(student);
         }
 
-        private async ValueTask<StudentExam> UpdateStudentExamRandom(StudentExam studentExam)
+        private async ValueTask<StudentExam> UpdateStudentExamRandomAsync(StudentExam studentExam)
         {
             studentExam.Score = GetRandomNumber();
             studentExam.UpdatedDate = DateTimeOffset.UtcNow;
