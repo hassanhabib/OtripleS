@@ -31,5 +31,22 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             await DeleteStudentExam(actualStudentExam);
         }
 
+        [Fact]
+        public async Task ShouldPutStudentExamAsync()
+        {
+            // given
+            StudentExam randomStudentExam = await PostRandomStudentExamAsync();
+            StudentExam modifiedStudentExam = await UpdateStudentExamRandom(randomStudentExam);
+
+            // when
+            await this.otripleSApiBroker.PutStudentExamAsync(modifiedStudentExam);
+
+            StudentExam actualStudentExam =
+                await this.otripleSApiBroker.GetStudentExamByIdAsync(randomStudentExam.Id);
+
+            // then
+            actualStudentExam.Should().BeEquivalentTo(modifiedStudentExam);
+            await DeleteStudentExam(actualStudentExam);
+        }
     }
 }
