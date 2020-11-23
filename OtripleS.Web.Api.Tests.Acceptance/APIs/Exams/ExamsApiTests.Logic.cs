@@ -76,5 +76,26 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Exams
                 await DeleteExamAsync(actualExam);
             }
         }
+
+        [Fact]
+        public async Task ShouldDeleteExamAsync()
+        {
+            // given
+            Exam randomExam = await PostRandomExamAsync();
+            Exam inputExam = randomExam;
+            Exam expectedExam = inputExam;
+
+            // when 
+            Exam deletedExam = await DeleteExamAsync(inputExam);
+
+            ValueTask<Exam> getExamByIdTask =
+                this.otripleSApiBroker.GetExamByIdAsync(inputExam.Id);
+
+            // then
+            deletedExam.Should().BeEquivalentTo(expectedExam);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getExamByIdTask.AsTask());
+        }
     }
 }
