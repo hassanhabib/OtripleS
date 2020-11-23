@@ -12,7 +12,7 @@ using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
 using OtripleS.Web.Api.Tests.Acceptance.Models.StudentExams;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
-using OtripleS.Web.Api.Tests.Acceptance.Tests.Models.Exams;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Exams;
 using Tynamix.ObjectFiller;
 using Xunit;
 
