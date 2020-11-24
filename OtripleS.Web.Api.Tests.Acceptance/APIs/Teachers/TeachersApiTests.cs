@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
 using Tynamix.ObjectFiller;
@@ -40,6 +41,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler.Create();
+        }
+
+        private async ValueTask<Teacher> PostRandomTeacherAsync()
+        {
+            Teacher randomTeacher = CreateRandomTeacher();
+            await this.otripleSApiBroker.PostTeacherAsync(randomTeacher);
+
+            return randomTeacher;
         }
 
         private static int GetRandomNumber() =>
