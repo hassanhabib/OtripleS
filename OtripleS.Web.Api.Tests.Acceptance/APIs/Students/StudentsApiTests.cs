@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 using Tynamix.ObjectFiller;
@@ -30,6 +31,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
         private Student CreateRandomStudent() =>
             CreateRandomStudentFiller().Create();
 
+        private async ValueTask<Student> PostRandomStudentAsync()
+        {
+            Student randomStudent = CreateRandomStudent();
+            await this.otripleSApiBroker.PostStudentAsync(randomStudent);
+
+            return randomStudent;
+        }
+
         private Filler<Student> CreateRandomStudentFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -49,17 +58,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
         private Student UpdateStudentRandom(Student student)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
-            var filler = new Filler<Student>();
+            student.UpdatedDate = now;
 
-            filler.Setup()
-                .OnProperty(student => student.Id).Use(student.Id)
-                .OnProperty(student => student.CreatedBy).Use(student.CreatedBy)
-                .OnProperty(student => student.UpdatedBy).Use(student.UpdatedBy)
-                .OnProperty(student => student.CreatedDate).Use(student.CreatedDate)
-                .OnProperty(student => student.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
-
-            return filler.Create();
+            return student;
         }
 
         private static DateTimeOffset GetRandomDateTime() =>
