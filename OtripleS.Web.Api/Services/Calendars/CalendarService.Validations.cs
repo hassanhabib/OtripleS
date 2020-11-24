@@ -14,6 +14,7 @@ namespace OtripleS.Web.Api.Services.Calendars
 		private void ValidateCalendarOnModify(Calendar calendar)
 		{
 			ValidateCalendarIsNull(calendar);
+			ValidateCalendarIdIsNull(calendar.Id);
 		}
 
 		private void ValidateCalendarIsNull(Calendar calendar)
@@ -21,6 +22,16 @@ namespace OtripleS.Web.Api.Services.Calendars
 			if (calendar is null)
 			{
 				throw new NullCalendarException();
+			}
+		}
+
+		private void ValidateCalendarIdIsNull(Guid calendarId)
+		{
+			if (calendarId == default)
+			{
+				throw new InvalidCalendarInputException(
+					parameterName: nameof(Calendar.Id),
+					parameterValue: calendarId);
 			}
 		}
 
