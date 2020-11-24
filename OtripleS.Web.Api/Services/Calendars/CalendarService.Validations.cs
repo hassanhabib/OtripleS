@@ -29,6 +29,17 @@ namespace OtripleS.Web.Api.Services.Calendars
 			}
 		}
 
+		private void ValidateAgainstStorageCalendarOnModify(Calendar inputCalendar, Calendar storageCalendar)
+		{
+			switch (inputCalendar)
+			{
+				case { } when inputCalendar.CreatedDate != storageCalendar.CreatedDate:
+					throw new InvalidCalendarInputException(
+						parameterName: nameof(Calendar.CreatedDate),
+						parameterValue: inputCalendar.CreatedDate);
+			}
+		}
+
 		private void ValidateCalendarIdIsNull(Guid calendarId)
 		{
 			if (IsInvalid(calendarId))
