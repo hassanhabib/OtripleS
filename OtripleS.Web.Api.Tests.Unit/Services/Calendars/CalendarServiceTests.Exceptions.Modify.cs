@@ -109,5 +109,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 			this.storageBrokerMock.VerifyNoOtherCalls();
 			this.dateTimeBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+		{
+			// given
+			int randomNegativeNumber = GetNegativeRandomNumber();
+			DateTimeOffset randomDateTime = GetRandomDateTime();
+			Calendar randomCalendar = CreateRandomCalendar(randomDateTime);
+			Calendar someCalendar = randomCalendar;
+			someCalendar.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+			var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+			var lockedCalendarException = new LockedCalendarException(databaseUpdateConcurrencyException);
+
+			var expectedCalendarDependencyException =
+				new CalendarDependencyException(lockedCalendarException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectCalendarByIdAsync(someCalendar.Id))
+					.ThrowsAsync(databaseUpdateConcurrencyException);
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(randomDateTime);
+
+			// when
+			ValueTask<Calendar> modifyCalendarTask =
+				this.calendarService.ModifyCalendarAsync(someCalendar);
+
+			// then
+			await Assert.ThrowsAsync<CalendarDependencyException>(() =>
+				modifyCalendarTask.AsTask());
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectCalendarByIdAsync(someCalendar.Id),
+					Times.Once);
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedCalendarDependencyException))),
+					Times.Once);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
