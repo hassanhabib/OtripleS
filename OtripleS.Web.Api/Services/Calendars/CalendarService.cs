@@ -12,29 +12,34 @@ using OtripleS.Web.Api.Models.Calendars;
 
 namespace OtripleS.Web.Api.Services.Calendars
 {
-    public partial class CalendarService : ICalendarService
-    {
-        private readonly IStorageBroker storageBroker;
-        private readonly ILoggingBroker loggingBroker;
-        private readonly IDateTimeBroker dateTimeBroker;
+	public partial class CalendarService : ICalendarService
+	{
+		private readonly IStorageBroker storageBroker;
+		private readonly ILoggingBroker loggingBroker;
+		private readonly IDateTimeBroker dateTimeBroker;
 
-        public CalendarService(IStorageBroker storageBroker,
-            ILoggingBroker loggingBroker,
-            IDateTimeBroker dateTimeBroker)
-        {
-            this.storageBroker = storageBroker;
-            this.loggingBroker = loggingBroker;
-            this.dateTimeBroker = dateTimeBroker;
-        }
+		public CalendarService(IStorageBroker storageBroker,
+			ILoggingBroker loggingBroker,
+			IDateTimeBroker dateTimeBroker)
+		{
+			this.storageBroker = storageBroker;
+			this.loggingBroker = loggingBroker;
+			this.dateTimeBroker = dateTimeBroker;
+		}
 
-        public ValueTask<Calendar> RetrieveCalendarByIdAsync(Guid calendarId) =>
-        TryCatch(async () =>
-        {
-            ValidateCalendarId(calendarId);
-            Calendar storageCalendar = await this.storageBroker.SelectCalendarByIdAsync(calendarId);
-            ValidateStorageCalendar(storageCalendar, calendarId);
+		public ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar)
+		{
+			throw new NotImplementedException();
+		}
 
-            return storageCalendar;
-        });
-    }
+		public ValueTask<Calendar> RetrieveCalendarByIdAsync(Guid calendarId) =>
+		TryCatch(async () =>
+		{
+			ValidateCalendarId(calendarId);
+			Calendar storageCalendar = await this.storageBroker.SelectCalendarByIdAsync(calendarId);
+			ValidateStorageCalendar(storageCalendar, calendarId);
+
+			return storageCalendar;
+		});
+	}
 }

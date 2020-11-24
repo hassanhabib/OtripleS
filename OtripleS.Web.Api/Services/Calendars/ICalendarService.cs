@@ -9,8 +9,9 @@ using OtripleS.Web.Api.Models.Calendars;
 
 namespace OtripleS.Web.Api.Services.Calendars
 {
-    public interface ICalendarService
-    {
-        ValueTask<Calendar> RetrieveCalendarByIdAsync(Guid calendarId);
-    }
+	public interface ICalendarService
+	{
+		ValueTask<Calendar> RetrieveCalendarByIdAsync(Guid calendarId);
+		ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar);
+	}
 }
