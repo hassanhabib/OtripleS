@@ -38,6 +38,10 @@ namespace OtripleS.Web.Api.Services.Calendars
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private CalendarValidationException CreateAndLogValidationException(Exception exception)
@@ -62,6 +66,14 @@ namespace OtripleS.Web.Api.Services.Calendars
             this.loggingBroker.LogError(calendarDependencyException);
 
             return calendarDependencyException;
+        }
+
+        private CalendarServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var calendarServiceException = new CalendarServiceException(exception);
+            this.loggingBroker.LogError(calendarServiceException);
+
+            return calendarServiceException;
         }
     }
 }
