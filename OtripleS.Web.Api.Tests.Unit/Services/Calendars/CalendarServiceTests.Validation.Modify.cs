@@ -294,5 +294,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Theory]
+		[MemberData(nameof(InvalidMinuteCases))]
+		public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsNotRecentAndLogItAsync(
+			int minutes)
+		{
+			// given
+			DateTimeOffset dateTime = GetRandomDateTime();
+			Calendar randomCalendar = CreateRandomCalendar(dateTime);
+			Calendar inputCalendar = randomCalendar;
+			inputCalendar.UpdatedBy = inputCalendar.CreatedBy;
+			inputCalendar.UpdatedDate = dateTime.AddMinutes(minutes);
+
+			var invalidCalendarInputException = new InvalidCalendarInputException(
+				parameterName: nameof(Calendar.UpdatedDate),
+				parameterValue: inputCalendar.UpdatedDate);
+
+			var expectedCalendarValidationException =
+				new CalendarValidationException(invalidCalendarInputException);
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(dateTime);
+
+			// when
+			ValueTask<Calendar> modifyCalendarTask =
+				this.calendarService.ModifyCalendarAsync(inputCalendar);
+
+			// then
+			await Assert.ThrowsAsync<CalendarValidationException>(() =>
+				modifyCalendarTask.AsTask());
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedCalendarValidationException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectCalendarByIdAsync(It.IsAny<Guid>()),
+					Times.Never);
+
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
