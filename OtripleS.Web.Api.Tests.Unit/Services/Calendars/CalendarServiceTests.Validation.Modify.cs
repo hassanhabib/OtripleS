@@ -147,5 +147,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedByIsInvalidAndLogItAsync()
+		{
+			// given
+			DateTimeOffset dateTime = GetRandomDateTime();
+			Calendar randomCalendar = CreateRandomCalendar(dateTime);
+			Calendar inputCalendar = randomCalendar;
+			inputCalendar.UpdatedBy = default;
+
+			var invalidCalendarInputException = new InvalidCalendarInputException(
+				parameterName: nameof(Calendar.UpdatedBy),
+				parameterValue: inputCalendar.UpdatedBy);
+
+			var expectedCalendarValidationException =
+				new CalendarValidationException(invalidCalendarInputException);
+
+			// when
+			ValueTask<Calendar> modifyCalendarTask =
+				this.calendarService.ModifyCalendarAsync(inputCalendar);
+
+			// then
+			await Assert.ThrowsAsync<CalendarValidationException>(() =>
+				modifyCalendarTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedCalendarValidationException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectCalendarByIdAsync(It.IsAny<Guid>()),
+					Times.Never);
+
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
