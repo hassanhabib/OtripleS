@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
             return filler.Create();
         }
 
-        private async ValueTask<Teacher> PostTeacherAsync()
+        private async ValueTask<Teacher> PostRandomTeacherAsync()
         {
             Teacher randomTeacher = CreateRandomTeacher();
             await this.otripleSApiBroker.PostTeacherAsync(randomTeacher);

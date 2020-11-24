@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
         public async Task ShouldPutTeacherAsync()
         {
             // given
-            Teacher randomTeacher = await PostTeacherAsync();
+            Teacher randomTeacher = await PostRandomTeacherAsync();
             Teacher modifiedTeacher = UpdateTeacherRandom(randomTeacher);
 
             // when
@@ -85,7 +85,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
         public async Task ShouldDeleteTeacherAsync()
         {
             // given
-            Teacher randomTeacher = await PostTeacherAsync();
+            Teacher randomTeacher = await PostRandomTeacherAsync();
             Teacher inputTeacher = randomTeacher;
             Teacher expectedTeacher = inputTeacher;
 
