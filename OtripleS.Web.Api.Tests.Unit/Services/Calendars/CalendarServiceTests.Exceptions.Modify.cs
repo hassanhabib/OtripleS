@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Calendars;
 using OtripleS.Web.Api.Models.Calendars.Exceptions;
@@ -55,6 +56,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogCritical(It.Is(SameExceptionAs(expectedCalendarDependencyException))),
+					Times.Once);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
+		public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateExceptionOccursAndLogItAsync()
+		{
+			// given
+			int randomNegativeNumber = GetNegativeRandomNumber();
+			DateTimeOffset randomDateTime = GetRandomDateTime();
+			Calendar randomCalendar = CreateRandomCalendar(randomDateTime);
+			Calendar someCalendar = randomCalendar;
+			someCalendar.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+			var databaseUpdateException = new DbUpdateException();
+
+			var expectedCalendarDependencyException =
+				new CalendarDependencyException(databaseUpdateException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectCalendarByIdAsync(someCalendar.Id))
+					.ThrowsAsync(databaseUpdateException);
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(randomDateTime);
+
+			// when
+			ValueTask<Calendar> modifyCalendarTask =
+				this.calendarService.ModifyCalendarAsync(someCalendar);
+
+			// then
+			await Assert.ThrowsAsync<CalendarDependencyException>(() =>
+				modifyCalendarTask.AsTask());
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectCalendarByIdAsync(someCalendar.Id),
+					Times.Once);
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedCalendarDependencyException))),
 					Times.Once);
 
 			this.loggingBrokerMock.VerifyNoOtherCalls();
