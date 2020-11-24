@@ -56,6 +56,12 @@ namespace OtripleS.Web.Api.Services.Calendars
 					throw new InvalidCalendarInputException(
 					parameterName: nameof(Calendar.CreatedBy),
 					parameterValue: calendar.CreatedBy);
+
+				case { } when IsInvalid(calendar.CreatedDate):
+					throw new InvalidCalendarInputException(
+					parameterName: nameof(Calendar.CreatedDate),
+					parameterValue: calendar.CreatedDate);
+
 				case { } when IsInvalid(calendar.UpdatedBy):
 					throw new InvalidCalendarInputException(
 					parameterName: nameof(Calendar.UpdatedBy),
@@ -83,5 +89,6 @@ namespace OtripleS.Web.Api.Services.Calendars
 
 		private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
 		private static bool IsInvalid(Guid input) => input == default;
+		private static bool IsInvalid(DateTimeOffset input) => input == default;
 	}
 }
