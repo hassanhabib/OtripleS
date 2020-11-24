@@ -27,15 +27,18 @@ namespace OtripleS.Web.Api.Services.Calendars
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-		public async ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar)
+		public ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar) =>
+		TryCatch(async () =>
 		{
+			ValidateCalendarOnModify(calendar);
+
 			Calendar maybeCalendar =
 			   await this.storageBroker.SelectCalendarByIdAsync(calendar.Id);
 
 			dateTimeBroker.GetCurrentDateTime();
 
 			return await this.storageBroker.UpdateCalendarAsync(calendar);
-		}
+		});
 
 		public ValueTask<Calendar> RetrieveCalendarByIdAsync(Guid calendarId) =>
 		TryCatch(async () =>

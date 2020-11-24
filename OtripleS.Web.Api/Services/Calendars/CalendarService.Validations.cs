@@ -9,24 +9,37 @@ using OtripleS.Web.Api.Models.Calendars.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Calendars
 {
-    public partial class CalendarService
-    {
-        private void ValidateCalendarId(Guid calendarId)
-        {
-            if (calendarId == Guid.Empty)
-            {
-                throw new InvalidCalendarInputException(
-                    parameterName: nameof(Calendar.Id),
-                    parameterValue: calendarId);
-            }
-        }
+	public partial class CalendarService
+	{
+		private void ValidateCalendarOnModify(Calendar calendar)
+		{
+			ValidateCalendarIsNull(calendar);
+		}
 
-        private static void ValidateStorageCalendar(Calendar storageCalendar, Guid calendarId)
-        {
-            if (storageCalendar == null)
-            {
-                throw new NotFoundCalendarException(calendarId);
-            }
-        }
-    }
+		private void ValidateCalendarIsNull(Calendar calendar)
+		{
+			if (calendar is null)
+			{
+				throw new NullCalendarException();
+			}
+		}
+
+		private void ValidateCalendarId(Guid calendarId)
+		{
+			if (calendarId == Guid.Empty)
+			{
+				throw new InvalidCalendarInputException(
+					parameterName: nameof(Calendar.Id),
+					parameterValue: calendarId);
+			}
+		}
+
+		private static void ValidateStorageCalendar(Calendar storageCalendar, Guid calendarId)
+		{
+			if (storageCalendar == null)
+			{
+				throw new NotFoundCalendarException(calendarId);
+			}
+		}
+	}
 }
