@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.Calendars;
 using OtripleS.Web.Api.Models.Calendars.Exceptions;
 
@@ -28,6 +29,10 @@ namespace OtripleS.Web.Api.Services.Calendars
             {
                 throw CreateAndLogValidationException(nullCalendarException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
         }
 
         private CalendarValidationException CreateAndLogValidationException(Exception exception)
@@ -36,6 +41,14 @@ namespace OtripleS.Web.Api.Services.Calendars
             this.loggingBroker.LogError(CalendarValidationException);
 
             return CalendarValidationException;
+        }
+
+        private CalendarDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var calendarDependencyException = new CalendarDependencyException(exception);
+            this.loggingBroker.LogCritical(calendarDependencyException);
+
+            return calendarDependencyException;
         }
     }
 }
