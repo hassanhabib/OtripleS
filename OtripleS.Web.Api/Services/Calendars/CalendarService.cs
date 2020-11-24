@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Services.Calendars
 
         public ValueTask<Calendar> RetrieveCalendarByIdAsync(Guid calendarId)
         {
-            throw new NotImplementedException();
+            return storageBroker.SelectCalendarByIdAsync(calendarId);
         }
     }
 }
