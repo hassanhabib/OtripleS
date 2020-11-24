@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Calendars;
 using OtripleS.Web.Api.Models.Calendars.Exceptions;
@@ -380,6 +381,60 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 
 			this.storageBrokerMock.Verify(broker =>
 				broker.SelectCalendarByIdAsync(nonExistentCalendar.Id),
+					Times.Once);
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedCalendarValidationException))),
+					Times.Once);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
+		public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedDateNotSameAsCreateDateAndLogItAsync()
+		{
+			// given
+			int randomNumber = GetRandomNumber();
+			int randomMinutes = randomNumber;
+			DateTimeOffset randomDate = GetRandomDateTime();
+			Calendar randomCalendar = CreateRandomCalendar(randomDate);
+			Calendar invalidCalendar = randomCalendar;
+			invalidCalendar.UpdatedDate = randomDate;
+			Calendar storageCalendar = randomCalendar.DeepClone();
+			Guid calendarId = invalidCalendar.Id;
+			invalidCalendar.CreatedDate = storageCalendar.CreatedDate.AddMinutes(randomNumber);
+
+			var invalidCalendarInputException = new InvalidCalendarInputException(
+				parameterName: nameof(Calendar.CreatedDate),
+				parameterValue: invalidCalendar.CreatedDate);
+
+			var expectedCalendarValidationException =
+			  new CalendarValidationException(invalidCalendarInputException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectCalendarByIdAsync(calendarId))
+					.ReturnsAsync(storageCalendar);
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(randomDate);
+
+			// when
+			ValueTask<Calendar> modifyCalendarTask =
+				this.calendarService.ModifyCalendarAsync(invalidCalendar);
+
+			// then
+			await Assert.ThrowsAsync<CalendarValidationException>(() =>
+				modifyCalendarTask.AsTask());
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectCalendarByIdAsync(invalidCalendar.Id),
 					Times.Once);
 
 			this.loggingBrokerMock.Verify(broker =>
