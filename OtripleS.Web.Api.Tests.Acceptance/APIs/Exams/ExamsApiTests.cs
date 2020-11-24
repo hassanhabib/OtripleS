@@ -9,77 +9,56 @@ using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Classrooms;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
 using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
-using OtripleS.Web.Api.Tests.Acceptance.Models.StudentExams;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Exams;
 using Tynamix.ObjectFiller;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
+namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Exams
 {
     [Collection(nameof(ApiTestCollection))]
-    public partial class StudentExamsApiTests
+    public partial class ExamsApiTests
     {
         private readonly OtripleSApiBroker otripleSApiBroker;
 
-        public StudentExamsApiTests(OtripleSApiBroker otripleSApiBroker)
+        public ExamsApiTests(OtripleSApiBroker otripleSApiBroker)
         {
             this.otripleSApiBroker = otripleSApiBroker;
         }
 
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
-
-        private async ValueTask<StudentExam> PostRandomStudentExamAsync()
+        private async ValueTask<Exam> DeleteExamAsync(Exam exam)
         {
-            StudentExam studentExam = await CreateRandomStudentExamAsync();
-
-            return await this.otripleSApiBroker.PostStudentExamAsync(studentExam);
-        }
-
-        private async ValueTask<StudentExam> CreateRandomStudentExamAsync()
-        {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Teacher randomTeacher = await PostRandomTeacherAsync();
-            Student randomStudent = await PostRandomStudentAsync();
-            Course randomCourse = await PostRandomCourseAsync();
-            Classroom randomClassroom = await PostRandomClassroomAsync();
-            Exam randomExam = await PostRandomExamAsync(randomTeacher, randomCourse, randomClassroom);
-
-            Guid userId = Guid.NewGuid();
-            var filler = new Filler<StudentExam>();
-
-            filler.Setup()
-                .OnProperty(studentExam => studentExam.CreatedBy).Use(userId)
-                .OnProperty(studentExam => studentExam.UpdatedBy).Use(userId)
-                .OnProperty(studentExam => studentExam.CreatedDate).Use(now)
-                .OnProperty(studentExam => studentExam.UpdatedDate).Use(now)
-                .OnProperty(studentExam => studentExam.StudentId).Use(randomStudent.Id)
-                .OnProperty(studentExam => studentExam.ExamId).Use(randomExam.Id)
-                .OnProperty(studentExam => studentExam.TeacherId).Use(randomTeacher.Id)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
-
-            return filler.Create();
-        }
-
-        private async ValueTask<StudentExam> DeleteStudentExam(StudentExam studentExam)
-        {
-            StudentExam deletedStudentExam =
-                await this.otripleSApiBroker.DeleteStudentExamByIdAsync(studentExam.Id);
-
-            await this.otripleSApiBroker.DeleteStudentByIdAsync(studentExam.StudentId);
-
             Exam deletedExam =
-                await this.otripleSApiBroker.DeleteExamByIdAsync(studentExam.ExamId);
+                await this.otripleSApiBroker.DeleteExamByIdAsync(exam.Id);
 
             SemesterCourse deletedSemesterCourse =
                 await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(deletedExam.SemesterCourseId);
 
             await this.otripleSApiBroker.DeleteCourseByIdAsync(deletedSemesterCourse.CourseId);
             await this.otripleSApiBroker.DeleteClassroomByIdAsync(deletedSemesterCourse.ClassroomId);
-            await this.otripleSApiBroker.DeleteTeacherByIdAsync(studentExam.TeacherId);
+            await this.otripleSApiBroker.DeleteTeacherByIdAsync(deletedSemesterCourse.TeacherId);
 
-            return deletedStudentExam;
+            return deletedExam;
+        }
+
+        private async ValueTask<Exam> PostRandomExamAsync()
+        {
+            Exam exam = await CreateRandomExamAsync();
+
+            return await this.otripleSApiBroker.PostExamAsync(exam);
+        }
+
+        private async ValueTask<Exam> CreateRandomExamAsync()
+        {
+            Teacher randomTeacher = await PostRandomTeacherAsync();
+            Course randomCourse = await PostRandomCourseAsync();
+            Classroom randomClassroom = await PostRandomClassroom();
+            
+            SemesterCourse semesterCourse = 
+                await PostRandomSemesterCourseAsync(randomTeacher, randomCourse, randomClassroom);
+
+            return CreateRandomExamFiller(semesterCourse).Create();
         }
 
         private async ValueTask<Teacher> PostRandomTeacherAsync()
@@ -87,17 +66,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             Teacher teacher = CreateRandomTeacherFiller().Create();
 
             return await this.otripleSApiBroker.PostTeacherAsync(teacher);
-        }
-
-        private async ValueTask<Exam> PostRandomExamAsync(
-            Teacher teacher,
-            Course course,
-            Classroom classroom)
-        {
-            SemesterCourse semesterCourse = await PostRandomSemesterCourseAsync(teacher, course, classroom);
-            Exam exam = CreateRandomExamFiller(semesterCourse).Create();
-
-            return await this.otripleSApiBroker.PostExamAsync(exam);
         }
 
         private async ValueTask<SemesterCourse> PostRandomSemesterCourseAsync(
@@ -118,30 +86,26 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             return await this.otripleSApiBroker.PostCourseAsync(course);
         }
 
-        private async ValueTask<Classroom> PostRandomClassroomAsync()
+        private async ValueTask<Classroom> PostRandomClassroom()
         {
             Classroom classroom = CreateRandomClassroomFiller().Create();
 
             return await this.otripleSApiBroker.PostClassroomAsync(classroom);
         }
 
-        private async ValueTask<Student> PostRandomStudentAsync()
+        private async ValueTask<Exam> UpdateExamRandom(Exam exam)
         {
-            Student student = CreateRandomStudentFiller().Create();
+            exam.Label = GetRandomString();
+            exam.UpdatedDate = DateTimeOffset.UtcNow;
 
-            return await this.otripleSApiBroker.PostStudentAsync(student);
-        }
-
-        private async ValueTask<StudentExam> UpdateStudentExamRandomAsync(StudentExam studentExam)
-        {
-            studentExam.Score = GetRandomNumber();
-            studentExam.UpdatedDate = DateTimeOffset.UtcNow;
-
-            return studentExam;
+            return exam;
         }
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private string GetRandomString() => new MnemonicString().GetValue();
+        private int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
         private Filler<Teacher> CreateRandomTeacherFiller()
         {
@@ -230,23 +194,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
                 .OnProperty(classroom => classroom.UpdatedBy).Use(userId)
                 .OnProperty(classroom => classroom.CreatedDate).Use(now)
                 .OnProperty(classroom => classroom.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
-
-            return filler;
-        }
-
-        private Filler<Student> CreateRandomStudentFiller()
-        {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid userId = Guid.NewGuid();
-
-            var filler = new Filler<Student>();
-
-            filler.Setup()
-                .OnProperty(student => student.CreatedBy).Use(userId)
-                .OnProperty(student => student.UpdatedBy).Use(userId)
-                .OnProperty(student => student.CreatedDate).Use(now)
-                .OnProperty(student => student.UpdatedDate).Use(now)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
