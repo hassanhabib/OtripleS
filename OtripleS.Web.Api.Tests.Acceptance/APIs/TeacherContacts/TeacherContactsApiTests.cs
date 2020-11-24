@@ -46,6 +46,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
             return teacherContact;
         }
 
+        private async ValueTask<TeacherContact> PostRandomTeacherContactAsync()
+        {
+            TeacherContact randomTeacherContact = await CreateRandomTeacherContactAsync();
+            await this.otripleSApiBroker.PostTeacherContactAsync(randomTeacherContact);
+
+            return randomTeacherContact;
+        }
+
         private async ValueTask<TeacherContact> CreateRandomTeacherContactAsync(Teacher teacher)
         {
             Contact randomContact = await PostRandomContactAsync();
@@ -87,13 +95,16 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
             return filler;
         }
 
-        private async ValueTask DeleteTeacherContactAsync(TeacherContact teacherContact)
+        private async ValueTask<TeacherContact> DeleteTeacherContactAsync(TeacherContact teacherContact)
         {
-            await this.otripleSApiBroker.DeleteTeacherContactByIdAsync(
-                teacherContact.TeacherId, teacherContact.ContactId);
+            TeacherContact deletedTeacherContact =
+                await this.otripleSApiBroker.DeleteTeacherContactByIdAsync(
+                    teacherContact.TeacherId, teacherContact.ContactId);
 
             await this.otripleSApiBroker.DeleteContactByIdAsync(teacherContact.ContactId);
             await this.otripleSApiBroker.DeleteTeacherByIdAsync(teacherContact.TeacherId);
+
+            return deletedTeacherContact;
         }
 
         private static Filler<Teacher> CreateTeacherFiller()
