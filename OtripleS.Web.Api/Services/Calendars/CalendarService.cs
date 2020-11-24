@@ -32,6 +32,7 @@ namespace OtripleS.Web.Api.Services.Calendars
         {
             ValidateCalendarId(calendarId);
             Calendar storageCalendar = await this.storageBroker.SelectCalendarByIdAsync(calendarId);
+            ValidateStorageCalendar(storageCalendar, calendarId);
 
             return storageCalendar;
         });

@@ -20,5 +20,13 @@ namespace OtripleS.Web.Api.Services.Calendars
                     parameterValue: calendarId);
             }
         }
+
+        private static void ValidateStorageCalendar(Calendar storageCalendar, Guid calendarId)
+        {
+            if (storageCalendar == null)
+            {
+                throw new NotFoundCalendarException(calendarId);
+            }
+        }
     }
 }
