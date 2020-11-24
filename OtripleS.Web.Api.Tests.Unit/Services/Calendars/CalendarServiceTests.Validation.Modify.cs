@@ -342,5 +342,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldThrowValidationExceptionOnModifyIfCalendarDoesntExistAndLogItAsync()
+		{
+			// given
+			int randomNegativeMinutes = GetNegativeRandomNumber();
+			DateTimeOffset dateTime = GetRandomDateTime();
+			Calendar randomCalendar = CreateRandomCalendar(dateTime);
+			Calendar nonExistentCalendar = randomCalendar;
+			nonExistentCalendar.CreatedDate = dateTime.AddMinutes(randomNegativeMinutes);
+			Calendar noCalendar = null;
+			var notFoundCalendarException = new NotFoundCalendarException(nonExistentCalendar.Id);
+
+			var expectedCalendarValidationException =
+				new CalendarValidationException(notFoundCalendarException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectCalendarByIdAsync(nonExistentCalendar.Id))
+					.ReturnsAsync(noCalendar);
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(dateTime);
+
+			// when
+			ValueTask<Calendar> modifyCalendarTask =
+				this.calendarService.ModifyCalendarAsync(nonExistentCalendar);
+
+			// then
+			await Assert.ThrowsAsync<CalendarValidationException>(() =>
+				modifyCalendarTask.AsTask());
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectCalendarByIdAsync(nonExistentCalendar.Id),
+					Times.Once);
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedCalendarValidationException))),
+					Times.Once);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
