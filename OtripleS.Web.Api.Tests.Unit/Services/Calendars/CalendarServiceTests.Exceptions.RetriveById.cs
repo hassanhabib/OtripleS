@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Calendars;
 using OtripleS.Web.Api.Models.Calendars.Exceptions;
@@ -39,6 +40,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedCalendarDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCalendarByIdAsync(inputCalendarId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomCalendarId = Guid.NewGuid();
+            Guid inputCalendarId = randomCalendarId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedCalendarDependencyException =
+                new CalendarDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCalendarByIdAsync(inputCalendarId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<Calendar> retrieveCalendarByIdTask =
+                this.calendarService.RetrieveCalendarByIdAsync(inputCalendarId);
+
+            // then
+            await Assert.ThrowsAsync<CalendarDependencyException>(() =>
+                retrieveCalendarByIdTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
