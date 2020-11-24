@@ -35,8 +35,6 @@ namespace OtripleS.Web.Api.Services.Calendars
 			Calendar maybeCalendar =
 			   await this.storageBroker.SelectCalendarByIdAsync(calendar.Id);
 
-			dateTimeBroker.GetCurrentDateTime();
-
 			return await this.storageBroker.UpdateCalendarAsync(calendar);
 		});
 

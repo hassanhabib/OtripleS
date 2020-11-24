@@ -18,6 +18,7 @@ namespace OtripleS.Web.Api.Services.Calendars
 			ValidateCalendarFields(calendar);
 			ValidateInvalidAuditFields(calendar);
 			ValidateDatesAreNotSame(calendar);
+			ValidateUpdatedDateIsRecent(calendar);
 		}
 
 		private void ValidateCalendarIsNull(Calendar calendar)
@@ -84,6 +85,16 @@ namespace OtripleS.Web.Api.Services.Calendars
 			}
 		}
 
+		private void ValidateUpdatedDateIsRecent(Calendar calendar)
+		{
+			if (IsDateNotRecent(calendar.UpdatedDate))
+			{
+				throw new InvalidCalendarInputException(
+					parameterName: nameof(calendar.UpdatedDate),
+					parameterValue: calendar.UpdatedDate);
+			}
+		}
+
 		private void ValidateCalendarId(Guid calendarId)
 		{
 			if (calendarId == Guid.Empty)
@@ -105,5 +116,14 @@ namespace OtripleS.Web.Api.Services.Calendars
 		private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
 		private static bool IsInvalid(Guid input) => input == default;
 		private static bool IsInvalid(DateTimeOffset input) => input == default;
+
+		private bool IsDateNotRecent(DateTimeOffset dateTime)
+		{
+			DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+			int oneMinute = 1;
+			TimeSpan difference = now.Subtract(dateTime);
+
+			return Math.Abs(difference.TotalMinutes) > oneMinute;
+		}
 	}
 }
