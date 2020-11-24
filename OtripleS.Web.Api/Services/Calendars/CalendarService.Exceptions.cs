@@ -22,8 +22,16 @@ namespace OtripleS.Web.Api.Services.Calendars
             }
             catch (InvalidCalendarInputException invalidCalendarInputException)
             {
-                throw new NotImplementedException();
+                throw CreateAndLogValidationException(invalidCalendarInputException);
             }
+        }
+
+        private CalendarValidationException CreateAndLogValidationException(Exception exception)
+        {
+            var CalendarValidationException = new CalendarValidationException(exception);
+            this.loggingBroker.LogError(CalendarValidationException);
+
+            return CalendarValidationException;
         }
     }
 }
