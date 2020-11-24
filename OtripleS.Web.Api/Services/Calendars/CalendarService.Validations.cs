@@ -38,6 +38,11 @@ namespace OtripleS.Web.Api.Services.Calendars
 						parameterName: nameof(Calendar.CreatedDate),
 						parameterValue: inputCalendar.CreatedDate);
 
+				case { } when inputCalendar.CreatedBy != storageCalendar.CreatedBy:
+					throw new InvalidCalendarInputException(
+						parameterName: nameof(Calendar.CreatedBy),
+						parameterValue: inputCalendar.CreatedBy);
+
 				case { } when inputCalendar.UpdatedDate == storageCalendar.UpdatedDate:
 					throw new InvalidCalendarInputException(
 						parameterName: nameof(Calendar.UpdatedDate),
