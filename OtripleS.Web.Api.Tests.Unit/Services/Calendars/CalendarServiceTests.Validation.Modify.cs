@@ -445,5 +445,59 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 			this.storageBrokerMock.VerifyNoOtherCalls();
 			this.dateTimeBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldThrowValidationExceptionOnModifyIfStorageUpdatedDateSameAsUpdatedDateAndLogItAsync()
+		{
+			// given
+			int randomNegativeMinutes = GetNegativeRandomNumber();
+			int minutesInThePast = randomNegativeMinutes;
+			DateTimeOffset randomDate = GetRandomDateTime();
+			Calendar randomCalendar = CreateRandomCalendar(randomDate);
+			randomCalendar.CreatedDate = randomCalendar.CreatedDate.AddMinutes(minutesInThePast);
+			Calendar invalidCalendar = randomCalendar;
+			invalidCalendar.UpdatedDate = randomDate;
+			Calendar storageCalendar = randomCalendar.DeepClone();
+			Guid calendarId = invalidCalendar.Id;
+
+			var invalidCalendarInputException = new InvalidCalendarInputException(
+				parameterName: nameof(Calendar.UpdatedDate),
+				parameterValue: invalidCalendar.UpdatedDate);
+
+			var expectedCalendarValidationException =
+			  new CalendarValidationException(invalidCalendarInputException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectCalendarByIdAsync(calendarId))
+					.ReturnsAsync(storageCalendar);
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(randomDate);
+
+			// when
+			ValueTask<Calendar> modifyCalendarTask =
+				this.calendarService.ModifyCalendarAsync(invalidCalendar);
+
+			// then
+			await Assert.ThrowsAsync<CalendarValidationException>(() =>
+				modifyCalendarTask.AsTask());
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectCalendarByIdAsync(invalidCalendar.Id),
+					Times.Once);
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedCalendarValidationException))),
+					Times.Once);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
