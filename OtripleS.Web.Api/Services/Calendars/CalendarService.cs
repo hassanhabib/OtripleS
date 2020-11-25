@@ -54,9 +54,11 @@ namespace OtripleS.Web.Api.Services.Calendars
 			return storageCalendar;
 		});
 
-		public ValueTask<Calendar> DeleteCalendarByIdAsync(Guid calendarId)
+		public async ValueTask<Calendar> DeleteCalendarByIdAsync(Guid calendarId)
 		{
-			throw new NotImplementedException();
+			Calendar maybeCalendar = await storageBroker.SelectCalendarByIdAsync(calendarId);
+
+			return await storageBroker.DeleteCalendarAsync(maybeCalendar);
 		}
 	}
 }
