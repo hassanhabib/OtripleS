@@ -13,5 +13,6 @@ namespace OtripleS.Web.Api.Services.Calendars
 	{
 		ValueTask<Calendar> RetrieveCalendarByIdAsync(Guid calendarId);
 		ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar);
+		ValueTask<Calendar> DeleteCalendarByIdAsync(Guid calendarId);
 	}
 }

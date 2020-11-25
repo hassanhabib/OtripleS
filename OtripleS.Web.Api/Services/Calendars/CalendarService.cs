@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Services.Calendars
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-		public ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar) =>
+        public ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar) =>
 		TryCatch(async () =>
 		{
 			ValidateCalendarOnModify(calendar);
@@ -53,5 +53,10 @@ namespace OtripleS.Web.Api.Services.Calendars
 
 			return storageCalendar;
 		});
+
+		public ValueTask<Calendar> DeleteCalendarByIdAsync(Guid calendarId)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
