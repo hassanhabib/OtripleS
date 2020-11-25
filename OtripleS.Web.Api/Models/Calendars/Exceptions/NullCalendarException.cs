@@ -4,14 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Calendars;
 
-namespace OtripleS.Web.Api.Services.Calendars
+namespace OtripleS.Web.Api.Models.Calendars.Exceptions
 {
-	public interface ICalendarService
+	public class NullCalendarException : Exception
 	{
-		ValueTask<Calendar> RetrieveCalendarByIdAsync(Guid calendarId);
-		ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar);
+		public NullCalendarException() : base("The calendar is null.") { }
 	}
 }
