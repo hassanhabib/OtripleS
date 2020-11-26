@@ -11,6 +11,11 @@ namespace OtripleS.Web.Api.Services.Calendars
 {
 	public partial class CalendarService
 	{
+		private void ValidateCalendarOnCreate(Calendar calendar)
+		{
+			ValidateCalendarIsNull(calendar);
+		}
+
 		private void ValidateCalendarOnModify(Calendar calendar)
 		{
 			ValidateCalendarIsNull(calendar);
