@@ -16,6 +16,7 @@ namespace OtripleS.Web.Api.Services.Calendars
 			ValidateCalendarIsNull(calendar);
 			ValidateCalendarIdIsNull(calendar.Id);
 			ValidateCalendarFields(calendar);
+			ValidateInvalidAuditFields(calendar);
 		}
 
 		private void ValidateCalendarOnModify(Calendar calendar)
