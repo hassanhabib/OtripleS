@@ -149,6 +149,44 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpDelete("{calendarId}")]
+        public async ValueTask<ActionResult<Calendar>> DeleteCalendarAsync(Guid calendarId)
+        {
+            try
+            {
+                Calendar storageCalendar =
+                    await this.calendarService.DeleteCalendarByIdAsync(calendarId);
+
+                return Ok(storageCalendar);
+            }
+            catch (CalendarValidationException calendarValidationException)
+                when (calendarValidationException.InnerException is NotFoundCalendarException)
+            {
+                string innerMessage = GetInnerMessage(calendarValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (CalendarValidationException calendarValidationException)
+            {
+                return BadRequest(calendarValidationException.Message);
+            }
+            catch (CalendarDependencyException calendarDependencyException)
+                when (calendarDependencyException.InnerException is LockedCalendarException)
+            {
+                string innerMessage = GetInnerMessage(calendarDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (CalendarDependencyException calendarDependencyException)
+            {
+                return Problem(calendarDependencyException.Message);
+            }
+            catch (CalendarServiceException calendarServiceException)
+            {
+                return Problem(calendarServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
