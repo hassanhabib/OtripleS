@@ -107,5 +107,51 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnAddWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Calendar randomCalendar = CreateRandomCalendar(dateTime);
+            Calendar inputCalendar = randomCalendar;
+            inputCalendar.UpdatedBy = inputCalendar.CreatedBy;
+            var exception = new Exception();
+
+            var expectedCalendarServiceException =
+                new CalendarServiceException(exception);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertCalendarAsync(inputCalendar))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<Calendar> registerCalendarTask =
+                 this.calendarService.AddCalendarAsync(inputCalendar);
+
+            // then
+            await Assert.ThrowsAsync<CalendarServiceException>(() =>
+                registerCalendarTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCalendarAsync(inputCalendar),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
