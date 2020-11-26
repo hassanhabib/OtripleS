@@ -109,6 +109,46 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpPut]
+        public async ValueTask<ActionResult<Calendar>> PutCalendarAsync(Calendar calendar)
+        {
+            try
+            {
+                Calendar registeredCalendar =
+                    await this.calendarService.ModifyCalendarAsync(calendar);
+
+                return Ok(registeredCalendar);
+            }
+            catch (CalendarValidationException calendarValidationException)
+                when (calendarValidationException.InnerException is NotFoundCalendarException)
+            {
+                string innerMessage = GetInnerMessage(calendarValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (CalendarValidationException calendarValidationException)
+            {
+                string innerMessage = GetInnerMessage(calendarValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (CalendarDependencyException calendarDependencyException)
+                when (calendarDependencyException.InnerException is LockedCalendarException)
+            {
+                string innerMessage = GetInnerMessage(calendarDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (CalendarDependencyException calendarDependencyException)
+            {
+                return Problem(calendarDependencyException.Message);
+            }
+            catch (CalendarServiceException calendarServiceException)
+            {
+                return Problem(calendarServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
