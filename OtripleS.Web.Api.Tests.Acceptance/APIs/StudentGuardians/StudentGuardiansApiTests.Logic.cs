@@ -12,6 +12,7 @@ using Force.DeepCloner;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Guardians;
 using OtripleS.Web.Api.Tests.Acceptance.Models.StudentGuardians;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
+using RESTFulSense.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
@@ -92,6 +93,30 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
 
                 await DeleteStudentGuardianAsync(actualStudentGuardian);
             }
+        }
+
+        [Fact]
+        public async Task ShouldDeleteStudentGuardianAsync()
+        {
+            // given
+            StudentGuardian randomStudentGuardian = await PostStudentGuardianAsync();
+            StudentGuardian inputStudentGuardian = randomStudentGuardian;
+            StudentGuardian expectedStudentGuardian = inputStudentGuardian;
+
+            // when 
+            StudentGuardian deletedStudentGuardian = 
+                await DeleteStudentGuardianAsync(inputStudentGuardian);
+
+            ValueTask<StudentGuardian> getStudentGuardianByIdTask =
+                this.otripleSApiBroker.GetStudentGuardianByIdsAsync(
+                    inputStudentGuardian.StudentId, 
+                    inputStudentGuardian.GuardianId);
+
+            // then
+            deletedStudentGuardian.Should().BeEquivalentTo(expectedStudentGuardian);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getStudentGuardianByIdTask.AsTask());
         }
     }
 }
