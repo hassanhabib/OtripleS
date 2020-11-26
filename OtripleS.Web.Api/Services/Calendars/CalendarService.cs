@@ -39,7 +39,12 @@ namespace OtripleS.Web.Api.Services.Calendars
 		public IQueryable<Calendar> RetrieveAllCalendars() =>
 		TryCatch(() =>
 		{
-			return this.storageBroker.SelectAllCalendars();
+			IQueryable<Calendar> storageCalendars = 
+				this.storageBroker.SelectAllCalendars();
+
+			ValidateStorageCalendars(storageCalendars);
+
+			return storageCalendars;
 		});
 
 		public ValueTask<Calendar> RetrieveCalendarByIdAsync(Guid calendarId) =>
