@@ -36,10 +36,11 @@ namespace OtripleS.Web.Api.Services.Calendars
 			return await this.storageBroker.InsertCalendarAsync(calendar);
 		});
 
-		public IQueryable<Calendar> RetrieveAllCalendars()
+		public IQueryable<Calendar> RetrieveAllCalendars() =>
+		TryCatch(() =>
 		{
-			return this.storageBroker.SelectAllCalendars();	
-		}
+			return this.storageBroker.SelectAllCalendars();
+		});
 
 		public ValueTask<Calendar> RetrieveCalendarByIdAsync(Guid calendarId) =>
 		TryCatch(async () =>
