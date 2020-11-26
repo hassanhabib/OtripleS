@@ -17,6 +17,7 @@ namespace OtripleS.Web.Api.Services.Calendars
 			ValidateCalendarIdIsNull(calendar.Id);
 			ValidateCalendarFields(calendar);
 			ValidateInvalidAuditFields(calendar);
+			ValidateAuditFieldDataAreSame(calendar);
 		}
 
 		private void ValidateCalendarOnModify(Calendar calendar)
@@ -101,6 +102,17 @@ namespace OtripleS.Web.Api.Services.Calendars
 					throw new InvalidCalendarInputException(
 					parameterName: nameof(Calendar.UpdatedDate),
 					parameterValue: calendar.UpdatedDate);
+			}
+		}
+
+		private void ValidateAuditFieldDataAreSame(Calendar calendar)
+		{
+			switch (calendar)
+			{
+				case { } when calendar.CreatedBy != calendar.UpdatedBy:
+					throw new InvalidCalendarInputException(
+						parameterName: nameof(Calendar.UpdatedBy),
+						parameterValue: calendar.UpdatedBy);				
 			}
 		}
 
