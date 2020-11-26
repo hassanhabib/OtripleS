@@ -32,6 +32,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
 
             return expectedSemesterCourse;
         }
+        
+        private async ValueTask<SemesterCourse> PostRandomSemesterCourseAsync()
+        {
+            SemesterCourse randomSemesterCourse = await CreateRandomSemesterCourseAsync();
+            await this.otripleSApiBroker.PostSemesterCourseAsync(randomSemesterCourse);
+
+            return randomSemesterCourse;
+        }
 
         private async ValueTask<SemesterCourse> CreateRandomSemesterCourseAsync()
         {
