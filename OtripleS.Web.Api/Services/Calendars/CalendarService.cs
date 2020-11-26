@@ -27,7 +27,12 @@ namespace OtripleS.Web.Api.Services.Calendars
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-		public ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar) =>
+        public ValueTask<Calendar> AddCalendarAsync(Calendar calendar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar) =>
 		TryCatch(async () =>
 		{
 			ValidateCalendarOnModify(calendar);
