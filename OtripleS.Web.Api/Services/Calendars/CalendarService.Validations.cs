@@ -18,6 +18,7 @@ namespace OtripleS.Web.Api.Services.Calendars
 			ValidateCalendarFields(calendar);
 			ValidateInvalidAuditFields(calendar);
 			ValidateAuditFieldDataAreSame(calendar);
+			ValidateCreatedDateIsRecent(calendar);
 		}
 
 		private void ValidateCalendarOnModify(Calendar calendar)
@@ -128,6 +129,16 @@ namespace OtripleS.Web.Api.Services.Calendars
 				throw new InvalidCalendarInputException(
 					parameterName: nameof(Calendar.UpdatedDate),
 					parameterValue: calendar.UpdatedDate);
+			}
+		}
+
+		private void ValidateCreatedDateIsRecent(Calendar calendar)
+		{
+			if (IsDateNotRecent(calendar.UpdatedDate))
+			{
+				throw new InvalidCalendarInputException(
+					parameterName: nameof(calendar.CreatedDate),
+					parameterValue: calendar.CreatedDate);
 			}
 		}
 
