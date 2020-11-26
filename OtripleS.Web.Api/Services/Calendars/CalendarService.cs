@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Services.Calendars
 
 		public IQueryable<Calendar> RetrieveAllCalendars()
 		{
-			throw new NotImplementedException();
+			return this.storageBroker.SelectAllCalendars();	
 		}
 
 		public ValueTask<Calendar> RetrieveCalendarByIdAsync(Guid calendarId) =>
