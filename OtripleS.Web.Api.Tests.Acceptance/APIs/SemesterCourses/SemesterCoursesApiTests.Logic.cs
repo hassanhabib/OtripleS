@@ -96,8 +96,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             SemesterCourse expectedSemesterCourse = inputSemesterCourse;
 
             // when 
-            SemesterCourse deletedSemesterCourse = 
-                await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(inputSemesterCourse.Id);
+            SemesterCourse deletedSemesterCourse =
+                await DeleteSemesterCourseAsync(inputSemesterCourse);
 
             ValueTask<SemesterCourse> getSemesterCourseByIdTask =
                 this.otripleSApiBroker.GetSemesterCourseByIdAsync(inputSemesterCourse.Id);

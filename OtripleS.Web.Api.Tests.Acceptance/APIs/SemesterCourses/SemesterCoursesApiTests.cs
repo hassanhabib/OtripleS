@@ -101,12 +101,16 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             return await this.otripleSApiBroker.PostClassroomAsync(randomClassroom);
         }
 
-        private async Task DeleteSemesterCourseAsync(SemesterCourse semesterCourse)
+        private async ValueTask<SemesterCourse> DeleteSemesterCourseAsync(SemesterCourse semesterCourse)
         {
-            await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(semesterCourse.Id);
+            SemesterCourse deletedSemesterCourse =
+                await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(semesterCourse.Id);
+
             await this.otripleSApiBroker.DeleteCourseByIdAsync(semesterCourse.CourseId);
             await this.otripleSApiBroker.DeleteClassroomByIdAsync(semesterCourse.ClassroomId);
             await this.otripleSApiBroker.DeleteTeacherByIdAsync(semesterCourse.TeacherId);
+
+            return deletedSemesterCourse;
         }
 
         private SemesterCourse UpdateSemesterCourseRandom(SemesterCourse semesterCourse)
