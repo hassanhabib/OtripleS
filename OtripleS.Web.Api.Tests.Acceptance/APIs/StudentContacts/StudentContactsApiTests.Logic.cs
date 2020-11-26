@@ -3,12 +3,14 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using OtripleS.Web.Api.Tests.Acceptance.Models.StudentContacts;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
+using RESTFulSense.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
@@ -27,7 +29,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
                 randomStudentContacts.Add(await CreateRandomStudentContactAsync(randomStudent));
             }
 
-            List<StudentContact> inputStudentContacts = randomStudentContacts.ToList();
+            List<StudentContact> inputStudentContacts = randomStudentContacts;
             List<StudentContact> expectedStudentContacts = inputStudentContacts;
 
             // when
@@ -65,7 +67,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
             await this.otripleSApiBroker.PostStudentContactAsync(inputStudentContact);
 
             StudentContact actualStudentContact =
-                await this.otripleSApiBroker.GetStudentContactAsync(
+                await this.otripleSApiBroker.GetStudentContactByIdsAsync(
                     inputStudentContact.StudentId,
                     inputStudentContact.ContactId);
 
@@ -74,5 +76,29 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
 
             await DeleteStudentContactAsync(actualStudentContact);
         }
-    }
+
+        [Fact]
+        public async Task ShouldDeleteStudentContactAsync()
+        {
+            // given
+            StudentContact randomStudentContact = await PostStudentContactAsync();
+            StudentContact inputStudentContact = randomStudentContact;
+            StudentContact expectedStudentContact = inputStudentContact;
+
+            // when 
+            StudentContact deletedStudentContact = 
+                await DeleteStudentContactAsync(inputStudentContact);
+
+            ValueTask<StudentContact> getStudentContactByIdTask =
+                this.otripleSApiBroker.GetStudentContactByIdsAsync(
+                    inputStudentContact.StudentId, 
+                    inputStudentContact.ContactId);
+
+            // then
+            deletedStudentContact.Should().BeEquivalentTo(expectedStudentContact);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getStudentContactByIdTask.AsTask());
+        }
+    }   
 }
