@@ -48,7 +48,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 
 			this.dateTimeBrokerMock.Verify(broker =>
 				broker.GetCurrentDateTime(),
-					Times.Never);
+					Times.Once);
 
 			this.storageBrokerMock.VerifyNoOtherCalls();
 			this.loggingBrokerMock.VerifyNoOtherCalls();
