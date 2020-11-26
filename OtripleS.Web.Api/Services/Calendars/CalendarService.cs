@@ -27,10 +27,10 @@ namespace OtripleS.Web.Api.Services.Calendars
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-        public ValueTask<Calendar> AddCalendarAsync(Calendar calendar)
+        public async ValueTask<Calendar> AddCalendarAsync(Calendar calendar)
         {
-            throw new NotImplementedException();
-        }
+			return await this.storageBroker.InsertCalendarAsync(calendar);
+		}
 
         public ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar) =>
 		TryCatch(async () =>
