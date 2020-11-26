@@ -71,7 +71,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             // then
             foreach (StudentExam expectedStudentExam in expectedStudentExams)
             {
-                StudentExam actualStudentExam = actualStudentExams.Single(student => student.Id == expectedStudentExam.Id);
+                StudentExam actualStudentExam = 
+                    actualStudentExams.Single(student => 
+                        student.Id == expectedStudentExam.Id);
+
                 actualStudentExam.Should().BeEquivalentTo(expectedStudentExam);
                 await DeleteStudentExam(actualStudentExam);
             }
