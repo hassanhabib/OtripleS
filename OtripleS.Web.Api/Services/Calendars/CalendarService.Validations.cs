@@ -11,6 +11,16 @@ namespace OtripleS.Web.Api.Services.Calendars
 {
 	public partial class CalendarService
 	{
+		private void ValidateCalendarOnCreate(Calendar calendar)
+		{
+			ValidateCalendarIsNull(calendar);
+			ValidateCalendarIdIsNull(calendar.Id);
+			ValidateCalendarFields(calendar);
+			ValidateInvalidAuditFields(calendar);
+			ValidateAuditFieldDataAreSame(calendar);
+			ValidateCreatedDateIsRecent(calendar);
+		}
+
 		private void ValidateCalendarOnModify(Calendar calendar)
 		{
 			ValidateCalendarIsNull(calendar);
@@ -96,6 +106,22 @@ namespace OtripleS.Web.Api.Services.Calendars
 			}
 		}
 
+		private void ValidateAuditFieldDataAreSame(Calendar calendar)
+		{
+			switch (calendar)
+			{
+				case { } when calendar.CreatedBy != calendar.UpdatedBy:
+					throw new InvalidCalendarInputException(
+						parameterName: nameof(Calendar.UpdatedBy),
+						parameterValue: calendar.UpdatedBy);
+				
+				case { } when calendar.CreatedDate != calendar.UpdatedDate:
+					throw new InvalidCalendarInputException(
+						parameterName: nameof(Calendar.UpdatedDate),
+						parameterValue: calendar.UpdatedDate);
+			}
+		}
+
 		private void ValidateDatesAreNotSame(Calendar calendar)
 		{
 			if (calendar.CreatedDate == calendar.UpdatedDate)
@@ -103,6 +129,16 @@ namespace OtripleS.Web.Api.Services.Calendars
 				throw new InvalidCalendarInputException(
 					parameterName: nameof(Calendar.UpdatedDate),
 					parameterValue: calendar.UpdatedDate);
+			}
+		}
+
+		private void ValidateCreatedDateIsRecent(Calendar calendar)
+		{
+			if (IsDateNotRecent(calendar.UpdatedDate))
+			{
+				throw new InvalidCalendarInputException(
+					parameterName: nameof(calendar.CreatedDate),
+					parameterValue: calendar.CreatedDate);
 			}
 		}
 

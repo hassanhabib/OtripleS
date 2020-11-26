@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Calendars;
@@ -37,6 +38,13 @@ namespace OtripleS.Web.Api.Services.Calendars
 			catch (SqlException sqlException)
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
+			}
+			catch (DuplicateKeyException duplicateKeyException)
+			{
+				var alreadyExistsCalendarException =
+					new AlreadyExistsCalendarException(duplicateKeyException);
+
+				throw CreateAndLogValidationException(alreadyExistsCalendarException);
 			}
 			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
 			{
