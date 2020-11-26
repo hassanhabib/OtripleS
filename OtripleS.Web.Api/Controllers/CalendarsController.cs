@@ -9,6 +9,7 @@ using OtripleS.Web.Api.Models.Calendars.Exceptions;
 using OtripleS.Web.Api.Services.Calendars;
 using RESTFulSense.Controllers;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Controllers
@@ -53,8 +54,28 @@ namespace OtripleS.Web.Api.Controllers
             {
                 return Problem(calendarServiceException.Message);
             }
-        } 
+        }
 
+        [HttpGet]
+        public ActionResult<IQueryable<Calendar>> GetAllCalendars()
+        {
+            try
+            {
+                IQueryable storageCalendars =
+                    this.calendarService.RetrieveAllCalendars();
+
+                return Ok(storageCalendars);
+            }
+            catch (CalendarDependencyException calendarDependencyException)
+            {
+                return Problem(calendarDependencyException.Message);
+            }
+            catch (CalendarServiceException calendarServiceException)
+            {
+                return Problem(calendarServiceException.Message);
+            }
+        }
+     
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
