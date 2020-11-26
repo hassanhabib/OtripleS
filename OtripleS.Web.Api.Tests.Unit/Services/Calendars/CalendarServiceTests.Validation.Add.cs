@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Calendars;
@@ -397,6 +398,57 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenCalendarAlreadyExistsAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Calendar randomCalendar = CreateRandomCalendar(dateTime);
+            Calendar alreadyExistsCalendar = randomCalendar;
+            alreadyExistsCalendar.UpdatedBy = alreadyExistsCalendar.CreatedBy;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsCalendarException =
+                new AlreadyExistsCalendarException(duplicateKeyException);
+
+            var expectedCalendarValidationException =
+                new CalendarValidationException(alreadyExistsCalendarException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertCalendarAsync(alreadyExistsCalendar))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<Calendar> registerCalendarTask =
+                this.calendarService.AddCalendarAsync(alreadyExistsCalendar);
+
+            // then
+            await Assert.ThrowsAsync<CalendarValidationException>(() =>
+                registerCalendarTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCalendarAsync(alreadyExistsCalendar),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedCalendarValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
