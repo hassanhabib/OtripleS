@@ -75,7 +75,40 @@ namespace OtripleS.Web.Api.Controllers
                 return Problem(calendarServiceException.Message);
             }
         }
-     
+
+        [HttpGet("{calendarId}")]
+        public async ValueTask<ActionResult<Calendar>> GetCalendarAsync(Guid calendarId)
+        {
+            try
+            {
+                Calendar storageCalendar =
+                    await this.calendarService.RetrieveCalendarByIdAsync(calendarId);
+
+                return Ok(storageCalendar);
+            }
+            catch (CalendarValidationException calendarValidationException)
+                when (calendarValidationException.InnerException is NotFoundCalendarException)
+            {
+                string innerMessage = GetInnerMessage(calendarValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (CalendarValidationException calendarValidationException)
+            {
+                string innerMessage = GetInnerMessage(calendarValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (CalendarDependencyException calendarDependencyException)
+            {
+                return Problem(calendarDependencyException.Message);
+            }
+            catch (CalendarServiceException calendarServiceException)
+            {
+                return Problem(calendarServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
