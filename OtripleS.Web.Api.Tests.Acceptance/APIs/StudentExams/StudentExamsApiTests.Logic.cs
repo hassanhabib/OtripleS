@@ -37,7 +37,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
         {
             // given
             StudentExam randomStudentExam = await PostRandomStudentExamAsync();
-            StudentExam modifiedStudentExam = await UpdateStudentExamRandomAsync(randomStudentExam);
+            
+            StudentExam modifiedStudentExam = 
+                await UpdateStudentExamRandomAsync(randomStudentExam);
 
             // when
             await this.otripleSApiBroker.PutStudentExamAsync(modifiedStudentExam);
@@ -66,7 +68,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             List<StudentExam> expectedStudentExams = inputStudentExams.ToList();
 
             // when
-            List<StudentExam> actualStudentExams = await this.otripleSApiBroker.GetAllStudentExamsAsync();
+            List<StudentExam> actualStudentExams = 
+                await this.otripleSApiBroker.GetAllStudentExamsAsync();
 
             // then
             foreach (StudentExam expectedStudentExam in expectedStudentExams)
