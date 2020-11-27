@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -40,16 +41,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 		private Calendar CreateRandomCalendar(DateTimeOffset dates) =>
 			CreateCalendarFiller(dates).Create();
 
-		private static Filler<Calendar> CreateCalendarFiller(DateTimeOffset dates)
-		{
-			var filler = new Filler<Calendar>();
-
-			filler.Setup()
-				.OnProperty(Calendar => Calendar.CreatedDate).Use(dates)
-				.OnProperty(Calendar => Calendar.UpdatedDate).Use(dates);
-
-			return filler;
-		}
+		private IQueryable<Calendar> CreateRandomCalendars() =>
+			CreateCalendarFiller(dates: DateTimeOffset.UtcNow)
+				.Create(GetRandomNumber()).AsQueryable();
 
 		private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 		private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
@@ -75,7 +69,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 			};
 		}
 
+		private static string GetRandomMessage() => new MnemonicString().GetValue();
+
 		private static SqlException GetSqlException() =>
 			(SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+		private static Filler<Calendar> CreateCalendarFiller(DateTimeOffset dates)
+		{
+			var filler = new Filler<Calendar>();
+
+			filler.Setup()
+				.OnProperty(Calendar => Calendar.CreatedDate).Use(dates)
+				.OnProperty(Calendar => Calendar.UpdatedDate).Use(dates);
+
+			return filler;
+		}
 	}
 }

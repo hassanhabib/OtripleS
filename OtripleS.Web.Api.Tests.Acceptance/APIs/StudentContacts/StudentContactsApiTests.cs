@@ -87,13 +87,25 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
             return filler;
         }
 
-        private async ValueTask DeleteStudentContactAsync(StudentContact studentContact)
+        public async ValueTask<StudentContact> PostStudentContactAsync()
         {
-            await this.otripleSApiBroker.DeleteStudentContactAsync(
-                studentContact.StudentId, studentContact.ContactId);
+            StudentContact randomStudentContact =
+                await CreateRandomStudentContactAsync();
+
+            return await this.otripleSApiBroker.PostStudentContactAsync(randomStudentContact);
+        }
+
+        private async ValueTask<StudentContact> DeleteStudentContactAsync(StudentContact studentContact)
+        {
+            StudentContact deletedStudentContact =
+                await this.otripleSApiBroker.DeleteStudentContactAsync(
+                    studentContact.StudentId, 
+                    studentContact.ContactId);
 
             await this.otripleSApiBroker.DeleteContactByIdAsync(studentContact.ContactId);
             await this.otripleSApiBroker.DeleteStudentByIdAsync(studentContact.StudentId);
+
+            return deletedStudentContact;
         }
 
         private static Filler<Student> CreateStudentFiller()

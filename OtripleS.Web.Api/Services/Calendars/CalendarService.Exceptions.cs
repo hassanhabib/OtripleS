@@ -4,7 +4,9 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Calendars;
@@ -15,6 +17,7 @@ namespace OtripleS.Web.Api.Services.Calendars
 	public partial class CalendarService
 	{
 		private delegate ValueTask<Calendar> ReturningCalendarFunction();
+		private delegate IQueryable<Calendar> ReturningCalendarsFunction();
 
 		private async ValueTask<Calendar> TryCatch(ReturningCalendarFunction returningCalendarFunction)
 		{
@@ -38,11 +41,38 @@ namespace OtripleS.Web.Api.Services.Calendars
 			{
 				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
+			catch (DuplicateKeyException duplicateKeyException)
+			{
+				var alreadyExistsCalendarException =
+					new AlreadyExistsCalendarException(duplicateKeyException);
+
+				throw CreateAndLogValidationException(alreadyExistsCalendarException);
+			}
 			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
 			{
 				var lockedCalendarException = new LockedCalendarException(dbUpdateConcurrencyException);
 
 				throw CreateAndLogDependencyException(lockedCalendarException);
+			}
+			catch (DbUpdateException dbUpdateException)
+			{
+				throw CreateAndLogDependencyException(dbUpdateException);
+			}
+			catch (Exception exception)
+			{
+				throw CreateAndLogServiceException(exception);
+			}
+		}
+
+		private IQueryable<Calendar> TryCatch(ReturningCalendarsFunction returningCalendarsFunction)
+        {
+            try
+            {
+				return returningCalendarsFunction();
+            }
+			catch (SqlException sqlException)
+			{
+				throw CreateAndLogCriticalDependencyException(sqlException);
 			}
 			catch (DbUpdateException dbUpdateException)
 			{

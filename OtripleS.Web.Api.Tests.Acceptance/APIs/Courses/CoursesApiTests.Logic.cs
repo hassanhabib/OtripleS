@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
+using RESTFulSense.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
@@ -30,7 +31,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
 
             // then
             actualCourse.Should().BeEquivalentTo(expectedCourse);
-
             await this.otripleSApiBroker.DeleteCourseByIdAsync(actualCourse.Id);
         }
 
@@ -38,8 +38,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
         public async Task ShouldPutCourseAsync()
         {
             // given
-            Course randomCourse = CreateRandomCourse();
-            await this.otripleSApiBroker.PostCourseAsync(randomCourse);
+            Course randomCourse = await PostRandomCourseAsync();
             Course modifiedCourse = UpdateCourseRandom(randomCourse);
 
             // when
@@ -50,7 +49,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
 
             // then
             actualCourse.Should().BeEquivalentTo(modifiedCourse);
-
             await this.otripleSApiBroker.DeleteCourseByIdAsync(actualCourse.Id);
         }
 
@@ -58,26 +56,53 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
         public async Task ShouldGetAllCoursesAsync()
         {
             // given
-            IEnumerable<Course> randomCourses = GetRandomCourses();
-            IEnumerable<Course> inputCourses = randomCourses;
+            int randomNumber = GetRandomNumber();
+            var randomCourses = new List<Course>();
 
-            foreach (Course course in inputCourses)
+            for (int i = 0; i <= randomNumber; i++)
             {
-                await this.otripleSApiBroker.PostCourseAsync(course);
+                randomCourses.Add(await PostRandomCourseAsync());
             }
 
+            List<Course> inputCourses = randomCourses;
             List<Course> expectedCourses = inputCourses.ToList();
 
             // when
-            List<Course> actualCourses = await this.otripleSApiBroker.GetAllCoursesAsync();
+            List<Course> actualCourses = 
+                await this.otripleSApiBroker.GetAllCoursesAsync();
 
             // then
             foreach (Course expectedCourse in expectedCourses)
             {
-                Course actualCourse = actualCourses.Single(course => course.Id == expectedCourse.Id);
+                Course actualCourse = 
+                    actualCourses.Single(course => 
+                        course.Id == expectedCourse.Id);
+
                 actualCourse.Should().BeEquivalentTo(expectedCourse);
                 await this.otripleSApiBroker.DeleteCourseByIdAsync(actualCourse.Id);
             }
+        }
+
+        [Fact]
+        public async Task ShouldDeleteCourseAsync()
+        {
+            // given
+            Course randomCourse = await PostRandomCourseAsync();
+            Course inputCourse = randomCourse;
+            Course expectedCourse = inputCourse;
+
+            // when 
+            Course deletedCourse =
+                await this.otripleSApiBroker.DeleteCourseByIdAsync(inputCourse.Id);
+
+            ValueTask<Course> getCourseByIdTask =
+                this.otripleSApiBroker.GetCourseByIdAsync(inputCourse.Id);
+
+            // then
+            deletedCourse.Should().BeEquivalentTo(expectedCourse);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getCourseByIdTask.AsTask());
         }
     }
 }

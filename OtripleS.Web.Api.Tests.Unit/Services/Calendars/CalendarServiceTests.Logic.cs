@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
@@ -15,6 +16,73 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 {
 	public partial class CalendarServiceTests
 	{
+		[Fact]
+		public async Task ShouldAddCalendarAsync()
+		{
+			// given
+			DateTimeOffset dateTime = DateTimeOffset.UtcNow;
+			Calendar randomCalendar = CreateRandomCalendar(dateTime);
+			randomCalendar.UpdatedBy = randomCalendar.CreatedBy;
+			randomCalendar.UpdatedDate = randomCalendar.CreatedDate;
+			Calendar inputCalendar = randomCalendar;
+			Calendar storageCalendar = randomCalendar;
+			Calendar expectedCalendar = randomCalendar;
+
+			this.dateTimeBrokerMock.Setup(broker =>
+			   broker.GetCurrentDateTime())
+				   .Returns(dateTime);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.InsertCalendarAsync(inputCalendar))
+					.ReturnsAsync(storageCalendar);
+
+			// when
+			Calendar actualCalendar =
+				await this.calendarService.AddCalendarAsync(inputCalendar);
+
+			// then
+			actualCalendar.Should().BeEquivalentTo(expectedCalendar);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.InsertCalendarAsync(inputCalendar),
+					Times.Once);
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
+
+		[Fact]
+		public void ShouldRetrieveAllCalendars()
+        {
+			// given
+			IQueryable<Calendar> randomCalendars = CreateRandomCalendars();
+			IQueryable<Calendar> storageCalendars = randomCalendars;
+			IQueryable<Calendar> expectedCalendars = storageCalendars;
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectAllCalendars())
+					.Returns(storageCalendars);
+
+			// when
+			IQueryable<Calendar> actualCalendars =
+				this.calendarService.RetrieveAllCalendars();
+
+			// then
+			actualCalendars.Should().BeEquivalentTo(expectedCalendars);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectAllCalendars(),
+					Times.Once);
+
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
 		[Fact]
 		public async Task ShouldRetrieveCalendarByIdAsync()
 		{

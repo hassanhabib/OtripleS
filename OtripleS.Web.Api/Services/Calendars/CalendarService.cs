@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -27,21 +28,23 @@ namespace OtripleS.Web.Api.Services.Calendars
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-        public ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar) =>
+		public ValueTask<Calendar> AddCalendarAsync(Calendar calendar) =>
 		TryCatch(async () =>
 		{
-			ValidateCalendarOnModify(calendar);
+			ValidateCalendarOnCreate(calendar);
 
-			Calendar maybeCalendar =
-			   await this.storageBroker.SelectCalendarByIdAsync(calendar.Id);
+			return await this.storageBroker.InsertCalendarAsync(calendar);
+		});
 
-			ValidateStorageCalendar(maybeCalendar, calendar.Id);
+		public IQueryable<Calendar> RetrieveAllCalendars() =>
+		TryCatch(() =>
+		{
+			IQueryable<Calendar> storageCalendars = 
+				this.storageBroker.SelectAllCalendars();
 
-			ValidateAgainstStorageCalendarOnModify(
-				inputCalendar: calendar,
-				storageCalendar: maybeCalendar);
+			ValidateStorageCalendars(storageCalendars);
 
-			return await this.storageBroker.UpdateCalendarAsync(calendar);
+			return storageCalendars;
 		});
 
 		public ValueTask<Calendar> RetrieveCalendarByIdAsync(Guid calendarId) =>
@@ -65,5 +68,23 @@ namespace OtripleS.Web.Api.Services.Calendars
 
 			return await storageBroker.DeleteCalendarAsync(maybeCalendar);
 		});
-	}
+
+		public ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar) =>
+		TryCatch(async () =>
+		{
+			ValidateCalendarOnModify(calendar);
+
+			Calendar maybeCalendar =
+			   await this.storageBroker.SelectCalendarByIdAsync(calendar.Id);
+
+			ValidateStorageCalendar(maybeCalendar, calendar.Id);
+
+			ValidateAgainstStorageCalendarOnModify(
+				inputCalendar: calendar,
+				storageCalendar: maybeCalendar);
+
+			return await this.storageBroker.UpdateCalendarAsync(calendar);
+		});
+
+    }
 }
