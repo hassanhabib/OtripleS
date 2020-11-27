@@ -31,7 +31,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
 
             // then
             actualCourse.Should().BeEquivalentTo(expectedCourse);
-
             await this.otripleSApiBroker.DeleteCourseByIdAsync(actualCourse.Id);
         }
 
@@ -50,7 +49,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
 
             // then
             actualCourse.Should().BeEquivalentTo(modifiedCourse);
-
             await this.otripleSApiBroker.DeleteCourseByIdAsync(actualCourse.Id);
         }
 
@@ -70,12 +68,16 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
             List<Course> expectedCourses = inputCourses.ToList();
 
             // when
-            List<Course> actualCourses = await this.otripleSApiBroker.GetAllCoursesAsync();
+            List<Course> actualCourses = 
+                await this.otripleSApiBroker.GetAllCoursesAsync();
 
             // then
             foreach (Course expectedCourse in expectedCourses)
             {
-                Course actualCourse = actualCourses.Single(course => course.Id == expectedCourse.Id);
+                Course actualCourse = 
+                    actualCourses.Single(course => 
+                        course.Id == expectedCourse.Id);
+
                 actualCourse.Should().BeEquivalentTo(expectedCourse);
                 await this.otripleSApiBroker.DeleteCourseByIdAsync(actualCourse.Id);
             }
