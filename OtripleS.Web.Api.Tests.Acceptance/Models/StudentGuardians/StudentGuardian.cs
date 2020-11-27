@@ -7,7 +7,7 @@ using System;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Models.StudentGuardians
 {
-    public class StudentGuardian 
+    public class StudentGuardian
     {
         public Guid GuardianId { get; set; }
         public Guid StudentId { get; set; }

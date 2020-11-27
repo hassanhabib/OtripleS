@@ -12,6 +12,7 @@ using Force.DeepCloner;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Guardians;
 using OtripleS.Web.Api.Tests.Acceptance.Models.StudentGuardians;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
+using RESTFulSense.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
@@ -22,13 +23,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
         public async Task ShouldPostStudentGuardianAsync()
         {
             // given
-            Student persistedStudent = await PostStudentAsync();
-            Guardian persistedGuardian = await PostGuardianAsync();
-
-            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(
-                persistedStudent.Id,
-                persistedGuardian.Id);
-
+            StudentGuardian randomStudentGuardian = await CreateRandomStudentGuardian();
             StudentGuardian inputStudentGuardian = randomStudentGuardian;
             StudentGuardian expectedStudentGuardian = inputStudentGuardian;
 
@@ -37,28 +32,21 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
                 await this.otripleSApiBroker.PostStudentGuardianAsync(inputStudentGuardian);
 
             StudentGuardian actualStudentGuardian =
-                await this.otripleSApiBroker.GetStudentGuardianAsync(persistedStudentGuardian.StudentId, persistedStudentGuardian.GuardianId);
+                await this.otripleSApiBroker.GetStudentGuardianByIdsAsync(
+                    persistedStudentGuardian.StudentId,
+                    persistedStudentGuardian.GuardianId);
 
             // then
             actualStudentGuardian.Should().BeEquivalentTo(expectedStudentGuardian);
-
-            await this.otripleSApiBroker.DeleteStudentGuardianAsync(actualStudentGuardian.StudentId,
-                actualStudentGuardian.GuardianId);
-            await this.otripleSApiBroker.DeleteGuardianByIdAsync(actualStudentGuardian.GuardianId);
-            await this.otripleSApiBroker.DeleteStudentByIdAsync(actualStudentGuardian.StudentId);
+            await DeleteStudentGuardianAsync(actualStudentGuardian);
         }
 
         [Fact]
         public async Task ShouldPutStudentGuardianAsync()
         {
             // given
-            Student inputStudent = await PostStudentAsync();
-            Guardian inputGuardian = await PostGuardianAsync();
-            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(inputStudent.Id, inputGuardian.Id);
+            StudentGuardian randomStudentGuardian = await PostStudentGuardianAsync();
             StudentGuardian inputStudentGuardian = randomStudentGuardian;
-
-            await this.otripleSApiBroker.PostStudentGuardianAsync(inputStudentGuardian);
-
             StudentGuardian modifiedStudentGuardian = randomStudentGuardian.DeepClone();
             modifiedStudentGuardian.UpdatedDate = DateTimeOffset.UtcNow;
 
@@ -66,59 +54,69 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
             await this.otripleSApiBroker.PutStudentGuardianAsync(modifiedStudentGuardian);
 
             StudentGuardian actualStudentGuardian =
-                await this.otripleSApiBroker.GetStudentGuardianAsync(
+                await this.otripleSApiBroker.GetStudentGuardianByIdsAsync(
                     randomStudentGuardian.StudentId,
                     randomStudentGuardian.GuardianId);
 
             // then
             actualStudentGuardian.Should().BeEquivalentTo(modifiedStudentGuardian);
-
-            await this.otripleSApiBroker.DeleteStudentGuardianAsync(actualStudentGuardian.StudentId,
-                actualStudentGuardian.GuardianId);
-            await this.otripleSApiBroker.DeleteGuardianByIdAsync(actualStudentGuardian.GuardianId);
-            await this.otripleSApiBroker.DeleteStudentByIdAsync(actualStudentGuardian.StudentId);
+            await DeleteStudentGuardianAsync(actualStudentGuardian);
         }
 
         [Fact]
         public async Task ShouldGetAllStudentGuardiansAsync()
         {
             // given
-            IEnumerable<StudentGuardian> randomStudentGuardians = GetRandomStudentGuardians();
-            IEnumerable<StudentGuardian> inputStudentGuardians = randomStudentGuardians;
-            List<Student> inputStudents = new List<Student>();
-            List<Guardian> inputGuardians = new List<Guardian>();
+            var randomStudentGuardians = new List<StudentGuardian>();
 
-            foreach (StudentGuardian studentGuardian in inputStudentGuardians)
+            for(var i =0; i<= GetRandomNumber(); i++)
             {
-                Student randomStudent = CreateRandomStudent();
-                Student inputStudent = randomStudent;
-                Guardian randomGuardian = CreateRandomGuardian();
-                Guardian inputGuardian = randomGuardian;
-                studentGuardian.StudentId = inputStudent.Id;
-                studentGuardian.GuardianId = inputGuardian.Id;
-                inputStudents.Add(inputStudent);
-                inputGuardians.Add(inputGuardian);
-
-                await this.otripleSApiBroker.PostStudentAsync(inputStudent);
-                await this.otripleSApiBroker.PostGuardianAsync(inputGuardian);
-                await this.otripleSApiBroker.PostStudentGuardianAsync(studentGuardian);
+                StudentGuardian randomStudentGuardian = await PostStudentGuardianAsync();
+                randomStudentGuardians.Add(randomStudentGuardian);
             }
 
-            List<StudentGuardian> expectedStudentGuardians = inputStudentGuardians.ToList();
+            List<StudentGuardian> inputStudentGuardians = randomStudentGuardians;
+            List<StudentGuardian> expectedStudentGuardians = inputStudentGuardians;
 
             // when
-            List<StudentGuardian> actualStudentGuardians = await this.otripleSApiBroker.GetAllStudentGuardiansAsync();
+            List<StudentGuardian> actualStudentGuardians = 
+                await this.otripleSApiBroker.GetAllStudentGuardiansAsync();
 
             // then
             foreach (StudentGuardian expectedStudentGuardian in expectedStudentGuardians)
             {
-                StudentGuardian actualStudentGuardian = actualStudentGuardians.Single(studentGuardian => studentGuardian.StudentId == expectedStudentGuardian.StudentId);
+                StudentGuardian actualStudentGuardian = 
+                    actualStudentGuardians.Single(studentGuardian => 
+                    studentGuardian.StudentId == expectedStudentGuardian.StudentId);
+
                 actualStudentGuardian.Should().BeEquivalentTo(expectedStudentGuardian);
 
-                await this.otripleSApiBroker.DeleteStudentGuardianAsync(actualStudentGuardian.StudentId, actualStudentGuardian.GuardianId);
-                await this.otripleSApiBroker.DeleteGuardianByIdAsync(actualStudentGuardian.GuardianId);
-                await this.otripleSApiBroker.DeleteStudentByIdAsync(actualStudentGuardian.StudentId);
+                await DeleteStudentGuardianAsync(actualStudentGuardian);
             }
+        }
+
+        [Fact]
+        public async Task ShouldDeleteStudentGuardianAsync()
+        {
+            // given
+            StudentGuardian randomStudentGuardian = await PostStudentGuardianAsync();
+            StudentGuardian inputStudentGuardian = randomStudentGuardian;
+            StudentGuardian expectedStudentGuardian = inputStudentGuardian;
+
+            // when 
+            StudentGuardian deletedStudentGuardian = 
+                await DeleteStudentGuardianAsync(inputStudentGuardian);
+
+            ValueTask<StudentGuardian> getStudentGuardianByIdTask =
+                this.otripleSApiBroker.GetStudentGuardianByIdsAsync(
+                    inputStudentGuardian.StudentId, 
+                    inputStudentGuardian.GuardianId);
+
+            // then
+            deletedStudentGuardian.Should().BeEquivalentTo(expectedStudentGuardian);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getStudentGuardianByIdTask.AsTask());
         }
     }
 }

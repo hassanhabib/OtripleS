@@ -190,6 +190,32 @@ namespace OtripleS.Web.Api.Migrations
                     b.ToTable("Attendances");
                 });
 
+            modelBuilder.Entity("OtripleS.Web.Api.Models.Calendars.Calendar", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Label")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("UpdatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Calendars");
+                });
+
             modelBuilder.Entity("OtripleS.Web.Api.Models.Classrooms.Classroom", b =>
                 {
                     b.Property<Guid>("Id")

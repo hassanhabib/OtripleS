@@ -5,8 +5,9 @@
 
 using System;
 using System.Collections.Generic;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
 using Tynamix.ObjectFiller;
 using Xunit;
 
@@ -22,26 +23,15 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private IEnumerable<Course> GetRandomCourses() =>
-            CreateRandomCourseFiller().Create(GetRandomNumber());
-
         private Course CreateRandomCourse() =>
             CreateRandomCourseFiller().Create();
 
-        private Filler<Course> CreateRandomCourseFiller()
+        private async ValueTask<Course> PostRandomCourseAsync()
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid posterId = Guid.NewGuid();
-            var filler = new Filler<Course>();
+            Course randomCourse = CreateRandomCourse();
+            await this.otripleSApiBroker.PostCourseAsync(randomCourse);
 
-            filler.Setup()
-                .OnProperty(course => course.CreatedBy).Use(posterId)
-                .OnProperty(course => course.UpdatedBy).Use(posterId)
-                .OnProperty(course => course.CreatedDate).Use(now)
-                .OnProperty(course => course.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
-
-            return filler;
+            return randomCourse;
         }
 
         private Course UpdateCourseRandom(Course course)
@@ -62,5 +52,21 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private Filler<Course> CreateRandomCourseFiller()
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            Guid posterId = Guid.NewGuid();
+            var filler = new Filler<Course>();
+
+            filler.Setup()
+                .OnProperty(course => course.CreatedBy).Use(posterId)
+                .OnProperty(course => course.UpdatedBy).Use(posterId)
+                .OnProperty(course => course.CreatedDate).Use(now)
+                .OnProperty(course => course.UpdatedDate).Use(now)
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+
+            return filler;
+        }
     }
 }

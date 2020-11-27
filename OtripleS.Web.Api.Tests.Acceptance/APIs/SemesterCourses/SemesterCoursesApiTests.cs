@@ -4,17 +4,15 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using Force.DeepCloner;
+using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Classrooms;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
 using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
-using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
-using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
 {
@@ -33,6 +31,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             SemesterCourse expectedSemesterCourse = semesterCourse.DeepClone();
 
             return expectedSemesterCourse;
+        }
+        
+        private async ValueTask<SemesterCourse> PostRandomSemesterCourseAsync()
+        {
+            SemesterCourse randomSemesterCourse = await CreateRandomSemesterCourseAsync();
+            await this.otripleSApiBroker.PostSemesterCourseAsync(randomSemesterCourse);
+
+            return randomSemesterCourse;
         }
 
         private async ValueTask<SemesterCourse> CreateRandomSemesterCourseAsync()
@@ -95,12 +101,16 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             return await this.otripleSApiBroker.PostClassroomAsync(randomClassroom);
         }
 
-        private async Task DeleteSemesterCourseAsync(SemesterCourse semesterCourse)
+        private async ValueTask<SemesterCourse> DeleteSemesterCourseAsync(SemesterCourse semesterCourse)
         {
-            await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(semesterCourse.Id);
+            SemesterCourse deletedSemesterCourse =
+                await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(semesterCourse.Id);
+
             await this.otripleSApiBroker.DeleteCourseByIdAsync(semesterCourse.CourseId);
             await this.otripleSApiBroker.DeleteClassroomByIdAsync(semesterCourse.ClassroomId);
             await this.otripleSApiBroker.DeleteTeacherByIdAsync(semesterCourse.TeacherId);
+
+            return deletedSemesterCourse;
         }
 
         private SemesterCourse UpdateSemesterCourseRandom(SemesterCourse semesterCourse)

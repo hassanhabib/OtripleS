@@ -4,15 +4,13 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
+using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Contacts;
 using OtripleS.Web.Api.Tests.Acceptance.Models.TeacherContacts;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
-using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
-using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
 {
@@ -46,6 +44,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
             TeacherContact teacherContact = filler.Create();
 
             return teacherContact;
+        }
+
+        private async ValueTask<TeacherContact> PostRandomTeacherContactAsync()
+        {
+            TeacherContact randomTeacherContact = await CreateRandomTeacherContactAsync();
+            await this.otripleSApiBroker.PostTeacherContactAsync(randomTeacherContact);
+
+            return randomTeacherContact;
         }
 
         private async ValueTask<TeacherContact> CreateRandomTeacherContactAsync(Teacher teacher)
@@ -89,13 +95,16 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
             return filler;
         }
 
-        private async ValueTask DeleteTeacherContactAsync(TeacherContact teacherContact)
+        private async ValueTask<TeacherContact> DeleteTeacherContactAsync(TeacherContact teacherContact)
         {
-            await this.otripleSApiBroker.DeleteTeacherContactByIdAsync(
-                teacherContact.TeacherId, teacherContact.ContactId);
+            TeacherContact deletedTeacherContact =
+                await this.otripleSApiBroker.DeleteTeacherContactByIdAsync(
+                    teacherContact.TeacherId, teacherContact.ContactId);
 
             await this.otripleSApiBroker.DeleteContactByIdAsync(teacherContact.ContactId);
             await this.otripleSApiBroker.DeleteTeacherByIdAsync(teacherContact.TeacherId);
+
+            return deletedTeacherContact;
         }
 
         private static Filler<Teacher> CreateTeacherFiller()

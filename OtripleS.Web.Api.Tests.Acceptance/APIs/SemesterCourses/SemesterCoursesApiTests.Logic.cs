@@ -7,10 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Classrooms;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
 using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
+using RESTFulSense.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
@@ -35,7 +33,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
 
             // then
             actualSemesterCourse.Should().BeEquivalentTo(expectedSemesterCourse);
-
             await DeleteSemesterCourseAsync(actualSemesterCourse);
         }
 
@@ -43,8 +40,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
         public async Task ShouldPutSemesterCourseAsync()
         {
             // given
-            SemesterCourse randomSemesterCourse = await CreateRandomSemesterCourseAsync();
-            await this.otripleSApiBroker.PostSemesterCourseAsync(randomSemesterCourse);
+            SemesterCourse randomSemesterCourse = await PostRandomSemesterCourseAsync();
             SemesterCourse modifiedSemesterCourse = UpdateSemesterCourseRandom(randomSemesterCourse);
 
             // when
@@ -57,7 +53,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
                 await this.otripleSApiBroker.GetSemesterCourseByIdAsync(randomSemesterCourse.Id);
             // then
             actualSemesterCourse.Should().BeEquivalentTo(expectedSemesterCourse);
-
             await DeleteSemesterCourseAsync(actualSemesterCourse);
         }
 
@@ -65,15 +60,11 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
         public async Task ShouldGetAllSemesterCoursesAsync()
         {
             // given
-            Teacher randomTeacher = await PostTeacherAsync();
-            Classroom randomClassroom = await PostClassRoomAsync();
-            Course randomCourse = await PostCourseAsync();
             List<SemesterCourse> randomSemesterCourses = new List<SemesterCourse>();
-            
-            for (int i =0; i<= GetRandomNumber(); i++)
+
+            for (int i = 0; i <= GetRandomNumber(); i++)
             {
-                randomSemesterCourses.Add(
-                    await CreateRandomSemesterCourseAsync(randomTeacher, randomClassroom, randomCourse));
+                randomSemesterCourses.Add(await PostRandomSemesterCourseAsync());
             }
 
             List<SemesterCourse> inputSemesterCourses = randomSemesterCourses.ToList();
@@ -92,11 +83,30 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
 
                 SemesterCourse expectedReturnedCourse = CreateExpectedSemesterCourse(expectedSemesterCourse);
                 actualSemesterCourse.Should().BeEquivalentTo(expectedReturnedCourse);
-                await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(actualSemesterCourse.Id);
+                await DeleteSemesterCourseAsync(actualSemesterCourse);
             }
-            await this.otripleSApiBroker.DeleteCourseByIdAsync(randomCourse.Id);
-            await this.otripleSApiBroker.DeleteClassroomByIdAsync(randomClassroom.Id);
-            await this.otripleSApiBroker.DeleteTeacherByIdAsync(randomTeacher.Id);
+        }
+
+        [Fact]
+        public async Task ShouldDeleteSemesterCourseAsync()
+        {
+            // given
+            SemesterCourse randomSemesterCourse = await PostRandomSemesterCourseAsync();
+            SemesterCourse inputSemesterCourse = randomSemesterCourse;
+            SemesterCourse expectedSemesterCourse = inputSemesterCourse;
+
+            // when 
+            SemesterCourse deletedSemesterCourse =
+                await DeleteSemesterCourseAsync(inputSemesterCourse);
+
+            ValueTask<SemesterCourse> getSemesterCourseByIdTask =
+                this.otripleSApiBroker.GetSemesterCourseByIdAsync(inputSemesterCourse.Id);
+
+            // then
+            deletedSemesterCourse.Should().BeEquivalentTo(expectedSemesterCourse);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getSemesterCourseByIdTask.AsTask());
         }
     }
 }

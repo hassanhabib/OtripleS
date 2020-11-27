@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Guardians;
+using RESTFulSense.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
@@ -30,7 +31,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
 
             // then
             actualGuardian.Should().BeEquivalentTo(expectedGuardian);
-
             await this.otripleSApiBroker.DeleteGuardianByIdAsync(actualGuardian.Id);
         }
 
@@ -38,8 +38,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
         public async Task ShouldPutGuardianAsync()
         {
             // given
-            Guardian randomGuardian = CreateRandomGuardian();
-            await this.otripleSApiBroker.PostGuardianAsync(randomGuardian);
+            Guardian randomGuardian = await PostRandomGuardianAsync();
             Guardian modifiedGuardian = UpdateGuardianRandom(randomGuardian);
 
             // when
@@ -50,7 +49,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
 
             // then
             actualGuardian.Should().BeEquivalentTo(modifiedGuardian);
-
             await this.otripleSApiBroker.DeleteGuardianByIdAsync(actualGuardian.Id);
         }
 
@@ -58,26 +56,52 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
         public async Task ShouldGetAllGuardiansAsync()
         {
             // given
-            IEnumerable<Guardian> randomGuardians = GetRandomGuardians();
-            IEnumerable<Guardian> inputGuardians = randomGuardians;
+            var randomGuardians = new List<Guardian>();
 
-            foreach (Guardian guardian in inputGuardians)
+            for (int i = 0; i <= GetRandomNumber(); i++)
             {
-                await this.otripleSApiBroker.PostGuardianAsync(guardian);
+                randomGuardians.Add(await PostRandomGuardianAsync());
             }
 
+            List<Guardian> inputGuardians = randomGuardians;
             List<Guardian> expectedGuardians = inputGuardians.ToList();
 
             // when
-            List<Guardian> actualGuardians = await this.otripleSApiBroker.GetAllGuardiansAsync();
+            List<Guardian> actualGuardians = 
+                await this.otripleSApiBroker.GetAllGuardiansAsync();
 
             // then
             foreach (Guardian expectedGuardian in expectedGuardians)
             {
-                Guardian actualGuardian = actualGuardians.Single(guardian => guardian.Id == expectedGuardian.Id);
+                Guardian actualGuardian = 
+                    actualGuardians.Single(guardian => 
+                        guardian.Id == expectedGuardian.Id);
+
                 actualGuardian.Should().BeEquivalentTo(expectedGuardian);
                 await this.otripleSApiBroker.DeleteGuardianByIdAsync(actualGuardian.Id);
             }
+        }
+
+        [Fact]
+        public async Task ShouldDeleteGuardianAsync()
+        {
+            // given
+            Guardian randomGuardian = await PostRandomGuardianAsync();
+            Guardian inputGuardian = randomGuardian;
+            Guardian expectedGuardian = inputGuardian;
+
+            // when 
+            Guardian deletedGuardian =
+                await this.otripleSApiBroker.DeleteGuardianByIdAsync(inputGuardian.Id);
+
+            ValueTask<Guardian> getGuardianByIdTask =
+                this.otripleSApiBroker.GetGuardianByIdAsync(inputGuardian.Id);
+
+            // then
+            deletedGuardian.Should().BeEquivalentTo(expectedGuardian);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getGuardianByIdTask.AsTask());
         }
     }
 }

@@ -4,8 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Contacts;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Models.TeacherContacts
 {

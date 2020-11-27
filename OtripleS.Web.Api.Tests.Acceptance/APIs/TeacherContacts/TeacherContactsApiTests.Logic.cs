@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using OtripleS.Web.Api.Tests.Acceptance.Models.TeacherContacts;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
+using RESTFulSense.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
@@ -69,10 +70,33 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
                 await this.otripleSApiBroker.DeleteTeacherContactByIdAsync(
                     actualTeacherContact.TeacherId, actualTeacherContact.ContactId);
 
-                await this.otripleSApiBroker.DeleteContactByIdAsync(actualTeacherContact.ContactId);                
+                await this.otripleSApiBroker.DeleteContactByIdAsync(actualTeacherContact.ContactId);
             }
 
             await this.otripleSApiBroker.DeleteTeacherByIdAsync(randomTeacher.Id);
+        }
+
+        [Fact]
+        public async Task ShouldDeleteTeacherContactAsync()
+        {
+            // given
+            TeacherContact randomTeacherContact = await PostRandomTeacherContactAsync();
+            TeacherContact inputTeacherContact = randomTeacherContact;
+            TeacherContact expectedTeacherContact = inputTeacherContact;
+
+            // when 
+            TeacherContact deletedTeacherContact =
+                await DeleteTeacherContactAsync(inputTeacherContact);
+
+            ValueTask<TeacherContact> getTeacherContactByIdTask =
+                this.otripleSApiBroker.GetTeacherContactByIdAsync(
+                    inputTeacherContact.TeacherId, inputTeacherContact.ContactId);
+
+            // then
+            deletedTeacherContact.Should().BeEquivalentTo(expectedTeacherContact);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getTeacherContactByIdTask.AsTask());
         }
     }
 }

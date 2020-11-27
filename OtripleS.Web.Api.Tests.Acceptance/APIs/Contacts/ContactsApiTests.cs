@@ -4,13 +4,13 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Contacts;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Contacts;
 using Tynamix.ObjectFiller;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
+namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Contacts
 {
     [Collection(nameof(ApiTestCollection))]
     public partial class ContactsApiTests
@@ -28,8 +28,13 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
         private static Contact CreateRandomContact() =>
             CreateRandomContactFiller().Create();
 
-        private IEnumerable<Contact> CreateRandomContacts() =>
-            CreateRandomContactFiller().Create(GetRandomNumber());
+        private async ValueTask<Contact> PostRandomContactAsync()
+        {
+            Contact randomContact = CreateRandomContact();
+            await this.otripleSApiBroker.PostContactAsync(randomContact);
+
+            return randomContact;
+        }
 
         private Contact UpdateContactRandom(Contact contact)
         {

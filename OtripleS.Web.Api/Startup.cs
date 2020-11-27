@@ -18,6 +18,7 @@ using OtripleS.Web.Api.Brokers.UserManagement;
 using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Services.Assignments;
 using OtripleS.Web.Api.Services.Attendances;
+using OtripleS.Web.Api.Services.Calendars;
 using OtripleS.Web.Api.Services.Classrooms;
 using OtripleS.Web.Api.Services.Contacts;
 using OtripleS.Web.Api.Services.Courses;
@@ -79,6 +80,7 @@ namespace OtripleS.Web.Api
 			services.AddTransient<IUserContactService, UserContactService>();
 			services.AddTransient<IExamService, ExamService>();
 			services.AddTransient<IStudentExamService, StudentExamService>();
+			services.AddTransient<ICalendarService, CalendarService>();
 
 			services.AddIdentityCore<User>()
 					.AddRoles<Role>()
