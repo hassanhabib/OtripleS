@@ -83,7 +83,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
             }
         }
 
-
         [Fact]
         public async Task ShouldDeleteCourseAsync()
         {
