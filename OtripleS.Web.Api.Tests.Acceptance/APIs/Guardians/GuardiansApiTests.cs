@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Guardians;
 using Tynamix.ObjectFiller;
@@ -23,23 +24,12 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
         private Guardian CreateRandomGuardian() =>
             CreateRandomGuardianFiller().Create();
 
-        private IEnumerable<Guardian> GetRandomGuardians() =>
-            CreateRandomGuardianFiller().Create(GetRandomNumber());
-
-        private Filler<Guardian> CreateRandomGuardianFiller()
+        private async ValueTask<Guardian> PostRandomGuardianAsync()
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid posterId = Guid.NewGuid();
-            var filler = new Filler<Guardian>();
+            Guardian randomGuardian = CreateRandomGuardian();
+            await this.otripleSApiBroker.PostGuardianAsync(randomGuardian);
 
-            filler.Setup()
-                .OnProperty(guardian => guardian.CreatedBy).Use(posterId)
-                .OnProperty(guardian => guardian.UpdatedBy).Use(posterId)
-                .OnProperty(guardian => guardian.CreatedDate).Use(now)
-                .OnProperty(guardian => guardian.UpdatedDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
-
-            return filler;
+            return randomGuardian;
         }
 
         private Guardian UpdateGuardianRandom(Guardian guardian)
@@ -62,5 +52,21 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static int GetRandomNumber() => new IntRange(min: 1, max: 10).GetValue();
+
+        private Filler<Guardian> CreateRandomGuardianFiller()
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            Guid posterId = Guid.NewGuid();
+            var filler = new Filler<Guardian>();
+
+            filler.Setup()
+                .OnProperty(guardian => guardian.CreatedBy).Use(posterId)
+                .OnProperty(guardian => guardian.UpdatedBy).Use(posterId)
+                .OnProperty(guardian => guardian.CreatedDate).Use(now)
+                .OnProperty(guardian => guardian.UpdatedDate).Use(now)
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+
+            return filler;
+        }
     }
 }

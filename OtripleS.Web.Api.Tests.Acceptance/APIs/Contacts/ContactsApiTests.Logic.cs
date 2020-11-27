@@ -8,9 +8,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Contacts;
+using RESTFulSense.Exceptions;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
+namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Contacts
 {
     public partial class ContactsApiTests
     {
@@ -37,8 +38,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
         public async Task ShouldPutContactAsync()
         {
             // given
-            Contact randomContact = CreateRandomContact();
-            await this.otripleSApiBroker.PostContactAsync(randomContact);
+            Contact randomContact = await PostRandomContactAsync();
             Contact modifiedContact = UpdateContactRandom(randomContact);
 
             // when
@@ -56,14 +56,15 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
         public async Task ShouldGetAllContactsAsync()
         {
             // given
-            IEnumerable<Contact> randomContacts = CreateRandomContacts();
-            IEnumerable<Contact> inputContacts = randomContacts;
+            int randomNumber = GetRandomNumber();
+            var randomContacts = new List<Contact>();
 
-            foreach (Contact contact in inputContacts)
+            for (var i = 0; i <= randomNumber; i++)
             {
-                await this.otripleSApiBroker.PostContactAsync(contact);
+                randomContacts.Add(await PostRandomContactAsync());
             }
 
+            List<Contact> inputContacts = randomContacts;
             List<Contact> expectedContacts = inputContacts.ToList();
 
             // when
@@ -73,10 +74,35 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Contacts
             // then
             foreach (Contact expectedContact in expectedContacts)
             {
-                Contact actualContact = actualContacts.Single(contact => contact.Id == expectedContact.Id);
+                Contact actualContact =
+                    actualContacts.Single(contact =>
+                        contact.Id == expectedContact.Id);
+
                 actualContact.Should().BeEquivalentTo(expectedContact);
                 await this.otripleSApiBroker.DeleteContactByIdAsync(actualContact.Id);
             }
+        }
+
+        [Fact]
+        public async Task ShouldDeleteContactAsync()
+        {
+            // given
+            Contact randomContact = await PostRandomContactAsync();
+            Contact inputContact = randomContact;
+            Contact expectedContact = inputContact;
+
+            // when 
+            Contact deletedContact =
+                await this.otripleSApiBroker.DeleteContactByIdAsync(inputContact.Id);
+
+            ValueTask<Contact> getContactByIdTask =
+                this.otripleSApiBroker.GetContactByIdAsync(inputContact.Id);
+
+            // then
+            deletedContact.Should().BeEquivalentTo(expectedContact);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getContactByIdTask.AsTask());
         }
     }
 }
