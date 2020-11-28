@@ -57,18 +57,6 @@ namespace OtripleS.Web.Api.Services.Calendars
 			return storageCalendar;
 		});
 
-		public ValueTask<Calendar> DeleteCalendarByIdAsync(Guid calendarId) =>
-		TryCatch(async () =>
-		{
-			ValidateCalendarId(calendarId);
-
-			Calendar maybeCalendar = await storageBroker.SelectCalendarByIdAsync(calendarId);
-
-			ValidateStorageCalendar(maybeCalendar, calendarId);
-
-			return await storageBroker.DeleteCalendarAsync(maybeCalendar);
-		});
-
 		public ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar) =>
 		TryCatch(async () =>
 		{
@@ -86,5 +74,17 @@ namespace OtripleS.Web.Api.Services.Calendars
 			return await this.storageBroker.UpdateCalendarAsync(calendar);
 		});
 
-    }
+		public ValueTask<Calendar> DeleteCalendarByIdAsync(Guid calendarId) =>
+		TryCatch(async () =>
+		{
+			ValidateCalendarId(calendarId);
+
+			Calendar maybeCalendar = await storageBroker.SelectCalendarByIdAsync(calendarId);
+
+			ValidateStorageCalendar(maybeCalendar, calendarId);
+
+			return await storageBroker.DeleteCalendarAsync(maybeCalendar);
+		});
+
+	}
 }
