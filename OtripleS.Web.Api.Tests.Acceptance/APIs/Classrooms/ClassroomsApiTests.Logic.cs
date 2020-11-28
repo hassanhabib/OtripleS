@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Classrooms;
+using RESTFulSense.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Classrooms
@@ -38,8 +39,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Classrooms
         public async Task ShouldPutClassroomAsync()
         {
             // given
-            Classroom randomClassroom = CreateRandomClassroom();
-            await this.otripleSApiBroker.PostClassroomAsync(randomClassroom);
+            Classroom randomClassroom = await PostRandomClassroomAsync();
             Classroom modifiedClassroom = UpdateClassroomRandom(randomClassroom);
 
             // when
@@ -57,18 +57,19 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Classrooms
         public async Task ShouldGetAllClassroomsAsync()
         {
             // given
-            IEnumerable<Classroom> randomClassrooms = GetRandomClassrooms();
-            IEnumerable<Classroom> inputClassrooms = randomClassrooms;
+            List<Classroom> randomClassrooms = new List<Classroom>();
 
-            foreach (Classroom classroom in inputClassrooms)
+            for (int i = 0; i <= GetRandomNumber(); i++)
             {
-                await this.otripleSApiBroker.PostClassroomAsync(classroom);
+                randomClassrooms.Add(await PostRandomClassroomAsync());
             }
 
+            List<Classroom> inputClassrooms = randomClassrooms;
             List<Classroom> expectedClassrooms = inputClassrooms.ToList();
 
             // when
-            List<Classroom> actualClassrooms = await this.otripleSApiBroker.GetAllClassroomsAsync();
+            List<Classroom> actualClassrooms = 
+                await this.otripleSApiBroker.GetAllClassroomsAsync();
 
             // then
             foreach (Classroom expectedClassroom in expectedClassrooms)
@@ -79,6 +80,28 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Classrooms
                 actualClassroom.Should().BeEquivalentTo(expectedClassroom);
                 await this.otripleSApiBroker.DeleteClassroomByIdAsync(actualClassroom.Id);
             }
+        }
+
+        [Fact]
+        public async Task ShouldDeleteClassroomAsync()
+        {
+            // given
+            Classroom randomClassroom = await PostRandomClassroomAsync();
+            Classroom inputClassroom = randomClassroom;
+            Classroom expectedClassroom = inputClassroom;
+
+            // when 
+            Classroom deletedClassroom =
+                await this.otripleSApiBroker.DeleteClassroomByIdAsync(inputClassroom.Id);
+
+            ValueTask<Classroom> getClassroomByIdTask =
+                this.otripleSApiBroker.GetClassroomByIdAsync(inputClassroom.Id);
+
+            // then
+            deletedClassroom.Should().BeEquivalentTo(expectedClassroom);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getClassroomByIdTask.AsTask());
         }
     }
 }
