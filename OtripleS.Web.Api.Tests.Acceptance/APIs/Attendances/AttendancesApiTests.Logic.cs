@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Attendances;
+using RESTFulSense.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
@@ -18,14 +19,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
         public async Task ShouldGetAllAttendancesAsync()
         {
             // given
-            IEnumerable<Attendance> randomAttendances = GetRandomAttendances();
-            IEnumerable<Attendance> inputAttendances = randomAttendances;
+            var randomAttendances = new List<Attendance>();
 
-            foreach (Attendance attendance in inputAttendances)
+            for (int i = 0; i <= GetRandomNumber(); i++)
             {
-                await this.otripleSApiBroker.PostAttendanceAsync(attendance);
+                randomAttendances.Add(await PostRandomAttendanceAsync());
             }
 
+            List<Attendance> inputAttendances = randomAttendances;
             List<Attendance> expectedAttendances = inputAttendances.ToList();
 
             // when
@@ -38,7 +39,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
                     actualAttendances.Single(attendance => attendance.Id == expectedAttendance.Id);
 
                 actualAttendance.Should().BeEquivalentTo(expectedAttendance);
-                await this.otripleSApiBroker.DeleteAttendanceByIdAsync(actualAttendance.Id);
+                await DeleteAttendanceByIdAsync(actualAttendance);
             }
         }
 
@@ -46,8 +47,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
         public async Task ShouldModifyAttendanceAsync()
         {
             // given
-            Attendance randomAttendance = CreateRandomAttendance();
-            await this.otripleSApiBroker.PostAttendanceAsync(randomAttendance);
+            Attendance randomAttendance = await PostRandomAttendanceAsync();
             Attendance modifiedAttendance = UpdateAttendanceRandom(randomAttendance);
 
             // when
@@ -58,14 +58,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
 
             // then
             actualAttendance.Should().BeEquivalentTo(modifiedAttendance);
-            await this.otripleSApiBroker.DeleteAttendanceByIdAsync(actualAttendance.Id);
+            await DeleteAttendanceByIdAsync(actualAttendance);
         }
 
         [Fact]
         public async Task ShouldPostAttendanceAsync()
         {
             // given
-            Attendance randomAttendance = CreateRandomAttendance();
+            Attendance randomAttendance = await CreateRandomAttendanceAsync();
             Attendance inputAttendance = randomAttendance;
             Attendance expectedAttendance = inputAttendance;
 
@@ -77,7 +77,29 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
 
             // then
             actualAttendance.Should().BeEquivalentTo(expectedAttendance);
-            await this.otripleSApiBroker.DeleteAttendanceByIdAsync(actualAttendance.Id);
+            await DeleteAttendanceByIdAsync(actualAttendance);
+        }
+
+        [Fact]
+        public async Task ShouldDeleteAttendanceAsync()
+        {
+            // given
+            Attendance randomAttendance = await PostRandomAttendanceAsync();
+            Attendance inputAttendance = randomAttendance;
+            Attendance expectedAttendance = inputAttendance;
+
+            // when 
+            Attendance deletedAttendance =
+                await DeleteAttendanceByIdAsync(inputAttendance);
+
+            ValueTask<Attendance> getAttendanceByIdTask =
+                this.otripleSApiBroker.GetAttendanceByIdAsync(inputAttendance.Id);
+
+            // then
+            deletedAttendance.Should().BeEquivalentTo(expectedAttendance);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getAttendanceByIdTask.AsTask());
         }
     }
 }
