@@ -23,15 +23,15 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
             IEnumerable<Calendar> randomCalenders = GetRandomCalenders();
             IEnumerable<Calendar> inputedCalenders = randomCalenders;
 
-            foreach(var calender in inputedCalenders)
+            foreach (var calender in inputedCalenders)
             {
-              await  this.otripleSApiBroker.PostCalendarAsync(calender);
+                await this.otripleSApiBroker.PostCalendarAsync(calender);
             }
 
             List<Calendar> expectedCalenders = inputedCalenders.ToList();
 
             //when 
-            List<Calendar> actualCalenders =   await this.otripleSApiBroker.GetAllCalendersAsync();
+            List<Calendar> actualCalenders = await this.otripleSApiBroker.GetAllCalendersAsync();
 
             //then
             foreach (var expectcalender in expectedCalenders)
@@ -42,9 +42,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
                 await this.otripleSApiBroker.DeleteCalenderByIdAsync(actualCalender.Id);
             }
         }
-    
-    [Fact]
-    public async Task ShouldDeleteCalenderAsync()
+
+        [Fact]
+        public async Task ShouldDeleteCalenderAsync()
         {
             //given
             Calendar randomCalender = await PostRandomCalenderAsync();
@@ -54,7 +54,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
             //when
             Calendar deletedCalender = await this.otripleSApiBroker.DeleteCalenderByIdAsync(inputCalender.Id);
 
-            ValueTask<Calendar> getCalenderByIdTask =  this.otripleSApiBroker.DeleteCalenderByIdAsync(inputCalender.Id);
+            ValueTask<Calendar> getCalenderByIdTask = this.otripleSApiBroker.DeleteCalenderByIdAsync(inputCalender.Id);
 
             // then
             deletedCalender.Should().BeEquivalentTo(expectedCalender);
