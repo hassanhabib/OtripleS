@@ -21,7 +21,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
             Guid randomCalendarId = default;
             Guid inputCalendarId = randomCalendarId;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarInputException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.Id),
                 parameterValue: inputCalendarId);
 

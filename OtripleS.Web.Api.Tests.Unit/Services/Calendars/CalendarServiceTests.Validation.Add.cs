@@ -58,7 +58,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
             Calendar inputCalendar = randomCalendar;
             inputCalendar.Id = default;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarInputException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.Id),
                 parameterValue: inputCalendar.Id);
 
@@ -99,7 +99,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
             Calendar invalidCalendar = randomCalendar;
             invalidCalendar.Label = invalidCalendarLabel;
 
-            var invalidCalendarException = new InvalidCalendarInputException(
+            var invalidCalendarException = new InvalidCalendarException(
                parameterName: nameof(Calendar.Label),
                parameterValue: invalidCalendar.Label);
 
@@ -137,7 +137,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
             Calendar inputCalendar = randomCalendar;
             inputCalendar.CreatedBy = default;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarInputException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.CreatedBy),
                 parameterValue: inputCalendar.CreatedBy);
 
@@ -174,7 +174,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
             Calendar inputCalendar = randomCalendar;
             inputCalendar.CreatedDate = default;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarInputException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.CreatedDate),
                 parameterValue: inputCalendar.CreatedDate);
 
@@ -211,7 +211,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
             Calendar inputCalendar = randomCalendar;
             inputCalendar.UpdatedBy = default;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarInputException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.UpdatedBy),
                 parameterValue: inputCalendar.UpdatedBy);
 
@@ -248,7 +248,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
             Calendar inputCalendar = randomCalendar;
             inputCalendar.UpdatedDate = default;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarInputException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.UpdatedDate),
                 parameterValue: inputCalendar.UpdatedDate);
 
@@ -285,7 +285,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
             Calendar inputCalendar = randomCalendar;
             inputCalendar.UpdatedBy = Guid.NewGuid();
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarInputException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.UpdatedBy),
                 parameterValue: inputCalendar.UpdatedBy);
 
@@ -323,7 +323,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
             inputCalendar.UpdatedBy = randomCalendar.CreatedBy;
             inputCalendar.UpdatedDate = GetRandomDateTime();
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarInputException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.UpdatedDate),
                 parameterValue: inputCalendar.UpdatedDate);
 
@@ -364,7 +364,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
             inputCalendar.CreatedDate = dateTime.AddMinutes(minutes);
             inputCalendar.UpdatedDate = inputCalendar.CreatedDate;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarInputException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.CreatedDate),
                 parameterValue: inputCalendar.CreatedDate);
 
