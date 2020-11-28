@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 			// given
 			Guid invalidCalendarId = Guid.Empty;
 
-			var invalidCalendarException = new InvalidCalendarException(
+			var invalidCalendarException = new InvalidCalendarInputException(
 				parameterName: nameof(Calendar.Id),
 				parameterValue: invalidCalendarId);
 

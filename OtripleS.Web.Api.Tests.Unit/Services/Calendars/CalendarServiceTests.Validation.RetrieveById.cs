@@ -21,12 +21,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
             Guid randomCalendarId = default;
             Guid inputCalendarId = randomCalendarId;
 
-            var invalidCalendarException = new InvalidCalendarException(
+            var invalidCalendarInputException = new InvalidCalendarInputException(
                 parameterName: nameof(Calendar.Id),
                 parameterValue: inputCalendarId);
 
             var expectedCalendarValidationException =
-                new CalendarValidationException(invalidCalendarException);
+                new CalendarValidationException(invalidCalendarInputException);
 
             // when
             ValueTask<Calendar> retrieveCalendarByIdTask =

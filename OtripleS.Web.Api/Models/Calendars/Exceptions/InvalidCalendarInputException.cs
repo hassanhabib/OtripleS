@@ -6,9 +6,9 @@
 using System;
 namespace OtripleS.Web.Api.Models.Calendars.Exceptions
 {
-    public class InvalidCalendarException : Exception
+    public class InvalidCalendarInputException : Exception
     {
-        public InvalidCalendarException(string parameterName, object parameterValue)
+        public InvalidCalendarInputException(string parameterName, object parameterValue)
             : base($"Invalid Calendar, " +
                   $"ParameterName: {parameterName}, " +
                   $"ParameterValue: {parameterValue}.")

@@ -53,17 +53,17 @@ namespace OtripleS.Web.Api.Services.Calendars
             switch (inputCalendar)
             {
                 case { } when inputCalendar.CreatedDate != storageCalendar.CreatedDate:
-                    throw new InvalidCalendarException(
+                    throw new InvalidCalendarInputException(
                         parameterName: nameof(Calendar.CreatedDate),
                         parameterValue: inputCalendar.CreatedDate);
 
                 case { } when inputCalendar.CreatedBy != storageCalendar.CreatedBy:
-                    throw new InvalidCalendarException(
+                    throw new InvalidCalendarInputException(
                         parameterName: nameof(Calendar.CreatedBy),
                         parameterValue: inputCalendar.CreatedBy);
 
                 case { } when inputCalendar.UpdatedDate == storageCalendar.UpdatedDate:
-                    throw new InvalidCalendarException(
+                    throw new InvalidCalendarInputException(
                         parameterName: nameof(Calendar.UpdatedDate),
                         parameterValue: inputCalendar.UpdatedDate);
             }
@@ -73,7 +73,7 @@ namespace OtripleS.Web.Api.Services.Calendars
         {
             if (IsInvalid(calendarId))
             {
-                throw new InvalidCalendarException(
+                throw new InvalidCalendarInputException(
                     parameterName: nameof(Calendar.Id),
                     parameterValue: calendarId);
             }
@@ -83,7 +83,7 @@ namespace OtripleS.Web.Api.Services.Calendars
         {
             if (IsInvalid(calendar.Label))
             {
-                throw new InvalidCalendarException(
+                throw new InvalidCalendarInputException(
                     parameterName: nameof(Calendar.Label),
                     parameterValue: calendar.Label);
             }
@@ -94,22 +94,22 @@ namespace OtripleS.Web.Api.Services.Calendars
             switch (calendar)
             {
                 case { } when IsInvalid(calendar.CreatedBy):
-                    throw new InvalidCalendarException(
+                    throw new InvalidCalendarInputException(
                     parameterName: nameof(Calendar.CreatedBy),
                     parameterValue: calendar.CreatedBy);
 
                 case { } when IsInvalid(calendar.CreatedDate):
-                    throw new InvalidCalendarException(
+                    throw new InvalidCalendarInputException(
                     parameterName: nameof(Calendar.CreatedDate),
                     parameterValue: calendar.CreatedDate);
 
                 case { } when IsInvalid(calendar.UpdatedBy):
-                    throw new InvalidCalendarException(
+                    throw new InvalidCalendarInputException(
                     parameterName: nameof(Calendar.UpdatedBy),
                     parameterValue: calendar.UpdatedBy);
 
                 case { } when IsInvalid(calendar.UpdatedDate):
-                    throw new InvalidCalendarException(
+                    throw new InvalidCalendarInputException(
                     parameterName: nameof(Calendar.UpdatedDate),
                     parameterValue: calendar.UpdatedDate);
             }
@@ -120,12 +120,12 @@ namespace OtripleS.Web.Api.Services.Calendars
             switch (calendar)
             {
                 case { } when calendar.CreatedBy != calendar.UpdatedBy:
-                    throw new InvalidCalendarException(
+                    throw new InvalidCalendarInputException(
                         parameterName: nameof(Calendar.UpdatedBy),
                         parameterValue: calendar.UpdatedBy);
 
                 case { } when calendar.CreatedDate != calendar.UpdatedDate:
-                    throw new InvalidCalendarException(
+                    throw new InvalidCalendarInputException(
                         parameterName: nameof(Calendar.UpdatedDate),
                         parameterValue: calendar.UpdatedDate);
             }
@@ -135,7 +135,7 @@ namespace OtripleS.Web.Api.Services.Calendars
         {
             if (calendar.CreatedDate == calendar.UpdatedDate)
             {
-                throw new InvalidCalendarException(
+                throw new InvalidCalendarInputException(
                     parameterName: nameof(Calendar.UpdatedDate),
                     parameterValue: calendar.UpdatedDate);
             }
@@ -145,7 +145,7 @@ namespace OtripleS.Web.Api.Services.Calendars
         {
             if (IsDateNotRecent(calendar.UpdatedDate))
             {
-                throw new InvalidCalendarException(
+                throw new InvalidCalendarInputException(
                     parameterName: nameof(calendar.CreatedDate),
                     parameterValue: calendar.CreatedDate);
             }
@@ -155,7 +155,7 @@ namespace OtripleS.Web.Api.Services.Calendars
         {
             if (IsDateNotRecent(calendar.UpdatedDate))
             {
-                throw new InvalidCalendarException(
+                throw new InvalidCalendarInputException(
                     parameterName: nameof(calendar.UpdatedDate),
                     parameterValue: calendar.UpdatedDate);
             }
@@ -165,7 +165,7 @@ namespace OtripleS.Web.Api.Services.Calendars
         {
             if (calendarId == Guid.Empty)
             {
-                throw new InvalidCalendarException(
+                throw new InvalidCalendarInputException(
                     parameterName: nameof(Calendar.Id),
                     parameterValue: calendarId);
             }
