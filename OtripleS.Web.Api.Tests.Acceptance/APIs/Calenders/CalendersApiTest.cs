@@ -6,8 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Calendars;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Calendars;
 using Tynamix.ObjectFiller;
 using Xunit;
 
