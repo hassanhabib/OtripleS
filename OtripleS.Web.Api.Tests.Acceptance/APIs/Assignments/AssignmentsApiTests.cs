@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Assignments;
 using Tynamix.ObjectFiller;
@@ -29,22 +30,12 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
         private Assignment CreateRandomAssignment() =>
             CreateRandomAssignmentFiller().Create();
 
-        private Filler<Assignment> CreateRandomAssignmentFiller()
+        private async ValueTask<Assignment> PostRandomAssignmentAsync()
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid posterId = Guid.NewGuid();
+            Assignment randomAssignment = CreateRandomAssignment();
+            await this.otripleSApiBroker.PostAssignmentAsync(randomAssignment);
 
-            var filler = new Filler<Assignment>();
-
-            filler.Setup()
-                .OnProperty(assignment => assignment.CreatedBy).Use(posterId)
-                .OnProperty(assignment => assignment.UpdatedBy).Use(posterId)
-                .OnProperty(assignment => assignment.CreatedDate).Use(now)
-                .OnProperty(assignment => assignment.UpdatedDate).Use(now)
-                .OnProperty(assignment => assignment.Deadline).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
-
-            return filler;
+            return randomAssignment;
         }
 
         private Assignment UpdateAssignmentRandom(Assignment inputAssignment)
@@ -64,8 +55,25 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
             return filler.Create();
         }
 
-
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private Filler<Assignment> CreateRandomAssignmentFiller()
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            Guid posterId = Guid.NewGuid();
+
+            var filler = new Filler<Assignment>();
+
+            filler.Setup()
+                .OnProperty(assignment => assignment.CreatedBy).Use(posterId)
+                .OnProperty(assignment => assignment.UpdatedBy).Use(posterId)
+                .OnProperty(assignment => assignment.CreatedDate).Use(now)
+                .OnProperty(assignment => assignment.UpdatedDate).Use(now)
+                .OnProperty(assignment => assignment.Deadline).Use(now)
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+
+            return filler;
+        }
     }
 }

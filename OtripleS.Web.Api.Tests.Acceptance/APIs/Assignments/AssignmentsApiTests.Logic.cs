@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Assignments;
+using RESTFulSense.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
@@ -18,23 +19,27 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
         public async Task ShouldGetAllAssignmentsAsync()
         {
             // given
-            IEnumerable<Assignment> randomAssignments = GetRandomAssignments();
-            IEnumerable<Assignment> inputAssignments = randomAssignments;
+            var randomAssignments = new List<Assignment>();
 
-            foreach (Assignment assignment in inputAssignments)
+            for (int i = 0; i < GetRandomNumber(); i++)
             {
-                await this.otripleSApiBroker.PostAssignmentAsync(assignment);
+                randomAssignments.Add(await PostRandomAssignmentAsync());
             }
 
+            List<Assignment> inputAssignments = randomAssignments;
             List<Assignment> expectedAssignments = inputAssignments.ToList();
 
             // when
-            List<Assignment> actualAssignments = await this.otripleSApiBroker.GetAllAssignmentsAsync();
+            List<Assignment> actualAssignments = 
+                await this.otripleSApiBroker.GetAllAssignmentsAsync();
 
             // then
             foreach (Assignment expectedAssignment in expectedAssignments)
             {
-                Assignment actualAssignment = actualAssignments.Single(assignment => assignment.Id == expectedAssignment.Id);
+                Assignment actualAssignment = 
+                    actualAssignments.Single(assignment => 
+                        assignment.Id == expectedAssignment.Id);
+
                 actualAssignment.Should().BeEquivalentTo(expectedAssignment);
                 await this.otripleSApiBroker.DeleteAssignmentByIdAsync(actualAssignment.Id);
             }
@@ -44,8 +49,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
         public async Task ShouldModifyAssignmentAsync()
         {
             // given
-            Assignment randomAssignment = CreateRandomAssignment();
-            await this.otripleSApiBroker.PostAssignmentAsync(randomAssignment);
+            Assignment randomAssignment = await PostRandomAssignmentAsync();
             Assignment modifiedAssignment = UpdateAssignmentRandom(randomAssignment);
 
             // when
@@ -76,6 +80,28 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
             // then
             actualAssignment.Should().BeEquivalentTo(expectedAssignment);
             await this.otripleSApiBroker.DeleteAssignmentByIdAsync(actualAssignment.Id);
+        }
+
+        [Fact]
+        public async Task ShouldDeleteAssignmentAsync()
+        {
+            // given
+            Assignment randomAssignment = await PostRandomAssignmentAsync();
+            Assignment inputAssignment = randomAssignment;
+            Assignment expectedAssignment = inputAssignment;
+
+            // when 
+            Assignment deletedAssignment =
+                await this.otripleSApiBroker.DeleteAssignmentByIdAsync(inputAssignment.Id);
+
+            ValueTask<Assignment> getAssignmentByIdTask =
+                this.otripleSApiBroker.GetAssignmentByIdAsync(inputAssignment.Id);
+
+            // then
+            deletedAssignment.Should().BeEquivalentTo(expectedAssignment);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getAssignmentByIdTask.AsTask());
         }
     }
 }
