@@ -18,26 +18,29 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 		public async Task ShouldThrowValidatonExceptionOnDeleteWhenIdIsInvalidAndLogItAsync()
 		{
 			// given
-			Guid randomCalendarId = default;
-			Guid inputCalendarId = randomCalendarId;
+			Guid invalidCalendarId = Guid.Empty;
 
-			var invalidCalendarInputException = new InvalidCalendarInputException(
+			var invalidCalendarException = new InvalidCalendarException(
 				parameterName: nameof(Calendar.Id),
-				parameterValue: inputCalendarId);
+				parameterValue: invalidCalendarId);
 
 			var expectedCalendarValidationException =
-				new CalendarValidationException(invalidCalendarInputException);
+				new CalendarValidationException(invalidCalendarException);
 
 			// when
-			ValueTask<Calendar> actualCalendarTask =
-				this.calendarService.DeleteCalendarByIdAsync(inputCalendarId);
+			ValueTask<Calendar> deleteCalenderTask =
+				this.calendarService.DeleteCalendarByIdAsync(invalidCalendarId);
 
 			// then
-			await Assert.ThrowsAsync<CalendarValidationException>(() => actualCalendarTask.AsTask());
+			await Assert.ThrowsAsync<CalendarValidationException>(() => deleteCalenderTask.AsTask());
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogError(It.Is(SameExceptionAs(expectedCalendarValidationException))),
 					Times.Once);
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Never);
 
 			this.storageBrokerMock.Verify(broker =>
 				broker.SelectCalendarByIdAsync(It.IsAny<Guid>()),
@@ -47,20 +50,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 				broker.DeleteCalendarAsync(It.IsAny<Calendar>()),
 					Times.Never);
 
-			this.storageBrokerMock.VerifyNoOtherCalls();
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
 
 		[Fact]
 		public async Task ShouldThrowValidatonExceptionOnDeleteWhenStorageCalendarIsInvalidAndLogItAsync()
 		{
 			// given
-			DateTimeOffset dateTime = GetRandomDateTime();
-			Calendar randomCalendar = CreateRandomCalendar(dateTime);
-			Guid inputCalendarId = randomCalendar.Id;
-			Calendar inputCalendar = randomCalendar;
-			Calendar nullStorageCalendar = null;
+			Guid randomCalendarId = Guid.NewGuid();
+			Guid inputCalendarId = randomCalendarId;
+			Calendar invalidStorageCalendar = null;
 
 			var notFoundCalendarException = new NotFoundCalendarException(inputCalendarId);
 
@@ -69,18 +70,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 
 			this.storageBrokerMock.Setup(broker =>
 				broker.SelectCalendarByIdAsync(inputCalendarId))
-					.ReturnsAsync(nullStorageCalendar);
+					.ReturnsAsync(invalidStorageCalendar);
 
 			// when
-			ValueTask<Calendar> actualCalendarTask =
+			ValueTask<Calendar> deleteCalendarByIdTask =
 				this.calendarService.DeleteCalendarByIdAsync(inputCalendarId);
 
 			// then
-			await Assert.ThrowsAsync<CalendarValidationException>(() => actualCalendarTask.AsTask());
+			await Assert.ThrowsAsync<CalendarValidationException>(() => deleteCalendarByIdTask.AsTask());
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogError(It.Is(SameExceptionAs(expectedCalendarValidationException))),
 					Times.Once);
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Never);
 
 			this.storageBrokerMock.Verify(broker =>
 				broker.SelectCalendarByIdAsync(inputCalendarId),
@@ -90,9 +95,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 				broker.DeleteCalendarAsync(It.IsAny<Calendar>()),
 					Times.Never);
 
-			this.storageBrokerMock.VerifyNoOtherCalls();
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
 	}
 }
