@@ -74,17 +74,17 @@ namespace OtripleS.Web.Api.Services.Calendars
 			return await this.storageBroker.UpdateCalendarAsync(calendar);
 		});
 
-		public ValueTask<Calendar> DeleteCalendarByIdAsync(Guid calendarId) =>
+    public ValueTask<Calendar> DeleteCalendarByIdAsync(Guid calendarId) =>
 		TryCatch(async () =>
 		{
-			ValidateCalendarId(calendarId);
+			ValidateCalendarIdIsNull(calendarId);
 
-			Calendar maybeCalendar = await storageBroker.SelectCalendarByIdAsync(calendarId);
+			Calendar maybeCalender =
+				await this.storageBroker.SelectCalendarByIdAsync(calendarId);
 
-			ValidateStorageCalendar(maybeCalendar, calendarId);
+			ValidateStorageCalendar(maybeCalender, calendarId);
 
-			return await storageBroker.DeleteCalendarAsync(maybeCalendar);
+			return await this.storageBroker.DeleteCalendarAsync(maybeCalender);
 		});
-
 	}
 }
