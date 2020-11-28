@@ -99,12 +99,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
             Calendar invalidCalendar = randomCalendar;
             invalidCalendar.Label = invalidCalendarLabel;
 
-            var invalidCalendarException = new InvalidCalendarInputException(
+            var invalidCalendarInputException = new InvalidCalendarInputException(
                parameterName: nameof(Calendar.Label),
                parameterValue: invalidCalendar.Label);
 
             var expectedCalendarValidationException =
-                new CalendarValidationException(invalidCalendarException);
+                new CalendarValidationException(invalidCalendarInputException);
 
             // when
             ValueTask<Calendar> registerCalendarTask =
