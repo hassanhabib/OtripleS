@@ -13,6 +13,7 @@ This project is aiming toward directing all the software development funds and h
 
 ## Project Coding Standard
 [The Standard](https://github.com/hassanhabib/The-Standard)
+
 [C# Coding Standard](https://github.com/hassanhabib/CSharpCodingStandard)
 
 ## Project Updates
