@@ -143,7 +143,7 @@ namespace OtripleS.Web.Api.Services.Calendars
 
         private void ValidateCreatedDateIsRecent(Calendar calendar)
         {
-            if (IsDateNotRecent(calendar.UpdatedDate))
+            if (IsDateNotRecent(calendar.CreatedDate))
             {
                 throw new InvalidCalendarInputException(
                     parameterName: nameof(calendar.CreatedDate),
