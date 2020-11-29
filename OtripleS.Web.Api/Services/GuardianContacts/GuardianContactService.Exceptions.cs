@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -16,6 +17,7 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
     public partial class GuardianContactService
     {
         private delegate ValueTask<GuardianContact> ReturningGuardianContactFunction();
+        private delegate IQueryable<GuardianContact> ReturningGuardianContactsFunction();
 
         private async ValueTask<GuardianContact> TryCatch(
             ReturningGuardianContactFunction returningGuardianContactFunction)
@@ -56,6 +58,27 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
                     new LockedGuardianContactException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedGuardianContactException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private IQueryable<GuardianContact> TryCatch(
+            ReturningGuardianContactsFunction returningGuardianContactsFunction)
+        {
+            try
+            {
+                return returningGuardianContactsFunction();
             }
             catch (SqlException sqlException)
             {
