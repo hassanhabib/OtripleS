@@ -34,6 +34,25 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
             actualCalendar.Should().BeEquivalentTo(expectedCalendar);
             await this.otripleSApiBroker.DeleteCalenderByIdAsync(actualCalendar.Id);
         }
+      
+        [Fact]
+        public async Task ShouldPutCalendarAsync()
+        {
+            // given
+            Calendar randomCalendar = await PostRandomCalenderAsync();
+            Calendar modifiedCalendar = UpdateCalendarRandom(randomCalendar);
+
+            // when
+            await this.otripleSApiBroker.PutCalendarAsync(modifiedCalendar);
+
+            Calendar actualCalendar =
+                await this.otripleSApiBroker.GetCalenderByIdAsync(randomCalendar.Id);
+
+            // then
+            actualCalendar.Should().BeEquivalentTo(modifiedCalendar);
+            await this.otripleSApiBroker.DeleteCalenderByIdAsync(actualCalendar.Id);
+        }
+
 
         [Fact]
         public async Task ShouldGetAllCalendersAsync()
