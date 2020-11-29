@@ -78,7 +78,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
             };
         }
 
-        private static int GetRandomNumber() => new IntRange(min: 1, max: 90).GetValue();
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 90).GetValue();
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
 
         private User CreateRandomUser(DateTimeOffset dates)
