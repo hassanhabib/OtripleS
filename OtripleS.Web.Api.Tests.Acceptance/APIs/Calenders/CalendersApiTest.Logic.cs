@@ -3,12 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using OtripleS.Web.Api.Models.Calendars;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Calendars;
 using RESTFulSense.Exceptions;
 using Xunit;
 
@@ -20,14 +19,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
         public async Task ShouldGetAllCalendersAsync()
         {
             //given
-            IEnumerable<Calendar> randomCalenders = GetRandomCalenders();
-            IEnumerable<Calendar> inputedCalenders = randomCalenders;
-
-            foreach (var calender in inputedCalenders)
+            var randomCalenders = new List<Calendar>();
+            
+            for (var i =0; i <= GetRandomNumber(); i++)
             {
-                await this.otripleSApiBroker.PostCalendarAsync(calender);
+                randomCalenders.Add(await PostRandomCalenderAsync());
             }
 
+            List<Calendar> inputedCalenders = randomCalenders;
             List<Calendar> expectedCalenders = inputedCalenders.ToList();
 
             //when 
@@ -52,9 +51,11 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
             Calendar expectedCalender = inputCalender;
 
             //when
-            Calendar deletedCalender = await this.otripleSApiBroker.DeleteCalenderByIdAsync(inputCalender.Id);
+            Calendar deletedCalender = 
+                await this.otripleSApiBroker.DeleteCalenderByIdAsync(inputCalender.Id);
 
-            ValueTask<Calendar> getCalenderByIdTask = this.otripleSApiBroker.DeleteCalenderByIdAsync(inputCalender.Id);
+            ValueTask<Calendar> getCalenderByIdTask = 
+                this.otripleSApiBroker.DeleteCalenderByIdAsync(inputCalender.Id);
 
             // then
             deletedCalender.Should().BeEquivalentTo(expectedCalender);

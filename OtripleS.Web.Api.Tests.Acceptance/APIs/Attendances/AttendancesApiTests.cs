@@ -5,8 +5,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Attendances;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Classrooms;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
+using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
 using Tynamix.ObjectFiller;
 using Xunit;
 
@@ -23,15 +28,30 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
         }
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private IEnumerable<Attendance> GetRandomAttendances() =>
-            CreateRandomAttendanceFiller().Create(GetRandomNumber());
-
-        private Attendance CreateRandomAttendance() =>
-            CreateRandomAttendanceFiller().Create();
-
-        private Filler<Attendance> CreateRandomAttendanceFiller()
+        private Attendance UpdateAttendanceRandom(Attendance inputAttendance)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
+            inputAttendance.UpdatedDate = now;
+                
+            return inputAttendance;
+        }
+
+        private async ValueTask<Attendance> PostRandomAttendanceAsync()
+        {
+            Attendance randomAttendance = await CreateRandomAttendanceAsync();
+            await this.otripleSApiBroker.PostAttendanceAsync(randomAttendance);
+
+            return randomAttendance;
+        }
+
+        private async ValueTask<Attendance> CreateRandomAttendanceAsync()
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            Teacher randomTeacher = await PostTeacherAsync();
+            Classroom randomClassroom = await PostClassRoomAsync();
+            Course randomCourse = await PostCourseAsync();
+            SemesterCourse semesterCourse = await PostRandomSemesterCourseAsync(
+                randomTeacher, randomClassroom, randomCourse);
             Guid posterId = Guid.NewGuid();
 
             var filler = new Filler<Attendance>();
@@ -42,30 +62,137 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
                 .OnProperty(attendance => attendance.CreatedDate).Use(now)
                 .OnProperty(attendance => attendance.UpdatedDate).Use(now)
                 .OnProperty(Attendance => Attendance.AttendanceDate).Use(now)
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
-
-            return filler;
-        }
-
-
-        private Attendance UpdateAttendanceRandom(Attendance inputAttendance)
-        {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            var filler = new Filler<Attendance>();
-
-            filler.Setup()
-                .OnProperty(attendance => attendance.Id).Use(inputAttendance.Id)
-                .OnProperty(attendance => attendance.CreatedBy).Use(inputAttendance.CreatedBy)
-                .OnProperty(attendance => attendance.UpdatedBy).Use(inputAttendance.UpdatedBy)
-                .OnProperty(attendance => attendance.CreatedDate).Use(inputAttendance.CreatedDate)
-                .OnProperty(attendance => attendance.UpdatedDate).Use(now)
+                .OnProperty(Attendance => Attendance.StudentSemesterCourseId).Use(semesterCourse.Id)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler.Create();
         }
 
+        private async ValueTask<Attendance> DeleteAttendanceByIdAsync(Attendance attendance)
+        {
+            Attendance deletedAttendance = 
+                await this.otripleSApiBroker.DeleteAttendanceByIdAsync(attendance.Id);
+
+            SemesterCourse deletedSemesterCourse = 
+                await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(
+                    attendance.StudentSemesterCourseId);
+
+            await this.otripleSApiBroker.DeleteCourseByIdAsync(deletedSemesterCourse.CourseId);
+            await this.otripleSApiBroker.DeleteClassroomByIdAsync(deletedSemesterCourse.ClassroomId);
+            await this.otripleSApiBroker.DeleteTeacherByIdAsync(deletedSemesterCourse.TeacherId);
+
+            return deletedAttendance;
+        }
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
+        
+        private async ValueTask<SemesterCourse> PostRandomSemesterCourseAsync(
+            Teacher randomTeacher, 
+            Classroom randomClassroom, 
+            Course randomCourse)
+        {
+            SemesterCourse randomSemesterCourse = await CreateRandomSemesterCourseAsync(
+                randomTeacher, randomClassroom, randomCourse);
+            await this.otripleSApiBroker.PostSemesterCourseAsync(randomSemesterCourse);
+
+            return randomSemesterCourse;
+        }
+
+        private async ValueTask<SemesterCourse> CreateRandomSemesterCourseAsync(
+            Teacher randomTeacher,
+            Classroom randomClassroom,
+            Course randomCourse)
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            
+            Guid userId = Guid.NewGuid();
+            var filler = new Filler<SemesterCourse>();
+
+            filler.Setup()
+                .OnProperty(semesterCourse => semesterCourse.CreatedBy).Use(userId)
+                .OnProperty(semesterCourse => semesterCourse.UpdatedBy).Use(userId)
+                .OnProperty(semesterCourse => semesterCourse.CreatedDate).Use(now)
+                .OnProperty(semesterCourse => semesterCourse.UpdatedDate).Use(now)
+                .OnProperty(semesterCourse => semesterCourse.TeacherId).Use(randomTeacher.Id)
+                .OnProperty(semesterCourse => semesterCourse.ClassroomId).Use(randomClassroom.Id)
+                .OnProperty(semesterCourse => semesterCourse.CourseId).Use(randomCourse.Id)
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+
+            SemesterCourse semesterCourse = filler.Create();
+
+            return semesterCourse;
+        }
+
+        private async ValueTask<Course> PostCourseAsync()
+        {
+            Course randomCourse = CreateRandomCourseFiller().Create();
+
+            return await this.otripleSApiBroker.PostCourseAsync(randomCourse);
+        }
+
+        private async ValueTask<Classroom> PostClassRoomAsync()
+        {
+            Classroom randomClassroom = CreateRandomClassroomFiller().Create();
+
+            return await this.otripleSApiBroker.PostClassroomAsync(randomClassroom);
+        }
+
+        private async ValueTask<Teacher> PostTeacherAsync()
+        {
+            Teacher randomTeacher = CreateRandomTeacherFiller().Create();
+
+            return await this.otripleSApiBroker.PostTeacherAsync(randomTeacher);
+        }
+
+        private Filler<Classroom> CreateRandomClassroomFiller()
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            Guid posterId = Guid.NewGuid();
+
+            var filler = new Filler<Classroom>();
+
+            filler.Setup()
+                .OnProperty(classroom => classroom.CreatedBy).Use(posterId)
+                .OnProperty(classroom => classroom.UpdatedBy).Use(posterId)
+                .OnProperty(classroom => classroom.CreatedDate).Use(now)
+                .OnProperty(classroom => classroom.UpdatedDate).Use(now)
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+
+            return filler;
+        }
+
+        private Filler<Teacher> CreateRandomTeacherFiller()
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            Guid posterId = Guid.NewGuid();
+
+            var filler = new Filler<Teacher>();
+
+            filler.Setup()
+                .OnProperty(teacher => teacher.CreatedBy).Use(posterId)
+                .OnProperty(teacher => teacher.UpdatedBy).Use(posterId)
+                .OnProperty(teacher => teacher.CreatedDate).Use(now)
+                .OnProperty(teacher => teacher.UpdatedDate).Use(now)
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+
+            return filler;
+        }
+
+        private Filler<Course> CreateRandomCourseFiller()
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            Guid posterId = Guid.NewGuid();
+            var filler = new Filler<Course>();
+
+            filler.Setup()
+                .OnProperty(course => course.CreatedBy).Use(posterId)
+                .OnProperty(course => course.UpdatedBy).Use(posterId)
+                .OnProperty(course => course.CreatedDate).Use(now)
+                .OnProperty(course => course.UpdatedDate).Use(now)
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+
+            return filler;
+        }
     }
 }
