@@ -17,8 +17,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.0" />
-    <PackageReference Include="RESTFulSense" Version="1.7.0" />
     <PackageReference Include="EFxceptions.Identity" Version="0.4.4" />
+    <PackageReference Include="RESTFulSense" Version="1.7.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\Users\Exceptions\" />

@@ -15,6 +15,26 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
 {
     public partial class CalendersApiTest
     {
+
+        [Fact]
+        public async Task ShouldPostCalendarAsync()
+        {
+            // given
+           Calendar randomCalendar = CreateRandomCalender();
+           Calendar inputCalendar = randomCalendar;
+           Calendar expectedCalendar = inputCalendar;
+
+            // when 
+            await this.otripleSApiBroker.PostCalendarAsync(inputCalendar);
+
+           Calendar actualCalendar =
+                await this.otripleSApiBroker.GetCalenderByIdAsync(inputCalendar.Id);
+
+            // then
+            actualCalendar.Should().BeEquivalentTo(expectedCalendar);
+            await this.otripleSApiBroker.DeleteCalenderByIdAsync(actualCalendar.Id);
+        }
+
         [Fact]
         public async Task ShouldGetAllCalendersAsync()
         {
