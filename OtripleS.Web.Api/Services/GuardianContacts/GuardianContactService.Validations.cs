@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.GuardianContacts;
 using OtripleS.Web.Api.Models.GuardianContacts.Exceptions;
 
@@ -15,6 +16,14 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
         {
             ValidateGuardianContactIsNull(guardianContact);
             ValidateGuardianContactRequiredFields(guardianContact);
+        }
+
+        private void ValidateStorageGuardianContacts(IQueryable<GuardianContact> storageGuardianContacts)
+        {
+            if (!storageGuardianContacts.Any())
+            {
+                this.loggingBroker.LogWarning("No GuardianContacts found in storage.");
+            }
         }
 
         private void ValidateGuardianContactIsNull(GuardianContact guardianContact)

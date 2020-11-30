@@ -46,10 +46,16 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
             return await this.storageBroker.DeleteGuardianContactAsync(mayBeGuardianContact);
         });
 
-        public IQueryable<GuardianContact> RetrieveAllGuardianContacts()
+        public IQueryable<GuardianContact> RetrieveAllGuardianContacts() =>
+        TryCatch(() =>
         {
-            throw new NotImplementedException();
-        }
+            IQueryable<GuardianContact> storageGuardianContacts =
+                this.storageBroker.SelectAllGuardianContacts();
+
+            ValidateStorageGuardianContacts(storageGuardianContacts);
+
+            return storageGuardianContacts;
+        });
 
         public ValueTask<GuardianContact> RetrieveGuardianContactByIdAsync(Guid guardianId, Guid contactId) =>
         TryCatch(async () =>

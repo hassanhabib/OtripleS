@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.UserContacts;
 using OtripleS.Web.Api.Models.UserContacts.Exceptions;
 
@@ -23,6 +24,14 @@ namespace OtripleS.Web.Api.Services.UserContacts
             if (userContact is null)
             {
                 throw new NullUserContactException();
+            }
+        }
+
+        private void ValidateStorageUserContacts(IQueryable<UserContact> storageUserContacts)
+        {
+            if (!storageUserContacts.Any())
+            {
+                this.loggingBroker.LogWarning("No UserContacts found in storage.");
             }
         }
 

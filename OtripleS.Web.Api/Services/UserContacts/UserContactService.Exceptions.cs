@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -16,6 +17,7 @@ namespace OtripleS.Web.Api.Services.UserContacts
     public partial class UserContactService
     {
         private delegate ValueTask<UserContact> ReturningUserContactFunction();
+        private delegate IQueryable<UserContact> ReturningUserContactsFunction();
 
         private async ValueTask<UserContact> TryCatch(ReturningUserContactFunction returningUserContactFunction)
         {
@@ -59,6 +61,27 @@ namespace OtripleS.Web.Api.Services.UserContacts
                     new LockedUserContactException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedUserContactException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private IQueryable<UserContact> TryCatch(
+           ReturningUserContactsFunction returningUserContactsFunction)
+        {
+            try
+            {
+                return returningUserContactsFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
             }
             catch (DbUpdateException dbUpdateException)
             {

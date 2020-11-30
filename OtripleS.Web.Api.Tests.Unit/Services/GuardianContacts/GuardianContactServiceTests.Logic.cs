@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -85,6 +86,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
         }
 
         [Fact]
+        public void ShouldRetrieveAllGuardianContacts()
+        {
+            // given
+            IQueryable<GuardianContact> randomGuardianContacts =
+                CreateRandomGuardianContacts();
+
+            IQueryable<GuardianContact> storageGuardianContacts = randomGuardianContacts;
+            IQueryable<GuardianContact> expectedGuardianContacts = storageGuardianContacts;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllGuardianContacts())
+                    .Returns(storageGuardianContacts);
+
+            // when
+            IQueryable<GuardianContact> actualGuardianContacts =
+                this.guardianContactService.RetrieveAllGuardianContacts();
+
+            // then
+            actualGuardianContacts.Should().BeEquivalentTo(expectedGuardianContacts);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllGuardianContacts(),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public async Task ShouldRetrieveGuardianContactById()
         {
             // given
@@ -110,6 +140,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-        }
+        }        
     }
 }

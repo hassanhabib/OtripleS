@@ -46,10 +46,16 @@ namespace OtripleS.Web.Api.Services.UserContacts
             return await this.storageBroker.DeleteUserContactAsync(mayBeUserContact);
         });
 
-        public IQueryable<UserContact> RetrieveAllUserContacts()
+        public IQueryable<UserContact> RetrieveAllUserContacts() =>
+        TryCatch(() =>
         {
-            throw new NotImplementedException();
-        }
+            IQueryable<UserContact> storageUserContacts =
+                this.storageBroker.SelectAllUserContacts();
+
+            ValidateStorageUserContacts(storageUserContacts);
+
+            return storageUserContacts;
+        });
 
         public ValueTask<UserContact> RetrieveUserContactByIdAsync(Guid userId, Guid contactId) =>
         TryCatch(async () =>

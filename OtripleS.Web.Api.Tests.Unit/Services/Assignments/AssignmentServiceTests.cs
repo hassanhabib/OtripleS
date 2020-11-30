@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
             return filler;
         }
 
-        private static int GetRandomNumber() => new IntRange(min: 1, max: 150).GetValue();
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
