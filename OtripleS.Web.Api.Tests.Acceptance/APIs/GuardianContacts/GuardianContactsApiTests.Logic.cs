@@ -32,8 +32,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.GuardianContacts
                     inputGuardianContact.GuardianId,
                     inputGuardianContact.ContactId);
 
+            GuardianContact retrieveGuardianContact=
+                await this.otripleSApiBroker.GetGuardianContactByIdAsync(
+                    inputGuardianContact.GuardianId,
+                    inputGuardianContact.ContactId);
+
             // then
             actualGuardianContact.Should().BeEquivalentTo(expectedGuardianContact);
+            retrieveGuardianContact.Should().BeEquivalentTo(expectedGuardianContact);
             await DeleteGuardianContactAsync(actualGuardianContact);
         }
 
