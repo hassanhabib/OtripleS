@@ -67,6 +67,11 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
                     throw new InvalidCalendarEntryException(
                         parameterName: nameof(CalendarEntry.UpdatedBy),
                         parameterValue: calendarEntry.UpdatedBy);
+
+                case { } when calendarEntry.UpdatedDate != calendarEntry.CreatedDate:
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.UpdatedDate),
+                        parameterValue: calendarEntry.UpdatedDate);
             }
         }
     }
