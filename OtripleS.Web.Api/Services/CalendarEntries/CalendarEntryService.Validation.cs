@@ -15,6 +15,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
         {
             ValidateCalendarEntryIsNotNull(calendarEntry);
             ValidateCalendarEntryId(calendarEntry.Id);
+            ValidateCalendarEntryRequiredFields(calendarEntry);
             ValidateCalendarEntryAuditFieldsOnCreate(calendarEntry);
         }
 
@@ -38,6 +39,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
 
         private static bool IsInvalid(Guid input) => input == Guid.Empty;
         private bool IsInvalid(DateTimeOffset input) => input == default;
+        private bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);
 
         private void ValidateCalendarEntryAuditFieldsOnCreate(CalendarEntry calendarEntry)
         {
@@ -87,6 +89,17 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             TimeSpan difference = now.Subtract(dateTime);
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
+
+        private void ValidateCalendarEntryRequiredFields(CalendarEntry calendarEntry)
+        {
+            switch (calendarEntry)
+            {
+                case { } when IsInvalid(input: calendarEntry.Label):
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.Label),
+                        parameterValue: calendarEntry.Label);
+            }
         }
     }
 }
