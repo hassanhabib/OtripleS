@@ -30,7 +30,9 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
 
         public IQueryable<CalendarEntry> RetrieveAllCalendarEntries()
         {
-            throw new NotImplementedException();
-        }
+			IQueryable<CalendarEntry> storageCalendarEntries = this.storageBroker.SelectAllCalendarEntries();
+
+			return storageCalendarEntries;
+		}
     }
 }
