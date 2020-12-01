@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq.Expressions;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -49,6 +50,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
                 .OnProperty(calendarEntry => calendarEntry.Calendar).IgnoreIt();
 
             return filler;
+        }
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
     }
 }

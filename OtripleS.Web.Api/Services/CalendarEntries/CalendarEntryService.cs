@@ -30,7 +30,8 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
 
         public ValueTask<CalendarEntry> AddCalendarEntryAsync(CalendarEntry calendarEntry)
         {
-            return storageBroker.InsertCalendarEntryAsync(calendarEntry);
+            ValidateCalendarEntryOnCreate(calendarEntry);
+            return this.storageBroker.InsertCalendarEntryAsync(calendarEntry);
         }
     }
 }
