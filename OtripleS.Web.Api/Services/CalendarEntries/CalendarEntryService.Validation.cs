@@ -37,15 +37,21 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
         }
 
         private static bool IsInvalid(Guid input) => input == Guid.Empty;
+        private bool IsInvalid(DateTimeOffset input) => input == default;
 
-        private void ValidateCalendarEntryAuditFieldsOnCreate(CalendarEntry CalendarEntry)
+        private void ValidateCalendarEntryAuditFieldsOnCreate(CalendarEntry calendarEntry)
         {
-            switch (CalendarEntry)
+            switch (calendarEntry)
             {
-                case { } when IsInvalid(input: CalendarEntry.CreatedBy):
+                case { } when IsInvalid(input: calendarEntry.CreatedBy):
                     throw new InvalidCalendarEntryException(
                         parameterName: nameof(CalendarEntry.CreatedBy),
-                        parameterValue: CalendarEntry.CreatedBy);
+                        parameterValue: calendarEntry.CreatedBy);
+
+                case { } when IsInvalid(input: calendarEntry.CreatedDate):
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.CreatedDate),
+                        parameterValue: calendarEntry.CreatedDate);
             }
         }
     }
