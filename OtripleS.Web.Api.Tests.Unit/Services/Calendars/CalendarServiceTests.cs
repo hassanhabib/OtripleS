@@ -13,6 +13,7 @@ using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Models.CalendarEntries;
 using OtripleS.Web.Api.Models.Calendars;
 using OtripleS.Web.Api.Services.Calendars;
 using Tynamix.ObjectFiller;
@@ -80,7 +81,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 
 			filler.Setup()
 				.OnProperty(Calendar => Calendar.CreatedDate).Use(dates)
-				.OnProperty(Calendar => Calendar.UpdatedDate).Use(dates);
+				.OnProperty(Calendar => Calendar.UpdatedDate).Use(dates)
+				.OnType<IEnumerable<CalendarEntry>>().IgnoreIt();
 
 			return filler;
 		}

@@ -4,6 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using OtripleS.Web.Api.Models.CalendarEntries;
 
 namespace OtripleS.Web.Api.Models.Calendars
 {
@@ -15,5 +17,7 @@ namespace OtripleS.Web.Api.Models.Calendars
         public DateTimeOffset UpdatedDate { get; set; }
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
+
+        public IEnumerable<CalendarEntry> CalendarEntries { get; set; }
     }
 }
