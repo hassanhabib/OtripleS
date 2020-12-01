@@ -24,6 +24,10 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             {
                 throw CreateAndLogValidationException(nullCalendarEntryException);
             }
+            catch (InvalidCalendarEntryException invalidCalendarEntryException)
+            {
+                throw CreateAndLogValidationException(invalidCalendarEntryException);
+            }
         }
 
         private CalendarEntryValidationException CreateAndLogValidationException(Exception exception)

@@ -14,6 +14,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
         private void ValidateCalendarEntryOnCreate(CalendarEntry calendarEntry)
         {
             ValidateCalendarEntryIsNotNull(calendarEntry);
+            ValidateCalendarEntryId(calendarEntry.Id);
         }
 
         private static void ValidateCalendarEntryIsNotNull(CalendarEntry CalendarEntry)
@@ -23,5 +24,17 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
                 throw new NullCalendarEntryException();
             }
         }
+
+        private static void ValidateCalendarEntryId(Guid calendarEntryId)
+        {
+            if (IsInvalid(calendarEntryId))
+            {
+                throw new InvalidCalendarEntryException(
+                    parameterName: nameof(CalendarEntry.Id),
+                    parameterValue: calendarEntryId);
+            }
+        }
+
+        private static bool IsInvalid(Guid input) => input == Guid.Empty;
     }
 }
