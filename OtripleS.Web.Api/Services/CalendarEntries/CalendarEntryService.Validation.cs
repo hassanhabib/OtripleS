@@ -5,6 +5,7 @@
 
 using System;
 using OtripleS.Web.Api.Models.CalendarEntries;
+using OtripleS.Web.Api.Models.CalendarEntries.Exceptions;
 
 namespace OtripleS.Web.Api.Services.CalendarEntries
 {
@@ -12,7 +13,15 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
     {
         private void ValidateCalendarEntryOnCreate(CalendarEntry calendarEntry)
         {
-            throw new NotImplementedException();
+            ValidateCalendarEntryIsNotNull(calendarEntry);
+        }
+
+        private static void ValidateCalendarEntryIsNotNull(CalendarEntry CalendarEntry)
+        {
+            if (CalendarEntry is null)
+            {
+                throw new NullCalendarEntryException();
+            }
         }
     }
 }

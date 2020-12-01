@@ -28,10 +28,12 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<CalendarEntry> AddCalendarEntryAsync(CalendarEntry calendarEntry)
+        public ValueTask<CalendarEntry> AddCalendarEntryAsync(CalendarEntry calendarEntry) =>
+        TryCatch(async() =>
         {
             ValidateCalendarEntryOnCreate(calendarEntry);
-            return this.storageBroker.InsertCalendarEntryAsync(calendarEntry);
-        }
+
+            return await this.storageBroker.InsertCalendarEntryAsync(calendarEntry);
+        });
     }
 }
