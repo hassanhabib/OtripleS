@@ -99,6 +99,11 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
                     throw new InvalidCalendarEntryException(
                         parameterName: nameof(CalendarEntry.Label),
                         parameterValue: calendarEntry.Label);
+
+                case { } when IsInvalid(input: calendarEntry.Description):
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.Description),
+                        parameterValue: calendarEntry.Description);
             }
         }
     }
