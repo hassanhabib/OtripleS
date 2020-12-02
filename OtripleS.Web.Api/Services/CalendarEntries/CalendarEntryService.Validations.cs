@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.CalendarEntries;
 using OtripleS.Web.Api.Models.CalendarEntries.Exceptions;
 
@@ -104,6 +105,14 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
                     throw new InvalidCalendarEntryException(
                         parameterName: nameof(CalendarEntry.Description),
                         parameterValue: calendarEntry.Description);
+            }
+        }
+
+        private void ValidateStorageCalendarEntries(IQueryable<CalendarEntry> storageCalendarEntries)
+        {
+            if (storageCalendarEntries.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No calendar entries found in storage.");
             }
         }
     }

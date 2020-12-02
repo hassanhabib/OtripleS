@@ -3,11 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
+using System.Linq;
 using OtripleS.Web.Api.Models.CalendarEntries;
 
 namespace OtripleS.Web.Api.Services.CalendarEntries
@@ -35,5 +35,15 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
 
             return await this.storageBroker.InsertCalendarEntryAsync(calendarEntry);
         });
+
+		public IQueryable<CalendarEntry> RetrieveAllCalendarEntries() =>
+		TryCatch(() =>
+		{
+			IQueryable<CalendarEntry> storageCalendarEntries = this.storageBroker.SelectAllCalendarEntries();
+
+			ValidateStorageCalendarEntries(storageCalendarEntries);
+
+			return storageCalendarEntries;
+		});
     }
 }

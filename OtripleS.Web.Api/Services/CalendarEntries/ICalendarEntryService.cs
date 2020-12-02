@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System.Threading.Tasks;
+using System.Linq;
 using OtripleS.Web.Api.Models.CalendarEntries;
 
 namespace OtripleS.Web.Api.Services.CalendarEntries
@@ -11,5 +12,6 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
     public interface ICalendarEntryService
     {
         ValueTask<CalendarEntry> AddCalendarEntryAsync(CalendarEntry calendarEntry);
+        IQueryable<CalendarEntry> RetrieveAllCalendarEntries();
     }
 }

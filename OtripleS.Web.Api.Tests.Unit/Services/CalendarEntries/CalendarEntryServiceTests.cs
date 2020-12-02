@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -80,5 +81,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static IQueryable<CalendarEntry> CreateRandomCalendarEntries(DateTimeOffset dateTime) =>
+            CreateRandomCalendarEntryFiller(dateTime)
+                .Create(GetRandomNumber()).AsQueryable();
     }
 }

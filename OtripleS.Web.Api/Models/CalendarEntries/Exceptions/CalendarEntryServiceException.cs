@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.CalendarEntries.Exceptions
 {
     public class CalendarEntryServiceException : Exception

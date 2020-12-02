@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -16,6 +17,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
     public partial class CalendarEntryService
     {
         private delegate ValueTask<CalendarEntry> ReturningCalendarEntryFunction();
+        private delegate IQueryable<CalendarEntry> ReturningCalendarEntriesFunction();
 
         private async ValueTask<CalendarEntry> TryCatch(ReturningCalendarEntryFunction returningCalendarEntryFunction)
         {
@@ -52,20 +54,32 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             }
         }
 
+        private IQueryable<CalendarEntry> TryCatch(ReturningCalendarEntriesFunction returningCalendarEntriesFunction)
+        {
+            try
+            {
+                return returningCalendarEntriesFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
         private CalendarEntryValidationException CreateAndLogValidationException(Exception exception)
         {
             var calendarEntryValidationException = new CalendarEntryValidationException(exception);
             this.loggingBroker.LogError(calendarEntryValidationException);
 
             return calendarEntryValidationException;
-        }
-
-        private CalendarEntryDependencyException CreateAndLogCriticalDependencyException(Exception exception)
-        {
-            var calendarEntryDependencyException = new CalendarEntryDependencyException(exception);
-            this.loggingBroker.LogCritical(calendarEntryDependencyException);
-
-            return calendarEntryDependencyException;
         }
 
         private CalendarEntryDependencyException CreateAndLogDependencyException(Exception exception)
@@ -82,6 +96,14 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             this.loggingBroker.LogError(calendarEntryServiceException);
 
             return calendarEntryServiceException;
+        }
+
+        private CalendarEntryDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var calendarEntryDependencyException = new CalendarEntryDependencyException(exception);
+            this.loggingBroker.LogCritical(calendarEntryDependencyException);
+
+            return calendarEntryDependencyException;
         }
     }
 }
