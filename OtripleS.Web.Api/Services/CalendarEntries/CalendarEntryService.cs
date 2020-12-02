@@ -28,13 +28,14 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
 			this.dateTimeBroker = dateTimeBroker;
 		}
 
-		public IQueryable<CalendarEntry> RetrieveAllCalendarEntries()
+		public IQueryable<CalendarEntry> RetrieveAllCalendarEntries() =>
+		TryCatch(() =>
 		{
 			IQueryable<CalendarEntry> storageCalendarEntries = this.storageBroker.SelectAllCalendarEntries();
 
 			ValidateStorageCalendarEntries(storageCalendarEntries);
 
 			return storageCalendarEntries;
-		}
+		});
     }
 }

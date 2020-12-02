@@ -1,0 +1,38 @@
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
+using System;
+using System.Linq;
+using Microsoft.Data.SqlClient;
+using OtripleS.Web.Api.Models.CalendarEntries;
+using OtripleS.Web.Api.Models.CalendarEntries.Exceptions;
+
+namespace OtripleS.Web.Api.Services.CalendarEntries
+{
+    public partial class CalendarEntryService
+    {
+        private delegate IQueryable<CalendarEntry> ReturningCalendarEntriesFunction();
+
+        private IQueryable<CalendarEntry> TryCatch(ReturningCalendarEntriesFunction returningCalendarEntriesFunction)
+        {
+            try
+            {
+                return returningCalendarEntriesFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+        }
+
+        private CalendarEntryDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var calendarEntryDependencyException = new CalendarEntryDependencyException(exception);
+            this.loggingBroker.LogCritical(calendarEntryDependencyException);
+
+            return calendarEntryDependencyException;
+        }
+    }
+}
