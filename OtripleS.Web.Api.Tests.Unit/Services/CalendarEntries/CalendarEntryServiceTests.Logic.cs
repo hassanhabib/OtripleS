@@ -41,6 +41,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
             // then
             actualCalendarEntry.Should().BeEquivalentTo(expectedCalendarEntry);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCalendarEntryAsync(inputCalendarEntry),
                     Times.Once);
