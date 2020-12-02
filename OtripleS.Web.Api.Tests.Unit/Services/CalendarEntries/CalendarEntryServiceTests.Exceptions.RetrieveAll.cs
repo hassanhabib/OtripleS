@@ -98,8 +98,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
                 broker.SelectAllCalendarEntries(),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
