@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.CalendarEntries;
 using OtripleS.Web.Api.Models.CalendarEntries.Exceptions;
 
@@ -25,12 +26,24 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
         private CalendarEntryDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
             var calendarEntryDependencyException = new CalendarEntryDependencyException(exception);
             this.loggingBroker.LogCritical(calendarEntryDependencyException);
+
+            return calendarEntryDependencyException;
+        }
+
+        private CalendarEntryDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var calendarEntryDependencyException = new CalendarEntryDependencyException(exception);
+            this.loggingBroker.LogError(calendarEntryDependencyException);
 
             return calendarEntryDependencyException;
         }
