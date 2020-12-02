@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using OtripleS.Web.Api.Models.CalendarEntries;
 using OtripleS.Web.Api.Models.CalendarEntries.Exceptions;
 
@@ -27,6 +28,13 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             catch (InvalidCalendarEntryException invalidCalendarEntryException)
             {
                 throw CreateAndLogValidationException(invalidCalendarEntryException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsCalendarEntryException =
+                new AlreadyExistsCalendarEntryException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsCalendarEntryException);
             }
         }
 
