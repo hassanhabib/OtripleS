@@ -5,6 +5,9 @@
 
 using System;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
+using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -39,6 +42,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
 				.Create(GetRandomNumber()).AsQueryable();
 
 		private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+
+		private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+		{
+			return actualException =>
+				expectedException.Message == actualException.Message
+				&& expectedException.InnerException.Message == actualException.InnerException.Message;
+		}
+
+		private static SqlException GetSqlException() =>
+			(SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
 		private static Filler<CalendarEntry> CreateCalendarEntryFiller(DateTimeOffset dates)
 		{
