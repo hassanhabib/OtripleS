@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.CalendarEntries;
 using OtripleS.Web.Api.Models.CalendarEntries.Exceptions;
 
@@ -29,6 +30,10 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             {
                 throw CreateAndLogValidationException(invalidCalendarEntryException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsCalendarEntryException =
@@ -44,6 +49,14 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             this.loggingBroker.LogError(calendarEntryValidationException);
 
             return calendarEntryValidationException;
+        }
+
+        private CalendarEntryDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var calendarEntryDependencyException = new CalendarEntryDependencyException(exception);
+            this.loggingBroker.LogCritical(calendarEntryDependencyException);
+
+            return calendarEntryDependencyException;
         }
     }
 }
