@@ -11,16 +11,16 @@ using OtripleS.Web.Api.Tests.Acceptance.Models.Calendars;
 using RESTFulSense.Exceptions;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
+namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
 {
-    public partial class CalendersApiTest
+    public partial class CalendarsApiTest
     {
 
         [Fact]
         public async Task ShouldPostCalendarAsync()
         {
             // given
-           Calendar randomCalendar = CreateRandomCalender();
+           Calendar randomCalendar = CreateRandomCalendar();
            Calendar inputCalendar = randomCalendar;
            Calendar expectedCalendar = inputCalendar;
 
@@ -28,79 +28,79 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
             await this.otripleSApiBroker.PostCalendarAsync(inputCalendar);
 
            Calendar actualCalendar =
-                await this.otripleSApiBroker.GetCalenderByIdAsync(inputCalendar.Id);
+                await this.otripleSApiBroker.GetCalendarByIdAsync(inputCalendar.Id);
 
             // then
             actualCalendar.Should().BeEquivalentTo(expectedCalendar);
-            await this.otripleSApiBroker.DeleteCalenderByIdAsync(actualCalendar.Id);
+            await this.otripleSApiBroker.DeleteCalendarByIdAsync(actualCalendar.Id);
         }
       
         [Fact]
         public async Task ShouldPutCalendarAsync()
         {
             // given
-            Calendar randomCalendar = await PostRandomCalenderAsync();
+            Calendar randomCalendar = await PostRandomCalendarAsync();
             Calendar modifiedCalendar = UpdateCalendarRandom(randomCalendar);
 
             // when
             await this.otripleSApiBroker.PutCalendarAsync(modifiedCalendar);
 
             Calendar actualCalendar =
-                await this.otripleSApiBroker.GetCalenderByIdAsync(randomCalendar.Id);
+                await this.otripleSApiBroker.GetCalendarByIdAsync(randomCalendar.Id);
 
             // then
             actualCalendar.Should().BeEquivalentTo(modifiedCalendar);
-            await this.otripleSApiBroker.DeleteCalenderByIdAsync(actualCalendar.Id);
+            await this.otripleSApiBroker.DeleteCalendarByIdAsync(actualCalendar.Id);
         }
 
 
         [Fact]
-        public async Task ShouldGetAllCalendersAsync()
+        public async Task ShouldGetAllCalendarsAsync()
         {
             //given
-            var randomCalenders = new List<Calendar>();
+            var randomCalendars = new List<Calendar>();
             
             for (var i =0; i <= GetRandomNumber(); i++)
             {
-                randomCalenders.Add(await PostRandomCalenderAsync());
+                randomCalendars.Add(await PostRandomCalendarAsync());
             }
 
-            List<Calendar> inputedCalenders = randomCalenders;
-            List<Calendar> expectedCalenders = inputedCalenders.ToList();
+            List<Calendar> inputedCalendars = randomCalendars;
+            List<Calendar> expectedCalendars = inputedCalendars.ToList();
 
             //when 
-            List<Calendar> actualCalenders = await this.otripleSApiBroker.GetAllCalendersAsync();
+            List<Calendar> actualCalendars = await this.otripleSApiBroker.GetAllCalendarsAsync();
 
             //then
-            foreach (var expectcalendar in expectedCalenders)
+            foreach (var expectcalendar in expectedCalendars)
             {
-                Calendar actualCalender = actualCalenders.Single(calendar => calendar.Id == expectcalendar.Id);
+                Calendar actualCalendar = actualCalendars.Single(calendar => calendar.Id == expectcalendar.Id);
 
-                actualCalender.Should().BeEquivalentTo(expectcalendar);
-                await this.otripleSApiBroker.DeleteCalenderByIdAsync(actualCalender.Id);
+                actualCalendar.Should().BeEquivalentTo(expectcalendar);
+                await this.otripleSApiBroker.DeleteCalendarByIdAsync(actualCalendar.Id);
             }
         }
 
         [Fact]
-        public async Task ShouldDeleteCalenderAsync()
+        public async Task ShouldDeleteCalendarAsync()
         {
             //given
-            Calendar randomCalender = await PostRandomCalenderAsync();
-            Calendar inputCalender = randomCalender;
-            Calendar expectedCalender = inputCalender;
+            Calendar randomCalendar = await PostRandomCalendarAsync();
+            Calendar inputCalendar = randomCalendar;
+            Calendar expectedCalendar = inputCalendar;
 
             //when
-            Calendar deletedCalender = 
-                await this.otripleSApiBroker.DeleteCalenderByIdAsync(inputCalender.Id);
+            Calendar deletedCalendar = 
+                await this.otripleSApiBroker.DeleteCalendarByIdAsync(inputCalendar.Id);
 
-            ValueTask<Calendar> getCalenderByIdTask = 
-                this.otripleSApiBroker.DeleteCalenderByIdAsync(inputCalender.Id);
+            ValueTask<Calendar> getCalendarByIdTask = 
+                this.otripleSApiBroker.DeleteCalendarByIdAsync(inputCalendar.Id);
 
             // then
-            deletedCalender.Should().BeEquivalentTo(expectedCalender);
+            deletedCalendar.Should().BeEquivalentTo(expectedCalendar);
 
             await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
-               getCalenderByIdTask.AsTask());
+               getCalendarByIdTask.AsTask());
         }
     }
 }

@@ -28,11 +28,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 				new CalendarValidationException(invalidCalendarException);
 
 			// when
-			ValueTask<Calendar> deleteCalenderTask =
+			ValueTask<Calendar> deleteCalendarTask =
 				this.calendarService.DeleteCalendarByIdAsync(invalidCalendarId);
 
 			// then
-			await Assert.ThrowsAsync<CalendarValidationException>(() => deleteCalenderTask.AsTask());
+			await Assert.ThrowsAsync<CalendarValidationException>(() => deleteCalendarTask.AsTask());
 
 			this.loggingBrokerMock.Verify(broker =>
 				broker.LogError(It.Is(SameExceptionAs(expectedCalendarValidationException))),
