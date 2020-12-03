@@ -18,9 +18,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
     {
         private readonly OtripleSApiBroker otripleSApiBroker;
 
-        public CalendersApiTest(OtripleSApiBroker calenderApiBroker)
+        public CalendersApiTest(OtripleSApiBroker calendarApiBroker)
         {
-            this.otripleSApiBroker = calenderApiBroker;
+            this.otripleSApiBroker = calendarApiBroker;
         }
 
         private async ValueTask<Calendar> PostRandomCalenderAsync()

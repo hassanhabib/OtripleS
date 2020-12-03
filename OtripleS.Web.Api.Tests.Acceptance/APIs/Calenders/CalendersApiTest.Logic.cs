@@ -72,11 +72,11 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
             List<Calendar> actualCalenders = await this.otripleSApiBroker.GetAllCalendersAsync();
 
             //then
-            foreach (var expectcalender in expectedCalenders)
+            foreach (var expectcalendar in expectedCalenders)
             {
-                Calendar actualCalender = actualCalenders.Single(calender => calender.Id == expectcalender.Id);
+                Calendar actualCalender = actualCalenders.Single(calendar => calendar.Id == expectcalendar.Id);
 
-                actualCalender.Should().BeEquivalentTo(expectcalender);
+                actualCalender.Should().BeEquivalentTo(expectcalendar);
                 await this.otripleSApiBroker.DeleteCalenderByIdAsync(actualCalender.Id);
             }
         }
