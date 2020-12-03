@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
@@ -19,50 +20,70 @@ using Tynamix.ObjectFiller;
 namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
 {
     public partial class CalendarEntryServiceTests
-	{
-		private readonly Mock<IStorageBroker> storageBrokerMock;
-		private readonly ICalendarEntryService calendarEntryService;
-		private readonly Mock<ILoggingBroker> loggingBrokerMock;
-		private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
+    {
+        private readonly Mock<IStorageBroker> storageBrokerMock;
+        private readonly Mock<ILoggingBroker> loggingBrokerMock;
+        private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
+        private readonly ICalendarEntryService calendarEntryService;
 
-		public CalendarEntryServiceTests()
-		{
-			this.storageBrokerMock = new Mock<IStorageBroker>();
-			this.loggingBrokerMock = new Mock<ILoggingBroker>();
-			this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
+        public CalendarEntryServiceTests()
+        {
+            this.storageBrokerMock = new Mock<IStorageBroker>();
+            this.loggingBrokerMock = new Mock<ILoggingBroker>();
+            this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
 
-			this.calendarEntryService = new CalendarEntryService(
-				storageBroker: this.storageBrokerMock.Object,
-				loggingBroker: this.loggingBrokerMock.Object,
-				dateTimeBroker: this.dateTimeBrokerMock.Object);
-		}
+            this.calendarEntryService = new CalendarEntryService(
+                storageBroker: this.storageBrokerMock.Object,
+                dateTimeBroker: this.dateTimeBrokerMock.Object,
+                loggingBroker: this.loggingBrokerMock.Object);
+        }
 
-		private IQueryable<CalendarEntry> CreateRandomCalendarEntries() =>
-			CreateCalendarEntryFiller(dates: DateTimeOffset.UtcNow)
-				.Create(GetRandomNumber()).AsQueryable();
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-		private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+        private static CalendarEntry CreateRandomCalendarEntry(DateTimeOffset dateTime) =>
+            CreateRandomCalendarEntryFiller(dateTime).Create();
 
-		private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
-		{
-			return actualException =>
-				expectedException.Message == actualException.Message
-				&& expectedException.InnerException.Message == actualException.InnerException.Message;
-		}
+        private static Filler<CalendarEntry> CreateRandomCalendarEntryFiller(DateTimeOffset dateTime)
+        {
+            Filler<CalendarEntry> filler = new Filler<CalendarEntry>();
 
-		private static SqlException GetSqlException() =>
-			(SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dateTime)
+                .OnProperty(calendarEntry => calendarEntry.RepeatUntil).IgnoreIt()
+                .OnProperty(calendarEntry => calendarEntry.Calendar).IgnoreIt();
 
-		private static Filler<CalendarEntry> CreateCalendarEntryFiller(DateTimeOffset dates)
-		{
-			var filler = new Filler<CalendarEntry>();
+            return filler;
+        }
 
-			filler.Setup()
-				.OnType<DateTimeOffset>().Use(dates)
-				.OnType<DateTimeOffset?>().IgnoreIt()
-				.OnProperty(calendarEntry => calendarEntry.Calendar).IgnoreIt();
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
 
-			return filler;
-		}
-	}
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static IQueryable<CalendarEntry> CreateRandomCalendarEntries(DateTimeOffset dateTime) =>
+            CreateRandomCalendarEntryFiller(dateTime)
+                .Create(GetRandomNumber()).AsQueryable();
+    }
 }

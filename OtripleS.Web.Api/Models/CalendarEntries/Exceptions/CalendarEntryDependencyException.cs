@@ -10,7 +10,6 @@ namespace OtripleS.Web.Api.Models.CalendarEntries.Exceptions
     public class CalendarEntryDependencyException : Exception
     {
         public CalendarEntryDependencyException(Exception innerException)
-            : base ("Service dependency error occurred, contact support.", innerException)
-        { }
+            : base("Service dependency error occurred, contact support.", innerException) { }
     }
 }

@@ -3,29 +3,38 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System.Linq;
-using OtripleS.Web.Api.Brokers.Storage;
-using OtripleS.Web.Api.Brokers.Loggings;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
+using OtripleS.Web.Api.Brokers.Loggings;
+using OtripleS.Web.Api.Brokers.Storage;
+using System.Linq;
 using OtripleS.Web.Api.Models.CalendarEntries;
 
 namespace OtripleS.Web.Api.Services.CalendarEntries
 {
     public partial class CalendarEntryService : ICalendarEntryService
     {
-		private readonly IStorageBroker storageBroker;
-		private readonly ILoggingBroker loggingBroker;
-		private readonly IDateTimeBroker dateTimeBroker;
+        private readonly IStorageBroker storageBroker;
+        private readonly IDateTimeBroker dateTimeBroker;
+        private readonly ILoggingBroker loggingBroker;
 
-		public CalendarEntryService(
-			IStorageBroker storageBroker,
-			ILoggingBroker loggingBroker,
-			IDateTimeBroker dateTimeBroker)
-		{
-			this.storageBroker = storageBroker;
-			this.loggingBroker = loggingBroker;
-			this.dateTimeBroker = dateTimeBroker;
-		}
+        public CalendarEntryService(
+            IStorageBroker storageBroker,
+            IDateTimeBroker dateTimeBroker,
+            ILoggingBroker loggingBroker)
+        {
+            this.storageBroker = storageBroker;
+            this.dateTimeBroker = dateTimeBroker;
+            this.loggingBroker = loggingBroker;
+        }
+
+        public ValueTask<CalendarEntry> AddCalendarEntryAsync(CalendarEntry calendarEntry) =>
+        TryCatch(async() =>
+        {
+            ValidateCalendarEntryOnCreate(calendarEntry);
+
+            return await this.storageBroker.InsertCalendarEntryAsync(calendarEntry);
+        });
 
 		public IQueryable<CalendarEntry> RetrieveAllCalendarEntries() =>
 		TryCatch(() =>

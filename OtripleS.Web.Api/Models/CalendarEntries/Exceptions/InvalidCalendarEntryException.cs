@@ -4,12 +4,14 @@
 // ---------------------------------------------------------------
 
 using System;
-
 namespace OtripleS.Web.Api.Models.CalendarEntries.Exceptions
 {
-    public class CalendarEntryServiceException : Exception
+    public class InvalidCalendarEntryException : Exception
     {
-        public CalendarEntryServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+        public InvalidCalendarEntryException(string parameterName, object parameterValue)
+            : base($"Invalid calendarEntry, " +
+                  $"ParameterName: {parameterName}, " +
+                  $"ParameterValue: {parameterValue}.")
+        { }
     }
 }

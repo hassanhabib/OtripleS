@@ -7,6 +7,7 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200907054733_AddGuardian.cs" />
     <Compile Remove="Migrations\20200907054733_AddGuardian.Designer.cs" />
+    <Compile Remove="Services\CalendarEntries\CalendarEntry.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,5 +28,7 @@
     <Folder Include="Services\StudentContacts\" />
     <Folder Include="Services\StudentExams\" />
     <Folder Include="Services\Calendars\" />
+    <Folder Include="Services\CalendarEntries\" />
+    <Folder Include="Models\CalendarEntries\Exceptions\" />
   </ItemGroup>
 </Project>

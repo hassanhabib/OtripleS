@@ -7,9 +7,8 @@ using System;
 
 namespace OtripleS.Web.Api.Models.CalendarEntries.Exceptions
 {
-    public class CalendarEntryServiceException : Exception
+    public class NullCalendarEntryException : Exception
     {
-        public CalendarEntryServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+        public NullCalendarEntryException() : base("The calendarEntry is null.") { }
     }
 }

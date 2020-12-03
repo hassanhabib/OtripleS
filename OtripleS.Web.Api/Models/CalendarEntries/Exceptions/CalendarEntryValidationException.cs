@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.CalendarEntries.Exceptions
 {
-    public class CalendarEntryServiceException : Exception
+    public class CalendarEntryValidationException : Exception
     {
-        public CalendarEntryServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+        public CalendarEntryValidationException(Exception innerException)
+            : base("Invalid input, contact support.", innerException) { }
     }
 }

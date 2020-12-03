@@ -3,6 +3,8 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Threading.Tasks;
 using System.Linq;
 using FluentAssertions;
 using Moq;
@@ -12,33 +14,78 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
 {
     public partial class CalendarEntryServiceTests
-	{
-		[Fact]
-		public void ShouldRetrieveAllCalendarEntries()
+    {
+        [Fact]
+        public async Task ShouldAddCalendarEntryAsync()
         {
-			// given
-			IQueryable<CalendarEntry> randomCalendarEntries = CreateRandomCalendarEntries();
-			IQueryable<CalendarEntry> storageCalendarEntries = randomCalendarEntries;
-			IQueryable<CalendarEntry> expectedCalendarEntries = storageCalendarEntries;
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            DateTimeOffset dateTime = randomDateTime;
+            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(dateTime);
+            CalendarEntry inputCalendarEntry = randomCalendarEntry;
+            inputCalendarEntry.UpdatedBy = inputCalendarEntry.CreatedBy;
+            inputCalendarEntry.UpdatedDate = inputCalendarEntry.CreatedDate;
+            CalendarEntry expectedCalendarEntry = inputCalendarEntry;
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectAllCalendarEntries())
-					.Returns(storageCalendarEntries);
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
 
-			// when
-			IQueryable<CalendarEntry> actualCalendarEntries =
-				this.calendarEntryService.RetrieveAllCalendarEntries();
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertCalendarEntryAsync(inputCalendarEntry))
+                    .ReturnsAsync(expectedCalendarEntry);
 
-			// then
-			actualCalendarEntries.Should().BeEquivalentTo(expectedCalendarEntries);
+            // when
+            CalendarEntry actualCalendarEntry =
+                await this.calendarEntryService.AddCalendarEntryAsync(inputCalendarEntry);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectAllCalendarEntries(),
-					Times.Once);
+            // then
+            actualCalendarEntry.Should().BeEquivalentTo(expectedCalendarEntry);
 
-			this.storageBrokerMock.VerifyNoOtherCalls();
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-		}
-	}
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCalendarEntryAsync(inputCalendarEntry),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldRetrieveAllCalendarEntries()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            IQueryable<CalendarEntry> randomCalendarEntries = CreateRandomCalendarEntries(randomDateTime);
+            IQueryable<CalendarEntry> storageCalendarEntries = randomCalendarEntries;
+            IQueryable<CalendarEntry> expectedCalendarEntries = storageCalendarEntries;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllCalendarEntries())
+                    .Returns(storageCalendarEntries);
+
+            // when
+            IQueryable<CalendarEntry> actualCalendarEntries =
+                this.calendarEntryService.RetrieveAllCalendarEntries();
+
+            // then
+            actualCalendarEntries.Should().BeEquivalentTo(expectedCalendarEntries);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllCalendarEntries(),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+    }
 }
