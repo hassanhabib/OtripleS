@@ -33,6 +33,31 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
 
         private IEnumerable<Calendar> GetRandomCalenders() =>
             this.CreateRandomCalenderFiller().Create(GetRandomNumber());
+        private Calendar CreateRandomCalendar() =>
+             CreateRandomCalenderFiller().Create();
+
+        private async ValueTask<Calendar> PostRandomGuardianAsync()
+        {
+            Calendar randomCalendar = CreateRandomCalendar();
+            await this.otripleSApiBroker.PostCalendarAsync(randomCalendar);
+
+            return randomCalendar;
+        }
+        private Calendar UpdateCalendarRandom(Calendar calendar)
+        {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            var filler = new Filler<Calendar>();
+
+            filler.Setup()
+                .OnProperty(calendar => calendar.Id).Use(calendar.Id)
+                .OnProperty(calendar => calendar.CreatedBy).Use(calendar.CreatedBy)
+                .OnProperty(calendar => calendar.UpdatedBy).Use(calendar.UpdatedBy)
+                .OnProperty(calendar => calendar.CreatedDate).Use(calendar.CreatedDate)
+                .OnProperty(calendar => calendar.UpdatedDate).Use(now)
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+
+            return filler.Create();
+        }
 
         private Calendar CreateRandomCalender() =>
             this.CreateRandomCalenderFiller().Create();

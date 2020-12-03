@@ -20,12 +20,13 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
         public async ValueTask<Calendar> GetCalenderByIdAsync(Guid calenderId) =>
             await this.apiFactoryClient.GetContentAsync<Calendar>($"{CalendarRelativeUrl}/{calenderId}");
 
+        public async ValueTask<Calendar> PutCalendarAsync(Calendar calendar) =>
+            await this.apiFactoryClient.PutContentAsync(CalendarRelativeUrl, calendar);
+
         public async ValueTask<Calendar> DeleteCalenderByIdAsync(Guid calenderId) =>
             await this.apiFactoryClient.DeleteContentAsync<Calendar>($"{CalendarRelativeUrl}/{calenderId}");
 
         public async ValueTask<List<Calendar>> GetAllCalendersAsync() =>
-          await  this.apiFactoryClient.GetContentAsync<List<Calendar>>($"{CalendarRelativeUrl}/");
-
-
+            await  this.apiFactoryClient.GetContentAsync<List<Calendar>>($"{CalendarRelativeUrl}/");
     }
 }
