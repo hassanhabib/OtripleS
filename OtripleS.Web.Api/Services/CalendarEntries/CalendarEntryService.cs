@@ -48,9 +48,8 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
 			return storageCalendarEntries;
 		});
 
-        public ValueTask<CalendarEntry> RetrieveCalendarEntryByIdAsync(Guid calendarEntryId)
-        {
-            throw new NotImplementedException();
-        }
+        public async ValueTask<CalendarEntry> RetrieveCalendarEntryByIdAsync(
+            Guid calendarEntryId) =>
+                await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntryId);
     }
 }
