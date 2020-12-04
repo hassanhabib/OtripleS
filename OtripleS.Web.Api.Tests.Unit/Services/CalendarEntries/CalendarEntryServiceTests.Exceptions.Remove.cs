@@ -51,5 +51,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbExceptionOccursAndLogItAsync()
+		{
+			// given
+			Guid randomCalendarEntryId = Guid.NewGuid();
+			Guid inputCalendarEntryId = randomCalendarEntryId;
+			var databaseUpdateException = new DbUpdateException();
+
+			var expectedCalendarEntryDependencyException =
+				new CalendarEntryDependencyException(databaseUpdateException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectCalendarEntryByIdAsync(inputCalendarEntryId))
+					.ThrowsAsync(databaseUpdateException);
+
+			// when
+			ValueTask<CalendarEntry> deleteCalendarEntryTask =
+				this.calendarEntryService.DeleteCalendarEntryByIdAsync(inputCalendarEntryId);
+
+			// then
+			await Assert.ThrowsAsync<CalendarEntryDependencyException>(() =>
+				deleteCalendarEntryTask.AsTask());
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryDependencyException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectCalendarEntryByIdAsync(inputCalendarEntryId),
+					Times.Once);
+
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
