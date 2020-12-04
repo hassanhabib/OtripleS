@@ -32,8 +32,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
 
             StudentGuardian actualStudentGuardian =
                 await this.otripleSApiBroker.GetStudentGuardianByIdsAsync(
-                    persistedStudentGuardian.StudentId,
-                    persistedStudentGuardian.GuardianId);
+                    inputStudentGuardian.StudentId,
+                    inputStudentGuardian.GuardianId);
 
             // then
             actualStudentGuardian.Should().BeEquivalentTo(expectedStudentGuardian);
@@ -46,7 +46,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
             // given
             StudentGuardian randomStudentGuardian = await PostStudentGuardianAsync();
             StudentGuardian inputStudentGuardian = randomStudentGuardian;
-            StudentGuardian modifiedStudentGuardian = randomStudentGuardian.DeepClone();
+            StudentGuardian modifiedStudentGuardian = inputStudentGuardian.DeepClone();
             modifiedStudentGuardian.UpdatedDate = DateTimeOffset.UtcNow;
 
             // when
