@@ -11,31 +11,29 @@ using OtripleS.Web.Api.Tests.Acceptance.Models.Calendars;
 using Tynamix.ObjectFiller;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
+namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
 {
     [Collection(nameof(ApiTestCollection))]
-    public partial class CalendersApiTest
+    public partial class CalendarsApiTest
     {
         private readonly OtripleSApiBroker otripleSApiBroker;
 
-        public CalendersApiTest(OtripleSApiBroker calenderApiBroker)
+        public CalendarsApiTest(OtripleSApiBroker calendarApiBroker) =>
+            this.otripleSApiBroker = calendarApiBroker;
+        
+        private async ValueTask<Calendar> PostRandomCalendarAsync()
         {
-            this.otripleSApiBroker = calenderApiBroker;
+            Calendar randomCalendar = CreateRandomCalendar();
+            await this.otripleSApiBroker.PostCalendarAsync(randomCalendar);
+
+            return randomCalendar;
         }
 
-        private async ValueTask<Calendar> PostRandomCalenderAsync()
-        {
-            Calendar randomCalender = CreateRandomCalender();
-            await this.otripleSApiBroker.PostCalendarAsync(randomCalender);
-
-            return randomCalender;
-        }
-
-        private IEnumerable<Calendar> GetRandomCalenders() =>
-            this.CreateRandomCalenderFiller().Create(GetRandomNumber());
-
+        private IEnumerable<Calendar> GetRandomCalendars() =>
+            this.CreateRandomCalendarFiller().Create(GetRandomNumber());
+        
         private Calendar CreateRandomCalendar() =>
-             CreateRandomCalenderFiller().Create();
+             CreateRandomCalendarFiller().Create();
 
         private async ValueTask<Calendar> PostRandomGuardianAsync()
         {
@@ -61,10 +59,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
             return filler.Create();
         }
 
-        private Calendar CreateRandomCalender() =>
-            this.CreateRandomCalenderFiller().Create();
-
-        private Filler<Calendar> CreateRandomCalenderFiller()
+        private Filler<Calendar> CreateRandomCalendarFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
