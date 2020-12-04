@@ -52,5 +52,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void 
+            ShouldThrowValidationExceptionOnRetrieveWhenStorageCalendarEntryIsNullAndLogItAsync()
+        {
+            // given
+            Guid randomCalendarEntryId = Guid.NewGuid();
+            Guid inputCalendarEntryId = randomCalendarEntryId;
+            CalendarEntry invalidStorageCalendarEntry = null;
+            
+            var notFoundCalendarEntryException = 
+                new NotFoundCalendarEntryException(inputCalendarEntryId);
+
+            var expectedCalendarEntryValidationException =
+                new CalendarEntryValidationException(notFoundCalendarEntryException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCalendarEntryByIdAsync(inputCalendarEntryId))
+                    .ReturnsAsync(invalidStorageCalendarEntry);
+
+            // when
+            ValueTask<CalendarEntry> retrieveCalendarEntryByIdTask =
+                this.calendarEntryService.RetrieveCalendarEntryByIdAsync(inputCalendarEntryId);
+
+            // then
+            await Assert.ThrowsAsync<CalendarEntryValidationException>(() =>
+                retrieveCalendarEntryByIdTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCalendarEntryByIdAsync(inputCalendarEntryId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
