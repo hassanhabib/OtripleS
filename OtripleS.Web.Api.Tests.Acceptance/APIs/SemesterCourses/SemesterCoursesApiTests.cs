@@ -41,6 +41,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             return randomSemesterCourse;
         }
 
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
         private async ValueTask<SemesterCourse> CreateRandomSemesterCourseAsync()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -188,8 +191,5 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
 
             return filler;
         }
-
-        private static DateTimeOffset GetRandomDateTime() =>
-            new DateTimeRange(earliestDate: new DateTime()).GetValue();
     }
 }

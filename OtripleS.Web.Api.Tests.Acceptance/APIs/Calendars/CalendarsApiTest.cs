@@ -18,11 +18,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
     {
         private readonly OtripleSApiBroker otripleSApiBroker;
 
-        public CalendarsApiTest(OtripleSApiBroker calendarApiBroker)
-        {
+        public CalendarsApiTest(OtripleSApiBroker calendarApiBroker) =>
             this.otripleSApiBroker = calendarApiBroker;
-        }
-
+        
         private async ValueTask<Calendar> PostRandomCalendarAsync()
         {
             Calendar randomCalendar = CreateRandomCalendar();
@@ -44,6 +42,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
 
             return randomCalendar;
         }
+
         private Calendar UpdateCalendarRandom(Calendar calendar)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;

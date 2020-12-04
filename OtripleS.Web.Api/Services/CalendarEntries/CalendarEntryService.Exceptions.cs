@@ -37,12 +37,23 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (NotFoundCalendarEntryException notFoundCalendarEntryException)
+            {
+                throw CreateAndLogValidationException(notFoundCalendarEntryException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsCalendarEntryException =
                 new AlreadyExistsCalendarEntryException(duplicateKeyException);
 
                 throw CreateAndLogValidationException(alreadyExistsCalendarEntryException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedCalendarException = 
+                    new LockedCalendarEntryException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedCalendarException);
             }
             catch (DbUpdateException dbUpdateException)
             {

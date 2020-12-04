@@ -38,6 +38,16 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             }
         }
 
+        private static void ValidateStorageCalendarEntry(
+            CalendarEntry storageCalendarEntry, 
+            Guid calendarEntryId)
+        {
+            if (storageCalendarEntry == null)
+            {
+                throw new NotFoundCalendarEntryException(calendarEntryId);
+            }
+        }
+
         private static bool IsInvalid(Guid input) => input == Guid.Empty;
         private bool IsInvalid(DateTimeOffset input) => input == default;
         private bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);

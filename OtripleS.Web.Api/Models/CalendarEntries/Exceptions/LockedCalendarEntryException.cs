@@ -7,8 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.CalendarEntries.Exceptions
 {
-    public class NullCalendarEntryException : Exception
-    {
-        public NullCalendarEntryException() : base("The CalendarEntry is null.") { }
-    }
+	public class LockedCalendarEntryException : Exception
+	{
+		public LockedCalendarEntryException(Exception innerException)
+			: base("Locked calendar entry record exception, please try again later.", innerException) { }
+	}
 }
