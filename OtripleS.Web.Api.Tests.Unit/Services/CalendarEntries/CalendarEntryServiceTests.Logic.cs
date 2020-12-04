@@ -145,7 +145,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
 
             // when
             CalendarEntry actualCalendarEntry =
-                await this.calendarEntryService.DeleteCalendarEntryByIdAsync(inputCalendarEntryId);
+                await this.calendarEntryService.RemoveCalendarEntryByIdAsync(inputCalendarEntryId);
 
             // then
             actualCalendarEntry.Should().BeEquivalentTo(expectedCalendarEntry);
