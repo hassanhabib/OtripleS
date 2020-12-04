@@ -79,12 +79,12 @@ namespace OtripleS.Web.Api.Services.Calendars
 		{
 			ValidateCalendarIdIsNull(calendarId);
 
-			Calendar maybeCalender =
+			Calendar maybeCalendar =
 				await this.storageBroker.SelectCalendarByIdAsync(calendarId);
 
-			ValidateStorageCalendar(maybeCalender, calendarId);
+			ValidateStorageCalendar(maybeCalendar, calendarId);
 
-			return await this.storageBroker.DeleteCalendarAsync(maybeCalender);
+			return await this.storageBroker.DeleteCalendarAsync(maybeCalendar);
 		});
 	}
 }
