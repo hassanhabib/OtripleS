@@ -33,6 +33,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
 
         private IEnumerable<Calendar> GetRandomCalenders() =>
             this.CreateRandomCalenderFiller().Create(GetRandomNumber());
+
         private Calendar CreateRandomCalendar() =>
              CreateRandomCalenderFiller().Create();
 
@@ -43,6 +44,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
 
             return randomCalendar;
         }
+
         private Calendar UpdateCalendarRandom(Calendar calendar)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;

@@ -15,7 +15,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
 {
     public partial class CalendersApiTest
     {
-
         [Fact]
         public async Task ShouldPostCalendarAsync()
         {
@@ -52,7 +51,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calenders
             actualCalendar.Should().BeEquivalentTo(modifiedCalendar);
             await this.otripleSApiBroker.DeleteCalenderByIdAsync(actualCalendar.Id);
         }
-
 
         [Fact]
         public async Task ShouldGetAllCalendersAsync()
