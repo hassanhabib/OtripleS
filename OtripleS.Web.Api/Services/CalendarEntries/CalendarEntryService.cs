@@ -30,36 +30,54 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
         }
 
         public ValueTask<CalendarEntry> AddCalendarEntryAsync(CalendarEntry calendarEntry) =>
-        TryCatch(async() =>
+        TryCatch(async () =>
         {
             ValidateCalendarEntryOnCreate(calendarEntry);
 
             return await this.storageBroker.InsertCalendarEntryAsync(calendarEntry);
         });
 
-        public ValueTask<CalendarEntry> DeleteCalendarEntryByIdAsync(Guid calendarEntryId)
-        {
-            throw new NotImplementedException();
-        }
-
         public ValueTask<CalendarEntry> ModifyCalendarEntryAsync(CalendarEntry calendarEntry)
         {
             throw new NotImplementedException();
         }
 
-        public IQueryable<CalendarEntry> RetrieveAllCalendarEntries() =>
-		TryCatch(() =>
-		{
-			IQueryable<CalendarEntry> storageCalendarEntries = this.storageBroker.SelectAllCalendarEntries();
-
-			ValidateStorageCalendarEntries(storageCalendarEntries);
-
-			return storageCalendarEntries;
-		});
-
-        public ValueTask<CalendarEntry> RetrieveCalendarEntryByIdAsync(Guid calendarEntryId)
+        public ValueTask<CalendarEntry> DeleteCalendarEntryByIdAsync(Guid calendarEntryId) =>
+        TryCatch(async () =>
         {
-            throw new NotImplementedException();
-        }
+            ValidateCalendarEntryId(calendarEntryId);
+
+            CalendarEntry maybeCalendarEntry =
+                await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntryId);
+
+            ValidateStorageCalendarEntry(maybeCalendarEntry, calendarEntryId);
+
+            return await this.storageBroker.DeleteCalendarEntryAsync(maybeCalendarEntry);
+        });
+
+        public IQueryable<CalendarEntry> RetrieveAllCalendarEntries() =>
+        TryCatch(() =>
+        {
+            IQueryable<CalendarEntry> storageCalendarEntries =
+                this.storageBroker.SelectAllCalendarEntries();
+
+            ValidateStorageCalendarEntries(storageCalendarEntries);
+
+            return storageCalendarEntries;
+        });
+
+        public ValueTask<CalendarEntry> RetrieveCalendarEntryByIdAsync(
+            Guid calendarEntryId) =>
+        TryCatch(async () =>
+        {
+            ValidateCalendarEntryId(calendarEntryId);
+
+            CalendarEntry storageCalendarEntry = 
+                await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntryId);
+
+            ValidateStorageCalendarEntry(storageCalendarEntry, calendarEntryId);
+
+            return storageCalendarEntry;
+        });
     }
 }

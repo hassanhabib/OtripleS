@@ -24,8 +24,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Exams
             Exam expectedExam = inputExam;
 
             // when 
+            await this.otripleSApiBroker.PostExamAsync(inputExam);
+
             Exam actualExam =
-                await this.otripleSApiBroker.PostExamAsync(inputExam);
+               await this.otripleSApiBroker.GetExamByIdAsync(inputExam.Id);
 
             // then
             actualExam.Should().BeEquivalentTo(expectedExam);

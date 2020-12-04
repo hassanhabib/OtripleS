@@ -22,11 +22,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Exams
     {
         private readonly OtripleSApiBroker otripleSApiBroker;
 
-        public ExamsApiTests(OtripleSApiBroker otripleSApiBroker)
-        {
+        public ExamsApiTests(OtripleSApiBroker otripleSApiBroker) =>
             this.otripleSApiBroker = otripleSApiBroker;
-        }
-
+        
         private async ValueTask<Exam> DeleteExamAsync(Exam exam)
         {
             Exam deletedExam =
