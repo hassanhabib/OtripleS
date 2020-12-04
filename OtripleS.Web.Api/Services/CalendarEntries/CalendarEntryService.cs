@@ -45,6 +45,8 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             CalendarEntry maybeCalendarEntry =
                 await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntryId);
 
+            ValidateStorageCalendarEntry(maybeCalendarEntry, calendarEntryId);
+
             return await this.storageBroker.DeleteCalendarEntryAsync(maybeCalendarEntry);
         });
 
