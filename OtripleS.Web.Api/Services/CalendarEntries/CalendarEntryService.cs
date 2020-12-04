@@ -54,7 +54,12 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
         {
             ValidateCalendarEntryId(calendarEntryId);
 
-            return await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntryId);
+            CalendarEntry storageCalendarEntry = 
+                await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntryId);
+
+            ValidateStorageCalendarEntry(storageCalendarEntry, calendarEntryId);
+
+            return storageCalendarEntry;
         });
     }
 }
