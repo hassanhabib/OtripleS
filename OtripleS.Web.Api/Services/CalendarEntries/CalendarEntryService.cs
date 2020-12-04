@@ -41,8 +41,8 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
         {
             throw new NotImplementedException();
         }
-
-        public ValueTask<CalendarEntry> DeleteCalendarEntryByIdAsync(Guid calendarEntryId) =>
+ 
+        public ValueTask<CalendarEntry> RemoveCalendarEntryByIdAsync(Guid calendarEntryId) =>
         TryCatch(async () =>
         {
             ValidateCalendarEntryId(calendarEntryId);
