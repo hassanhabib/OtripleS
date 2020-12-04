@@ -15,5 +15,6 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
         ValueTask<CalendarEntry> AddCalendarEntryAsync(CalendarEntry calendarEntry);
         IQueryable<CalendarEntry> RetrieveAllCalendarEntries();
         ValueTask<CalendarEntry> RetrieveCalendarEntryByIdAsync(Guid calendarEntryId);
+        ValueTask<CalendarEntry> DeleteCalendarEntryByIdAsync(Guid calendarEntryId);
     }
 }
