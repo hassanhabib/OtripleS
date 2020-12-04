@@ -30,26 +30,31 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
         }
 
         public ValueTask<CalendarEntry> AddCalendarEntryAsync(CalendarEntry calendarEntry) =>
-        TryCatch(async() =>
+        TryCatch(async () =>
         {
             ValidateCalendarEntryOnCreate(calendarEntry);
 
             return await this.storageBroker.InsertCalendarEntryAsync(calendarEntry);
         });
 
-		public IQueryable<CalendarEntry> RetrieveAllCalendarEntries() =>
-		TryCatch(() =>
-		{
-			IQueryable<CalendarEntry> storageCalendarEntries = 
+        public IQueryable<CalendarEntry> RetrieveAllCalendarEntries() =>
+        TryCatch(() =>
+        {
+            IQueryable<CalendarEntry> storageCalendarEntries =
                 this.storageBroker.SelectAllCalendarEntries();
 
-			ValidateStorageCalendarEntries(storageCalendarEntries);
+            ValidateStorageCalendarEntries(storageCalendarEntries);
 
-			return storageCalendarEntries;
-		});
+            return storageCalendarEntries;
+        });
 
-        public async ValueTask<CalendarEntry> RetrieveCalendarEntryByIdAsync(
+        public ValueTask<CalendarEntry> RetrieveCalendarEntryByIdAsync(
             Guid calendarEntryId) =>
-                await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntryId);
+        TryCatch(async () =>
+        {
+            ValidateCalendarEntryId(calendarEntryId);
+
+            return await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntryId);
+        });
     }
 }
