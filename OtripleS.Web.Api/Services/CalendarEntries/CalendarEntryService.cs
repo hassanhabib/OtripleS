@@ -9,6 +9,7 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using System.Linq;
 using OtripleS.Web.Api.Models.CalendarEntries;
+using System;
 
 namespace OtripleS.Web.Api.Services.CalendarEntries
 {
@@ -36,7 +37,17 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             return await this.storageBroker.InsertCalendarEntryAsync(calendarEntry);
         });
 
-		public IQueryable<CalendarEntry> RetrieveAllCalendarEntries() =>
+        public ValueTask<CalendarEntry> DeleteCalendarEntryByIdAsync(Guid calendarEntryId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ValueTask<CalendarEntry> ModifyCalendarEntryAsync(CalendarEntry calendarEntry)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<CalendarEntry> RetrieveAllCalendarEntries() =>
 		TryCatch(() =>
 		{
 			IQueryable<CalendarEntry> storageCalendarEntries = this.storageBroker.SelectAllCalendarEntries();
@@ -45,5 +56,10 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
 
 			return storageCalendarEntries;
 		});
+
+        public ValueTask<CalendarEntry> RetrieveCalendarEntryByIdAsync(Guid calendarEntryId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
