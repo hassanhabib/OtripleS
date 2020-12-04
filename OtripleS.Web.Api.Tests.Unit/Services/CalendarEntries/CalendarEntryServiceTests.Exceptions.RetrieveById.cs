@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.CalendarEntries;
 using OtripleS.Web.Api.Models.CalendarEntries.Exceptions;
@@ -39,6 +40,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedCalendarEntryDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCalendarEntryByIdAsync(inputCalendarEntryId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomCalendarEntryId = Guid.NewGuid();
+            Guid inputCalendarEntryId = randomCalendarEntryId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedCalendarEntryDependencyException =
+                new CalendarEntryDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCalendarEntryByIdAsync(inputCalendarEntryId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<CalendarEntry> retrieveCalendarEntryByIdTask =
+                this.calendarEntryService.RetrieveCalendarEntryByIdAsync(inputCalendarEntryId);
+
+            // then
+            await Assert.ThrowsAsync<CalendarEntryDependencyException>(() =>
+                retrieveCalendarEntryByIdTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
