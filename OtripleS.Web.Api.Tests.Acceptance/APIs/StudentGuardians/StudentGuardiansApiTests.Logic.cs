@@ -28,8 +28,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
             StudentGuardian expectedStudentGuardian = inputStudentGuardian;
 
             // when             
-            StudentGuardian persistedStudentGuardian =
-                await this.otripleSApiBroker.PostStudentGuardianAsync(inputStudentGuardian);
+            await this.otripleSApiBroker.PostStudentGuardianAsync(inputStudentGuardian);
 
             StudentGuardian actualStudentGuardian =
                 await this.otripleSApiBroker.GetStudentGuardianByIdsAsync(
