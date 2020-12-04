@@ -95,7 +95,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
 			Guid randomCalendarEntryId = Guid.NewGuid();
 			Guid inputCalendarEntryId = randomCalendarEntryId;
 			var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
-			var lockedCalendarEntryException = new LockedCalendarEntryException(databaseUpdateConcurrencyException);
+			
+			var lockedCalendarEntryException = 
+				new LockedCalendarEntryException(databaseUpdateConcurrencyException);
 
 			var expectedCalendarEntryDependencyException =
 				new CalendarEntryDependencyException(lockedCalendarEntryException);

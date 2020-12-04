@@ -48,6 +48,13 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
 
                 throw CreateAndLogValidationException(alreadyExistsCalendarEntryException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedCalendarException = 
+                    new LockedCalendarEntryException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedCalendarException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
