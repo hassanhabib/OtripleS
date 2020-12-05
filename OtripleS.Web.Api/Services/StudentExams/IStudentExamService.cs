@@ -17,7 +17,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
 
         IQueryable<StudentExam> RetrieveAllStudentExams();
 
-        ValueTask<StudentExam> DeleteStudentExamByIdAsync(Guid studentExamId);
+        ValueTask<StudentExam> RemoveStudentExamByIdAsync(Guid studentExamId);
                 
         ValueTask<StudentExam> ModifyStudentExamAsync(StudentExam studentExam);
     }

@@ -77,7 +77,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
             return await storageBroker.UpdateStudentExamAsync(studentExam);
         });
 
-        public ValueTask<StudentExam> DeleteStudentExamByIdAsync(Guid studentExamId) =>
+        public ValueTask<StudentExam> RemoveStudentExamByIdAsync(Guid studentExamId) =>
         TryCatch(async () =>
         {
             ValidateStudentExamId(studentExamId);
