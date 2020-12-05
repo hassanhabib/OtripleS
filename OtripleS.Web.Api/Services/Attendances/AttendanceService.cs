@@ -65,7 +65,7 @@ namespace OtripleS.Web.Api.Services.Attendances
             return storageAttendances;
         });
 
-        public ValueTask<Attendance> DeleteAttendanceAsync(Guid attendanceId) =>
+        public ValueTask<Attendance> RemoveAttendanceByIdAsync(Guid attendanceId) =>
         TryCatch(async () =>
         {
             ValidateAttendanceId(attendanceId);
