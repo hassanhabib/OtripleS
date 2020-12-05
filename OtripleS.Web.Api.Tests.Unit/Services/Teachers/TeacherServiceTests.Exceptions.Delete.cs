@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Teachers
 
             // when
             ValueTask<Teacher> deleteTeacherTask =
-                this.teacherService.DeleteTeacherByIdAsync(inputTeacherId);
+                this.teacherService.RemoveTeacherByIdAsync(inputTeacherId);
 
             // then
             await Assert.ThrowsAsync<TeacherDependencyException>(() =>
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Teachers
 
             // when
             ValueTask<Teacher> deleteTeacherTask =
-                this.teacherService.DeleteTeacherByIdAsync(inputTeacherId);
+                this.teacherService.RemoveTeacherByIdAsync(inputTeacherId);
 
             // then
             await Assert.ThrowsAsync<TeacherDependencyException>(() =>
@@ -106,7 +106,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Teachers
 
             // when
             ValueTask<Teacher> deleteTeacherTask =
-                this.teacherService.DeleteTeacherByIdAsync(inputTeacherId);
+                this.teacherService.RemoveTeacherByIdAsync(inputTeacherId);
 
             // then
             await Assert.ThrowsAsync<TeacherDependencyException>(() =>
@@ -142,7 +142,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Teachers
 
             // when
             ValueTask<Teacher> deleteTeacherTask =
-                this.teacherService.DeleteTeacherByIdAsync(inputTeacherId);
+                this.teacherService.RemoveTeacherByIdAsync(inputTeacherId);
 
             // then
             await Assert.ThrowsAsync<TeacherServiceException>(() =>
