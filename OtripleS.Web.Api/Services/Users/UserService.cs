@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Services.Users
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<User> DeleteUserAsync(Guid userId) =>
+        public ValueTask<User> RemoveUserByIdAsync(Guid userId) =>
         TryCatch(async () =>
         {
             ValidateUserIdIsNull(userId);

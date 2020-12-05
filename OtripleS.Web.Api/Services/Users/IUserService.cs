@@ -13,7 +13,7 @@ namespace OtripleS.Web.Api.Services.Users
     public interface IUserService
     {
         ValueTask<User> RegisterUserAsync(User user, string password);
-        ValueTask<User> DeleteUserAsync(Guid userId);
+        ValueTask<User> RemoveUserByIdAsync(Guid userId);
         ValueTask<User> RetrieveUserByIdAsync(Guid userId);
         IQueryable<User> RetrieveAllUsers();
         ValueTask<User> ModifyUserAsync(User course);
