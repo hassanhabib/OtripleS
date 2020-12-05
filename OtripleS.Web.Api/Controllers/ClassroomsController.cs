@@ -115,7 +115,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 Classroom storageClassroom =
-                    await this.classroomService.DeleteClassroomAsync(classroomId);
+                    await this.classroomService.RemoveClassroomAsync(classroomId);
 
                 return Ok(storageClassroom);
             }

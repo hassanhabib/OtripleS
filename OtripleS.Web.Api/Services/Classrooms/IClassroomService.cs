@@ -13,7 +13,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
     public interface IClassroomService
     {
         ValueTask<Classroom> CreateClassroomAsync(Classroom classroom);
-        ValueTask<Classroom> DeleteClassroomAsync(Guid classroomId);
+        ValueTask<Classroom> RemoveClassroomAsync(Guid classroomId);
         ValueTask<Classroom> ModifyClassroomAsync(Classroom classroom);
         IQueryable<Classroom> RetrieveAllClassrooms();
         ValueTask<Classroom> RetrieveClassroomById(Guid classroomId);

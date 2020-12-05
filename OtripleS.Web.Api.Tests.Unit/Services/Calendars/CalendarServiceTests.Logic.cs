@@ -189,7 +189,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 
 			// when
 			Calendar actualCalendar =
-				await this.calendarService.DeleteCalendarByIdAsync(inputCalendarId);
+				await this.calendarService.RemoveCalendarByIdAsync(inputCalendarId);
 
 			// then
 			actualCalendar.Should().BeEquivalentTo(expectedCalendar);
