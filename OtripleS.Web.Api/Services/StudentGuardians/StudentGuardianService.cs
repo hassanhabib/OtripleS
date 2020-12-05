@@ -81,7 +81,7 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
         });
 
         public ValueTask<StudentGuardian>
-        DeleteStudentGuardianAsync(Guid GuardianId, Guid studentId) =>
+        RemoveStudentGuardianByIdsAsync(Guid GuardianId, Guid studentId) =>
         TryCatch(async () =>
         {
             ValidateStudentGuardianId(GuardianId);
