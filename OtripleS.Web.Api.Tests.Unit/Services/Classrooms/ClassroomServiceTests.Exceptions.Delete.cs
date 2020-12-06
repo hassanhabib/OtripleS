@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Classrooms
 
             // when
             ValueTask<Classroom> deleteClassroomTask =
-                this.classroomService.DeleteClassroomAsync(inputClassroomId);
+                this.classroomService.RemoveClassroomAsync(inputClassroomId);
 
             // then
             await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Classrooms
 
             // when
             ValueTask<Classroom> deleteClassroomTask =
-                this.classroomService.DeleteClassroomAsync(inputClassroomId);
+                this.classroomService.RemoveClassroomAsync(inputClassroomId);
 
             // then
             await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
@@ -106,7 +106,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Classrooms
 
             // when
             ValueTask<Classroom> deleteClassroomTask =
-                this.classroomService.DeleteClassroomAsync(inputClassroomId);
+                this.classroomService.RemoveClassroomAsync(inputClassroomId);
 
             // then
             await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
@@ -142,7 +142,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Classrooms
 
             // when
             ValueTask<Classroom> deleteClassroomTask =
-                this.classroomService.DeleteClassroomAsync(inputClassroomId);
+                this.classroomService.RemoveClassroomAsync(inputClassroomId);
 
             // then
             await Assert.ThrowsAsync<ClassroomServiceException>(() =>

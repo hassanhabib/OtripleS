@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attendances
 
             // when
             ValueTask<Attendance> actualAttendanceTask =
-                this.attendanceService.DeleteAttendanceAsync(inputAttendanceId);
+                this.attendanceService.RemoveAttendanceByIdAsync(inputAttendanceId);
 
             // then
             await Assert.ThrowsAsync<AttendanceValidationException>(() => actualAttendanceTask.AsTask());
@@ -73,7 +73,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attendances
 
             // when
             ValueTask<Attendance> actualAttendanceTask =
-                this.attendanceService.DeleteAttendanceAsync(inputAttendanceId);
+                this.attendanceService.RemoveAttendanceByIdAsync(inputAttendanceId);
 
             // then
             await Assert.ThrowsAsync<AttendanceValidationException>(() => actualAttendanceTask.AsTask());

@@ -155,7 +155,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 Calendar storageCalendar =
-                    await this.calendarService.DeleteCalendarByIdAsync(calendarId);
+                    await this.calendarService.RemoveCalendarByIdAsync(calendarId);
 
                 return Ok(storageCalendar);
             }

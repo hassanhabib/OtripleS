@@ -19,6 +19,6 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
 
         IQueryable<StudentSemesterCourse> RetrieveAllStudentSemesterCourses();
         ValueTask<StudentSemesterCourse> ModifyStudentSemesterCourseAsync(StudentSemesterCourse studentSemesterCourse);
-        ValueTask<StudentSemesterCourse> DeleteStudentSemesterCourseAsync(Guid semesterCourseId, Guid studentId);
+        ValueTask<StudentSemesterCourse> RemoveStudentSemesterCourseByIdsAsync(Guid semesterCourseId, Guid studentId);
     }
 }

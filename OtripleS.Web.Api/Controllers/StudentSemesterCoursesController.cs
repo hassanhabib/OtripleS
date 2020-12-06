@@ -110,7 +110,9 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 StudentSemesterCourse storageStudentSemesterCourse =
-                    await this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(semesterCourseId, studentId);
+                    await this.studentSemesterCourseService.RemoveStudentSemesterCourseByIdsAsync(
+                        semesterCourseId, 
+                        studentId);
 
                 return Ok(storageStudentSemesterCourse);
             }

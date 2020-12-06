@@ -160,7 +160,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourses
 
             // when
             StudentSemesterCourse actualStudentSemesterCourse =
-                await this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputSemesterCourseId, inputStudentId);
+                await this.studentSemesterCourseService.RemoveStudentSemesterCourseByIdsAsync(inputSemesterCourseId, inputStudentId);
 
             actualStudentSemesterCourse.Should().BeEquivalentTo(expectedStudentSemesterCourse);
 

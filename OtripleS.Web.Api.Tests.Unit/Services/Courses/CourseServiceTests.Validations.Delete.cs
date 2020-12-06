@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
 
             // when
             ValueTask<Course> actualCourseTask =
-                this.courseService.DeleteCourseAsync(inputCourseId);
+                this.courseService.RemoveCourseAsync(inputCourseId);
 
             // then
             await Assert.ThrowsAsync<CourseValidationException>(() => actualCourseTask.AsTask());
@@ -73,7 +73,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
 
             // when
             ValueTask<Course> actualCourseTask =
-                this.courseService.DeleteCourseAsync(inputCourseId);
+                this.courseService.RemoveCourseAsync(inputCourseId);
 
             // then
             await Assert.ThrowsAsync<CourseValidationException>(() => actualCourseTask.AsTask());

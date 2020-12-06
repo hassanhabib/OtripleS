@@ -13,7 +13,7 @@ namespace OtripleS.Web.Api.Services.Teachers
     public interface ITeacherService
     {
         ValueTask<Teacher> RetrieveTeacherByIdAsync(Guid teacherId);
-        ValueTask<Teacher> DeleteTeacherByIdAsync(Guid teacherId);
+        ValueTask<Teacher> RemoveTeacherByIdAsync(Guid teacherId);
         IQueryable<Teacher> RetrieveAllTeachers();
         ValueTask<Teacher> CreateTeacherAsync(Teacher teacher);
         ValueTask<Teacher> ModifyTeacherAsync(Teacher teacher);

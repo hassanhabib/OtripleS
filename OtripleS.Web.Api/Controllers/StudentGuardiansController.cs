@@ -154,7 +154,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 StudentGuardian storageStudentGuardian =
-                    await this.studentGuardianService.DeleteStudentGuardianAsync(studentId, guardianId);
+                    await this.studentGuardianService.RemoveStudentGuardianByIdsAsync(studentId, guardianId);
 
                 return Ok(storageStudentGuardian);
             }

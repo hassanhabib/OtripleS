@@ -35,7 +35,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
 
             // when
             ValueTask<StudentGuardian> deleteStudentGuardianTask =
-                this.studentGuardianService.DeleteStudentGuardianAsync(inputStudentGuardianId, inputStudentId);
+                this.studentGuardianService.RemoveStudentGuardianByIdsAsync(inputStudentGuardianId, inputStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianDependencyException>(() =>
@@ -73,7 +73,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
 
             // when
             ValueTask<StudentGuardian> deleteStudentGuardianTask =
-                this.studentGuardianService.DeleteStudentGuardianAsync(inputStudentGuardianId, inputStudentId);
+                this.studentGuardianService.RemoveStudentGuardianByIdsAsync(inputStudentGuardianId, inputStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianDependencyException>(() => deleteStudentGuardianTask.AsTask());
@@ -112,7 +112,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
 
             // when
             ValueTask<StudentGuardian> deleteStudentGuardianTask =
-                this.studentGuardianService.DeleteStudentGuardianAsync(inputStudentGuardianId, inputStudentId);
+                this.studentGuardianService.RemoveStudentGuardianByIdsAsync(inputStudentGuardianId, inputStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianDependencyException>(() => deleteStudentGuardianTask.AsTask());
@@ -148,7 +148,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
 
             // when
             ValueTask<StudentGuardian> deleteStudentGuardianTask =
-                this.studentGuardianService.DeleteStudentGuardianAsync(inputStudentGuardianId, inputStudentId);
+                this.studentGuardianService.RemoveStudentGuardianByIdsAsync(inputStudentGuardianId, inputStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianServiceException>(() =>

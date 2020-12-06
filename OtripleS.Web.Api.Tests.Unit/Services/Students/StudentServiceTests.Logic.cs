@@ -160,7 +160,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Students
 
             // when
             Student actualStudent =
-                await this.studentService.DeleteStudentAsync(studentId);
+                await this.studentService.RemoveStudentByIdAsync(studentId);
 
             // then
             actualStudent.Should().BeEquivalentTo(expectedStudent);

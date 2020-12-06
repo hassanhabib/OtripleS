@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
 
             // when
             ValueTask<User> actualUserTask =
-                this.userService.DeleteUserAsync(inputUserId);
+                this.userService.RemoveUserByIdAsync(inputUserId);
 
             // then
             await Assert.ThrowsAsync<UserValidationException>(() => actualUserTask.AsTask());
@@ -70,7 +70,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
 
             // when
             ValueTask<User> deleteUserTask =
-                this.userService.DeleteUserAsync(inputUserId);
+                this.userService.RemoveUserByIdAsync(inputUserId);
 
             // then
             await Assert.ThrowsAsync<UserValidationException>(() =>

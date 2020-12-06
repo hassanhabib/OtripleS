@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
 
             //when
             ValueTask<StudentGuardian> actualStudentGuardianDeleteTask =
-                this.studentGuardianService.DeleteStudentGuardianAsync(inputStudentGuardianId, inputStudentId);
+                this.studentGuardianService.RemoveStudentGuardianByIdsAsync(inputStudentGuardianId, inputStudentId);
 
             //then
             await Assert.ThrowsAsync<StudentGuardianValidationException>(
@@ -72,7 +72,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
 
             //when
             ValueTask<StudentGuardian> actualStudentGuardianDeleteTask =
-                this.studentGuardianService.DeleteStudentGuardianAsync(inputStudentGuardianId, inputStudentId);
+                this.studentGuardianService.RemoveStudentGuardianByIdsAsync(inputStudentGuardianId, inputStudentId);
 
             //then
             await Assert.ThrowsAsync<StudentGuardianValidationException>(
@@ -115,7 +115,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
                     .ReturnsAsync(nullStorageStudentGuardian);
             // when
             ValueTask<StudentGuardian> actualStudentGuardianDeleteTask =
-                this.studentGuardianService.DeleteStudentGuardianAsync(inputStudentGuardianId, inputStudentId);
+                this.studentGuardianService.RemoveStudentGuardianByIdsAsync(inputStudentGuardianId, inputStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>

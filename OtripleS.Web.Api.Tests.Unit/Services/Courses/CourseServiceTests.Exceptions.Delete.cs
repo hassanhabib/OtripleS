@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
 
             // when
             ValueTask<Course> deleteCourseTask =
-                this.courseService.DeleteCourseAsync(inputCourseId);
+                this.courseService.RemoveCourseAsync(inputCourseId);
 
             // then
             await Assert.ThrowsAsync<CourseDependencyException>(() =>
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
 
             // when
             ValueTask<Course> deleteCourseTask =
-                this.courseService.DeleteCourseAsync(inputCourseId);
+                this.courseService.RemoveCourseAsync(inputCourseId);
 
             // then
             await Assert.ThrowsAsync<CourseDependencyException>(() =>
@@ -106,7 +106,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
 
             // when
             ValueTask<Course> deleteCourseTask =
-                this.courseService.DeleteCourseAsync(inputCourseId);
+                this.courseService.RemoveCourseAsync(inputCourseId);
 
             // then
             await Assert.ThrowsAsync<CourseDependencyException>(() =>
@@ -142,7 +142,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
 
             // when
             ValueTask<Course> deleteCourseTask =
-                this.courseService.DeleteCourseAsync(inputCourseId);
+                this.courseService.RemoveCourseAsync(inputCourseId);
 
             // then
             await Assert.ThrowsAsync<CourseServiceException>(() =>

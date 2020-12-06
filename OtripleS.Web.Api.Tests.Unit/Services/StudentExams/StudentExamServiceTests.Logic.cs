@@ -195,7 +195,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 
             // when
             StudentExam actualStudentExam =
-                await this.studentExamService.DeleteStudentExamByIdAsync(inputStudentExamId);
+                await this.studentExamService.RemoveStudentExamByIdAsync(inputStudentExamId);
 
             //then
             actualStudentExam.Should().BeEquivalentTo(expectedStudentExam);

@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attendances
 
             // when
             ValueTask<Attendance> deleteAttendanceTask =
-                this.attendanceService.DeleteAttendanceAsync(inputAttendanceId);
+                this.attendanceService.RemoveAttendanceByIdAsync(inputAttendanceId);
 
             // then
             await Assert.ThrowsAsync<AttendanceDependencyException>(() =>
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attendances
 
             // when
             ValueTask<Attendance> deleteAttendanceTask =
-                this.attendanceService.DeleteAttendanceAsync(inputAttendanceId);
+                this.attendanceService.RemoveAttendanceByIdAsync(inputAttendanceId);
 
             // then
             await Assert.ThrowsAsync<AttendanceDependencyException>(() =>
@@ -106,7 +106,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attendances
 
             // when
             ValueTask<Attendance> deleteAttendanceTask =
-                this.attendanceService.DeleteAttendanceAsync(inputAttendanceId);
+                this.attendanceService.RemoveAttendanceByIdAsync(inputAttendanceId);
 
             // then
             await Assert.ThrowsAsync<AttendanceDependencyException>(() =>
@@ -142,7 +142,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attendances
 
             // when
             ValueTask<Attendance> deleteAttendanceTask =
-                this.attendanceService.DeleteAttendanceAsync(inputAttendanceId);
+                this.attendanceService.RemoveAttendanceByIdAsync(inputAttendanceId);
 
             // then
             await Assert.ThrowsAsync<AttendanceServiceException>(() =>

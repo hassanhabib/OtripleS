@@ -37,6 +37,11 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             return await this.storageBroker.InsertCalendarEntryAsync(calendarEntry);
         });
 
+        public ValueTask<CalendarEntry> ModifyCalendarEntryAsync(CalendarEntry calendarEntry)
+        {
+            throw new NotImplementedException();
+        }
+ 
         public ValueTask<CalendarEntry> RemoveCalendarEntryByIdAsync(Guid calendarEntryId) =>
         TryCatch(async () =>
         {

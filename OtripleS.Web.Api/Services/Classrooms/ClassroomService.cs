@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
             return await this.storageBroker.InsertClassroomAsync(classroom);
         });
 
-        public ValueTask<Classroom> DeleteClassroomAsync(Guid classroomId) =>
+        public ValueTask<Classroom> RemoveClassroomAsync(Guid classroomId) =>
         TryCatch(async () =>
         {
             ValidateClassroomIdIsNull(classroomId);

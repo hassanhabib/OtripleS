@@ -77,7 +77,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
 
             // when
             User actualUser =
-                await this.userService.DeleteUserAsync(inputUserId);
+                await this.userService.RemoveUserByIdAsync(inputUserId);
 
             // then
             actualUser.Should().BeEquivalentTo(expectedUser);
