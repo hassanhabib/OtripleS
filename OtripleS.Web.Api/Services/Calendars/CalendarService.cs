@@ -74,7 +74,7 @@ namespace OtripleS.Web.Api.Services.Calendars
 			return await this.storageBroker.UpdateCalendarAsync(calendar);
 		});
 
-    public ValueTask<Calendar> DeleteCalendarByIdAsync(Guid calendarId) =>
+    public ValueTask<Calendar> RemoveCalendarByIdAsync(Guid calendarId) =>
 		TryCatch(async () =>
 		{
 			ValidateCalendarIdIsNull(calendarId);

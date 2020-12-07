@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 
 			//when
 			ValueTask<StudentExam> actualStudentExamDeleteTask =
-				this.studentExamService.DeleteStudentExamByIdAsync(inputStudentExamId);
+				this.studentExamService.RemoveStudentExamByIdAsync(inputStudentExamId);
 
 			//then
 			await Assert.ThrowsAsync<StudentExamValidationException>(
@@ -72,7 +72,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 
 			// when
 			ValueTask<StudentExam> actualStudentExamDeleteTask =
-				this.studentExamService.DeleteStudentExamByIdAsync(inputStudentExamId);
+				this.studentExamService.RemoveStudentExamByIdAsync(inputStudentExamId);
 
 			// then
 			await Assert.ThrowsAsync<StudentExamValidationException>(() => actualStudentExamDeleteTask.AsTask());
@@ -110,7 +110,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
 
 			// when
 			ValueTask<StudentExam> deleteStudentExamTask =
-				this.studentExamService.DeleteStudentExamByIdAsync(inputStudentExamId);
+				this.studentExamService.RemoveStudentExamByIdAsync(inputStudentExamId);
 
 			// then
 			await Assert.ThrowsAsync<StudentExamServiceException>(() =>

@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Teachers
 
             // when
             Teacher actualTeacher =
-                await this.teacherService.DeleteTeacherByIdAsync(inputTeacherId);
+                await this.teacherService.RemoveTeacherByIdAsync(inputTeacherId);
 
             // then
             actualTeacher.Should().BeEquivalentTo(expectedTeacher);

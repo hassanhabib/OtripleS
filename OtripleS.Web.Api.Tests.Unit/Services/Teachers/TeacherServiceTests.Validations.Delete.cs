@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Teachers
 
             // when
             ValueTask<Teacher> actualTeacherTask =
-                this.teacherService.DeleteTeacherByIdAsync(inputTeacherId);
+                this.teacherService.RemoveTeacherByIdAsync(inputTeacherId);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() => actualTeacherTask.AsTask());
@@ -72,7 +72,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Teachers
 
             // when
             ValueTask<Teacher> actualTeacherTask =
-                this.teacherService.DeleteTeacherByIdAsync(inputTeacherId);
+                this.teacherService.RemoveTeacherByIdAsync(inputTeacherId);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() => actualTeacherTask.AsTask());

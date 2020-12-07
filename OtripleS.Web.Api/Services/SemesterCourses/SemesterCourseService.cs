@@ -77,7 +77,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             return await this.storageBroker.UpdateSemesterCourseAsync(semesterCourse);
         });
 
-        public ValueTask<SemesterCourse> DeleteSemesterCourseAsync(Guid semesterCourseId) =>
+        public ValueTask<SemesterCourse> RemoveSemesterCourseByIdAsync(Guid semesterCourseId) =>
         TryCatch(async () =>
         {
             ValidateSemesterCourseId(semesterCourseId);

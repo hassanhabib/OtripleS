@@ -78,7 +78,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Classrooms
 
             // when
             Classroom actualClassroom =
-                await this.classroomService.DeleteClassroomAsync(inputClassroomId);
+                await this.classroomService.RemoveClassroomAsync(inputClassroomId);
 
             // then
             actualClassroom.Should().BeEquivalentTo(expectedClassroom);

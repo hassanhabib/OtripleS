@@ -35,7 +35,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourses
 
             // when
             ValueTask<StudentSemesterCourse> deleteStudentSemesterCourseTask =
-                this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputSemesterCourseId, inputStudentId);
+                this.studentSemesterCourseService.RemoveStudentSemesterCourseByIdsAsync(inputSemesterCourseId, inputStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseDependencyException>(() =>
@@ -74,7 +74,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourses
 
             // when
             ValueTask<StudentSemesterCourse> deleteSemesterCourseTask =
-                this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputSemesterCourseId, inputStudentId);
+                this.studentSemesterCourseService.RemoveStudentSemesterCourseByIdsAsync(inputSemesterCourseId, inputStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseDependencyException>(() => deleteSemesterCourseTask.AsTask());
@@ -114,7 +114,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourses
 
             // when
             ValueTask<StudentSemesterCourse> deleteStudentSemesterCourseTask =
-                this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputSemesterCourseId, inputStudentId);
+                this.studentSemesterCourseService.RemoveStudentSemesterCourseByIdsAsync(inputSemesterCourseId, inputStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseDependencyException>(() => deleteStudentSemesterCourseTask.AsTask());
@@ -151,7 +151,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourses
 
             // when
             ValueTask<StudentSemesterCourse> deleteStudentSemesterCourseTask =
-                this.studentSemesterCourseService.DeleteStudentSemesterCourseAsync(inputSemesterCourseId, inputStudentId);
+                this.studentSemesterCourseService.RemoveStudentSemesterCourseByIdsAsync(inputSemesterCourseId, inputStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseServiceException>(() =>

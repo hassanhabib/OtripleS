@@ -167,5 +167,47 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldRemoveStudentGuardianAsync()
+        {
+            // given
+            var randomStudentId = Guid.NewGuid();
+            var randomGuardianId = Guid.NewGuid();
+            Guid inputStudentId = randomStudentId;
+            Guid inputGuardianId = randomGuardianId;
+            DateTimeOffset inputDateTime = GetRandomDateTime();
+            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(inputDateTime);
+            randomStudentGuardian.StudentId = inputStudentId;
+            randomStudentGuardian.GuardianId = inputGuardianId;
+            StudentGuardian storageStudentGuardian = randomStudentGuardian;
+            StudentGuardian expectedStudentGuardian = storageStudentGuardian;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentGuardianByIdAsync(inputStudentId, inputGuardianId))
+                    .ReturnsAsync(storageStudentGuardian);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteStudentGuardianAsync(storageStudentGuardian))
+                    .ReturnsAsync(expectedStudentGuardian);
+
+            // when
+            StudentGuardian actualStudentGuardian =
+                await this.studentGuardianService.RemoveStudentGuardianByIdsAsync(inputStudentId, inputGuardianId);
+
+            // then
+            actualStudentGuardian.Should().BeEquivalentTo(expectedStudentGuardian);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentGuardianByIdAsync(inputStudentId, inputGuardianId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteStudentGuardianAsync(storageStudentGuardian),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }

@@ -154,7 +154,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 Teacher storageTeacher =
-                    await this.teacherService.DeleteTeacherByIdAsync(teacherId);
+                    await this.teacherService.RemoveTeacherByIdAsync(teacherId);
 
                 return Ok(storageTeacher);
             }

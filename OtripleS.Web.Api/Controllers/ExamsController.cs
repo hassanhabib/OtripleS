@@ -155,7 +155,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 Exam storageExam =
-                    await this.examService.DeleteExamByIdAsync(examId);
+                    await this.examService.RemoveExamByIdAsync(examId);
 
                 return Ok(storageExam);
             }

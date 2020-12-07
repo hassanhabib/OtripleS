@@ -156,7 +156,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attendances
 
             // when
             Attendance actualAttendance =
-                await this.attendanceService.DeleteAttendanceAsync(inputAttendanceId);
+                await this.attendanceService.RemoveAttendanceByIdAsync(inputAttendanceId);
 
             // then
             actualAttendance.Should().BeEquivalentTo(expectedAttendance);

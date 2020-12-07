@@ -192,7 +192,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Guardians
 
             // when
             Guardian actualGuardian =
-                await this.guardianService.DeleteGuardianByIdAsync(guardianId);
+                await this.guardianService.RemoveGuardianByIdAsync(guardianId);
 
             // then
             actualGuardian.Should().BeEquivalentTo(expectedGuardian);

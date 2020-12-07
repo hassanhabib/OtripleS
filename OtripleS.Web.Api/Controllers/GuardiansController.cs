@@ -155,7 +155,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 Guardian storageGuardian =
-                    await this.guardianService.DeleteGuardianByIdAsync(guardianId);
+                    await this.guardianService.RemoveGuardianByIdAsync(guardianId);
 
                 return Ok(storageGuardian);
             }

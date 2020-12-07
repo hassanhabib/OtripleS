@@ -129,7 +129,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
 
             // when
             Course actualCourse =
-                await this.courseService.DeleteCourseAsync(inputCourseId);
+                await this.courseService.RemoveCourseAsync(inputCourseId);
 
             // then
             actualCourse.Should().BeEquivalentTo(expectedCourse);

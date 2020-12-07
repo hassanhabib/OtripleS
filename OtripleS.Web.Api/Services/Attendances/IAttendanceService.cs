@@ -16,6 +16,6 @@ namespace OtripleS.Web.Api.Services.Attendances
         ValueTask<Attendance> CreateAttendanceAsync(Attendance attendance);
         ValueTask<Attendance> RetrieveAttendanceByIdAsync(Guid attendanceId);
         IQueryable<Attendance> RetrieveAllAttendances();
-        ValueTask<Attendance> DeleteAttendanceAsync(Guid attendanceId);
+        ValueTask<Attendance> RemoveAttendanceByIdAsync(Guid attendanceId);
     }
 }

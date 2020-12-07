@@ -155,7 +155,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 User storageUser =
-                    await this.userService.DeleteUserAsync(userId);
+                    await this.userService.RemoveUserByIdAsync(userId);
 
                 return Ok(storageUser);
             }

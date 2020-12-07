@@ -116,7 +116,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 Attendance storageAttendance =
-                    await this.attendanceService.DeleteAttendanceAsync(attendanceId);
+                    await this.attendanceService.RemoveAttendanceByIdAsync(attendanceId);
 
                 return Ok(storageAttendance);
             }

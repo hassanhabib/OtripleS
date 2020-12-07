@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 
 			// when
 			ValueTask<Calendar> deleteCalendarTask =
-				this.calendarService.DeleteCalendarByIdAsync(invalidCalendarId);
+				this.calendarService.RemoveCalendarByIdAsync(invalidCalendarId);
 
 			// then
 			await Assert.ThrowsAsync<CalendarValidationException>(() => deleteCalendarTask.AsTask());
@@ -74,7 +74,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 
 			// when
 			ValueTask<Calendar> deleteCalendarByIdTask =
-				this.calendarService.DeleteCalendarByIdAsync(inputCalendarId);
+				this.calendarService.RemoveCalendarByIdAsync(inputCalendarId);
 
 			// then
 			await Assert.ThrowsAsync<CalendarValidationException>(() => deleteCalendarByIdTask.AsTask());

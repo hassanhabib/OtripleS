@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 
 			// when
 			ValueTask<Calendar> deleteCalendarTask =
-				this.calendarService.DeleteCalendarByIdAsync(inputCalendarId);
+				this.calendarService.RemoveCalendarByIdAsync(inputCalendarId);
 
 			// then
 			await Assert.ThrowsAsync<CalendarDependencyException>(() =>
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 
 			// when
 			ValueTask<Calendar> deleteCalendarTask =
-				this.calendarService.DeleteCalendarByIdAsync(inputCalendarId);
+				this.calendarService.RemoveCalendarByIdAsync(inputCalendarId);
 
 			// then
 			await Assert.ThrowsAsync<CalendarDependencyException>(() =>
@@ -106,7 +106,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 
 			// when
 			ValueTask<Calendar> deleteCalendarTask =
-				this.calendarService.DeleteCalendarByIdAsync(inputCalendarId);
+				this.calendarService.RemoveCalendarByIdAsync(inputCalendarId);
 
 			// then
 			await Assert.ThrowsAsync<CalendarDependencyException>(() =>
@@ -142,7 +142,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 
 			// when
 			ValueTask<Calendar> deleteCalendarTask =
-				this.calendarService.DeleteCalendarByIdAsync(inputCalendarId);
+				this.calendarService.RemoveCalendarByIdAsync(inputCalendarId);
 
 			// then
 			await Assert.ThrowsAsync<CalendarServiceException>(() =>
