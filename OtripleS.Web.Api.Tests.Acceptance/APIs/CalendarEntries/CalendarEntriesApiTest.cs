@@ -6,9 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using OtripleS.Web.Api.Models.CalendarEntries;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
-using OtripleS.Web.Api.Tests.Acceptance.Models.CalendarEntries;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Calendars;
 using Tynamix.ObjectFiller;
 using Xunit;
 
@@ -19,8 +18,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
     {
         private readonly OtripleSApiBroker otripleSApiBroker;
 
-        public CalendarEntriesApiTest(OtripleSApiBroker calendarApiBroker) =>
-            this.otripleSApiBroker = calendarApiBroker;
+        public CalendarEntriesApiTest(OtripleSApiBroker calendarEntryApiBroker) =>
+            this.otripleSApiBroker = calendarEntryApiBroker;
         
         private async ValueTask<CalendarEntry> PostRandomCalendarEntryAsync()
         {
@@ -36,17 +35,17 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
         private CalendarEntry CreateRandomCalendarEntry() =>
              CreateRandomCalendarEntryFiller().Create();
 
-        private CalendarEntry UpdateCalendarEntryRandom(Calendar calendar)
+        private CalendarEntry UpdateCalendarEntryRandom(CalendarEntry calendarEntry)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             var filler = new Filler<CalendarEntry>();
 
             filler.Setup()
-                .OnProperty(calendar => calendar.Id).Use(calendar.Id)
-                .OnProperty(calendar => calendar.CreatedBy).Use(calendar.CreatedBy)
-                .OnProperty(calendar => calendar.UpdatedBy).Use(calendar.UpdatedBy)
-                .OnProperty(calendar => calendar.CreatedDate).Use(calendar.CreatedDate)
-                .OnProperty(calendar => calendar.UpdatedDate).Use(now)
+                .OnProperty(calendarEntry => calendarEntry.Id).Use(calendarEntry.Id)
+                .OnProperty(calendarEntry => calendarEntry.CreatedBy).Use(calendarEntry.CreatedBy)
+                .OnProperty(calendarEntry => calendarEntry.UpdatedBy).Use(calendarEntry.UpdatedBy)
+                .OnProperty(calendarEntry => calendarEntry.CreatedDate).Use(calendarEntry.CreatedDate)
+                .OnProperty(calendarEntry => calendarEntry.UpdatedDate).Use(now)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler.Create();

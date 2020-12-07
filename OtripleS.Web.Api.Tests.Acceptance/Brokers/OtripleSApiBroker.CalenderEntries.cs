@@ -6,13 +6,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Tests.Acceptance.Models.CalendarEntries;
+using OtripleS.Web.Api.Models.CalendarEntries;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
 {
     public partial class OtripleSApiBroker
     {
-        private const string CalendarEntryRelativeUrl = "api/CalendarEntry";
+        private const string CalendarEntryRelativeUrl = "api/CalendarEntries";
 
         public async ValueTask<CalendarEntry> PostCalendarEntryAsync(CalendarEntry calendarEntry) =>
             await this.apiFactoryClient.PostContentAsync(CalendarEntryRelativeUrl, calendarEntry);
