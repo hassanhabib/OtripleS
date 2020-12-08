@@ -87,5 +87,78 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomAssignmentId = Guid.NewGuid();
+            Guid inputAssignmentId = randomAssignmentId;
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+            var lockedAssignmentException = new LockedAssignmentException(databaseUpdateConcurrencyException);
+
+            var expectedAssignmentDependencyException =
+                new AssignmentDependencyException(lockedAssignmentException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAssignmentByIdAsync(inputAssignmentId))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
+
+            // when
+            ValueTask<Assignment> deleteAssignmentTask =
+                this.assignmentService.RemoveAssignmentByIdAsync(inputAssignmentId);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentDependencyException>(() =>
+                deleteAssignmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAssignmentByIdAsync(inputAssignmentId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomAssignmentId = Guid.NewGuid();
+            Guid inputAssignmentId = randomAssignmentId;
+            var exception = new Exception();
+
+            var expectedAssignmentServiceException =
+                new AssignmentServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAssignmentByIdAsync(inputAssignmentId))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<Assignment> deleteAssignmentTask =
+                this.assignmentService.RemoveAssignmentByIdAsync(inputAssignmentId);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentServiceException>(() =>
+                deleteAssignmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAssignmentByIdAsync(inputAssignmentId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
