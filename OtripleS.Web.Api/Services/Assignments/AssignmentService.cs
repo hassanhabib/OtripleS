@@ -60,12 +60,12 @@ namespace OtripleS.Web.Api.Services.Assignments
             return storageAssignments;
         });
 
-        public ValueTask<Assignment> RetrieveAssignmentById(Guid guid) =>
+        public ValueTask<Assignment> RetrieveAssignmentById(Guid assignmentId) =>
         TryCatch(async () =>
         {
-            ValidateAssignmentIdIsNull(guid);
-            Assignment storageAssignment = await this.storageBroker.SelectAssignmentByIdAsync(guid);
-            ValidateStorageAssignment(storageAssignment, guid);
+            ValidateAssignmentIdIsNull(assignmentId);
+            Assignment storageAssignment = await this.storageBroker.SelectAssignmentByIdAsync(assignmentId);
+            ValidateStorageAssignment(storageAssignment, assignmentId);
 
             return storageAssignment;
         });
@@ -73,6 +73,8 @@ namespace OtripleS.Web.Api.Services.Assignments
         public ValueTask<Assignment> RemoveAssignmentByIdAsync(Guid assignmentId) =>
         TryCatch(async () =>
         {
+            ValidateAssignmentIdIsNull(assignmentId);
+
             Assignment maybeAssignment =
                 await this.storageBroker.SelectAssignmentByIdAsync(assignmentId);
 

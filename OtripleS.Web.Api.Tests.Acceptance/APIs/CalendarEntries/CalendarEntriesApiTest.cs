@@ -6,10 +6,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.CalendarEntries;
+using OtripleS.Web.Api.Tests.Acceptance.Models.CalendarEntries;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using Tynamix.ObjectFiller;
 using Xunit;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Calendars;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
 {
@@ -23,17 +24,21 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
         
         private async ValueTask<CalendarEntry> PostRandomCalendarEntryAsync()
         {
-            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry();
+            CalendarEntry randomCalendarEntry = await CreateRandomCalendarEntry();
             await this.otripleSApiBroker.PostCalendarEntryAsync(randomCalendarEntry);
 
             return randomCalendarEntry;
         }
 
-        private IEnumerable<CalendarEntry> GetRandomCalendarEntries() =>
-            this.CreateRandomCalendarEntryFiller().Create(GetRandomNumber());
-        
-        private CalendarEntry CreateRandomCalendarEntry() =>
-             CreateRandomCalendarEntryFiller().Create();
+        private async ValueTask<CalendarEntry> DeleteCalenderEntryAsync(CalendarEntry actualCalendarEntry)
+        {
+            CalendarEntry deletedCalendarEntry =
+                await otripleSApiBroker.DeleteCalenderEntryByIdAsync(actualCalendarEntry.Id);
+
+            await otripleSApiBroker.DeleteCalendarByIdAsync(actualCalendarEntry.CalendarId);
+
+            return deletedCalendarEntry;
+        }
 
         private CalendarEntry UpdateCalendarEntryRandom(CalendarEntry calendarEntry)
         {
@@ -51,22 +56,53 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
             return filler.Create();
         }
 
-        private Filler<CalendarEntry> CreateRandomCalendarEntryFiller()
+        private async ValueTask<CalendarEntry> CreateRandomCalendarEntry()
+        {
+
+            Calendar calendar = await PostRandomGuardianAsync();
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            
+            var filler = new Filler<CalendarEntry>();
+
+            filler.Setup()
+                .OnProperty(calendarEntry => calendarEntry.Label).Use(GetRandomString())
+                .OnProperty(calendarEntry => calendarEntry.CreatedBy).Use(calendar.CreatedBy)
+                .OnProperty(calendarEntry => calendarEntry.UpdatedBy).Use(calendar.CreatedBy)
+                .OnProperty(calendarEntry => calendarEntry.CreatedDate).Use(now)
+                .OnProperty(calendarEntry => calendarEntry.UpdatedDate).Use(now)
+                .OnProperty(calendarEntry => calendarEntry.CalendarId).Use(calendar.Id)
+                .OnProperty(calenderEntry => calenderEntry.RepeatUntil).IgnoreIt()
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+
+            return filler.Create();
+        }
+
+        private async ValueTask<Calendar> PostRandomGuardianAsync()
+        {
+            Calendar randomCalendar = CreateRandomCalendar();
+            await this.otripleSApiBroker.PostCalendarAsync(randomCalendar);
+
+            return randomCalendar;
+        }
+
+        private Calendar CreateRandomCalendar()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
 
-            var filler = new Filler<CalendarEntry>();
+            var filler = new Filler<Calendar>();
 
             filler.Setup()
-                .OnProperty(classroom => classroom.CreatedBy).Use(posterId)
-                .OnProperty(classroom => classroom.UpdatedBy).Use(posterId)
-                .OnProperty(classroom => classroom.CreatedDate).Use(now)
-                .OnProperty(classroom => classroom.UpdatedDate).Use(now)
+                .OnProperty(calendarEntry => calendarEntry.CreatedBy).Use(posterId)
+                .OnProperty(calendarEntry => calendarEntry.UpdatedBy).Use(posterId)
+                .OnProperty(calendarEntry => calendarEntry.CreatedDate).Use(now)
+                .OnProperty(calendarEntry => calendarEntry.UpdatedDate).Use(now)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
-            return filler;
+            return filler.Create();
         }
+
+        private static string GetRandomString() => new MnemonicString().GetValue();
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
