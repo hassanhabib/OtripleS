@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using OtripleS.Web.Api.Models.CalendarEntries;
+using OtripleS.Web.Api.Tests.Acceptance.Models.CalendarEntries;
 using RESTFulSense.Exceptions;
 using Xunit;
 
@@ -30,15 +30,18 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
             List<CalendarEntry> expectedCalendarEntries = inputedCalendarEntries;
 
             //When
-            List<CalendarEntry> actualcalendarEntries = await this.otripleSApiBroker.GetAllCalendarEntriesAsync();
+            List<CalendarEntry> actualcalendarEntries = 
+                await this.otripleSApiBroker.GetAllCalendarEntriesAsync();
 
             //then
             foreach (CalendarEntry expectCalendarEntry in expectedCalendarEntries)
             {
-                CalendarEntry actualCalendarEntry = actualcalendarEntries.Single(calendarEntry => calendarEntry.Id == expectCalendarEntry.Id);
+                CalendarEntry actualCalendarEntry = 
+                    actualcalendarEntries.Single(calendarEntry => 
+                        calendarEntry.Id == expectCalendarEntry.Id);
 
                 actualCalendarEntry.Should().BeEquivalentTo(expectCalendarEntry);
-                await otripleSApiBroker.DeleteCalenderEntryByIdAsync(actualCalendarEntry.Id);
+                await DeleteCalenderEntryAsync(actualCalendarEntry);                
             }
         }
 
@@ -52,10 +55,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
 
             //when
             CalendarEntry deletedCalendarEntry =
-                await this.otripleSApiBroker.DeleteCalenderEntryByIdAsync(inputCalendarEntry.Id);
+                await DeleteCalenderEntryAsync(inputCalendarEntry);
 
             ValueTask<CalendarEntry> getCalendarEntryByIdTask =
-                this.otripleSApiBroker.DeleteCalenderEntryByIdAsync(inputCalendarEntry.Id);
+                this.otripleSApiBroker.GetCalendarEntryByIdAsync(inputCalendarEntry.Id);
 
             // then
             deletedCalendarEntry.Should().BeEquivalentTo(expectedCalendarEntry);
