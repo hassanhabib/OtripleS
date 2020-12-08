@@ -67,10 +67,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
             var filler = new Filler<Calendar>();
 
             filler.Setup()
-                .OnProperty(classroom => classroom.CreatedBy).Use(posterId)
-                .OnProperty(classroom => classroom.UpdatedBy).Use(posterId)
-                .OnProperty(classroom => classroom.CreatedDate).Use(now)
-                .OnProperty(classroom => classroom.UpdatedDate).Use(now)
+                .OnProperty(calendar => calendar.CreatedBy).Use(posterId)
+                .OnProperty(calendar => calendar.UpdatedBy).Use(posterId)
+                .OnProperty(calendar => calendar.CreatedDate).Use(now)
+                .OnProperty(calendar => calendar.UpdatedDate).Use(now)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
