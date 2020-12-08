@@ -73,6 +73,8 @@ namespace OtripleS.Web.Api.Services.Assignments
         public ValueTask<Assignment> RemoveAssignmentByIdAsync(Guid assignmentId) =>
         TryCatch(async () =>
         {
+            ValidateAssignmentIdIsNull(assignmentId);
+
             Assignment maybeAssignment =
                 await this.storageBroker.SelectAssignmentByIdAsync(assignmentId);
 
