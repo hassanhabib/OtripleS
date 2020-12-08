@@ -51,5 +51,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomAssignmentId = Guid.NewGuid();
+            Guid inputAssignmentId = randomAssignmentId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedAssignmentDependencyException =
+                new AssignmentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAssignmentByIdAsync(inputAssignmentId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<Assignment> deleteAssignmentTask =
+                this.assignmentService.RemoveAssignmentByIdAsync(inputAssignmentId);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentDependencyException>(() =>
+                deleteAssignmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAssignmentByIdAsync(inputAssignmentId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
