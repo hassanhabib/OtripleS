@@ -25,6 +25,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             ValidateCalendarEntryIsNotNull(calendarEntry);
             ValidateCalendarEntryId(calendarEntry.Id);
             ValidateCalendarEntryRequiredFields(calendarEntry);
+            ValidateCalendarEntryAuditFieldsOnModify(calendarEntry);
         }
 
         private static void ValidateCalendarEntryIsNotNull(CalendarEntry CalendarEntry)
@@ -94,6 +95,47 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
                         parameterValue: calendarEntry.UpdatedDate);
 
                 case { } when IsDateNotRecent(calendarEntry.CreatedDate):
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.CreatedDate),
+                        parameterValue: calendarEntry.CreatedDate);
+            }
+        }
+
+        private void ValidateCalendarEntryAuditFieldsOnModify(CalendarEntry calendarEntry)
+        {
+            switch (calendarEntry)
+            {
+                case { } when IsInvalid(input: calendarEntry.CreatedBy):
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.CreatedBy),
+                        parameterValue: calendarEntry.CreatedBy);
+
+                case { } when IsInvalid(input: calendarEntry.CreatedDate):
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.CreatedDate),
+                        parameterValue: calendarEntry.CreatedDate);
+
+                case { } when IsInvalid(input: calendarEntry.UpdatedBy):
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.UpdatedBy),
+                        parameterValue: calendarEntry.UpdatedBy);
+
+                case { } when IsInvalid(input: calendarEntry.UpdatedDate):
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.UpdatedDate),
+                        parameterValue: calendarEntry.UpdatedDate);
+
+                case { } when calendarEntry.UpdatedBy == calendarEntry.CreatedBy:
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.UpdatedBy),
+                        parameterValue: calendarEntry.UpdatedBy);
+
+                case { } when calendarEntry.UpdatedDate == calendarEntry.CreatedDate:
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.UpdatedDate),
+                        parameterValue: calendarEntry.UpdatedDate);
+
+                case { } when IsDateNotRecent(calendarEntry.UpdatedDate):
                     throw new InvalidCalendarEntryException(
                         parameterName: nameof(CalendarEntry.CreatedDate),
                         parameterValue: calendarEntry.CreatedDate);
