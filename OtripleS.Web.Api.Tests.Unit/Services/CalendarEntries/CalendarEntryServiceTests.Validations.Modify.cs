@@ -295,5 +295,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [MemberData(nameof(InvalidMinuteCases))]
+        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsNotRecentAndLogItAsync(
+            int minutes)
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(dateTime);
+            CalendarEntry inputCalendarEntry = randomCalendarEntry;
+            inputCalendarEntry.UpdatedBy = inputCalendarEntry.CreatedBy;
+            inputCalendarEntry.UpdatedDate = dateTime.AddMinutes(minutes);
+
+            var invalidCalendarEntryInputException = new InvalidCalendarEntryException(
+                parameterName: nameof(CalendarEntry.UpdatedDate),
+                parameterValue: inputCalendarEntry.UpdatedDate);
+
+            var expectedCalendarEntryValidationException =
+                new CalendarEntryValidationException(invalidCalendarEntryInputException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            // when
+            ValueTask<CalendarEntry> modifyCalendarEntryTask =
+                this.calendarEntryService.ModifyCalendarEntryAsync(inputCalendarEntry);
+
+            // then
+            await Assert.ThrowsAsync<CalendarEntryValidationException>(() =>
+                modifyCalendarEntryTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCalendarEntryByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
