@@ -137,6 +137,30 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             }
         }
 
+        private void ValidateAgainstStorageCalendarEntryOnModify(
+            CalendarEntry inputCalendarEntry, 
+            CalendarEntry storageCalendarEntry)
+        {
+            switch (inputCalendarEntry)
+            {
+                case { } when inputCalendarEntry.CreatedDate != storageCalendarEntry.CreatedDate:
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.CreatedDate),
+                        parameterValue: inputCalendarEntry.CreatedDate);
+
+                case { } when inputCalendarEntry.CreatedBy != storageCalendarEntry.CreatedBy:
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.CreatedBy),
+                        parameterValue: inputCalendarEntry.CreatedBy);
+
+                case { } when inputCalendarEntry.UpdatedDate == storageCalendarEntry.UpdatedDate:
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.UpdatedDate),
+                        parameterValue: inputCalendarEntry.UpdatedDate);
+            }
+        }
+
+
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
