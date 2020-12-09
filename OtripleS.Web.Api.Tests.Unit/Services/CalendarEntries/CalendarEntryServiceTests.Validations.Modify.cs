@@ -41,5 +41,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyWhenCalendarEntryIdIsInvalidAndLogItAsync()
+        {
+            //given
+            Guid invalidCalendarEntryId = Guid.Empty;
+            DateTimeOffset dateTime = GetRandomDateTime();
+            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(dateTime);
+            CalendarEntry invalidCalendarEntry = randomCalendarEntry;
+            invalidCalendarEntry.Id = invalidCalendarEntryId;
+
+            var invalidCalendarEntryInputException = new InvalidCalendarEntryException(
+                parameterName: nameof(CalendarEntry.Id),
+                parameterValue: invalidCalendarEntry.Id);
+
+            var expectedCalendarEntryValidationException =
+                new CalendarEntryValidationException(invalidCalendarEntryInputException);
+
+            //when
+            ValueTask<CalendarEntry> modifyCalendarEntryTask =
+                this.calendarEntryService.ModifyCalendarEntryAsync(invalidCalendarEntry);
+
+            //then
+            await Assert.ThrowsAsync<CalendarEntryValidationException>(() =>
+                modifyCalendarEntryTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
+                Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }

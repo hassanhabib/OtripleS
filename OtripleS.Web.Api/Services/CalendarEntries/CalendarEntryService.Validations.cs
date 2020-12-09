@@ -23,6 +23,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
         private void ValidateCalendarEntryOnModify(CalendarEntry calendarEntry)
         {
             ValidateCalendarEntryIsNotNull(calendarEntry);
+            ValidateCalendarEntryId(calendarEntry.Id);
         }
 
         private static void ValidateCalendarEntryIsNotNull(CalendarEntry CalendarEntry)
