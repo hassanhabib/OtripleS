@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
         }
 
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnDeleteWhenStorageCalendarEntryIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRemoveWhenStorageCalendarEntryIsInvalidAndLogItAsync()
         {
             // given
             Guid randomCalendarEntryId = Guid.NewGuid();
