@@ -7,8 +7,8 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Calendars.Exceptions
 {
-	public class NullCalendarException : Exception
-	{
-		public NullCalendarException() : base("The calendar is null.") { }
-	}
+    public class NullCalendarException : Exception
+    {
+        public NullCalendarException() : base("The calendar is null.") { }
+    }
 }

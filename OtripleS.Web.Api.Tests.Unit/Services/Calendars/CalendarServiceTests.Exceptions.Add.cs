@@ -5,7 +5,6 @@
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Calendars;
@@ -14,8 +13,8 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 {
-	public partial class CalendarServiceTests
-	{
+    public partial class CalendarServiceTests
+    {
         [Fact]
         public async Task ShouldThrowDependencyExceptionOnAddWhenSqlExceptionOccursAndLogItAsync()
         {

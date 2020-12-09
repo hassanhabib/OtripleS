@@ -27,6 +27,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
             await this.apiFactoryClient.DeleteContentAsync<Calendar>($"{CalendarRelativeUrl}/{calendarId}");
 
         public async ValueTask<List<Calendar>> GetAllCalendarsAsync() =>
-            await  this.apiFactoryClient.GetContentAsync<List<Calendar>>($"{CalendarRelativeUrl}/");
+            await this.apiFactoryClient.GetContentAsync<List<Calendar>>($"{CalendarRelativeUrl}/");
     }
 }

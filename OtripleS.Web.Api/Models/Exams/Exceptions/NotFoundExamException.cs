@@ -8,8 +8,8 @@ using System;
 namespace OtripleS.Web.Api.Models.Exams.Exceptions
 {
     public class NotFoundExamException : Exception
-	{
-		public NotFoundExamException(Guid examId)
-			: base($"Couldn't find exam with Id: {examId}.") { }
-	}
+    {
+        public NotFoundExamException(Guid examId)
+            : base($"Couldn't find exam with Id: {examId}.") { }
+    }
 }

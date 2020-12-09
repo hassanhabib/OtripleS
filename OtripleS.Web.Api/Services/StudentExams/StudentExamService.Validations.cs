@@ -85,10 +85,10 @@ namespace OtripleS.Web.Api.Services.StudentExams
         }
 
         private void ValidateAgainstStorageStudentExamOnModify(
-            StudentExam inputStudentExam, 
+            StudentExam inputStudentExam,
             StudentExam storageStudentExam)
         {
-            if(inputStudentExam.CreatedDate != storageStudentExam.CreatedDate)
+            if (inputStudentExam.CreatedDate != storageStudentExam.CreatedDate)
                 throw new InvalidStudentExamInputException(
                     parameterName: nameof(StudentExam.CreatedDate),
                     parameterValue: inputStudentExam.CreatedDate);

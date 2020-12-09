@@ -4,13 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Tests.Acceptance.Models.CalendarEntries;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
+using OtripleS.Web.Api.Tests.Acceptance.Models.CalendarEntries;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Calendars;
 using Tynamix.ObjectFiller;
 using Xunit;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Calendars;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
 {
@@ -21,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
 
         public CalendarEntriesApiTest(OtripleSApiBroker calendarEntryApiBroker) =>
             this.otripleSApiBroker = calendarEntryApiBroker;
-        
+
         private async ValueTask<CalendarEntry> PostRandomCalendarEntryAsync()
         {
             CalendarEntry randomCalendarEntry = await CreateRandomCalendarEntry();
@@ -39,6 +38,21 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
 
             return deletedCalendarEntry;
         }
+
+        private async ValueTask<Calendar> PostRandomGuardianAsync()
+        {
+            Calendar randomCalendar = CreateRandomCalendar();
+            await this.otripleSApiBroker.PostCalendarAsync(randomCalendar);
+
+            return randomCalendar;
+        }
+
+        private static string GetRandomString() => new MnemonicString().GetValue();
+
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
         private CalendarEntry UpdateCalendarEntryRandom(CalendarEntry calendarEntry)
         {
@@ -58,10 +72,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
 
         private async ValueTask<CalendarEntry> CreateRandomCalendarEntry()
         {
-
             Calendar calendar = await PostRandomGuardianAsync();
             DateTimeOffset now = DateTimeOffset.UtcNow;
-            
             var filler = new Filler<CalendarEntry>();
 
             filler.Setup()
@@ -77,19 +89,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
             return filler.Create();
         }
 
-        private async ValueTask<Calendar> PostRandomGuardianAsync()
-        {
-            Calendar randomCalendar = CreateRandomCalendar();
-            await this.otripleSApiBroker.PostCalendarAsync(randomCalendar);
-
-            return randomCalendar;
-        }
-
         private Calendar CreateRandomCalendar()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
-
             var filler = new Filler<Calendar>();
 
             filler.Setup()
@@ -101,12 +104,5 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
 
             return filler.Create();
         }
-
-        private static string GetRandomString() => new MnemonicString().GetValue();
-
-        private static DateTimeOffset GetRandomDateTime() =>
-            new DateTimeRange(earliestDate: new DateTime()).GetValue();
-
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
     }
 }

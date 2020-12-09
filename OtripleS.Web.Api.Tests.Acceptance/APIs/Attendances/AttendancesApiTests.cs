@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Attendances;
@@ -24,14 +23,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
 
         public AttendancesApiTests(OtripleSApiBroker otripleSApiBroker) =>
             this.otripleSApiBroker = otripleSApiBroker;
-        
+
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
         private Attendance UpdateAttendanceRandom(Attendance inputAttendance)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             inputAttendance.UpdatedDate = now;
-                
+
             return inputAttendance;
         }
 
@@ -69,10 +68,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
 
         private async ValueTask<Attendance> DeleteAttendanceByIdAsync(Attendance attendance)
         {
-            Attendance deletedAttendance = 
+            Attendance deletedAttendance =
                 await this.otripleSApiBroker.DeleteAttendanceByIdAsync(attendance.Id);
 
-            SemesterCourse deletedSemesterCourse = 
+            SemesterCourse deletedSemesterCourse =
                 await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(
                     attendance.StudentSemesterCourseId);
 
@@ -85,10 +84,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
-        
+
         private async ValueTask<SemesterCourse> PostRandomSemesterCourseAsync(
-            Teacher randomTeacher, 
-            Classroom randomClassroom, 
+            Teacher randomTeacher,
+            Classroom randomClassroom,
             Course randomCourse)
         {
             SemesterCourse randomSemesterCourse = await CreateRandomSemesterCourseAsync(
@@ -104,7 +103,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
             Course randomCourse)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
-            
+
             Guid userId = Guid.NewGuid();
             var filler = new Filler<SemesterCourse>();
 

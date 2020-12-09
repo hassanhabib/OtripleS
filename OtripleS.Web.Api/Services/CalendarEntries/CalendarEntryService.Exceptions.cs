@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                var lockedCalendarException = 
+                var lockedCalendarException =
                     new LockedCalendarEntryException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedCalendarException);

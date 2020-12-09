@@ -9,9 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Guardians;
 using OtripleS.Web.Api.Tests.Acceptance.Models.StudentGuardians;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 using RESTFulSense.Exceptions;
 using Xunit;
 
@@ -68,7 +66,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
             // given
             var randomStudentGuardians = new List<StudentGuardian>();
 
-            for(var i =0; i<= GetRandomNumber(); i++)
+            for (var i = 0; i <= GetRandomNumber(); i++)
             {
                 StudentGuardian randomStudentGuardian = await PostStudentGuardianAsync();
                 randomStudentGuardians.Add(randomStudentGuardian);
@@ -78,14 +76,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
             List<StudentGuardian> expectedStudentGuardians = inputStudentGuardians;
 
             // when
-            List<StudentGuardian> actualStudentGuardians = 
+            List<StudentGuardian> actualStudentGuardians =
                 await this.otripleSApiBroker.GetAllStudentGuardiansAsync();
 
             // then
             foreach (StudentGuardian expectedStudentGuardian in expectedStudentGuardians)
             {
-                StudentGuardian actualStudentGuardian = 
-                    actualStudentGuardians.Single(studentGuardian => 
+                StudentGuardian actualStudentGuardian =
+                    actualStudentGuardians.Single(studentGuardian =>
                     studentGuardian.StudentId == expectedStudentGuardian.StudentId);
 
                 actualStudentGuardian.Should().BeEquivalentTo(expectedStudentGuardian);
@@ -103,12 +101,12 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
             StudentGuardian expectedStudentGuardian = inputStudentGuardian;
 
             // when 
-            StudentGuardian deletedStudentGuardian = 
+            StudentGuardian deletedStudentGuardian =
                 await DeleteStudentGuardianAsync(inputStudentGuardian);
 
             ValueTask<StudentGuardian> getStudentGuardianByIdTask =
                 this.otripleSApiBroker.GetStudentGuardianByIdsAsync(
-                    inputStudentGuardian.StudentId, 
+                    inputStudentGuardian.StudentId,
                     inputStudentGuardian.GuardianId);
 
             // then

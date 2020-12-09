@@ -12,6 +12,6 @@ namespace OtripleS.Web.Api.Models.Calendars.Exceptions
             : base($"Invalid Calendar, " +
                   $"ParameterName: {parameterName}, " +
                   $"ParameterValue: {parameterValue}.")
-        {}
+        { }
     }
 }

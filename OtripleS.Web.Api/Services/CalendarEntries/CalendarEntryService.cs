@@ -3,13 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
-using System.Linq;
 using OtripleS.Web.Api.Models.CalendarEntries;
-using System;
 
 namespace OtripleS.Web.Api.Services.CalendarEntries
 {
@@ -41,7 +41,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
         {
             throw new NotImplementedException();
         }
- 
+
         public ValueTask<CalendarEntry> RemoveCalendarEntryByIdAsync(Guid calendarEntryId) =>
         TryCatch(async () =>
         {
@@ -72,7 +72,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
         {
             ValidateCalendarEntryId(calendarEntryId);
 
-            CalendarEntry storageCalendarEntry = 
+            CalendarEntry storageCalendarEntry =
                 await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntryId);
 
             ValidateStorageCalendarEntry(storageCalendarEntry, calendarEntryId);

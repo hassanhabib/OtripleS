@@ -11,11 +11,11 @@ using OtripleS.Web.Api.Models.Exams;
 namespace OtripleS.Web.Api.Services.Exams
 {
     public interface IExamService
-	{
-		ValueTask<Exam> AddExamAsync(Exam exam);
-		IQueryable<Exam> RetrieveAllExams();
-		ValueTask<Exam> RetrieveExamByIdAsync(Guid examId);
-		ValueTask<Exam> ModifyExamAsync(Exam exam);
-		ValueTask<Exam> RemoveExamByIdAsync(Guid examId);
-	}
+    {
+        ValueTask<Exam> AddExamAsync(Exam exam);
+        IQueryable<Exam> RetrieveAllExams();
+        ValueTask<Exam> RetrieveExamByIdAsync(Guid examId);
+        ValueTask<Exam> ModifyExamAsync(Exam exam);
+        ValueTask<Exam> RemoveExamByIdAsync(Guid examId);
+    }
 }

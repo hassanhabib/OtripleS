@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Classrooms;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
-using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Exams;
+using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
 using Tynamix.ObjectFiller;
 using Xunit;
 
@@ -24,7 +23,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Exams
 
         public ExamsApiTests(OtripleSApiBroker otripleSApiBroker) =>
             this.otripleSApiBroker = otripleSApiBroker;
-        
+
         private async ValueTask<Exam> DeleteExamAsync(Exam exam)
         {
             Exam deletedExam =
@@ -52,8 +51,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Exams
             Teacher randomTeacher = await PostRandomTeacherAsync();
             Course randomCourse = await PostRandomCourseAsync();
             Classroom randomClassroom = await PostRandomClassroom();
-            
-            SemesterCourse semesterCourse = 
+
+            SemesterCourse semesterCourse =
                 await PostRandomSemesterCourseAsync(randomTeacher, randomCourse, randomClassroom);
 
             return CreateRandomExamFiller(semesterCourse).Create();

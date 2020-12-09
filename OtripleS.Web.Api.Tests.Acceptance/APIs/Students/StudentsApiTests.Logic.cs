@@ -87,7 +87,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
             Student expectedStudent = inputStudent;
 
             // when 
-            Student deletedStudent = 
+            Student deletedStudent =
                 await this.otripleSApiBroker.DeleteStudentByIdAsync(inputStudent.Id);
 
             ValueTask<Student> getStudentByIdTask =

@@ -17,7 +17,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
         public async ValueTask<StudentContact> PostStudentContactAsync(
             StudentContact studentContact) =>
                 await this.apiFactoryClient.PostContentAsync(
-                    StudentContactsRelativeUrl, 
+                    StudentContactsRelativeUrl,
                     studentContact);
 
         public async ValueTask<StudentContact> GetStudentContactByIdsAsync(
@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
         public async ValueTask<StudentContact> PutStudentContactAsync(
             StudentContact studentContact) =>
                 await this.apiFactoryClient.PutContentAsync(
-                    StudentContactsRelativeUrl, 
+                    StudentContactsRelativeUrl,
                     studentContact);
 
         public async ValueTask<List<StudentContact>> GetAllStudentContactsAsync() =>

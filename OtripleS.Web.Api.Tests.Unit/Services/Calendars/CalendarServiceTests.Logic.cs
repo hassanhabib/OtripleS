@@ -14,197 +14,197 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 {
-	public partial class CalendarServiceTests
-	{
-		[Fact]
-		public async Task ShouldAddCalendarAsync()
-		{
-			// given
-			DateTimeOffset dateTime = DateTimeOffset.UtcNow;
-			Calendar randomCalendar = CreateRandomCalendar(dateTime);
-			randomCalendar.UpdatedBy = randomCalendar.CreatedBy;
-			randomCalendar.UpdatedDate = randomCalendar.CreatedDate;
-			Calendar inputCalendar = randomCalendar;
-			Calendar storageCalendar = randomCalendar;
-			Calendar expectedCalendar = randomCalendar;
-
-			this.dateTimeBrokerMock.Setup(broker =>
-			   broker.GetCurrentDateTime())
-				   .Returns(dateTime);
-
-			this.storageBrokerMock.Setup(broker =>
-				broker.InsertCalendarAsync(inputCalendar))
-					.ReturnsAsync(storageCalendar);
-
-			// when
-			Calendar actualCalendar =
-				await this.calendarService.AddCalendarAsync(inputCalendar);
-
-			// then
-			actualCalendar.Should().BeEquivalentTo(expectedCalendar);
-
-			this.storageBrokerMock.Verify(broker =>
-				broker.InsertCalendarAsync(inputCalendar),
-					Times.Once);
-
-			this.dateTimeBrokerMock.Verify(broker =>
-				broker.GetCurrentDateTime(),
-					Times.Once);
-
-			this.storageBrokerMock.VerifyNoOtherCalls();
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-		}
-
-		[Fact]
-		public void ShouldRetrieveAllCalendars()
+    public partial class CalendarServiceTests
+    {
+        [Fact]
+        public async Task ShouldAddCalendarAsync()
         {
-			// given
-			IQueryable<Calendar> randomCalendars = CreateRandomCalendars();
-			IQueryable<Calendar> storageCalendars = randomCalendars;
-			IQueryable<Calendar> expectedCalendars = storageCalendars;
+            // given
+            DateTimeOffset dateTime = DateTimeOffset.UtcNow;
+            Calendar randomCalendar = CreateRandomCalendar(dateTime);
+            randomCalendar.UpdatedBy = randomCalendar.CreatedBy;
+            randomCalendar.UpdatedDate = randomCalendar.CreatedDate;
+            Calendar inputCalendar = randomCalendar;
+            Calendar storageCalendar = randomCalendar;
+            Calendar expectedCalendar = randomCalendar;
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectAllCalendars())
-					.Returns(storageCalendars);
+            this.dateTimeBrokerMock.Setup(broker =>
+               broker.GetCurrentDateTime())
+                   .Returns(dateTime);
 
-			// when
-			IQueryable<Calendar> actualCalendars =
-				this.calendarService.RetrieveAllCalendars();
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertCalendarAsync(inputCalendar))
+                    .ReturnsAsync(storageCalendar);
 
-			// then
-			actualCalendars.Should().BeEquivalentTo(expectedCalendars);
+            // when
+            Calendar actualCalendar =
+                await this.calendarService.AddCalendarAsync(inputCalendar);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectAllCalendars(),
-					Times.Once);
+            // then
+            actualCalendar.Should().BeEquivalentTo(expectedCalendar);
 
-			this.storageBrokerMock.VerifyNoOtherCalls();
-			this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCalendarAsync(inputCalendar),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-		[Fact]
-		public async Task ShouldRetrieveCalendarByIdAsync()
-		{
-			// given
-			Guid randomCalendarId = Guid.NewGuid();
-			Guid inputCalendarId = randomCalendarId;
-			DateTimeOffset randomDateTime = GetRandomDateTime();
-			Calendar randomCalendar = CreateRandomCalendar(randomDateTime);
-			Calendar storageCalendar = randomCalendar;
-			Calendar expectedCalendar = storageCalendar;
+        [Fact]
+        public void ShouldRetrieveAllCalendars()
+        {
+            // given
+            IQueryable<Calendar> randomCalendars = CreateRandomCalendars();
+            IQueryable<Calendar> storageCalendars = randomCalendars;
+            IQueryable<Calendar> expectedCalendars = storageCalendars;
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectCalendarByIdAsync(inputCalendarId))
-					.ReturnsAsync(storageCalendar);
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllCalendars())
+                    .Returns(storageCalendars);
 
-			// when
-			Calendar actualCalendar =
-				await this.calendarService.RetrieveCalendarByIdAsync(inputCalendarId);
+            // when
+            IQueryable<Calendar> actualCalendars =
+                this.calendarService.RetrieveAllCalendars();
 
-			// then
-			actualCalendar.Should().BeEquivalentTo(expectedCalendar);
+            // then
+            actualCalendars.Should().BeEquivalentTo(expectedCalendars);
 
-			this.dateTimeBrokerMock.Verify(broker =>
-				broker.GetCurrentDateTime(),
-					Times.Never);
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllCalendars(),
+                    Times.Once);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectCalendarByIdAsync(inputCalendarId),
-					Times.Once);
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
 
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-		}
+        [Fact]
+        public async Task ShouldRetrieveCalendarByIdAsync()
+        {
+            // given
+            Guid randomCalendarId = Guid.NewGuid();
+            Guid inputCalendarId = randomCalendarId;
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Calendar randomCalendar = CreateRandomCalendar(randomDateTime);
+            Calendar storageCalendar = randomCalendar;
+            Calendar expectedCalendar = storageCalendar;
 
-		[Fact]
-		public async Task ShouldModifyCalendarAsync()
-		{
-			// given
-			DateTimeOffset randomDate = GetRandomDateTime();
-			DateTimeOffset randomInputDate = GetRandomDateTime();
-			Calendar randomCalendar = CreateRandomCalendar(randomInputDate);
-			Calendar inputCalendar = randomCalendar;
-			Calendar afterUpdateStorageCalendar = inputCalendar;
-			Calendar expectedCalendar = afterUpdateStorageCalendar;
-			Calendar beforeUpdateStorageCalendar = randomCalendar.DeepClone();
-			inputCalendar.UpdatedDate = randomDate;
-			Guid calendarId = inputCalendar.Id;
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCalendarByIdAsync(inputCalendarId))
+                    .ReturnsAsync(storageCalendar);
 
-			this.dateTimeBrokerMock.Setup(broker =>
-			   broker.GetCurrentDateTime())
-				   .Returns(randomDate);
+            // when
+            Calendar actualCalendar =
+                await this.calendarService.RetrieveCalendarByIdAsync(inputCalendarId);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectCalendarByIdAsync(calendarId))
-					.ReturnsAsync(beforeUpdateStorageCalendar);
+            // then
+            actualCalendar.Should().BeEquivalentTo(expectedCalendar);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.UpdateCalendarAsync(inputCalendar))
-					.ReturnsAsync(afterUpdateStorageCalendar);
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
 
-			// when
-			Calendar actualCalendar =
-				await this.calendarService.ModifyCalendarAsync(inputCalendar);
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCalendarByIdAsync(inputCalendarId),
+                    Times.Once);
 
-			// then
-			actualCalendar.Should().BeEquivalentTo(expectedCalendar);
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
 
-			this.dateTimeBrokerMock.Verify(broker =>
-				broker.GetCurrentDateTime(),
-					Times.Once);
+        [Fact]
+        public async Task ShouldModifyCalendarAsync()
+        {
+            // given
+            DateTimeOffset randomDate = GetRandomDateTime();
+            DateTimeOffset randomInputDate = GetRandomDateTime();
+            Calendar randomCalendar = CreateRandomCalendar(randomInputDate);
+            Calendar inputCalendar = randomCalendar;
+            Calendar afterUpdateStorageCalendar = inputCalendar;
+            Calendar expectedCalendar = afterUpdateStorageCalendar;
+            Calendar beforeUpdateStorageCalendar = randomCalendar.DeepClone();
+            inputCalendar.UpdatedDate = randomDate;
+            Guid calendarId = inputCalendar.Id;
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectCalendarByIdAsync(calendarId),
-					Times.Once);
+            this.dateTimeBrokerMock.Setup(broker =>
+               broker.GetCurrentDateTime())
+                   .Returns(randomDate);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.UpdateCalendarAsync(inputCalendar),
-					Times.Once);
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCalendarByIdAsync(calendarId))
+                    .ReturnsAsync(beforeUpdateStorageCalendar);
 
-			this.storageBrokerMock.VerifyNoOtherCalls();
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-		}
+            this.storageBrokerMock.Setup(broker =>
+                broker.UpdateCalendarAsync(inputCalendar))
+                    .ReturnsAsync(afterUpdateStorageCalendar);
 
-		[Fact]
-		public async Task ShouldDeleteCalendarByIdAsync()
-		{
-			// given
-			DateTimeOffset dateTime = GetRandomDateTime();
-			Calendar randomCalendar = CreateRandomCalendar(dateTime);
-			Guid inputCalendarId = randomCalendar.Id;
-			Calendar inputCalendar = randomCalendar;
-			Calendar storageCalendar = randomCalendar;
-			Calendar expectedCalendar = randomCalendar;
+            // when
+            Calendar actualCalendar =
+                await this.calendarService.ModifyCalendarAsync(inputCalendar);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectCalendarByIdAsync(inputCalendarId))
-					.ReturnsAsync(inputCalendar);
+            // then
+            actualCalendar.Should().BeEquivalentTo(expectedCalendar);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.DeleteCalendarAsync(inputCalendar))
-					.ReturnsAsync(storageCalendar);
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
-			// when
-			Calendar actualCalendar =
-				await this.calendarService.RemoveCalendarByIdAsync(inputCalendarId);
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCalendarByIdAsync(calendarId),
+                    Times.Once);
 
-			// then
-			actualCalendar.Should().BeEquivalentTo(expectedCalendar);
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateCalendarAsync(inputCalendar),
+                    Times.Once);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectCalendarByIdAsync(inputCalendarId),
-					Times.Once);
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.DeleteCalendarAsync(inputCalendar),
-					Times.Once);
+        [Fact]
+        public async Task ShouldDeleteCalendarByIdAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Calendar randomCalendar = CreateRandomCalendar(dateTime);
+            Guid inputCalendarId = randomCalendar.Id;
+            Calendar inputCalendar = randomCalendar;
+            Calendar storageCalendar = randomCalendar;
+            Calendar expectedCalendar = randomCalendar;
 
-			this.storageBrokerMock.VerifyNoOtherCalls();
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-		}
-	}
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCalendarByIdAsync(inputCalendarId))
+                    .ReturnsAsync(inputCalendar);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteCalendarAsync(inputCalendar))
+                    .ReturnsAsync(storageCalendar);
+
+            // when
+            Calendar actualCalendar =
+                await this.calendarService.RemoveCalendarByIdAsync(inputCalendarId);
+
+            // then
+            actualCalendar.Should().BeEquivalentTo(expectedCalendar);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCalendarByIdAsync(inputCalendarId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteCalendarAsync(inputCalendar),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+    }
 }

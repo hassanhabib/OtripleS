@@ -4,10 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.Calendars;
 using OtripleS.Web.Api.Models.Calendars.Exceptions;
 using Xunit;
 

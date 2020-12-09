@@ -6,7 +6,6 @@
 using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
-using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Calendars;
 using OtripleS.Web.Api.Models.Calendars.Exceptions;
@@ -14,8 +13,8 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 {
-	public partial class CalendarServiceTests
-	{
+    public partial class CalendarServiceTests
+    {
         [Fact]
         public async void ShouldThrowValidationExceptionOnAddWhenCalendarIsNullAndLogItAsync()
         {

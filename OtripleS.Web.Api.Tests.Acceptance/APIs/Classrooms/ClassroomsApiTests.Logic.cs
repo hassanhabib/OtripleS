@@ -68,7 +68,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Classrooms
             List<Classroom> expectedClassrooms = inputClassrooms.ToList();
 
             // when
-            List<Classroom> actualClassrooms = 
+            List<Classroom> actualClassrooms =
                 await this.otripleSApiBroker.GetAllClassroomsAsync();
 
             // then

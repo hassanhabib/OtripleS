@@ -13,78 +13,78 @@ using OtripleS.Web.Api.Models.Calendars;
 
 namespace OtripleS.Web.Api.Services.Calendars
 {
-	public partial class CalendarService : ICalendarService
-	{
-		private readonly IStorageBroker storageBroker;
-		private readonly ILoggingBroker loggingBroker;
-		private readonly IDateTimeBroker dateTimeBroker;
+    public partial class CalendarService : ICalendarService
+    {
+        private readonly IStorageBroker storageBroker;
+        private readonly ILoggingBroker loggingBroker;
+        private readonly IDateTimeBroker dateTimeBroker;
 
-		public CalendarService(IStorageBroker storageBroker,
-			ILoggingBroker loggingBroker,
-			IDateTimeBroker dateTimeBroker)
-		{
-			this.storageBroker = storageBroker;
-			this.loggingBroker = loggingBroker;
-			this.dateTimeBroker = dateTimeBroker;
-		}
+        public CalendarService(IStorageBroker storageBroker,
+            ILoggingBroker loggingBroker,
+            IDateTimeBroker dateTimeBroker)
+        {
+            this.storageBroker = storageBroker;
+            this.loggingBroker = loggingBroker;
+            this.dateTimeBroker = dateTimeBroker;
+        }
 
-		public ValueTask<Calendar> AddCalendarAsync(Calendar calendar) =>
-		TryCatch(async () =>
-		{
-			ValidateCalendarOnCreate(calendar);
+        public ValueTask<Calendar> AddCalendarAsync(Calendar calendar) =>
+        TryCatch(async () =>
+        {
+            ValidateCalendarOnCreate(calendar);
 
-			return await this.storageBroker.InsertCalendarAsync(calendar);
-		});
+            return await this.storageBroker.InsertCalendarAsync(calendar);
+        });
 
-		public IQueryable<Calendar> RetrieveAllCalendars() =>
-		TryCatch(() =>
-		{
-			IQueryable<Calendar> storageCalendars = 
-				this.storageBroker.SelectAllCalendars();
+        public IQueryable<Calendar> RetrieveAllCalendars() =>
+        TryCatch(() =>
+        {
+            IQueryable<Calendar> storageCalendars =
+                this.storageBroker.SelectAllCalendars();
 
-			ValidateStorageCalendars(storageCalendars);
+            ValidateStorageCalendars(storageCalendars);
 
-			return storageCalendars;
-		});
+            return storageCalendars;
+        });
 
-		public ValueTask<Calendar> RetrieveCalendarByIdAsync(Guid calendarId) =>
-		TryCatch(async () =>
-		{
-			ValidateCalendarId(calendarId);
-			Calendar storageCalendar = await this.storageBroker.SelectCalendarByIdAsync(calendarId);
-			ValidateStorageCalendar(storageCalendar, calendarId);
+        public ValueTask<Calendar> RetrieveCalendarByIdAsync(Guid calendarId) =>
+        TryCatch(async () =>
+        {
+            ValidateCalendarId(calendarId);
+            Calendar storageCalendar = await this.storageBroker.SelectCalendarByIdAsync(calendarId);
+            ValidateStorageCalendar(storageCalendar, calendarId);
 
-			return storageCalendar;
-		});
+            return storageCalendar;
+        });
 
-		public ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar) =>
-		TryCatch(async () =>
-		{
-			ValidateCalendarOnModify(calendar);
+        public ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar) =>
+        TryCatch(async () =>
+        {
+            ValidateCalendarOnModify(calendar);
 
-			Calendar maybeCalendar =
-			   await this.storageBroker.SelectCalendarByIdAsync(calendar.Id);
+            Calendar maybeCalendar =
+               await this.storageBroker.SelectCalendarByIdAsync(calendar.Id);
 
-			ValidateStorageCalendar(maybeCalendar, calendar.Id);
+            ValidateStorageCalendar(maybeCalendar, calendar.Id);
 
-			ValidateAgainstStorageCalendarOnModify(
-				inputCalendar: calendar,
-				storageCalendar: maybeCalendar);
+            ValidateAgainstStorageCalendarOnModify(
+                inputCalendar: calendar,
+                storageCalendar: maybeCalendar);
 
-			return await this.storageBroker.UpdateCalendarAsync(calendar);
-		});
+            return await this.storageBroker.UpdateCalendarAsync(calendar);
+        });
 
-    public ValueTask<Calendar> RemoveCalendarByIdAsync(Guid calendarId) =>
-		TryCatch(async () =>
-		{
-			ValidateCalendarIdIsNull(calendarId);
+        public ValueTask<Calendar> RemoveCalendarByIdAsync(Guid calendarId) =>
+            TryCatch(async () =>
+            {
+                ValidateCalendarIdIsNull(calendarId);
 
-			Calendar maybeCalendar =
-				await this.storageBroker.SelectCalendarByIdAsync(calendarId);
+                Calendar maybeCalendar =
+                    await this.storageBroker.SelectCalendarByIdAsync(calendarId);
 
-			ValidateStorageCalendar(maybeCalendar, calendarId);
+                ValidateStorageCalendar(maybeCalendar, calendarId);
 
-			return await this.storageBroker.DeleteCalendarAsync(maybeCalendar);
-		});
-	}
+                return await this.storageBroker.DeleteCalendarAsync(maybeCalendar);
+            });
+    }
 }

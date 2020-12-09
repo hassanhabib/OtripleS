@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
 
         public CalendarsApiTest(OtripleSApiBroker calendarApiBroker) =>
             this.otripleSApiBroker = calendarApiBroker;
-        
+
         private async ValueTask<Calendar> PostRandomCalendarAsync()
         {
             Calendar randomCalendar = CreateRandomCalendar();
@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
 
         private IEnumerable<Calendar> GetRandomCalendars() =>
             this.CreateRandomCalendarFiller().Create(GetRandomNumber());
-        
+
         private Calendar CreateRandomCalendar() =>
              CreateRandomCalendarFiller().Create();
 

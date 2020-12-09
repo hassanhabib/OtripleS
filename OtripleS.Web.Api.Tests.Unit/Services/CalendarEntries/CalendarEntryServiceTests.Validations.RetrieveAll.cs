@@ -13,7 +13,7 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
 {
     public partial class CalendarEntryServiceTests
-	{
+    {
         [Fact]
         public void ShouldLogWarningOnRetrieveAllWhenCalendarEntriesWereEmptyAndLogIt()
         {

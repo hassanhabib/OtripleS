@@ -99,7 +99,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
         {
             StudentContact deletedStudentContact =
                 await this.otripleSApiBroker.DeleteStudentContactAsync(
-                    studentContact.StudentId, 
+                    studentContact.StudentId,
                     studentContact.ContactId);
 
             await this.otripleSApiBroker.DeleteContactByIdAsync(studentContact.ContactId);

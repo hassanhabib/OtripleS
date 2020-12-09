@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Calendars.Exceptions
 {
-	public class LockedCalendarException : Exception
-	{
-		public LockedCalendarException(Exception innerException)
-			: base("Locked calendar record exception, please try again later.", innerException) { }
-	}
+    public class LockedCalendarException : Exception
+    {
+        public LockedCalendarException(Exception innerException)
+            : base("Locked calendar record exception, please try again later.", innerException) { }
+    }
 }
