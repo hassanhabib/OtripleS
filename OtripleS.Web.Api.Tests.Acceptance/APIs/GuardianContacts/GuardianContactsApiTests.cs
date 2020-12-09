@@ -4,12 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Guardians;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Contacts;
 using OtripleS.Web.Api.Tests.Acceptance.Models.GuardianContacts;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Guardians;
 using Tynamix.ObjectFiller;
 using Xunit;
 

@@ -13,37 +13,37 @@ using OtripleS.Web.Api.Models.StudentExams.Exceptions;
 
 namespace OtripleS.Web.Api.Services.StudentExams
 {
-	public partial class StudentExamService
-	{
-		private delegate ValueTask<StudentExam> ReturningStudentExamFunction();
-		private delegate IQueryable<StudentExam> ReturningStudentExamsFunction();
+    public partial class StudentExamService
+    {
+        private delegate ValueTask<StudentExam> ReturningStudentExamFunction();
+        private delegate IQueryable<StudentExam> ReturningStudentExamsFunction();
 
-		private async ValueTask<StudentExam> TryCatch(
-			ReturningStudentExamFunction returningStudentExamFunction)
-		{
-			try
-			{
-				return await returningStudentExamFunction();
-			}
-			catch (NullStudentExamException nullStudentExamException)
-			{
-				throw CreateAndLogValidationException(nullStudentExamException);
-			}
-			catch (InvalidStudentExamInputException invalidStudentExamInputException)
-			{
-				throw CreateAndLogValidationException(invalidStudentExamInputException);
-			}
-			catch (NotFoundStudentExamException nullStudentExamException)
-			{
-				throw CreateAndLogValidationException(nullStudentExamException);
-			}
-			catch (SqlException sqlException)
-			{
-				throw CreateAndLogCriticalDependencyException(sqlException);
-			}
-			catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
-			{
-				var lockedStudentExamException = new LockedStudentExamException(dbUpdateConcurrencyException);
+        private async ValueTask<StudentExam> TryCatch(
+            ReturningStudentExamFunction returningStudentExamFunction)
+        {
+            try
+            {
+                return await returningStudentExamFunction();
+            }
+            catch (NullStudentExamException nullStudentExamException)
+            {
+                throw CreateAndLogValidationException(nullStudentExamException);
+            }
+            catch (InvalidStudentExamInputException invalidStudentExamInputException)
+            {
+                throw CreateAndLogValidationException(invalidStudentExamInputException);
+            }
+            catch (NotFoundStudentExamException nullStudentExamException)
+            {
+                throw CreateAndLogValidationException(nullStudentExamException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedStudentExamException = new LockedStudentExamException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedStudentExamException);
             }
@@ -57,30 +57,30 @@ namespace OtripleS.Web.Api.Services.StudentExams
             }
         }
 
-		private IQueryable<StudentExam> TryCatch(ReturningStudentExamsFunction returningStudentExamsFunction)
-		{
-			try
-			{
-				return returningStudentExamsFunction();
-			}
-			catch (SqlException sqlException)
-			{
-				throw CreateAndLogCriticalDependencyException(sqlException);
-			}
-			catch (DbUpdateException dbUpdateException)
-			{
-				throw CreateAndLogDependencyException(dbUpdateException);
-			}
-			catch (Exception exception)
-			{
-				throw CreateAndLogServiceException(exception);
-			}
-		}
+        private IQueryable<StudentExam> TryCatch(ReturningStudentExamsFunction returningStudentExamsFunction)
+        {
+            try
+            {
+                return returningStudentExamsFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
 
-		private StudentExamValidationException CreateAndLogValidationException(Exception exception)
-		{
-			var StudentExamValidationException = new StudentExamValidationException(exception);
-			this.loggingBroker.LogError(StudentExamValidationException);
+        private StudentExamValidationException CreateAndLogValidationException(Exception exception)
+        {
+            var StudentExamValidationException = new StudentExamValidationException(exception);
+            this.loggingBroker.LogError(StudentExamValidationException);
 
             return StudentExamValidationException;
         }

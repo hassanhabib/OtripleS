@@ -30,14 +30,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
             List<Assignment> expectedAssignments = inputAssignments.ToList();
 
             // when
-            List<Assignment> actualAssignments = 
+            List<Assignment> actualAssignments =
                 await this.otripleSApiBroker.GetAllAssignmentsAsync();
 
             // then
             foreach (Assignment expectedAssignment in expectedAssignments)
             {
-                Assignment actualAssignment = 
-                    actualAssignments.Single(assignment => 
+                Assignment actualAssignment =
+                    actualAssignments.Single(assignment =>
                         assignment.Id == expectedAssignment.Id);
 
                 actualAssignment.Should().BeEquivalentTo(expectedAssignment);

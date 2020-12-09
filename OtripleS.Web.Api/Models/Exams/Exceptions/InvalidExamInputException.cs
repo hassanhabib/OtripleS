@@ -8,11 +8,11 @@ using System;
 namespace OtripleS.Web.Api.Models.Exams.Exceptions
 {
     public class InvalidExamInputException : Exception
-	{
-		public InvalidExamInputException(string parameterName, object parameterValue)
-			: base($"Invalid Exam, " +
-				  $"ParameterName: {parameterName}, " +
-				  $"ParameterValue: {parameterValue}.")
-		{ }
-	}
+    {
+        public InvalidExamInputException(string parameterName, object parameterValue)
+            : base($"Invalid Exam, " +
+                  $"ParameterName: {parameterName}, " +
+                  $"ParameterValue: {parameterValue}.")
+        { }
+    }
 }

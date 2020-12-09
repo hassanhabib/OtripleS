@@ -67,14 +67,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
             List<Guardian> expectedGuardians = inputGuardians.ToList();
 
             // when
-            List<Guardian> actualGuardians = 
+            List<Guardian> actualGuardians =
                 await this.otripleSApiBroker.GetAllGuardiansAsync();
 
             // then
             foreach (Guardian expectedGuardian in expectedGuardians)
             {
-                Guardian actualGuardian = 
-                    actualGuardians.Single(guardian => 
+                Guardian actualGuardian =
+                    actualGuardians.Single(guardian =>
                         guardian.Id == expectedGuardian.Id);
 
                 actualGuardian.Should().BeEquivalentTo(expectedGuardian);

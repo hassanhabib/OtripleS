@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Classrooms;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Exams;
 using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
 using OtripleS.Web.Api.Tests.Acceptance.Models.StudentExams;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Exams;
 using Tynamix.ObjectFiller;
 using Xunit;
 
@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
 
         public StudentExamsApiTests(OtripleSApiBroker otripleSApiBroker) =>
             this.otripleSApiBroker = otripleSApiBroker;
-        
+
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
         private async ValueTask<StudentExam> PostRandomStudentExamAsync()

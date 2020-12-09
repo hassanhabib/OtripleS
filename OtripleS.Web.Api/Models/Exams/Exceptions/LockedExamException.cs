@@ -8,8 +8,8 @@ using System;
 namespace OtripleS.Web.Api.Models.Exams.Exceptions
 {
     public class LockedExamException : Exception
-	{
-		public LockedExamException(Exception innerException)
-			: base("Locked exam record exception, please try again later.", innerException) { }
-	}
+    {
+        public LockedExamException(Exception innerException)
+            : base("Locked exam record exception, please try again later.", innerException) { }
+    }
 }

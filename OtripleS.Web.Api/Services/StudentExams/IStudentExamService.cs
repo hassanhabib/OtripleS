@@ -12,13 +12,13 @@ namespace OtripleS.Web.Api.Services.StudentExams
     public interface IStudentExamService
     {
         ValueTask<StudentExam> AddStudentExamAsync(StudentExam studentExam);
-        
+
         ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId);
 
         IQueryable<StudentExam> RetrieveAllStudentExams();
 
         ValueTask<StudentExam> RemoveStudentExamByIdAsync(Guid studentExamId);
-                
+
         ValueTask<StudentExam> ModifyStudentExamAsync(StudentExam studentExam);
     }
 }

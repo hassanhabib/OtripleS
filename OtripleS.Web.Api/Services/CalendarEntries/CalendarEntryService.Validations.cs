@@ -19,6 +19,14 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             ValidateCalendarEntryRequiredFields(calendarEntry);
             ValidateCalendarEntryAuditFieldsOnCreate(calendarEntry);
         }
+        
+        private void ValidateCalendarEntryOnModify(CalendarEntry calendarEntry)
+        {
+            ValidateCalendarEntryIsNotNull(calendarEntry);
+            ValidateCalendarEntryId(calendarEntry.Id);
+            ValidateCalendarEntryRequiredFields(calendarEntry);
+            ValidateCalendarEntryAuditFieldsOnModify(calendarEntry);
+        }
 
         private static void ValidateCalendarEntryIsNotNull(CalendarEntry CalendarEntry)
         {
@@ -39,7 +47,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
         }
 
         private static void ValidateStorageCalendarEntry(
-            CalendarEntry storageCalendarEntry, 
+            CalendarEntry storageCalendarEntry,
             Guid calendarEntryId)
         {
             if (storageCalendarEntry == null)
@@ -92,6 +100,66 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
                         parameterValue: calendarEntry.CreatedDate);
             }
         }
+
+        private void ValidateCalendarEntryAuditFieldsOnModify(CalendarEntry calendarEntry)
+        {
+            switch (calendarEntry)
+            {
+                case { } when IsInvalid(input: calendarEntry.CreatedBy):
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.CreatedBy),
+                        parameterValue: calendarEntry.CreatedBy);
+
+                case { } when IsInvalid(input: calendarEntry.CreatedDate):
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.CreatedDate),
+                        parameterValue: calendarEntry.CreatedDate);
+
+                case { } when IsInvalid(input: calendarEntry.UpdatedBy):
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.UpdatedBy),
+                        parameterValue: calendarEntry.UpdatedBy);
+
+                case { } when IsInvalid(input: calendarEntry.UpdatedDate):
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.UpdatedDate),
+                        parameterValue: calendarEntry.UpdatedDate);
+
+                case { } when calendarEntry.UpdatedDate == calendarEntry.CreatedDate:
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.UpdatedDate),
+                        parameterValue: calendarEntry.UpdatedDate);
+
+                case { } when IsDateNotRecent(calendarEntry.UpdatedDate):
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.UpdatedDate),
+                        parameterValue: calendarEntry.UpdatedDate);
+            }
+        }
+
+        private void ValidateAgainstStorageCalendarEntryOnModify(
+            CalendarEntry inputCalendarEntry, 
+            CalendarEntry storageCalendarEntry)
+        {
+            switch (inputCalendarEntry)
+            {
+                case { } when inputCalendarEntry.CreatedDate != storageCalendarEntry.CreatedDate:
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.CreatedDate),
+                        parameterValue: inputCalendarEntry.CreatedDate);
+
+                case { } when inputCalendarEntry.CreatedBy != storageCalendarEntry.CreatedBy:
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.CreatedBy),
+                        parameterValue: inputCalendarEntry.CreatedBy);
+
+                case { } when inputCalendarEntry.UpdatedDate == storageCalendarEntry.UpdatedDate:
+                    throw new InvalidCalendarEntryException(
+                        parameterName: nameof(CalendarEntry.UpdatedDate),
+                        parameterValue: inputCalendarEntry.UpdatedDate);
+            }
+        }
+
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {

@@ -3,14 +3,14 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.CalendarEntries;
 using OtripleS.Web.Api.Models.CalendarEntries.Exceptions;
 using OtripleS.Web.Api.Services.CalendarEntries;
 using RESTFulSense.Controllers;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Controllers
 {

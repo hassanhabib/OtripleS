@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
 
         public CalendarsApiTest(OtripleSApiBroker calendarApiBroker) =>
             this.otripleSApiBroker = calendarApiBroker;
-        
+
         private async ValueTask<Calendar> PostRandomCalendarAsync()
         {
             Calendar randomCalendar = CreateRandomCalendar();
@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
 
         private IEnumerable<Calendar> GetRandomCalendars() =>
             this.CreateRandomCalendarFiller().Create(GetRandomNumber());
-        
+
         private Calendar CreateRandomCalendar() =>
              CreateRandomCalendarFiller().Create();
 
@@ -67,10 +67,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
             var filler = new Filler<Calendar>();
 
             filler.Setup()
-                .OnProperty(classroom => classroom.CreatedBy).Use(posterId)
-                .OnProperty(classroom => classroom.UpdatedBy).Use(posterId)
-                .OnProperty(classroom => classroom.CreatedDate).Use(now)
-                .OnProperty(classroom => classroom.UpdatedDate).Use(now)
+                .OnProperty(calendar => calendar.CreatedBy).Use(posterId)
+                .OnProperty(calendar => calendar.UpdatedBy).Use(posterId)
+                .OnProperty(calendar => calendar.CreatedDate).Use(now)
+                .OnProperty(calendar => calendar.UpdatedDate).Use(now)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;

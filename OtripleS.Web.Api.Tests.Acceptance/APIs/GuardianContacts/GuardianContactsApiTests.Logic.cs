@@ -3,7 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -52,14 +51,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.GuardianContacts
             List<GuardianContact> expectedGuardianContacts = inputGuardianContacts.ToList();
 
             // when
-            List<GuardianContact> actualGuardianContacts = 
+            List<GuardianContact> actualGuardianContacts =
                 await this.otripleSApiBroker.GetAllGuardianContactsAsync();
 
             // then
             foreach (GuardianContact expectedGuardianContact in expectedGuardianContacts)
             {
-                GuardianContact actualGuardianContact = 
-                    actualGuardianContacts.Single(guardianContact => 
+                GuardianContact actualGuardianContact =
+                    actualGuardianContacts.Single(guardianContact =>
                         guardianContact.GuardianId == expectedGuardianContact.GuardianId &&
                         guardianContact.ContactId == expectedGuardianContact.ContactId);
 

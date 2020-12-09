@@ -140,6 +140,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-        }        
+        }
     }
 }

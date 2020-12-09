@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Classrooms
 
         public ClassroomsApiTests(OtripleSApiBroker otripleSApiBroker) =>
             this.otripleSApiBroker = otripleSApiBroker;
-        
+
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
         private IEnumerable<Classroom> GetRandomClassrooms() =>

@@ -10,7 +10,7 @@ using OtripleS.Web.Api.Models.CalendarEntries;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
-    public  partial interface IStorageBroker
+    public partial interface IStorageBroker
     {
         ValueTask<CalendarEntry> InsertCalendarEntryAsync(CalendarEntry calendarEntry);
         IQueryable<CalendarEntry> SelectAllCalendarEntries();

@@ -3,22 +3,17 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using EFxceptions.Models.Exceptions;
 using FluentAssertions;
-using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Calendars;
-using OtripleS.Web.Api.Models.Calendars.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 {
-	public partial class CalendarServiceTests
-	{
+    public partial class CalendarServiceTests
+    {
         [Fact]
         public void ShouldLogWarningOnRetrieveAllIfCalendarsIsEmptyAndLogIt()
         {

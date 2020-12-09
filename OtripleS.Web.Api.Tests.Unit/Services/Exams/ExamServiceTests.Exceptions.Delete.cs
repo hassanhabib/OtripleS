@@ -15,150 +15,150 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
 {
     public partial class ExamServiceTests
-	{
-		[Fact]
-		public async Task ShouldThrowDependencyExceptionOnDeleteWhenSqlExceptionOccursAndLogItAsync()
-		{
-			// given
-			Guid randomExamId = Guid.NewGuid();
-			Guid inputExamId = randomExamId;
-			SqlException sqlException = GetSqlException();
+    {
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenSqlExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomExamId = Guid.NewGuid();
+            Guid inputExamId = randomExamId;
+            SqlException sqlException = GetSqlException();
 
-			var expectedExamDependencyException =
-				new ExamDependencyException(sqlException);
+            var expectedExamDependencyException =
+                new ExamDependencyException(sqlException);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectExamByIdAsync(inputExamId))
-					.ThrowsAsync(sqlException);
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectExamByIdAsync(inputExamId))
+                    .ThrowsAsync(sqlException);
 
-			// when
-			ValueTask<Exam> deleteExamTask =
-				this.examService.RemoveExamByIdAsync(inputExamId);
+            // when
+            ValueTask<Exam> deleteExamTask =
+                this.examService.RemoveExamByIdAsync(inputExamId);
 
-			// then
-			await Assert.ThrowsAsync<ExamDependencyException>(() =>
-				deleteExamTask.AsTask());
+            // then
+            await Assert.ThrowsAsync<ExamDependencyException>(() =>
+                deleteExamTask.AsTask());
 
-			this.loggingBrokerMock.Verify(broker =>
-				broker.LogCritical(It.Is(SameExceptionAs(expectedExamDependencyException))),
-					Times.Once);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(expectedExamDependencyException))),
+                    Times.Once);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectExamByIdAsync(inputExamId),
-					Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(inputExamId),
+                    Times.Once);
 
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-		}
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
 
-		[Fact]
-		public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
-		{
-			// given
-			Guid randomExamId = Guid.NewGuid();
-			Guid inputExamId = randomExamId;
-			var databaseUpdateException = new DbUpdateException();
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomExamId = Guid.NewGuid();
+            Guid inputExamId = randomExamId;
+            var databaseUpdateException = new DbUpdateException();
 
-			var expectedExamDependencyException =
-				new ExamDependencyException(databaseUpdateException);
+            var expectedExamDependencyException =
+                new ExamDependencyException(databaseUpdateException);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectExamByIdAsync(inputExamId))
-					.ThrowsAsync(databaseUpdateException);
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectExamByIdAsync(inputExamId))
+                    .ThrowsAsync(databaseUpdateException);
 
-			// when
-			ValueTask<Exam> deleteExamTask =
-				this.examService.RemoveExamByIdAsync(inputExamId);
+            // when
+            ValueTask<Exam> deleteExamTask =
+                this.examService.RemoveExamByIdAsync(inputExamId);
 
-			// then
-			await Assert.ThrowsAsync<ExamDependencyException>(() =>
-				deleteExamTask.AsTask());
+            // then
+            await Assert.ThrowsAsync<ExamDependencyException>(() =>
+                deleteExamTask.AsTask());
 
-			this.loggingBrokerMock.Verify(broker =>
-				broker.LogError(It.Is(SameExceptionAs(expectedExamDependencyException))),
-					Times.Once);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamDependencyException))),
+                    Times.Once);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectExamByIdAsync(inputExamId),
-					Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(inputExamId),
+                    Times.Once);
 
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-		}
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
 
-		[Fact]
-		public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
-		{
-			// given
-			Guid randomExamId = Guid.NewGuid();
-			Guid inputExamId = randomExamId;
-			var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
-			var lockedExamException = new LockedExamException(databaseUpdateConcurrencyException);
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomExamId = Guid.NewGuid();
+            Guid inputExamId = randomExamId;
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+            var lockedExamException = new LockedExamException(databaseUpdateConcurrencyException);
 
-			var expectedExamDependencyException =
-				new ExamDependencyException(lockedExamException);
+            var expectedExamDependencyException =
+                new ExamDependencyException(lockedExamException);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectExamByIdAsync(inputExamId))
-					.ThrowsAsync(databaseUpdateConcurrencyException);
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectExamByIdAsync(inputExamId))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
 
-			// when
-			ValueTask<Exam> deleteExamTask =
-				this.examService.RemoveExamByIdAsync(inputExamId);
+            // when
+            ValueTask<Exam> deleteExamTask =
+                this.examService.RemoveExamByIdAsync(inputExamId);
 
-			// then
-			await Assert.ThrowsAsync<ExamDependencyException>(() =>
-				deleteExamTask.AsTask());
+            // then
+            await Assert.ThrowsAsync<ExamDependencyException>(() =>
+                deleteExamTask.AsTask());
 
-			this.loggingBrokerMock.Verify(broker =>
-				broker.LogError(It.Is(SameExceptionAs(expectedExamDependencyException))),
-					Times.Once);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamDependencyException))),
+                    Times.Once);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectExamByIdAsync(inputExamId),
-					Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(inputExamId),
+                    Times.Once);
 
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-		}
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
 
-		[Fact]
-		public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
-		{
-			// given
-			Guid randomExamId = Guid.NewGuid();
-			Guid inputExamId = randomExamId;
-			var exception = new Exception();
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomExamId = Guid.NewGuid();
+            Guid inputExamId = randomExamId;
+            var exception = new Exception();
 
-			var expectedExamServiceException =
-				new ExamServiceException(exception);
+            var expectedExamServiceException =
+                new ExamServiceException(exception);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectExamByIdAsync(inputExamId))
-					.ThrowsAsync(exception);
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectExamByIdAsync(inputExamId))
+                    .ThrowsAsync(exception);
 
-			// when
-			ValueTask<Exam> deleteExamTask =
-				this.examService.RemoveExamByIdAsync(inputExamId);
+            // when
+            ValueTask<Exam> deleteExamTask =
+                this.examService.RemoveExamByIdAsync(inputExamId);
 
-			// then
-			await Assert.ThrowsAsync<ExamServiceException>(() =>
-				deleteExamTask.AsTask());
+            // then
+            await Assert.ThrowsAsync<ExamServiceException>(() =>
+                deleteExamTask.AsTask());
 
-			this.loggingBrokerMock.Verify(broker =>
-				broker.LogError(It.Is(SameExceptionAs(expectedExamServiceException))),
-					Times.Once);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamServiceException))),
+                    Times.Once);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectExamByIdAsync(inputExamId),
-					Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(inputExamId),
+                    Times.Once);
 
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-		}
-	}
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+    }
 }

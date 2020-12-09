@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
         TryCatch(async () =>
         {
             ValidateStudentExamOnCreate(studentExam);
-            
+
             return await this.storageBroker.InsertStudentExamAsync(studentExam);
         });
 

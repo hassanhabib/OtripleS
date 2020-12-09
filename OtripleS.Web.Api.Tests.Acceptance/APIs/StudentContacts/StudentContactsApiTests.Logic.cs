@@ -3,7 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -86,12 +85,12 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
             StudentContact expectedStudentContact = inputStudentContact;
 
             // when 
-            StudentContact deletedStudentContact = 
+            StudentContact deletedStudentContact =
                 await DeleteStudentContactAsync(inputStudentContact);
 
             ValueTask<StudentContact> getStudentContactByIdTask =
                 this.otripleSApiBroker.GetStudentContactByIdsAsync(
-                    inputStudentContact.StudentId, 
+                    inputStudentContact.StudentId,
                     inputStudentContact.ContactId);
 
             // then
@@ -100,5 +99,5 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
             await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
                getStudentContactByIdTask.AsTask());
         }
-    }   
+    }
 }

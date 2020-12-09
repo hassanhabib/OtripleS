@@ -13,7 +13,7 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
 {
     public partial class CalendarEntryServiceTests
-	{
+    {
         [Fact]
         public async void ShouldThrowValidationExceptionOnRetrieveWhenIdIsInvalidAndLogItAsync()
         {
@@ -54,15 +54,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
         }
 
         [Fact]
-        public async void 
+        public async void
             ShouldThrowValidationExceptionOnRetrieveWhenStorageCalendarEntryIsNullAndLogItAsync()
         {
             // given
             Guid randomCalendarEntryId = Guid.NewGuid();
             Guid inputCalendarEntryId = randomCalendarEntryId;
             CalendarEntry invalidStorageCalendarEntry = null;
-            
-            var notFoundCalendarEntryException = 
+
+            var notFoundCalendarEntryException =
                 new NotFoundCalendarEntryException(inputCalendarEntryId);
 
             var expectedCalendarEntryValidationException =

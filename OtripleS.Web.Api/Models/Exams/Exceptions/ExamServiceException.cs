@@ -8,8 +8,8 @@ using System;
 namespace OtripleS.Web.Api.Models.Exams.Exceptions
 {
     public class ExamServiceException : Exception
-	{
-		public ExamServiceException(Exception innerException)
-			: base("Service error occurred, contact support.", innerException) { }
-	}
+    {
+        public ExamServiceException(Exception innerException)
+            : base("Service error occurred, contact support.", innerException) { }
+    }
 }

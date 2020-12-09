@@ -194,7 +194,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
-        
+
         [Fact]
         public async void ShouldThrowValidationExceptionOnAddWhenUpdatedDateIsInvalidAndLogItAsync()
         {

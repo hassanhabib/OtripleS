@@ -14,7 +14,7 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
 {
     public partial class ExamServiceTests
-	{
+    {
         [Fact]
         public async Task ShouldThrowDependencyExceptionOnAddWhenSqlExceptionOccursAndLogItAsync()
         {

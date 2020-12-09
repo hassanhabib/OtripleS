@@ -19,21 +19,21 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
         public async Task ShouldPostCalendarAsync()
         {
             // given
-           Calendar randomCalendar = CreateRandomCalendar();
-           Calendar inputCalendar = randomCalendar;
-           Calendar expectedCalendar = inputCalendar;
+            Calendar randomCalendar = CreateRandomCalendar();
+            Calendar inputCalendar = randomCalendar;
+            Calendar expectedCalendar = inputCalendar;
 
             // when 
             await this.otripleSApiBroker.PostCalendarAsync(inputCalendar);
 
-           Calendar actualCalendar =
-                await this.otripleSApiBroker.GetCalendarByIdAsync(inputCalendar.Id);
+            Calendar actualCalendar =
+                 await this.otripleSApiBroker.GetCalendarByIdAsync(inputCalendar.Id);
 
             // then
             actualCalendar.Should().BeEquivalentTo(expectedCalendar);
             await this.otripleSApiBroker.DeleteCalendarByIdAsync(actualCalendar.Id);
         }
-      
+
         [Fact]
         public async Task ShouldPutCalendarAsync()
         {
@@ -57,8 +57,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
         {
             //given
             var randomCalendars = new List<Calendar>();
-            
-            for (var i =0; i <= GetRandomNumber(); i++)
+
+            for (var i = 0; i <= GetRandomNumber(); i++)
             {
                 randomCalendars.Add(await PostRandomCalendarAsync());
             }
@@ -88,10 +88,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
             Calendar expectedCalendar = inputCalendar;
 
             //when
-            Calendar deletedCalendar = 
+            Calendar deletedCalendar =
                 await this.otripleSApiBroker.DeleteCalendarByIdAsync(inputCalendar.Id);
 
-            ValueTask<Calendar> getCalendarByIdTask = 
+            ValueTask<Calendar> getCalendarByIdTask =
                 this.otripleSApiBroker.DeleteCalendarByIdAsync(inputCalendar.Id);
 
             // then

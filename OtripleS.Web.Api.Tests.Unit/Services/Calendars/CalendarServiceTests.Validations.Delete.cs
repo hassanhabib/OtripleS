@@ -13,91 +13,91 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
 {
     public partial class CalendarServiceTests
-	{
-		[Fact]
-		public async Task ShouldThrowValidatonExceptionOnDeleteWhenIdIsInvalidAndLogItAsync()
-		{
-			// given
-			Guid invalidCalendarId = Guid.Empty;
+    {
+        [Fact]
+        public async Task ShouldThrowValidatonExceptionOnDeleteWhenIdIsInvalidAndLogItAsync()
+        {
+            // given
+            Guid invalidCalendarId = Guid.Empty;
 
-			var invalidCalendarException = new InvalidCalendarInputException(
-				parameterName: nameof(Calendar.Id),
-				parameterValue: invalidCalendarId);
+            var invalidCalendarException = new InvalidCalendarInputException(
+                parameterName: nameof(Calendar.Id),
+                parameterValue: invalidCalendarId);
 
-			var expectedCalendarValidationException =
-				new CalendarValidationException(invalidCalendarException);
+            var expectedCalendarValidationException =
+                new CalendarValidationException(invalidCalendarException);
 
-			// when
-			ValueTask<Calendar> deleteCalendarTask =
-				this.calendarService.RemoveCalendarByIdAsync(invalidCalendarId);
+            // when
+            ValueTask<Calendar> deleteCalendarTask =
+                this.calendarService.RemoveCalendarByIdAsync(invalidCalendarId);
 
-			// then
-			await Assert.ThrowsAsync<CalendarValidationException>(() => deleteCalendarTask.AsTask());
+            // then
+            await Assert.ThrowsAsync<CalendarValidationException>(() => deleteCalendarTask.AsTask());
 
-			this.loggingBrokerMock.Verify(broker =>
-				broker.LogError(It.Is(SameExceptionAs(expectedCalendarValidationException))),
-					Times.Once);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarValidationException))),
+                    Times.Once);
 
-			this.dateTimeBrokerMock.Verify(broker =>
-				broker.GetCurrentDateTime(),
-					Times.Never);
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectCalendarByIdAsync(It.IsAny<Guid>()),
-					Times.Never);
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCalendarByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.DeleteCalendarAsync(It.IsAny<Calendar>()),
-					Times.Never);
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteCalendarAsync(It.IsAny<Calendar>()),
+                    Times.Never);
 
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-		}
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
 
-		[Fact]
-		public async Task ShouldThrowValidatonExceptionOnDeleteWhenStorageCalendarIsInvalidAndLogItAsync()
-		{
-			// given
-			Guid randomCalendarId = Guid.NewGuid();
-			Guid inputCalendarId = randomCalendarId;
-			Calendar invalidStorageCalendar = null;
+        [Fact]
+        public async Task ShouldThrowValidatonExceptionOnDeleteWhenStorageCalendarIsInvalidAndLogItAsync()
+        {
+            // given
+            Guid randomCalendarId = Guid.NewGuid();
+            Guid inputCalendarId = randomCalendarId;
+            Calendar invalidStorageCalendar = null;
 
-			var notFoundCalendarException = new NotFoundCalendarException(inputCalendarId);
+            var notFoundCalendarException = new NotFoundCalendarException(inputCalendarId);
 
-			var expectedCalendarValidationException =
-				new CalendarValidationException(notFoundCalendarException);
+            var expectedCalendarValidationException =
+                new CalendarValidationException(notFoundCalendarException);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectCalendarByIdAsync(inputCalendarId))
-					.ReturnsAsync(invalidStorageCalendar);
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCalendarByIdAsync(inputCalendarId))
+                    .ReturnsAsync(invalidStorageCalendar);
 
-			// when
-			ValueTask<Calendar> deleteCalendarByIdTask =
-				this.calendarService.RemoveCalendarByIdAsync(inputCalendarId);
+            // when
+            ValueTask<Calendar> deleteCalendarByIdTask =
+                this.calendarService.RemoveCalendarByIdAsync(inputCalendarId);
 
-			// then
-			await Assert.ThrowsAsync<CalendarValidationException>(() => deleteCalendarByIdTask.AsTask());
+            // then
+            await Assert.ThrowsAsync<CalendarValidationException>(() => deleteCalendarByIdTask.AsTask());
 
-			this.loggingBrokerMock.Verify(broker =>
-				broker.LogError(It.Is(SameExceptionAs(expectedCalendarValidationException))),
-					Times.Once);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarValidationException))),
+                    Times.Once);
 
-			this.dateTimeBrokerMock.Verify(broker =>
-				broker.GetCurrentDateTime(),
-					Times.Never);
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectCalendarByIdAsync(inputCalendarId),
-					Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCalendarByIdAsync(inputCalendarId),
+                    Times.Once);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.DeleteCalendarAsync(It.IsAny<Calendar>()),
-					Times.Never);
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteCalendarAsync(It.IsAny<Calendar>()),
+                    Times.Never);
 
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-		}
-	}
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+    }
 }
