@@ -125,11 +125,6 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
                         parameterName: nameof(CalendarEntry.UpdatedDate),
                         parameterValue: calendarEntry.UpdatedDate);
 
-                case { } when calendarEntry.UpdatedBy == calendarEntry.CreatedBy:
-                    throw new InvalidCalendarEntryException(
-                        parameterName: nameof(CalendarEntry.UpdatedBy),
-                        parameterValue: calendarEntry.UpdatedBy);
-
                 case { } when calendarEntry.UpdatedDate == calendarEntry.CreatedDate:
                     throw new InvalidCalendarEntryException(
                         parameterName: nameof(CalendarEntry.UpdatedDate),
@@ -137,8 +132,8 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
 
                 case { } when IsDateNotRecent(calendarEntry.UpdatedDate):
                     throw new InvalidCalendarEntryException(
-                        parameterName: nameof(CalendarEntry.CreatedDate),
-                        parameterValue: calendarEntry.CreatedDate);
+                        parameterName: nameof(CalendarEntry.UpdatedDate),
+                        parameterValue: calendarEntry.UpdatedDate);
             }
         }
 
