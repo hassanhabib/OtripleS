@@ -19,6 +19,11 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             ValidateCalendarEntryRequiredFields(calendarEntry);
             ValidateCalendarEntryAuditFieldsOnCreate(calendarEntry);
         }
+        
+        private void ValidateCalendarEntryOnModify(CalendarEntry calendarEntry)
+        {
+            ValidateCalendarEntryIsNotNull(calendarEntry);
+        }
 
         private static void ValidateCalendarEntryIsNotNull(CalendarEntry CalendarEntry)
         {
