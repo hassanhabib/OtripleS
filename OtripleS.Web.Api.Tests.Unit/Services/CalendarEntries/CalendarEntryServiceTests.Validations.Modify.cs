@@ -653,5 +653,52 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnModifyIfServiceExceptionOccursAndLogItAsync()
+        {
+            // given
+            int randomNegativeNumber = GetNegativeRandomNumber();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(randomDateTime);
+            CalendarEntry someCalendarEntry = randomCalendarEntry;
+            someCalendarEntry.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+            var serviceException = new Exception();
+
+            var expectedCalendarEntryServiceException =
+                new CalendarEntryServiceException(serviceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCalendarEntryByIdAsync(someCalendarEntry.Id))
+                    .ThrowsAsync(serviceException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
+
+            // when
+            ValueTask<CalendarEntry> modifyCalendarEntryTask =
+                this.calendarEntryService.ModifyCalendarEntryAsync(someCalendarEntry);
+
+            // then
+            await Assert.ThrowsAsync<CalendarEntryServiceException>(() =>
+                modifyCalendarEntryTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCalendarEntryByIdAsync(someCalendarEntry.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryServiceException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
