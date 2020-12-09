@@ -160,7 +160,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
-                    Times.Never);
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCalendarEntryByIdAsync(calendarEntryId),
