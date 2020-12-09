@@ -29,10 +29,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
             return randomCalendarEntry;
         }
 
-        private async ValueTask<CalendarEntry> DeleteCalenderEntryAsync(CalendarEntry actualCalendarEntry)
+        private async ValueTask<CalendarEntry> DeleteCalendarEntryAsync(CalendarEntry actualCalendarEntry)
         {
             CalendarEntry deletedCalendarEntry =
-                await otripleSApiBroker.DeleteCalenderEntryByIdAsync(actualCalendarEntry.Id);
+                await otripleSApiBroker.DeleteCalendarEntryByIdAsync(actualCalendarEntry.Id);
 
             await otripleSApiBroker.DeleteCalendarByIdAsync(actualCalendarEntry.CalendarId);
 
@@ -54,8 +54,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private CalendarEntry UpdateCalendarEntryRandom(CalendarEntry calendarEntry)
+        private async ValueTask<CalendarEntry> UpdateCalendarEntryRandom(CalendarEntry calendarEntry)
         {
+            Calendar calendar = await PostRandomGuardianAsync();
             DateTimeOffset now = DateTimeOffset.UtcNow;
             var filler = new Filler<CalendarEntry>();
 
@@ -65,6 +66,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
                 .OnProperty(calendarEntry => calendarEntry.UpdatedBy).Use(calendarEntry.UpdatedBy)
                 .OnProperty(calendarEntry => calendarEntry.CreatedDate).Use(calendarEntry.CreatedDate)
                 .OnProperty(calendarEntry => calendarEntry.UpdatedDate).Use(now)
+                .OnProperty(calendarEntry => calendarEntry.CalendarId).Use(calendar.Id)
+                .OnProperty(calenderEntry => calenderEntry.RepeatUntil).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler.Create();
