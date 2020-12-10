@@ -16,6 +16,43 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
     public partial class CalendarEntriesApiTest
     {
         [Fact]
+        public async Task ShouldPostCalendarEntryAsync()
+        {
+            // given
+            CalendarEntry randomCalendarEntry = await CreateRandomCalendarEntry();
+            CalendarEntry inputCalendarEntry = randomCalendarEntry;
+            CalendarEntry expectedCalendarEntry = inputCalendarEntry;
+
+            // when 
+            await this.otripleSApiBroker.PostCalendarEntryAsync(inputCalendarEntry);
+
+            CalendarEntry actualCalendarEntry =
+                 await this.otripleSApiBroker.GetCalendarEntryByIdAsync(inputCalendarEntry.Id);
+
+            // then
+            actualCalendarEntry.Should().BeEquivalentTo(expectedCalendarEntry);
+            await DeleteCalendarEntryAsync(actualCalendarEntry);
+        }
+
+        [Fact]
+        public async Task ShouldPutCalendarEntryAsync()
+        {
+            // given
+            CalendarEntry randomCalendarEntry = await PostRandomCalendarEntryAsync();
+            CalendarEntry modifiedCalendarEntry = await UpdateCalendarEntryRandom(randomCalendarEntry);
+
+            // when
+            await this.otripleSApiBroker.PutCalendarEntryAsync(modifiedCalendarEntry);
+
+            CalendarEntry actualCalendarEntry =
+                await this.otripleSApiBroker.GetCalendarEntryByIdAsync(randomCalendarEntry.Id);
+
+            // then
+            actualCalendarEntry.Should().BeEquivalentTo(modifiedCalendarEntry);
+            await DeleteCalendarEntryAsync(actualCalendarEntry);
+        }
+
+        [Fact]
         public async Task ShouldGetAllCalendarEntriesAsync()
         {
             //given
@@ -41,7 +78,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
                         calendarEntry.Id == expectCalendarEntry.Id);
 
                 actualCalendarEntry.Should().BeEquivalentTo(expectCalendarEntry);
-                await DeleteCalenderEntryAsync(actualCalendarEntry);
+                await DeleteCalendarEntryAsync(actualCalendarEntry);
             }
         }
 
@@ -55,7 +92,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
 
             //when
             CalendarEntry deletedCalendarEntry =
-                await DeleteCalenderEntryAsync(inputCalendarEntry);
+                await DeleteCalendarEntryAsync(inputCalendarEntry);
 
             ValueTask<CalendarEntry> getCalendarEntryByIdTask =
                 this.otripleSApiBroker.GetCalendarEntryByIdAsync(inputCalendarEntry.Id);
