@@ -71,13 +71,13 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
                 await this.otripleSApiBroker.GetAllCalendarEntriesAsync();
 
             //then
-            foreach (CalendarEntry expectCalendarEntry in expectedCalendarEntries)
+            foreach (CalendarEntry expectedCalendarEntry in expectedCalendarEntries)
             {
                 CalendarEntry actualCalendarEntry =
                     actualcalendarEntries.Single(calendarEntry =>
-                        calendarEntry.Id == expectCalendarEntry.Id);
+                        calendarEntry.Id == expectedCalendarEntry.Id);
 
-                actualCalendarEntry.Should().BeEquivalentTo(expectCalendarEntry);
+                actualCalendarEntry.Should().BeEquivalentTo(expectedCalendarEntry);
                 await DeleteCalendarEntryAsync(actualCalendarEntry);
             }
         }
