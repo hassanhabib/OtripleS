@@ -226,5 +226,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedByIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Attachment randomAttachment = CreateRandomAttachment(dateTime);
+            Attachment inputAttachment = randomAttachment;
+            inputAttachment.CreatedBy = default;
+
+            var invalidAttachmentInputException = new InvalidAttachmentException(
+                parameterName: nameof(Attachment.CreatedBy),
+                parameterValue: inputAttachment.CreatedBy);
+
+            var expectedAttachmentValidationException =
+                new AttachmentValidationException(invalidAttachmentInputException);
+
+            // when
+            ValueTask<Attachment> createAttachmentTask =
+                this.attachmentService.InsertAttachmentAsync(inputAttachment);
+
+            // then
+            await Assert.ThrowsAsync<AttachmentValidationException>(() =>
+                createAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
