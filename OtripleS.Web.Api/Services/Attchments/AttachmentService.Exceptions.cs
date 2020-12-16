@@ -42,6 +42,10 @@ namespace OtripleS.Web.Api.Services.Attachments
 
                 throw CreateAndLogValidationException(alreadyExistsAttachmentException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
