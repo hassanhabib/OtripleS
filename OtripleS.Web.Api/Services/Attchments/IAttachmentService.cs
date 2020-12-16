@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.Attachments;
 
@@ -12,6 +13,7 @@ namespace OtripleS.Web.Api.Services.Attachments
     public interface IAttachmentService
     {
         ValueTask<Attachment> InsertAttachmentAsync(Attachment attachment);
+        IQueryable<Attachment> RetrieveAllAttachments();
         ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId);        
     }
 }

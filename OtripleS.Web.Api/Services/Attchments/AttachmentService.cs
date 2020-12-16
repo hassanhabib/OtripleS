@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -34,6 +35,11 @@ namespace OtripleS.Web.Api.Services.Attachments
 
             return await this.storageBroker.InsertAttachmentAsync(attachment);
         });
+
+        public IQueryable<Attachment> RetrieveAllAttachments()
+        {
+            throw new NotImplementedException();
+        }
 
         public ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId) =>
         TryCatch(async () => {
