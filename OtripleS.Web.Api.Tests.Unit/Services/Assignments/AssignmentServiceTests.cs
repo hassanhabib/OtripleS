@@ -44,18 +44,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
         private Assignment CreateRandomAssignment(DateTimeOffset dates) =>
             CreateAssignmentFiller(dates).Create();
 
-        private static Filler<Assignment> CreateAssignmentFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<Assignment>();
-
-            filler.Setup()
-                .OnProperty(assignment => assignment.CreatedDate).Use(dates)
-                .OnProperty(assignment => assignment.UpdatedDate).Use(dates)
-                .OnProperty(assignment => assignment.Deadline).Use(dates.AddDays(GetRandomNumber()));
-
-            return filler;
-        }
-
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
@@ -88,5 +76,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static Filler<Assignment> CreateAssignmentFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<Assignment>();
+
+            filler.Setup()
+                .OnProperty(assignment => assignment.CreatedDate).Use(dates)
+                .OnProperty(assignment => assignment.UpdatedDate).Use(dates)
+                .OnProperty(assignment => assignment.Deadline).Use(dates.AddDays(GetRandomNumber()));
+
+            return filler;
+        }
     }
 }
