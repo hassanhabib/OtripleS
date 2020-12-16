@@ -35,6 +35,7 @@ namespace OtripleS.Web.Api.Services.Attachments
 
         private bool IsInvalid(Guid input) => input == Guid.Empty;
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
+        private static bool IsInvalid(DateTimeOffset input) => input == default;
 
         private void ValidateAttachmentOnCreate(Attachment attachment)
         {
@@ -52,6 +53,11 @@ namespace OtripleS.Web.Api.Services.Attachments
                     throw new InvalidAttachmentException(
                     parameterName: nameof(Attachment.CreatedBy),
                     parameterValue: attachment.CreatedBy);
+
+                case { } when IsInvalid(attachment.CreatedDate):
+                    throw new InvalidAttachmentException(
+                    parameterName: nameof(Attachment.CreatedDate),
+                    parameterValue: attachment.CreatedDate);
             }
         }
 
