@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Services.Attachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId) =>
-            throw new NotImplementedException();
+        public async ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId) =>
+            await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
     }
 }
