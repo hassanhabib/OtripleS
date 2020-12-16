@@ -50,5 +50,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnRetrieveWhenStorageAttachmentIsNullAndLogItAsync()
+        {
+            //given
+            Guid randomAttachmentId = Guid.NewGuid();
+            Guid inputAttachmentId = randomAttachmentId;
+            Attachment invalidStorageAttachment = null;
+
+            var notFoundAttachmentException = new NotFoundAttachmentException(inputAttachmentId);
+
+            var expectedAttachmentValidationException = new AttachmentValidationException(notFoundAttachmentException);
+
+            this.storageBrokerMock.Setup(broker =>
+                    broker.SelectAttachmentByIdAsync(inputAttachmentId))
+                .ReturnsAsync(invalidStorageAttachment);
+
+            //when
+            ValueTask<Attachment> retrieveAttachmentByIdTask =
+                this.attachmentService.RetrieveAttachmentByIdAsync(inputAttachmentId);
+
+            //then
+            await Assert.ThrowsAsync<AttachmentValidationException>(() =>
+                retrieveAttachmentByIdTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
+                Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker => broker.GetCurrentDateTime(),
+                Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                    broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
+                Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
