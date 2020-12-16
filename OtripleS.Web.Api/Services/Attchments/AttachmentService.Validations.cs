@@ -40,16 +40,23 @@ namespace OtripleS.Web.Api.Services.Attachments
         {
             ValidateAttachmentIsNull(attachment);
             ValidateAttachmentIdIsNull(attachment.Id);
-            ValidateInvalidAuditFields(attachment);
+            ValidateInvalidFields(attachment);
         }
 
-        private void ValidateInvalidAuditFields(Attachment attachment)
+        private void ValidateInvalidFields(Attachment attachment)
         {
             if (IsInvalid(attachment.Label))
             {
                 throw new InvalidAttachmentException(
                     parameterName: nameof(Attachment.Label),
                     parameterValue: attachment.Label);
+            }
+
+            if (IsInvalid(attachment.Description))
+            {
+                throw new InvalidAttachmentException(
+                    parameterName: nameof(Attachment.Description),
+                    parameterValue: attachment.Description);
             }
         }
 

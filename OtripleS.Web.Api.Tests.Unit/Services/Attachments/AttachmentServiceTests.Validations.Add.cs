@@ -132,8 +132,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             invalidAttachment.Description = invalidAttachmentDescription;
 
             var invalidAttachmentException = new InvalidAttachmentException(
-               parameterName: nameof(Attachment.Label),
-               parameterValue: invalidAttachment.Label);
+               parameterName: nameof(Attachment.Description),
+               parameterValue: invalidAttachment.Description);
 
             var expectedAttachmentValidationException =
                 new AttachmentValidationException(invalidAttachmentException);
