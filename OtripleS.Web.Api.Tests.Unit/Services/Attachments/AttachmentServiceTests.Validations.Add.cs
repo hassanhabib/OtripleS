@@ -154,5 +154,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task ShouldThrowValidationExceptionOnCreateWhenAttachmentContectTypeIsInvalidAndLogItAsync(
+            string invalidAttachmentContectType)
+        {
+            // given
+            Attachment randomAttachment = CreateRandomAttachment();
+            Attachment invalidAttachment = randomAttachment;
+            invalidAttachment.ContectType = invalidAttachmentContectType;
+
+            var invalidAttachmentException = new InvalidAttachmentException(
+               parameterName: nameof(Attachment.ContectType),
+               parameterValue: invalidAttachment.ContectType);
+
+            var expectedAttachmentValidationException =
+                new AttachmentValidationException(invalidAttachmentException);
+
+            // when
+            ValueTask<Attachment> createAttachmentTask =
+                this.attachmentService.InsertAttachmentAsync(invalidAttachment);
+
+            // then
+            await Assert.ThrowsAsync<AttachmentValidationException>(() =>
+                createAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
