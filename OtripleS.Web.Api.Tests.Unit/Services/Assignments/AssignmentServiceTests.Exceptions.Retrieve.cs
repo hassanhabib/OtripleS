@@ -68,8 +68,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                 broker.SelectAssignmentByIdAsync(guid))
                     .Throws(databaseUpdateException);
 
-            // when 
-
+            // when
             ValueTask<Assignment> retrieveTask = this.assignmentService.RetrieveAssignmentById(guid);
 
             // then
@@ -91,6 +90,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
         [Fact]
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogIt()
         {
