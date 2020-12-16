@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Attachments.Exceptions;
 using Xunit;
@@ -30,6 +31,36 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllAttachments(),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldThrowDependencyExceptionOnRetrieveAllAttachmentsWhenDbExceptionOccursAndLogIt()
+        {
+            // given
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedAttachmentDependencyException =
+                new AttachmentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllAttachments())
+                    .Throws(databaseUpdateException);
+
+            // when . then
+            Assert.Throws<AttachmentDependencyException>(() =>
+                this.attachmentService.RetrieveAllAttachments());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
