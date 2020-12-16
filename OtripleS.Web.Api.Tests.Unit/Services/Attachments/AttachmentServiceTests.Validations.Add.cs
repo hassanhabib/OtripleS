@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Moq;
 using OtripleS.Web.Api.Models.Attachments;
 using OtripleS.Web.Api.Models.Attachments.Exceptions;
@@ -497,6 +498,57 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenAttachmentAlreadyExistsAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Attachment randomAttachment = CreateRandomAttachment(dateTime);
+            Attachment alreadyExistsAttachment = randomAttachment;
+            alreadyExistsAttachment.UpdatedBy = alreadyExistsAttachment.CreatedBy;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsAttachmentException =
+                new AlreadyExistsAttachmentException(duplicateKeyException);
+
+            var expectedAttachmentValidationException =
+                new AttachmentValidationException(alreadyExistsAttachmentException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertAttachmentAsync(alreadyExistsAttachment))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<Attachment> createAttachmentTask =
+                this.attachmentService.InsertAttachmentAsync(alreadyExistsAttachment);
+
+            // then
+            await Assert.ThrowsAsync<AttachmentValidationException>(() =>
+                createAttachmentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertAttachmentAsync(alreadyExistsAttachment),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
