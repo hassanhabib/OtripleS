@@ -24,6 +24,10 @@ namespace OtripleS.Web.Api.Services.Attachments
             {
                 throw CreateAndLogValidationException(invalidAttachmentInputException);
             }
+            catch (NotFoundAttachmentException notFoundAttachmentException)
+            {
+                throw CreateAndLogValidationException(notFoundAttachmentException);
+            }
         }
 
         private AttachmentValidationException CreateAndLogValidationException(Exception exception)

@@ -31,7 +31,11 @@ namespace OtripleS.Web.Api.Services.Attachments
         TryCatch(async () => {
             ValidateAttachmentId(attachmentId);
 
-            return await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
+            Attachment storageAttachment = await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
+            ValidateStorageAttachment(storageAttachment, attachmentId);
+
+            return storageAttachment;
         });
+
     }
 }

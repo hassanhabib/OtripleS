@@ -25,6 +25,14 @@ namespace OtripleS.Web.Api.Services.Attachments
             }
         }
 
+        private void ValidateStorageAttachment(Attachment storageAttachment, Guid attachmentId)
+        {
+            if (storageAttachment == null)
+            {
+                throw new NotFoundAttachmentException(attachmentId);
+            }
+        }
+
         private bool IsInvalid(Guid input) => input == Guid.Empty;
     }
 }
