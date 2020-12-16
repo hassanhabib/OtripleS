@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                     .Throws(sqlException);
 
             // when 
-            ValueTask<Assignment> retrieveTask = this.assignmentService.RetrieveAssignmentById(badGuid);
+            ValueTask<Assignment> retrieveTask = this.assignmentService.RetrieveAssignmentByIdAsync(badGuid);
 
             // then
             await Assert.ThrowsAsync<AssignmentDependencyException>(() => retrieveTask.AsTask());
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                     .Throws(databaseUpdateException);
 
             // when
-            ValueTask<Assignment> retrieveTask = this.assignmentService.RetrieveAssignmentById(guid);
+            ValueTask<Assignment> retrieveTask = this.assignmentService.RetrieveAssignmentByIdAsync(guid);
 
             // then
             await Assert.ThrowsAsync<AssignmentDependencyException>(() => retrieveTask.AsTask());
@@ -107,7 +107,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                     .Throws(exception);
 
             // when 
-            ValueTask<Assignment> retrieveTask = this.assignmentService.RetrieveAssignmentById(guid);
+            ValueTask<Assignment> retrieveTask = this.assignmentService.RetrieveAssignmentByIdAsync(guid);
 
             // then
             await Assert.ThrowsAsync<AssignmentServiceException>(() => retrieveTask.AsTask());

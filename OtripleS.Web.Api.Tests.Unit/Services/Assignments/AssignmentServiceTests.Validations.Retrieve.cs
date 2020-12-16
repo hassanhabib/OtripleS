@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
 
             //when
             ValueTask<Assignment> retrieveAssignmentByIdTask =
-                this.assignmentService.RetrieveAssignmentById(inputAssignmentId);
+                this.assignmentService.RetrieveAssignmentByIdAsync(inputAssignmentId);
 
             //then
             await Assert.ThrowsAsync<AssignmentValidationException>(() => retrieveAssignmentByIdTask.AsTask());
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
 
             //when
             ValueTask<Assignment> retrieveAssignmentByIdTask =
-                this.assignmentService.RetrieveAssignmentById(inputAssignmentId);
+                this.assignmentService.RetrieveAssignmentByIdAsync(inputAssignmentId);
 
             //then
             await Assert.ThrowsAsync<AssignmentValidationException>(() =>
