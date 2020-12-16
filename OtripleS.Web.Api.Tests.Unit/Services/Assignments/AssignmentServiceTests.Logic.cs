@@ -157,7 +157,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                 .ReturnsAsync(inputAssignment);
 
             //when 
-            Assignment actualAssignment = await this.assignmentService.RetrieveAssignmentById(inputAssignmentId);
+            Assignment actualAssignment = await this.assignmentService.RetrieveAssignmentByIdAsync(inputAssignmentId);
 
             //then
             actualAssignment.Should().BeEquivalentTo(expectedAssignment);
