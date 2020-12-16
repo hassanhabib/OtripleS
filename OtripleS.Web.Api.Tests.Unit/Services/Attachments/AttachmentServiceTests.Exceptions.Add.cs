@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Attachments;
 using OtripleS.Web.Api.Models.Attachments.Exceptions;
@@ -46,6 +47,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertAttachmentAsync(inputAttachment),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnCreateWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Attachment randomAttachment = CreateRandomAttachment(dateTime);
+            Attachment inputAttachment = randomAttachment;
+            inputAttachment.UpdatedBy = inputAttachment.CreatedBy;
+            inputAttachment.UpdatedDate = inputAttachment.CreatedDate;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedAttachmentDependencyException =
+                new AttachmentDependencyException(databaseUpdateException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertAttachmentAsync(inputAttachment))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<Attachment> createAttachmentTask =
+                this.attachmentService.InsertAttachmentAsync(inputAttachment);
+
+            // then
+            await Assert.ThrowsAsync<AttachmentDependencyException>(() =>
+                createAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
