@@ -93,5 +93,44 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogIt()
+        {
+            // given
+            var exception = new Exception();
+
+            var expectedAttachmentServiceException =
+                new AttachmentServiceException(exception);
+
+            var guid = Guid.NewGuid();
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAttachmentByIdAsync(guid))
+                    .Throws(exception);
+
+            // when 
+            ValueTask<Attachment> retrieveTask = 
+                this.attachmentService.RetrieveAttachmentByIdAsync(guid);
+
+            // then
+            await Assert.ThrowsAsync<AttachmentServiceException>(() => retrieveTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAttachmentByIdAsync(guid),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
