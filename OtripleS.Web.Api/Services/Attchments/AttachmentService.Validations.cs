@@ -43,6 +43,18 @@ namespace OtripleS.Web.Api.Services.Attachments
             ValidateAttachmentIdIsNull(attachment.Id);
             ValidateInvalidFields(attachment);
             ValidateInvalidAuditFields(attachment);
+            ValidateAuditFieldsDataOnCreate(attachment);
+        }
+
+        private void ValidateAuditFieldsDataOnCreate(Attachment attachment)
+        {
+            switch (attachment)
+            {
+                case { } when attachment.UpdatedBy != attachment.CreatedBy:
+                    throw new InvalidAttachmentException(
+                    parameterName: nameof(Attachment.UpdatedBy),
+                    parameterValue: attachment.UpdatedBy);
+            }
         }
 
         private void ValidateInvalidAuditFields(Attachment attachment)
