@@ -54,6 +54,11 @@ namespace OtripleS.Web.Api.Services.Attachments
                     throw new InvalidAttachmentException(
                     parameterName: nameof(Attachment.UpdatedBy),
                     parameterValue: attachment.UpdatedBy);
+
+                case { } when attachment.UpdatedDate != attachment.CreatedDate:
+                    throw new InvalidAttachmentException(
+                    parameterName: nameof(Attachment.UpdatedDate),
+                    parameterValue: attachment.UpdatedDate);
             }
         }
 
