@@ -38,7 +38,9 @@ namespace OtripleS.Web.Api.Services.Attachments
 
         public IQueryable<Attachment> RetrieveAllAttachments()
         {
-            throw new NotImplementedException();
+            IQueryable<Attachment> storageAttachments = this.storageBroker.SelectAllAttachments();
+
+            return storageAttachments;
         }
 
         public ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId) =>
