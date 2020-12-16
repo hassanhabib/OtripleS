@@ -58,6 +58,13 @@ namespace OtripleS.Web.Api.Services.Attachments
                     parameterName: nameof(Attachment.Description),
                     parameterValue: attachment.Description);
             }
+
+            if (IsInvalid(attachment.ContectType))
+            {
+                throw new InvalidAttachmentException(
+                    parameterName: nameof(Attachment.ContectType),
+                    parameterValue: attachment.ContectType);
+            }
         }
 
         private void ValidateAttachmentIdIsNull(Guid attachmentId)
