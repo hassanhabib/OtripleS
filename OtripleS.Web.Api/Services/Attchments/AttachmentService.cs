@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Services.Attachments
 
         public ValueTask<Attachment> InsertAttachmentAsync(Attachment attachment)
         {
-            throw new NotImplementedException();
+            return this.storageBroker.InsertAttachmentAsync(attachment);
         }
 
         public ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId) =>

@@ -42,10 +42,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             // then
             actualAttachment.Should().BeEquivalentTo(expectedAttachment);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertAttachmentAsync(inputAttachment),
                     Times.Once);
