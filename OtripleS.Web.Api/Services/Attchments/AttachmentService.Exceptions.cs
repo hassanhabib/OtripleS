@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.Attachments;
 using OtripleS.Web.Api.Models.Attachments.Exceptions;
 
@@ -27,6 +28,10 @@ namespace OtripleS.Web.Api.Services.Attachments
             catch (NotFoundAttachmentException notFoundAttachmentException)
             {
                 throw CreateAndLogValidationException(notFoundAttachmentException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
             }
         }
 
