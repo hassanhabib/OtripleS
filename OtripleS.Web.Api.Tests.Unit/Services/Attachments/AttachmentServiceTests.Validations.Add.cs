@@ -118,5 +118,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task ShouldThrowValidationExceptionOnCreateWhenAttachmentDescriptionIsInvalidAndLogItAsync(
+            string invalidAttachmentDescription)
+        {
+            // given
+            Attachment randomAttachment = CreateRandomAttachment();
+            Attachment invalidAttachment = randomAttachment;
+            invalidAttachment.Description = invalidAttachmentDescription;
+
+            var invalidAttachmentException = new InvalidAttachmentException(
+               parameterName: nameof(Attachment.Label),
+               parameterValue: invalidAttachment.Label);
+
+            var expectedAttachmentValidationException =
+                new AttachmentValidationException(invalidAttachmentException);
+
+            // when
+            ValueTask<Attachment> createAttachmentTask =
+                this.attachmentService.InsertAttachmentAsync(invalidAttachment);
+
+            // then
+            await Assert.ThrowsAsync<AttachmentValidationException>(() =>
+                createAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
