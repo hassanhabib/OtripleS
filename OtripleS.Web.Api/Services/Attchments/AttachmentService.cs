@@ -40,6 +40,8 @@ namespace OtripleS.Web.Api.Services.Attachments
         {
             IQueryable<Attachment> storageAttachments = this.storageBroker.SelectAllAttachments();
 
+            ValidateStorageAttachments(storageAttachments);
+
             return storageAttachments;
         }
 
