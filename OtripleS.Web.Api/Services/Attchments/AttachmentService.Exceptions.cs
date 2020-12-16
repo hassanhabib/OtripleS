@@ -22,6 +22,10 @@ namespace OtripleS.Web.Api.Services.Attachments
             {
                 return await returningAttachmentFunction();
             }
+            catch (NullAttachmentException nullAttachmentException)
+            {
+                throw CreateAndLogValidationException(nullAttachmentException);
+            }
             catch (InvalidAttachmentException invalidAttachmentInputException)
             {
                 throw CreateAndLogValidationException(invalidAttachmentInputException);

@@ -34,5 +34,18 @@ namespace OtripleS.Web.Api.Services.Attachments
         }
 
         private bool IsInvalid(Guid input) => input == Guid.Empty;
+
+        private void ValidateAttachmentOnCreate(Attachment Attachment)
+        {
+            ValidateAttachmentIsNull(Attachment);
+        }
+
+        private void ValidateAttachmentIsNull(Attachment attachment)
+        {
+            if (attachment is null)
+            {
+                throw new NullAttachmentException();
+            }
+        }
     }
 }
