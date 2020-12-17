@@ -45,5 +45,9 @@ namespace OtripleS.Web.Api.Services.Attachments
             return storageAttachment;
         });
 
+        public ValueTask<Attachment> RemoveAttachmentByIdAsync(Guid attachmentId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
