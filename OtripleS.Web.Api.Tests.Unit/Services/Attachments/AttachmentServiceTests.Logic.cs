@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             Attachment actualAttachment =
-                await this.attachmentService.InsertAttachmentAsync(inputAttachment);
+                await this.attachmentService.AddAttachmentAsync(inputAttachment);
 
             // then
             actualAttachment.Should().BeEquivalentTo(expectedAttachment);
