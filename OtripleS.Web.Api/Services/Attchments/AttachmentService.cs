@@ -53,6 +53,8 @@ namespace OtripleS.Web.Api.Services.Attachments
             Attachment maybeAttachment =
                 await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
 
+            ValidateStorageAttachment(maybeAttachment, attachmentId);
+
             return await this.storageBroker.DeleteAttachmentAsync(maybeAttachment);
         });
     }
