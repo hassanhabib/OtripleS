@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Attachments;
@@ -22,6 +23,10 @@ namespace OtripleS.Web.Api.Services.Attachments
             {
                 return await returningAttachmentFunction();
             }
+            catch (NullAttachmentException nullAttachmentException)
+            {
+                throw CreateAndLogValidationException(nullAttachmentException);
+            }
             catch (InvalidAttachmentException invalidAttachmentInputException)
             {
                 throw CreateAndLogValidationException(invalidAttachmentInputException);
@@ -29,6 +34,13 @@ namespace OtripleS.Web.Api.Services.Attachments
             catch (NotFoundAttachmentException notFoundAttachmentException)
             {
                 throw CreateAndLogValidationException(notFoundAttachmentException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsAttachmentException =
+                    new AlreadyExistsAttachmentException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsAttachmentException);
             }
             catch (SqlException sqlException)
             {

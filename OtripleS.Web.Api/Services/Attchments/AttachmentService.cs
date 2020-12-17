@@ -27,6 +27,14 @@ namespace OtripleS.Web.Api.Services.Attachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
+        public ValueTask<Attachment> AddAttachmentAsync(Attachment attachment) =>
+        TryCatch(async () =>
+        {
+            ValidateAttachmentOnCreate(attachment);
+
+            return await this.storageBroker.InsertAttachmentAsync(attachment);
+        });
+
         public ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId) =>
         TryCatch(async () => {
             ValidateAttachmentId(attachmentId);
