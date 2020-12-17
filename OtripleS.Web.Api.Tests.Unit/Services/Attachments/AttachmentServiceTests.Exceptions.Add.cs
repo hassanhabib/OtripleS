@@ -39,7 +39,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(inputAttachment);
+                this.attachmentService.AddAttachmentAsync(inputAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentDependencyException>(() =>
@@ -86,7 +86,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(inputAttachment);
+                this.attachmentService.AddAttachmentAsync(inputAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentDependencyException>(() =>
@@ -133,7 +133,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                 this.attachmentService.InsertAttachmentAsync(inputAttachment);
+                 this.attachmentService.AddAttachmentAsync(inputAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentServiceException>(() =>

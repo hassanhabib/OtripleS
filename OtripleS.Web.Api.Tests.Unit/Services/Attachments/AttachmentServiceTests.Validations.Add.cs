@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(nullAttachment);
+                this.attachmentService.AddAttachmentAsync(nullAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>
@@ -65,7 +65,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> registerAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(inputAttachment);
+                this.attachmentService.AddAttachmentAsync(inputAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>
@@ -105,7 +105,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(invalidAttachment);
+                this.attachmentService.AddAttachmentAsync(invalidAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>
@@ -141,7 +141,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(invalidAttachment);
+                this.attachmentService.AddAttachmentAsync(invalidAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>
@@ -177,7 +177,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(invalidAttachment);
+                this.attachmentService.AddAttachmentAsync(invalidAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>
@@ -213,7 +213,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(invalidAttachment);
+                this.attachmentService.AddAttachmentAsync(invalidAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>
@@ -246,7 +246,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(inputAttachment);
+                this.attachmentService.AddAttachmentAsync(inputAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>
@@ -283,7 +283,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(inputAttachment);
+                this.attachmentService.AddAttachmentAsync(inputAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>
@@ -320,7 +320,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(inputAttachment);
+                this.attachmentService.AddAttachmentAsync(inputAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>
@@ -357,7 +357,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(inputAttachment);
+                this.attachmentService.AddAttachmentAsync(inputAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>
@@ -394,7 +394,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(inputAttachment);
+                this.attachmentService.AddAttachmentAsync(inputAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>
@@ -432,7 +432,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(inputAttachment);
+                this.attachmentService.AddAttachmentAsync(inputAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>
@@ -477,7 +477,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(inputAttachment);
+                this.attachmentService.AddAttachmentAsync(inputAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>
@@ -528,7 +528,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.InsertAttachmentAsync(alreadyExistsAttachment);
+                this.attachmentService.AddAttachmentAsync(alreadyExistsAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>

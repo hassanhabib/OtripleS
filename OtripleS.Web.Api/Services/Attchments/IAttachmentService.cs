@@ -12,8 +12,7 @@ namespace OtripleS.Web.Api.Services.Attachments
 {
     public interface IAttachmentService
     {
-        ValueTask<Attachment> InsertAttachmentAsync(Attachment attachment);
-        IQueryable<Attachment> RetrieveAllAttachments();
+        ValueTask<Attachment> AddAttachmentAsync(Attachment attachment);
         ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId);        
     }
 }
