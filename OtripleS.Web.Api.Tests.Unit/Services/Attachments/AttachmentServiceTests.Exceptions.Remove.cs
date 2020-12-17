@@ -87,5 +87,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomAttachmentId = Guid.NewGuid();
+            Guid inputAttachmentId = randomAttachmentId;
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+            var lockedAttachmentException = new LockedAttachmentException(databaseUpdateConcurrencyException);
+
+            var expectedAttachmentDependencyException =
+                new AttachmentDependencyException(lockedAttachmentException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAttachmentByIdAsync(inputAttachmentId))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
+
+            // when
+            ValueTask<Attachment> deleteAttachmentTask =
+                this.attachmentService.RemoveAttachmentByIdAsync(inputAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<AttachmentDependencyException>(() =>
+                deleteAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAttachmentByIdAsync(inputAttachmentId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
