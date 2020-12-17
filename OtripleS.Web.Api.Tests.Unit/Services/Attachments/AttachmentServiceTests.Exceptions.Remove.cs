@@ -124,5 +124,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomAttachmentId = Guid.NewGuid();
+            Guid inputAttachmentId = randomAttachmentId;
+            var exception = new Exception();
+
+            var expectedAttachmentServiceException =
+                new AttachmentServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAttachmentByIdAsync(inputAttachmentId))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<Attachment> deleteAttachmentTask =
+                this.attachmentService.RemoveAttachmentByIdAsync(inputAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<AttachmentServiceException>(() =>
+                deleteAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAttachmentByIdAsync(inputAttachmentId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
