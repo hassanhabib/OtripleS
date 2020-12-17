@@ -47,7 +47,8 @@ namespace OtripleS.Web.Api.Services.Attachments
         });
 
         public ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId) =>
-        TryCatch(async () => {
+        TryCatch(async () =>
+        {
             ValidateAttachmentId(attachmentId);
 
             Attachment storageAttachment = await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
