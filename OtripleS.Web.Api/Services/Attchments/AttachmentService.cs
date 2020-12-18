@@ -38,7 +38,9 @@ namespace OtripleS.Web.Api.Services.Attachments
 
 		public ValueTask<Attachment> ModifyAttachmentAsync(Attachment attachment)
 		{
-			throw new NotImplementedException();
+			this.storageBroker.SelectAttachmentByIdAsync(attachment.Id);
+			dateTimeBroker.GetCurrentDateTime();
+			return this.storageBroker.UpdateAttachmentAsync(attachment);
 		}
 
 		public IQueryable<Attachment> RetrieveAllAttachments() =>
