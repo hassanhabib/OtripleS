@@ -46,6 +46,7 @@ namespace OtripleS.Web.Api.Services.Attachments
 		private void ValidateAttachmentOnModify(Attachment attachment)
 		{
 			ValidateAttachmentIsNull(attachment);
+			ValidateAttachmentIdIsNull(attachment.Id);
 		}
 
 		private void ValidateAuditFieldsDataOnCreate(Attachment attachment)
