@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -16,6 +17,7 @@ namespace OtripleS.Web.Api.Services.Attachments
     public partial class AttachmentService : IAttachmentService
     {
         private delegate ValueTask<Attachment> ReturningAttachmentFunction();
+        private delegate IQueryable<Attachment> ReturningAttachmentsFunction();
 
         private async ValueTask<Attachment> TryCatch(ReturningAttachmentFunction returningAttachmentFunction)
         {
@@ -41,6 +43,26 @@ namespace OtripleS.Web.Api.Services.Attachments
                     new AlreadyExistsAttachmentException(duplicateKeyException);
 
                 throw CreateAndLogValidationException(alreadyExistsAttachmentException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private IQueryable<Attachment> TryCatch(ReturningAttachmentsFunction returningAttachmentsFunction)
+        {
+            try
+            {
+                return returningAttachmentsFunction();
             }
             catch (SqlException sqlException)
             {

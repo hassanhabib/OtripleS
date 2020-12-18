@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.Attachments;
 using OtripleS.Web.Api.Models.Attachments.Exceptions;
 
@@ -135,6 +136,14 @@ namespace OtripleS.Web.Api.Services.Attachments
             if (attachment is null)
             {
                 throw new NullAttachmentException();
+            }
+        }
+
+        private void ValidateStorageAttachments(IQueryable<Attachment> storageAttachments)
+        {
+            if (storageAttachments.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No attachments found in storage.");
             }
         }
 
