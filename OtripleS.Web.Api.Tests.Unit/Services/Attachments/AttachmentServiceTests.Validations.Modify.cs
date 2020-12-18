@@ -308,5 +308,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Theory]
+		[MemberData(nameof(InvalidMinuteCases))]
+		public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsNotRecentAndLogItAsync(
+			int minutes)
+		{
+			// given
+			DateTimeOffset dateTime = GetRandomDateTime();
+			Attachment randomAttachment = CreateRandomAttachment(dateTime);
+			Attachment inputAttachment = randomAttachment;
+			inputAttachment.UpdatedBy = inputAttachment.CreatedBy;
+			inputAttachment.UpdatedDate = dateTime.AddMinutes(minutes);
+
+			var invalidAttachmentInputException = new InvalidAttachmentException(
+				parameterName: nameof(Attachment.UpdatedDate),
+				parameterValue: inputAttachment.UpdatedDate);
+
+			var expectedAttachmentValidationException =
+				new AttachmentValidationException(invalidAttachmentInputException);
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(dateTime);
+
+			// when
+			ValueTask<Attachment> modifyAttachmentTask =
+				this.attachmentService.ModifyAttachmentAsync(inputAttachment);
+
+			// then
+			await Assert.ThrowsAsync<AttachmentValidationException>(() =>
+				modifyAttachmentTask.AsTask());
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
+					Times.Never);
+
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
