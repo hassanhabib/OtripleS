@@ -356,5 +356,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
 		}
+
+		[Fact]
+		public async Task ShouldThrowValidationExceptionOnModifyIfAttachmentDoesntExistAndLogItAsync()
+		{
+			// given
+			int randomNegativeMinutes = GetNegativeRandomNumber();
+			DateTimeOffset dateTime = GetRandomDateTime();
+			Attachment randomAttachment = CreateRandomAttachment(dateTime);
+			Attachment nonExistentAttachment = randomAttachment;
+			nonExistentAttachment.CreatedDate = dateTime.AddMinutes(randomNegativeMinutes);
+			Attachment noAttachment = null;
+			var notFoundAttachmentException = new NotFoundAttachmentException(nonExistentAttachment.Id);
+
+			var expectedAttachmentValidationException =
+				new AttachmentValidationException(notFoundAttachmentException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectAttachmentByIdAsync(nonExistentAttachment.Id))
+					.ReturnsAsync(noAttachment);
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(dateTime);
+
+			// when
+			ValueTask<Attachment> modifyAttachmentTask =
+				this.attachmentService.ModifyAttachmentAsync(nonExistentAttachment);
+
+			// then
+			await Assert.ThrowsAsync<AttachmentValidationException>(() =>
+				modifyAttachmentTask.AsTask());
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectAttachmentByIdAsync(nonExistentAttachment.Id),
+					Times.Once);
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
+					Times.Once);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
 	}
 }
