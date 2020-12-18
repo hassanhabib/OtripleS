@@ -1,0 +1,66 @@
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
+using System;
+using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Moq;
+using OtripleS.Web.Api.Models.Attachments;
+using OtripleS.Web.Api.Models.Attachments.Exceptions;
+using Xunit;
+
+namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
+{
+	public partial class AttachmentServiceTests
+	{
+		[Fact]
+		public async Task ShouldThrowDependencyExceptionOnModifyIfSqlExceptionOccursAndLogItAsync()
+		{
+			// given
+			int randomNegativeNumber = GetNegativeRandomNumber();
+			DateTimeOffset randomDateTime = GetRandomDateTime();
+			Attachment randomAttachment = CreateRandomAttachment(randomDateTime);
+			Attachment someAttachment = randomAttachment;
+			someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+			SqlException sqlException = GetSqlException();
+
+			var expectedAttachmentDependencyException =
+				new AttachmentDependencyException(sqlException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectAttachmentByIdAsync(someAttachment.Id))
+					.ThrowsAsync(sqlException);
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(randomDateTime);
+
+			// when
+			ValueTask<Attachment> modifyAttachmentTask =
+				this.attachmentService.ModifyAttachmentAsync(someAttachment);
+
+			// then
+			await Assert.ThrowsAsync<AttachmentDependencyException>(() =>
+				modifyAttachmentTask.AsTask());
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectAttachmentByIdAsync(someAttachment.Id),
+					Times.Once);
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogCritical(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
+					Times.Once);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
+	}
+}
