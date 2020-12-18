@@ -39,7 +39,6 @@ namespace OtripleS.Web.Api.Services.Attachments
 		public ValueTask<Attachment> ModifyAttachmentAsync(Attachment attachment) =>
 		TryCatch(async () =>
 		{
-			dateTimeBroker.GetCurrentDateTime();
 			ValidateAttachmentOnModify(attachment);
 			Attachment maybeAttachment = await this.storageBroker.SelectAttachmentByIdAsync(attachment.Id);
 

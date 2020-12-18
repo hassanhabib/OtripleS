@@ -50,6 +50,7 @@ namespace OtripleS.Web.Api.Services.Attachments
 			ValidateInvalidFields(attachment);
 			ValidateInvalidAuditFields(attachment);
 			ValidateDatesAreNotSame(attachment);
+			ValidateUpdatedDateIsRecent(attachment);
 		}
 
 		private void ValidateAuditFieldsDataOnCreate(Attachment attachment)
@@ -79,6 +80,16 @@ namespace OtripleS.Web.Api.Services.Attachments
 			{
 				throw new InvalidAttachmentException(
 					parameterName: nameof(Attachment.UpdatedDate),
+					parameterValue: attachment.UpdatedDate);
+			}
+		}
+
+		private void ValidateUpdatedDateIsRecent(Attachment attachment)
+		{
+			if (IsDateNotRecent(attachment.UpdatedDate))
+			{
+				throw new InvalidAttachmentException(
+					parameterName: nameof(attachment.UpdatedDate),
 					parameterValue: attachment.UpdatedDate);
 			}
 		}
