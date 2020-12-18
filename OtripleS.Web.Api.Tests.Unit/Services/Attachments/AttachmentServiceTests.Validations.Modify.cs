@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Force.DeepCloner;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Attachments;
@@ -394,6 +395,60 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
 			this.storageBrokerMock.Verify(broker =>
 				broker.SelectAttachmentByIdAsync(nonExistentAttachment.Id),
+					Times.Once);
+
+			this.loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
+					Times.Once);
+
+			this.loggingBrokerMock.VerifyNoOtherCalls();
+			this.storageBrokerMock.VerifyNoOtherCalls();
+			this.dateTimeBrokerMock.VerifyNoOtherCalls();
+		}
+		
+		[Fact]
+		public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedDateNotSameAsCreateDateAndLogItAsync()
+		{
+			// given
+			int randomNumber = GetRandomNumber();
+			int randomMinutes = randomNumber;
+			DateTimeOffset randomDate = GetRandomDateTime();
+			Attachment randomAttachment = CreateRandomAttachment(randomDate);
+			Attachment invalidAttachment = randomAttachment;
+			invalidAttachment.UpdatedDate = randomDate;
+			Attachment storageAttachment = randomAttachment.DeepClone();
+			Guid attachmentId = invalidAttachment.Id;
+			invalidAttachment.CreatedDate = storageAttachment.CreatedDate.AddMinutes(randomNumber);
+
+			var invalidAttachmentException = new InvalidAttachmentException(
+				parameterName: nameof(Attachment.CreatedDate),
+				parameterValue: invalidAttachment.CreatedDate);
+
+			var expectedAttachmentValidationException =
+			  new AttachmentValidationException(invalidAttachmentException);
+
+			this.storageBrokerMock.Setup(broker =>
+				broker.SelectAttachmentByIdAsync(attachmentId))
+					.ReturnsAsync(storageAttachment);
+
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTime())
+					.Returns(randomDate);
+
+			// when
+			ValueTask<Attachment> modifyAttachmentTask =
+				this.attachmentService.ModifyAttachmentAsync(invalidAttachment);
+
+			// then
+			await Assert.ThrowsAsync<AttachmentValidationException>(() =>
+				modifyAttachmentTask.AsTask());
+
+			this.dateTimeBrokerMock.Verify(broker =>
+				broker.GetCurrentDateTime(),
+					Times.Once);
+
+			this.storageBrokerMock.Verify(broker =>
+				broker.SelectAttachmentByIdAsync(invalidAttachment.Id),
 					Times.Once);
 
 			this.loggingBrokerMock.Verify(broker =>
