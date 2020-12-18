@@ -39,6 +39,11 @@ namespace OtripleS.Web.Api.Services.Attachments
 						parameterName: nameof(Attachment.CreatedDate),
 						parameterValue: inputAttachment.CreatedDate);
 
+				case { } when inputAttachment.CreatedBy != storageAttachment.CreatedBy:
+					throw new InvalidAttachmentException(
+						parameterName: nameof(Attachment.CreatedBy),
+						parameterValue: inputAttachment.CreatedBy);
+
 				case { } when inputAttachment.UpdatedDate == storageAttachment.UpdatedDate:
 					throw new InvalidAttachmentException(
 						parameterName: nameof(Attachment.UpdatedDate),
