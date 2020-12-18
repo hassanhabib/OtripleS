@@ -36,12 +36,15 @@ namespace OtripleS.Web.Api.Services.Attachments
 			return await this.storageBroker.InsertAttachmentAsync(attachment);
 		});
 
-		public ValueTask<Attachment> ModifyAttachmentAsync(Attachment attachment)
+		public ValueTask<Attachment> ModifyAttachmentAsync(Attachment attachment) =>
+		TryCatch(async () =>
 		{
-			this.storageBroker.SelectAttachmentByIdAsync(attachment.Id);
+			ValidateAttachmentOnModify(attachment);
+			Attachment maybeAttachment = await this.storageBroker.SelectAttachmentByIdAsync(attachment.Id);
 			dateTimeBroker.GetCurrentDateTime();
-			return this.storageBroker.UpdateAttachmentAsync(attachment);
-		}
+
+			return await this.storageBroker.UpdateAttachmentAsync(attachment);
+		});
 
 		public IQueryable<Attachment> RetrieveAllAttachments() =>
 		TryCatch(() =>
