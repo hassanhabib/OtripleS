@@ -48,6 +48,12 @@ namespace OtripleS.Web.Api.Services.Attachments
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedAttachmentException = new LockedAttachmentException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedAttachmentException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);

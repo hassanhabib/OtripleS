@@ -57,5 +57,17 @@ namespace OtripleS.Web.Api.Services.Attachments
             return storageAttachment;
         });
 
+        public ValueTask<Attachment> RemoveAttachmentByIdAsync(Guid attachmentId) =>
+        TryCatch(async () =>
+        {
+            ValidateAttachmentIdIsNull(attachmentId);
+
+            Attachment maybeAttachment =
+                await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
+
+            ValidateStorageAttachment(maybeAttachment, attachmentId);
+
+            return await this.storageBroker.DeleteAttachmentAsync(maybeAttachment);
+        });
     }
 }
