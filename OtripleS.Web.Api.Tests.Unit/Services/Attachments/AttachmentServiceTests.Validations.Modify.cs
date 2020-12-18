@@ -44,46 +44,33 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 		}
 
 		[Fact]
-		public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateExceptionOccursAndLogItAsync()
+		public async Task ShouldThrowValidationExceptionOnModifyWhenAttachmentIdIsInvalidAndLogItAsync()
 		{
-			// given
-			int randomNegativeNumber = GetNegativeRandomNumber();
-			DateTimeOffset randomDateTime = GetRandomDateTime();
-			Attachment randomAttachment = CreateRandomAttachment(randomDateTime);
-			Attachment someAttachment = randomAttachment;
-			someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
-			var databaseUpdateException = new DbUpdateException();
+			//given
+			Guid invalidAttachmentId = Guid.Empty;
+			DateTimeOffset dateTime = GetRandomDateTime();
+			Attachment randomAttachment = CreateRandomAttachment(dateTime);
+			Attachment invalidAttachment = randomAttachment;
+			invalidAttachment.Id = invalidAttachmentId;
 
-			var expectedAttachmentDependencyException =
-				new AttachmentDependencyException(databaseUpdateException);
+			var invalidAttachmentException = new InvalidAttachmentException(
+				parameterName: nameof(Attachment.Id),
+				parameterValue: invalidAttachment.Id);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectAttachmentByIdAsync(someAttachment.Id))
-					.ThrowsAsync(databaseUpdateException);
+			var expectedAttachmentValidationException =
+				new AttachmentValidationException(invalidAttachmentException);
 
-			this.dateTimeBrokerMock.Setup(broker =>
-				broker.GetCurrentDateTime())
-					.Returns(randomDateTime);
-
-			// when
+			//when
 			ValueTask<Attachment> modifyAttachmentTask =
-				this.attachmentService.ModifyAttachmentAsync(someAttachment);
+				this.attachmentService.ModifyAttachmentAsync(invalidAttachment);
 
-			// then
-			await Assert.ThrowsAsync<AttachmentDependencyException>(() =>
+			//then
+			await Assert.ThrowsAsync<AttachmentValidationException>(() =>
 				modifyAttachmentTask.AsTask());
 
-			this.dateTimeBrokerMock.Verify(broker =>
-				broker.GetCurrentDateTime(),
-					Times.Once);
-
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectAttachmentByIdAsync(someAttachment.Id),
-					Times.Once);
-
 			this.loggingBrokerMock.Verify(broker =>
-				broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
-					Times.Once);
+				broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
+				Times.Once);
 
 			this.loggingBrokerMock.VerifyNoOtherCalls();
 			this.storageBrokerMock.VerifyNoOtherCalls();
@@ -405,7 +392,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 			this.storageBrokerMock.VerifyNoOtherCalls();
 			this.dateTimeBrokerMock.VerifyNoOtherCalls();
 		}
-		
+
 		[Fact]
 		public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedDateNotSameAsCreateDateAndLogItAsync()
 		{
