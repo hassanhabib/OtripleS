@@ -13,61 +13,66 @@ using OtripleS.Web.Api.Models.Attachments;
 
 namespace OtripleS.Web.Api.Services.Attachments
 {
-    public partial class AttachmentService : IAttachmentService
-    {
-        private readonly IStorageBroker storageBroker;
-        private readonly ILoggingBroker loggingBroker;
-        private readonly IDateTimeBroker dateTimeBroker;
+	public partial class AttachmentService : IAttachmentService
+	{
+		private readonly IStorageBroker storageBroker;
+		private readonly ILoggingBroker loggingBroker;
+		private readonly IDateTimeBroker dateTimeBroker;
 
-        public AttachmentService(IStorageBroker storageBroker,
-            ILoggingBroker loggingBroker,
-            IDateTimeBroker dateTimeBroker)
-        {
-            this.storageBroker = storageBroker;
-            this.loggingBroker = loggingBroker;
-            this.dateTimeBroker = dateTimeBroker;
-        }
+		public AttachmentService(IStorageBroker storageBroker,
+			ILoggingBroker loggingBroker,
+			IDateTimeBroker dateTimeBroker)
+		{
+			this.storageBroker = storageBroker;
+			this.loggingBroker = loggingBroker;
+			this.dateTimeBroker = dateTimeBroker;
+		}
 
-        public ValueTask<Attachment> AddAttachmentAsync(Attachment attachment) =>
-        TryCatch(async () =>
-        {
-            ValidateAttachmentOnCreate(attachment);
+		public ValueTask<Attachment> AddAttachmentAsync(Attachment attachment) =>
+		TryCatch(async () =>
+		{
+			ValidateAttachmentOnCreate(attachment);
 
-            return await this.storageBroker.InsertAttachmentAsync(attachment);
-        });
+			return await this.storageBroker.InsertAttachmentAsync(attachment);
+		});
 
-        public IQueryable<Attachment> RetrieveAllAttachments() =>
-        TryCatch(() =>
-        {
-            IQueryable<Attachment> storageAttachments = this.storageBroker.SelectAllAttachments();
+		public ValueTask<Attachment> ModifyAttachmentAsync(Attachment attachment)
+		{
+			throw new NotImplementedException();
+		}
 
-            ValidateStorageAttachments(storageAttachments);
+		public IQueryable<Attachment> RetrieveAllAttachments() =>
+		TryCatch(() =>
+		{
+			IQueryable<Attachment> storageAttachments = this.storageBroker.SelectAllAttachments();
 
-            return storageAttachments;
-        });
+			ValidateStorageAttachments(storageAttachments);
 
-        public ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId) =>
-        TryCatch(async () =>
-        {
-            ValidateAttachmentId(attachmentId);
+			return storageAttachments;
+		});
 
-            Attachment storageAttachment = await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
-            ValidateStorageAttachment(storageAttachment, attachmentId);
+		public ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId) =>
+		TryCatch(async () =>
+		{
+			ValidateAttachmentId(attachmentId);
 
-            return storageAttachment;
-        });
+			Attachment storageAttachment = await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
+			ValidateStorageAttachment(storageAttachment, attachmentId);
 
-        public ValueTask<Attachment> RemoveAttachmentByIdAsync(Guid attachmentId) =>
-        TryCatch(async () =>
-        {
-            ValidateAttachmentIdIsNull(attachmentId);
+			return storageAttachment;
+		});
 
-            Attachment maybeAttachment =
-                await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
+		public ValueTask<Attachment> RemoveAttachmentByIdAsync(Guid attachmentId) =>
+		TryCatch(async () =>
+		{
+			ValidateAttachmentIdIsNull(attachmentId);
 
-            ValidateStorageAttachment(maybeAttachment, attachmentId);
+			Attachment maybeAttachment =
+				await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
 
-            return await this.storageBroker.DeleteAttachmentAsync(maybeAttachment);
-        });
-    }
+			ValidateStorageAttachment(maybeAttachment, attachmentId);
+
+			return await this.storageBroker.DeleteAttachmentAsync(maybeAttachment);
+		});
+	}
 }
