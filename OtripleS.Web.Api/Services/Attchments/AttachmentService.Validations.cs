@@ -30,6 +30,17 @@ namespace OtripleS.Web.Api.Services.Attachments
 			}
 		}
 
+		private void ValidateAgainstStorageAttachmentOnModify(Attachment inputAttachment, Attachment storageAttachment)
+		{
+			switch (inputAttachment)
+			{
+				case { } when inputAttachment.CreatedDate != storageAttachment.CreatedDate:
+					throw new InvalidAttachmentException(
+						parameterName: nameof(Attachment.CreatedDate),
+						parameterValue: inputAttachment.CreatedDate);
+			}
+		}
+
 		private bool IsInvalid(Guid input) => input == Guid.Empty;
 		private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
 		private static bool IsInvalid(DateTimeOffset input) => input == default;
