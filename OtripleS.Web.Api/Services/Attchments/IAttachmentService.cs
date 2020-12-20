@@ -14,6 +14,8 @@ namespace OtripleS.Web.Api.Services.Attachments
     {
         ValueTask<Attachment> AddAttachmentAsync(Attachment attachment);
         ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId);
+        IQueryable<Attachment> RetrieveAllAttachments();
+        ValueTask<Attachment> ModifyAttachmentAsync(Attachment attachment);
         ValueTask<Attachment> RemoveAttachmentByIdAsync(Guid attachmentId);
     }
 }
