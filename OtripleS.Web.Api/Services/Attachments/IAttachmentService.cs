@@ -10,10 +10,11 @@ using OtripleS.Web.Api.Models.Attachments;
 
 namespace OtripleS.Web.Api.Services.Attachments
 {
-    public interface IAttachmentService
-    {
-        ValueTask<Attachment> AddAttachmentAsync(Attachment attachment);
-        ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId);
-        ValueTask<Attachment> RemoveAttachmentByIdAsync(Guid attachmentId);
-    }
+	public interface IAttachmentService
+	{
+		ValueTask<Attachment> AddAttachmentAsync(Attachment attachment);
+		ValueTask<Attachment> ModifyAttachmentAsync(Attachment attachment);
+		ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId);
+		ValueTask<Attachment> RemoveAttachmentByIdAsync(Guid attachmentId);
+	}
 }
