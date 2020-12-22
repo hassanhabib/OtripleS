@@ -23,6 +23,59 @@ namespace OtripleS.Web.Api.Controllers
         public AttachmentsController(IAttachmentService attachmentService) =>
             this.attachmentService = attachmentService;
 
+        [HttpPost]
+        public async ValueTask<ActionResult<Attachment>> PostAttachmentAsync(Attachment attachment)
+        {
+            try
+            {
+                Attachment persistedAttachment =
+                    await this.attachmentService.AddAttachmentAsync(attachment);
+
+                return Ok(persistedAttachment);
+            }
+            catch (AttachmentValidationException attachmentValidationException)
+                when (attachmentValidationException.InnerException is AlreadyExistsAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(attachmentValidationException);
+
+                return Conflict(innerMessage);
+            }
+            catch (AttachmentValidationException attachmentValidationException)
+            {
+                string innerMessage = GetInnerMessage(attachmentValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (AttachmentDependencyException attachmentDependencyException)
+            {
+                return Problem(attachmentDependencyException.Message);
+            }
+            catch (AttachmentServiceException attachmentServiceException)
+            {
+                return Problem(attachmentServiceException.Message);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<IQueryable<Attachment>> GetAllAttachments()
+        {
+            try
+            {
+                IQueryable storageAttachments =
+                    this.attachmentService.RetrieveAllAttachments();
+
+                return Ok(storageAttachments);
+            }
+            catch (AttachmentDependencyException attachmentDependencyException)
+            {
+                return Problem(attachmentDependencyException.Message);
+            }
+            catch (AttachmentServiceException attachmentServiceException)
+            {
+                return Problem(attachmentServiceException.Message);
+            }
+        }
+
         [HttpGet("{attachmentId}")]
         public async ValueTask<ActionResult<Attachment>> GetAttachmentByIdAsync(Guid attachmentId)
         {
@@ -45,6 +98,84 @@ namespace OtripleS.Web.Api.Controllers
                 string innerMessage = GetInnerMessage(attachmentValidationException);
 
                 return BadRequest(innerMessage);
+            }
+            catch (AttachmentDependencyException attachmentDependencyException)
+            {
+                return Problem(attachmentDependencyException.Message);
+            }
+            catch (AttachmentServiceException attachmentServiceException)
+            {
+                return Problem(attachmentServiceException.Message);
+            }
+        }
+
+        [HttpPut]
+        public async ValueTask<ActionResult<Attachment>> PutAttachmentAsync(Attachment attachment)
+        {
+            try
+            {
+                Attachment registeredAttachment =
+                    await this.attachmentService.ModifyAttachmentAsync(attachment);
+
+                return Ok(registeredAttachment);
+            }
+            catch (AttachmentValidationException attachmentValidationException)
+                when (attachmentValidationException.InnerException is NotFoundAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(attachmentValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (AttachmentValidationException attachmentValidationException)
+            {
+                string innerMessage = GetInnerMessage(attachmentValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (AttachmentDependencyException attachmentDependencyException)
+                when (attachmentDependencyException.InnerException is LockedAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(attachmentDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (AttachmentDependencyException attachmentDependencyException)
+            {
+                return Problem(attachmentDependencyException.Message);
+            }
+            catch (AttachmentServiceException attachmentServiceException)
+            {
+                return Problem(attachmentServiceException.Message);
+            }
+        }
+
+        [HttpDelete("{attachmentId}")]
+        public async ValueTask<ActionResult<Attachment>> DeleteAttachmentAsync(Guid attachmentId)
+        {
+            try
+            {
+                Attachment storageAttachment =
+                    await this.attachmentService.RemoveAttachmentByIdAsync(attachmentId);
+
+                return Ok(storageAttachment);
+            }
+            catch (AttachmentValidationException attachmentValidationException)
+                when (attachmentValidationException.InnerException is NotFoundAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(attachmentValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (AttachmentValidationException attachmentValidationException)
+            {
+                return BadRequest(attachmentValidationException.Message);
+            }
+            catch (AttachmentDependencyException attachmentDependencyException)
+                when (attachmentDependencyException.InnerException is LockedAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(attachmentDependencyException);
+
+                return Locked(innerMessage);
             }
             catch (AttachmentDependencyException attachmentDependencyException)
             {
