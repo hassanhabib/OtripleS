@@ -281,43 +281,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Students
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRegisterWhenCreatedDateIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent(dateTime);
-            Student inputStudent = randomStudent;
-            inputStudent.CreatedDate = default;
-
-            var invalidStudentInputException = new InvalidStudentException(
-                parameterName: nameof(Student.CreatedDate),
-                parameterValue: inputStudent.CreatedDate);
-
-            var expectedStudentValidationException =
-                new StudentValidationException(invalidStudentInputException);
-
-            // when
-            ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(inputStudent);
-
-            // then
-            await Assert.ThrowsAsync<StudentValidationException>(() =>
-                registerStudentTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(It.IsAny<Student>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
         public async void ShouldThrowValidationExceptionOnRegisterWhenUpdatedByIsInvalidAndLogItAsync()
         {
             // given
