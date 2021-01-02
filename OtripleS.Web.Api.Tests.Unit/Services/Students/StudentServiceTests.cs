@@ -79,11 +79,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Students
         private static Filler<Student> CreateStudentFiller(DateTimeOffset dates)
         {
             var filler = new Filler<Student>();
+            Guid createdById = Guid.NewGuid();
 
             filler.Setup()
                 .OnProperty(student => student.BirthDate).Use(GetRandomDateTime())
                 .OnProperty(student => student.CreatedDate).Use(dates)
                 .OnProperty(student => student.UpdatedDate).Use(dates)
+                .OnProperty(student => student.CreatedBy).Use(createdById)
+                .OnProperty(student => student.UpdatedBy).Use(createdById)
                 .OnProperty(student => student.StudentSemesterCourses).IgnoreIt()
                 .OnProperty(student => student.StudentGuardians).IgnoreIt()
                 .OnProperty(student => student.StudentContacts).IgnoreIt()
