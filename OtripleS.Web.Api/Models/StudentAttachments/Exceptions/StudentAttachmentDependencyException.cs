@@ -7,11 +7,10 @@ using System;
 
 namespace OtripleS.Web.Api.Models.StudentAttachments.Exceptions
 {
-    public class NotFoundStudentAttachmentException : Exception
+    public class StudentAttachmentDependencyException : Exception
     {
-        public NotFoundStudentAttachmentException(Guid studentId, Guid attachmentId)
-           : base($"Couldn't find studentAttachment with studentId: {studentId} " +
-                  $"and attachmentId: {attachmentId}.")
+        public StudentAttachmentDependencyException(Exception innerException) :
+            base("Service dependency error occurred, contact support.", innerException)
         { }
     }
 }
