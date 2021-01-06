@@ -63,6 +63,23 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attachments
             await this.otripleSApiBroker.DeleteAttachmentByIdAsync(actualAttachment.Id);
         }
 
-        
+        [Fact]
+        public async Task ShouldPostAttachmentAsync()
+        {
+            // given
+            Attachment randomAttachment = CreateRandomAttachment();
+            Attachment inputAttachment = randomAttachment;
+            Attachment expectedAttachment = inputAttachment;
+
+            // when 
+            await this.otripleSApiBroker.PostAttachmentAsync(inputAttachment);
+
+            Attachment actualAttachment =
+                await this.otripleSApiBroker.GetAttachmentByIdAsync(inputAttachment.Id);
+
+            // then
+            actualAttachment.Should().BeEquivalentTo(expectedAttachment);
+            await this.otripleSApiBroker.DeleteAttachmentByIdAsync(actualAttachment.Id);
+        }        
     }
 }
