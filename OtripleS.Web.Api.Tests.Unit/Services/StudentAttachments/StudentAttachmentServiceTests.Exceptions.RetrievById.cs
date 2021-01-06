@@ -93,5 +93,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomAttachmentId = Guid.NewGuid();
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputAttachmentId = randomAttachmentId;
+            Guid inputStudentId = randomStudentId;
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+            var lockedAttachmentException =
+                new LockedStudentAttachmentException(databaseUpdateConcurrencyException);
+
+            var expectedStudentAttachmentException =
+                new StudentAttachmentDependencyException(lockedAttachmentException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
+
+            // when
+            ValueTask<StudentAttachment> deleteStudentAttachmentTask =
+                this.studentAttachmentService.RetrieveStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<StudentAttachmentDependencyException>(() => deleteStudentAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentAttachmentException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
