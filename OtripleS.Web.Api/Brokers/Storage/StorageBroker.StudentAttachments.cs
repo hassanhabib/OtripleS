@@ -29,5 +29,13 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
         public IQueryable<StudentAttachment> SelectAllStudentAttachments() =>
             this.StudentAttachments.AsQueryable();
+
+        public async ValueTask<StudentAttachment> SelectStudentAttachmentByIdAsync(
+            Guid studentId, Guid attachmentId)
+        {
+            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
+            return await this.StudentAttachments.FindAsync(studentId, attachmentId);
+        }
     }
 }
