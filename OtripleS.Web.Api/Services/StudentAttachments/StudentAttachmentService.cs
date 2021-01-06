@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
 
         public ValueTask<StudentAttachment> RetrieveStudentAttachmentByIdAsync(Guid studentId, Guid attachmentId)
         {
-            throw new NotImplementedException();
+            return storageBroker.SelectStudentAttachmentByIdAsync(studentId, attachmentId);
         }
     }
 }
