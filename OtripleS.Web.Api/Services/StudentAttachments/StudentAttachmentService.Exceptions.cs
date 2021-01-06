@@ -37,14 +37,18 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                var lockedSemesterCourseException =
+                var lockedAttachmentException =
                     new LockedStudentAttachmentException(dbUpdateConcurrencyException);
 
-                throw CreateAndLogDependencyException(lockedSemesterCourseException);
+                throw CreateAndLogDependencyException(lockedAttachmentException);
             }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
             }
         }
 
@@ -70,6 +74,14 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             this.loggingBroker.LogError(StudentAttachmentDependencyException);
 
             return StudentAttachmentDependencyException;
+        }
+
+        private StudentAttachmentServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var StudentAttachmentServiceException = new StudentAttachmentServiceException(exception);
+            this.loggingBroker.LogError(StudentAttachmentServiceException);
+
+            return StudentAttachmentServiceException;
         }
     }
 }
