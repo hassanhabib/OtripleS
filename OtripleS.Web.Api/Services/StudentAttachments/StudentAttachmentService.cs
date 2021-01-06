@@ -37,6 +37,8 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             StudentAttachment storageStudentAttachment =
                await this.storageBroker.SelectStudentAttachmentByIdAsync(studentId, attachmentId);
 
+            ValidateStorageStudentAttachment(storageStudentAttachment, studentId, attachmentId);
+
             return storageStudentAttachment;
         });
     }

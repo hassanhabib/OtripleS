@@ -27,5 +27,15 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
                     parameterValue: attachmentId);
             }
         }
+
+        private static void ValidateStorageStudentAttachment(
+            StudentAttachment storageStudentAttachment,
+            Guid studentId, Guid attachmentId)
+        {
+            if (storageStudentAttachment == null)
+            {
+                throw new NotFoundStudentAttachmentException(studentId, attachmentId);
+            }
+        }
     }
 }
