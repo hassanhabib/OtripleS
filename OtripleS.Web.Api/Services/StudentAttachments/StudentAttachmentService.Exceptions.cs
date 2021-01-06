@@ -35,6 +35,13 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedSemesterCourseException =
+                    new LockedStudentAttachmentException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedSemesterCourseException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
