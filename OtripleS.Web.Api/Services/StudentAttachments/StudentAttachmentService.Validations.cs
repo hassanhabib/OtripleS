@@ -19,13 +19,6 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
                     parameterName: nameof(StudentAttachment.StudentId),
                     parameterValue: studentId);
             }
-
-            if (attachmentId == default)
-            {
-                throw new InvalidStudentAttachmentException(
-                    parameterName: nameof(StudentAttachment.AttachmentId),
-                    parameterValue: attachmentId);
-            }
         }
     }
 }
