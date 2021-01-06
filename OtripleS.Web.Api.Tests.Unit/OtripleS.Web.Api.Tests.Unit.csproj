@@ -29,4 +29,7 @@
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\StudentAttachments\" />
+  </ItemGroup>
 </Project>
