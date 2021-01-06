@@ -29,9 +29,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
             return randomCalendar;
         }
 
-        private IEnumerable<Calendar> GetRandomCalendars() =>
-            this.CreateRandomCalendarFiller().Create(GetRandomNumber());
-
         private Calendar CreateRandomCalendar() =>
              CreateRandomCalendarFiller().Create();
 
