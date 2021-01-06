@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentAttachments;
 using OtripleS.Web.Api.Models.StudentAttachments.Exceptions;
 
@@ -34,6 +35,10 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
         private StudentAttachmentValidationException CreateAndLogValidationException(Exception exception)
@@ -48,6 +53,14 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
         {
             var StudentAttachmentDependencyException = new StudentAttachmentDependencyException(exception);
             this.loggingBroker.LogCritical(StudentAttachmentDependencyException);
+
+            return StudentAttachmentDependencyException;
+        }
+
+        private StudentAttachmentDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var StudentAttachmentDependencyException = new StudentAttachmentDependencyException(exception);
+            this.loggingBroker.LogError(StudentAttachmentDependencyException);
 
             return StudentAttachmentDependencyException;
         }
