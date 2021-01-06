@@ -23,9 +23,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Classrooms
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private IEnumerable<Classroom> GetRandomClassrooms() =>
-            CreateRandomClassroomFiller().Create(GetRandomNumber());
-
         private Classroom CreateRandomClassroom() =>
             CreateRandomClassroomFiller().Create();
 
