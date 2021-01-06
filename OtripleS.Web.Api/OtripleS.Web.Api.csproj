@@ -31,5 +31,6 @@
     <Folder Include="Services\CalendarEntries\" />
     <Folder Include="Models\StudentAttachments\" />
     <Folder Include="Services\StudentAttachments\" />
+    <Folder Include="Models\StudentAttachments\Exceptions\" />
   </ItemGroup>
 </Project>
