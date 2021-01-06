@@ -29,35 +29,5 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
         public IQueryable<StudentAttachment> SelectAllStudentAttachments() =>
             this.StudentAttachments.AsQueryable();
-
-        public async ValueTask<StudentAttachment> SelectStudentAttachmentByIdAsync(
-            Guid studentId, Guid AttachmentId)
-        {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-
-            return await this.StudentAttachments.FindAsync(studentId, AttachmentId);
-        }
-
-        public async ValueTask<StudentAttachment> UpdateStudentAttachmentAsync(
-            StudentAttachment studentAttachment)
-        {
-            EntityEntry<StudentAttachment> studentAttachmentEntityEntry =
-                this.StudentAttachments.Update(studentAttachment);
-
-            await this.SaveChangesAsync();
-
-            return studentAttachmentEntityEntry.Entity;
-        }
-
-        public async ValueTask<StudentAttachment> DeleteStudentAttachmentAsync(
-            StudentAttachment studentAttachment)
-        {
-            EntityEntry<StudentAttachment> studentAttachmentEntityEntry =
-                this.StudentAttachments.Remove(studentAttachment);
-
-            await this.SaveChangesAsync();
-
-            return studentAttachmentEntityEntry.Entity;
-        }
     }
 }
