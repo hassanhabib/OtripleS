@@ -37,5 +37,16 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
             return await this.StudentAttachments.FindAsync(studentId, attachmentId);
         }
+
+        public async ValueTask<StudentAttachment> UpdateStudentAttachmentAsync(
+            StudentAttachment studentAttachment)
+        {
+            EntityEntry<StudentAttachment> studentAttachmentEntityEntry =
+                this.StudentAttachments.Update(studentAttachment);
+
+            await this.SaveChangesAsync();
+
+            return studentAttachmentEntityEntry.Entity;
+        }
     }
 }
