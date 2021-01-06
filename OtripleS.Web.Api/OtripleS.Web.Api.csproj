@@ -29,5 +29,6 @@
     <Folder Include="Services\StudentExams\" />
     <Folder Include="Services\Calendars\" />
     <Folder Include="Services\CalendarEntries\" />
+    <Folder Include="Models\StudentAttachments\" />
   </ItemGroup>
 </Project>
