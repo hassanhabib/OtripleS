@@ -23,9 +23,6 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
         public StudentGuardiansApiTests(OtripleSApiBroker otripleSApiBroker) =>
             this.otripleSApiBroker = otripleSApiBroker;
 
-        private IEnumerable<StudentGuardian> GetRandomStudentGuardians() =>
-            CreateRandomStudentGuardianFiller().Create(GetRandomNumber());
-
         private async Task<StudentGuardian> CreateRandomStudentGuardian()
         {
             Student persistedStudent = await PostStudentAsync();
