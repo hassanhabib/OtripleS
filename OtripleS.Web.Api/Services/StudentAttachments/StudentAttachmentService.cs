@@ -28,9 +28,16 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<StudentAttachment> RetrieveStudentAttachmentByIdAsync(Guid studentId, Guid attachmentId)
+        public ValueTask<StudentAttachment> RetrieveStudentAttachmentByIdAsync
+            (Guid studentId, Guid attachmentId) =>
+        TryCatch(async () =>
         {
-            return storageBroker.SelectStudentAttachmentByIdAsync(studentId, attachmentId);
-        }
+            ValidateStudentAttachmentIdIsNull(studentId, attachmentId);
+
+            StudentAttachment storageStudentAttachment =
+               await this.storageBroker.SelectStudentAttachmentByIdAsync(studentId, attachmentId);
+
+            return storageStudentAttachment;
+        });
     }
 }
