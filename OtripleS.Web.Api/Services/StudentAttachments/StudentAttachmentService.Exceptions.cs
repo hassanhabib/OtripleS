@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.StudentAttachments;
 using OtripleS.Web.Api.Models.StudentAttachments.Exceptions;
 
@@ -29,6 +30,10 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             {
                 throw CreateAndLogValidationException(notFoundStudentAttachmentException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
         }
 
         private StudentAttachmentValidationException CreateAndLogValidationException(Exception exception)
@@ -37,6 +42,14 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             this.loggingBroker.LogError(StudentAttachmentValidationException);
 
             return StudentAttachmentValidationException;
+        }
+
+        private StudentAttachmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var StudentAttachmentDependencyException = new StudentAttachmentDependencyException(exception);
+            this.loggingBroker.LogCritical(StudentAttachmentDependencyException);
+
+            return StudentAttachmentDependencyException;
         }
     }
 }
