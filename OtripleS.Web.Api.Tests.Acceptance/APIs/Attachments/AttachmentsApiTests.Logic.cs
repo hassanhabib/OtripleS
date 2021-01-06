@@ -80,6 +80,28 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attachments
             // then
             actualAttachment.Should().BeEquivalentTo(expectedAttachment);
             await this.otripleSApiBroker.DeleteAttachmentByIdAsync(actualAttachment.Id);
-        }        
+        }
+
+        [Fact]
+        public async Task ShouldDeleteAttachmentAsync()
+        {
+            // given
+            Attachment randomAttachment = await PostRandomAttachmentAsync();
+            Attachment inputAttachment = randomAttachment;
+            Attachment expectedAttachment = inputAttachment;
+
+            // when 
+            Attachment deletedAttachment =
+                await this.otripleSApiBroker.DeleteAttachmentByIdAsync(inputAttachment.Id);
+
+            ValueTask<Attachment> getAttachmentByIdTask =
+                this.otripleSApiBroker.GetAttachmentByIdAsync(inputAttachment.Id);
+
+            // then
+            deletedAttachment.Should().BeEquivalentTo(expectedAttachment);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getAttachmentByIdTask.AsTask());
+        }
     }
 }
