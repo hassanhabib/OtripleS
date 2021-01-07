@@ -10,7 +10,7 @@ using OtripleS.Web.Api.Models.Attachments.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Attachments
 {
-	public partial class AttachmentService : IAttachmentService
+    public partial class AttachmentService : IAttachmentService
 	{
 		private void ValidateAttachmentId(Guid attachmentId)
 		{

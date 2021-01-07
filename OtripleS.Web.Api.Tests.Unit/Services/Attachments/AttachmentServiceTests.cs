@@ -14,6 +14,7 @@ using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Attachments;
+using OtripleS.Web.Api.Models.StudentAttachments;
 using OtripleS.Web.Api.Services.Attachments;
 using Tynamix.ObjectFiller;
 
@@ -61,17 +62,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
-        private static Filler<Attachment> CreateAttachmentFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<Attachment>();
-
-            filler.Setup()
-                .OnProperty(attachment => attachment.CreatedDate).Use(dates)
-                .OnProperty(attachment => attachment.UpdatedDate).Use(dates);
-
-            return filler;
-        }
-
         public static IEnumerable<object[]> InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
@@ -87,5 +77,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+        private static Filler<Attachment> CreateAttachmentFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<Attachment>();
+
+            filler.Setup()
+                .OnProperty(attachment => attachment.CreatedDate).Use(dates)
+                .OnProperty(attachment => attachment.UpdatedDate).Use(dates)
+                .OnProperty(attachment => attachment.StudentAttachments).IgnoreIt();
+
+            return filler;
+        }
     }
 }

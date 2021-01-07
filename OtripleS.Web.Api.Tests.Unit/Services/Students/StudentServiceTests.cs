@@ -90,7 +90,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Students
                 .OnProperty(student => student.StudentSemesterCourses).IgnoreIt()
                 .OnProperty(student => student.StudentGuardians).IgnoreIt()
                 .OnProperty(student => student.StudentContacts).IgnoreIt()
-                .OnProperty(student => student.StudentExams).IgnoreIt();
+                .OnProperty(student => student.StudentExams).IgnoreIt()
+                .OnProperty(student => student.StudentAttachments).IgnoreIt();
 
             return filler;
         }

@@ -14,7 +14,7 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 {
-	public partial class AttachmentServiceTests
+    public partial class AttachmentServiceTests
 	{
 		[Fact]
 		public async Task ShouldThrowDependencyExceptionOnModifyIfSqlExceptionOccursAndLogItAsync()
