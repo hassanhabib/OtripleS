@@ -13,7 +13,7 @@ using OtripleS.Web.Api.Models.Attachments;
 
 namespace OtripleS.Web.Api.Services.Attachments
 {
-	public partial class AttachmentService : IAttachmentService
+    public partial class AttachmentService : IAttachmentService
 	{
 		private readonly IStorageBroker storageBroker;
 		private readonly ILoggingBroker loggingBroker;

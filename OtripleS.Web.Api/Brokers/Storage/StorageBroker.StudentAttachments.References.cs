@@ -3,7 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentAttachments;
 
@@ -19,7 +18,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
             modelBuilder.Entity<StudentAttachment>()
                 .HasOne(studentAttachment => studentAttachment.Attachment)
-                .WithMany(Attachment => Attachment.StudentAttachments)
+                .WithMany(attachment => attachment.StudentAttachments)
                 .HasForeignKey(studentAttachment => studentAttachment.AttachmentId)
                 .OnDelete(DeleteBehavior.NoAction);
 

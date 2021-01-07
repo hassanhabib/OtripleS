@@ -6,7 +6,6 @@
 using System;
 using System.Threading.Tasks;
 using Force.DeepCloner;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Attachments;
 using OtripleS.Web.Api.Models.Attachments.Exceptions;
@@ -14,7 +13,7 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 {
-	public partial class AttachmentServiceTests
+    public partial class AttachmentServiceTests
 	{
 		[Fact]
 		public async Task ShouldThrowValidationExceptionOnModifyWhenAttachmentIsNullAndLogItAsync()
