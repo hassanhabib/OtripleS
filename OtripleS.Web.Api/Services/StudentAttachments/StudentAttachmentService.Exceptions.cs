@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
     public partial class StudentAttachmentService
     {
         private delegate ValueTask<StudentAttachment> ReturningStudentAttachmentFunction();
+        private delegate IQueryable<StudentAttachment> ReturningStudentAttachmentsFunction();
 
         private async ValueTask<StudentAttachment> TryCatch(
             ReturningStudentAttachmentFunction returningStudentAttachmentFunction)
@@ -41,6 +43,26 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
                     new LockedStudentAttachmentException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedAttachmentException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private IQueryable<StudentAttachment> TryCatch(ReturningStudentAttachmentsFunction returningStudentAttachmentsFunction)
+        {
+            try
+            {
+                return returningStudentAttachmentsFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
             }
             catch (DbUpdateException dbUpdateException)
             {

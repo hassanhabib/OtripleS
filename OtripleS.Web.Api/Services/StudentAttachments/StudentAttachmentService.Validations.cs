@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.StudentAttachments;
 using OtripleS.Web.Api.Models.StudentAttachments.Exceptions;
 
@@ -35,6 +36,14 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             if (storageStudentAttachment == null)
             {
                 throw new NotFoundStudentAttachmentException(studentId, attachmentId);
+            }
+        }
+
+        private void ValidateStorageStudentAttachments(IQueryable<StudentAttachment> storageStudentAttachments)
+        {
+            if (storageStudentAttachments.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No student attachments found in storage.");
             }
         }
     }
