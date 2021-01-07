@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -14,6 +15,34 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
 {
     public partial class StudentAttachmentServiceTests
     {
+        [Fact]
+        public void ShouldRetrieveAllStudentAttachments()
+        {
+            // given
+            IQueryable<StudentAttachment> randomStudentAttachments = CreateRandomStudentAttachments();
+            IQueryable<StudentAttachment> storageStudentAttachments = randomStudentAttachments;
+            IQueryable<StudentAttachment> expectedStudentAttachments = storageStudentAttachments;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllStudentAttachments())
+                    .Returns(storageStudentAttachments);
+
+            // when
+            IQueryable<StudentAttachment> actualStudentAttachments =
+                this.studentAttachmentService.RetrieveAllStudentAttachments();
+
+            // then
+            actualStudentAttachments.Should().BeEquivalentTo(expectedStudentAttachments);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllStudentAttachments(),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Fact]
         public async Task ShouldRetrieveStudentAttachmentById()
         {
