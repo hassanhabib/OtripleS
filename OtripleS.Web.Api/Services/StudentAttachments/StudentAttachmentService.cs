@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
         }
 
         public IQueryable<StudentAttachment> RetrieveAllStudentAttachments() =>
-        TryCatch(() => 
+        TryCatch(() =>
         {
             IQueryable<StudentAttachment> storageStudentAttachments = this.storageBroker.SelectAllStudentAttachments();
 
