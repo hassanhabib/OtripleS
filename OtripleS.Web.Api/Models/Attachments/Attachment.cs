@@ -5,7 +5,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using OtripleS.Web.Api.Models.StudentAttachments;
 
 namespace OtripleS.Web.Api.Models.Attachments
@@ -23,7 +23,6 @@ namespace OtripleS.Web.Api.Models.Attachments
         public DateTimeOffset UpdatedDate { get; set; }
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
-
 
         [JsonIgnore]
         public IEnumerable<StudentAttachment> StudentAttachments { get; set; }

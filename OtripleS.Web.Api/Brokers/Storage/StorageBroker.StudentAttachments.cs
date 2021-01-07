@@ -17,14 +17,14 @@ namespace OtripleS.Web.Api.Brokers.Storage
         public DbSet<StudentAttachment> StudentAttachments { get; set; }
 
         public async ValueTask<StudentAttachment> InsertStudentAttachmentAsync(
-            StudentAttachment StudentAttachment)
+            StudentAttachment studentAttachment)
         {
-            EntityEntry<StudentAttachment> StudentAttachmentEntityEntry =
-                await this.StudentAttachments.AddAsync(StudentAttachment);
+            EntityEntry<StudentAttachment> studentAttachmentEntityEntry =
+                await this.StudentAttachments.AddAsync(studentAttachment);
 
             await this.SaveChangesAsync();
 
-            return StudentAttachmentEntityEntry.Entity;
+            return studentAttachmentEntityEntry.Entity;
         }
 
         public IQueryable<StudentAttachment> SelectAllStudentAttachments() =>
@@ -40,25 +40,25 @@ namespace OtripleS.Web.Api.Brokers.Storage
         }
 
         public async ValueTask<StudentAttachment> UpdateStudentAttachmentAsync(
-            StudentAttachment StudentAttachment)
+            StudentAttachment studentAttachment)
         {
-            EntityEntry<StudentAttachment> StudentAttachmentEntityEntry =
-                this.StudentAttachments.Update(StudentAttachment);
+            EntityEntry<StudentAttachment> studentAttachmentEntityEntry =
+                this.StudentAttachments.Update(studentAttachment);
 
             await this.SaveChangesAsync();
 
-            return StudentAttachmentEntityEntry.Entity;
+            return studentAttachmentEntityEntry.Entity;
         }
 
         public async ValueTask<StudentAttachment> DeleteStudentAttachmentAsync(
-            StudentAttachment StudentAttachment)
+            StudentAttachment studentAttachment)
         {
-            EntityEntry<StudentAttachment> StudentAttachmentEntityEntry =
-                this.StudentAttachments.Remove(StudentAttachment);
+            EntityEntry<StudentAttachment> studentAttachmentEntityEntry =
+                this.StudentAttachments.Remove(studentAttachment);
 
             await this.SaveChangesAsync();
 
-            return StudentAttachmentEntityEntry.Entity;
+            return studentAttachmentEntityEntry.Entity;
         }
     }
 }

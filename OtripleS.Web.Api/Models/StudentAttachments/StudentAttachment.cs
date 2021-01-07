@@ -13,8 +13,10 @@ namespace OtripleS.Web.Api.Models.StudentAttachments
     {
         public Guid StudentId { get; set; }
         public Student Student { get; set; }
+
         public Guid AttachmentId { get; set; }
         public Attachment Attachment { get; set; }
+
         public string Notes { get; set; }
     }
 }
