@@ -68,6 +68,10 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private StudentAttachmentValidationException CreateAndLogValidationException(Exception exception)
