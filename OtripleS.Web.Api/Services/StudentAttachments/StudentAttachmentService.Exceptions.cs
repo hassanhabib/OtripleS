@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentAttachments;
@@ -40,6 +41,13 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsStudentAttachmentException =
+                    new AlreadyExistsStudentAttachmentException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsStudentAttachmentException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
