@@ -16,6 +16,7 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
         private void ValidateStudentAttachmentOnCreate(StudentAttachment studentAttachment)
         {
             ValidateStudentAttachmentIsNull(studentAttachment);
+            ValidateStudentAttachmentIdIsNull(studentAttachment.StudentId, studentAttachment.AttachmentId);
         }
 
         private void ValidateStudentAttachmentIsNull(StudentAttachment studentContact)
