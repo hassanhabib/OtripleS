@@ -37,6 +37,11 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             return await this.storageBroker.InsertStudentAttachmentAsync(studentAttachment);
         });
 
+        public ValueTask<StudentAttachment> RemoveStudentAttachmentByIdAsync(Guid studentId, Guid attachmentId)
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<StudentAttachment> RetrieveAllStudentAttachments() =>
         TryCatch(() =>
         {

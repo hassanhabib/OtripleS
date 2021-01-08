@@ -38,17 +38,26 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
         }
 
         private IQueryable<StudentAttachment> CreateRandomStudentAttachments() =>
-            CreateStudentAttachmentFiller()
+            CreateStudentAttachmentFiller(DateTimeOffset.UtcNow)
             .Create(GetRandomNumber()).AsQueryable();
 
         private static string GetRandomMessage() => new MnemonicString().GetValue();
-        private StudentAttachment CreateRandomStudentAttachment() =>
-            CreateStudentAttachmentFiller().Create();
 
-        private static Filler<StudentAttachment> CreateStudentAttachmentFiller()
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private StudentAttachment CreateRandomStudentAttachment() =>
+            CreateStudentAttachmentFiller(DateTimeOffset.UtcNow).Create();
+
+        private StudentAttachment CreateRandomStudentAttachment(DateTimeOffset dates) =>
+            CreateStudentAttachmentFiller(dates).Create();
+
+        private static Filler<StudentAttachment> CreateStudentAttachmentFiller(DateTimeOffset dates)
         {
             var filler = new Filler<StudentAttachment>();
+
             filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
                 .OnProperty(studentAttachment => studentAttachment.Student).IgnoreIt()
                 .OnProperty(studentAttachment => studentAttachment.Attachment).IgnoreIt();
 
