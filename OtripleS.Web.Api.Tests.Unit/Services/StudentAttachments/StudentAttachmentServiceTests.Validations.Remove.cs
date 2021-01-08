@@ -53,5 +53,43 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowValidatonExceptionOnRemoveWhenAttachmentIdIsInvalidAndLogItAsync()
+        {
+            // given
+            Guid randomAttachmentId = default;
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputAttachmentId = randomAttachmentId;
+            Guid inputStudentId = randomStudentId;
+
+            var invalidStudentAttachmentInputException = new InvalidStudentAttachmentException(
+                parameterName: nameof(StudentAttachment.AttachmentId),
+                parameterValue: inputAttachmentId);
+
+            var expectedStudentAttachmentValidationException =
+                new StudentAttachmentValidationException(invalidStudentAttachmentInputException);
+
+            // when
+            ValueTask<StudentAttachment> removeStudentAttachmentTask =
+                this.studentAttachmentService.RemoveStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<StudentAttachmentValidationException>(() => removeStudentAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentAttachmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteStudentAttachmentAsync(It.IsAny<StudentAttachment>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
