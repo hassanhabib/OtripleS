@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -14,6 +15,34 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
 {
     public partial class StudentAttachmentServiceTests
     {
+        [Fact]
+        public async Task ShouldAddStudentAttachmentAsync()
+        {
+            // given
+            StudentAttachment randomStudentAttachment = CreateRandomStudentAttachment();
+            StudentAttachment inputStudentAttachment = randomStudentAttachment;
+            StudentAttachment storageStudentAttachment = randomStudentAttachment;
+            StudentAttachment expectedStudentAttachment = storageStudentAttachment;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertStudentAttachmentAsync(inputStudentAttachment))
+                    .ReturnsAsync(storageStudentAttachment);
+
+            // when
+            StudentAttachment actualStudentAttachment =
+                await this.studentAttachmentService.AddStudentAttachmentAsync(inputStudentAttachment);
+
+            // then
+            actualStudentAttachment.Should().BeEquivalentTo(expectedStudentAttachment);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentAttachmentAsync(inputStudentAttachment),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Fact]
         public void ShouldRetrieveAllStudentAttachments()
         {
@@ -70,6 +99,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldRemoveStudentAttachmentAsync()
+        {
+            // given
+            var randomStudentId = Guid.NewGuid();
+            var randomAttachmentId = Guid.NewGuid();
+            Guid inputStudentId = randomStudentId;
+            Guid inputAttachmentId = randomAttachmentId;
+            DateTimeOffset inputDateTime = GetRandomDateTime();
+            StudentAttachment randomStudentAttachment = CreateRandomStudentAttachment(inputDateTime);
+            randomStudentAttachment.StudentId = inputStudentId;
+            randomStudentAttachment.AttachmentId = inputAttachmentId;
+            StudentAttachment storageStudentAttachment = randomStudentAttachment;
+            StudentAttachment expectedStudentAttachment = storageStudentAttachment;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId))
+                    .ReturnsAsync(storageStudentAttachment);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteStudentAttachmentAsync(storageStudentAttachment))
+                    .ReturnsAsync(expectedStudentAttachment);
+
+            // when
+            StudentAttachment actualStudentAttachment =
+                await this.studentAttachmentService.RemoveStudentAttachmentByIdAsync(
+                    inputStudentId, inputAttachmentId);
+
+            // then
+            actualStudentAttachment.Should().BeEquivalentTo(expectedStudentAttachment);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteStudentAttachmentAsync(storageStudentAttachment),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

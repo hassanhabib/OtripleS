@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentAttachments;
@@ -25,6 +26,10 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             {
                 return await returningStudentAttachmentFunction();
             }
+            catch (NullStudentAttachmentException nullStudentAttachmentInputException)
+            {
+                throw CreateAndLogValidationException(nullStudentAttachmentInputException);
+            }
             catch (InvalidStudentAttachmentException invalidStudentAttachmentInputException)
             {
                 throw CreateAndLogValidationException(invalidStudentAttachmentInputException);
@@ -36,6 +41,20 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsStudentAttachmentException =
+                    new AlreadyExistsStudentAttachmentException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsStudentAttachmentException);
+            }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidStudentAttachmentReferenceException =
+                    new InvalidStudentAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidStudentAttachmentReferenceException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
