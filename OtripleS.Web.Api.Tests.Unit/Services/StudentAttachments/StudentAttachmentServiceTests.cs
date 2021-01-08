@@ -41,6 +41,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
             CreateStudentAttachmentFiller()
             .Create(GetRandomNumber()).AsQueryable();
 
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
         private StudentAttachment CreateRandomStudentAttachment() =>
             CreateStudentAttachmentFiller().Create();
 
