@@ -45,5 +45,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenStudentIdIsInvalidAndLogItAsync()
+        {
+            // given
+            StudentAttachment randomStudentAttachment = CreateRandomStudentAttachment();
+            StudentAttachment inputStudentAttachment = randomStudentAttachment;
+            inputStudentAttachment.StudentId = default;
+
+            var invalidStudentAttachmentInputException = new InvalidStudentAttachmentException(
+                parameterName: nameof(StudentAttachment.StudentId),
+                parameterValue: inputStudentAttachment.StudentId);
+
+            var expectedStudentAttachmentValidationException =
+                new StudentAttachmentValidationException(invalidStudentAttachmentInputException);
+
+            // when
+            ValueTask<StudentAttachment> addStudentAttachmentTask =
+                this.studentAttachmentService.AddStudentAttachmentAsync(inputStudentAttachment);
+
+            // then
+            await Assert.ThrowsAsync<StudentAttachmentValidationException>(() =>
+                addStudentAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentAttachmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentAttachmentAsync(It.IsAny<StudentAttachment>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
