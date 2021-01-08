@@ -12,6 +12,20 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
 {
     public partial class StudentAttachmentService
     {
+
+        private void ValidateStudentAttachmentOnCreate(StudentAttachment studentAttachment)
+        {
+            ValidateStudentAttachmentIsNull(studentAttachment);
+        }
+
+        private void ValidateStudentAttachmentIsNull(StudentAttachment studentContact)
+        {
+            if (studentContact is null)
+            {
+                throw new NullStudentAttachmentException();
+            }
+        }
+
         private void ValidateStudentAttachmentIdIsNull(Guid studentId, Guid attachmentId)
         {
             if (studentId == default)

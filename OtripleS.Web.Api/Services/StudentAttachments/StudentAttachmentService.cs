@@ -29,9 +29,13 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async ValueTask<StudentAttachment> AddStudentAttachmentAsync(StudentAttachment studentAttachment) =>
-            await this.storageBroker.InsertStudentAttachmentAsync(studentAttachment);
+        public ValueTask<StudentAttachment> AddStudentAttachmentAsync(StudentAttachment studentAttachment) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentAttachmentOnCreate(studentAttachment);
 
+            return await this.storageBroker.InsertStudentAttachmentAsync(studentAttachment);
+        });
 
         public IQueryable<StudentAttachment> RetrieveAllStudentAttachments() =>
         TryCatch(() =>

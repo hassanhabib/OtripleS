@@ -25,6 +25,10 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             {
                 return await returningStudentAttachmentFunction();
             }
+            catch (NullStudentAttachmentException nullStudentAttachmentInputException)
+            {
+                throw CreateAndLogValidationException(nullStudentAttachmentInputException);
+            }
             catch (InvalidStudentAttachmentException invalidStudentAttachmentInputException)
             {
                 throw CreateAndLogValidationException(invalidStudentAttachmentInputException);
