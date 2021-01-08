@@ -49,6 +49,13 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
 
                 throw CreateAndLogValidationException(alreadyExistsStudentAttachmentException);
             }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidStudentAttachmentReferenceException =
+                    new InvalidStudentAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidStudentAttachmentReferenceException);
+            }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
                 var lockedAttachmentException =
