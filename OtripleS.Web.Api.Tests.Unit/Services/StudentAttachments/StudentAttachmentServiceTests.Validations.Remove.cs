@@ -91,5 +91,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnRemoveWhenStorageStudentAttachmentIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            StudentAttachment randomStudentAttachment = CreateRandomStudentAttachment(randomDateTime);
+            Guid inputAttachmentId = randomStudentAttachment.AttachmentId;
+            Guid inputStudentId = randomStudentAttachment.StudentId;
+            StudentAttachment nullStorageStudentAttachment = null;
+
+            var notFoundStudentAttachmentException =
+                new NotFoundStudentAttachmentException(inputStudentId, inputAttachmentId);
+
+            var expectedSemesterCourseValidationException =
+                new StudentAttachmentValidationException(notFoundStudentAttachmentException);
+
+            this.storageBrokerMock.Setup(broker =>
+                 broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId))
+                    .ReturnsAsync(nullStorageStudentAttachment);
+
+            // when
+            ValueTask<StudentAttachment> removeStudentAttachmentTask =
+                this.studentAttachmentService.RemoveStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<StudentAttachmentValidationException>(() =>
+                removeStudentAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteStudentAttachmentAsync(It.IsAny<StudentAttachment>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
