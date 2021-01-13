@@ -32,7 +32,10 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
             GuardianAttachment storageStudentAttachment,
             Guid guardianId, Guid attachmentId)
         {
-            throw new NotImplementedException();
+            if (storageStudentAttachment == null)
+            {
+                throw new NotFoundGuardianAttachmentException(guardianId, attachmentId);
+            }
         }
     }
 }

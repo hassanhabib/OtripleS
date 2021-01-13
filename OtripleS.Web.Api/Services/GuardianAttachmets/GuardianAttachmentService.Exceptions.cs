@@ -25,6 +25,10 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
             {
                 throw CreateAndLogValidationException(invalidGuardianAttachmentInputException);
             }
+            catch (NotFoundGuardianAttachmentException notFoundGuardianAttachmentException)
+            {
+                throw CreateAndLogValidationException(notFoundGuardianAttachmentException);
+            }
         }
 
         private GuardianAttachmentValidationException CreateAndLogValidationException(Exception exception)
