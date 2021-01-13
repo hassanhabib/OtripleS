@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.GuardianAttachments;
 using OtripleS.Web.Api.Models.GuardianAttachments.Exceptions;
 
@@ -29,6 +30,10 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
             {
                 throw CreateAndLogValidationException(notFoundGuardianAttachmentException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
         }
 
         private GuardianAttachmentValidationException CreateAndLogValidationException(Exception exception)
@@ -37,6 +42,14 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
             this.loggingBroker.LogError(guardianAttachmentValidationException);
 
             return guardianAttachmentValidationException;
+        }
+
+        private GuardianAttachmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var guardianAttachmentDependencyException = new GuardianAttachmentDependencyException(exception);
+            this.loggingBroker.LogCritical(guardianAttachmentDependencyException);
+
+            return guardianAttachmentDependencyException;
         }
     }
 }
