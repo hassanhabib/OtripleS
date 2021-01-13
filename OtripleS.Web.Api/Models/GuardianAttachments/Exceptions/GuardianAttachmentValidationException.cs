@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.GuardianAttachments.Exceptions
 {
     public class GuardianAttachmentValidationException : Exception

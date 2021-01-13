@@ -7,11 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.GuardianAttachments.Exceptions
 {
-    public class NotFoundGuardianAttachmentException : Exception
+    public class GuardianAttachmentServiceException : Exception
     {
-        public NotFoundGuardianAttachmentException(Guid guardianId, Guid attachmentId)
-           : base($"Couldn't find guardianAttachment with studentId: {guardianId} " +
-                  $"and attachmentId: {attachmentId}.")
-        { }
+        public GuardianAttachmentServiceException(Exception innerException)
+            : base("Service error occurred, contact support.", innerException) { }
     }
 }
