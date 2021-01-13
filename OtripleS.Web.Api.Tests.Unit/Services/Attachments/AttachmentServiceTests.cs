@@ -85,7 +85,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             filler.Setup()
                 .OnProperty(attachment => attachment.CreatedDate).Use(dates)
                 .OnProperty(attachment => attachment.UpdatedDate).Use(dates)
-                .OnProperty(attachment => attachment.StudentAttachments).IgnoreIt();
+                .OnProperty(attachment => attachment.StudentAttachments).IgnoreIt()
+                .OnProperty(attachment => attachment.GuardianAttachments).IgnoreIt();
 
             return filler;
         }

@@ -70,7 +70,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Guardians
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dateTime)
                 .OnProperty(guardian => guardian.StudentGuardians).IgnoreIt()
-                .OnProperty(guardian => guardian.GuardianContacts).IgnoreIt(); ;
+                .OnProperty(guardian => guardian.GuardianContacts).IgnoreIt()
+                .OnProperty(guardian => guardian.GuardianAttachments).IgnoreIt();
 
             return filler;
         }

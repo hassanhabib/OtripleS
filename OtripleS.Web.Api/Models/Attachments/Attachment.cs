@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using OtripleS.Web.Api.Models.GuardianAttachments;
 using OtripleS.Web.Api.Models.StudentAttachments;
 
 namespace OtripleS.Web.Api.Models.Attachments
@@ -26,5 +27,6 @@ namespace OtripleS.Web.Api.Models.Attachments
 
         [JsonIgnore]
         public IEnumerable<StudentAttachment> StudentAttachments { get; set; }
+        public IEnumerable<GuardianAttachment> GuardianAttachments { get; set; }
     }
 }
