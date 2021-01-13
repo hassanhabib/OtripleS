@@ -19,6 +19,13 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
                     parameterName: nameof(GuardianAttachment.GuardianId),
                     parameterValue: guardianId);
             }
+
+            if (attachmentId == default)
+            {
+                throw new InvalidGuardianAttachmentException(
+                    parameterName: nameof(GuardianAttachment.AttachmentId),
+                    parameterValue: attachmentId);
+            }
         }
     }
 }
