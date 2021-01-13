@@ -27,5 +27,12 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
                     parameterValue: attachmentId);
             }
         }
+
+        private static void ValidateStorageGuardianAttachment(
+            GuardianAttachment storageStudentAttachment,
+            Guid guardianId, Guid attachmentId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

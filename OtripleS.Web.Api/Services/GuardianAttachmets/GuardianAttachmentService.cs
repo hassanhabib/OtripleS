@@ -37,6 +37,8 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
             GuardianAttachment storageGuardianAttachment =
                await this.storageBroker.SelectGuardianAttachmentByIdAsync(guardianId, attachmentId);
 
+            ValidateStorageGuardianAttachment(storageGuardianAttachment, guardianId, attachmentId);
+
             return storageGuardianAttachment;
         });
     }
