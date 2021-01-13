@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
 
         public ValueTask<GuardianAttachment> RetrieveGuardianAttachmentByIdAsync(Guid guardianId, Guid attachmentId)
         {
-            throw new NotImplementedException();
+            return storageBroker.SelectGuardianAttachmentByIdAsync(guardianId, attachmentId);
         }
     }
 }
