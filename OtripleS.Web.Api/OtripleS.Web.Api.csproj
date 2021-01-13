@@ -30,5 +30,6 @@
     <Folder Include="Services\Calendars\" />
     <Folder Include="Services\CalendarEntries\" />
     <Folder Include="Services\StudentAttachments\" />
+    <Folder Include="Services\GuardianAttachmets\" />
   </ItemGroup>
 </Project>
