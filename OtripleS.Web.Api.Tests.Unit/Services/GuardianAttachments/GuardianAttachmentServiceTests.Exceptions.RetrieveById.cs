@@ -93,5 +93,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomAttachmentId = Guid.NewGuid();
+            Guid randomGuardianId = Guid.NewGuid();
+            Guid inputAttachmentId = randomAttachmentId;
+            Guid inputGuardianId = randomGuardianId;
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+            var lockedGuardianAttachmentException =
+                new LockedGuardianAttachmentException(databaseUpdateConcurrencyException);
+
+            var expectedGuardianAttachmentException =
+                new GuardianAttachmentDependencyException(lockedGuardianAttachmentException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
+
+            // when
+            ValueTask<GuardianAttachment> deleteGuardianAttachmentTask =
+                this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(() => deleteGuardianAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
