@@ -33,6 +33,8 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
         {
             IQueryable<GuardianAttachment> storageGuardianAttachments = this.storageBroker.SelectAllGuardianAttachments();
 
+            ValidateStorageGuardianAttachments(storageGuardianAttachments);
+
             return storageGuardianAttachments;
         }
 
