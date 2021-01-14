@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -44,6 +45,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
 
         private GuardianAttachment CreateRandomGuardianAttachment(DateTimeOffset dates) =>
            CreateGuardianAttachmentFiller(dates).Create();
+
+        private IQueryable<GuardianAttachment> CreateRandomGuardianAttachments() =>
+            CreateGuardianAttachmentFiller(dates: DateTimeOffset.UtcNow)
+                .Create(GetRandomNumber()).AsQueryable();
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+
 
         private static Filler<GuardianAttachment> CreateGuardianAttachmentFiller(DateTimeOffset dates)
         {

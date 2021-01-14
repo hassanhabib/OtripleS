@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.GuardianAttachments;
 using OtripleS.Web.Api.Models.GuardianAttachments.Exceptions;
 
@@ -35,6 +36,14 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
             if (storageStudentAttachment == null)
             {
                 throw new NotFoundGuardianAttachmentException(guardianId, attachmentId);
+            }
+        }
+
+        private void ValidateStorageGuardianAttachments(IQueryable<GuardianAttachment> storageGuardianAttachments)
+        {
+            if (storageGuardianAttachments.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No guardian attachments found in storage.");
             }
         }
     }
