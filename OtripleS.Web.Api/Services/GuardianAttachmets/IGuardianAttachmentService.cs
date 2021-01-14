@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.GuardianAttachments;
 
@@ -11,6 +12,8 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
 {
     public interface IGuardianAttachmentService
     {
+        IQueryable<GuardianAttachment> RetrieveAllGuardianAttachments();
+
         ValueTask<GuardianAttachment> RetrieveGuardianAttachmentByIdAsync
             (Guid guardianId, Guid attachmentId);
     }
