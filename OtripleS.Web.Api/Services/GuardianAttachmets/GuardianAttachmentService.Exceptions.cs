@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
     public partial class GuardianAttachmentService
     {
         private delegate ValueTask<GuardianAttachment> ReturningGuardianAttachmentFunction();
+        private delegate IQueryable<GuardianAttachment> ReturningGuardianAttachmentsFunction();
 
         private async ValueTask<GuardianAttachment> TryCatch(
             ReturningGuardianAttachmentFunction returningGuardianAttachmentFunction)
@@ -49,6 +51,18 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private IQueryable<GuardianAttachment> TryCatch(ReturningGuardianAttachmentsFunction returningGuardianAttachmentsFunction)
+        {
+            try
+            {
+                return returningGuardianAttachmentsFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
             }
         }
 
