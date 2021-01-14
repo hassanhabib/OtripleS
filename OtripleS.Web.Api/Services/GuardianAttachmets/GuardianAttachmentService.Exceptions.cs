@@ -68,6 +68,10 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private GuardianAttachmentValidationException CreateAndLogValidationException(Exception exception)
