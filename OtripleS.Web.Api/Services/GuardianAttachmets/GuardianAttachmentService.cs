@@ -31,7 +31,9 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
 
         public IQueryable<GuardianAttachment> RetrieveAllGuardianAttachments()
         {
-            throw new NotImplementedException();
+            IQueryable<GuardianAttachment> storageGuardianAttachments = this.storageBroker.SelectAllGuardianAttachments();
+
+            return storageGuardianAttachments;
         }
 
         public ValueTask<GuardianAttachment> RetrieveGuardianAttachmentByIdAsync
