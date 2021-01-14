@@ -43,5 +43,48 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldRemoveGuardianAttachmentAsync()
+        {
+            // given
+            var randomGuardianId = Guid.NewGuid();
+            var randomAttachmentId = Guid.NewGuid();
+            Guid inputGuardianId = randomGuardianId;
+            Guid inputAttachmentId = randomAttachmentId;
+            DateTimeOffset inputDateTime = GetRandomDateTime();
+            GuardianAttachment randomGuardianAttachment = CreateRandomGuardianAttachment(inputDateTime);
+            randomGuardianAttachment.GuardianId = inputGuardianId;
+            randomGuardianAttachment.AttachmentId = inputAttachmentId;
+            GuardianAttachment storageGuardianAttachment = randomGuardianAttachment;
+            GuardianAttachment expectedGuardianAttachment = storageGuardianAttachment;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId))
+                    .ReturnsAsync(storageGuardianAttachment);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteGuardianAttachmentAsync(storageGuardianAttachment))
+                    .ReturnsAsync(expectedGuardianAttachment);
+
+            // when
+            GuardianAttachment actualGuardianAttachment =
+                await this.guardianAttachmentService.RemoveGuardianAttachmentByIdAsync(
+                    inputGuardianId, inputAttachmentId);
+
+            // then
+            actualGuardianAttachment.Should().BeEquivalentTo(expectedGuardianAttachment);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteGuardianAttachmentAsync(storageGuardianAttachment),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }

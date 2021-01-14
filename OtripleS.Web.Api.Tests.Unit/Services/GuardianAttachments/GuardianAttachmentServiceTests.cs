@@ -36,8 +36,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
+        private static DateTimeOffset GetRandomDateTime() =>
+           new DateTimeRange(earliestDate: new DateTime()).GetValue();
+         
         private GuardianAttachment CreateRandomGuardianAttachment() =>
             CreateGuardianAttachmentFiller(DateTimeOffset.UtcNow).Create();
+
+        private GuardianAttachment CreateRandomGuardianAttachment(DateTimeOffset dates) =>
+           CreateGuardianAttachmentFiller(dates).Create();
 
         private static Filler<GuardianAttachment> CreateGuardianAttachmentFiller(DateTimeOffset dates)
         {
