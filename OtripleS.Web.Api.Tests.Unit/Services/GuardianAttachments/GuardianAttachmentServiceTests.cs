@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
         private IQueryable<GuardianAttachment> CreateRandomGuardianAttachments() =>
             CreateGuardianAttachmentFiller(dates: DateTimeOffset.UtcNow)
                 .Create(GetRandomNumber()).AsQueryable();
-    
+
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
         private static Filler<GuardianAttachment> CreateGuardianAttachmentFiller(DateTimeOffset dates)
