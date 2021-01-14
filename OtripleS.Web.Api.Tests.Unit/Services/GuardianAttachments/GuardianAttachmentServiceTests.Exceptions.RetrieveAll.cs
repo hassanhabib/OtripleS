@@ -71,5 +71,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public void ShouldThrowServiceExceptionOnRetrieveAllGuardianAttachmentsWhenExceptionOccursAndLogIt()
+        {
+            // given
+            var exception = new Exception();
+
+            var expectedGuardianAttachmentServiceException =
+                new GuardianAttachmentServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllGuardianAttachments())
+                    .Throws(exception);
+
+            // when . then
+            Assert.Throws<GuardianAttachmentServiceException>(() =>
+                this.guardianAttachmentService.RetrieveAllGuardianAttachments());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllGuardianAttachments(),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
