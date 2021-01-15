@@ -20,19 +20,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
         {
             // given
             GuardianAttachment randomGuardianAttachment = CreateRandomGuardianAttachment();
-            GuardianAttachment inputGuardianAttachment = randomGuardianAttachment;
+            GuardianAttachment someGuardianAttachment = randomGuardianAttachment;
             var sqlException = GetSqlException();
 
             var expectedGuardianAttachmentDependencyException =
                 new GuardianAttachmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertGuardianAttachmentAsync(inputGuardianAttachment))
+                broker.InsertGuardianAttachmentAsync(someGuardianAttachment))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<GuardianAttachment> addGuardianAttachmentTask =
-                this.guardianAttachmentService.AddGuardianAttachmentAsync(inputGuardianAttachment);
+                this.guardianAttachmentService.AddGuardianAttachmentAsync(someGuardianAttachment);
 
             // then
             await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(() =>
@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertGuardianAttachmentAsync(inputGuardianAttachment),
+                broker.InsertGuardianAttachmentAsync(someGuardianAttachment),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -55,19 +55,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
         {
             // given
             GuardianAttachment randomGuardianAttachment = CreateRandomGuardianAttachment();
-            GuardianAttachment inputGuardianAttachment = randomGuardianAttachment;
+            GuardianAttachment someGuardianAttachment = randomGuardianAttachment;
             var databaseUpdateException = new DbUpdateException();
 
             var expectedGuardianAttachmentDependencyException =
                 new GuardianAttachmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertGuardianAttachmentAsync(inputGuardianAttachment))
+                broker.InsertGuardianAttachmentAsync(someGuardianAttachment))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<GuardianAttachment> addGuardianAttachmentTask =
-                this.guardianAttachmentService.AddGuardianAttachmentAsync(inputGuardianAttachment);
+                this.guardianAttachmentService.AddGuardianAttachmentAsync(someGuardianAttachment);
 
             // then
             await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(() =>
@@ -78,7 +78,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertGuardianAttachmentAsync(inputGuardianAttachment),
+                broker.InsertGuardianAttachmentAsync(someGuardianAttachment),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -90,19 +90,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
         {
             // given
             GuardianAttachment randomGuardianAttachment = CreateRandomGuardianAttachment();
-            GuardianAttachment inputGuardianAttachment = randomGuardianAttachment;
+            GuardianAttachment someGuardianAttachment = randomGuardianAttachment;
             var exception = new Exception();
 
             var expectedGuardianAttachmentServiceException =
                 new GuardianAttachmentServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertGuardianAttachmentAsync(inputGuardianAttachment))
+                broker.InsertGuardianAttachmentAsync(someGuardianAttachment))
                     .ThrowsAsync(exception);
 
             // when
             ValueTask<GuardianAttachment> addGuardianAttachmentTask =
-                 this.guardianAttachmentService.AddGuardianAttachmentAsync(inputGuardianAttachment);
+                 this.guardianAttachmentService.AddGuardianAttachmentAsync(someGuardianAttachment);
 
             // then
             await Assert.ThrowsAsync<GuardianAttachmentServiceException>(() =>
@@ -113,7 +113,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertGuardianAttachmentAsync(inputGuardianAttachment),
+                broker.InsertGuardianAttachmentAsync(someGuardianAttachment),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
