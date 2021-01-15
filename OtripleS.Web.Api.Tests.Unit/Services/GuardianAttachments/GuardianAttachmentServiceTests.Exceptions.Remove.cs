@@ -59,6 +59,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
-        
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            var randomAttachmentId = Guid.NewGuid();
+            var randomGuardianId = Guid.NewGuid();
+            Guid someAttachmentId = randomAttachmentId;
+            Guid someGuardianId = randomGuardianId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedGuardianAttachmentDependencyException =
+                new GuardianAttachmentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<GuardianAttachment> removeGuardianAttachmentTask =
+                this.guardianAttachmentService.RemoveGuardianAttachmentByIdAsync
+                (someGuardianId, someAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(
+                () => removeGuardianAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteGuardianAttachmentAsync(It.IsAny<GuardianAttachment>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
