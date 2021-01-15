@@ -12,6 +12,21 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
 {
     public partial class GuardianAttachmentService
     {
+
+        public void ValidateGuardianAttachmentOnCreate(GuardianAttachment guardianAttachment)
+        {
+            ValidateGuardianAttachmentIsNull(guardianAttachment);
+            ValidateGuardianAttachmentIdIsNull(guardianAttachment.GuardianId, guardianAttachment.AttachmentId);
+        }
+
+        private void ValidateGuardianAttachmentIsNull(GuardianAttachment guardianAttachment)
+        {
+            if (guardianAttachment is null)
+            {
+                throw new NullGuardianAttachmentException();
+            }
+        }
+
         private void ValidateGuardianAttachmentIdIsNull(Guid guardianId, Guid attachmentId)
         {
             if (guardianId == default)
@@ -20,8 +35,7 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
                     parameterName: nameof(GuardianAttachment.GuardianId),
                     parameterValue: guardianId);
             }
-
-            if (attachmentId == default)
+            else if (attachmentId == default)
             {
                 throw new InvalidGuardianAttachmentException(
                     parameterName: nameof(GuardianAttachment.AttachmentId),

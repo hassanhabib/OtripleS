@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.GuardianAttachments;
@@ -25,6 +26,10 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
             {
                 return await returningGuardianAttachmentFunction();
             }
+            catch (NullGuardianAttachmentException nullGuardianAttachmentException)
+            {
+                throw CreateAndLogValidationException(nullGuardianAttachmentException);
+            }
             catch (InvalidGuardianAttachmentException invalidGuardianAttachmentInputException)
             {
                 throw CreateAndLogValidationException(invalidGuardianAttachmentInputException);
@@ -36,6 +41,20 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsGuardianAttachmentException =
+                    new AlreadyExistsGuardianAttachmentException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsGuardianAttachmentException);
+            }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidGuardianAttachmentReferenceException =
+                    new InvalidGuardianAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidGuardianAttachmentReferenceException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {

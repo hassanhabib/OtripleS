@@ -14,6 +14,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
 {
     public partial class GuardianAttachmentServiceTests
     {
+
+        [Fact]
+        public async Task ShouldAddGuardianAttachmentAsync()
+        {
+            // given
+            GuardianAttachment randomGuardianAttachment = CreateRandomGuardianAttachment();
+            GuardianAttachment inputGuardianAttachment = randomGuardianAttachment;
+            GuardianAttachment storageGuardianAttachment = randomGuardianAttachment;
+            GuardianAttachment expectedGuardianAttachment = storageGuardianAttachment;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertGuardianAttachmentAsync(inputGuardianAttachment))
+                    .ReturnsAsync(storageGuardianAttachment);
+
+            // when
+            GuardianAttachment actualGuardianAttachment =
+                await this.guardianAttachmentService.AddGuardianAttachmentAsync(inputGuardianAttachment);
+
+            // then
+            actualGuardianAttachment.Should().BeEquivalentTo(expectedGuardianAttachment);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianAttachmentAsync(inputGuardianAttachment),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Fact]
         public void ShouldRetrieveAllGuardianAttachments()
         {
