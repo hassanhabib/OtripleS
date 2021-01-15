@@ -11,7 +11,7 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.GuardianAttachments;
 
-namespace OtripleS.Web.Api.Services.GuardianAttachmets
+namespace OtripleS.Web.Api.Services.GuardianAttachments
 {
     public partial class GuardianAttachmentService : IGuardianAttachmentService
     {

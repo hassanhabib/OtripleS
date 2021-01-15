@@ -13,7 +13,7 @@ using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.GuardianAttachments;
-using OtripleS.Web.Api.Services.GuardianAttachmets;
+using OtripleS.Web.Api.Services.GuardianAttachments;
 using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
