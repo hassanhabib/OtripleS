@@ -34,13 +34,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
                     .ThrowsAsync(sqlException);
 
             // when
-            ValueTask<GuardianAttachment> deleteGuardianAttachmentTask =
+            ValueTask<GuardianAttachment> retrieveAllGuardianAttachmentTask =
                 this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync
                 (inputGuardianId, inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(() =>
-                deleteGuardianAttachmentTask.AsTask());
+                retrieveAllGuardianAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedGuardianAttachmentDependencyException))),
@@ -73,13 +73,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
                     .ThrowsAsync(databaseUpdateException);
 
             // when
-            ValueTask<GuardianAttachment> deleteAttachmentTask =
+            ValueTask<GuardianAttachment> retrieveAllAttachmentTask =
                 this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync
                 (inputGuardianId, inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(
-                () => deleteAttachmentTask.AsTask());
+                () => retrieveAllAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentDependencyException))),
@@ -115,11 +115,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
-            ValueTask<GuardianAttachment> deleteGuardianAttachmentTask =
+            ValueTask<GuardianAttachment> retrieveAllGuardianAttachmentTask =
                 this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(() => deleteGuardianAttachmentTask.AsTask());
+            await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(() => 
+                retrieveAllGuardianAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentException))),
@@ -152,13 +153,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
                     .ThrowsAsync(exception);
 
             // when
-            ValueTask<GuardianAttachment> deleteGuardianAttachmentTask =
+            ValueTask<GuardianAttachment> retrieveAllGuardianAttachmentTask =
                 this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync
                 (inputGuardianId, inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<GuardianAttachmentServiceException>(() =>
-                deleteGuardianAttachmentTask.AsTask());
+                retrieveAllGuardianAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentException))),
