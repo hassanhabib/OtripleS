@@ -144,5 +144,48 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            var randomAttachmentId = Guid.NewGuid();
+            var randomGuardianId = Guid.NewGuid();
+            Guid someAttachmentId = randomAttachmentId;
+            Guid someGuardianId = randomGuardianId;
+            var exception = new Exception();
+
+            var expectedGuardianAttachmentException =
+                new GuardianAttachmentServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<GuardianAttachment> removeGuardianAttachmentTask =
+                this.guardianAttachmentService.RemoveGuardianAttachmentByIdAsync(
+                    someGuardianId,
+                    someAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<GuardianAttachmentServiceException>(() =>
+                removeGuardianAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteGuardianAttachmentAsync(It.IsAny<GuardianAttachment>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
