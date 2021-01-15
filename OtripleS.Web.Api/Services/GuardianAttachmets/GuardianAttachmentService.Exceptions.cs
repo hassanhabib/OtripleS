@@ -49,6 +49,13 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
 
                 throw CreateAndLogValidationException(alreadyExistsGuardianAttachmentException);
             }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidGuardianAttachmentReferenceException =
+                    new InvalidGuardianAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidGuardianAttachmentReferenceException);
+            }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
                 var lockedGuardianAttachmentException =
