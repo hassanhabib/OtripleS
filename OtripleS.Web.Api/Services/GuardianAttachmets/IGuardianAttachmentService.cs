@@ -17,5 +17,7 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
 
         ValueTask<GuardianAttachment> RetrieveGuardianAttachmentByIdAsync
             (Guid guardianId, Guid attachmentId);
+
+        ValueTask<GuardianAttachment> RemoveGuardianAttachmentByIdAsync(Guid guardianId, Guid attachmentId);
     }
 }

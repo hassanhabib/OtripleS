@@ -61,5 +61,9 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
             return storageGuardianAttachment;
         });
 
+        public ValueTask<GuardianAttachment> RemoveGuardianAttachmentByIdAsync(Guid guardianId, Guid attachmentId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
