@@ -29,10 +29,8 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<GuardianAttachment> AddGuardianAttachmentAsync(GuardianAttachment guardianAttachment)
-        {
-            throw new NotImplementedException();
-        }
+        public async ValueTask<GuardianAttachment> AddGuardianAttachmentAsync(GuardianAttachment guardianAttachment) =>
+            await this.storageBroker.InsertGuardianAttachmentAsync(guardianAttachment);
 
         public IQueryable<GuardianAttachment> RetrieveAllGuardianAttachments() =>
         TryCatch(() =>
