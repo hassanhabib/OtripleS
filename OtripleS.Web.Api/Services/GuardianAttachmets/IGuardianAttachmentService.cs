@@ -12,6 +12,7 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
 {
     public interface IGuardianAttachmentService
     {
+        ValueTask<GuardianAttachment> AddGuardianAttachmentAsync(GuardianAttachment guardianAttachment);
         IQueryable<GuardianAttachment> RetrieveAllGuardianAttachments();
 
         ValueTask<GuardianAttachment> RetrieveGuardianAttachmentByIdAsync
