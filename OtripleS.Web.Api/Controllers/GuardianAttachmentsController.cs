@@ -77,6 +77,41 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpGet("guardians/{guardianId}/attachments/{attachmentId}")]
+        public async ValueTask<ActionResult<GuardianAttachment>> GetGuardianAttachmentAsync(
+            Guid guardianId,
+            Guid attachmentId)
+        {
+            try
+            {
+                GuardianAttachment storageGuardianAttachment =
+                    await this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync(guardianId, attachmentId);
+
+                return Ok(storageGuardianAttachment);
+            }
+            catch (GuardianAttachmentValidationException semesterGuardianAttachmentValidationException)
+                when (semesterGuardianAttachmentValidationException.InnerException is NotFoundGuardianAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(semesterGuardianAttachmentValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (GuardianAttachmentValidationException semesterGuardianAttachmentValidationException)
+            {
+                string innerMessage = GetInnerMessage(semesterGuardianAttachmentValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (GuardianAttachmentDependencyException semesterGuardianAttachmentDependencyException)
+            {
+                return Problem(semesterGuardianAttachmentDependencyException.Message);
+            }
+            catch (GuardianAttachmentServiceException semesterGuardianAttachmentServiceException)
+            {
+                return Problem(semesterGuardianAttachmentServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
