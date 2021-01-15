@@ -57,7 +57,25 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        
+        [HttpGet]
+        public ActionResult<IQueryable<GuardianAttachment>> GetAllGuardianAttachments()
+        {
+            try
+            {
+                IQueryable storageGuardianAttachments =
+                    this.guardianAttachmentService.RetrieveAllGuardianAttachments();
+
+                return Ok(storageGuardianAttachments);
+            }
+            catch (GuardianAttachmentDependencyException guardianAttachmentDependencyException)
+            {
+                return Problem(guardianAttachmentDependencyException.Message);
+            }
+            catch (GuardianAttachmentServiceException guardianAttachmentServiceException)
+            {
+                return Problem(guardianAttachmentServiceException.Message);
+            }
+        }
 
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
