@@ -12,6 +12,20 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
 {
     public partial class GuardianAttachmentService
     {
+
+        public void ValidateGuardianAttachmentOnCreate(GuardianAttachment guardianAttachment)
+        {
+            ValidateGuardianAttachmentIsNull(guardianAttachment);
+        }
+
+        private void ValidateGuardianAttachmentIsNull(GuardianAttachment guardianAttachment)
+        {
+            if (guardianAttachment is null)
+            {
+                throw new NullGuardianAttachmentException();
+            }
+        }
+
         private void ValidateGuardianAttachmentIdIsNull(Guid guardianId, Guid attachmentId)
         {
             if (guardianId == default)

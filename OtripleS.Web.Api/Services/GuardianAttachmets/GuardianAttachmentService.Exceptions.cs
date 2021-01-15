@@ -25,6 +25,10 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
             {
                 return await returningGuardianAttachmentFunction();
             }
+            catch (NullGuardianAttachmentException nullGuardianAttachmentException)
+            {
+                throw CreateAndLogValidationException(nullGuardianAttachmentException);
+            }
             catch (InvalidGuardianAttachmentException invalidGuardianAttachmentInputException)
             {
                 throw CreateAndLogValidationException(invalidGuardianAttachmentInputException);
