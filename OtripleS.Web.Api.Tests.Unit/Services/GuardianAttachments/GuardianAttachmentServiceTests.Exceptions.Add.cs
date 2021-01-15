@@ -50,5 +50,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnAddWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            GuardianAttachment randomGuardianAttachment = CreateRandomGuardianAttachment();
+            GuardianAttachment inputGuardianAttachment = randomGuardianAttachment;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedGuardianAttachmentDependencyException =
+                new GuardianAttachmentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertGuardianAttachmentAsync(inputGuardianAttachment))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<GuardianAttachment> addGuardianAttachmentTask =
+                this.guardianAttachmentService.AddGuardianAttachmentAsync(inputGuardianAttachment);
+
+            // then
+            await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(() =>
+                addGuardianAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianAttachmentAsync(inputGuardianAttachment),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
