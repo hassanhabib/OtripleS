@@ -91,5 +91,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnRemoveWhenStorageGuardianAttachmentIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            GuardianAttachment randomGuardianAttachment = CreateRandomGuardianAttachment(randomDateTime);
+            Guid inputAttachmentId = randomGuardianAttachment.AttachmentId;
+            Guid inputGuardianId = randomGuardianAttachment.GuardianId;
+            GuardianAttachment nullStorageGuardianAttachment = null;
+
+            var notFoundGuardianAttachmentException =
+                new NotFoundGuardianAttachmentException(inputGuardianId, inputAttachmentId);
+
+            var expectedSemesterCourseValidationException =
+                new GuardianAttachmentValidationException(notFoundGuardianAttachmentException);
+
+            this.storageBrokerMock.Setup(broker =>
+                 broker.SelectGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId))
+                    .ReturnsAsync(nullStorageGuardianAttachment);
+
+            // when
+            ValueTask<GuardianAttachment> removeGuardianAttachmentTask =
+                this.guardianAttachmentService.RemoveGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<GuardianAttachmentValidationException>(() =>
+                removeGuardianAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteGuardianAttachmentAsync(It.IsAny<GuardianAttachment>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
