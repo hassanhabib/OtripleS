@@ -61,12 +61,15 @@ namespace OtripleS.Web.Api.Services.GuardianAttachmets
             return storageGuardianAttachment;
         });
 
-        public async ValueTask<GuardianAttachment> RemoveGuardianAttachmentByIdAsync(Guid guardianId, Guid attachmentId)
+        public ValueTask<GuardianAttachment> RemoveGuardianAttachmentByIdAsync(Guid guardianId, Guid attachmentId) =>
+        TryCatch(async () =>
         {
+            ValidateGuardianAttachmentIdIsNull(guardianId, attachmentId);
+
             GuardianAttachment mayBeGuardianAttachment =
                await this.storageBroker.SelectGuardianAttachmentByIdAsync(guardianId, attachmentId);
 
             return await this.storageBroker.DeleteGuardianAttachmentAsync(mayBeGuardianAttachment);
-        }
+        });
     }
 }
