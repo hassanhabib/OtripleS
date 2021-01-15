@@ -79,5 +79,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenAttachmentIdIsInvalidAndLogItAsync()
+        {
+            // given
+            GuardianAttachment randomGuardianAttachment = CreateRandomGuardianAttachment();
+            GuardianAttachment inputGuardianAttachment = randomGuardianAttachment;
+            inputGuardianAttachment.AttachmentId = default;
+
+            var invalidGuardianAttachmentInputException = new InvalidGuardianAttachmentException(
+                parameterName: nameof(GuardianAttachment.AttachmentId),
+                parameterValue: inputGuardianAttachment.AttachmentId);
+
+            var expectedGuardianAttachmentValidationException =
+                new GuardianAttachmentValidationException(invalidGuardianAttachmentInputException);
+
+            // when
+            ValueTask<GuardianAttachment> addGuardianAttachmentTask =
+                this.guardianAttachmentService.AddGuardianAttachmentAsync(inputGuardianAttachment);
+
+            // then
+            await Assert.ThrowsAsync<GuardianAttachmentValidationException>(() =>
+                addGuardianAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianAttachmentAsync(It.IsAny<GuardianAttachment>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
