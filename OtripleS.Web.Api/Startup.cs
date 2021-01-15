@@ -25,7 +25,7 @@ using OtripleS.Web.Api.Services.Classrooms;
 using OtripleS.Web.Api.Services.Contacts;
 using OtripleS.Web.Api.Services.Courses;
 using OtripleS.Web.Api.Services.Exams;
-using OtripleS.Web.Api.Services.GuardianAttachmets;
+using OtripleS.Web.Api.Services.GuardianAttachments;
 using OtripleS.Web.Api.Services.GuardianContacts;
 using OtripleS.Web.Api.Services.Guardians;
 using OtripleS.Web.Api.Services.SemesterCourses;

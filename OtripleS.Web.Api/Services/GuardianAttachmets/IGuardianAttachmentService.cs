@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.GuardianAttachments;
 
-namespace OtripleS.Web.Api.Services.GuardianAttachmets
+namespace OtripleS.Web.Api.Services.GuardianAttachments
 {
     public interface IGuardianAttachmentService
     {

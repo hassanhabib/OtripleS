@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.GuardianAttachments;
 using OtripleS.Web.Api.Models.GuardianAttachments.Exceptions;
 
-namespace OtripleS.Web.Api.Services.GuardianAttachmets
+namespace OtripleS.Web.Api.Services.GuardianAttachments
 {
     public partial class GuardianAttachmentService
     {
