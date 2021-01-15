@@ -112,6 +112,46 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpDelete("guardians/{guardianId}/attachments/{attachmentId}")]
+        public async ValueTask<ActionResult<bool>> DeleteGuardianAttachmentAsync(Guid guardianId, Guid attachmentId)
+        {
+            try
+            {
+                GuardianAttachment deletedGuardianAttachment =
+                    await this.guardianAttachmentService.RemoveGuardianAttachmentByIdAsync(guardianId, attachmentId);
+
+                return Ok(deletedGuardianAttachment);
+            }
+            catch (GuardianAttachmentValidationException guardianAttachmentValidationException)
+                when (guardianAttachmentValidationException.InnerException is NotFoundGuardianAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(guardianAttachmentValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (GuardianAttachmentValidationException guardianAttachmentValidationException)
+            {
+                string innerMessage = GetInnerMessage(guardianAttachmentValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (GuardianAttachmentDependencyException guardianAttachmentValidationException)
+               when (guardianAttachmentValidationException.InnerException is LockedGuardianAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(guardianAttachmentValidationException);
+
+                return Locked(innerMessage);
+            }
+            catch (GuardianAttachmentDependencyException guardianAttachmentDependencyException)
+            {
+                return Problem(guardianAttachmentDependencyException.Message);
+            }
+            catch (GuardianAttachmentServiceException guardianAttachmentServiceException)
+            {
+                return Problem(guardianAttachmentServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
