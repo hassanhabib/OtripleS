@@ -38,6 +38,10 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (NotFoundTeacherAttachmentException notFoundTeacherAttachmentException)
+            {
+                throw CreateAndLogValidationException(notFoundTeacherAttachmentException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsTeacherAttachmentException =
@@ -51,6 +55,13 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
                     new InvalidTeacherAttachmentReferenceException(foreignKeyConstraintConflictException);
 
                 throw CreateAndLogValidationException(invalidTeacherAttachmentReferenceException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedTeacherAttachmentException =
+                    new LockedTeacherAttachmentException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedTeacherAttachmentException);
             }
             catch (DbUpdateException dbUpdateException)
             {
