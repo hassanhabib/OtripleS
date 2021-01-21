@@ -34,6 +34,13 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
             {
                 throw CreateAndLogValidationException(invalidTeacherAttachmentInputException);
             }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsTeacherAttachmentException =
+                    new AlreadyExistsTeacherAttachmentException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsTeacherAttachmentException);
+            }
         }
 
 
