@@ -54,7 +54,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherAttachmentByIdAsync
                 (randomTeacherAttachment.TeacherId, randomTeacherAttachment.AttachmentId))
-                    .Returns(new ValueTask<TeacherAttachment>(randomTeacherAttachment));
+                    .ReturnsAsync(storageTeacherAttachment);
 
             // when
             TeacherAttachment actualTeacherAttachment = await
