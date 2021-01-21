@@ -37,6 +37,11 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
             return await this.storageBroker.InsertTeacherAttachmentAsync(teacherAttachment);
         });
 
+        public IQueryable<TeacherAttachment> RetrieveAllTeacherAttachments()
+        {
+            throw new NotImplementedException();
+        }
+
         public ValueTask<TeacherAttachment> RetrieveTeacherAttachmentByIdAsync(
             Guid teacherId,
             Guid attachmentId) =>

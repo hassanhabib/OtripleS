@@ -13,6 +13,7 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
     public interface ITeacherAttachmentService
     {
         ValueTask<TeacherAttachment> AddTeacherAttachmentAsync(TeacherAttachment teacherAttachment);
+        IQueryable<TeacherAttachment> RetrieveAllTeacherAttachments();
         ValueTask<TeacherAttachment> RetrieveTeacherAttachmentByIdAsync(Guid teacherId, Guid attachmentId);
     }
 }
