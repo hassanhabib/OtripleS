@@ -38,6 +38,10 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (NotFoundTeacherAttachmentException notFoundTeacherAttachmentException)
+            {
+                throw CreateAndLogValidationException(notFoundTeacherAttachmentException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsTeacherAttachmentException =
