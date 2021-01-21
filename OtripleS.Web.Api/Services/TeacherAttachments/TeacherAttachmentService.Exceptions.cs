@@ -30,7 +30,10 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
             {
                 throw CreateAndLogValidationException(nullTeacherAttachmentInputException);
             }
-            
+            catch (InvalidTeacherAttachmentException invalidTeacherAttachmentInputException)
+            {
+                throw CreateAndLogValidationException(invalidTeacherAttachmentInputException);
+            }
         }
 
 
