@@ -25,9 +25,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
             Guid someAttachmentId = randomAttachmentId;
             Guid someTeacherId = randomTeacherId;
             SqlException sqlException = GetSqlException();
-
-            var expectedTeacherAttachmentDependencyException
-                = new TeacherAttachmentDependencyException(sqlException);
+            var expectedTeacherAttachmentDependencyException = new TeacherAttachmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
                  broker.SelectTeacherAttachmentByIdAsync(someTeacherId, someAttachmentId))
@@ -40,8 +38,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
                     someAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<TeacherAttachmentDependencyException>(() =>
-                removeTeacherAttachmentTask.AsTask());
+            await Assert.ThrowsAsync<TeacherAttachmentDependencyException>(() => removeTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherAttachmentDependencyException))),
@@ -70,7 +67,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
             Guid someTeacherId = randomTeacherId;
             var databaseUpdateException = new DbUpdateException();
 
-            var expectedTeacherAttachmentDependencyException =
+            var expectedTeacherAttachmentDependencyException = 
                 new TeacherAttachmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -83,8 +80,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
                 (someTeacherId, someAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<TeacherAttachmentDependencyException>(
-                () => removeTeacherAttachmentTask.AsTask());
+            await Assert.ThrowsAsync<TeacherAttachmentDependencyException>(() => removeTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentDependencyException))),
@@ -112,9 +108,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
             Guid someAttachmentId = randomAttachmentId;
             Guid someTeacherId = randomTeacherId;
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
-
-            var lockedAttachmentException =
-                new LockedTeacherAttachmentException(databaseUpdateConcurrencyException);
+            var lockedAttachmentException = new LockedTeacherAttachmentException(databaseUpdateConcurrencyException);
 
             var expectedTeacherAttachmentException =
                 new TeacherAttachmentDependencyException(lockedAttachmentException);
@@ -128,8 +122,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
                 this.teacherAttachmentService.RemoveTeacherAttachmentByIdAsync(someTeacherId, someAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<TeacherAttachmentDependencyException>(() =>
-                removeTeacherAttachmentTask.AsTask());
+            await Assert.ThrowsAsync<TeacherAttachmentDependencyException>(() => removeTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentException))),
@@ -157,9 +150,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
             Guid someAttachmentId = randomAttachmentId;
             Guid someTeacherId = randomTeacherId;
             var exception = new Exception();
-
-            var expectedTeacherAttachmentException =
-                new TeacherAttachmentServiceException(exception);
+            var expectedTeacherAttachmentException = new TeacherAttachmentServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherAttachmentByIdAsync(someTeacherId, someAttachmentId))
@@ -172,8 +163,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
                     someAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<TeacherAttachmentServiceException>(() =>
-                removeTeacherAttachmentTask.AsTask());
+            await Assert.ThrowsAsync<TeacherAttachmentServiceException>(() => removeTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentException))),
