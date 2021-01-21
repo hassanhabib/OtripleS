@@ -56,6 +56,13 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
 
                 throw CreateAndLogValidationException(invalidTeacherAttachmentReferenceException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedTeacherAttachmentException =
+                    new LockedTeacherAttachmentException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedTeacherAttachmentException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
