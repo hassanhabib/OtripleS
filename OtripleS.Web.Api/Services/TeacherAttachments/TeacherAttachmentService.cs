@@ -37,12 +37,17 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
             return await this.storageBroker.InsertTeacherAttachmentAsync(teacherAttachment);
         });
 
-        public async ValueTask<TeacherAttachment> RetrieveTeacherAttachmentByIdAsync(Guid teacherId, Guid attachmentId)
+        public ValueTask<TeacherAttachment> RetrieveTeacherAttachmentByIdAsync(
+            Guid teacherId,
+            Guid attachmentId) =>
+        TryCatch(async () =>
         {
+            ValidateTeacherAttachmentIdIsNull(teacherId, attachmentId);
+
             TeacherAttachment storageTeacherAttachment =
                await this.storageBroker.SelectTeacherAttachmentByIdAsync(teacherId, attachmentId);
 
             return storageTeacherAttachment;
-        }
+        });
     }
 }
