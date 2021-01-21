@@ -154,5 +154,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenReferneceExceptionAndLogItAsync()
+        {
+            // given
+            TeacherAttachment randomTeacherAttachment = CreateRandomTeacherAttachment();
+            TeacherAttachment invalidTeacherAttachment = randomTeacherAttachment;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var foreignKeyConstraintConflictException = new ForeignKeyConstraintConflictException(exceptionMessage);
+
+            var invalidTeacherAttachmentReferenceException =
+                new InvalidTeacherAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+            var expectedTeacherAttachmentValidationException =
+                new TeacherAttachmentValidationException(invalidTeacherAttachmentReferenceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertTeacherAttachmentAsync(invalidTeacherAttachment))
+                    .ThrowsAsync(foreignKeyConstraintConflictException);
+
+            // when
+            ValueTask<TeacherAttachment> addTeacherAttachmentTask =
+                this.teacherAttachmentService.AddTeacherAttachmentAsync(invalidTeacherAttachment);
+
+            // then
+            await Assert.ThrowsAsync<TeacherAttachmentValidationException>(() =>
+                addTeacherAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTeacherAttachmentAsync(invalidTeacherAttachment),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
