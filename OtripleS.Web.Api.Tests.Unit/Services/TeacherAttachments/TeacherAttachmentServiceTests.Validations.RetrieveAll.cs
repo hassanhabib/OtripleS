@@ -18,19 +18,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
         public void ShouldLogWarningOnRetrieveAllWhenTeacherAttachmentsWereEmptyAndLogIt()
         {
             // given
-            IQueryable<TeacherAttachment> emptyStorageTeacherAttachments = new List<TeacherAttachment>().AsQueryable();
+            IQueryable<TeacherAttachment> emptyStorageTeacherAttachments = 
+                new List<TeacherAttachment>().AsQueryable();
+
+            IQueryable<TeacherAttachment> storageTeacherAttachments = emptyStorageTeacherAttachments;
             IQueryable<TeacherAttachment> expectedTeacherAttachments = emptyStorageTeacherAttachments;
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllTeacherAttachments())
-                    .Returns(expectedTeacherAttachments);
+                    .Returns(storageTeacherAttachments);
 
             // when
             IQueryable<TeacherAttachment> actualTeacherAttachments =
                 this.teacherAttachmentService.RetrieveAllTeacherAttachments();
 
             // then
-            actualTeacherAttachments.Should().BeEquivalentTo(emptyStorageTeacherAttachments);
+            actualTeacherAttachments.Should().BeEquivalentTo(expectedTeacherAttachments);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllTeacherAttachments(),
