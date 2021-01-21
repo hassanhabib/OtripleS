@@ -55,10 +55,52 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
                 broker.DeleteTeacherAttachmentAsync(It.IsAny<TeacherAttachment>()),
                     Times.Never);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-        
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            var randomAttachmentId = Guid.NewGuid();
+            var randomTeacherId = Guid.NewGuid();
+            Guid someAttachmentId = randomAttachmentId;
+            Guid someTeacherId = randomTeacherId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedTeacherAttachmentDependencyException =
+                new TeacherAttachmentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectTeacherAttachmentByIdAsync(someTeacherId, someAttachmentId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<TeacherAttachment> removeTeacherAttachmentTask =
+                this.teacherAttachmentService.RemoveTeacherAttachmentByIdAsync
+                (someTeacherId, someAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<TeacherAttachmentDependencyException>(
+                () => removeTeacherAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectTeacherAttachmentByIdAsync(someTeacherId, someAttachmentId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteTeacherAttachmentAsync(It.IsAny<TeacherAttachment>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
