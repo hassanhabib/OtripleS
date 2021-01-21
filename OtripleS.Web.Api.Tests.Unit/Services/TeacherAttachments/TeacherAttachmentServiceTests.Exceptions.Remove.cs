@@ -147,5 +147,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            var randomAttachmentId = Guid.NewGuid();
+            var randomTeacherId = Guid.NewGuid();
+            Guid someAttachmentId = randomAttachmentId;
+            Guid someTeacherId = randomTeacherId;
+            var exception = new Exception();
+
+            var expectedTeacherAttachmentException =
+                new TeacherAttachmentServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectTeacherAttachmentByIdAsync(someTeacherId, someAttachmentId))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<TeacherAttachment> removeTeacherAttachmentTask =
+                this.teacherAttachmentService.RemoveTeacherAttachmentByIdAsync(
+                    someTeacherId,
+                    someAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<TeacherAttachmentServiceException>(() =>
+                removeTeacherAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectTeacherAttachmentByIdAsync(someTeacherId, someAttachmentId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteTeacherAttachmentAsync(It.IsAny<TeacherAttachment>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
