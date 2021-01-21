@@ -18,9 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
         {
             // given
             var sqlException = GetSqlException();
-
-            var expectedTeacherAttachmentDependencyException =
-                new TeacherAttachmentDependencyException(sqlException);
+            var expectedTeacherAttachmentDependencyException = new TeacherAttachmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllTeacherAttachments())
@@ -49,7 +47,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
             // given
             var databaseUpdateException = new DbUpdateException();
 
-            var expectedAttachmentDependencyException =
+            var expectedAttachmentDependencyException = 
                 new TeacherAttachmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -78,9 +76,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
         {
             // given
             var exception = new Exception();
-
-            var expectedTeacherAttachmentServiceException =
-                new TeacherAttachmentServiceException(exception);
+            var expectedTeacherAttachmentServiceException = new TeacherAttachmentServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllTeacherAttachments())
