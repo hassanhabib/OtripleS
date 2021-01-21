@@ -47,8 +47,7 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
         });
 
         public ValueTask<TeacherAttachment> RetrieveTeacherAttachmentByIdAsync(
-            Guid teacherId,
-            Guid attachmentId) =>
+            Guid teacherId, Guid attachmentId) =>
         TryCatch(async () =>
         {
             ValidateTeacherAttachmentIdIsNull(teacherId, attachmentId);
