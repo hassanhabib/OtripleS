@@ -72,7 +72,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-
         [Fact]
         public async Task ShouldRetrieveTeacherAttachmentByIdAsync()
         {
