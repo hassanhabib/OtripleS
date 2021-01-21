@@ -41,8 +41,14 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
 
                 throw CreateAndLogValidationException(alreadyExistsTeacherAttachmentException);
             }
-        }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidTeacherAttachmentReferenceException =
+                    new InvalidTeacherAttachmentReferenceException(foreignKeyConstraintConflictException);
 
+                throw CreateAndLogValidationException(invalidTeacherAttachmentReferenceException);
+            }
+        }
 
         private TeacherAttachmentValidationException CreateAndLogValidationException(Exception exception)
         {
