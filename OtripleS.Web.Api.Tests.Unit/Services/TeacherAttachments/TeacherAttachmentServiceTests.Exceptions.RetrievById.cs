@@ -113,7 +113,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
                 this.teacherAttachmentService.RetrieveTeacherAttachmentByIdAsync(someTeacherId, someAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<TeacherAttachmentDependencyException>(() => 
+            await Assert.ThrowsAsync<TeacherAttachmentDependencyException>(() =>
                 retrieveTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
@@ -149,8 +149,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
                 this.teacherAttachmentService.RetrieveTeacherAttachmentByIdAsync(someTeacherId, someAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<TeacherAttachmentServiceException>(() =>
-                deleteTeacherAttachmentTask.AsTask());
+            await Assert.ThrowsAsync<TeacherAttachmentServiceException>(() => deleteTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentException))),
