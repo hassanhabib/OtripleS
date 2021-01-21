@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
 
             // when
             TeacherAttachment actualTeacherAttachment =
-                await this.studentAttachmentService.AddTeacherAttachmentAsync(inputTeacherAttachment);
+                await this.teacherAttachmentService.AddTeacherAttachmentAsync(inputTeacherAttachment);
 
             // then
             actualTeacherAttachment.Should().BeEquivalentTo(expectedTeacherAttachment);

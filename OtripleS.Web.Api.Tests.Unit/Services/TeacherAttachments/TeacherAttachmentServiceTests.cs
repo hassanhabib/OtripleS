@@ -23,7 +23,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
         private readonly Mock<IStorageBroker> storageBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
-        private readonly ITeacherAttachmentService studentAttachmentService;
+        private readonly ITeacherAttachmentService teacherAttachmentService;
 
         public TeacherAttachmentServiceTests()
         {
@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
             this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
 
-            this.studentAttachmentService = new TeacherAttachmentService(
+            this.teacherAttachmentService = new TeacherAttachmentService(
                 storageBroker: this.storageBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
@@ -58,8 +58,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(studentAttachment => studentAttachment.Teacher).IgnoreIt()
-                .OnProperty(studentAttachment => studentAttachment.Attachment).IgnoreIt();
+                .OnProperty(teacherAttachment => teacherAttachment.Teacher).IgnoreIt()
+                .OnProperty(teacherAttachment => teacherAttachment.Attachment).IgnoreIt();
 
             return filler;
         }
