@@ -52,5 +52,13 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
                 throw new NotFoundTeacherAttachmentException(studentId, attachmentId);
             }
         }
+
+        private void ValidateStorageTeacherAttachments(IQueryable<TeacherAttachment> storageTeacherAttachments)
+        {
+            if (storageTeacherAttachments.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No teacher attachments found in storage.");
+            }
+        }
     }
 }
