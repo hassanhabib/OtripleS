@@ -112,6 +112,46 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpDelete("teachers/{teacherId}/attachments/{attachmentId}")]
+        public async ValueTask<ActionResult<bool>> DeleteTeacherAttachmentAsync(Guid teacherId, Guid attachmentId)
+        {
+            try
+            {
+                TeacherAttachment deletedTeacherAttachment =
+                    await this.teacherAttachmentService.RemoveTeacherAttachmentByIdAsync(teacherId, attachmentId);
+
+                return Ok(deletedTeacherAttachment);
+            }
+            catch (TeacherAttachmentValidationException teacherAttachmentValidationException)
+                when (teacherAttachmentValidationException.InnerException is NotFoundTeacherAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(teacherAttachmentValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (TeacherAttachmentValidationException teacherAttachmentValidationException)
+            {
+                string innerMessage = GetInnerMessage(teacherAttachmentValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (TeacherAttachmentDependencyException teacherAttachmentValidationException)
+               when (teacherAttachmentValidationException.InnerException is LockedTeacherAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(teacherAttachmentValidationException);
+
+                return Locked(innerMessage);
+            }
+            catch (TeacherAttachmentDependencyException teacherAttachmentDependencyException)
+            {
+                return Problem(teacherAttachmentDependencyException.Message);
+            }
+            catch (TeacherAttachmentServiceException teacherAttachmentServiceException)
+            {
+                return Problem(teacherAttachmentServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
