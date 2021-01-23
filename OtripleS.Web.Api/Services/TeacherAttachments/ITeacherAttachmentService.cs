@@ -15,5 +15,6 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
         ValueTask<TeacherAttachment> AddTeacherAttachmentAsync(TeacherAttachment teacherAttachment);
         IQueryable<TeacherAttachment> RetrieveAllTeacherAttachments();
         ValueTask<TeacherAttachment> RetrieveTeacherAttachmentByIdAsync(Guid teacherId, Guid attachmentId);
+        ValueTask<TeacherAttachment> RemoveTeacherAttachmentByIdAsync(Guid teacherId, Guid attachmentId);
     }
 }
