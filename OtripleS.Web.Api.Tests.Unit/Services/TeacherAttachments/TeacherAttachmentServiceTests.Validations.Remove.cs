@@ -35,7 +35,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
                 this.teacherAttachmentService.RemoveTeacherAttachmentByIdAsync(inputTeacherId, inputAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<TeacherAttachmentValidationException>(() => removeTeacherAttachmentTask.AsTask());
+            await Assert.ThrowsAsync<TeacherAttachmentValidationException>(() => 
+                removeTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentValidationException))),
@@ -75,7 +76,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
                 this.teacherAttachmentService.RemoveTeacherAttachmentByIdAsync(inputTeacherId, inputAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<TeacherAttachmentValidationException>(() => removeTeacherAttachmentTask.AsTask());
+            await Assert.ThrowsAsync<TeacherAttachmentValidationException>(() => 
+                removeTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentValidationException))),
