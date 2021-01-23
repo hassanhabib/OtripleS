@@ -35,5 +35,37 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherAttachments
             actualTeacherAttachment.Should().BeEquivalentTo(expectedTeacherAttachment);
             await DeleteTeacherAttachmentAsync(actualTeacherAttachment);
         }
+
+        [Fact]
+        public async Task ShouldGetAllTeacherAttachmentsAsync()
+        {
+            // given
+            var randomTeacherAttachments = new List<TeacherAttachment>();
+
+            for (var i = 0; i <= GetRandomNumber(); i++)
+            {
+                TeacherAttachment randomTeacherAttachment = await PostTeacherAttachmentAsync();
+                randomTeacherAttachments.Add(randomTeacherAttachment);
+            }
+
+            List<TeacherAttachment> inputTeacherAttachments = randomTeacherAttachments;
+            List<TeacherAttachment> expectedTeacherAttachments = inputTeacherAttachments;
+
+            // when
+            List<TeacherAttachment> actualTeacherAttachments =
+                await this.otripleSApiBroker.GetAllTeacherAttachmentsAsync();
+
+            // then
+            foreach (TeacherAttachment expectedTeacherAttachment in expectedTeacherAttachments)
+            {
+                TeacherAttachment actualTeacherAttachment =
+                    actualTeacherAttachments.Single(studentAttachment =>
+                    studentAttachment.TeacherId == expectedTeacherAttachment.TeacherId);
+
+                actualTeacherAttachment.Should().BeEquivalentTo(expectedTeacherAttachment);
+
+                await DeleteTeacherAttachmentAsync(actualTeacherAttachment);
+            }
+        }
     }
 }
