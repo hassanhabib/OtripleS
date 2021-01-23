@@ -46,7 +46,7 @@ namespace OtripleS.Web.Api.Controllers
             {
                 string innerMessage = GetInnerMessage(teacherAttachmentValidationException);
 
-                return BadRequest(innerMessage);
+                return FailedDependency(innerMessage);
             }
             catch (TeacherAttachmentValidationException teacherAttachmentValidationException)
             {
