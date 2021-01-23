@@ -14,8 +14,8 @@ using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]    
     public class TeacherAttachmentsController : RESTFulController
     {
         private readonly ITeacherAttachmentService teacherAttachmentService;
@@ -40,6 +40,13 @@ namespace OtripleS.Web.Api.Controllers
                 string innerMessage = GetInnerMessage(teacherAttachmentValidationException);
 
                 return Conflict(innerMessage);
+            }
+            catch (TeacherAttachmentValidationException teacherAttachmentValidationException)
+                when (teacherAttachmentValidationException.InnerException is InvalidTeacherAttachmentReferenceException)
+            {
+                string innerMessage = GetInnerMessage(teacherAttachmentValidationException);
+
+                return BadRequest(innerMessage);
             }
             catch (TeacherAttachmentValidationException teacherAttachmentValidationException)
             {
