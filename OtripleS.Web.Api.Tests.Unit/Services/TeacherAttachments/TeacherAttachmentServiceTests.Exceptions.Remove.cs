@@ -20,10 +20,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            var randomAttachmentId = Guid.NewGuid();
-            var randomTeacherId = Guid.NewGuid();
-            Guid someAttachmentId = randomAttachmentId;
-            Guid someTeacherId = randomTeacherId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someTeacherId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
             var expectedTeacherAttachmentDependencyException = 
@@ -64,10 +62,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            var randomAttachmentId = Guid.NewGuid();
-            var randomTeacherId = Guid.NewGuid();
-            Guid someAttachmentId = randomAttachmentId;
-            Guid someTeacherId = randomTeacherId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someTeacherId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedTeacherAttachmentDependencyException = 
@@ -107,10 +103,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            var randomAttachmentId = Guid.NewGuid();
-            var randomTeacherId = Guid.NewGuid();
-            Guid someAttachmentId = randomAttachmentId;
-            Guid someTeacherId = randomTeacherId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someTeacherId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
             
             var lockedAttachmentException = 
