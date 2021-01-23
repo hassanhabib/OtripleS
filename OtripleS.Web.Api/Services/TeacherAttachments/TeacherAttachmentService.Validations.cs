@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
         private void ValidateTeacherAttachmentOnCreate(TeacherAttachment teacherAttachment)
         {
             ValidateTeacherAttachmentIsNull(teacherAttachment);
-            ValidateTeacherAttachmentIdIsNull(teacherAttachment.TeacherId, teacherAttachment.AttachmentId);
+            ValidateTeacherAttachmentIdIsInvalid(teacherAttachment.TeacherId, teacherAttachment.AttachmentId);
         }
 
         private void ValidateTeacherAttachmentIsNull(TeacherAttachment teacherContact)
@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
             }
         }
 
-        private void ValidateTeacherAttachmentIdIsNull(Guid teacherId, Guid attachmentId)
+        private void ValidateTeacherAttachmentIdIsInvalid(Guid teacherId, Guid attachmentId)
         {
             if (teacherId == default)
             {

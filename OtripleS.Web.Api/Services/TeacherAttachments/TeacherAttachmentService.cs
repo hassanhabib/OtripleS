@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
             Guid teacherId, Guid attachmentId) =>
         TryCatch(async () =>
         {
-            ValidateTeacherAttachmentIdIsNull(teacherId, attachmentId);
+            ValidateTeacherAttachmentIdIsInvalid(teacherId, attachmentId);
 
             TeacherAttachment storageTeacherAttachment =
                await this.storageBroker.SelectTeacherAttachmentByIdAsync(teacherId, attachmentId);
@@ -63,7 +63,7 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
         public ValueTask<TeacherAttachment> RemoveTeacherAttachmentByIdAsync(Guid teacherId, Guid attachmentId) =>
         TryCatch(async () =>
         {
-            ValidateTeacherAttachmentIdIsNull(teacherId, attachmentId);
+            ValidateTeacherAttachmentIdIsInvalid(teacherId, attachmentId);
 
             TeacherAttachment mayBeTeacherAttachment =
                await this.storageBroker.SelectTeacherAttachmentByIdAsync(teacherId, attachmentId);
