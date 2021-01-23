@@ -24,15 +24,17 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherAttachments
             TeacherAttachment expectedTeacherAttachment = inputTeacherAttachment;
 
             // when             
-            await this.otripleSApiBroker.PostTeacherAttachmentAsync(inputTeacherAttachment);
+            TeacherAttachment actualTeacherAttachment = 
+                await this.otripleSApiBroker.PostTeacherAttachmentAsync(inputTeacherAttachment);
 
-            TeacherAttachment actualTeacherAttachment =
+            TeacherAttachment retrievedTeacherAttachment =
                 await this.otripleSApiBroker.GetTeacherAttachmentByIdsAsync(
                     inputTeacherAttachment.TeacherId,
                     inputTeacherAttachment.AttachmentId);
 
             // then
             actualTeacherAttachment.Should().BeEquivalentTo(expectedTeacherAttachment);
+            retrievedTeacherAttachment.Should().BeEquivalentTo(expectedTeacherAttachment);
             await DeleteTeacherAttachmentAsync(actualTeacherAttachment);
         }
 
@@ -60,7 +62,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherAttachments
             {
                 TeacherAttachment actualTeacherAttachment =
                     actualTeacherAttachments.Single(studentAttachment =>
-                    studentAttachment.TeacherId == expectedTeacherAttachment.TeacherId);
+                        studentAttachment.TeacherId == expectedTeacherAttachment.TeacherId);
 
                 actualTeacherAttachment.Should().BeEquivalentTo(expectedTeacherAttachment);
 
