@@ -111,8 +111,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
             var randomAttachmentId = Guid.NewGuid();
             Guid inputTeacherId = randomTeacherId;
             Guid inputAttachmentId = randomAttachmentId;
-            DateTimeOffset inputDateTime = GetRandomDateTime();
-            TeacherAttachment randomTeacherAttachment = CreateRandomTeacherAttachment(inputDateTime);
+            TeacherAttachment randomTeacherAttachment = CreateRandomTeacherAttachment();
             randomTeacherAttachment.TeacherId = inputTeacherId;
             randomTeacherAttachment.AttachmentId = inputAttachmentId;
             TeacherAttachment storageTeacherAttachment = randomTeacherAttachment;
