@@ -66,30 +66,30 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherAttachments
 
                 await DeleteTeacherAttachmentAsync(actualTeacherAttachment);
             }
+        }
 
-            [Fact]
-            public async Task ShouldDeleteTeacherAttachmentAsync()
-            {
-                // given
-                TeacherAttachment randomTeacherAttachment = await PostTeacherAttachmentAsync();
-                TeacherAttachment inputTeacherAttachment = randomTeacherAttachment;
-                TeacherAttachment expectedTeacherAttachment = inputTeacherAttachment;
+        [Fact]
+        public async Task ShouldDeleteTeacherAttachmentAsync()
+        {
+            // given
+            TeacherAttachment randomTeacherAttachment = await PostTeacherAttachmentAsync();
+            TeacherAttachment inputTeacherAttachment = randomTeacherAttachment;
+            TeacherAttachment expectedTeacherAttachment = inputTeacherAttachment;
 
-                // when 
-                TeacherAttachment deletedTeacherAttachment =
-                    await DeleteTeacherAttachmentAsync(inputTeacherAttachment);
+            // when 
+            TeacherAttachment deletedTeacherAttachment =
+                await DeleteTeacherAttachmentAsync(inputTeacherAttachment);
 
-                ValueTask<TeacherAttachment> getTeacherAttachmentByIdTask =
-                    this.otripleSApiBroker.GetTeacherAttachmentByIdsAsync(
-                        inputTeacherAttachment.TeacherId,
-                        inputTeacherAttachment.AttachmentId);
+            ValueTask<TeacherAttachment> getTeacherAttachmentByIdTask =
+                this.otripleSApiBroker.GetTeacherAttachmentByIdsAsync(
+                    inputTeacherAttachment.TeacherId,
+                    inputTeacherAttachment.AttachmentId);
 
-                // then
-                deletedTeacherAttachment.Should().BeEquivalentTo(expectedTeacherAttachment);
+            // then
+            deletedTeacherAttachment.Should().BeEquivalentTo(expectedTeacherAttachment);
 
-                await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
-                   getTeacherAttachmentByIdTask.AsTask());
-            }
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getTeacherAttachmentByIdTask.AsTask());
         }
     }
 }
