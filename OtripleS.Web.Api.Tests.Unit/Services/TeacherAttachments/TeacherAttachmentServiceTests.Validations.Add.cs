@@ -41,8 +41,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
                 broker.InsertTeacherAttachmentAsync(It.IsAny<TeacherAttachment>()),
                     Times.Never);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -76,8 +77,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
                 broker.InsertTeacherAttachmentAsync(It.IsAny<TeacherAttachment>()),
                     Times.Never);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -111,8 +113,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
                 broker.InsertTeacherAttachmentAsync(It.IsAny<TeacherAttachment>()),
                     Times.Never);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -153,6 +156,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -193,6 +197,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

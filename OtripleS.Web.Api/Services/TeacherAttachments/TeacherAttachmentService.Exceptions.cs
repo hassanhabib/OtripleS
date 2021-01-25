@@ -73,6 +73,27 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
             }
         }
 
+        private IQueryable<TeacherAttachment> TryCatch(
+            ReturningTeacherAttachmentsFunction returningTeacherAttachmentsFunction)
+        {
+            try
+            {
+                return returningTeacherAttachmentsFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
         private TeacherAttachmentValidationException CreateAndLogValidationException(Exception exception)
         {
             var TeacherAttachmentValidationException = new TeacherAttachmentValidationException(exception);
