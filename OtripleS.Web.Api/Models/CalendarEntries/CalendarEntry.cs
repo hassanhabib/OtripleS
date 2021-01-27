@@ -4,6 +4,9 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using OtripleS.Web.Api.Models.Calendars;
 
 namespace OtripleS.Web.Api.Models.CalendarEntries
@@ -28,5 +31,8 @@ namespace OtripleS.Web.Api.Models.CalendarEntries
 
         public Guid CalendarId { get; set; }
         public Calendar Calendar { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<CalendarEntryAttachment> CalendarEntryAttachments { get; set; }
     }
 }
