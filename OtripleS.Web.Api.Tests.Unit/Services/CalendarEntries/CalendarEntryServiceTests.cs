@@ -51,7 +51,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dateTime)
                 .OnProperty(calendarEntry => calendarEntry.RepeatUntil).IgnoreIt()
-                .OnProperty(calendarEntry => calendarEntry.Calendar).IgnoreIt();
+                .OnProperty(calendarEntry => calendarEntry.Calendar).IgnoreIt()
+                .OnProperty(calendarEntry => calendarEntry.CalendarEntryAttachments).IgnoreIt();
 
             return filler;
         }
