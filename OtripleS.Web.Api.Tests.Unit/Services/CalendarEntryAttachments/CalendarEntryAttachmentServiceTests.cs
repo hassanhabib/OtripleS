@@ -10,6 +10,7 @@ using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using OtripleS.Web.Api.Services.CalendarEntryAttachments;
 using System;
+using System.Linq.Expressions;
 using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
@@ -46,6 +47,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                 .OnProperty(calendarEntryAttachment => calendarEntryAttachment.Attachment).IgnoreIt();
 
             return filler;
+        }
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
     }
 }
