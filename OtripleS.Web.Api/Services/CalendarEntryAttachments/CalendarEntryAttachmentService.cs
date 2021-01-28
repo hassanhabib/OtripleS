@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
 {
-    public class CalendarEntryAttachmentService : ICalendarEntryAttachmentService
+    public partial class CalendarEntryAttachmentService : ICalendarEntryAttachmentService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -29,9 +29,15 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
         }
 
         public ValueTask<CalendarEntryAttachment> RetrieveCalendarEntryAttachmentByIdAsync
-            (Guid calendarEntryId, Guid attachmentId)
+            (Guid calendarEntryId, Guid attachmentId) =>
+        TryCatch(async () =>
         {
-            return storageBroker.SelectCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
-        }
+            ValidateCalendarEntryAttachmentIdIsNull(calendarEntryId, attachmentId);
+
+            CalendarEntryAttachment storageCalendarEntryAttachment =
+                await this.storageBroker.SelectCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
+
+            return storageCalendarEntryAttachment;
+        });
     }
 }
