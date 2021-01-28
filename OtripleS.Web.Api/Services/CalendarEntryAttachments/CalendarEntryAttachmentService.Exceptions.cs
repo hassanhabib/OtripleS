@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using System;
 using System.Threading.Tasks;
@@ -28,6 +29,10 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             {
                 throw CreateAndLogValidationException(notFoundCalendarEntryAttachmentException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
         }
 
         private CalendarEntryAttachmentValidationException CreateAndLogValidationException(Exception exception)
@@ -38,5 +43,12 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             return calendarEntryAttachmentValidationException;
         }
 
+        private CalendarEntryAttachmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var calendarEntryAttachmentDependencyException = new CalendarEntryAttachmentDependencyException(exception);
+            this.loggingBroker.LogCritical(calendarEntryAttachmentDependencyException);
+
+            return calendarEntryAttachmentDependencyException;
+        }
     }
 }
