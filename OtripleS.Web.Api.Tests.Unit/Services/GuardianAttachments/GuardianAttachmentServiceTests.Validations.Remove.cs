@@ -105,7 +105,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
             var notFoundGuardianAttachmentException =
                 new NotFoundGuardianAttachmentException(inputGuardianId, inputAttachmentId);
 
-            var expectedSemesterCourseValidationException =
+            var expectedGuardianAttachmentValidationException =
                 new GuardianAttachmentValidationException(notFoundGuardianAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -121,7 +121,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
                 removeGuardianAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
