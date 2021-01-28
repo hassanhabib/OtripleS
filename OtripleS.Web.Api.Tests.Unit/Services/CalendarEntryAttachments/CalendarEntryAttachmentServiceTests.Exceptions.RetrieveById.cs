@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using System;
@@ -42,6 +43,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomAttachmentId = Guid.NewGuid();
+            Guid randomCalendarEntryId = Guid.NewGuid();
+            Guid inputAttachmentId = randomAttachmentId;
+            Guid inputCalendarEntryId = randomCalendarEntryId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedCalendarEntryAttachmentDependencyException =
+                new CalendarEntryAttachmentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<CalendarEntryAttachment> deleteAttachmentTask =
+                this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync
+                (inputCalendarEntryId, inputAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<CalendarEntryAttachmentDependencyException>(
+                () => deleteAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
