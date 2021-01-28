@@ -21,9 +21,17 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<CalendarEntryAttachment> RemoveCalendarEntryAttachmentByIdAsync(Guid calendarEntryId, Guid attachmentId)
+        public ValueTask<CalendarEntryAttachment> RemoveCalendarEntryAttachmentByIdAsync(Guid calendarEntryId, Guid attachmentId) =>
+        TryCatch(async () =>
         {
-            throw new Exception();
-        }
+            ValidateCalendarEntryAttachmentIdIsNull(calendarEntryId, attachmentId);
+
+            CalendarEntryAttachment mayBeCalendarAttachment =
+                await this.storageBroker.SelectCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
+
+            ValidateStorageCalendarEntryAttachment(mayBeCalendarAttachment, calendarEntryId, attachmentId);
+
+            return await this.storageBroker.DeleteCalendarEntryAttachmentAsync(mayBeCalendarAttachment);
+        });
     }
 }
