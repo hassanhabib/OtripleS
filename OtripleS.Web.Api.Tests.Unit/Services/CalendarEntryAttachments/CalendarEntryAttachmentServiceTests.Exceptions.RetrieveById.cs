@@ -1,0 +1,56 @@
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
+using Microsoft.Data.SqlClient;
+using Moq;
+using OtripleS.Web.Api.Models.CalendarEntryAttachments;
+using System;
+using System.Threading.Tasks;
+using Xunit;
+
+namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
+{
+    public partial class CalendarEntryAttachmentServiceTests
+    {
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomAttachmentId = Guid.NewGuid();
+            Guid inputAttachmentId = randomAttachmentId;
+            Guid randomCalendarEntryId = Guid.NewGuid();
+            Guid inputCalendarEntryId = randomCalendarEntryId;
+            SqlException sqlException = GetSqlException();
+
+            var expectedCalendarEntryAttachmentDependencyException
+                = new CalendarEntryAttachmentDependencyException(sqlException);
+
+            this.storageBrokerMock.Setup(broker =>
+                 broker.SelectCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId))
+                    .ThrowsAsync(sqlException);
+
+            // when
+            ValueTask<CalendarEntryAttachment> deleteCalendarEntryAttachmentTask =
+                this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync
+                (inputCalendarEntryId, inputAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<CalendarEntryAttachmentDependencyException>(() =>
+                deleteCalendarEntryAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+    }
+}

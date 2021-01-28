@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -11,6 +12,7 @@ using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using OtripleS.Web.Api.Services.CalendarEntryAttachments;
 using System;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
@@ -55,5 +57,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
+
+        private static SqlException GetSqlException() =>
+          (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
     }
 }
