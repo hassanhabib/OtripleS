@@ -27,15 +27,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                     .Returns(new ValueTask<CalendarEntryAttachment>(randomCalendarEntryAttachment));
 
             // when
-            CalendarEntryAttachment actualGuardianAttachment = await
+            CalendarEntryAttachment actualCalendarEntryAttachment = await
                 this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync(
                     randomCalendarEntryAttachment.CalendarEntryId, randomCalendarEntryAttachment.AttachmentId);
 
             // then
-            actualGuardianAttachment.Should().BeEquivalentTo(expectedCalendarEntryAttachment);
+            actualCalendarEntryAttachment.Should().BeEquivalentTo(expectedCalendarEntryAttachment);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianAttachmentByIdAsync
+                broker.SelectCalendarEntryAttachmentByIdAsync
                 (randomCalendarEntryAttachment.CalendarEntryId, randomCalendarEntryAttachment.AttachmentId),
                     Times.Once);
 

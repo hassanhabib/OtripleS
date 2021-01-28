@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
         public ValueTask<CalendarEntryAttachment> RetrieveCalendarEntryAttachmentByIdAsync
             (Guid calendarEntryId, Guid attachmentId)
         {
-            throw new NotImplementedException();
+            return storageBroker.SelectCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
         }
     }
 }
