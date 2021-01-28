@@ -26,5 +26,14 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
                     parameterValue: attachmentId);
             }
         }
+
+        private static void ValidateStorageCalendarEntryAttachment(
+            CalendarEntryAttachment storageCalendarEntryAttachment,
+            Guid calendarEntryId, Guid attachmentId)
+        {
+            if (storageCalendarEntryAttachment == null)
+                throw new NotFoundCalendarEntryAttachmentException(calendarEntryId, attachmentId);
+
+        }
     }
 }

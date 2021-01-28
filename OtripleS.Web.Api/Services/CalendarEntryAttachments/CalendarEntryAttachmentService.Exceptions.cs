@@ -24,6 +24,10 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             {
                 throw CreateAndLogValidationException(invalidCalendarEntryAttachmentInputException);
             }
+            catch (NotFoundCalendarEntryAttachmentException notFoundCalendarEntryAttachmentException)
+            {
+                throw CreateAndLogValidationException(notFoundCalendarEntryAttachmentException);
+            }
         }
 
         private CalendarEntryAttachmentValidationException CreateAndLogValidationException(Exception exception)
