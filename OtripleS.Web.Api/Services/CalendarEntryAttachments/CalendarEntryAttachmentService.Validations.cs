@@ -17,7 +17,14 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
                 throw new InvalidCalendarEntryAttachmentException(
                     parameterName: nameof(CalendarEntryAttachment.CalendarEntryId),
                     parameterValue: calendarEntryId);
-            } 
+            }
+
+            if (attachmentId == default)
+            {
+                throw new InvalidCalendarEntryAttachmentException(
+                    parameterName: nameof(CalendarEntryAttachment.AttachmentId),
+                    parameterValue: attachmentId);
+            }
         }
     }
 }
