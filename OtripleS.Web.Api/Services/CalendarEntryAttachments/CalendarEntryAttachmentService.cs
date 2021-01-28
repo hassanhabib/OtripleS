@@ -37,6 +37,8 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             CalendarEntryAttachment storageCalendarEntryAttachment =
                 await this.storageBroker.SelectCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
 
+            ValidateStorageCalendarEntryAttachment(storageCalendarEntryAttachment, calendarEntryId, attachmentId);
+
             return storageCalendarEntryAttachment;
         });
     }
