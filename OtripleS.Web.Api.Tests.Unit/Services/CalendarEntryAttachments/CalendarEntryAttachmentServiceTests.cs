@@ -1,18 +1,18 @@
-﻿using Microsoft.Data.SqlClient;
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
+using System;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
+using Tynamix.ObjectFiller;
+using Microsoft.Data.SqlClient;
 using Moq;
-using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using OtripleS.Web.Api.Services.CalendarEntryAttachments;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
 {
