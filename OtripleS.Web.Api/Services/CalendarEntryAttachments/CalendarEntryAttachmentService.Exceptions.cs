@@ -34,6 +34,13 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedCalendarEntryAttachmentException =
+                    new LockedCalendarEntryAttachmentException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedCalendarEntryAttachmentException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
