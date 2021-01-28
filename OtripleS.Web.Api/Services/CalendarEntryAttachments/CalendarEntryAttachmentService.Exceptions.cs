@@ -45,6 +45,10 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private CalendarEntryAttachmentValidationException CreateAndLogValidationException(Exception exception)
@@ -69,6 +73,14 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             this.loggingBroker.LogError(calendarEntryAttachmentDependencyException);
 
             return calendarEntryAttachmentDependencyException;
+        }
+
+        private CalendarEntryAttachmentServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var CalendarEntryAttachmentServiceException = new CalendarEntryAttachmentServiceException(exception);
+            this.loggingBroker.LogError(CalendarEntryAttachmentServiceException);
+
+            return CalendarEntryAttachmentServiceException;
         }
     }
 }
