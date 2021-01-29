@@ -29,15 +29,16 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public IQueryable<CalendarEntryAttachment> RetrieveAllCalendarEntryAttachments()
-        {
-            IQueryable<CalendarEntryAttachment> storageCalendarEntryAttachments = 
-                this.storageBroker.SelectAllCalendarEntryAttachments();
+        public IQueryable<CalendarEntryAttachment> RetrieveAllCalendarEntryAttachments()=>
+            TryCatch(() =>
+                {
+                    IQueryable<CalendarEntryAttachment> storageCalendarEntryAttachment =
+                        this.storageBroker.SelectAllCalendarEntryAttachments();
 
-            ValidateStorageCalendarEntryAttachments(storageCalendarEntryAttachments);
+                    ValidateStorageCalendarEntryAttachments(storageCalendarEntryAttachment);
 
-            return storageCalendarEntryAttachments;
-        }
+                    return storageCalendarEntryAttachment;
+                });
 
         public ValueTask<CalendarEntryAttachment> RetrieveCalendarEntryAttachmentByIdAsync
             (Guid calendarEntryId, Guid attachmentId) =>
