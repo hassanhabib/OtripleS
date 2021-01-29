@@ -6,6 +6,7 @@
 using Moq;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using Xunit;
+using Microsoft.EntityFrameworkCore;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
 {
@@ -31,6 +32,36 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogCritical(It.Is(SameExceptionAs(
                         expectedCalendarEntryAttachmentDependencyException))),
+                Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                    broker.SelectAllCalendarEntryAttachments(),
+                Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldThrowDependencyExceptionOnRetrieveAllCalendarEntryAttachmentsWhenDbExceptionOccursAndLogIt()
+        {
+            // given
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedCalendarEntryAttachmentDependencyException =
+                new CalendarEntryAttachmentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                    broker.SelectAllCalendarEntryAttachments())
+                .Throws(databaseUpdateException);
+
+            // when . then
+            Assert.Throws<CalendarEntryAttachmentDependencyException>(() =>
+                this.calendarEntryAttachmentService.RetrieveAllCalendarEntryAttachments());
+
+            this.loggingBrokerMock.Verify(broker =>
+                    broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentDependencyException))),
                 Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
