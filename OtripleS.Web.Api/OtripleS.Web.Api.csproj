@@ -22,6 +22,7 @@
     <PackageReference Include="RESTFulSense" Version="1.7.0" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Models\CalendarEntryAttachments\Exceptions\" />
     <Folder Include="Models\Users\Exceptions\" />
     <Folder Include="Brokers\UserManagement\" />
     <Folder Include="Services\Guardians\" />
