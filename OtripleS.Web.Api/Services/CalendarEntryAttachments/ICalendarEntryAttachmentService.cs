@@ -6,6 +6,7 @@
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using System;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
 {
@@ -13,5 +14,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
     {
         ValueTask<CalendarEntryAttachment> RetrieveCalendarEntryAttachmentByIdAsync
             (Guid calendarEntryId, Guid attachmentId);
+
+        IQueryable<CalendarEntryAttachment> RetrieveAllCalendarEntryAttachments();
     }
 }

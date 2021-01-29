@@ -17,6 +17,8 @@ using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
 {
+    using System.Linq;
+
     public partial class CalendarEntryAttachmentServiceTests
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
@@ -39,6 +41,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         private CalendarEntryAttachment CreateRandomCalendarEntryAttachment() =>
           CreateCalendarEntryAttachmentFiller(DateTimeOffset.UtcNow).Create();
 
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 100).GetValue();
         private static Filler<CalendarEntryAttachment> CreateCalendarEntryAttachmentFiller(DateTimeOffset dates)
         {
             var filler = new Filler<CalendarEntryAttachment>();
@@ -60,5 +66,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
 
         private static SqlException GetSqlException() =>
           (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static IQueryable<CalendarEntryAttachment> CreateRandomCalendarEntries(DateTimeOffset dateTime) =>
+            CreateCalendarEntryAttachmentFiller(dateTime)
+                .Create(GetRandomNumber()).AsQueryable();
     }
 }
