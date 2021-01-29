@@ -63,6 +63,10 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
         private CalendarEntryAttachmentValidationException CreateAndLogValidationException(Exception exception)
