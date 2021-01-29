@@ -34,6 +34,8 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             IQueryable<CalendarEntryAttachment> storageCalendarEntryAttachments = 
                 this.storageBroker.SelectAllCalendarEntryAttachments();
 
+            ValidateStorageCalendarEntryAttachments(storageCalendarEntryAttachments);
+
             return storageCalendarEntryAttachments;
         }
 

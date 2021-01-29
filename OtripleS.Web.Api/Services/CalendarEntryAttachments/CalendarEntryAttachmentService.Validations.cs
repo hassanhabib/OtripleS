@@ -8,6 +8,8 @@ using System;
 
 namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
 {
+    using System.Linq;
+
     public partial class CalendarEntryAttachmentService
     {
         private void ValidateCalendarEntryAttachmentIdIsNull(Guid calendarEntryId, Guid attachmentId)
@@ -34,6 +36,15 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             if (storageCalendarEntryAttachment == null)
                 throw new NotFoundCalendarEntryAttachmentException(calendarEntryId, attachmentId);
 
+        }
+
+        private void ValidateStorageCalendarEntryAttachments(
+            IQueryable<CalendarEntryAttachment> storageCalendarEntryAttachments)
+        {
+            if (storageCalendarEntryAttachments.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No calendar entry attachments found in storage.");
+            }
         }
     }
 }
