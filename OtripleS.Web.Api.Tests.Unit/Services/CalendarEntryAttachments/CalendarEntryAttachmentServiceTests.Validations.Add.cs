@@ -81,5 +81,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenAttachmentIdIsInvalidAndLogItAsync()
+        {
+            // given
+            CalendarEntryAttachment randomCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
+            CalendarEntryAttachment inputCalendarEntryAttachment = randomCalendarEntryAttachment;
+            inputCalendarEntryAttachment.AttachmentId = default;
+
+            var invalidCalendarEntryAttachmentInputException = new InvalidCalendarEntryAttachmentException(
+                parameterName: nameof(CalendarEntryAttachment.AttachmentId),
+                parameterValue: inputCalendarEntryAttachment.AttachmentId);
+
+            var expectedCalendarEntryAttachmentValidationException =
+                new CalendarEntryAttachmentValidationException(invalidCalendarEntryAttachmentInputException);
+
+            // when
+            ValueTask<CalendarEntryAttachment> addCalendarEntryAttachmentTask =
+                this.calendarEntryAttachmentService.AddCalendarEntryAttachmentAsync(inputCalendarEntryAttachment);
+
+            // then
+            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
+                addCalendarEntryAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCalendarEntryAttachmentAsync(It.IsAny<CalendarEntryAttachment>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
