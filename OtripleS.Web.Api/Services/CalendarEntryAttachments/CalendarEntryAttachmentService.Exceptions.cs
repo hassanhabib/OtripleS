@@ -47,6 +47,13 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
 
                 throw CreateAndLogValidationException(alreadyExistsCalendarEntryAttachmentException);
             }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidCalendarEntryAttachmentReferenceException =
+                    new InvalidCalendarEntryAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidCalendarEntryAttachmentReferenceException);
+            }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
                 var lockedCalendarEntryAttachmentException =
