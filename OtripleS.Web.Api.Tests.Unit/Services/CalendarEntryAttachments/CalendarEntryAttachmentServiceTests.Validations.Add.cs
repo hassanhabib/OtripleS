@@ -145,12 +145,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
                 addCalendarEntryAttachmentTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentValidationException))),
-                    Times.Once);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCalendarEntryAttachmentAsync(alreadyExistsCalendarEntryAttachment),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -186,12 +186,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
                 addCalendarEntryAttachmentTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentValidationException))),
-                    Times.Once);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCalendarEntryAttachmentAsync(invalidCalendarEntryAttachment),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
