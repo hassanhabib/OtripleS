@@ -36,6 +36,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
+        
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
