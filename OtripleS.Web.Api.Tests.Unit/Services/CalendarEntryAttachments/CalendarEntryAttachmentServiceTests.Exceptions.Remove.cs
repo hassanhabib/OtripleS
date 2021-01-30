@@ -141,5 +141,47 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            var randomAttachmentId = Guid.NewGuid();
+            var randomCalendarEntryId = Guid.NewGuid();
+            Guid someAttachmentId = randomAttachmentId;
+            Guid someCalendarEntryId = randomCalendarEntryId;
+            var exception = new Exception();
+            var expectedCalendarEntryAttachmentException = new CalendarEntryAttachmentServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCalendarEntryAttachmentByIdAsync(someCalendarEntryId, someAttachmentId))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<CalendarEntryAttachment> removeCalendarEntryAttachmentTask =
+                this.calendarEntryAttachmentService.RemoveCalendarEntryAttachmentByIdAsync(
+                    someCalendarEntryId,
+                    someAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<CalendarEntryAttachmentServiceException>(() =>
+                removeCalendarEntryAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCalendarEntryAttachmentByIdAsync(someCalendarEntryId, someAttachmentId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteCalendarEntryAttachmentAsync(It.IsAny<CalendarEntryAttachment>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
