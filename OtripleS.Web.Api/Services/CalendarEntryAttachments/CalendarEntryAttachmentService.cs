@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             (Guid calendarEntryId, Guid attachmentId) =>
         TryCatch(async () =>
         {
-            ValidateCalendarEntryAttachmentIdIsNull(calendarEntryId, attachmentId);
+            ValidateCalendarEntryAttachmentIds(calendarEntryId, attachmentId);
 
             CalendarEntryAttachment storageCalendarEntryAttachment =
                 await this.storageBroker.SelectCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
@@ -42,14 +42,16 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             return storageCalendarEntryAttachment;
         });
 
-        public async ValueTask<CalendarEntryAttachment> RemoveCalendarEntryAttachmentByIdAsync(
-            Guid calendarEntryId,
-            Guid attachmentId)
+        public ValueTask<CalendarEntryAttachment> RemoveCalendarEntryAttachmentByIdAsync(
+            Guid calendarEntryId, Guid attachmentId) =>
+        TryCatch(async () =>
         {
+            ValidateCalendarEntryAttachmentIds(calendarEntryId, attachmentId);
+
             CalendarEntryAttachment maybeCalendarEntryAttachment =
-               await this.storageBroker.SelectCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
+                await this.storageBroker.SelectCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
 
             return await this.storageBroker.DeleteCalendarEntryAttachmentAsync(maybeCalendarEntryAttachment);
-        }
+        });
     }
 }
