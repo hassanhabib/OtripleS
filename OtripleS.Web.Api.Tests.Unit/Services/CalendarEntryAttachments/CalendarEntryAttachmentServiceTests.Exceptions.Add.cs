@@ -51,6 +51,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-        
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnAddWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            CalendarEntryAttachment randomCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
+            CalendarEntryAttachment inputCalendarEntryAttachment = randomCalendarEntryAttachment;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedCalendarEntryAttachmentDependencyException =
+                new CalendarEntryAttachmentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertCalendarEntryAttachmentAsync(inputCalendarEntryAttachment))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<CalendarEntryAttachment> addCalendarEntryAttachmentTask =
+                this.calendarEntryAttachmentService.AddCalendarEntryAttachmentAsync(inputCalendarEntryAttachment);
+
+            // then
+            await Assert.ThrowsAsync<CalendarEntryAttachmentDependencyException>(() =>
+                addCalendarEntryAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCalendarEntryAttachmentAsync(inputCalendarEntryAttachment),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
