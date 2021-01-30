@@ -28,10 +28,10 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<CalendarEntryAttachment> AddCalendarEntryAttachmentAsync(
+        public async ValueTask<CalendarEntryAttachment> AddCalendarEntryAttachmentAsync(
             CalendarEntryAttachment calendarEntryAttachment)
         {
-            throw new NotImplementedException();
+            return await this.storageBroker.InsertCalendarEntryAttachmentAsync(calendarEntryAttachment);
         }
 
         public ValueTask<CalendarEntryAttachment> RetrieveCalendarEntryAttachmentByIdAsync
