@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
@@ -31,13 +32,20 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             {
                 throw CreateAndLogValidationException(invalidCalendarEntryAttachmentInputException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
             catch (NotFoundCalendarEntryAttachmentException notFoundCalendarEntryAttachmentException)
             {
                 throw CreateAndLogValidationException(notFoundCalendarEntryAttachmentException);
             }
-            catch (SqlException sqlException)
+            catch (DuplicateKeyException duplicateKeyException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var alreadyExistsCalendarEntryAttachmentException =
+                    new AlreadyExistsCalendarEntryAttachmentException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsCalendarEntryAttachmentException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
