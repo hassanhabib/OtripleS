@@ -158,5 +158,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenReferneceExceptionAndLogItAsync()
+        {
+            // given
+            CalendarEntryAttachment randomCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
+            CalendarEntryAttachment invalidCalendarEntryAttachment = randomCalendarEntryAttachment;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var foreignKeyConstraintConflictException = new ForeignKeyConstraintConflictException(exceptionMessage);
+
+            var invalidCalendarEntryAttachmentReferenceException =
+                new InvalidCalendarEntryAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+            var expectedCalendarEntryAttachmentValidationException =
+                new CalendarEntryAttachmentValidationException(invalidCalendarEntryAttachmentReferenceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertCalendarEntryAttachmentAsync(invalidCalendarEntryAttachment))
+                    .ThrowsAsync(foreignKeyConstraintConflictException);
+
+            // when
+            ValueTask<CalendarEntryAttachment> addCalendarEntryAttachmentTask =
+                this.calendarEntryAttachmentService.AddCalendarEntryAttachmentAsync(invalidCalendarEntryAttachment);
+
+            // then
+            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
+                addCalendarEntryAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCalendarEntryAttachmentAsync(invalidCalendarEntryAttachment),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
