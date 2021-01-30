@@ -5,7 +5,7 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Models.CalendarEntryAttachments
+namespace OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions
 {
     public class InvalidCalendarEntryAttachmentException : Exception
     {
