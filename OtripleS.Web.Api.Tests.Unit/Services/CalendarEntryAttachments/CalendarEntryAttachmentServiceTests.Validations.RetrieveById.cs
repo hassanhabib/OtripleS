@@ -5,6 +5,7 @@
 
 using Moq;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
+using OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -67,10 +68,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
 
             // when
             ValueTask<CalendarEntryAttachment> actualCalendarEntryAttachmentTask =
-                this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId);
+                this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync(
+                    inputCalendarEntryId, inputAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() => actualCalendarEntryAttachmentTask.AsTask());
+            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() => 
+                actualCalendarEntryAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentValidationException))),
@@ -86,7 +89,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageCalendarEntryAttachmentIsInvalidAndLogItAsync()
+        public async Task 
+            ShouldThrowValidationExceptionOnRetrieveWhenStorageCalendarEntryAttachmentIsInvalidAndLogItAsync()
         {
             // given
             CalendarEntryAttachment randomCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
@@ -106,7 +110,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
 
             // when
             ValueTask<CalendarEntryAttachment> actualCalendarEntryAttachmentRetrieveTask =
-                this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId);
+                this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync(
+                    inputCalendarEntryId, inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>

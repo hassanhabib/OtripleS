@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
+using OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions;
 using System;
 
 namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
@@ -32,7 +33,6 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
         {
             if (storageCalendarEntryAttachment == null)
                 throw new NotFoundCalendarEntryAttachmentException(calendarEntryId, attachmentId);
-
         }
     }
 }
