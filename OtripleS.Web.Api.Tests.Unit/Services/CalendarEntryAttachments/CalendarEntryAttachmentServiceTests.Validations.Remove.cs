@@ -94,5 +94,51 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task 
+            ShouldThrowValidationExceptionOnRemoveWhenStorageCalendarEntryAttachmentIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            CalendarEntryAttachment randomCalendarEntryAttachment = CreateRandomCalendarEntryAttachment(randomDateTime);
+            Guid inputAttachmentId = randomCalendarEntryAttachment.AttachmentId;
+            Guid inputCalendarEntryId = randomCalendarEntryAttachment.CalendarEntryId;
+            CalendarEntryAttachment nullStorageCalendarEntryAttachment = null;
+
+            var notFoundCalendarEntryAttachmentException =
+                new NotFoundCalendarEntryAttachmentException(inputCalendarEntryId, inputAttachmentId);
+
+            var expectedCalendarEntryValidationException =
+                new CalendarEntryAttachmentValidationException(notFoundCalendarEntryAttachmentException);
+
+            this.storageBrokerMock.Setup(broker =>
+                 broker.SelectCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId))
+                    .ReturnsAsync(nullStorageCalendarEntryAttachment);
+
+            // when
+            ValueTask<CalendarEntryAttachment> removeCalendarEntryAttachmentTask =
+                this.calendarEntryAttachmentService.RemoveCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
+                removeCalendarEntryAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCalendarEntryAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteCalendarEntryAttachmentAsync(It.IsAny<CalendarEntryAttachment>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
