@@ -23,6 +23,10 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             {
                 return await returningCalendarEntryAttachmentFunction();
             }
+            catch (NullCalendarEntryAttachmentException nullCalendarEntryAttachmentInputException)
+            {
+                throw CreateAndLogValidationException(nullCalendarEntryAttachmentInputException);
+            }
             catch (InvalidCalendarEntryAttachmentException invalidCalendarEntryAttachmentInputException)
             {
                 throw CreateAndLogValidationException(invalidCalendarEntryAttachmentInputException);

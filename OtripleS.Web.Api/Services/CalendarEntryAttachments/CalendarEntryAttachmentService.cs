@@ -31,6 +31,8 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
         public async ValueTask<CalendarEntryAttachment> AddCalendarEntryAttachmentAsync(
             CalendarEntryAttachment calendarEntryAttachment)
         {
+            ValidateCalendarEntryAttachmentOnCreate(calendarEntryAttachment);
+
             return await this.storageBroker.InsertCalendarEntryAttachmentAsync(calendarEntryAttachment);
         }
 
