@@ -28,6 +28,13 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
+        public ValueTask<CalendarEntryAttachment> RemoveCalendarEntryAttachmentByIdAsync(
+            Guid calendarEntryId, 
+            Guid attachmentId)
+        {
+            throw new NotImplementedException();
+        }
+
         public ValueTask<CalendarEntryAttachment> RetrieveCalendarEntryAttachmentByIdAsync
             (Guid calendarEntryId, Guid attachmentId) =>
         TryCatch(async () =>
