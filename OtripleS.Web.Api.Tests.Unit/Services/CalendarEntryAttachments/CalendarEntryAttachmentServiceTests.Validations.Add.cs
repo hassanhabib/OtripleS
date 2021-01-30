@@ -18,8 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         public async void ShouldThrowValidationExceptionOnAddWhenCalendarEntryAttachmentIsNullAndLogItAsync()
         {
             // given
-            CalendarEntryAttachment randomCalendarEntryAttachment = default;
-            CalendarEntryAttachment nullCalendarEntryAttachment = randomCalendarEntryAttachment;
+            CalendarEntryAttachment nullCalendarEntryAttachment = default;
             var nullCalendarEntryAttachmentException = new NullCalendarEntryAttachmentException();
 
             var expectedCalendarEntryAttachmentValidationException =
