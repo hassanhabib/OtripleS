@@ -31,11 +31,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                 new CalendarEntryAttachmentValidationException(invalidCalendarEntryAttachmentInputException);
 
             // when
-            ValueTask<CalendarEntryAttachment> actualCalendarEntryAttachmentTask =
+            ValueTask<CalendarEntryAttachment> retrieveCalendarEntryAttachmentTask =
                 this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() => actualCalendarEntryAttachmentTask.AsTask());
+            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() => retrieveCalendarEntryAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentValidationException))),
@@ -67,13 +67,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                 new CalendarEntryAttachmentValidationException(invalidCalendarEntryAttachmentInputException);
 
             // when
-            ValueTask<CalendarEntryAttachment> actualCalendarEntryAttachmentTask =
+            ValueTask<CalendarEntryAttachment> retrieveCalendarEntryAttachmentTask =
                 this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync(
                     inputCalendarEntryId, inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() => 
-                actualCalendarEntryAttachmentTask.AsTask());
+                retrieveCalendarEntryAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentValidationException))),
@@ -109,22 +109,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                     .ReturnsAsync(nullStorageCalendarEntryAttachment);
 
             // when
-            ValueTask<CalendarEntryAttachment> actualCalendarEntryAttachmentRetrieveTask =
+            ValueTask<CalendarEntryAttachment> retrieveCalendarEntryAttachmentTask =
                 this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync(
                     inputCalendarEntryId, inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
-                actualCalendarEntryAttachmentRetrieveTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                retrieveCalendarEntryAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCalendarEntryAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Once);
 
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
+                    Times.Once); 
+            
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
