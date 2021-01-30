@@ -52,9 +52,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             CalendarEntryAttachment expectedCalendarEntryAttachment = storageCalendarEntryAttachment;
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCalendarEntryAttachmentByIdAsync
-                (randomCalendarEntryAttachment.CalendarEntryId, randomCalendarEntryAttachment.AttachmentId))
-                    .Returns(new ValueTask<CalendarEntryAttachment>(randomCalendarEntryAttachment));
+                broker.SelectCalendarEntryAttachmentByIdAsync(
+                    randomCalendarEntryAttachment.CalendarEntryId, randomCalendarEntryAttachment.AttachmentId))
+                        .Returns(new ValueTask<CalendarEntryAttachment>(randomCalendarEntryAttachment));
 
             // when
             CalendarEntryAttachment actualCalendarEntryAttachment = await
@@ -65,9 +65,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             actualCalendarEntryAttachment.Should().BeEquivalentTo(expectedCalendarEntryAttachment);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCalendarEntryAttachmentByIdAsync
-                (randomCalendarEntryAttachment.CalendarEntryId, randomCalendarEntryAttachment.AttachmentId),
-                    Times.Once);
+                broker.SelectCalendarEntryAttachmentByIdAsync(
+                    randomCalendarEntryAttachment.CalendarEntryId, randomCalendarEntryAttachment.AttachmentId),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
