@@ -163,7 +163,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         {
             // given
             CalendarEntryAttachment randomCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
-            CalendarEntryAttachment invalidCalendarEntryAttachment = randomCalendarEntryAttachment;
+            CalendarEntryAttachment someCalendarEntryAttachment = randomCalendarEntryAttachment;
             string randomMessage = GetRandomMessage();
             string exceptionMessage = randomMessage;
             var foreignKeyConstraintConflictException = new ForeignKeyConstraintConflictException(exceptionMessage);
@@ -175,19 +175,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                 new CalendarEntryAttachmentValidationException(invalidCalendarEntryAttachmentReferenceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertCalendarEntryAttachmentAsync(invalidCalendarEntryAttachment))
+                broker.InsertCalendarEntryAttachmentAsync(someCalendarEntryAttachment))
                     .ThrowsAsync(foreignKeyConstraintConflictException);
 
             // when
             ValueTask<CalendarEntryAttachment> addCalendarEntryAttachmentTask =
-                this.calendarEntryAttachmentService.AddCalendarEntryAttachmentAsync(invalidCalendarEntryAttachment);
+                this.calendarEntryAttachmentService.AddCalendarEntryAttachmentAsync(someCalendarEntryAttachment);
 
             // then
             await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
                 addCalendarEntryAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAttachmentAsync(invalidCalendarEntryAttachment),
+                broker.InsertCalendarEntryAttachmentAsync(It.IsAny<CalendarEntryAttachment>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
