@@ -43,6 +43,34 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-        
+        [Fact]
+        public void ShouldThrowDependencyExceptionOnRetrieveAllCalendarEntryAttachmentsWhenDbExceptionOccursAndLogIt()
+        {
+            // given
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedAttachmentDependencyException =
+                new CalendarEntryAttachmentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllCalendarEntryAttachments())
+                    .Throws(databaseUpdateException);
+
+            // when . then
+            Assert.Throws<CalendarEntryAttachmentDependencyException>(() =>
+                this.calendarEntryAttachmentService.RetrieveAllCalendarEntryAttachments());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllCalendarEntryAttachments(),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
