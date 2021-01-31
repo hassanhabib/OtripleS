@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogWarning("No calendarEntry attachments found in storage."),
+                broker.LogWarning("No calendarentry attachments found in storage."),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
