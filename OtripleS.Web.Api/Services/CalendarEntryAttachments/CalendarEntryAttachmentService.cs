@@ -40,7 +40,10 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
 
         public IQueryable<CalendarEntryAttachment> RetrieveAllCalendarEntryAttachments()
         {
-            throw new NotImplementedException();
+            IQueryable<CalendarEntryAttachment> storageCalendarEntryAttachments =
+                this.storageBroker.SelectAllCalendarEntryAttachments();
+            
+            return storageCalendarEntryAttachments;
         }
 
         public ValueTask<CalendarEntryAttachment> RetrieveCalendarEntryAttachmentByIdAsync
