@@ -9,12 +9,10 @@ using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using System;
 using System.Threading.Tasks;
 using Xunit;
+using System.Linq;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
 {
-    using System;
-    using System.Linq;
-
     public partial class CalendarEntryAttachmentServiceTests
     {
         [Fact]
@@ -74,7 +72,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             this.storageBrokerMock.Verify(broker =>
                     broker.SelectAllCalendarEntryAttachments(),
                 Times.Once);
-        
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Fact]
         public async Task ShouldRemoveCalendarEntryAttachmentAsync()
         {
@@ -112,7 +115,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteCalendarEntryAttachmentAsync(storageCalendarEntryAttachment),
                     Times.Once);
-          
+
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

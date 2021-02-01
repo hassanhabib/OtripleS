@@ -46,9 +46,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         private CalendarEntryAttachment CreateRandomCalendarEntryAttachment(DateTimeOffset dates) =>
             CreateCalendarEntryAttachmentFiller(dates).Create();
 
-        private static DateTimeOffset GetRandomDateTime() =>
-            new DateTimeRange(earliestDate: new DateTime()).GetValue();
-
         private static int GetRandomNumber() => new IntRange(min: 2, max: 100).GetValue();
         private static Filler<CalendarEntryAttachment> CreateCalendarEntryAttachmentFiller(DateTimeOffset dates)
         {

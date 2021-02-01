@@ -17,7 +17,10 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
              Guid attachmentId);
 
         IQueryable<CalendarEntryAttachment> RetrieveAllCalendarEntryAttachments();
-        
+
+        ValueTask<CalendarEntryAttachment> RemoveCalendarEntryAttachmentByIdAsync(
+            Guid calendarEntryId, 
+            Guid attachmentId);
 
     }
 }
