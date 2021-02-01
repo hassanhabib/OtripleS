@@ -11,6 +11,23 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
 {
     public partial class CalendarEntryAttachmentService
     {
+        private void ValidateCalendarEntryAttachmentOnCreate(CalendarEntryAttachment calendarEntryAttachment)
+        {
+            ValidateCalendarEntryAttachmentIsNull(calendarEntryAttachment);
+            
+            ValidateCalendarEntryAttachmentIds(
+                calendarEntryAttachment.CalendarEntryId, 
+                calendarEntryAttachment.AttachmentId);
+        }
+
+        private void ValidateCalendarEntryAttachmentIsNull(CalendarEntryAttachment calendarEntryAttachment)
+        {
+            if (calendarEntryAttachment is null)
+            {
+                throw new NullCalendarEntryAttachmentException();
+            }
+        }
+
         private void ValidateCalendarEntryAttachmentIds(Guid calendarEntryId, Guid attachmentId)
         {
             if (calendarEntryId == default)

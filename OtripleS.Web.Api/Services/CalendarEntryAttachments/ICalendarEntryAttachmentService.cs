@@ -11,6 +11,9 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
 {
     public interface ICalendarEntryAttachmentService
     {
+        ValueTask<CalendarEntryAttachment> AddCalendarEntryAttachmentAsync(
+            CalendarEntryAttachment calendarEntryAttachment);
+
         ValueTask<CalendarEntryAttachment> RetrieveCalendarEntryAttachmentByIdAsync(
             Guid calendarEntryId, 
             Guid attachmentId);

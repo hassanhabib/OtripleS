@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCalendarEntryAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
-
+            
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteCalendarEntryAttachmentAsync(It.IsAny<CalendarEntryAttachment>()),
                     Times.Never);
@@ -125,12 +125,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
                 removeCalendarEntryAttachmentTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCalendarEntryAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
