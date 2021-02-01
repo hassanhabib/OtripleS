@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
+using OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions;
 using System;
 
 namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
@@ -12,7 +13,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
 
     public partial class CalendarEntryAttachmentService
     {
-        private void ValidateCalendarEntryAttachmentIdIsNull(Guid calendarEntryId, Guid attachmentId)
+        private void ValidateCalendarEntryAttachmentIds(Guid calendarEntryId, Guid attachmentId)
         {
             if (calendarEntryId == default)
             {
@@ -20,8 +21,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
                     parameterName: nameof(CalendarEntryAttachment.CalendarEntryId),
                     parameterValue: calendarEntryId);
             }
-
-            if (attachmentId == default)
+            else if (attachmentId == default)
             {
                 throw new InvalidCalendarEntryAttachmentException(
                     parameterName: nameof(CalendarEntryAttachment.AttachmentId),
@@ -35,7 +35,6 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
         {
             if (storageCalendarEntryAttachment == null)
                 throw new NotFoundCalendarEntryAttachmentException(calendarEntryId, attachmentId);
-
         }
 
         private void ValidateStorageCalendarEntryAttachments(

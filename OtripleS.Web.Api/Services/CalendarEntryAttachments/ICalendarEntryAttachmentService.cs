@@ -16,5 +16,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             (Guid calendarEntryId, Guid attachmentId);
 
         IQueryable<CalendarEntryAttachment> RetrieveAllCalendarEntryAttachments();
+        
+
     }
 }
