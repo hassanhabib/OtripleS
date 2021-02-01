@@ -146,10 +146,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            var randomAttachmentId = Guid.NewGuid();
-            var randomCalendarEntryId = Guid.NewGuid();
-            Guid someAttachmentId = randomAttachmentId;
-            Guid someCalendarEntryId = randomCalendarEntryId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someCalendarEntryId = Guid.NewGuid();
             var exception = new Exception();
             var expectedCalendarEntryAttachmentException = new CalendarEntryAttachmentServiceException(exception);
 

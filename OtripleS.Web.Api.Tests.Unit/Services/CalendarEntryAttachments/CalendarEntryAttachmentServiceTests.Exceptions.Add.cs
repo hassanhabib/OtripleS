@@ -19,8 +19,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         public async Task ShouldThrowDependencyExceptionOnAddWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            CalendarEntryAttachment randomCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
-            CalendarEntryAttachment someCalendarEntryAttachment = randomCalendarEntryAttachment;
+            CalendarEntryAttachment someCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
             var sqlException = GetSqlException();
             
             var expectedCalendarEntryAttachmentDependencyException = 
@@ -55,8 +54,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         public async Task ShouldThrowDependencyExceptionOnAddWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            CalendarEntryAttachment randomCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
-            CalendarEntryAttachment someCalendarEntryAttachment = randomCalendarEntryAttachment;
+            CalendarEntryAttachment someCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedCalendarEntryAttachmentDependencyException =
@@ -91,8 +89,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         public async Task ShouldThrowServiceExceptionOnAddWhenExceptionOccursAndLogItAsync()
         {
             // given
-            CalendarEntryAttachment randomCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
-            CalendarEntryAttachment someCalendarEntryAttachment = randomCalendarEntryAttachment;
+            CalendarEntryAttachment someCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
             var exception = new Exception();
             
             var expectedCalendarEntryAttachmentServiceException = 
