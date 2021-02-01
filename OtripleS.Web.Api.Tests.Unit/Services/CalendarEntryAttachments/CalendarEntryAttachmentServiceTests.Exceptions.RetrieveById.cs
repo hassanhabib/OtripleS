@@ -7,6 +7,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
+using OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions;
 using System;
 using System.Threading.Tasks;
 using Xunit;
