@@ -11,14 +11,13 @@ using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using OtripleS.Web.Api.Services.CalendarEntryAttachments;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
 {
-    using System.Linq;
-
     public partial class CalendarEntryAttachmentServiceTests
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
@@ -68,7 +67,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
           (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static IQueryable<CalendarEntryAttachment> CreateRandomCalendarEntries(DateTimeOffset dateTime) =>
-            CreateCalendarEntryAttachmentFiller(dateTime)
-                .Create(GetRandomNumber()).AsQueryable();
+            CreateCalendarEntryAttachmentFiller(dateTime).Create(GetRandomNumber()).AsQueryable();
     }
 }

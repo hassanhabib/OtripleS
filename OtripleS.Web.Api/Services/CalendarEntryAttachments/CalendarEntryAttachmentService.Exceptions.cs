@@ -8,15 +8,15 @@ using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using System;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
 {
-    using System.Linq;
-
     public partial class CalendarEntryAttachmentService
     {
         private delegate ValueTask<CalendarEntryAttachment> ReturningCalendarEntryAttachmentFunction();
         private delegate IQueryable<CalendarEntryAttachment> ReturningCalendarEntryAttachmentsFunction();
+
         private async ValueTask<CalendarEntryAttachment> TryCatch(
             ReturningCalendarEntryAttachmentFunction returningCalendarEntryAttachmentFunction)
         {

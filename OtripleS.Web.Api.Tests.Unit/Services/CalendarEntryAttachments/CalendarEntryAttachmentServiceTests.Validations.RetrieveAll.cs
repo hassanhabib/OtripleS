@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
 
             this.storageBrokerMock.Setup(broker =>
                     broker.SelectAllCalendarEntryAttachments())
-                .Returns(emptyStorageCalendarEntryAttachments);
+                        .Returns(emptyStorageCalendarEntryAttachments);
 
             // when
             IQueryable<CalendarEntryAttachment> actualCalendarEntries =
@@ -36,11 +36,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
 
             this.storageBrokerMock.Verify(broker =>
                     broker.SelectAllCalendarEntryAttachments(),
-                Times.Once);
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogWarning("No calendar entry attachments found in storage."),
-                Times.Once);
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
