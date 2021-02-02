@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
@@ -16,6 +17,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
     public partial class CalendarEntryAttachmentService
     {
         private delegate ValueTask<CalendarEntryAttachment> ReturningCalendarEntryAttachmentFunction();
+        private delegate IQueryable<CalendarEntryAttachment> ReturningCalendarEntryAttachmentsFunction();
 
         private async ValueTask<CalendarEntryAttachment> TryCatch(
             ReturningCalendarEntryAttachmentFunction returningCalendarEntryAttachmentFunction)
@@ -71,6 +73,26 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             }
         }
 
+        private IQueryable<CalendarEntryAttachment> TryCatch(
+            ReturningCalendarEntryAttachmentsFunction returningCalendarEntryAttachmentsFunction)
+        {
+            try
+            {
+                return returningCalendarEntryAttachmentsFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
         private CalendarEntryAttachmentValidationException CreateAndLogValidationException(Exception exception)
         {
             var calendarEntryAttachmentValidationException = new CalendarEntryAttachmentValidationException(exception);

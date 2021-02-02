@@ -8,6 +8,7 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
@@ -34,6 +35,17 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             ValidateCalendarEntryAttachmentOnCreate(calendarEntryAttachment);
 
             return await this.storageBroker.InsertCalendarEntryAttachmentAsync(calendarEntryAttachment);
+        });
+
+        public IQueryable<CalendarEntryAttachment> RetrieveAllCalendarEntryAttachments() =>
+        TryCatch(() =>
+        {
+            IQueryable<CalendarEntryAttachment> storageCalendarEntryAttachments =
+                this.storageBroker.SelectAllCalendarEntryAttachments();
+
+            ValidateStorageCalendarEntryAttachments(storageCalendarEntryAttachments);
+
+            return storageCalendarEntryAttachments;
         });
 
         public ValueTask<CalendarEntryAttachment> RetrieveCalendarEntryAttachmentByIdAsync
