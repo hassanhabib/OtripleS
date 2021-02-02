@@ -64,6 +64,26 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult<IQueryable<CalendarEntryAttachment>> GetAllCalendarEntryAttachments()
+        {
+            try
+            {
+                IQueryable storageCalendarEntryAttachments =
+                    this.calendarEntryAttachmentService.RetrieveAllCalendarEntryAttachments();
+
+                return Ok(storageCalendarEntryAttachments);
+            }
+            catch (CalendarEntryAttachmentDependencyException calendarEntryAttachmentDependencyException)
+            {
+                return Problem(calendarEntryAttachmentDependencyException.Message);
+            }
+            catch (CalendarEntryAttachmentServiceException calendarEntryAttachmentServiceException)
+            {
+                return Problem(calendarEntryAttachmentServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
