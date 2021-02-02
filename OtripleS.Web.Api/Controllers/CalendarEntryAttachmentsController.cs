@@ -119,6 +119,46 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpDelete("calendarEntrys/{calendarEntryId}/attachments/{attachmentId}")]
+        public async ValueTask<ActionResult<bool>> DeleteCalendarEntryAttachmentAsync(Guid calendarEntryId, Guid attachmentId)
+        {
+            try
+            {
+                CalendarEntryAttachment deletedCalendarEntryAttachment =
+                    await this.calendarEntryAttachmentService.RemoveCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
+
+                return Ok(deletedCalendarEntryAttachment);
+            }
+            catch (CalendarEntryAttachmentValidationException calendarEntryAttachmentValidationException)
+                when (calendarEntryAttachmentValidationException.InnerException is NotFoundCalendarEntryAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(calendarEntryAttachmentValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (CalendarEntryAttachmentValidationException calendarEntryAttachmentValidationException)
+            {
+                string innerMessage = GetInnerMessage(calendarEntryAttachmentValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (CalendarEntryAttachmentDependencyException calendarEntryAttachmentValidationException)
+               when (calendarEntryAttachmentValidationException.InnerException is LockedCalendarEntryAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(calendarEntryAttachmentValidationException);
+
+                return Locked(innerMessage);
+            }
+            catch (CalendarEntryAttachmentDependencyException calendarEntryAttachmentDependencyException)
+            {
+                return Problem(calendarEntryAttachmentDependencyException.Message);
+            }
+            catch (CalendarEntryAttachmentServiceException calendarEntryAttachmentServiceException)
+            {
+                return Problem(calendarEntryAttachmentServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
