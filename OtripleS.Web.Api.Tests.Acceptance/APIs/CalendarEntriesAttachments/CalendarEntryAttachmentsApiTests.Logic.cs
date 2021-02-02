@@ -1,0 +1,42 @@
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using FluentAssertions;
+using OtripleS.Web.Api.Tests.Acceptance.Models.CalendarEntriesAttachments;
+using RESTFulSense.Exceptions;
+using Xunit;
+
+namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntryAttachments
+{
+    public partial class CalendarEntryAttachmentsApiTests
+    {
+        [Fact]
+        public async Task ShouldPostCalendarEntryAttachmentAsync()
+        {
+            // given
+            CalendarEntryAttachment randomCalendarEntryAttachment = await CreateRandomCalendarEntryAttachment();
+            CalendarEntryAttachment inputCalendarEntryAttachment = randomCalendarEntryAttachment;
+            CalendarEntryAttachment expectedCalendarEntryAttachment = inputCalendarEntryAttachment;
+
+            // when             
+            CalendarEntryAttachment actualCalendarEntryAttachment = 
+                await this.otripleSApiBroker.PostCalendarEntryAttachmentAsync(inputCalendarEntryAttachment);
+
+            CalendarEntryAttachment retrievedCalendarEntryAttachment =
+                await this.otripleSApiBroker.GetCalendarEntryAttachmentByIdsAsync(
+                    inputCalendarEntryAttachment.CalendarEntryId,
+                    inputCalendarEntryAttachment.AttachmentId);
+
+            // then
+            actualCalendarEntryAttachment.Should().BeEquivalentTo(expectedCalendarEntryAttachment);
+            retrievedCalendarEntryAttachment.Should().BeEquivalentTo(expectedCalendarEntryAttachment);
+            await DeleteCalendarEntryAttachmentAsync(actualCalendarEntryAttachment);
+        }
+
+    }
+}
