@@ -69,5 +69,29 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntryAttachments
                 await DeleteCalendarEntryAttachmentAsync(actualCalendarEntryAttachment);
             }
         }
+
+        [Fact]
+        public async Task ShouldDeleteCalendarEntryAttachmentAsync()
+        {
+            // given
+            CalendarEntryAttachment randomCalendarEntryAttachment = await PostCalendarEntryAttachmentAsync();
+            CalendarEntryAttachment inputCalendarEntryAttachment = randomCalendarEntryAttachment;
+            CalendarEntryAttachment expectedCalendarEntryAttachment = inputCalendarEntryAttachment;
+
+            // when 
+            CalendarEntryAttachment deletedCalendarEntryAttachment =
+                await DeleteCalendarEntryAttachmentAsync(inputCalendarEntryAttachment);
+
+            ValueTask<CalendarEntryAttachment> getCalendarEntryAttachmentByIdTask =
+                this.otripleSApiBroker.GetCalendarEntryAttachmentByIdsAsync(
+                    inputCalendarEntryAttachment.CalendarEntryId,
+                    inputCalendarEntryAttachment.AttachmentId);
+
+            // then
+            deletedCalendarEntryAttachment.Should().BeEquivalentTo(expectedCalendarEntryAttachment);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getCalendarEntryAttachmentByIdTask.AsTask());
+        }
     }
 }
