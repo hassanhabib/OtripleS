@@ -84,6 +84,41 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpGet("calendarEntrys/{calendarEntryId}/attachments/{attachmentId}")]
+        public async ValueTask<ActionResult<CalendarEntryAttachment>> GetCalendarEntryAttachmentAsync(
+            Guid calendarEntryId,
+            Guid attachmentId)
+        {
+            try
+            {
+                CalendarEntryAttachment storageCalendarEntryAttachment =
+                    await this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
+
+                return Ok(storageCalendarEntryAttachment);
+            }
+            catch (CalendarEntryAttachmentValidationException semesterCalendarEntryAttachmentValidationException)
+                when (semesterCalendarEntryAttachmentValidationException.InnerException is NotFoundCalendarEntryAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(semesterCalendarEntryAttachmentValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (CalendarEntryAttachmentValidationException semesterCalendarEntryAttachmentValidationException)
+            {
+                string innerMessage = GetInnerMessage(semesterCalendarEntryAttachmentValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (CalendarEntryAttachmentDependencyException semesterCalendarEntryAttachmentDependencyException)
+            {
+                return Problem(semesterCalendarEntryAttachmentDependencyException.Message);
+            }
+            catch (CalendarEntryAttachmentServiceException semesterCalendarEntryAttachmentServiceException)
+            {
+                return Problem(semesterCalendarEntryAttachmentServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
