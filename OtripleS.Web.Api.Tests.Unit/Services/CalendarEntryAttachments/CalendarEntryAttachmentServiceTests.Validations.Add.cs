@@ -146,7 +146,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                 addCalendarEntryAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAttachmentAsync(alreadyExistsCalendarEntryAttachment),
+                broker.InsertCalendarEntryAttachmentAsync(It.IsAny<CalendarEntryAttachment>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>

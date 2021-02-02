@@ -20,10 +20,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
-            Guid someAttachmentId = randomAttachmentId;
-            Guid randomCalendarEntryId = Guid.NewGuid();
-            Guid someCalendarEntryId = randomCalendarEntryId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someCalendarEntryId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
             var expectedCalendarEntryAttachmentDependencyException
@@ -59,10 +57,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomCalendarEntryId = Guid.NewGuid();
-            Guid someAttachmentId = randomAttachmentId;
-            Guid someCalendarEntryId = randomCalendarEntryId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someCalendarEntryId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedCalendarEntryAttachmentDependencyException =
@@ -98,10 +94,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomCalendarEntryId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
-            Guid inputCalendarEntryId = randomCalendarEntryId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someCalendarEntryId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
             var lockedCalendarEntryAttachmentException =
@@ -111,19 +105,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                 new CalendarEntryAttachmentDependencyException(lockedCalendarEntryAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId))
+                broker.SelectCalendarEntryAttachmentByIdAsync(someCalendarEntryId, someAttachmentId))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
             ValueTask<CalendarEntryAttachment> retrieveCalendarEntryAttachmentTask =
-                this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId);
+                this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync(someCalendarEntryId, someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<CalendarEntryAttachmentDependencyException>(() =>
                 retrieveCalendarEntryAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId),
+                broker.SelectCalendarEntryAttachmentByIdAsync(someCalendarEntryId, someAttachmentId),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -139,30 +133,28 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomCalendarEntryId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
-            Guid inputCalendarEntryId = randomCalendarEntryId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someCalendarEntryId = Guid.NewGuid();
             var exception = new Exception();
 
             var expectedCalendarEntryAttachmentException =
                 new CalendarEntryAttachmentServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId))
+                broker.SelectCalendarEntryAttachmentByIdAsync(someCalendarEntryId, someAttachmentId))
                     .ThrowsAsync(exception);
 
             // when
             ValueTask<CalendarEntryAttachment> retrieveCalendarEntryAttachmentTask =
                 this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync
-                    (inputCalendarEntryId, inputAttachmentId);
+                    (someCalendarEntryId, someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<CalendarEntryAttachmentServiceException>(() =>
                 retrieveCalendarEntryAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId),
+                broker.SelectCalendarEntryAttachmentByIdAsync(someCalendarEntryId, someAttachmentId),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>

@@ -30,8 +30,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
         }
 
         public ValueTask<CalendarEntryAttachment> AddCalendarEntryAttachmentAsync(
-            CalendarEntryAttachment calendarEntryAttachment) => 
-        TryCatch(async () =>
+            CalendarEntryAttachment calendarEntryAttachment) => TryCatch(async () =>
         {
             ValidateCalendarEntryAttachmentOnCreate(calendarEntryAttachment);
 
@@ -50,8 +49,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
         });
 
         public ValueTask<CalendarEntryAttachment> RetrieveCalendarEntryAttachmentByIdAsync
-            (Guid calendarEntryId, Guid attachmentId) =>
-        TryCatch(async () =>
+            (Guid calendarEntryId, Guid attachmentId) => TryCatch(async () =>
         {
             ValidateCalendarEntryAttachmentIds(calendarEntryId, attachmentId);
 
@@ -64,8 +62,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
         });
 
         public ValueTask<CalendarEntryAttachment> RemoveCalendarEntryAttachmentByIdAsync(
-            Guid calendarEntryId, Guid attachmentId) =>
-        TryCatch(async () =>
+            Guid calendarEntryId, Guid attachmentId) => TryCatch(async () =>
         {
             ValidateCalendarEntryAttachmentIds(calendarEntryId, attachmentId);
 
