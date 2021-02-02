@@ -16,11 +16,11 @@ namespace OtripleS.Web.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]    
-    public class CalendarEntryAttachmentsController : RESTFulController
+    public class CalendarEntriesAttachmentsController : RESTFulController
     {
         private readonly ICalendarEntryAttachmentService calendarEntryAttachmentService;
 
-        public CalendarEntryAttachmentsController(ICalendarEntryAttachmentService calendarEntryAttachmentService) =>
+        public CalendarEntriesAttachmentsController(ICalendarEntryAttachmentService calendarEntryAttachmentService) =>
             this.calendarEntryAttachmentService = calendarEntryAttachmentService;
 
         [HttpPost]
@@ -84,7 +84,7 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpGet("calendarEntrys/{calendarEntryId}/attachments/{attachmentId}")]
+        [HttpGet("calendarentries/{calendarEntryId}/attachments/{attachmentId}")]
         public async ValueTask<ActionResult<CalendarEntryAttachment>> GetCalendarEntryAttachmentAsync(
             Guid calendarEntryId,
             Guid attachmentId)
@@ -119,7 +119,7 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpDelete("calendarEntrys/{calendarEntryId}/attachments/{attachmentId}")]
+        [HttpDelete("calendarentries/{calendarEntryId}/attachments/{attachmentId}")]
         public async ValueTask<ActionResult<bool>> DeleteCalendarEntryAttachmentAsync(Guid calendarEntryId, Guid attachmentId)
         {
             try
