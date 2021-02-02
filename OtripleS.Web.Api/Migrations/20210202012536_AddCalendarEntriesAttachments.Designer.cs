@@ -10,8 +10,8 @@ using OtripleS.Web.Api.Brokers.Storage;
 namespace OtripleS.Web.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20210127042711_AddCalendarEntryAttachments")]
-    partial class AddCalendarEntryAttachments
+    [Migration("20210202012536_AddCalendarEntriesAttachments")]
+    partial class AddCalendarEntriesAttachments
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -299,14 +299,14 @@ namespace OtripleS.Web.Api.Migrations
                     b.Property<Guid>("AttachmentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("Notes")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CalendarEntryId", "AttachmentId");
 
                     b.HasIndex("AttachmentId");
 
-                    b.ToTable("CalendarEntryAttachments");
+                    b.ToTable("CalendarEntriesAttachments");
                 });
 
             modelBuilder.Entity("OtripleS.Web.Api.Models.Calendars.Calendar", b =>

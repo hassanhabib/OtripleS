@@ -297,14 +297,14 @@ namespace OtripleS.Web.Api.Migrations
                     b.Property<Guid>("AttachmentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("Notes")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CalendarEntryId", "AttachmentId");
 
                     b.HasIndex("AttachmentId");
 
-                    b.ToTable("CalendarEntryAttachments");
+                    b.ToTable("CalendarEntriesAttachments");
                 });
 
             modelBuilder.Entity("OtripleS.Web.Api.Models.Calendars.Calendar", b =>

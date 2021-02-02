@@ -15,6 +15,6 @@ namespace OtripleS.Web.Api.Models.CalendarEntryAttachments
         public CalendarEntry CalendarEntry { get; set; }
         public Guid AttachmentId { get; set; }
         public Attachment Attachment { get; set; }
-        public Guid Notes { get; set; }
+        public string Notes { get; set; }
     }
 }
