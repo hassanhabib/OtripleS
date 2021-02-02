@@ -38,5 +38,36 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntryAttachments
             await DeleteCalendarEntryAttachmentAsync(actualCalendarEntryAttachment);
         }
 
+        [Fact]
+        public async Task ShouldGetAllCalendarEntryAttachmentsAsync()
+        {
+            // given
+            var randomCalendarEntryAttachments = new List<CalendarEntryAttachment>();
+
+            for (var i = 0; i <= GetRandomNumber(); i++)
+            {
+                CalendarEntryAttachment randomCalendarEntryAttachment = await PostCalendarEntryAttachmentAsync();
+                randomCalendarEntryAttachments.Add(randomCalendarEntryAttachment);
+            }
+
+            List<CalendarEntryAttachment> inputCalendarEntryAttachments = randomCalendarEntryAttachments;
+            List<CalendarEntryAttachment> expectedCalendarEntryAttachments = inputCalendarEntryAttachments;
+
+            // when
+            List<CalendarEntryAttachment> actualCalendarEntryAttachments =
+                await this.otripleSApiBroker.GetAllCalendarEntryAttachmentsAsync();
+
+            // then
+            foreach (CalendarEntryAttachment expectedCalendarEntryAttachment in expectedCalendarEntryAttachments)
+            {
+                CalendarEntryAttachment actualCalendarEntryAttachment =
+                    actualCalendarEntryAttachments.Single(studentAttachment =>
+                        studentAttachment.CalendarEntryId == expectedCalendarEntryAttachment.CalendarEntryId);
+
+                actualCalendarEntryAttachment.Should().BeEquivalentTo(expectedCalendarEntryAttachment);
+
+                await DeleteCalendarEntryAttachmentAsync(actualCalendarEntryAttachment);
+            }
+        }
     }
 }
