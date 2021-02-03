@@ -3,11 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using System;
+using System.Threading.Tasks;
 using Moq;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions;
-using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
     public partial class CalendarEntryAttachmentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenCalendarEntryIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRemoveWhenCalendarEntryIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomAttachmentId = Guid.NewGuid();
@@ -31,11 +31,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                 new CalendarEntryAttachmentValidationException(invalidCalendarEntryAttachmentInputException);
 
             // when
-            ValueTask<CalendarEntryAttachment> retrieveCalendarEntryAttachmentTask =
-                this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId);
+            ValueTask<CalendarEntryAttachment> removeCalendarEntryAttachmentTask =
+                this.calendarEntryAttachmentService.RemoveCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() => retrieveCalendarEntryAttachmentTask.AsTask());
+            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() => 
+                removeCalendarEntryAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentValidationException))),
@@ -44,14 +45,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCalendarEntryAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
+            
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteCalendarEntryAttachmentAsync(It.IsAny<CalendarEntryAttachment>()),
+                    Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        } 
+        }
 
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenAttachmentIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRemoveWhenAttachmentIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomAttachmentId = default;
@@ -67,13 +72,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                 new CalendarEntryAttachmentValidationException(invalidCalendarEntryAttachmentInputException);
 
             // when
-            ValueTask<CalendarEntryAttachment> retrieveCalendarEntryAttachmentTask =
-                this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync(
-                    inputCalendarEntryId, inputAttachmentId);
+            ValueTask<CalendarEntryAttachment> removeCalendarEntryAttachmentTask =
+                this.calendarEntryAttachmentService.RemoveCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() => 
-                retrieveCalendarEntryAttachmentTask.AsTask());
+            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
+                removeCalendarEntryAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentValidationException))),
@@ -83,6 +87,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                 broker.SelectCalendarEntryAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteCalendarEntryAttachmentAsync(It.IsAny<CalendarEntryAttachment>()),
+                    Times.Never);
+
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -90,10 +98,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
 
         [Fact]
         public async Task 
-            ShouldThrowValidationExceptionOnRetrieveWhenStorageCalendarEntryAttachmentIsInvalidAndLogItAsync()
+            ShouldThrowValidationExceptionOnRemoveWhenStorageCalendarEntryAttachmentIsInvalidAndLogItAsync()
         {
             // given
-            CalendarEntryAttachment randomCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            CalendarEntryAttachment randomCalendarEntryAttachment = CreateRandomCalendarEntryAttachment(randomDateTime);
             Guid inputAttachmentId = randomCalendarEntryAttachment.AttachmentId;
             Guid inputCalendarEntryId = randomCalendarEntryAttachment.CalendarEntryId;
             CalendarEntryAttachment nullStorageCalendarEntryAttachment = null;
@@ -101,7 +110,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             var notFoundCalendarEntryAttachmentException =
                 new NotFoundCalendarEntryAttachmentException(inputCalendarEntryId, inputAttachmentId);
 
-            var expectedAttachmentValidationException =
+            var expectedCalendarEntryValidationException =
                 new CalendarEntryAttachmentValidationException(notFoundCalendarEntryAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -109,22 +118,25 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                     .ReturnsAsync(nullStorageCalendarEntryAttachment);
 
             // when
-            ValueTask<CalendarEntryAttachment> retrieveCalendarEntryAttachmentTask =
-                this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync(
-                    inputCalendarEntryId, inputAttachmentId);
+            ValueTask<CalendarEntryAttachment> removeCalendarEntryAttachmentTask =
+                this.calendarEntryAttachmentService.RemoveCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
-                retrieveCalendarEntryAttachmentTask.AsTask());
+                removeCalendarEntryAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCalendarEntryAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once); 
-            
+                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteCalendarEntryAttachmentAsync(It.IsAny<CalendarEntryAttachment>()),
+                    Times.Never);
+
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

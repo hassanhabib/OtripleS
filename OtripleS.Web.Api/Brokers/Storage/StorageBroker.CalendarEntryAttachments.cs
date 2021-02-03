@@ -14,13 +14,13 @@ namespace OtripleS.Web.Api.Brokers.Storage
 {
     public partial class StorageBroker
     {
-        public DbSet<CalendarEntryAttachment> CalendarEntryAttachments { get; set; }
+        public DbSet<CalendarEntryAttachment> CalendarEntriesAttachments { get; set; }
 
         public async ValueTask<CalendarEntryAttachment> InsertCalendarEntryAttachmentAsync(
             CalendarEntryAttachment calendarEntryAttachment)
         {
             EntityEntry<CalendarEntryAttachment> calendarEntryAttachmentEntityEntry =
-                await this.CalendarEntryAttachments.AddAsync(calendarEntryAttachment);
+                await this.CalendarEntriesAttachments.AddAsync(calendarEntryAttachment);
 
             await this.SaveChangesAsync();
 
@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
         }
 
         public IQueryable<CalendarEntryAttachment> SelectAllCalendarEntryAttachments() =>
-            this.CalendarEntryAttachments.AsQueryable();
+            this.CalendarEntriesAttachments.AsQueryable();
 
         public async ValueTask<CalendarEntryAttachment> SelectCalendarEntryAttachmentByIdAsync(
             Guid calendarEntryId,
@@ -36,14 +36,14 @@ namespace OtripleS.Web.Api.Brokers.Storage
         {
             this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await this.CalendarEntryAttachments.FindAsync(calendarEntryId, attachmentId);
+            return await this.CalendarEntriesAttachments.FindAsync(calendarEntryId, attachmentId);
         }
 
         public async ValueTask<CalendarEntryAttachment> UpdateCalendarEntryAttachmentAsync(
             CalendarEntryAttachment calendarEntryAttachment)
         {
             EntityEntry<CalendarEntryAttachment> calendarEntryAttachmentEntityEntry =
-                this.CalendarEntryAttachments.Update(calendarEntryAttachment);
+                this.CalendarEntriesAttachments.Update(calendarEntryAttachment);
 
             await this.SaveChangesAsync();
 
@@ -54,7 +54,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
             CalendarEntryAttachment calendarEntryAttachment)
         {
             EntityEntry<CalendarEntryAttachment> calendarEntryAttachmentEntityEntry =
-                this.CalendarEntryAttachments.Remove(calendarEntryAttachment);
+                this.CalendarEntriesAttachments.Remove(calendarEntryAttachment);
 
             await this.SaveChangesAsync();
 

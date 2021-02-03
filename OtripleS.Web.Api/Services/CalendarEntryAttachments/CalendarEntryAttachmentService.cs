@@ -8,6 +8,7 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
@@ -28,11 +29,29 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<CalendarEntryAttachment> RetrieveCalendarEntryAttachmentByIdAsync
-            (Guid calendarEntryId, Guid attachmentId) =>
-        TryCatch(async () =>
+        public ValueTask<CalendarEntryAttachment> AddCalendarEntryAttachmentAsync(
+            CalendarEntryAttachment calendarEntryAttachment) => TryCatch(async () =>
         {
-            ValidateCalendarEntryAttachmentIdIsNull(calendarEntryId, attachmentId);
+            ValidateCalendarEntryAttachmentOnCreate(calendarEntryAttachment);
+
+            return await this.storageBroker.InsertCalendarEntryAttachmentAsync(calendarEntryAttachment);
+        });
+
+        public IQueryable<CalendarEntryAttachment> RetrieveAllCalendarEntryAttachments() =>
+        TryCatch(() =>
+        {
+            IQueryable<CalendarEntryAttachment> storageCalendarEntryAttachments =
+                this.storageBroker.SelectAllCalendarEntryAttachments();
+
+            ValidateStorageCalendarEntryAttachments(storageCalendarEntryAttachments);
+
+            return storageCalendarEntryAttachments;
+        });
+
+        public ValueTask<CalendarEntryAttachment> RetrieveCalendarEntryAttachmentByIdAsync
+            (Guid calendarEntryId, Guid attachmentId) => TryCatch(async () =>
+        {
+            ValidateCalendarEntryAttachmentIds(calendarEntryId, attachmentId);
 
             CalendarEntryAttachment storageCalendarEntryAttachment =
                 await this.storageBroker.SelectCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
@@ -40,6 +59,19 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             ValidateStorageCalendarEntryAttachment(storageCalendarEntryAttachment, calendarEntryId, attachmentId);
 
             return storageCalendarEntryAttachment;
+        });
+
+        public ValueTask<CalendarEntryAttachment> RemoveCalendarEntryAttachmentByIdAsync(
+            Guid calendarEntryId, Guid attachmentId) => TryCatch(async () =>
+        {
+            ValidateCalendarEntryAttachmentIds(calendarEntryId, attachmentId);
+
+            CalendarEntryAttachment maybeCalendarEntryAttachment =
+                await this.storageBroker.SelectCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
+
+            ValidateStorageCalendarEntryAttachment(maybeCalendarEntryAttachment, calendarEntryId, attachmentId);
+
+            return await this.storageBroker.DeleteCalendarEntryAttachmentAsync(maybeCalendarEntryAttachment);
         });
     }
 }

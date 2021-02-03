@@ -11,6 +11,7 @@ using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using OtripleS.Web.Api.Services.CalendarEntryAttachments;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
@@ -36,8 +37,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
+        private IQueryable<CalendarEntryAttachment> CreateRandomCalendarEntryAttachments() =>
+            CreateCalendarEntryAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
+
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
+        
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
         private CalendarEntryAttachment CreateRandomCalendarEntryAttachment() =>
-          CreateCalendarEntryAttachmentFiller(DateTimeOffset.UtcNow).Create();
+            CreateCalendarEntryAttachmentFiller(DateTimeOffset.UtcNow).Create();
+
+        private CalendarEntryAttachment CreateRandomCalendarEntryAttachment(DateTimeOffset dates) =>
+            CreateCalendarEntryAttachmentFiller(dates).Create();
 
         private static Filler<CalendarEntryAttachment> CreateCalendarEntryAttachmentFiller(DateTimeOffset dates)
         {
