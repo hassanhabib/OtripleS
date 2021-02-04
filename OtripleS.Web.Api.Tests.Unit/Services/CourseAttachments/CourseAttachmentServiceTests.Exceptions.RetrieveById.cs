@@ -48,8 +48,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 broker.LogCritical(It.Is(SameExceptionAs(expectedCourseAttachmentDependencyException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -85,8 +85,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentDependencyException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -124,8 +124,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -161,8 +161,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
