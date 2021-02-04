@@ -40,5 +40,18 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 
                 return await this.storageBroker.DeleteCourseAttachmentAsync(maybeCourseAttachment);
             });
+
+        public ValueTask<CourseAttachment> RetrieveCourseAttachmentByIdAsync(Guid courseId, Guid attachmentId) =>
+           TryCatch(async () =>
+           {
+               ValidateCourseAttachmentIds(courseId, attachmentId);
+
+               CourseAttachment storageCourseAttachment =
+                   await this.storageBroker.SelectCourseAttachmentByIdAsync(courseId, attachmentId);
+
+               ValidateStorageCourseAttachment(storageCourseAttachment, courseId, attachmentId);
+
+               return storageCourseAttachment;
+           });
     }
 }

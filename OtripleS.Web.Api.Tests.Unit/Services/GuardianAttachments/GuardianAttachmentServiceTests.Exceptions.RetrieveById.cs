@@ -73,13 +73,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
                     .ThrowsAsync(databaseUpdateException);
 
             // when
-            ValueTask<GuardianAttachment> retrieveAttachmentTask =
+            ValueTask<GuardianAttachment> retrieveGuardianAttachmentTask =
                 this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync
                 (inputGuardianId, inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(
-                () => retrieveAttachmentTask.AsTask());
+                () => retrieveGuardianAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentDependencyException))),
