@@ -29,10 +29,17 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             }
             catch (DuplicateKeyException duplicateKeyException)
             {
-                var alreadyExistsCalendarEntryAttachmentException =
+                var alreadyExistsCourseAttachmentException =
                     new AlreadyExistsCourseAttachmentException(duplicateKeyException);
 
-                throw CreateAndLogValidationException(alreadyExistsCalendarEntryAttachmentException);
+                throw CreateAndLogValidationException(alreadyExistsCourseAttachmentException);
+            }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidCourseAttachmentReferenceException =
+                    new InvalidCourseAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidCourseAttachmentReferenceException);
             }
         }
 
