@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 new CourseAttachmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId))
+                 broker.SelectCourseAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
                     .ThrowsAsync(sqlException);
 
             // when
@@ -66,7 +66,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 new CourseAttachmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId))
+                broker.SelectCourseAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
@@ -107,7 +107,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 new CourseAttachmentDependencyException(lockedCourseAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId))
+                broker.SelectCourseAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
@@ -143,7 +143,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 new CourseAttachmentServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId))
+                broker.SelectCourseAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
                     .ThrowsAsync(exception);
 
             // when
