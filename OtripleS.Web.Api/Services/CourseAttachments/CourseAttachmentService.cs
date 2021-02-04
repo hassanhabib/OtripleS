@@ -39,7 +39,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 
         public IQueryable<CourseAttachment> RetrieveAllCourseAttachments()
         {
-            throw new NotImplementedException();
+            return storageBroker.SelectAllCourseAttachments();
         }
 
     }
