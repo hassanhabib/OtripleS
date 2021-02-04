@@ -4,10 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
-using System.Threading.Tasks;
-using OtripleS.Web.Api.Brokers.DateTimes;
-using OtripleS.Web.Api.Brokers.Loggings;
-using OtripleS.Web.Api.Brokers.Storage;
+using System.Linq;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
 
@@ -48,12 +45,21 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
         }
 
         private void ValidateStorageCourseAttachment(
-            CourseAttachment storageCourseAttachment, 
-            Guid courseId, 
+            CourseAttachment storageCourseAttachment,
+            Guid courseId,
             Guid attachmentId)
         {
             if (storageCourseAttachment == null)
                 throw new NotFoundCourseAttachmentException(courseId, attachmentId);
+        }
+
+        private void ValidateStorageCourseAttachments(
+            IQueryable<CourseAttachment> storageCourseAttachments)
+        {
+            if (!storageCourseAttachments.Any())
+            {
+                this.loggingBroker.LogWarning("No course attachments found in storage.");
+            }
         }
     }
 }
