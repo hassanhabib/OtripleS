@@ -83,7 +83,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectGuardianAttachmentByIdAsync
                 (randomGuardianAttachment.GuardianId, randomGuardianAttachment.AttachmentId))
-                    .Returns(new ValueTask<GuardianAttachment>(randomGuardianAttachment));
+                    .ReturnsAsync(storageGuardianAttachment);
 
             // when
             GuardianAttachment actualGuardianAttachment = await
