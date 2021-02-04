@@ -43,6 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
