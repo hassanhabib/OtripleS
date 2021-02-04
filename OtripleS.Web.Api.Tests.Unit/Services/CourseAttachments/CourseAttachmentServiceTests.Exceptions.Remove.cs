@@ -145,5 +145,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someCourseId = Guid.NewGuid();
+            var exception = new Exception();
+            var expectedCourseAttachmentException = new CourseAttachmentServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<CourseAttachment> removeCourseAttachmentTask =
+                this.courseAttachmentService.RemoveCourseAttachmentByIdAsync(
+                    someCourseId,
+                    someAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<CourseAttachmentServiceException>(() =>
+                removeCourseAttachmentTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteCourseAttachmentAsync(It.IsAny<CourseAttachment>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
