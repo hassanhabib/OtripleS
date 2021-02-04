@@ -3,7 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
-using System;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
 
@@ -15,7 +14,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
         {
             ValidateCourseAttachmentIsNull(courseAttachment);
 
-            ValidateCourseAttachmentIds(courseAttachment.CourseId, courseAttachment.AttachmentId);
+            ValidateCourseAttachmentIds(courseAttachment);
 
         }
 
@@ -27,19 +26,19 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             }
         }
 
-        private void ValidateCourseAttachmentIds(Guid courseId, Guid attachmentId)
+        private void ValidateCourseAttachmentIds(CourseAttachment courseAttachment)
         {
-            if (courseId == default)
+            switch (courseAttachment)
             {
-                throw new InvalidCourseAttachmentException(
-                    parameterName: nameof(CourseAttachment.CourseId),
-                    parameterValue: courseId);
-            }
-            else if (attachmentId == default)
-            {
-                throw new InvalidCourseAttachmentException(
-                    parameterName: nameof(CourseAttachment.AttachmentId),
-                    parameterValue: attachmentId);
+                case { } when courseAttachment.CourseId == default:
+                    throw new InvalidCourseAttachmentException(
+                        parameterName: nameof(CourseAttachment.CourseId),
+                        parameterValue: courseAttachment.CourseId);
+
+                case { } when courseAttachment.AttachmentId == default:
+                    throw new InvalidCourseAttachmentException(
+                        parameterName: nameof(CourseAttachment.AttachmentId),
+                        parameterValue: courseAttachment.AttachmentId);
             }
         }
     }
