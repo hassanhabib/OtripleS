@@ -41,6 +41,5 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 
             return storageCourseAttachment;
         });
-
     }
 }
