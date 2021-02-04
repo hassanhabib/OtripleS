@@ -3,6 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using System;
+using System.Threading.Tasks;
+using OtripleS.Web.Api.Brokers.DateTimes;
+using OtripleS.Web.Api.Brokers.Loggings;
+using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
 
@@ -39,7 +44,15 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
                     throw new InvalidCourseAttachmentException(
                         parameterName: nameof(CourseAttachment.AttachmentId),
                         parameterValue: courseAttachment.AttachmentId);
-            }
+        }
+
+        private void ValidateStorageCourseAttachment(
+            CourseAttachment storageCourseAttachment, 
+            Guid courseId, 
+            Guid attachmentId)
+        {
+            if (storageCourseAttachment == null)
+                throw new NotFoundCourseAttachmentException(courseId, attachmentId);
         }
     }
 }

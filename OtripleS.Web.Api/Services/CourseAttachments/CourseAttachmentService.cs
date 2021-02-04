@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -13,6 +14,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 {
     public partial class CourseAttachmentService : ICourseAttachmentService
     {
+
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
         private readonly IDateTimeBroker dateTimeBroker;
@@ -25,6 +27,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             this.storageBroker = storageBroker;
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
+            this.loggingBroker = loggingBroker;
         }
 
         public ValueTask<CourseAttachment> AddCourseAttachmentAsync(CourseAttachment courseAttachment) =>

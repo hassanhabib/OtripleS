@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.CourseAttachments;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
@@ -35,7 +38,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCourseAttachmentAsync(inputCourseAttachment),
-                    Times.Once);
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

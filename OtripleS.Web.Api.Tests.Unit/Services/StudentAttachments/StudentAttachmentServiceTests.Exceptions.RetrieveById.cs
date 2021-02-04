@@ -34,13 +34,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
                     .ThrowsAsync(sqlException);
 
             // when
-            ValueTask<StudentAttachment> deleteStudentAttachmentTask =
+            ValueTask<StudentAttachment> retrieveStudentAttachmentTask =
                 this.studentAttachmentService.RetrieveStudentAttachmentByIdAsync
                 (inputStudentId, inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<StudentAttachmentDependencyException>(() =>
-                deleteStudentAttachmentTask.AsTask());
+                retrieveStudentAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentAttachmentDependencyException))),
@@ -73,13 +73,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
                     .ThrowsAsync(databaseUpdateException);
 
             // when
-            ValueTask<StudentAttachment> deleteAttachmentTask =
+            ValueTask<StudentAttachment> retrieveStudentAttachmentTask =
                 this.studentAttachmentService.RetrieveStudentAttachmentByIdAsync
                 (inputStudentId, inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<StudentAttachmentDependencyException>(
-                () => deleteAttachmentTask.AsTask());
+                () => retrieveStudentAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentAttachmentDependencyException))),
@@ -115,11 +115,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
-            ValueTask<StudentAttachment> deleteStudentAttachmentTask =
+            ValueTask<StudentAttachment> retrieveStudentAttachmentTask =
                 this.studentAttachmentService.RetrieveStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<StudentAttachmentDependencyException>(() => deleteStudentAttachmentTask.AsTask());
+            await Assert.ThrowsAsync<StudentAttachmentDependencyException>(() => 
+                retrieveStudentAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentAttachmentException))),
@@ -152,13 +153,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
                     .ThrowsAsync(exception);
 
             // when
-            ValueTask<StudentAttachment> deleteStudentAttachmentTask =
+            ValueTask<StudentAttachment> retrieveStudentAttachmentTask =
                 this.studentAttachmentService.RetrieveStudentAttachmentByIdAsync
                 (inputStudentId, inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<StudentAttachmentServiceException>(() =>
-                deleteStudentAttachmentTask.AsTask());
+                retrieveStudentAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentAttachmentException))),
