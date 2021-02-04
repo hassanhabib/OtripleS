@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
@@ -48,6 +49,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 .OnProperty(courseAttachment => courseAttachment.Attachment).IgnoreIt();
 
             return filler;
+        }
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
     }
 }
