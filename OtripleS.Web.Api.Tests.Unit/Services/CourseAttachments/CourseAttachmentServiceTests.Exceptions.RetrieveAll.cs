@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
 using Xunit;
@@ -34,6 +35,36 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedCourseAttachmentDependencyException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldThrowDependencyExceptionOnRetrieveAllCourseAttachmentsWhenDbExceptionOccursAndLogIt()
+        {
+            // given
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedAttachmentDependencyException =
+                new CourseAttachmentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllCourseAttachments())
+                    .Throws(databaseUpdateException);
+
+            // when . then
+            Assert.Throws<CourseAttachmentDependencyException>(() =>
+                this.courseAttachmentService.RetrieveAllCourseAttachments());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllCourseAttachments(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
