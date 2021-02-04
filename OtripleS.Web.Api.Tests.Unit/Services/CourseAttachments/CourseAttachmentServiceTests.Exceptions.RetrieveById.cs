@@ -24,8 +24,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             Guid someCourseId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
-            var expectedCourseAttachmentDependencyException
-                = new CourseAttachmentDependencyException(sqlException);
+            var expectedCourseAttachmentDependencyException = 
+                new CourseAttachmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
                  broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId))

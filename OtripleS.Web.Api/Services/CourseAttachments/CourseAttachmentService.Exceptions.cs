@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -27,6 +28,10 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             catch (InvalidCourseAttachmentException invalidCourseAttachmentInputException)
             {
                 throw CreateAndLogValidationException(invalidCourseAttachmentInputException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
             }
             catch (NotFoundCourseAttachmentException notFoundCourseAttachmentException)
             {
