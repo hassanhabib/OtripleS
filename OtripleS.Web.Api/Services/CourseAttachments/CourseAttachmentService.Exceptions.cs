@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
 
@@ -27,6 +28,10 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             {
                 throw CreateAndLogValidationException(invalidCourseAttachmentException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsCourseAttachmentException =
@@ -50,6 +55,14 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             this.loggingBroker.LogError(courseAttachmentValidationException);
 
             return courseAttachmentValidationException;
+        }
+
+        private CourseAttachmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var courseAttachmentDependencyException = new CourseAttachmentDependencyException(exception);
+            this.loggingBroker.LogCritical(courseAttachmentDependencyException);
+
+            return courseAttachmentDependencyException;
         }
 
     }
