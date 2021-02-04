@@ -39,6 +39,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
         private CourseAttachment CreateRandomCourseAttachment(DateTimeOffset dates) =>
             CreateCourseAttachmentFiller(dates).Create();
 
+        private static DateTimeOffset GetRandomDateTime() =>
+           new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
         private static Filler<CourseAttachment> CreateCourseAttachmentFiller(DateTimeOffset dates)
         {
             var filler = new Filler<CourseAttachment>();
