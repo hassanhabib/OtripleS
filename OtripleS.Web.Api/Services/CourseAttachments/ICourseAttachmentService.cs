@@ -12,5 +12,6 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
     public interface ICourseAttachmentService
     {
         ValueTask<CourseAttachment> AddCourseAttachmentAsync(CourseAttachment courseAttachment);
+        ValueTask<CourseAttachment> RetrieveCourseAttachmentByIdAsync(Guid courseId, Guid attachmentId);
     }
 }

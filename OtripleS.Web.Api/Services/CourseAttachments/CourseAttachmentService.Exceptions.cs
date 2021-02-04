@@ -39,6 +39,10 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (NotFoundCourseAttachmentException notFoundCourseAttachmentException)
+            {
+                throw CreateAndLogValidationException(notFoundCourseAttachmentException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsCourseAttachmentException =
@@ -52,6 +56,13 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
                     new InvalidCourseAttachmentReferenceException(foreignKeyConstraintConflictException);
 
                 throw CreateAndLogValidationException(invalidCourseAttachmentReferenceException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedCourseAttachmentException =
+                    new LockedCourseAttachmentException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedCourseAttachmentException);
             }
             catch (DbUpdateException dbUpdateException)
             {
