@@ -10,7 +10,7 @@ namespace OtripleS.Web.Api.Models.CourseAttachments.Exceptions
     public class InvalidCourseAttachmentException : Exception
     {
         public InvalidCourseAttachmentException(string parameterName, object parameterValue)
-            : base($"Invalid CourseAttachment, " +
+            : base($"Invalid Course Attachment, " +
                   $"ParameterName: {parameterName}, " +
                   $"ParameterValue: {parameterValue}.")
         { }
