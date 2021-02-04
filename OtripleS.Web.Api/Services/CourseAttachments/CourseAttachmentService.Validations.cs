@@ -14,13 +14,13 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 {
     public partial class CourseAttachmentService
     {
-        private void ValidateCourseAttachmentIds(Guid calendarEntryId, Guid attachmentId)
+        private void ValidateCourseAttachmentIds(Guid courseId, Guid attachmentId)
         {
-            if (calendarEntryId == default)
+            if (courseId == default)
             {
                 throw new InvalidCourseAttachmentException(
                     parameterName: nameof(CourseAttachment.CourseId),
-                    parameterValue: calendarEntryId);
+                    parameterValue: courseId);
             }
             else if (attachmentId == default)
             {
@@ -28,6 +28,14 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
                     parameterName: nameof(CourseAttachment.AttachmentId),
                     parameterValue: attachmentId);
             }
+        }
+
+        private static void ValidateStorageCourseAttachment(
+          CourseAttachment storageCourseAttachment,
+          Guid courseId, Guid attachmentId)
+        {
+            if (storageCourseAttachment == null)
+                throw new NotFoundCourseAttachmentException(courseId, attachmentId);
         }
     }
 }
