@@ -13,7 +13,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
         {
             ValidateCourseAttachmentIsNull(courseAttachment);
 
-            ValidateCourseAttachmentIds(courseAttachment.CourseId);
+            ValidateCourseAttachmentIds(courseAttachment.CourseId, courseAttachment.AttachmentId);
 
         }
 
@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             }
         }
 
-        private void ValidateCourseAttachmentIds(Guid courseId)
+        private void ValidateCourseAttachmentIds(Guid courseId, Guid attachmentId)
         {
             if (courseId == default)
             {
@@ -33,7 +33,12 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
                     parameterName: nameof(CourseAttachment.CourseId),
                     parameterValue: courseId);
             }
-
+            else if (attachmentId == default)
+            {
+                throw new InvalidCourseAttachmentException(
+                    parameterName: nameof(CourseAttachment.AttachmentId),
+                    parameterValue: attachmentId);
+            }
         }
     }
 }
