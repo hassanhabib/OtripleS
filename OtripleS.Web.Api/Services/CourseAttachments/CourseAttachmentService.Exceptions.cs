@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
 
@@ -46,6 +47,10 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 
                 throw CreateAndLogValidationException(invalidCourseAttachmentReferenceException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
 
@@ -61,6 +66,14 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
         {
             var courseAttachmentDependencyException = new CourseAttachmentDependencyException(exception);
             this.loggingBroker.LogCritical(courseAttachmentDependencyException);
+
+            return courseAttachmentDependencyException;
+        }
+
+        private CourseAttachmentDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var courseAttachmentDependencyException = new CourseAttachmentDependencyException(exception);
+            this.loggingBroker.LogError(courseAttachmentDependencyException);
 
             return courseAttachmentDependencyException;
         }
