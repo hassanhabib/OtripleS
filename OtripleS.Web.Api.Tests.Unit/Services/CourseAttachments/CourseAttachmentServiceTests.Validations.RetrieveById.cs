@@ -49,5 +49,43 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenAttachmentIdIsInvalidAndLogItAsync()
+        {
+            // given
+            Guid randomAttachmentId = default;
+            Guid randomCourseId = Guid.NewGuid();
+            Guid inputAttachmentId = randomAttachmentId;
+            Guid inputCourseId = randomCourseId;
+
+            var invalidCourseAttachmentInputException = new InvalidCourseAttachmentException(
+                parameterName: nameof(CourseAttachment.AttachmentId),
+                parameterValue: inputAttachmentId);
+
+            var expectedCourseAttachmentValidationException =
+                new CourseAttachmentValidationException(invalidCourseAttachmentInputException);
+
+            // when
+            ValueTask<CourseAttachment> retrieveCourseAttachmentTask =
+                this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync(
+                    inputCourseId, inputAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<CourseAttachmentValidationException>(() =>
+                retrieveCourseAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCourseAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
