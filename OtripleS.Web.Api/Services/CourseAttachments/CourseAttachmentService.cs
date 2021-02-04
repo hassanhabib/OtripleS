@@ -9,7 +9,7 @@ using OtripleS.Web.Api.Models.CourseAttachments;
 
 namespace OtripleS.Web.Api.Services.CourseAttachments
 {
-    public class CourseAttachmentService : ICourseAttachmentService
+    public partial class CourseAttachmentService : ICourseAttachmentService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -25,12 +25,15 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async ValueTask<CourseAttachment> RemoveCourseAttachmentByIdAsync(Guid courseId, Guid attachmentId)
-        {
-            CourseAttachment maybeCourseAttachment =
-                await this.storageBroker.SelectCourseAttachmentByIdAsync(courseId, attachmentId);
+        public ValueTask<CourseAttachment> RemoveCourseAttachmentByIdAsync
+            (Guid courseId, Guid attachmentId) => TryCatch(async () => 
+            {
+                ValidateCourseAttachmentIds(courseId, attachmentId);
 
-            return await this.storageBroker.DeleteCourseAttachmentAsync(maybeCourseAttachment);
-        }
+                CourseAttachment maybeCourseAttachment =
+                 await this.storageBroker.SelectCourseAttachmentByIdAsync(courseId, attachmentId);
+
+                return await this.storageBroker.DeleteCourseAttachmentAsync(maybeCourseAttachment);
+            });       
     }
 }
