@@ -32,10 +32,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
 
             // when
             ValueTask<CourseAttachment> retrieveCourseAttachmentTask =
-                this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync(inputCourseId, inputAttachmentId);
+                this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync(
+                    inputCourseId, 
+                    inputAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<CourseAttachmentValidationException>(() => retrieveCourseAttachmentTask.AsTask());
+            await Assert.ThrowsAsync<CourseAttachmentValidationException>(() => 
+                retrieveCourseAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentValidationException))),

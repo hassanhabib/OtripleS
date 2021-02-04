@@ -33,22 +33,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
 
             this.courseAttachmentService = new CourseAttachmentService(
                 storageBroker: this.storageBrokerMock.Object,
-                loggingBroker: this.loggingBrokerMock.Object,
-                dateTimeBroker: this.dateTimeBrokerMock.Object);
+                dateTimeBroker: this.dateTimeBrokerMock.Object,
+                loggingBroker: this.loggingBrokerMock.Object);
         }
 
         private IQueryable<CourseAttachment> CreateRandomCourseAttachments() =>
             CreateCourseAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
-
         private static string GetRandomMessage() => new MnemonicString().GetValue();
-        
+
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private CourseAttachment CreateRandomCourseAttachment() =>
-            CreateCourseAttachmentFiller(DateTimeOffset.UtcNow).Create();
+            CreateCourseAttachmentFiller(GetRandomDateTime()).Create();
 
         private CourseAttachment CreateRandomCourseAttachment(DateTimeOffset dates) =>
             CreateCourseAttachmentFiller(dates).Create();

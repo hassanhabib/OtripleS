@@ -33,15 +33,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
 
             // when
             ValueTask<CourseAttachment> retrieveCourseAttachmentTask =
-                this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync
-                    (someCourseId, someAttachmentId);
+                this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync(
+                    someCourseId, 
+                    someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<CourseAttachmentDependencyException>(() =>
                 retrieveCourseAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId),
+                broker.SelectCourseAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -78,7 +79,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 retrieveAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId),
+                broker.SelectCourseAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -117,7 +118,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 retrieveCourseAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId),
+                broker.SelectCourseAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -154,7 +155,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 retrieveCourseAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId),
+                broker.SelectCourseAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
