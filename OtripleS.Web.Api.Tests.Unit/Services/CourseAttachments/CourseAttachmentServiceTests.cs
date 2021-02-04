@@ -1,9 +1,16 @@
-﻿using System;
+﻿//---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+//----------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -60,5 +67,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
+
+        private static SqlException GetSqlException() =>
+         (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
     }
 }
