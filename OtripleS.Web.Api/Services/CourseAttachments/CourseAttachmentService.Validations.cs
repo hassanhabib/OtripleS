@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
 
@@ -40,6 +41,15 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
                 throw new InvalidCourseAttachmentException(
                     parameterName: nameof(CourseAttachment.AttachmentId),
                     parameterValue: attachmentId);
+            }
+        }
+
+        private void ValidateStorageCourseAttachments(
+            IQueryable<CourseAttachment> storageCourseAttachments)
+        {
+            if (!storageCourseAttachments.Any())
+            {
+                this.loggingBroker.LogWarning("No course attachments found in storage.");
             }
         }
     }

@@ -40,7 +40,12 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
         public IQueryable<CourseAttachment> RetrieveAllCourseAttachments() =>
         TryCatch(() =>
         {
-            return storageBroker.SelectAllCourseAttachments();
+            IQueryable<CourseAttachment> storageCourseAttachments =
+                this.storageBroker.SelectAllCourseAttachments();
+
+            ValidateStorageCourseAttachments(storageCourseAttachments);
+
+            return storageCourseAttachments;
         });
 
     }
