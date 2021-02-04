@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
@@ -40,6 +41,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedCourseAttachmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnAddWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            CourseAttachment someCourseAttachment = CreateRandomCourseAttachment();
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedCourseAttachmentDependencyException =
+                new CourseAttachmentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertCourseAttachmentAsync(someCourseAttachment))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<CourseAttachment> addCourseAttachmentTask =
+                this.courseAttachmentService.AddCourseAttachmentAsync(someCourseAttachment);
+
+            // then
+            await Assert.ThrowsAsync<CourseAttachmentDependencyException>(() =>
+                addCourseAttachmentTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCourseAttachmentAsync(someCourseAttachment),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
