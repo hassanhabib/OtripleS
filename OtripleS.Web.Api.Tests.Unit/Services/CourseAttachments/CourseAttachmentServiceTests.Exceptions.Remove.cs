@@ -102,5 +102,48 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someCourseId = Guid.NewGuid();
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+            var lockedAttachmentException =
+                new LockedCourseAttachmentException(databaseUpdateConcurrencyException);
+
+            var expectedCourseAttachmentException =
+                new CourseAttachmentDependencyException(lockedAttachmentException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
+
+            // when
+            ValueTask<CourseAttachment> removeCourseAttachmentTask =
+                this.courseAttachmentService.RemoveCourseAttachmentByIdAsync(someCourseId, someAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<CourseAttachmentDependencyException>(() =>
+                removeCourseAttachmentTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteCourseAttachmentAsync(It.IsAny<CourseAttachment>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
