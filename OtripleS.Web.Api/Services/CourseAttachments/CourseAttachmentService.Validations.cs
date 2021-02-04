@@ -13,6 +13,8 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
         {
             ValidateCourseAttachmentIsNull(courseAttachment);
 
+            ValidateCourseAttachmentIds(courseAttachment.CourseId);
+
         }
 
         private void ValidateCourseAttachmentIsNull(CourseAttachment courseAttachment)
@@ -21,6 +23,17 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             {
                 throw new NullCourseAttachmentException();
             }
+        }
+
+        private void ValidateCourseAttachmentIds(Guid courseId)
+        {
+            if (courseId == default)
+            {
+                throw new InvalidCourseAttachmentException(
+                    parameterName: nameof(CourseAttachment.CourseId),
+                    parameterValue: courseId);
+            }
+
         }
     }
 }

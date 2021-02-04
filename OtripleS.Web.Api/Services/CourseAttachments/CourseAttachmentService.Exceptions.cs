@@ -22,6 +22,10 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             {
                 throw CreateAndLogValidationException(nullCourseAttachmentException);
             }
+            catch (InvalidCourseAttachmentException invalidCourseAttachmentException)
+            {
+                throw CreateAndLogValidationException(invalidCourseAttachmentException);
+            }
         }
 
 
