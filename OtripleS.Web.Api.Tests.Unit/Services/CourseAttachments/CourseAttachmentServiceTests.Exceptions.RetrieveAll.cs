@@ -71,5 +71,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public void ShouldThrowServiceExceptionOnRetrieveAllCourseAttachmentsWhenExceptionOccursAndLogIt()
+        {
+            // given
+            var exception = new Exception();
+
+            var expectedCourseAttachmentServiceException =
+                new CourseAttachmentServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllCourseAttachments())
+                    .Throws(exception);
+
+            // when . then
+            Assert.Throws<CourseAttachmentServiceException>(() =>
+                this.courseAttachmentService.RetrieveAllCourseAttachments());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllCourseAttachments(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
