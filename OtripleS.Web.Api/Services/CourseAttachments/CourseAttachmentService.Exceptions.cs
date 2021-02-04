@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
 
@@ -25,6 +26,13 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             catch (InvalidCourseAttachmentException invalidCourseAttachmentException)
             {
                 throw CreateAndLogValidationException(invalidCourseAttachmentException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsCalendarEntryAttachmentException =
+                    new AlreadyExistsCourseAttachmentException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsCalendarEntryAttachmentException);
             }
         }
 
