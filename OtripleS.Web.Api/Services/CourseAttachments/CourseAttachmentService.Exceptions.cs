@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -19,6 +20,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
     public partial class CourseAttachmentService
     {
         private delegate ValueTask<CourseAttachment> ReturningCourseAttachmentFunction();
+        private delegate IQueryable<CourseAttachment> ReturningCourseAttachmentsFunction();
 
         private async ValueTask<CourseAttachment> TryCatch(
             ReturningCourseAttachmentFunction returningCourseAttachmentFunction)
@@ -63,6 +65,27 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
                     new LockedCourseAttachmentException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedCourseAttachmentException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private IQueryable<CourseAttachment> TryCatch(
+            ReturningCourseAttachmentsFunction returningCourseAttachmentsFunction)
+        {
+            try
+            {
+                return returningCourseAttachmentsFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
             }
             catch (DbUpdateException dbUpdateException)
             {

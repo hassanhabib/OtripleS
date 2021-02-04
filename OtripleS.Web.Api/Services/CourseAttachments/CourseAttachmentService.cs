@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -36,6 +37,17 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             ValidateCourseAttachmentOnCreate(courseAttachment);
 
             return await storageBroker.InsertCourseAttachmentAsync(courseAttachment);
+        });
+
+        public IQueryable<CourseAttachment> RetrieveAllCourseAttachments() =>
+        TryCatch(() =>
+        {
+            IQueryable<CourseAttachment> storageCourseAttachments =
+                this.storageBroker.SelectAllCourseAttachments();
+
+            ValidateStorageCourseAttachments(storageCourseAttachments);
+
+            return storageCourseAttachments;
         });
 
         public ValueTask<CourseAttachment> RetrieveCourseAttachmentByIdAsync(Guid courseId, Guid attachmentId) =>
