@@ -12,7 +12,7 @@ using OtripleS.Web.Api.Models.CourseAttachments;
 
 namespace OtripleS.Web.Api.Services.CourseAttachments
 {
-    public class CourseAttachmentService : ICourseAttachmentService
+    public partial class CourseAttachmentService : ICourseAttachmentService
     {
 
         private readonly IStorageBroker storageBroker;
@@ -29,12 +29,15 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async ValueTask<CourseAttachment> RetrieveCourseAttachmentByIdAsync(Guid courseId, Guid attachmentId)
+        public ValueTask<CourseAttachment> RetrieveCourseAttachmentByIdAsync(Guid courseId, Guid attachmentId) =>
+        TryCatch(async () =>
         {
+            ValidateCourseAttachmentIds(courseId, attachmentId);
+
             CourseAttachment storageCourseAttachment =
                 await this.storageBroker.SelectCourseAttachmentByIdAsync(courseId, attachmentId);
 
             return storageCourseAttachment;
-        }
+        });
     }
 }
