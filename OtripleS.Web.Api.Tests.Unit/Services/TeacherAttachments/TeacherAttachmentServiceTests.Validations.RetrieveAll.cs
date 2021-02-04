@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
         public void ShouldLogWarningOnRetrieveAllWhenTeacherAttachmentsWereEmptyAndLogIt()
         {
             // given
-            IQueryable<TeacherAttachment> emptyStorageTeacherAttachments = 
+            IQueryable<TeacherAttachment> emptyStorageTeacherAttachments =
                 new List<TeacherAttachment>().AsQueryable();
 
             IQueryable<TeacherAttachment> storageTeacherAttachments = emptyStorageTeacherAttachments;

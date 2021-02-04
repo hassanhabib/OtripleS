@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Assignments;
@@ -22,7 +21,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
             this.otripleSApiBroker = otripleSApiBroker;
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
-     
+
         private Assignment CreateRandomAssignment() =>
             CreateRandomAssignmentFiller().Create();
 

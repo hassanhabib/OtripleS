@@ -3,13 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions;
-using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
@@ -74,7 +74,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                     (someCalendarEntryId, someAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<CalendarEntryAttachmentDependencyException>(() => 
+            await Assert.ThrowsAsync<CalendarEntryAttachmentDependencyException>(() =>
                 retrieveAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>

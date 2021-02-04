@@ -30,10 +30,10 @@ namespace OtripleS.Web.Api.Models.Attachments
 
         [JsonIgnore]
         public IEnumerable<StudentAttachment> StudentAttachments { get; set; }
-        
+
         [JsonIgnore]
         public IEnumerable<GuardianAttachment> GuardianAttachments { get; set; }
-        
+
         [JsonIgnore]
         public IEnumerable<TeacherAttachment> TeacherAttachments { get; set; }
 

@@ -24,7 +24,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntryAttachments
             CalendarEntryAttachment expectedCalendarEntryAttachment = inputCalendarEntryAttachment;
 
             // when             
-            CalendarEntryAttachment actualCalendarEntryAttachment = 
+            CalendarEntryAttachment actualCalendarEntryAttachment =
                 await this.otripleSApiBroker.PostCalendarEntryAttachmentAsync(inputCalendarEntryAttachment);
 
             CalendarEntryAttachment retrievedCalendarEntryAttachment =

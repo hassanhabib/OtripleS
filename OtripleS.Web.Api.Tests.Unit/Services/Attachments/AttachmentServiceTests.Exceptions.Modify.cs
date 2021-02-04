@@ -15,194 +15,194 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 {
     public partial class AttachmentServiceTests
-	{
-		[Fact]
-		public async Task ShouldThrowDependencyExceptionOnModifyIfSqlExceptionOccursAndLogItAsync()
-		{
-			// given
-			int randomNegativeNumber = GetNegativeRandomNumber();
-			DateTimeOffset randomDateTime = GetRandomDateTime();
-			Attachment randomAttachment = CreateRandomAttachment(randomDateTime);
-			Attachment someAttachment = randomAttachment;
-			someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
-			SqlException sqlException = GetSqlException();
+    {
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnModifyIfSqlExceptionOccursAndLogItAsync()
+        {
+            // given
+            int randomNegativeNumber = GetNegativeRandomNumber();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Attachment randomAttachment = CreateRandomAttachment(randomDateTime);
+            Attachment someAttachment = randomAttachment;
+            someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+            SqlException sqlException = GetSqlException();
 
-			var expectedAttachmentDependencyException =
-				new AttachmentDependencyException(sqlException);
+            var expectedAttachmentDependencyException =
+                new AttachmentDependencyException(sqlException);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectAttachmentByIdAsync(someAttachment.Id))
-					.ThrowsAsync(sqlException);
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAttachmentByIdAsync(someAttachment.Id))
+                    .ThrowsAsync(sqlException);
 
-			this.dateTimeBrokerMock.Setup(broker =>
-				broker.GetCurrentDateTime())
-					.Returns(randomDateTime);
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
 
-			// when
-			ValueTask<Attachment> modifyAttachmentTask =
-				this.attachmentService.ModifyAttachmentAsync(someAttachment);
+            // when
+            ValueTask<Attachment> modifyAttachmentTask =
+                this.attachmentService.ModifyAttachmentAsync(someAttachment);
 
-			// then
-			await Assert.ThrowsAsync<AttachmentDependencyException>(() =>
-				modifyAttachmentTask.AsTask());
+            // then
+            await Assert.ThrowsAsync<AttachmentDependencyException>(() =>
+                modifyAttachmentTask.AsTask());
 
-			this.dateTimeBrokerMock.Verify(broker =>
-				broker.GetCurrentDateTime(),
-					Times.Once);
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectAttachmentByIdAsync(someAttachment.Id),
-					Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAttachmentByIdAsync(someAttachment.Id),
+                    Times.Once);
 
-			this.loggingBrokerMock.Verify(broker =>
-				broker.LogCritical(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
-					Times.Once);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
+                    Times.Once);
 
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-		}
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
 
-		[Fact]
-		public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateExceptionOccursAndLogItAsync()
-		{
-			// given
-			int randomNegativeNumber = GetNegativeRandomNumber();
-			DateTimeOffset randomDateTime = GetRandomDateTime();
-			Attachment randomAttachment = CreateRandomAttachment(randomDateTime);
-			Attachment someAttachment = randomAttachment;
-			someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
-			var databaseUpdateException = new DbUpdateException();
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateExceptionOccursAndLogItAsync()
+        {
+            // given
+            int randomNegativeNumber = GetNegativeRandomNumber();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Attachment randomAttachment = CreateRandomAttachment(randomDateTime);
+            Attachment someAttachment = randomAttachment;
+            someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+            var databaseUpdateException = new DbUpdateException();
 
-			var expectedAttachmentDependencyException =
-				new AttachmentDependencyException(databaseUpdateException);
+            var expectedAttachmentDependencyException =
+                new AttachmentDependencyException(databaseUpdateException);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectAttachmentByIdAsync(someAttachment.Id))
-					.ThrowsAsync(databaseUpdateException);
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAttachmentByIdAsync(someAttachment.Id))
+                    .ThrowsAsync(databaseUpdateException);
 
-			this.dateTimeBrokerMock.Setup(broker =>
-				broker.GetCurrentDateTime())
-					.Returns(randomDateTime);
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
 
-			// when
-			ValueTask<Attachment> modifyAttachmentTask =
-				this.attachmentService.ModifyAttachmentAsync(someAttachment);
+            // when
+            ValueTask<Attachment> modifyAttachmentTask =
+                this.attachmentService.ModifyAttachmentAsync(someAttachment);
 
-			// then
-			await Assert.ThrowsAsync<AttachmentDependencyException>(() =>
-				modifyAttachmentTask.AsTask());
+            // then
+            await Assert.ThrowsAsync<AttachmentDependencyException>(() =>
+                modifyAttachmentTask.AsTask());
 
-			this.dateTimeBrokerMock.Verify(broker =>
-				broker.GetCurrentDateTime(),
-					Times.Once);
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectAttachmentByIdAsync(someAttachment.Id),
-					Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAttachmentByIdAsync(someAttachment.Id),
+                    Times.Once);
 
-			this.loggingBrokerMock.Verify(broker =>
-				broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
-					Times.Once);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
+                    Times.Once);
 
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-		}
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
 
-		[Fact]
-		public async Task ShouldThrowServiceExceptionOnModifyIfServiceExceptionOccursAndLogItAsync()
-		{
-			// given
-			int randomNegativeNumber = GetNegativeRandomNumber();
-			DateTimeOffset randomDateTime = GetRandomDateTime();
-			Attachment randomAttachment = CreateRandomAttachment(randomDateTime);
-			Attachment someAttachment = randomAttachment;
-			someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
-			var serviceException = new Exception();
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnModifyIfServiceExceptionOccursAndLogItAsync()
+        {
+            // given
+            int randomNegativeNumber = GetNegativeRandomNumber();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Attachment randomAttachment = CreateRandomAttachment(randomDateTime);
+            Attachment someAttachment = randomAttachment;
+            someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+            var serviceException = new Exception();
 
-			var expectedAttachmentServiceException =
-				new AttachmentServiceException(serviceException);
+            var expectedAttachmentServiceException =
+                new AttachmentServiceException(serviceException);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectAttachmentByIdAsync(someAttachment.Id))
-					.ThrowsAsync(serviceException);
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAttachmentByIdAsync(someAttachment.Id))
+                    .ThrowsAsync(serviceException);
 
-			this.dateTimeBrokerMock.Setup(broker =>
-				broker.GetCurrentDateTime())
-					.Returns(randomDateTime);
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
 
-			// when
-			ValueTask<Attachment> modifyAttachmentTask =
-				this.attachmentService.ModifyAttachmentAsync(someAttachment);
+            // when
+            ValueTask<Attachment> modifyAttachmentTask =
+                this.attachmentService.ModifyAttachmentAsync(someAttachment);
 
-			// then
-			await Assert.ThrowsAsync<AttachmentServiceException>(() =>
-				modifyAttachmentTask.AsTask());
+            // then
+            await Assert.ThrowsAsync<AttachmentServiceException>(() =>
+                modifyAttachmentTask.AsTask());
 
-			this.dateTimeBrokerMock.Verify(broker =>
-				broker.GetCurrentDateTime(),
-					Times.Once);
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectAttachmentByIdAsync(someAttachment.Id),
-					Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAttachmentByIdAsync(someAttachment.Id),
+                    Times.Once);
 
-			this.loggingBrokerMock.Verify(broker =>
-				broker.LogError(It.Is(SameExceptionAs(expectedAttachmentServiceException))),
-					Times.Once);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentServiceException))),
+                    Times.Once);
 
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-		}
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
 
-		[Fact]
-		public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateConcurrencyExceptionOccursAndLogItAsync()
-		{
-			// given
-			int randomNegativeNumber = GetNegativeRandomNumber();
-			DateTimeOffset randomDateTime = GetRandomDateTime();
-			Attachment randomAttachment = CreateRandomAttachment(randomDateTime);
-			Attachment someAttachment = randomAttachment;
-			someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
-			var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
-			var lockedAttachmentException = new LockedAttachmentException(databaseUpdateConcurrencyException);
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            int randomNegativeNumber = GetNegativeRandomNumber();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Attachment randomAttachment = CreateRandomAttachment(randomDateTime);
+            Attachment someAttachment = randomAttachment;
+            someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+            var lockedAttachmentException = new LockedAttachmentException(databaseUpdateConcurrencyException);
 
-			var expectedAttachmentDependencyException =
-				new AttachmentDependencyException(lockedAttachmentException);
+            var expectedAttachmentDependencyException =
+                new AttachmentDependencyException(lockedAttachmentException);
 
-			this.storageBrokerMock.Setup(broker =>
-				broker.SelectAttachmentByIdAsync(someAttachment.Id))
-					.ThrowsAsync(databaseUpdateConcurrencyException);
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAttachmentByIdAsync(someAttachment.Id))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
 
-			this.dateTimeBrokerMock.Setup(broker =>
-				broker.GetCurrentDateTime())
-					.Returns(randomDateTime);
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
 
-			// when
-			ValueTask<Attachment> modifyAttachmentTask =
-				this.attachmentService.ModifyAttachmentAsync(someAttachment);
+            // when
+            ValueTask<Attachment> modifyAttachmentTask =
+                this.attachmentService.ModifyAttachmentAsync(someAttachment);
 
-			// then
-			await Assert.ThrowsAsync<AttachmentDependencyException>(() =>
-				modifyAttachmentTask.AsTask());
+            // then
+            await Assert.ThrowsAsync<AttachmentDependencyException>(() =>
+                modifyAttachmentTask.AsTask());
 
-			this.dateTimeBrokerMock.Verify(broker =>
-				broker.GetCurrentDateTime(),
-					Times.Once);
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
-			this.storageBrokerMock.Verify(broker =>
-				broker.SelectAttachmentByIdAsync(someAttachment.Id),
-					Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAttachmentByIdAsync(someAttachment.Id),
+                    Times.Once);
 
-			this.loggingBrokerMock.Verify(broker =>
-				broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
-					Times.Once);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
+                    Times.Once);
 
-			this.loggingBrokerMock.VerifyNoOtherCalls();
-			this.storageBrokerMock.VerifyNoOtherCalls();
-			this.dateTimeBrokerMock.VerifyNoOtherCalls();
-		}
-	}
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+    }
 }

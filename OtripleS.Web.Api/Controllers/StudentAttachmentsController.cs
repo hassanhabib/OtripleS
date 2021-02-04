@@ -79,7 +79,7 @@ namespace OtripleS.Web.Api.Controllers
 
         [HttpGet("students/{studentId}/attachments/{attachmentId}")]
         public async ValueTask<ActionResult<StudentAttachment>> GetStudentAttachmentAsync(
-            Guid studentId, 
+            Guid studentId,
             Guid attachmentId)
         {
             try

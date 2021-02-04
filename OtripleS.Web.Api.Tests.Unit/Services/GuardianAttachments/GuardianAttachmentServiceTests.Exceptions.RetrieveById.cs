@@ -119,7 +119,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
                 this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(() => 
+            await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(() =>
                 retrieveGuardianAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>

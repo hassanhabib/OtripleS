@@ -4,8 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -31,7 +29,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
         }
 
         public ValueTask<CourseAttachment> RemoveCourseAttachmentByIdAsync
-            (Guid courseId, Guid attachmentId) => TryCatch(async () => 
+            (Guid courseId, Guid attachmentId) => TryCatch(async () =>
             {
                 ValidateCourseAttachmentIds(courseId, attachmentId);
 
@@ -41,6 +39,6 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
                 ValidateStorageCourseAttachment(maybeCourseAttachment, courseId, attachmentId);
 
                 return await this.storageBroker.DeleteCourseAttachmentAsync(maybeCourseAttachment);
-            });       
+            });
     }
 }
