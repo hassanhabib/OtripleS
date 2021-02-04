@@ -37,10 +37,11 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             return await storageBroker.InsertCourseAttachmentAsync(courseAttachment);
         });
 
-        public IQueryable<CourseAttachment> RetrieveAllCourseAttachments()
+        public IQueryable<CourseAttachment> RetrieveAllCourseAttachments() =>
+        TryCatch(() =>
         {
             return storageBroker.SelectAllCourseAttachments();
-        }
+        });
 
     }
 }
