@@ -25,9 +25,13 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async ValueTask<CourseAttachment> AddCourseAttachmentAsync(CourseAttachment courseAttachment)
+        public ValueTask<CourseAttachment> AddCourseAttachmentAsync(CourseAttachment courseAttachment) =>
+        TryCatch(async () =>
         {
+            ValidateCourseAttachmentOnCreate(courseAttachment);
+
             return await storageBroker.InsertCourseAttachmentAsync(courseAttachment);
-        }
+        });
+
     }
 }
