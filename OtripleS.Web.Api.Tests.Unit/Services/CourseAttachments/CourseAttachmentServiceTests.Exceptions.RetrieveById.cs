@@ -53,5 +53,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someCourseId = Guid.NewGuid();
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedCourseAttachmentDependencyException =
+                new CourseAttachmentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<CourseAttachment> retrieveAttachmentTask =
+                this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync
+                    (someCourseId, someAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<CourseAttachmentDependencyException>(() =>
+                retrieveAttachmentTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentDependencyException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
