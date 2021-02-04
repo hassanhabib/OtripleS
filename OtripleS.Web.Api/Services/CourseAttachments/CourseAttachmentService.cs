@@ -29,9 +29,12 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<CourseAttachment> RetrieveCourseAttachmentByIdAsync(Guid courseId, Guid attachmentId)
+        public async ValueTask<CourseAttachment> RetrieveCourseAttachmentByIdAsync(Guid courseId, Guid attachmentId)
         {
-            throw new NotImplementedException();
+            CourseAttachment storageCourseAttachment =
+                await this.storageBroker.SelectCourseAttachmentByIdAsync(courseId, attachmentId);
+
+            return storageCourseAttachment;
         }
     }
 }
