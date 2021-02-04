@@ -38,6 +38,13 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             {
                 throw CreateAndLogValidationException(notFoundCourseAttachmentException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedCourseAttachmentException = 
+                    new LockedCourseAttachmentException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedCourseAttachmentException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
