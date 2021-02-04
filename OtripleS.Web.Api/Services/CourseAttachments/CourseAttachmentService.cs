@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿//---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+//----------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -21,13 +21,22 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 
         public CourseAttachmentService(
             IStorageBroker storageBroker,
-            IDateTimeBroker dateTimeBroker,
-            ILoggingBroker loggingBroker)
+            ILoggingBroker loggingBroker,
+            IDateTimeBroker dateTimeBroker)
         {
             this.storageBroker = storageBroker;
+            this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
             this.loggingBroker = loggingBroker;
         }
+
+        public ValueTask<CourseAttachment> AddCourseAttachmentAsync(CourseAttachment courseAttachment) =>
+        TryCatch(async () =>
+        {
+            ValidateCourseAttachmentOnCreate(courseAttachment);
+
+            return await storageBroker.InsertCourseAttachmentAsync(courseAttachment);
+        });
 
         public ValueTask<CourseAttachment> RetrieveCourseAttachmentByIdAsync(Guid courseId, Guid attachmentId) =>
         TryCatch(async () =>
@@ -41,5 +50,6 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 
             return storageCourseAttachment;
         });
+
     }
 }

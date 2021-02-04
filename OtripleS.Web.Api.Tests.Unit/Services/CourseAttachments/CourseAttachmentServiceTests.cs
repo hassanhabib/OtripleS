@@ -1,8 +1,12 @@
-﻿// ---------------------------------------------------------------
+﻿//---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+//----------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
@@ -33,14 +37,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
 
             this.courseAttachmentService = new CourseAttachmentService(
                 storageBroker: this.storageBrokerMock.Object,
-                dateTimeBroker: this.dateTimeBrokerMock.Object,
-                loggingBroker: this.loggingBrokerMock.Object);
+                loggingBroker: this.loggingBrokerMock.Object,
+                dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
         private IQueryable<CourseAttachment> CreateRandomCourseAttachments() =>
             CreateCourseAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
+
         private static string GetRandomMessage() => new MnemonicString().GetValue();
 
         private static DateTimeOffset GetRandomDateTime() =>

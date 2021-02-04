@@ -1,10 +1,11 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿//---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+//----------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Brokers.DateTimes;
@@ -26,9 +27,13 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             {
                 return await returningCourseAttachmentFunction();
             }
-            catch (InvalidCourseAttachmentException invalidCourseAttachmentInputException)
+            catch (NullCourseAttachmentException nullCourseAttachmentException)
             {
-                throw CreateAndLogValidationException(invalidCourseAttachmentInputException);
+                throw CreateAndLogValidationException(nullCourseAttachmentException);
+            }
+            catch (InvalidCourseAttachmentException invalidCourseAttachmentException)
+            {
+                throw CreateAndLogValidationException(invalidCourseAttachmentException);
             }
             catch (SqlException sqlException)
             {
@@ -38,9 +43,23 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             {
                 throw CreateAndLogValidationException(notFoundCourseAttachmentException);
             }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsCourseAttachmentException =
+                    new AlreadyExistsCourseAttachmentException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsCourseAttachmentException);
+            }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidCourseAttachmentReferenceException =
+                    new InvalidCourseAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidCourseAttachmentReferenceException);
+            }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                var lockedCourseAttachmentException = 
+                var lockedCourseAttachmentException =
                     new LockedCourseAttachmentException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedCourseAttachmentException);
@@ -54,6 +73,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
                 throw CreateAndLogServiceException(exception);
             }
         }
+
 
         private CourseAttachmentValidationException CreateAndLogValidationException(Exception exception)
         {
@@ -86,5 +106,6 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 
             return CourseAttachmentServiceException;
         }
+
     }
 }
