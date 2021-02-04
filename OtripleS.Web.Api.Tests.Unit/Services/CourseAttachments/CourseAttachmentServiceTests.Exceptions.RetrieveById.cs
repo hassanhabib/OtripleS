@@ -71,8 +71,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
 
             // when
             ValueTask<CourseAttachment> retrieveAttachmentTask =
-                this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync
-                    (someCourseId, someAttachmentId);
+                this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync(
+                    someCourseId, 
+                    someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<CourseAttachmentDependencyException>(() =>
@@ -147,8 +148,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
 
             // when
             ValueTask<CourseAttachment> retrieveCourseAttachmentTask =
-                this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync
-                    (someCourseId, someAttachmentId);
+                this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync(
+                    someCourseId, 
+                    someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<CourseAttachmentServiceException>(() =>
