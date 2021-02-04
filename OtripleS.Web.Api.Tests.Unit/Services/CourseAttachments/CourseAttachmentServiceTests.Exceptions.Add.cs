@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 new CourseAttachmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertCourseAttachmentAsync(someCourseAttachment))
+                broker.InsertCourseAttachmentAsync(It.IsAny<CourseAttachment>()))
                     .ThrowsAsync(sqlException);
 
             // when
@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 addCourseAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertCourseAttachmentAsync(someCourseAttachment),
+                broker.InsertCourseAttachmentAsync(It.IsAny<CourseAttachment>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -61,7 +61,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 new CourseAttachmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertCourseAttachmentAsync(someCourseAttachment))
+                broker.InsertCourseAttachmentAsync(It.IsAny<CourseAttachment>()))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
@@ -73,7 +73,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 addCourseAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertCourseAttachmentAsync(someCourseAttachment),
+                broker.InsertCourseAttachmentAsync(It.IsAny<CourseAttachment>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -96,7 +96,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 new CourseAttachmentServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertCourseAttachmentAsync(someCourseAttachment))
+                broker.InsertCourseAttachmentAsync(It.IsAny<CourseAttachment>()))
                     .ThrowsAsync(exception);
 
             // when
@@ -108,7 +108,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 addCourseAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertCourseAttachmentAsync(someCourseAttachment),
+                broker.InsertCourseAttachmentAsync(It.IsAny<CourseAttachment>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>

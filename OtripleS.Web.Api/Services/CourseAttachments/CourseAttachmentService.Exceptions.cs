@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using OtripleS.Web.Api.Brokers.DateTimes;
+using OtripleS.Web.Api.Brokers.Loggings;
+using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
 
@@ -38,6 +41,10 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (NotFoundCourseAttachmentException notFoundCourseAttachmentException)
+            {
+                throw CreateAndLogValidationException(notFoundCourseAttachmentException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsCourseAttachmentException =
@@ -51,6 +58,13 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
                     new InvalidCourseAttachmentReferenceException(foreignKeyConstraintConflictException);
 
                 throw CreateAndLogValidationException(invalidCourseAttachmentReferenceException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedCourseAttachmentException =
+                    new LockedCourseAttachmentException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedCourseAttachmentException);
             }
             catch (DbUpdateException dbUpdateException)
             {

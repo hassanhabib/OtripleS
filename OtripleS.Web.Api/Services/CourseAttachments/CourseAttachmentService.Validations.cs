@@ -4,7 +4,10 @@
 //----------------------------------------------------------------
 
 using System;
-using System.Linq;
+using System.Threading.Tasks;
+using OtripleS.Web.Api.Brokers.DateTimes;
+using OtripleS.Web.Api.Brokers.Loggings;
+using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
 
@@ -30,27 +33,27 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 
         private void ValidateCourseAttachmentIds(Guid courseId, Guid attachmentId)
         {
-            if (courseId == default)
+            switch (courseId, attachmentId)
             {
-                throw new InvalidCourseAttachmentException(
-                    parameterName: nameof(CourseAttachment.CourseId),
-                    parameterValue: courseId);
-            }
-            else if (attachmentId == default)
-            {
-                throw new InvalidCourseAttachmentException(
-                    parameterName: nameof(CourseAttachment.AttachmentId),
-                    parameterValue: attachmentId);
+                case { } when (courseId == default):
+                    throw new InvalidCourseAttachmentException(
+                        parameterName: nameof(CourseAttachment.CourseId),
+                        parameterValue: courseId);
+
+                case { } when (attachmentId == default):
+                    throw new InvalidCourseAttachmentException(
+                        parameterName: nameof(CourseAttachment.AttachmentId),
+                        parameterValue: attachmentId);
             }
         }
 
-        private void ValidateStorageCourseAttachments(
-            IQueryable<CourseAttachment> storageCourseAttachments)
+        private void ValidateStorageCourseAttachment(
+            CourseAttachment storageCourseAttachment, 
+            Guid courseId, 
+            Guid attachmentId)
         {
-            if (!storageCourseAttachments.Any())
-            {
-                this.loggingBroker.LogWarning("No course attachments found in storage.");
-            }
+            if (storageCourseAttachment == null)
+                throw new NotFoundCourseAttachmentException(courseId, attachmentId);
         }
     }
 }

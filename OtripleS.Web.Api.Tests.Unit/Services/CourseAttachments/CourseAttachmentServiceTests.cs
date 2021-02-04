@@ -14,6 +14,10 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Services.CourseAttachments;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
@@ -48,7 +52,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private CourseAttachment CreateRandomCourseAttachment() =>
-            CreateCourseAttachmentFiller(DateTimeOffset.UtcNow).Create();
+            CreateCourseAttachmentFiller(GetRandomDateTime()).Create();
 
         private CourseAttachment CreateRandomCourseAttachment(DateTimeOffset dates) =>
             CreateCourseAttachmentFiller(dates).Create();

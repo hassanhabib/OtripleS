@@ -7,9 +7,12 @@ using System;
 
 namespace OtripleS.Web.Api.Models.CourseAttachments.Exceptions
 {
-    public class CourseAttachmentValidationException : Exception
+    public class NotFoundCourseAttachmentException : Exception
     {
-        public CourseAttachmentValidationException(Exception innerException)
-            : base("Invalid input, contact support.", innerException) { }
+        public NotFoundCourseAttachmentException(Guid courseId, Guid attachmentId)
+          : base($"Couldn't find Course Attachment with courseId: " +
+                    $"{courseId} " +
+                    $"and attachmentId: {attachmentId}.")
+        { }
     }
 }

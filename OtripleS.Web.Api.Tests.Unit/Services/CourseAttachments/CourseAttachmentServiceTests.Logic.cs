@@ -36,7 +36,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCourseAttachmentAsync(inputCourseAttachment),
-                    Times.Once);
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldRetrieveCourseAttachmentById()
+        {
+            // given
+            CourseAttachment randomCourseAttachment = CreateRandomCourseAttachment();
+            CourseAttachment storageCourseAttachment = randomCourseAttachment;
+            CourseAttachment expectedCourseAttachment = storageCourseAttachment;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCourseAttachmentByIdAsync(
+                    randomCourseAttachment.CourseId,
+                    randomCourseAttachment.AttachmentId))
+                        .Returns(new ValueTask<CourseAttachment>(randomCourseAttachment));
+
+            // when
+            CourseAttachment actualCourseAttachment = await
+                this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync(
+                    randomCourseAttachment.CourseId,
+                    randomCourseAttachment.AttachmentId);
+
+            // then
+            actualCourseAttachment.Should().BeEquivalentTo(expectedCourseAttachment);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCourseAttachmentByIdAsync(
+                    randomCourseAttachment.CourseId,
+                    randomCourseAttachment.AttachmentId),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

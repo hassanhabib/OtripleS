@@ -3,7 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
-using System.Linq;
+using System;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -14,6 +14,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 {
     public partial class CourseAttachmentService : ICourseAttachmentService
     {
+
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
         private readonly IDateTimeBroker dateTimeBroker;
@@ -26,6 +27,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             this.storageBroker = storageBroker;
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
+            this.loggingBroker = loggingBroker;
         }
 
         public ValueTask<CourseAttachment> AddCourseAttachmentAsync(CourseAttachment courseAttachment) =>
@@ -36,15 +38,17 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             return await storageBroker.InsertCourseAttachmentAsync(courseAttachment);
         });
 
-        public IQueryable<CourseAttachment> RetrieveAllCourseAttachments() =>
-        TryCatch(() =>
+        public ValueTask<CourseAttachment> RetrieveCourseAttachmentByIdAsync(Guid courseId, Guid attachmentId) =>
+        TryCatch(async () =>
         {
-            IQueryable<CourseAttachment> storageCourseAttachments =
-                this.storageBroker.SelectAllCourseAttachments();
+            ValidateCourseAttachmentIds(courseId, attachmentId);
 
-            ValidateStorageCourseAttachments(storageCourseAttachments);
+            CourseAttachment storageCourseAttachment =
+                await this.storageBroker.SelectCourseAttachmentByIdAsync(courseId, attachmentId);
 
-            return storageCourseAttachments;
+            ValidateStorageCourseAttachment(storageCourseAttachment, courseId, attachmentId);
+
+            return storageCourseAttachment;
         });
 
     }

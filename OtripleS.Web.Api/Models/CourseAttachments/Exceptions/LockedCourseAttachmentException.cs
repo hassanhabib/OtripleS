@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.CourseAttachments.Exceptions
 {
-    public class CourseAttachmentValidationException : Exception
+    public class LockedCourseAttachmentException : Exception
     {
-        public CourseAttachmentValidationException(Exception innerException)
-            : base("Invalid input, contact support.", innerException) { }
+        public LockedCourseAttachmentException(Exception innerException)
+            : base("Locked Course Attachment record exception, please try again later.", innerException) { }
     }
 }
