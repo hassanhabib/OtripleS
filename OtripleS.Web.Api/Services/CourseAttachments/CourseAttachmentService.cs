@@ -25,9 +25,12 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<CourseAttachment> RemoveCourseAttachmentByIdAsync(Guid courseId, Guid attachmentId)
+        public async ValueTask<CourseAttachment> RemoveCourseAttachmentByIdAsync(Guid courseId, Guid attachmentId)
         {
-            throw new NotImplementedException();
+            CourseAttachment maybeCourseAttachment =
+                await this.storageBroker.SelectCourseAttachmentByIdAsync(courseId, attachmentId);
+
+            return await this.storageBroker.DeleteCourseAttachmentAsync(maybeCourseAttachment);
         }
     }
 }
