@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -15,7 +15,6 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 {
     public partial class CourseAttachmentService : ICourseAttachmentService
     {
-
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
         private readonly IDateTimeBroker dateTimeBroker;
@@ -28,9 +27,20 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             this.storageBroker = storageBroker;
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
-            this.loggingBroker = loggingBroker;
         }
 
+        public ValueTask<CourseAttachment> RemoveCourseAttachmentByIdAsync
+            (Guid courseId, Guid attachmentId) => TryCatch(async () =>
+            {
+                ValidateCourseAttachmentIds(courseId, attachmentId);
+
+                CourseAttachment maybeCourseAttachment =
+                 await this.storageBroker.SelectCourseAttachmentByIdAsync(courseId, attachmentId);
+
+                ValidateStorageCourseAttachment(maybeCourseAttachment, courseId, attachmentId);
+
+                return await this.storageBroker.DeleteCourseAttachmentAsync(maybeCourseAttachment);
+            });
         public ValueTask<CourseAttachment> AddCourseAttachmentAsync(CourseAttachment courseAttachment) =>
         TryCatch(async () =>
         {
@@ -51,17 +61,16 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
         });
 
         public ValueTask<CourseAttachment> RetrieveCourseAttachmentByIdAsync(Guid courseId, Guid attachmentId) =>
-        TryCatch(async () =>
-        {
-            ValidateCourseAttachmentIds(courseId, attachmentId);
+           TryCatch(async () =>
+           {
+               ValidateCourseAttachmentIds(courseId, attachmentId);
 
-            CourseAttachment storageCourseAttachment =
-                await this.storageBroker.SelectCourseAttachmentByIdAsync(courseId, attachmentId);
+               CourseAttachment storageCourseAttachment =
+                   await this.storageBroker.SelectCourseAttachmentByIdAsync(courseId, attachmentId);
 
-            ValidateStorageCourseAttachment(storageCourseAttachment, courseId, attachmentId);
+               ValidateStorageCourseAttachment(storageCourseAttachment, courseId, attachmentId);
 
-            return storageCourseAttachment;
-        });
-
+               return storageCourseAttachment;
+           });
     }
 }

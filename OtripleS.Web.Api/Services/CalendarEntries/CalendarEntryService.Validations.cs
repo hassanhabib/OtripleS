@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             ValidateCalendarEntryRequiredFields(calendarEntry);
             ValidateCalendarEntryAuditFieldsOnCreate(calendarEntry);
         }
-        
+
         private void ValidateCalendarEntryOnModify(CalendarEntry calendarEntry)
         {
             ValidateCalendarEntryIsNotNull(calendarEntry);
@@ -138,7 +138,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
         }
 
         private void ValidateAgainstStorageCalendarEntryOnModify(
-            CalendarEntry inputCalendarEntry, 
+            CalendarEntry inputCalendarEntry,
             CalendarEntry storageCalendarEntry)
         {
             switch (inputCalendarEntry)

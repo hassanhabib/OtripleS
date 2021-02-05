@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -30,17 +30,17 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 
         private void ValidateCourseAttachmentIds(Guid courseId, Guid attachmentId)
         {
-            switch (courseId, attachmentId)
+            if (courseId == default)
             {
-                case { } when (courseId == default):
-                    throw new InvalidCourseAttachmentException(
-                        parameterName: nameof(CourseAttachment.CourseId),
-                        parameterValue: courseId);
-
-                case { } when (attachmentId == default):
-                    throw new InvalidCourseAttachmentException(
-                        parameterName: nameof(CourseAttachment.AttachmentId),
-                        parameterValue: attachmentId);
+                throw new InvalidCourseAttachmentException(
+                    parameterName: nameof(CourseAttachment.CourseId),
+                    parameterValue: courseId);
+            }
+            else if (attachmentId == default)
+            {
+                throw new InvalidCourseAttachmentException(
+                    parameterName: nameof(CourseAttachment.AttachmentId),
+                    parameterValue: attachmentId);
             }
         }
 

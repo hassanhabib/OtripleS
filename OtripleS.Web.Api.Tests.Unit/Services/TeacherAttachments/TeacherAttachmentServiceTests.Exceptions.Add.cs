@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
                 this.teacherAttachmentService.AddTeacherAttachmentAsync(inputTeacherAttachment);
 
             // then
-            await Assert.ThrowsAsync<TeacherAttachmentDependencyException>(() => 
+            await Assert.ThrowsAsync<TeacherAttachmentDependencyException>(() =>
                 addTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
             TeacherAttachment inputTeacherAttachment = randomTeacherAttachment;
             var databaseUpdateException = new DbUpdateException();
 
-            var expectedTeacherAttachmentDependencyException = 
+            var expectedTeacherAttachmentDependencyException =
                 new TeacherAttachmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
                 this.teacherAttachmentService.AddTeacherAttachmentAsync(inputTeacherAttachment);
 
             // then
-            await Assert.ThrowsAsync<TeacherAttachmentDependencyException>(() => 
+            await Assert.ThrowsAsync<TeacherAttachmentDependencyException>(() =>
                 addTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
@@ -103,7 +103,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
                  this.teacherAttachmentService.AddTeacherAttachmentAsync(inputTeacherAttachment);
 
             // then
-            await Assert.ThrowsAsync<TeacherAttachmentServiceException>(() => 
+            await Assert.ThrowsAsync<TeacherAttachmentServiceException>(() =>
                 addTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>

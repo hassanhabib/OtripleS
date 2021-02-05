@@ -18,8 +18,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         {
             // given
             var sqlException = GetSqlException();
-            
-            var expectedCalendarEntryAttachmentDependencyException = 
+
+            var expectedCalendarEntryAttachmentDependencyException =
                 new CalendarEntryAttachmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>

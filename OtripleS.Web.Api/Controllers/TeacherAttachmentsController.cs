@@ -15,7 +15,7 @@ using RESTFulSense.Controllers;
 namespace OtripleS.Web.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]    
+    [Route("api/[controller]")]
     public class TeacherAttachmentsController : RESTFulController
     {
         private readonly ITeacherAttachmentService teacherAttachmentService;

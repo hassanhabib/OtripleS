@@ -24,7 +24,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             Guid someCalendarEntryId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
-            var expectedCalendarEntryAttachmentDependencyException = 
+            var expectedCalendarEntryAttachmentDependencyException =
                 new CalendarEntryAttachmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                     someAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<CalendarEntryAttachmentDependencyException>(() => 
+            await Assert.ThrowsAsync<CalendarEntryAttachmentDependencyException>(() =>
                 removeCalendarEntryAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>

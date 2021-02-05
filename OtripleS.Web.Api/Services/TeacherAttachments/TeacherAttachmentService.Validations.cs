@@ -44,7 +44,7 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
 
         private static void ValidateStorageTeacherAttachment(
             TeacherAttachment storageTeacherAttachment,
-            Guid studentId, 
+            Guid studentId,
             Guid attachmentId)
         {
             if (storageTeacherAttachment is null)

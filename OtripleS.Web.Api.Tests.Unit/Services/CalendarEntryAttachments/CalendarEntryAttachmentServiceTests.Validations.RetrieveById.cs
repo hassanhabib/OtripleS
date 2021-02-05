@@ -3,11 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using System;
+using System.Threading.Tasks;
 using Moq;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions;
-using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
@@ -48,7 +48,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        } 
+        }
 
         [Fact]
         public async Task ShouldThrowValidatonExceptionOnRetrieveWhenAttachmentIdIsInvalidAndLogItAsync()
@@ -72,7 +72,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                     inputCalendarEntryId, inputAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() => 
+            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
                 retrieveCalendarEntryAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
@@ -89,7 +89,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         }
 
         [Fact]
-        public async Task 
+        public async Task
             ShouldThrowValidationExceptionOnRetrieveWhenStorageCalendarEntryAttachmentIsInvalidAndLogItAsync()
         {
             // given
@@ -123,8 +123,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once); 
-            
+                    Times.Once);
+
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

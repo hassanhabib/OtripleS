@@ -11,11 +11,11 @@ using OtripleS.Web.Api.Models.Attachments;
 namespace OtripleS.Web.Api.Services.Attachments
 {
     public interface IAttachmentService
-	{
-		ValueTask<Attachment> AddAttachmentAsync(Attachment attachment);
-		ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId);
-		IQueryable<Attachment> RetrieveAllAttachments();
-		ValueTask<Attachment> ModifyAttachmentAsync(Attachment attachment);
-		ValueTask<Attachment> RemoveAttachmentByIdAsync(Guid attachmentId);
-	}
+    {
+        ValueTask<Attachment> AddAttachmentAsync(Attachment attachment);
+        ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId);
+        IQueryable<Attachment> RetrieveAllAttachments();
+        ValueTask<Attachment> ModifyAttachmentAsync(Attachment attachment);
+        ValueTask<Attachment> RemoveAttachmentByIdAsync(Guid attachmentId);
+    }
 }

@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -9,9 +9,6 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Brokers.DateTimes;
-using OtripleS.Web.Api.Brokers.Loggings;
-using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
 
@@ -37,10 +34,6 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             {
                 throw CreateAndLogValidationException(invalidCourseAttachmentException);
             }
-            catch (SqlException sqlException)
-            {
-                throw CreateAndLogCriticalDependencyException(sqlException);
-            }
             catch (NotFoundCourseAttachmentException notFoundCourseAttachmentException)
             {
                 throw CreateAndLogValidationException(notFoundCourseAttachmentException);
@@ -65,6 +58,10 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
                     new LockedCourseAttachmentException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedCourseAttachmentException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
             }
             catch (DbUpdateException dbUpdateException)
             {

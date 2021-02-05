@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     .Throws(sqlException);
 
             // when 
-            ValueTask<Attachment> retrieveTask = 
+            ValueTask<Attachment> retrieveTask =
                 this.attachmentService.RetrieveAttachmentByIdAsync(badGuid);
 
             // then
@@ -70,7 +70,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     .Throws(databaseUpdateException);
 
             // when
-            ValueTask<Attachment> retrieveTask = 
+            ValueTask<Attachment> retrieveTask =
                 this.attachmentService.RetrieveAttachmentByIdAsync(guid);
 
             // then
@@ -109,7 +109,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     .Throws(exception);
 
             // when 
-            ValueTask<Attachment> retrieveTask = 
+            ValueTask<Attachment> retrieveTask =
                 this.attachmentService.RetrieveAttachmentByIdAsync(guid);
 
             // then
