@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.CourseAttachments;
 
@@ -18,5 +19,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
         ValueTask<CourseAttachment> RetrieveCourseAttachmentByIdAsync(
                 Guid courseId,
                 Guid attachmentId);
+        ValueTask<CourseAttachment> AddCourseAttachmentAsync(CourseAttachment courseAttachment);
+        IQueryable<CourseAttachment> RetrieveAllCourseAttachments();
     }
 }

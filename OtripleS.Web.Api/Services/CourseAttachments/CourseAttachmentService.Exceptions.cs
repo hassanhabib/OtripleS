@@ -4,7 +4,9 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.CourseAttachments;
@@ -15,6 +17,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
     public partial class CourseAttachmentService
     {
         private delegate ValueTask<CourseAttachment> ReturningCourseAttachmentFunction();
+        private delegate IQueryable<CourseAttachment> ReturningCourseAttachmentsFunction();
 
         private async ValueTask<CourseAttachment> TryCatch(
             ReturningCourseAttachmentFunction returningCourseAttachmentFunction)
@@ -23,13 +26,31 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             {
                 return await returningCourseAttachmentFunction();
             }
-            catch (InvalidCourseAttachmentException invalidCourseAttachmentInputException)
+            catch (NullCourseAttachmentException nullCourseAttachmentException)
             {
-                throw CreateAndLogValidationException(invalidCourseAttachmentInputException);
+                throw CreateAndLogValidationException(nullCourseAttachmentException);
+            }
+            catch (InvalidCourseAttachmentException invalidCourseAttachmentException)
+            {
+                throw CreateAndLogValidationException(invalidCourseAttachmentException);
             }
             catch (NotFoundCourseAttachmentException notFoundCourseAttachmentException)
             {
                 throw CreateAndLogValidationException(notFoundCourseAttachmentException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsCourseAttachmentException =
+                    new AlreadyExistsCourseAttachmentException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsCourseAttachmentException);
+            }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidCourseAttachmentReferenceException =
+                    new InvalidCourseAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidCourseAttachmentReferenceException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
@@ -51,6 +72,28 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
                 throw CreateAndLogServiceException(exception);
             }
         }
+
+        private IQueryable<CourseAttachment> TryCatch(
+            ReturningCourseAttachmentsFunction returningCourseAttachmentsFunction)
+        {
+            try
+            {
+                return returningCourseAttachmentsFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
 
         private CourseAttachmentValidationException CreateAndLogValidationException(Exception exception)
         {
@@ -83,5 +126,6 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 
             return CourseAttachmentServiceException;
         }
+
     }
 }

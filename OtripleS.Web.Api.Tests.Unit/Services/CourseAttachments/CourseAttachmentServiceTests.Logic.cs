@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -15,41 +16,94 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
     public partial class CourseAttachmentServiceTests
     {
         [Fact]
-        public async Task ShouldRemoveCourseAttachmentAsync()
+        public async Task ShouldAddCourseAttachmentAsync()
         {
             // given
-            var randomCourseId = Guid.NewGuid();
-            var randomAttachmentId = Guid.NewGuid();
-            Guid inputCourseId = randomCourseId;
-            Guid inputAttachmentId = randomAttachmentId;
             CourseAttachment randomCourseAttachment = CreateRandomCourseAttachment();
-            randomCourseAttachment.CourseId = inputCourseId;
-            randomCourseAttachment.AttachmentId = inputAttachmentId;
+            CourseAttachment inputCourseAttachment = randomCourseAttachment;
             CourseAttachment storageCourseAttachment = randomCourseAttachment;
             CourseAttachment expectedCourseAttachment = storageCourseAttachment;
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseAttachmentByIdAsync(inputCourseId, inputAttachmentId))
+                broker.InsertCourseAttachmentAsync(inputCourseAttachment))
                     .ReturnsAsync(storageCourseAttachment);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.DeleteCourseAttachmentAsync(storageCourseAttachment))
-                    .ReturnsAsync(expectedCourseAttachment);
 
             // when
             CourseAttachment actualCourseAttachment =
-                await this.courseAttachmentService.RemoveCourseAttachmentByIdAsync(
-                    inputCourseId, inputAttachmentId);
+                await this.courseAttachmentService.AddCourseAttachmentAsync(inputCourseAttachment);
 
             // then
             actualCourseAttachment.Should().BeEquivalentTo(expectedCourseAttachment);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseAttachmentByIdAsync(inputCourseId, inputAttachmentId),
-                    Times.Once);
+                broker.InsertCourseAttachmentAsync(inputCourseAttachment),
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldRetrieveCourseAttachmentById()
+        {
+            // given
+            CourseAttachment randomCourseAttachment = CreateRandomCourseAttachment();
+            CourseAttachment storageCourseAttachment = randomCourseAttachment;
+            CourseAttachment expectedCourseAttachment = storageCourseAttachment;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCourseAttachmentByIdAsync(
+                    randomCourseAttachment.CourseId,
+                    randomCourseAttachment.AttachmentId))
+                        .Returns(new ValueTask<CourseAttachment>(randomCourseAttachment));
+
+            // when
+            CourseAttachment actualCourseAttachment = await
+                this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync(
+                    randomCourseAttachment.CourseId,
+                    randomCourseAttachment.AttachmentId);
+
+            // then
+            actualCourseAttachment.Should().BeEquivalentTo(expectedCourseAttachment);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteCourseAttachmentAsync(storageCourseAttachment),
+                broker.SelectCourseAttachmentByIdAsync(
+                    randomCourseAttachment.CourseId,
+                    randomCourseAttachment.AttachmentId),
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldRetrieveAllCourseAttachments()
+        {
+            // given
+            IQueryable<CourseAttachment> randomCourseAttachments =
+                CreateRandomCourseAttachments();
+
+            IQueryable<CourseAttachment> storageCourseAttachments =
+                randomCourseAttachments;
+
+            IQueryable<CourseAttachment> expectedCourseAttachments =
+                storageCourseAttachments;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllCourseAttachments())
+                    .Returns(storageCourseAttachments);
+
+            // when
+            IQueryable<CourseAttachment> actualCourseAttachments =
+                this.courseAttachmentService.RetrieveAllCourseAttachments();
+
+            // then
+            actualCourseAttachments.Should().BeEquivalentTo(expectedCourseAttachments);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllCourseAttachments(),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();

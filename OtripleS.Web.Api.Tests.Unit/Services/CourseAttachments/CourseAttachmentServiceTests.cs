@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -36,14 +37,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
+        private IQueryable<CourseAttachment> CreateRandomCourseAttachments() =>
+            CreateCourseAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
+
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
         private CourseAttachment CreateRandomCourseAttachment() =>
             CreateCourseAttachmentFiller(DateTimeOffset.UtcNow).Create();
 
         private CourseAttachment CreateRandomCourseAttachment(DateTimeOffset dates) =>
             CreateCourseAttachmentFiller(dates).Create();
-
-        private static DateTimeOffset GetRandomDateTime() =>
-           new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static Filler<CourseAttachment> CreateCourseAttachmentFiller(DateTimeOffset dates)
         {
