@@ -119,6 +119,46 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpDelete("courses/{courseId}/attachments/{attachmentId}")]
+        public async ValueTask<ActionResult<bool>> DeleteCourseAttachmentAsync(Guid courseId, Guid attachmentId)
+        {
+            try
+            {
+                CourseAttachment deletedCourseAttachment =
+                    await this.courseAttachmentService.RemoveCourseAttachmentByIdAsync(courseId, attachmentId);
+
+                return Ok(deletedCourseAttachment);
+            }
+            catch (CourseAttachmentValidationException courseAttachmentValidationException)
+                when (courseAttachmentValidationException.InnerException is NotFoundCourseAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(courseAttachmentValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (CourseAttachmentValidationException courseAttachmentValidationException)
+            {
+                string innerMessage = GetInnerMessage(courseAttachmentValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (CourseAttachmentDependencyException courseAttachmentValidationException)
+               when (courseAttachmentValidationException.InnerException is LockedCourseAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(courseAttachmentValidationException);
+
+                return Locked(innerMessage);
+            }
+            catch (CourseAttachmentDependencyException courseAttachmentDependencyException)
+            {
+                return Problem(courseAttachmentDependencyException.Message);
+            }
+            catch (CourseAttachmentServiceException courseAttachmentServiceException)
+            {
+                return Problem(courseAttachmentServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
