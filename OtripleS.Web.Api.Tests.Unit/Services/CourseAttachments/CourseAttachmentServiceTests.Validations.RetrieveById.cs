@@ -21,11 +21,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             Guid randomAttachmentId = Guid.NewGuid();
             Guid randomCourseId = default;
             Guid inputAttachmentId = randomAttachmentId;
-            Guid inputCourseId = randomCourseId;
+            Guid invalidCourseId = randomCourseId;
 
             var invalidCourseAttachmentInputException = new InvalidCourseAttachmentException(
                 parameterName: nameof(CourseAttachment.CourseId),
-                parameterValue: inputCourseId);
+                parameterValue: invalidCourseId);
 
             var expectedCourseAttachmentValidationException =
                 new CourseAttachmentValidationException(invalidCourseAttachmentInputException);
@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             // when
             ValueTask<CourseAttachment> retrieveCourseAttachmentTask =
                 this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync(
-                    inputCourseId, 
+                    invalidCourseId, 
                     inputAttachmentId);
 
             // then
@@ -59,12 +59,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             // given
             Guid randomAttachmentId = default;
             Guid randomCourseId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
+            Guid invalidAttachmentId = randomAttachmentId;
             Guid inputCourseId = randomCourseId;
 
             var invalidCourseAttachmentInputException = new InvalidCourseAttachmentException(
                 parameterName: nameof(CourseAttachment.AttachmentId),
-                parameterValue: inputAttachmentId);
+                parameterValue: invalidAttachmentId);
 
             var expectedCourseAttachmentValidationException =
                 new CourseAttachmentValidationException(invalidCourseAttachmentInputException);
@@ -73,7 +73,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             ValueTask<CourseAttachment> retrieveCourseAttachmentTask =
                 this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync(
                     inputCourseId, 
-                    inputAttachmentId);
+                    invalidAttachmentId);
 
             // then
             await Assert.ThrowsAsync<CourseAttachmentValidationException>(() =>

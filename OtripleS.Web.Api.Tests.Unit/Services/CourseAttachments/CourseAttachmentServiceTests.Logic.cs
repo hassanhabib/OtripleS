@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCourseAttachmentAsync(inputCourseAttachment),
-                        Times.Once);
+                    Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
