@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CourseAttachmentsController : RESTFulController
+    public class CoursesAttachmentsController : RESTFulController
     {
         private readonly ICourseAttachmentService courseAttachmentService;
 
