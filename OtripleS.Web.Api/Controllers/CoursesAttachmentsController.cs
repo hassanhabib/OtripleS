@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Controllers
     {
         private readonly ICourseAttachmentService courseAttachmentService;
 
-        public CourseAttachmentsController(ICourseAttachmentService courseAttachmentService) =>
+        public CoursesAttachmentsController(ICourseAttachmentService courseAttachmentService) =>
             this.courseAttachmentService = courseAttachmentService;
 
         [HttpPost]

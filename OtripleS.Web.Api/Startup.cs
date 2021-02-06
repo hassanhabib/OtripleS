@@ -24,6 +24,7 @@ using OtripleS.Web.Api.Services.CalendarEntryAttachments;
 using OtripleS.Web.Api.Services.Calendars;
 using OtripleS.Web.Api.Services.Classrooms;
 using OtripleS.Web.Api.Services.Contacts;
+using OtripleS.Web.Api.Services.CourseAttachments;
 using OtripleS.Web.Api.Services.Courses;
 using OtripleS.Web.Api.Services.Exams;
 using OtripleS.Web.Api.Services.GuardianAttachments;
@@ -93,6 +94,7 @@ namespace OtripleS.Web.Api
             services.AddTransient<IGuardianAttachmentService, GuardianAttachmentService>();
             services.AddTransient<ITeacherAttachmentService, TeacherAttachmentService>();
             services.AddTransient<ICalendarEntryAttachmentService, CalendarEntryAttachmentService>();
+            services.AddTransient<ICourseAttachmentService, CourseAttachmentService>();
 
             services.AddIdentityCore<User>()
                     .AddRoles<Role>()
