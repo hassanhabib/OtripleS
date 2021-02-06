@@ -64,7 +64,26 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        
+        [HttpGet]
+        public ActionResult<IQueryable<CourseAttachment>> GetAllCourseAttachments()
+        {
+            try
+            {
+                IQueryable storageCourseAttachments =
+                    this.courseAttachmentService.RetrieveAllCourseAttachments();
+
+                return Ok(storageCourseAttachments);
+            }
+            catch (CourseAttachmentDependencyException courseAttachmentDependencyException)
+            {
+                return Problem(courseAttachmentDependencyException.Message);
+            }
+            catch (CourseAttachmentServiceException courseAttachmentServiceException)
+            {
+                return Problem(courseAttachmentServiceException.Message);
+            }
+        }
+
 
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
