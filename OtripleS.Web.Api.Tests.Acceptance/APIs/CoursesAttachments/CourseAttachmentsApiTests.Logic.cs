@@ -38,6 +38,36 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CoursesAttachments
             await DeleteCourseAttachmentAsync(actualCourseAttachment);
         }
 
-        
+        [Fact]
+        public async Task ShouldGetAllCourseAttachmentsAsync()
+        {
+            // given
+            var randomCourseAttachments = new List<CourseAttachment>();
+
+            for (var i = 0; i <= GetRandomNumber(); i++)
+            {
+                CourseAttachment randomCourseAttachment = await PostCourseAttachmentAsync();
+                randomCourseAttachments.Add(randomCourseAttachment);
+            }
+
+            List<CourseAttachment> inputCourseAttachments = randomCourseAttachments;
+            List<CourseAttachment> expectedCourseAttachments = inputCourseAttachments;
+
+            // when
+            List<CourseAttachment> actualCourseAttachments =
+                await this.otripleSApiBroker.GetAllCourseAttachmentsAsync();
+
+            // then
+            foreach (CourseAttachment expectedCourseAttachment in expectedCourseAttachments)
+            {
+                CourseAttachment actualCourseAttachment =
+                    actualCourseAttachments.Single(studentAttachment =>
+                        studentAttachment.CourseId == expectedCourseAttachment.CourseId);
+
+                actualCourseAttachment.Should().BeEquivalentTo(expectedCourseAttachment);
+
+                await DeleteCourseAttachmentAsync(actualCourseAttachment);
+            }
+        }
     }
 }
