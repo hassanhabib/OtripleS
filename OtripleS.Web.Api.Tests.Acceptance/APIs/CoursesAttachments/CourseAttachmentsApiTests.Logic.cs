@@ -69,5 +69,29 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CoursesAttachments
                 await DeleteCourseAttachmentAsync(actualCourseAttachment);
             }
         }
+
+        [Fact]
+        public async Task ShouldDeleteCourseAttachmentAsync()
+        {
+            // given
+            CourseAttachment randomCourseAttachment = await PostCourseAttachmentAsync();
+            CourseAttachment inputCourseAttachment = randomCourseAttachment;
+            CourseAttachment expectedCourseAttachment = inputCourseAttachment;
+
+            // when 
+            CourseAttachment deletedCourseAttachment =
+                await DeleteCourseAttachmentAsync(inputCourseAttachment);
+
+            ValueTask<CourseAttachment> getCourseAttachmentByIdTask =
+                this.otripleSApiBroker.GetCourseAttachmentByIdsAsync(
+                    inputCourseAttachment.CourseId,
+                    inputCourseAttachment.AttachmentId);
+
+            // then
+            deletedCourseAttachment.Should().BeEquivalentTo(expectedCourseAttachment);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getCourseAttachmentByIdTask.AsTask());
+        }
     }
 }
