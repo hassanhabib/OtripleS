@@ -21,18 +21,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             Guid randomAttachmentId = Guid.NewGuid();
             Guid randomCourseId = default;
             Guid inputAttachmentId = randomAttachmentId;
-            Guid inputCourseId = randomCourseId;
+            Guid invalidCourseId = randomCourseId;
 
             var invalidCourseAttachmentInputException = new InvalidCourseAttachmentException(
                 parameterName: nameof(CourseAttachment.CourseId),
-                parameterValue: inputCourseId);
+                parameterValue: invalidCourseId);
 
             var expectedCourseAttachmentValidationException =
                 new CourseAttachmentValidationException(invalidCourseAttachmentInputException);
 
             // when
             ValueTask<CourseAttachment> removeCourseAttachmentTask =
-                this.courseAttachmentService.RemoveCourseAttachmentByIdAsync(inputCourseId, inputAttachmentId);
+                this.courseAttachmentService.RemoveCourseAttachmentByIdAsync(invalidCourseId, inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<CourseAttachmentValidationException>(() =>
@@ -61,19 +61,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             // given
             Guid randomAttachmentId = default;
             Guid randomCourseId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
+            Guid invalidAttachmentId = randomAttachmentId;
             Guid inputCourseId = randomCourseId;
 
             var invalidCourseAttachmentInputException = new InvalidCourseAttachmentException(
                 parameterName: nameof(CourseAttachment.AttachmentId),
-                parameterValue: inputAttachmentId);
+                parameterValue: invalidAttachmentId);
 
             var expectedCourseAttachmentValidationException =
                 new CourseAttachmentValidationException(invalidCourseAttachmentInputException);
 
             // when
             ValueTask<CourseAttachment> removeCourseAttachmentTask =
-                this.courseAttachmentService.RemoveCourseAttachmentByIdAsync(inputCourseId, inputAttachmentId);
+                this.courseAttachmentService.RemoveCourseAttachmentByIdAsync(inputCourseId, invalidAttachmentId);
 
             // then
             await Assert.ThrowsAsync<CourseAttachmentValidationException>(() =>
@@ -102,23 +102,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
             CourseAttachment randomCourseAttachment = CreateRandomCourseAttachment(randomDateTime);
-            Guid inputAttachmentId = randomCourseAttachment.AttachmentId;
-            Guid inputCourseId = randomCourseAttachment.CourseId;
+            Guid someAttachmentId = randomCourseAttachment.AttachmentId;
+            Guid someCourseId = randomCourseAttachment.CourseId;
             CourseAttachment nullStorageCourseAttachment = null;
 
             var notFoundCourseAttachmentException =
-                new NotFoundCourseAttachmentException(inputCourseId, inputAttachmentId);
+                new NotFoundCourseAttachmentException(someCourseId, someAttachmentId);
 
             var expectedCourseValidationException =
                 new CourseAttachmentValidationException(notFoundCourseAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectCourseAttachmentByIdAsync(inputCourseId, inputAttachmentId))
+                 broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId))
                     .ReturnsAsync(nullStorageCourseAttachment);
 
             // when
             ValueTask<CourseAttachment> removeCourseAttachmentTask =
-                this.courseAttachmentService.RemoveCourseAttachmentByIdAsync(inputCourseId, inputAttachmentId);
+                this.courseAttachmentService.RemoveCourseAttachmentByIdAsync(someCourseId, someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<CourseAttachmentValidationException>(() =>

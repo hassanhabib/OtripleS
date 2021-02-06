@@ -15,9 +15,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
         private void ValidateCourseAttachmentOnCreate(CourseAttachment courseAttachment)
         {
             ValidateCourseAttachmentIsNull(courseAttachment);
-
             ValidateCourseAttachmentIds(courseAttachment.CourseId, courseAttachment.AttachmentId);
-
         }
 
         private void ValidateCourseAttachmentIsNull(CourseAttachment courseAttachment)
@@ -30,17 +28,17 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 
         private void ValidateCourseAttachmentIds(Guid courseId, Guid attachmentId)
         {
-            if (courseId == default)
+            switch(courseId, attachmentId)
             {
-                throw new InvalidCourseAttachmentException(
-                    parameterName: nameof(CourseAttachment.CourseId),
-                    parameterValue: courseId);
-            }
-            else if (attachmentId == default)
-            {
-                throw new InvalidCourseAttachmentException(
-                    parameterName: nameof(CourseAttachment.AttachmentId),
-                    parameterValue: attachmentId);
+                case { } when courseId == default:
+                    throw new InvalidCourseAttachmentException(
+                        parameterName: nameof(CourseAttachment.CourseId),
+                        parameterValue: courseId);
+
+                case { } when attachmentId == default:
+                    throw new InvalidCourseAttachmentException(
+                        parameterName: nameof(CourseAttachment.AttachmentId),
+                        parameterValue: attachmentId);
             }
         }
 

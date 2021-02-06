@@ -94,7 +94,6 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             }
         }
 
-
         private CourseAttachmentValidationException CreateAndLogValidationException(Exception exception)
         {
             var courseAttachmentValidationException = new CourseAttachmentValidationException(exception);
@@ -126,6 +125,5 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 
             return CourseAttachmentServiceException;
         }
-
     }
 }
