@@ -400,6 +400,24 @@ namespace OtripleS.Web.Api.Migrations
                     b.ToTable("Contacts");
                 });
 
+            modelBuilder.Entity("OtripleS.Web.Api.Models.CourseAttachments.CourseAttachment", b =>
+                {
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AttachmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CourseId", "AttachmentId");
+
+                    b.HasIndex("AttachmentId");
+
+                    b.ToTable("CourseAttachments");
+                });
+
             modelBuilder.Entity("OtripleS.Web.Api.Models.Courses.Course", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1056,6 +1074,25 @@ namespace OtripleS.Web.Api.Migrations
                     b.Navigation("CalendarEntry");
                 });
 
+            modelBuilder.Entity("OtripleS.Web.Api.Models.CourseAttachments.CourseAttachment", b =>
+                {
+                    b.HasOne("OtripleS.Web.Api.Models.Attachments.Attachment", "Attachment")
+                        .WithMany("CourseAttachments")
+                        .HasForeignKey("AttachmentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("OtripleS.Web.Api.Models.Courses.Course", "Course")
+                        .WithMany("CourseAttachments")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Attachment");
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("OtripleS.Web.Api.Models.Exams.Exam", b =>
                 {
                     b.HasOne("OtripleS.Web.Api.Models.SemesterCourses.SemesterCourse", "SemesterCourse")
@@ -1296,6 +1333,8 @@ namespace OtripleS.Web.Api.Migrations
                 {
                     b.Navigation("CalendarEntryAttachments");
 
+                    b.Navigation("CourseAttachments");
+
                     b.Navigation("GuardianAttachments");
 
                     b.Navigation("StudentAttachments");
@@ -1331,6 +1370,8 @@ namespace OtripleS.Web.Api.Migrations
 
             modelBuilder.Entity("OtripleS.Web.Api.Models.Courses.Course", b =>
                 {
+                    b.Navigation("CourseAttachments");
+
                     b.Navigation("SemesterCourses");
                 });
 

@@ -21,8 +21,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             // given
             CalendarEntryAttachment someCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
             var sqlException = GetSqlException();
-            
-            var expectedCalendarEntryAttachmentDependencyException = 
+
+            var expectedCalendarEntryAttachmentDependencyException =
                 new CalendarEntryAttachmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -34,7 +34,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                 this.calendarEntryAttachmentService.AddCalendarEntryAttachmentAsync(someCalendarEntryAttachment);
 
             // then
-            await Assert.ThrowsAsync<CalendarEntryAttachmentDependencyException>(() => 
+            await Assert.ThrowsAsync<CalendarEntryAttachmentDependencyException>(() =>
                 addCalendarEntryAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
@@ -75,7 +75,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCalendarEntryAttachmentAsync(someCalendarEntryAttachment),
                     Times.Once);
-            
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentDependencyException))),
                     Times.Once);
@@ -91,8 +91,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             // given
             CalendarEntryAttachment someCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
             var exception = new Exception();
-            
-            var expectedCalendarEntryAttachmentServiceException = 
+
+            var expectedCalendarEntryAttachmentServiceException =
                 new CalendarEntryAttachmentServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>

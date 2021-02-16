@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         public void ShouldLogWarningOnRetrieveAllWhenCalendarEntryAttachmentsWereEmptyAndLogIt()
         {
             // given
-            IQueryable<CalendarEntryAttachment> emptyStorageCalendarEntryAttachments = 
+            IQueryable<CalendarEntryAttachment> emptyStorageCalendarEntryAttachments =
                 new List<CalendarEntryAttachment>().AsQueryable();
 
             IQueryable<CalendarEntryAttachment> storageCalendarEntryAttachments =

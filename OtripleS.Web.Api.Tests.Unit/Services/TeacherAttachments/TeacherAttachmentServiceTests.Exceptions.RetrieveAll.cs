@@ -47,7 +47,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
             // given
             var databaseUpdateException = new DbUpdateException();
 
-            var expectedAttachmentDependencyException = 
+            var expectedAttachmentDependencyException =
                 new TeacherAttachmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>

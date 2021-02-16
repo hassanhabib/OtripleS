@@ -7,11 +7,11 @@ using System;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Attachments;
-using OtripleS.Web.Api.Tests.Acceptance.Models.CalendarEntriesAttachments;
 using OtripleS.Web.Api.Tests.Acceptance.Models.CalendarEntries;
+using OtripleS.Web.Api.Tests.Acceptance.Models.CalendarEntriesAttachments;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Calendars;
 using Tynamix.ObjectFiller;
 using Xunit;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Calendars;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntryAttachments
 {

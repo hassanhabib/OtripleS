@@ -3,10 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using OtripleS.Web.Api.Models.CalendarEntryAttachments;
-using OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions;
 using System;
 using System.Linq;
+using OtripleS.Web.Api.Models.CalendarEntryAttachments;
+using OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions;
 
 namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
 {
@@ -15,9 +15,9 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
         private void ValidateCalendarEntryAttachmentOnCreate(CalendarEntryAttachment calendarEntryAttachment)
         {
             ValidateCalendarEntryAttachmentIsNull(calendarEntryAttachment);
-            
+
             ValidateCalendarEntryAttachmentIds(
-                calendarEntryAttachment.CalendarEntryId, 
+                calendarEntryAttachment.CalendarEntryId,
                 calendarEntryAttachment.AttachmentId);
         }
 

@@ -54,7 +54,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -104,9 +104,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                 broker.UpdateAssignmentAsync(inputAssignment),
                     Times.Once);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -129,16 +129,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
             // then
             actualAssignments.Should().BeEquivalentTo(expectedAssignments);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAssignments(),
                     Times.Once);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -153,11 +153,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
             Assignment expectedAssignment = randomAssignment;
 
             this.storageBrokerMock.Setup(broker =>
-                    broker.SelectAssignmentByIdAsync(inputAssignmentId))
-                .ReturnsAsync(inputAssignment);
+                broker.SelectAssignmentByIdAsync(inputAssignmentId))
+                    .ReturnsAsync(inputAssignment);
 
             //when 
-            Assignment actualAssignment = await this.assignmentService.RetrieveAssignmentByIdAsync(inputAssignmentId);
+            Assignment actualAssignment = 
+                await this.assignmentService.RetrieveAssignmentByIdAsync(inputAssignmentId);
 
             //then
             actualAssignment.Should().BeEquivalentTo(expectedAssignment);

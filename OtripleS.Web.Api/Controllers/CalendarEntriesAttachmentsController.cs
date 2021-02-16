@@ -15,7 +15,7 @@ using RESTFulSense.Controllers;
 namespace OtripleS.Web.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]    
+    [Route("api/[controller]")]
     public class CalendarEntriesAttachmentsController : RESTFulController
     {
         private readonly ICalendarEntryAttachmentService calendarEntryAttachmentService;

@@ -24,7 +24,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherAttachments
             TeacherAttachment expectedTeacherAttachment = inputTeacherAttachment;
 
             // when             
-            TeacherAttachment actualTeacherAttachment = 
+            TeacherAttachment actualTeacherAttachment =
                 await this.otripleSApiBroker.PostTeacherAttachmentAsync(inputTeacherAttachment);
 
             TeacherAttachment retrievedTeacherAttachment =

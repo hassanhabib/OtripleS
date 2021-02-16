@@ -3,12 +3,12 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using FluentAssertions;
-using Moq;
-using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
+using Moq;
+using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
@@ -48,13 +48,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         public void ShouldRetrieveAllCalendarEntryAttachments()
         {
             // given
-            IQueryable<CalendarEntryAttachment> randomCalendarEntryAttachments = 
+            IQueryable<CalendarEntryAttachment> randomCalendarEntryAttachments =
                 CreateRandomCalendarEntryAttachments();
 
-            IQueryable<CalendarEntryAttachment> storageCalendarEntryAttachments = 
+            IQueryable<CalendarEntryAttachment> storageCalendarEntryAttachments =
                 randomCalendarEntryAttachments;
 
-            IQueryable<CalendarEntryAttachment> expectedCalendarEntryAttachments = 
+            IQueryable<CalendarEntryAttachment> expectedCalendarEntryAttachments =
                 storageCalendarEntryAttachments;
 
             this.storageBrokerMock.Setup(broker =>

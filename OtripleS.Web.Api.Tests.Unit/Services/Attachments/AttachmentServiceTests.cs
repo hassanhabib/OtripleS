@@ -14,7 +14,6 @@ using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.Attachments;
-using OtripleS.Web.Api.Models.StudentAttachments;
 using OtripleS.Web.Api.Services.Attachments;
 using Tynamix.ObjectFiller;
 
@@ -88,7 +87,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 .OnProperty(attachment => attachment.StudentAttachments).IgnoreIt()
                 .OnProperty(attachment => attachment.GuardianAttachments).IgnoreIt()
                 .OnProperty(attachment => attachment.TeacherAttachments).IgnoreIt()
-                .OnProperty(attachment => attachment.CalendarEntryAttachments).IgnoreIt();
+                .OnProperty(attachment => attachment.CalendarEntryAttachments).IgnoreIt()
+                .OnProperty(attachment => attachment.CourseAttachments).IgnoreIt();
 
             return filler;
         }

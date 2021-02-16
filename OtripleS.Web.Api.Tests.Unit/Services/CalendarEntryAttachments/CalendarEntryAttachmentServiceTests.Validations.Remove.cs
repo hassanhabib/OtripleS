@@ -35,7 +35,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                 this.calendarEntryAttachmentService.RemoveCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() => 
+            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
                 removeCalendarEntryAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCalendarEntryAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
-            
+
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteCalendarEntryAttachmentAsync(It.IsAny<CalendarEntryAttachment>()),
                     Times.Never);
@@ -97,7 +97,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         }
 
         [Fact]
-        public async Task 
+        public async Task
             ShouldThrowValidationExceptionOnRemoveWhenStorageCalendarEntryAttachmentIsInvalidAndLogItAsync()
         {
             // given

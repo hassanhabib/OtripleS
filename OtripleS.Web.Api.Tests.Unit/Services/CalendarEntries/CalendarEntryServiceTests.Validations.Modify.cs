@@ -355,8 +355,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
             CalendarEntry nonExistentCalendarEntry = randomCalendarEntry;
             nonExistentCalendarEntry.CreatedDate = dateTime.AddMinutes(randomNegativeMinutes);
             CalendarEntry noCalendarEntry = null;
-            
-            var notFoundCalendarEntryException = 
+
+            var notFoundCalendarEntryException =
                 new NotFoundCalendarEntryException(nonExistentCalendarEntry.Id);
 
             var expectedCalendarEntryValidationException =

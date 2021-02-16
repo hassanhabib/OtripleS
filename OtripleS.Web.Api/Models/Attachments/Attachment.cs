@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
+using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.GuardianAttachments;
 using OtripleS.Web.Api.Models.StudentAttachments;
 using OtripleS.Web.Api.Models.TeacherAttachments;
@@ -29,14 +30,17 @@ namespace OtripleS.Web.Api.Models.Attachments
 
         [JsonIgnore]
         public IEnumerable<StudentAttachment> StudentAttachments { get; set; }
-        
+
         [JsonIgnore]
         public IEnumerable<GuardianAttachment> GuardianAttachments { get; set; }
-        
+
         [JsonIgnore]
         public IEnumerable<TeacherAttachment> TeacherAttachments { get; set; }
 
         [JsonIgnore]
         public IEnumerable<CalendarEntryAttachment> CalendarEntryAttachments { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<CourseAttachment> CourseAttachments { get; set; }
     }
 }
