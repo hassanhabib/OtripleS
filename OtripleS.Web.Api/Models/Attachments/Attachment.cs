@@ -11,6 +11,7 @@ using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.GuardianAttachments;
 using OtripleS.Web.Api.Models.StudentAttachments;
 using OtripleS.Web.Api.Models.TeacherAttachments;
+using OtripleS.Web.Api.Models.ExamAttachments;
 
 namespace OtripleS.Web.Api.Models.Attachments
 {
@@ -42,5 +43,8 @@ namespace OtripleS.Web.Api.Models.Attachments
 
         [JsonIgnore]
         public IEnumerable<CourseAttachment> CourseAttachments { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<ExamAttachment> ExamAttachments { get; set; }
     }
 }
