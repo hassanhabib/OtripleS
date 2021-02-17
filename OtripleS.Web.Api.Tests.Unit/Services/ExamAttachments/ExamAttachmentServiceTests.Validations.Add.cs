@@ -155,5 +155,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenReferneceExceptionAndLogItAsync()
+        {
+            // given
+            ExamAttachment randomExamAttachment = CreateRandomExamAttachment();
+            ExamAttachment invalidExamAttachment = randomExamAttachment;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var foreignKeyConstraintConflictException = new ForeignKeyConstraintConflictException(exceptionMessage);
+
+            var invalidExamAttachmentReferenceException =
+                new InvalidExamAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+            var expectedExamAttachmentValidationException =
+                new ExamAttachmentValidationException(invalidExamAttachmentReferenceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertExamAttachmentAsync(invalidExamAttachment))
+                    .ThrowsAsync(foreignKeyConstraintConflictException);
+
+            // when
+            ValueTask<ExamAttachment> addExamAttachmentTask =
+                this.examAttachmentService.AddExamAttachmentAsync(invalidExamAttachment);
+
+            // then
+            await Assert.ThrowsAsync<ExamAttachmentValidationException>(() =>
+                addExamAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedExamAttachmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertExamAttachmentAsync(invalidExamAttachment),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
