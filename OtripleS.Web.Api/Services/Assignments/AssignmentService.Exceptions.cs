@@ -50,7 +50,8 @@ namespace OtripleS.Web.Api.Services.Assignments
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                var lockedAssignmentException = new LockedAssignmentException(dbUpdateConcurrencyException);
+                var lockedAssignmentException = 
+                    new LockedAssignmentException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedAssignmentException);
             }
