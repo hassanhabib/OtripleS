@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.ExamAttachments;
 using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
 
@@ -44,6 +45,10 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
 
                 throw CreateAndLogValidationException(invalidExamAttachmentReferenceException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
         }
 
         private ExamAttachmentValidationException CreateAndLogValidationException(Exception exception)
@@ -52,6 +57,14 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             this.loggingBroker.LogError(examAttachmentValidationException);
 
             return examAttachmentValidationException;
+        }
+
+        private ExamAttachmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var examAttachmentDependencyException = new ExamAttachmentDependencyException(exception);
+            this.loggingBroker.LogCritical(examAttachmentDependencyException);
+
+            return examAttachmentDependencyException;
         }
     }
 }
