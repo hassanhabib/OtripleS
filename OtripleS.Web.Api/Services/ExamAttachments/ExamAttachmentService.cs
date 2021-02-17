@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
 
         public ValueTask<ExamAttachment> AddExamAttachmentAsync(ExamAttachment examAttachment)
         {
-            throw new NotImplementedException();
+            return storageBroker.InsertExamAttachmentAsync(examAttachment);
         }
     }
 }
