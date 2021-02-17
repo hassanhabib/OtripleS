@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using OtripleS.Web.Api.Models.ExamAttachments;
 using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
 
@@ -28,6 +29,13 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             catch (InvalidExamAttachmentException invalidExamAttachmentInputException)
             {
                 throw CreateAndLogValidationException(invalidExamAttachmentInputException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsExamAttachmentException =
+                    new AlreadyExistsExamAttachmentException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsExamAttachmentException);
             }
         }
 
