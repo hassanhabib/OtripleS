@@ -14,6 +14,7 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
         public void ValidateExamAttachmentOnCreate(ExamAttachment examAttachment)
         {
             ValidateExamAttachmentIsNull(examAttachment);
+            ValidateExamAttachmentIdIsNull(examAttachment.ExamId, examAttachment.AttachmentId);
         }
 
         private void ValidateExamAttachmentIsNull(ExamAttachment examAttachment)
@@ -21,6 +22,22 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             if (examAttachment is null)
             {
                 throw new NullExamAttachmentException();
+            }
+        }
+
+        private void ValidateExamAttachmentIdIsNull(Guid examId, Guid attachmentId)
+        {
+            if (examId == default)
+            {
+                throw new InvalidExamAttachmentException(
+                    parameterName: nameof(ExamAttachment.ExamId),
+                    parameterValue: examId);
+            }
+            else if (attachmentId == default)
+            {
+                throw new InvalidExamAttachmentException(
+                    parameterName: nameof(ExamAttachment.AttachmentId),
+                    parameterValue: attachmentId);
             }
         }
     }

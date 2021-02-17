@@ -25,6 +25,10 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             {
                 throw CreateAndLogValidationException(nullExamAttachmentException);
             }
+            catch (InvalidExamAttachmentException invalidExamAttachmentInputException)
+            {
+                throw CreateAndLogValidationException(invalidExamAttachmentInputException);
+            }
         }
 
         private ExamAttachmentValidationException CreateAndLogValidationException(Exception exception)
