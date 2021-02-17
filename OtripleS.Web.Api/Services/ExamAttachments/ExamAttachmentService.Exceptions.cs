@@ -54,6 +54,10 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private ExamAttachmentValidationException CreateAndLogValidationException(Exception exception)
@@ -78,6 +82,14 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             this.loggingBroker.LogError(examAttachmentDependencyException);
 
             return examAttachmentDependencyException;
+        }
+
+        private ExamAttachmentServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var examAttachmentServiceException = new ExamAttachmentServiceException(exception);
+            this.loggingBroker.LogError(examAttachmentServiceException);
+
+            return examAttachmentServiceException;
         }
     }
 }
