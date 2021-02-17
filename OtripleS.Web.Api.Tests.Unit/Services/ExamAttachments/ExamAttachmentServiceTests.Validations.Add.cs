@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Moq;
 using OtripleS.Web.Api.Models.ExamAttachments;
 using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
@@ -113,6 +114,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenExamAttachmentAlreadyExistsAndLogItAsync()
+        {
+            // given
+            ExamAttachment randomExamAttachment = CreateRandomExamAttachment();
+            ExamAttachment alreadyExistsExamAttachment = randomExamAttachment;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsExamAttachmentException =
+                new AlreadyExistsExamAttachmentException(duplicateKeyException);
+
+            var expectedExamAttachmentValidationException =
+                new ExamAttachmentValidationException(alreadyExistsExamAttachmentException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertExamAttachmentAsync(alreadyExistsExamAttachment))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<ExamAttachment> addExamAttachmentTask =
+                this.examAttachmentService.AddExamAttachmentAsync(alreadyExistsExamAttachment);
+
+            // then
+            await Assert.ThrowsAsync<ExamAttachmentValidationException>(() =>
+                addExamAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedExamAttachmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertExamAttachmentAsync(alreadyExistsExamAttachment),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

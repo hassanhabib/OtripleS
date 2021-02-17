@@ -55,5 +55,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
+
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
     }
 }
