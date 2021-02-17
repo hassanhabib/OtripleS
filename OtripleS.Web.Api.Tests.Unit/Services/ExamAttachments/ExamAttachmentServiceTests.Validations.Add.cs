@@ -44,5 +44,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenExamIdIsInvalidAndLogItAsync()
+        {
+            // given
+            ExamAttachment randomExamAttachment = CreateRandomExamAttachment();
+            ExamAttachment inputExamAttachment = randomExamAttachment;
+            inputExamAttachment.ExamId = default;
+
+            var invalidExamAttachmentInputException = new InvalidExamAttachmentException(
+                parameterName: nameof(ExamAttachment.ExamId),
+                parameterValue: inputExamAttachment.ExamId);
+
+            var expectedExamAttachmentValidationException =
+                new ExamAttachmentValidationException(invalidExamAttachmentInputException);
+
+            // when
+            ValueTask<ExamAttachment> addExamAttachmentTask =
+                this.examAttachmentService.AddExamAttachmentAsync(inputExamAttachment);
+
+            // then
+            await Assert.ThrowsAsync<ExamAttachmentValidationException>(() =>
+                addExamAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamAttachmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertExamAttachmentAsync(It.IsAny<ExamAttachment>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
