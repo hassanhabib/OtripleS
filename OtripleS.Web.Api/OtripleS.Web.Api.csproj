@@ -32,5 +32,6 @@
     <Folder Include="Services\StudentAttachments\" />
     <Folder Include="Models\GuardianAttachments\Exceptions\" />
     <Folder Include="Services\ExamAttachments\" />
+    <Folder Include="Models\ExamAttachments\Exceptions\" />
   </ItemGroup>
 </Project>
