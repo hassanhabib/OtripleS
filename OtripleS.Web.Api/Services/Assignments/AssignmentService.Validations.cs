@@ -41,7 +41,7 @@ namespace OtripleS.Web.Api.Services.Assignments
 
         private void ValidateAssignmentIdIsNull(Guid assignmentId)
         {
-            if (assignmentId == default)
+            if (IsInvalid(assignmentId))
             {
                 throw new InvalidAssignmentException(
                     parameterName: nameof(Assignment.Id),
@@ -51,19 +51,18 @@ namespace OtripleS.Web.Api.Services.Assignments
 
         private void ValidateAssignmentFields(Assignment assignment)
         {
-            if (IsInvalid(assignment.Label))
+            switch(assignment)
             {
-                throw new InvalidAssignmentException(
-                    parameterName: nameof(Assignment.Label),
-                    parameterValue: assignment.Label);
-            }
+                case { } when IsInvalid(assignment.Label):
+                    throw new InvalidAssignmentException(
+                        parameterName: nameof(Assignment.Label),
+                        parameterValue: assignment.Label);
 
-            if (IsInvalid(assignment.Content))
-            {
-                throw new InvalidAssignmentException(
-                    parameterName: nameof(Assignment.Content),
-                    parameterValue: assignment.Content);
-            }
+                case { } when IsInvalid(assignment.Content):
+                    throw new InvalidAssignmentException(
+                        parameterName: nameof(Assignment.Content),
+                        parameterValue: assignment.Content);
+            }            
         }
 
         private void ValidateInvalidAuditFields(Assignment assignment)
@@ -72,28 +71,28 @@ namespace OtripleS.Web.Api.Services.Assignments
             {
                 case { } when IsInvalid(assignment.CreatedBy):
                     throw new InvalidAssignmentException(
-                    parameterName: nameof(assignment.CreatedBy),
-                    parameterValue: assignment.CreatedBy);
+                        parameterName: nameof(assignment.CreatedBy),
+                        parameterValue: assignment.CreatedBy);
 
                 case { } when IsInvalid(assignment.CreatedDate):
                     throw new InvalidAssignmentException(
-                    parameterName: nameof(Assignment.CreatedDate),
-                    parameterValue: assignment.CreatedDate);
+                        parameterName: nameof(Assignment.CreatedDate),
+                        parameterValue: assignment.CreatedDate);
 
                 case { } when IsInvalid(assignment.UpdatedBy):
                     throw new InvalidAssignmentException(
-                    parameterName: nameof(Assignment.UpdatedBy),
-                    parameterValue: assignment.UpdatedBy);
+                        parameterName: nameof(Assignment.UpdatedBy),
+                        parameterValue: assignment.UpdatedBy);
 
                 case { } when IsInvalid(assignment.UpdatedDate):
                     throw new InvalidAssignmentException(
-                    parameterName: nameof(Assignment.UpdatedDate),
-                    parameterValue: assignment.UpdatedDate);
+                        parameterName: nameof(Assignment.UpdatedDate),
+                        parameterValue: assignment.UpdatedDate);
 
                 case { } when IsInvalid(assignment.Deadline):
                     throw new InvalidAssignmentException(
-                    parameterName: nameof(Assignment.Deadline),
-                    parameterValue: assignment.Deadline);
+                        parameterName: nameof(Assignment.Deadline),
+                        parameterValue: assignment.Deadline);
             }
         }
 
@@ -103,18 +102,18 @@ namespace OtripleS.Web.Api.Services.Assignments
             {
                 case { } when assignment.UpdatedBy != assignment.CreatedBy:
                     throw new InvalidAssignmentException(
-                    parameterName: nameof(Assignment.UpdatedBy),
-                    parameterValue: assignment.UpdatedBy);
+                        parameterName: nameof(Assignment.UpdatedBy),
+                        parameterValue: assignment.UpdatedBy);
 
                 case { } when assignment.UpdatedDate != assignment.CreatedDate:
                     throw new InvalidAssignmentException(
-                    parameterName: nameof(Assignment.UpdatedDate),
-                    parameterValue: assignment.UpdatedDate);
+                        parameterName: nameof(Assignment.UpdatedDate),
+                        parameterValue: assignment.UpdatedDate);
 
                 case { } when IsDateNotRecent(assignment.CreatedDate):
                     throw new InvalidAssignmentException(
-                    parameterName: nameof(Assignment.CreatedDate),
-                    parameterValue: assignment.CreatedDate);
+                        parameterName: nameof(Assignment.CreatedDate),
+                        parameterValue: assignment.CreatedDate);
             }
         }
 
@@ -146,7 +145,9 @@ namespace OtripleS.Web.Api.Services.Assignments
             }
         }
 
-        private void ValidateAgainstStorageAssignmentOnModify(Assignment inputAssignment, Assignment storageAssignment)
+        private void ValidateAgainstStorageAssignmentOnModify(
+            Assignment inputAssignment, 
+            Assignment storageAssignment)
         {
             switch (inputAssignment)
             {
