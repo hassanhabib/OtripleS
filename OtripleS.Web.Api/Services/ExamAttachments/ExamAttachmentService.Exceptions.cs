@@ -37,6 +37,13 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
 
                 throw CreateAndLogValidationException(alreadyExistsExamAttachmentException);
             }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidExamAttachmentReferenceException =
+                    new InvalidExamAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidExamAttachmentReferenceException);
+            }
         }
 
         private ExamAttachmentValidationException CreateAndLogValidationException(Exception exception)
