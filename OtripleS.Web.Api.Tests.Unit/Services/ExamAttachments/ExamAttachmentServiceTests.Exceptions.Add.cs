@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.ExamAttachments;
 using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
@@ -39,6 +40,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedExamAttachmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertExamAttachmentAsync(someExamAttachment),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnAddWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            ExamAttachment randomExamAttachment = CreateRandomExamAttachment();
+            ExamAttachment someExamAttachment = randomExamAttachment;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedExamAttachmentDependencyException =
+                new ExamAttachmentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertExamAttachmentAsync(someExamAttachment))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<ExamAttachment> addExamAttachmentTask =
+                this.examAttachmentService.AddExamAttachmentAsync(someExamAttachment);
+
+            // then
+            await Assert.ThrowsAsync<ExamAttachmentDependencyException>(() =>
+                addExamAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamAttachmentDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
