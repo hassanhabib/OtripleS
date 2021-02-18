@@ -45,8 +45,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
 
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
         private ExamAttachment CreateRandomExamAttachment() =>
-           CreateExamAttachmentFiller(DateTimeOffset.UtcNow).Create();
+            CreateExamAttachmentFiller(DateTimeOffset.UtcNow).Create();
+
+        private ExamAttachment CreateRandomExamAttachment(DateTimeOffset dates) =>
+            CreateExamAttachmentFiller(dates).Create();
 
         private static Filler<ExamAttachment> CreateExamAttachmentFiller(DateTimeOffset dates)
         {
