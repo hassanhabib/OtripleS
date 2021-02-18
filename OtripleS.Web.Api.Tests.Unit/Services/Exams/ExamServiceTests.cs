@@ -94,7 +94,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dateTime)
                 .OnProperty(exam => exam.SemesterCourse).IgnoreIt()
-                .OnProperty(exam => exam.StudentExams).IgnoreIt();
+                .OnProperty(exam => exam.StudentExams).IgnoreIt()
+                .OnProperty(exam => exam.ExamAttachments).IgnoreIt();
 
             return filler;
         }
