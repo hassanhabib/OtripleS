@@ -30,9 +30,12 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<ExamAttachment> RemoveExamAttachmentByIdAsync(Guid examId, Guid attachmentId)
+        public async ValueTask<ExamAttachment> RemoveExamAttachmentByIdAsync(Guid examId, Guid attachmentId)
         {
-            throw new NotImplementedException();
+            ExamAttachment maybeExamAttachment =
+                await this.storageBroker.SelectExamAttachmentByIdAsync(examId, attachmentId);
+
+            return await this.storageBroker.DeleteExamAttachmentAsync(maybeExamAttachment);
         }
     }
 }
