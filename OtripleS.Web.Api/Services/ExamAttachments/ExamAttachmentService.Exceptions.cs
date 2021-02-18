@@ -4,12 +4,10 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
 using OtripleS.Web.Api.Models.ExamAttachments;
-using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
+using Microsoft.Data.SqlClient;
 
 namespace OtripleS.Web.Api.Services.ExamAttachments
 {
@@ -32,6 +30,10 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             {
                 throw CreateAndLogValidationException(notFoundExamAttachmentException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
         }
 
         private ExamAttachmentValidationException CreateAndLogValidationException(Exception exception)
@@ -40,6 +42,14 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             this.loggingBroker.LogError(ExamAttachmentValidationException);
 
             return ExamAttachmentValidationException;
+        }
+
+        private ExamAttachmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var examAttachmentDependencyException = new ExamAttachmentDependencyException(exception);
+            this.loggingBroker.LogCritical(examAttachmentDependencyException);
+
+            return examAttachmentDependencyException;
         }
     }
 }
