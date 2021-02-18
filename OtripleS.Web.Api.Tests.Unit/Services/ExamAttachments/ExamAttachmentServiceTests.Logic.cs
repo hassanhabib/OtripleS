@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -40,6 +41,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldRetrieveAllExamAttachments()
+        {
+            // given
+            IQueryable<ExamAttachment> randomExamAttachments =
+                CreateRandomExamAttachments();
+
+            IQueryable<ExamAttachment> storageExamAttachments =
+                randomExamAttachments;
+
+            IQueryable<ExamAttachment> expectedExamAttachments =
+                storageExamAttachments;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllExamAttachments())
+                    .Returns(storageExamAttachments);
+
+            // when
+            IQueryable<ExamAttachment> actualExamAttachments =
+                this.examAttachmentService.RetrieveAllExamAttachments();
+
+            // then
+            actualExamAttachments.Should().BeEquivalentTo(expectedExamAttachments);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllExamAttachments(),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
