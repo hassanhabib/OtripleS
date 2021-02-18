@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.ExamAttachments;
 using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
@@ -59,6 +60,48 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someExamId = Guid.NewGuid();
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedExamAttachmentDependencyException =
+                new ExamAttachmentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectExamAttachmentByIdAsync(someExamId, someAttachmentId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<ExamAttachment> removeExamAttachmentTask =
+                this.ExamAttachmentService.RemoveExamAttachmentByIdAsync
+                (someExamId, someAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<ExamAttachmentDependencyException>(() =>
+                removeExamAttachmentTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamAttachmentByIdAsync(someExamId, someAttachmentId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamAttachmentDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteExamAttachmentAsync(It.IsAny<ExamAttachment>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
 
     }
 }
