@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
@@ -36,6 +37,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
                 loggingBroker: this.loggingBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
+
         private ExamAttachment CreateRandomExamAttachment() =>
            CreateExamAttachmentFiller(DateTimeOffset.UtcNow).Create();
 
