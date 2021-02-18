@@ -77,6 +77,10 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
 
         }
 
