@@ -39,7 +39,7 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
         public IQueryable<ExamAttachment> RetrieveAllExamAttachments() =>
         TryCatch(() =>
         {
-            IQueryable<ExamAttachment> storageExamAttachments = 
+            IQueryable<ExamAttachment> storageExamAttachments =
                 storageBroker.SelectAllExamAttachments();
 
             ValidateStorageExamAttachments(storageExamAttachments);

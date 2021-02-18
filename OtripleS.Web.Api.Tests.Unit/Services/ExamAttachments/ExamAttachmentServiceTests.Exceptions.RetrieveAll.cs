@@ -4,10 +4,8 @@
 //----------------------------------------------------------------
 
 using System;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.ExamAttachments;
 using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
 using Xunit;
 
