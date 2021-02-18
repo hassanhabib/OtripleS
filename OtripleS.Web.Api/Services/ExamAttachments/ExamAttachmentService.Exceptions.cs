@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
 using OtripleS.Web.Api.Models.ExamAttachments;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace OtripleS.Web.Api.Services.ExamAttachments
 {
@@ -34,6 +35,10 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
         private ExamAttachmentValidationException CreateAndLogValidationException(Exception exception)
@@ -48,6 +53,14 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
         {
             var examAttachmentDependencyException = new ExamAttachmentDependencyException(exception);
             this.loggingBroker.LogCritical(examAttachmentDependencyException);
+
+            return examAttachmentDependencyException;
+        }
+
+        private ExamAttachmentDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var examAttachmentDependencyException = new ExamAttachmentDependencyException(exception);
+            this.loggingBroker.LogError(examAttachmentDependencyException);
 
             return examAttachmentDependencyException;
         }
