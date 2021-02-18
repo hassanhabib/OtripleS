@@ -44,5 +44,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public void ShouldThrowDependencyExceptionOnRetrieveAllExamAttachmentsWhenDbExceptionOccursAndLogIt()
+        {
+            // given
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedAttachmentDependencyException =
+                new ExamAttachmentDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllExamAttachments())
+                    .Throws(databaseUpdateException);
+
+            // when . then
+            Assert.Throws<ExamAttachmentDependencyException>(() =>
+                this.examAttachmentService.RetrieveAllExamAttachments());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllExamAttachments(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
