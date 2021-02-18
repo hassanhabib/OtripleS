@@ -14,7 +14,7 @@ using OtripleS.Web.Api.Models.ExamAttachments;
 
 namespace OtripleS.Web.Api.Services.ExamAttachments
 {
-    public class ExamAttachmentService : IExamAttachmentService
+    public partial class ExamAttachmentService : IExamAttachmentService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -30,12 +30,17 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async ValueTask<ExamAttachment> RemoveExamAttachmentByIdAsync(Guid examId, Guid attachmentId)
-        {
-            ExamAttachment maybeExamAttachment =
-                await this.storageBroker.SelectExamAttachmentByIdAsync(examId, attachmentId);
+        public ValueTask<ExamAttachment> RemoveExamAttachmentByIdAsync(
+           Guid examId,
+           Guid attachmentId) =>
+       TryCatch(async () =>
+       {
+           ValidateExamAttachmentIds(examId, attachmentId);
 
-            return await this.storageBroker.DeleteExamAttachmentAsync(maybeExamAttachment);
-        }
+           ExamAttachment maybeExamAttachment =
+               await this.storageBroker.SelectExamAttachmentByIdAsync(examId, attachmentId);
+
+           return await this.storageBroker.DeleteExamAttachmentAsync(maybeExamAttachment);
+       });
     }
 }
