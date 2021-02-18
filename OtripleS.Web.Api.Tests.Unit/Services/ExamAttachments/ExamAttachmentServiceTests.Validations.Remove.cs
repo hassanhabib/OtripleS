@@ -57,5 +57,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidatonExceptionOnRemoveWhenAttachmentIdIsInvalidAndLogItAsync()
+        {
+            // given
+            Guid randomAttachmentId = default;
+            Guid randomExamId = Guid.NewGuid();
+            Guid inputAttachmentId = randomAttachmentId;
+            Guid inputExamId = randomExamId;
+
+            var invalidExamAttachmentInputException = new InvalidExamAttachmentException(
+                parameterName: nameof(ExamAttachment.AttachmentId),
+                parameterValue: inputAttachmentId);
+
+            var expectedExamAttachmentValidationException =
+                new ExamAttachmentValidationException(invalidExamAttachmentInputException);
+
+            // when
+            ValueTask<ExamAttachment> removeExamAttachmentTask =
+                this.ExamAttachmentService.RemoveExamAttachmentByIdAsync(inputExamId, inputAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<ExamAttachmentValidationException>(() =>
+                removeExamAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamAttachmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteExamAttachmentAsync(It.IsAny<ExamAttachment>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
