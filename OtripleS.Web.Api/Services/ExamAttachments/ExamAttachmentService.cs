@@ -3,7 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
@@ -40,7 +39,12 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
         public IQueryable<ExamAttachment> RetrieveAllExamAttachments() =>
         TryCatch(() =>
         {
-            return storageBroker.SelectAllExamAttachments();
+            IQueryable<ExamAttachment> storageExamAttachments = 
+                storageBroker.SelectAllExamAttachments();
+
+            ValidateStorageExamAttachments(storageExamAttachments);
+
+            return storageExamAttachments;
 
         });
 
