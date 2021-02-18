@@ -62,10 +62,10 @@ namespace OtripleS.Web.Api.Services.Assignments
         TryCatch(async () =>
         {
             ValidateAssignmentOnModify(assignment);
-            
-            Assignment maybeAssignment = 
+
+            Assignment maybeAssignment =
                 await this.storageBroker.SelectAssignmentByIdAsync(assignment.Id);
-            
+
             ValidateStorageAssignment(maybeAssignment, assignment.Id);
 
             ValidateAgainstStorageAssignmentOnModify(

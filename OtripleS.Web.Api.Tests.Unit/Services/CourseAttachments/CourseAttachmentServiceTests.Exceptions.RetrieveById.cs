@@ -3,13 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
-using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
@@ -24,7 +24,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             Guid someCourseId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
-            var expectedCourseAttachmentDependencyException = 
+            var expectedCourseAttachmentDependencyException =
                 new CourseAttachmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -34,7 +34,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             // when
             ValueTask<CourseAttachment> retrieveCourseAttachmentTask =
                 this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync(
-                    someCourseId, 
+                    someCourseId,
                     someAttachmentId);
 
             // then
@@ -72,7 +72,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             // when
             ValueTask<CourseAttachment> retrieveAttachmentTask =
                 this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync(
-                    someCourseId, 
+                    someCourseId,
                     someAttachmentId);
 
             // then
@@ -149,7 +149,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
             // when
             ValueTask<CourseAttachment> retrieveCourseAttachmentTask =
                 this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync(
-                    someCourseId, 
+                    someCourseId,
                     someAttachmentId);
 
             // then
