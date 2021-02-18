@@ -37,9 +37,12 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             return await this.storageBroker.InsertExamAttachmentAsync(examAttachment);
         });
 
-        public IQueryable<ExamAttachment> RetrieveAllExamAttachments()
+        public IQueryable<ExamAttachment> RetrieveAllExamAttachments() =>
+        TryCatch(() =>
         {
             return storageBroker.SelectAllExamAttachments();
-        }
+
+        });
+
     }
 }
