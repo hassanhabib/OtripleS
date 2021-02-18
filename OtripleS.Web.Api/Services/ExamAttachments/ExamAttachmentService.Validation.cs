@@ -29,5 +29,13 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
                     parameterValue: attachmentId);
             }
         }
+
+        private static void ValidateStorageExamAttachment(
+          ExamAttachment storageCourseAttachment,
+          Guid courseId, Guid attachmentId)
+        {
+            if (storageCourseAttachment == null)
+                throw new NotFoundExamAttachmentException(courseId, attachmentId);
+        }
     }
 }

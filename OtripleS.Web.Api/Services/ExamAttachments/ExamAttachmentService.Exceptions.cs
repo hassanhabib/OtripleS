@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
 using OtripleS.Web.Api.Models.ExamAttachments;
 using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
 
@@ -26,6 +27,10 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             catch (InvalidExamAttachmentException invalidExamAttachmentInputException)
             {
                 throw CreateAndLogValidationException(invalidExamAttachmentInputException);
+            }
+            catch (NotFoundExamAttachmentException notFoundExamAttachmentException)
+            {
+                throw CreateAndLogValidationException(notFoundExamAttachmentException);
             }
         }
 

@@ -40,6 +40,8 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
            ExamAttachment maybeExamAttachment =
                await this.storageBroker.SelectExamAttachmentByIdAsync(examId, attachmentId);
 
+           ValidateStorageExamAttachment(maybeExamAttachment, examId, attachmentId);
+
            return await this.storageBroker.DeleteExamAttachmentAsync(maybeExamAttachment);
        });
     }
