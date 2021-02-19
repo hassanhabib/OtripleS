@@ -32,6 +32,10 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             {
                 throw CreateAndLogValidationException(invalidExamAttachmentInputException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
             catch (NotFoundExamAttachmentException notFoundExamAttachmentException)
             {
                 throw CreateAndLogValidationException(notFoundExamAttachmentException);
@@ -50,10 +54,13 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
 
                 throw CreateAndLogValidationException(invalidExamAttachmentReferenceException);
             }
-            catch (SqlException sqlException)
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
-            }
+                var lockedExamAttachmentException =
+                    new LockedExamAttachmentException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedExamAttachmentException);
+            }           
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
