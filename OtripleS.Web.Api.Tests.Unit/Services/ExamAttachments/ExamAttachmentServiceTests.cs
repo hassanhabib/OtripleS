@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -39,6 +40,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
         private ExamAttachment CreateRandomExamAttachment() =>
             CreateExamAttachmentFiller(DateTimeOffset.UtcNow).Create();
 
+        private IQueryable<ExamAttachment> CreateRandomExamAttachments() =>
+            CreateExamAttachmentFiller(DateTimeOffset.UtcNow)
+                .Create(GetRandomNumber()).AsQueryable();
+
+
         private static Filler<ExamAttachment> CreateExamAttachmentFiller(DateTimeOffset dates)
         {
             var filler = new Filler<ExamAttachment>();
@@ -62,5 +68,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
     }
 }
