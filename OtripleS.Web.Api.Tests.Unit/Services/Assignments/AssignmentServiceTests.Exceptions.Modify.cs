@@ -22,8 +22,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
             // given
             int randomNegativeNumber = GetNegativeRandomNumber();
             DateTimeOffset randomDateTime = GetRandomDateTime();
-            Assignment randomAssignment = CreateRandomAssignment(randomDateTime);
-            Assignment someAssignment = randomAssignment;
+            Assignment someAssignment = CreateRandomAssignment(randomDateTime);
             someAssignment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             SqlException sqlException = GetSqlException();
 
@@ -31,7 +30,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                 new AssignmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAssignmentByIdAsync(someAssignment.Id))
+                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(sqlException);
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -51,16 +50,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(someAssignment.Id),
+                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();            
         }
 
         [Fact]
@@ -69,8 +68,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
             // given
             int randomNegativeNumber = GetNegativeRandomNumber();
             DateTimeOffset randomDateTime = GetRandomDateTime();
-            Assignment randomAssignment = CreateRandomAssignment(randomDateTime);
-            Assignment someAssignment = randomAssignment;
+            Assignment someAssignment = CreateRandomAssignment(randomDateTime);
             someAssignment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var databaseUpdateException = new DbUpdateException();
 
@@ -78,7 +76,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                 new AssignmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAssignmentByIdAsync(someAssignment.Id))
+                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateException);
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -98,16 +96,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(someAssignment.Id),
+                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();            
         }
 
         [Fact]
@@ -116,8 +114,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
             // given
             int randomNegativeNumber = GetNegativeRandomNumber();
             DateTimeOffset randomDateTime = GetRandomDateTime();
-            Assignment randomAssignment = CreateRandomAssignment(randomDateTime);
-            Assignment someAssignment = randomAssignment;
+            Assignment someAssignment = CreateRandomAssignment(randomDateTime);
             someAssignment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var serviceException = new Exception();
 
@@ -125,7 +122,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                 new AssignmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAssignmentByIdAsync(someAssignment.Id))
+                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -145,16 +142,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(someAssignment.Id),
+                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAssignmentServiceException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();            
         }
 
         [Fact]
@@ -163,8 +160,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
             // given
             int randomNegativeNumber = GetNegativeRandomNumber();
             DateTimeOffset randomDateTime = GetRandomDateTime();
-            Assignment randomAssignment = CreateRandomAssignment(randomDateTime);
-            Assignment someAssignment = randomAssignment;
+            Assignment someAssignment = CreateRandomAssignment(randomDateTime);
             someAssignment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
             var lockedAssignmentException = new LockedAssignmentException(databaseUpdateConcurrencyException);
@@ -173,7 +169,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                 new AssignmentDependencyException(lockedAssignmentException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAssignmentByIdAsync(someAssignment.Id))
+                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -193,16 +189,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(someAssignment.Id),
+                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
                     Times.Once);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls(); 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();            
         }
     }
 }
