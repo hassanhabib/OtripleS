@@ -3,7 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
-using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -57,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
                         .ReturnsAsync(randomExamAttachment);
 
             // when
-            ExamAttachment actualExamAttachment = 
+            ExamAttachment actualExamAttachment =
                 await this.examAttachmentService.RetrieveExamAttachmentByIdAsync(
                     randomExamAttachment.ExamId,
                     randomExamAttachment.AttachmentId);

@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
 
         private void ValidateExamAttachmentIds(Guid examId, Guid attachmentId)
         {
-            switch(examId, attachmentId)
+            switch (examId, attachmentId)
             {
                 case { } when IsInvalid(examId):
                     throw new InvalidExamAttachmentException(

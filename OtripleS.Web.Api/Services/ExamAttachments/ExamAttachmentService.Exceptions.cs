@@ -60,7 +60,7 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
                     new LockedExamAttachmentException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedExamAttachmentException);
-            }           
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);

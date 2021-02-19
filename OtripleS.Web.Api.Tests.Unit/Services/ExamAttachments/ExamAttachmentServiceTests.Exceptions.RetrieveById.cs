@@ -3,13 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.ExamAttachments;
 using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
-using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
@@ -24,7 +24,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
             Guid someExamId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
-            var expectedExamAttachmentDependencyException = 
+            var expectedExamAttachmentDependencyException =
                 new ExamAttachmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -34,7 +34,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
             // when
             ValueTask<ExamAttachment> retrieveExamAttachmentTask =
                 this.examAttachmentService.RetrieveExamAttachmentByIdAsync(
-                    someExamId, 
+                    someExamId,
                     someAttachmentId);
 
             // then

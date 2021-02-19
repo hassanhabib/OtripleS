@@ -33,11 +33,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
             // when
             ValueTask<ExamAttachment> retrieveExamAttachmentTask =
                 this.examAttachmentService.RetrieveExamAttachmentByIdAsync(
-                    invalidExamId, 
+                    invalidExamId,
                     inputAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<ExamAttachmentValidationException>(() => 
+            await Assert.ThrowsAsync<ExamAttachmentValidationException>(() =>
                 retrieveExamAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
