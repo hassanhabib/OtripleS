@@ -32,6 +32,10 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             {
                 throw CreateAndLogValidationException(invalidExamAttachmentInputException);
             }
+            catch (NotFoundExamAttachmentException notFoundExamAttachmentException)
+            {
+                throw CreateAndLogValidationException(notFoundExamAttachmentException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsExamAttachmentException =

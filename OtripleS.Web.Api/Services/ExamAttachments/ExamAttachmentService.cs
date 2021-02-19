@@ -46,6 +46,8 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             ExamAttachment storageExamAttachment =
                 await this.storageBroker.SelectExamAttachmentByIdAsync(examId, attachmentId);
 
+            ValidateStorageExamAttachment(storageExamAttachment, examId, attachmentId);
+
             return storageExamAttachment;
         });
     }

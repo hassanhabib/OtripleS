@@ -122,7 +122,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
                 retrieveExamAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                broker.SelectExamAttachmentByIdAsync(inputExamId, inputAttachmentId),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
