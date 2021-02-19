@@ -1,10 +1,11 @@
-﻿// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.ExamAttachments;
@@ -23,6 +24,11 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             {
                 return await returningExamEntryAttachmentFunction();
             }
+
+            catch (NullExamAttachmentException nullExamAttachmentException)
+            {
+                throw CreateAndLogValidationException(nullExamAttachmentException);
+            }
             catch (InvalidExamAttachmentException invalidExamAttachmentInputException)
             {
                 throw CreateAndLogValidationException(invalidExamAttachmentInputException);
@@ -34,6 +40,20 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsExamAttachmentException =
+                    new AlreadyExistsExamAttachmentException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsExamAttachmentException);
+            }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidExamAttachmentReferenceException =
+                    new InvalidExamAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidExamAttachmentReferenceException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {

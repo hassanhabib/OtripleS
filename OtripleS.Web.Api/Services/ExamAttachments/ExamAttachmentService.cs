@@ -28,6 +28,14 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
+        public ValueTask<ExamAttachment> AddExamAttachmentAsync(ExamAttachment examAttachment) =>
+        TryCatch(async () =>
+        {
+            ValidateExamAttachmentOnCreate(examAttachment);
+
+            return await this.storageBroker.InsertExamAttachmentAsync(examAttachment);
+        });
+
         public ValueTask<ExamAttachment> RemoveExamAttachmentByIdAsync(
            Guid examId,
            Guid attachmentId) =>

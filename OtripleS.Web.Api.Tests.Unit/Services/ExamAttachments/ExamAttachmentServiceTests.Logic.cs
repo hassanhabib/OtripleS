@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
 
             // when
             ExamAttachment actualExamAttachment =
-                await this.ExamAttachmentService.RemoveExamAttachmentByIdAsync(
+                await this.examAttachmentService.RemoveExamAttachmentByIdAsync(
                     inputExamId, inputAttachmentId);
 
             // then

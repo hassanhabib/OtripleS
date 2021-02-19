@@ -14,5 +14,6 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
         ValueTask<ExamAttachment> RemoveExamAttachmentByIdAsync(
           Guid examId,
           Guid attachmentId);
+        ValueTask<ExamAttachment> AddExamAttachmentAsync(ExamAttachment someExamAttachment);
     }
 }

@@ -22,7 +22,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
         private readonly Mock<IStorageBroker> storageBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
-        private readonly IExamAttachmentService ExamAttachmentService;
+        private readonly IExamAttachmentService examAttachmentService;
 
         public ExamAttachmentServiceTests()
         {
@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
             this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
 
-            this.ExamAttachmentService = new ExamAttachmentService(
+            this.examAttachmentService = new ExamAttachmentService(
                 storageBroker: this.storageBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
@@ -51,6 +51,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
 
         private ExamAttachment CreateRandomExamAttachment(DateTimeOffset dates) =>
             CreateExamAttachmentFiller(dates).Create();
+
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
 
         private static SqlException GetSqlException() =>
          (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));

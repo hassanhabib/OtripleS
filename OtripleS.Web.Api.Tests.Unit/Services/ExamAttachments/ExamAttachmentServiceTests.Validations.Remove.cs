@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
 
             // when
             ValueTask<ExamAttachment> removeExamAttachmentTask =
-                this.ExamAttachmentService.RemoveExamAttachmentByIdAsync(inputExamId, inputAttachmentId);
+                this.examAttachmentService.RemoveExamAttachmentByIdAsync(inputExamId, inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<ExamAttachmentValidationException>(() =>
@@ -73,7 +73,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
 
             // when
             ValueTask<ExamAttachment> removeExamAttachmentTask =
-                this.ExamAttachmentService.RemoveExamAttachmentByIdAsync(inputExamId, inputAttachmentId);
+                this.examAttachmentService.RemoveExamAttachmentByIdAsync(inputExamId, inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<ExamAttachmentValidationException>(() =>
@@ -118,7 +118,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
 
             // when
             ValueTask<ExamAttachment> removeExamAttachmentTask =
-                this.ExamAttachmentService.RemoveExamAttachmentByIdAsync(inputExamId, inputAttachmentId);
+                this.examAttachmentService.RemoveExamAttachmentByIdAsync(inputExamId, inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<ExamAttachmentValidationException>(() =>
