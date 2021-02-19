@@ -35,5 +35,10 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
 
             return await this.storageBroker.InsertExamAttachmentAsync(examAttachment);
         });
+
+        public ValueTask<ExamAttachment> RetrieveExamAttachmentByIdAsync(Guid examId, Guid attachmentId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
