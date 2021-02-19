@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
         }
 
         [Fact]
-        public async Task ShouldRetrieveExamAttachmentById()
+        public async Task ShouldRetrieveExamAttachmentByIdAsync()
         {
             // given
             ExamAttachment randomExamAttachment = CreateRandomExamAttachment();
