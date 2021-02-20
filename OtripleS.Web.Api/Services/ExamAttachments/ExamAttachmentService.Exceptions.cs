@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -16,16 +16,18 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
 {
     public partial class ExamAttachmentService
     {
+        private delegate ValueTask<ExamAttachment> ReturningExamEntryAttachmentFunction();
         private delegate ValueTask<ExamAttachment> ReturningExamAttachmentFunction();
         private delegate IQueryable<ExamAttachment> ReturningExamAttachmentsFunction();
 
         private async ValueTask<ExamAttachment> TryCatch(
-            ReturningExamAttachmentFunction returningExamAttachmentFunction)
+            ReturningExamEntryAttachmentFunction returningExamEntryAttachmentFunction)
         {
             try
             {
-                return await returningExamAttachmentFunction();
+                return await returningExamEntryAttachmentFunction();
             }
+
             catch (NullExamAttachmentException nullExamAttachmentException)
             {
                 throw CreateAndLogValidationException(nullExamAttachmentException);
@@ -33,6 +35,14 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             catch (InvalidExamAttachmentException invalidExamAttachmentInputException)
             {
                 throw CreateAndLogValidationException(invalidExamAttachmentInputException);
+            }
+            catch (NotFoundExamAttachmentException notFoundExamAttachmentException)
+            {
+                throw CreateAndLogValidationException(notFoundExamAttachmentException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
             }
             catch (DuplicateKeyException duplicateKeyException)
             {
@@ -48,9 +58,12 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
 
                 throw CreateAndLogValidationException(invalidExamAttachmentReferenceException);
             }
-            catch (SqlException sqlException)
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var lockedExamAttachmentException =
+                    new LockedExamAttachmentException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedExamAttachmentException);
             }
             catch (DbUpdateException dbUpdateException)
             {
@@ -86,10 +99,10 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
 
         private ExamAttachmentValidationException CreateAndLogValidationException(Exception exception)
         {
-            var examAttachmentValidationException = new ExamAttachmentValidationException(exception);
-            this.loggingBroker.LogError(examAttachmentValidationException);
+            var ExamAttachmentValidationException = new ExamAttachmentValidationException(exception);
+            this.loggingBroker.LogError(ExamAttachmentValidationException);
 
-            return examAttachmentValidationException;
+            return ExamAttachmentValidationException;
         }
 
         private ExamAttachmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
@@ -110,10 +123,10 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
 
         private ExamAttachmentServiceException CreateAndLogServiceException(Exception exception)
         {
-            var examAttachmentServiceException = new ExamAttachmentServiceException(exception);
-            this.loggingBroker.LogError(examAttachmentServiceException);
+            var ExamAttachmentServiceException = new ExamAttachmentServiceException(exception);
+            this.loggingBroker.LogError(ExamAttachmentServiceException);
 
-            return examAttachmentServiceException;
+            return ExamAttachmentServiceException;
         }
     }
 }

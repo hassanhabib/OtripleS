@@ -7,12 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.ExamAttachments.Exceptions
 {
-    public class InvalidExamAttachmentException : Exception
+    public class LockedExamAttachmentException : Exception
     {
-        public InvalidExamAttachmentException(string parameterName, object parameterValue)
-           : base($"Invalid Exam Attachment, " +
-                 $"ParameterName: {parameterName}, " +
-                 $"ParameterValue: {parameterValue}.")
-        { }
+        public LockedExamAttachmentException(Exception innerException)
+          : base("Locked Exam Attachment record exception, please try again later.", innerException) { }
     }
 }

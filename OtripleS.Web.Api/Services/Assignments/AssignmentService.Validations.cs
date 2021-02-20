@@ -51,7 +51,7 @@ namespace OtripleS.Web.Api.Services.Assignments
 
         private void ValidateAssignmentFields(Assignment assignment)
         {
-            switch(assignment)
+            switch (assignment)
             {
                 case { } when IsInvalid(assignment.Label):
                     throw new InvalidAssignmentException(
@@ -62,7 +62,7 @@ namespace OtripleS.Web.Api.Services.Assignments
                     throw new InvalidAssignmentException(
                         parameterName: nameof(Assignment.Content),
                         parameterValue: assignment.Content);
-            }            
+            }
         }
 
         private void ValidateInvalidAuditFields(Assignment assignment)
@@ -146,7 +146,7 @@ namespace OtripleS.Web.Api.Services.Assignments
         }
 
         private void ValidateAgainstStorageAssignmentOnModify(
-            Assignment inputAssignment, 
+            Assignment inputAssignment,
             Assignment storageAssignment)
         {
             switch (inputAssignment)

@@ -78,7 +78,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
-            
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

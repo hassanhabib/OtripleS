@@ -50,8 +50,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertAssignmentAsync(It.IsAny<Assignment>()),
-                    Times.Once); 
-            
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
                     Times.Once);

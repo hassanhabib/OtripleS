@@ -39,7 +39,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                 Times.Once
             );
 
-            this.dateTimeBrokerMock.Verify(broker => 
+            this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Never);
 
