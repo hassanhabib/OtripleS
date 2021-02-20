@@ -64,6 +64,26 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult<IQueryable<ExamAttachment>> GetAllExamAttachments()
+        {
+            try
+            {
+                IQueryable storageExamAttachments =
+                    this.examAttachmentService.RetrieveAllExamAttachments();
+
+                return Ok(storageExamAttachments);
+            }
+            catch (ExamAttachmentDependencyException examAttachmentDependencyException)
+            {
+                return Problem(examAttachmentDependencyException.Message);
+            }
+            catch (ExamAttachmentServiceException examAttachmentServiceException)
+            {
+                return Problem(examAttachmentServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
