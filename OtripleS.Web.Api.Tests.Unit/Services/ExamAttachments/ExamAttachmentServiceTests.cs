@@ -37,9 +37,26 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
+
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
         private ExamAttachment CreateRandomExamAttachment() =>
             CreateExamAttachmentFiller(DateTimeOffset.UtcNow).Create();
 
+        private ExamAttachment CreateRandomExamAttachment(DateTimeOffset dates) =>
+            CreateExamAttachmentFiller(dates).Create();
+
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+        private static SqlException GetSqlException() =>
+         (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
         private IQueryable<ExamAttachment> CreateRandomExamAttachments() =>
             CreateExamAttachmentFiller(DateTimeOffset.UtcNow)
                 .Create(GetRandomNumber()).AsQueryable();
@@ -51,23 +68,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(examAttachment => examAttachment.Exam).IgnoreIt()
-                .OnProperty(examAttachment => examAttachment.Attachment).IgnoreIt();
+                .OnProperty(ExamAttachment => ExamAttachment.Exam).IgnoreIt()
+                .OnProperty(ExamAttachment => ExamAttachment.Attachment).IgnoreIt();
 
             return filler;
         }
-
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
-        {
-            return actualException =>
-                expectedException.Message == actualException.Message
-                && expectedException.InnerException.Message == actualException.InnerException.Message;
-        }
-
-        private static string GetRandomMessage() => new MnemonicString().GetValue();
-
-        private static SqlException GetSqlException() =>
-            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
     }

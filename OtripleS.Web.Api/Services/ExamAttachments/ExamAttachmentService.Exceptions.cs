@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -20,12 +20,13 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
         private delegate IQueryable<ExamAttachment> ReturningExamAttachmentsFunction();
 
         private async ValueTask<ExamAttachment> TryCatch(
-            ReturningExamAttachmentFunction returningExamAttachmentFunction)
+            ReturningExamEntryAttachmentFunction returningExamEntryAttachmentFunction)
         {
             try
             {
-                return await returningExamAttachmentFunction();
+                return await returningExamEntryAttachmentFunction();
             }
+
             catch (NullExamAttachmentException nullExamAttachmentException)
             {
                 throw CreateAndLogValidationException(nullExamAttachmentException);
@@ -97,10 +98,10 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
 
         private ExamAttachmentValidationException CreateAndLogValidationException(Exception exception)
         {
-            var examAttachmentValidationException = new ExamAttachmentValidationException(exception);
-            this.loggingBroker.LogError(examAttachmentValidationException);
+            var ExamAttachmentValidationException = new ExamAttachmentValidationException(exception);
+            this.loggingBroker.LogError(ExamAttachmentValidationException);
 
-            return examAttachmentValidationException;
+            return ExamAttachmentValidationException;
         }
 
         private ExamAttachmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
@@ -121,10 +122,10 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
 
         private ExamAttachmentServiceException CreateAndLogServiceException(Exception exception)
         {
-            var examAttachmentServiceException = new ExamAttachmentServiceException(exception);
-            this.loggingBroker.LogError(examAttachmentServiceException);
+            var ExamAttachmentServiceException = new ExamAttachmentServiceException(exception);
+            this.loggingBroker.LogError(ExamAttachmentServiceException);
 
-            return examAttachmentServiceException;
+            return ExamAttachmentServiceException;
         }
     }
 }

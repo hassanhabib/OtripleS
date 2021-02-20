@@ -59,7 +59,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();            
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -105,7 +105,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();            
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -151,7 +151,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();            
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -196,9 +196,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                 broker.LogError(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
                     Times.Once);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls(); 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();            
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -15,31 +16,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
     public partial class ExamAttachmentServiceTests
     {
         [Fact]
-        public async Task ShouldAddExamAttachmentAsync()
+        public async Task ShouldRemoveExamAttachmentAsync()
         {
             // given
+            var randomExamId = Guid.NewGuid();
+            var randomAttachmentId = Guid.NewGuid();
+            Guid inputExamId = randomExamId;
+            Guid inputAttachmentId = randomAttachmentId;
             ExamAttachment randomExamAttachment = CreateRandomExamAttachment();
-            ExamAttachment inputExamAttachment = randomExamAttachment;
+            randomExamAttachment.ExamId = inputExamId;
+            randomExamAttachment.AttachmentId = inputAttachmentId;
             ExamAttachment storageExamAttachment = randomExamAttachment;
             ExamAttachment expectedExamAttachment = storageExamAttachment;
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertExamAttachmentAsync(inputExamAttachment))
+                broker.SelectExamAttachmentByIdAsync(inputExamId, inputAttachmentId))
                     .ReturnsAsync(storageExamAttachment);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteExamAttachmentAsync(storageExamAttachment))
+                    .ReturnsAsync(expectedExamAttachment);
 
             // when
             ExamAttachment actualExamAttachment =
-                await this.examAttachmentService.AddExamAttachmentAsync(inputExamAttachment);
+                await this.examAttachmentService.RemoveExamAttachmentByIdAsync(
+                    inputExamId, inputAttachmentId);
 
             // then
             actualExamAttachment.Should().BeEquivalentTo(expectedExamAttachment);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertExamAttachmentAsync(inputExamAttachment),
+                broker.SelectExamAttachmentByIdAsync(inputExamId, inputAttachmentId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteExamAttachmentAsync(storageExamAttachment),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]

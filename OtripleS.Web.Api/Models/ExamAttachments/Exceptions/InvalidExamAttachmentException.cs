@@ -4,14 +4,15 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.ExamAttachments.Exceptions
 {
     public class InvalidExamAttachmentException : Exception
     {
         public InvalidExamAttachmentException(string parameterName, object parameterValue)
-            : base($"Invalid guardianAttachment, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+           : base($"Invalid Exam Attachment, " +
+                 $"ParameterName: {parameterName}, " +
+                 $"ParameterValue: {parameterValue}.")
         { }
     }
 }

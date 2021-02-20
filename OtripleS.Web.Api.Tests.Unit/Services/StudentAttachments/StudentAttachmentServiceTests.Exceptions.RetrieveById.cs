@@ -119,7 +119,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
                 this.studentAttachmentService.RetrieveStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<StudentAttachmentDependencyException>(() => 
+            await Assert.ThrowsAsync<StudentAttachmentDependencyException>(() =>
                 retrieveStudentAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>

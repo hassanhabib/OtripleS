@@ -17,7 +17,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
         ValueTask<CourseAttachment> RetrieveCourseAttachmentByIdAsync(
                 Guid courseId,
                 Guid attachmentId);
-        
+
         IQueryable<CourseAttachment> RetrieveAllCourseAttachments();
 
         ValueTask<CourseAttachment> RemoveCourseAttachmentByIdAsync(

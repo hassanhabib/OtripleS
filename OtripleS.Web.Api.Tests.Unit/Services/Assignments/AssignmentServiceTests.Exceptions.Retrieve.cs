@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                     .Throws(sqlException);
 
             // when 
-            ValueTask<Assignment> retrieveTask = 
+            ValueTask<Assignment> retrieveTask =
                 this.assignmentService.RetrieveAssignmentByIdAsync(someAssignmentId);
 
             // then
@@ -105,7 +105,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                     .Throws(exception);
 
             // when 
-            ValueTask<Assignment> retrieveTask = 
+            ValueTask<Assignment> retrieveTask =
                 this.assignmentService.RetrieveAssignmentByIdAsync(someAssignmentId);
 
             // then

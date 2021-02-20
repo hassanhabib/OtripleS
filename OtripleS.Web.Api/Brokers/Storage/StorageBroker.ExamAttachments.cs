@@ -12,8 +12,6 @@ using OtripleS.Web.Api.Models.ExamAttachments;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
-    using OtripleS.Web.Api.Models.CourseAttachments;
-
     public partial class StorageBroker
     {
         public DbSet<ExamAttachment> ExamAttachments { get; set; }

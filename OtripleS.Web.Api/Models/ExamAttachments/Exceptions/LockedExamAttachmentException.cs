@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.ExamAttachments.Exceptions
     public class LockedExamAttachmentException : Exception
     {
         public LockedExamAttachmentException(Exception innerException)
-            : base("Locked guardianAttachment record exception, please try again later.", innerException) { }
+          : base("Locked Exam Attachment record exception, please try again later.", innerException) { }
     }
 }
