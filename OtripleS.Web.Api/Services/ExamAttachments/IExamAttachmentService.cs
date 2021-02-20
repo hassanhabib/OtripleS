@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.ExamAttachments;
 
@@ -15,5 +16,6 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
           Guid examId,
           Guid attachmentId);
         ValueTask<ExamAttachment> AddExamAttachmentAsync(ExamAttachment someExamAttachment);
+        IQueryable<ExamAttachment> RetrieveAllExamAttachments();
     }
 }

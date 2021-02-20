@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.ExamAttachments;
 using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
 
@@ -38,6 +39,14 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
                 throw new InvalidExamAttachmentException(
                     parameterName: nameof(ExamAttachment.AttachmentId),
                     parameterValue: attachmentId);
+            }
+        }
+
+        private void ValidateStorageExamAttachments(IQueryable<ExamAttachment> storageExamAttachments)
+        {
+            if (storageExamAttachments.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No exam attachments found in storage.");
             }
         }
     }

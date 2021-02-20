@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -50,5 +51,17 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
 
            return await this.storageBroker.DeleteExamAttachmentAsync(maybeExamAttachment);
        });
+        public IQueryable<ExamAttachment> RetrieveAllExamAttachments() =>
+        TryCatch(() =>
+        {
+            IQueryable<ExamAttachment> storageExamAttachments =
+                storageBroker.SelectAllExamAttachments();
+
+            ValidateStorageExamAttachments(storageExamAttachments);
+
+            return storageExamAttachments;
+
+        });
+
     }
 }
