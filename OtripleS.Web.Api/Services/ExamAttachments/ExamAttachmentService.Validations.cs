@@ -26,26 +26,25 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             }
         }
 
-        private void ValidateExamAttachmentIds(Guid examId, Guid attachmentId)
+        private void ValidateExamAttachmentIds(Guid calendarEntryId, Guid attachmentId)
         {
-            switch (examId, attachmentId)
+            if (calendarEntryId == default)
             {
-                case { } when IsInvalid(examId):
-                    throw new InvalidExamAttachmentException(
-                        parameterName: nameof(ExamAttachment.ExamId),
-                        parameterValue: examId);
-
-                case { } when IsInvalid(attachmentId):
-                    throw new InvalidExamAttachmentException(
-                        parameterName: nameof(ExamAttachment.AttachmentId),
-                        parameterValue: attachmentId);
+                throw new InvalidExamAttachmentException(
+                    parameterName: nameof(ExamAttachment.ExamId),
+                    parameterValue: calendarEntryId);
+            }
+            else if (attachmentId == default)
+            {
+                throw new InvalidExamAttachmentException(
+                    parameterName: nameof(ExamAttachment.AttachmentId),
+                    parameterValue: attachmentId);
             }
         }
 
-        private void ValidateStorageExamAttachment(
-            ExamAttachment storageExamAttachment,
-            Guid examId,
-            Guid attachmentId)
+        private static void ValidateStorageExamAttachment(
+          ExamAttachment storageExamAttachment,
+          Guid examId, Guid attachmentId)
         {
             if (storageExamAttachment == null)
                 throw new NotFoundExamAttachmentException(examId, attachmentId);

@@ -20,11 +20,11 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
         private delegate IQueryable<ExamAttachment> ReturningExamAttachmentsFunction();
 
         private async ValueTask<ExamAttachment> TryCatch(
-            ReturningExamEntryAttachmentFunction returningExamEntryAttachmentFunction)
+            ReturningExamAttachmentFunction returningExamAttachmentFunction)
         {
             try
             {
-                return await returningExamEntryAttachmentFunction();
+                return await returningExamAttachmentFunction();
             }
 
             catch (NullExamAttachmentException nullExamAttachmentException)
