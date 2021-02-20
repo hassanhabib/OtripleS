@@ -119,6 +119,46 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpDelete("exams/{examId}/attachments/{attachmentId}")]
+        public async ValueTask<ActionResult<bool>> DeleteExamAttachmentByIdsAsync(Guid examId, Guid attachmentId)
+        {
+            try
+            {
+                ExamAttachment deletedExamAttachment =
+                    await this.examAttachmentService.RemoveExamAttachmentByIdAsync(examId, attachmentId);
+
+                return Ok(deletedExamAttachment);
+            }
+            catch (ExamAttachmentValidationException examAttachmentValidationException)
+                when (examAttachmentValidationException.InnerException is NotFoundExamAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(examAttachmentValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (ExamAttachmentValidationException examAttachmentValidationException)
+            {
+                string innerMessage = GetInnerMessage(examAttachmentValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (ExamAttachmentDependencyException examAttachmentValidationException)
+               when (examAttachmentValidationException.InnerException is LockedExamAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(examAttachmentValidationException);
+
+                return Locked(innerMessage);
+            }
+            catch (ExamAttachmentDependencyException examAttachmentDependencyException)
+            {
+                return Problem(examAttachmentDependencyException.Message);
+            }
+            catch (ExamAttachmentServiceException examAttachmentServiceException)
+            {
+                return Problem(examAttachmentServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
