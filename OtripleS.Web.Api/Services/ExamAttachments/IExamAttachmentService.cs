@@ -17,5 +17,8 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
           Guid attachmentId);
         ValueTask<ExamAttachment> AddExamAttachmentAsync(ExamAttachment someExamAttachment);
         IQueryable<ExamAttachment> RetrieveAllExamAttachments();
+
+        ValueTask<ExamAttachment> RetrieveExamAttachmentByIdAsync
+            (Guid examId, Guid attachmentId);
     }
 }

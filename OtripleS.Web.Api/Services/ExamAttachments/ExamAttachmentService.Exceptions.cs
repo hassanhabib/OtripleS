@@ -16,16 +16,15 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
 {
     public partial class ExamAttachmentService
     {
-        private delegate ValueTask<ExamAttachment> ReturningExamEntryAttachmentFunction();
         private delegate ValueTask<ExamAttachment> ReturningExamAttachmentFunction();
         private delegate IQueryable<ExamAttachment> ReturningExamAttachmentsFunction();
 
         private async ValueTask<ExamAttachment> TryCatch(
-            ReturningExamEntryAttachmentFunction returningExamEntryAttachmentFunction)
+            ReturningExamAttachmentFunction returningExamAttachmentFunction)
         {
             try
             {
-                return await returningExamEntryAttachmentFunction();
+                return await returningExamAttachmentFunction();
             }
 
             catch (NullExamAttachmentException nullExamAttachmentException)
@@ -36,13 +35,13 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             {
                 throw CreateAndLogValidationException(invalidExamAttachmentInputException);
             }
-            catch (NotFoundExamAttachmentException notFoundExamAttachmentException)
-            {
-                throw CreateAndLogValidationException(notFoundExamAttachmentException);
-            }
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (NotFoundExamAttachmentException notFoundExamAttachmentException)
+            {
+                throw CreateAndLogValidationException(notFoundExamAttachmentException);
             }
             catch (DuplicateKeyException duplicateKeyException)
             {

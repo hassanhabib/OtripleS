@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
         public void ValidateExamAttachmentOnCreate(ExamAttachment examAttachment)
         {
             ValidateExamAttachmentIsNull(examAttachment);
-            ValidateExamAttachmentIdIsNull(examAttachment.ExamId, examAttachment.AttachmentId);
+            ValidateExamAttachmentIds(examAttachment.ExamId, examAttachment.AttachmentId);
         }
 
         private void ValidateExamAttachmentIsNull(ExamAttachment examAttachment)
@@ -26,13 +26,13 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             }
         }
 
-        private void ValidateExamAttachmentIdIsNull(Guid examId, Guid attachmentId)
+        private void ValidateExamAttachmentIds(Guid calendarEntryId, Guid attachmentId)
         {
-            if (examId == default)
+            if (calendarEntryId == default)
             {
                 throw new InvalidExamAttachmentException(
                     parameterName: nameof(ExamAttachment.ExamId),
-                    parameterValue: examId);
+                    parameterValue: calendarEntryId);
             }
             else if (attachmentId == default)
             {
@@ -42,6 +42,14 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             }
         }
 
+        private static void ValidateStorageExamAttachment(
+          ExamAttachment storageExamAttachment,
+          Guid examId, Guid attachmentId)
+        {
+            if (storageExamAttachment == null)
+                throw new NotFoundExamAttachmentException(examId, attachmentId);
+        }
+
         private void ValidateStorageExamAttachments(IQueryable<ExamAttachment> storageExamAttachments)
         {
             if (storageExamAttachments.Count() == 0)
@@ -49,5 +57,7 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
                 this.loggingBroker.LogWarning("No exam attachments found in storage.");
             }
         }
+
+        private bool IsInvalid(Guid input) => input == default;
     }
 }

@@ -90,5 +90,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldRetrieveExamAttachmentByIdAsync()
+        {
+            // given
+            ExamAttachment randomExamAttachment = CreateRandomExamAttachment();
+            ExamAttachment storageExamAttachment = randomExamAttachment;
+            ExamAttachment expectedExamAttachment = storageExamAttachment;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectExamAttachmentByIdAsync(
+                    randomExamAttachment.ExamId,
+                    randomExamAttachment.AttachmentId))
+                        .ReturnsAsync(randomExamAttachment);
+
+            // when
+            ExamAttachment actualExamAttachment =
+                await this.examAttachmentService.RetrieveExamAttachmentByIdAsync(
+                    randomExamAttachment.ExamId,
+                    randomExamAttachment.AttachmentId);
+
+            // then
+            actualExamAttachment.Should().BeEquivalentTo(expectedExamAttachment);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamAttachmentByIdAsync(
+                    randomExamAttachment.ExamId,
+                    randomExamAttachment.AttachmentId),
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
