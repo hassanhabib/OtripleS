@@ -42,8 +42,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -79,8 +79,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -205,8 +205,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             invalidAttachment.Extension = invalidAttachmentExtension;
 
             var invalidAttachmentException = new InvalidAttachmentException(
-               parameterName: nameof(Attachment.Extension),
-               parameterValue: invalidAttachment.Extension);
+                parameterName: nameof(Attachment.Extension),
+                parameterValue: invalidAttachment.Extension);
 
             var expectedAttachmentValidationException =
                 new AttachmentValidationException(invalidAttachmentException);
@@ -260,8 +260,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -297,8 +297,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -334,9 +334,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -371,8 +371,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -408,8 +408,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -446,8 +446,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -495,8 +495,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -546,9 +546,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
                     Times.Once);
 
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
