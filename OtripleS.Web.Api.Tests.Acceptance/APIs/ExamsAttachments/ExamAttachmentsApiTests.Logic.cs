@@ -36,6 +36,40 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamsAttachments
             actualExamAttachment.Should().BeEquivalentTo(expectedExamAttachment);
             retrievedExamAttachment.Should().BeEquivalentTo(expectedExamAttachment);
             await DeleteExamAttachmentAsync(actualExamAttachment);
-        }        
+        }
+
+        [Fact]
+        public async Task ShouldGetAllExamAttachmentsAsync()
+        {
+            // given
+            var randomExamAttachments = new List<ExamAttachment>();
+
+            for (var i = 0; i <= GetRandomNumber(); i++)
+            {
+                ExamAttachment randomExamAttachment = await PostExamAttachmentAsync();
+                randomExamAttachments.Add(randomExamAttachment);
+            }
+
+            List<ExamAttachment> inputExamAttachments = randomExamAttachments;
+            List<ExamAttachment> expectedExamAttachments = inputExamAttachments;
+
+            // when
+            List<ExamAttachment> actualExamAttachments =
+                await this.otripleSApiBroker.GetAllExamAttachmentsAsync();
+
+            // then
+            foreach (ExamAttachment expectedExamAttachment in expectedExamAttachments)
+            {
+                ExamAttachment actualExamAttachment =
+                    actualExamAttachments.Single(studentAttachment =>
+                        studentAttachment.ExamId == expectedExamAttachment.ExamId);
+
+                actualExamAttachment.Should().BeEquivalentTo(expectedExamAttachment);
+
+                await DeleteExamAttachmentAsync(actualExamAttachment);
+            }
+        }
+
+        
     }
 }
