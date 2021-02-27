@@ -22,8 +22,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             // given
             int randomNegativeNumber = GetNegativeRandomNumber();
             DateTimeOffset randomDateTime = GetRandomDateTime();
-            Attachment randomAttachment = CreateRandomAttachment(randomDateTime);
-            Attachment someAttachment = randomAttachment;
+            Attachment someAttachment = CreateRandomAttachment(randomDateTime);
             someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             SqlException sqlException = GetSqlException();
 
@@ -31,7 +30,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 new AttachmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttachmentByIdAsync(someAttachment.Id))
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(sqlException);
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -51,16 +50,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(someAttachment.Id),
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
                     Times.Once);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -69,8 +68,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             // given
             int randomNegativeNumber = GetNegativeRandomNumber();
             DateTimeOffset randomDateTime = GetRandomDateTime();
-            Attachment randomAttachment = CreateRandomAttachment(randomDateTime);
-            Attachment someAttachment = randomAttachment;
+            Attachment someAttachment = CreateRandomAttachment(randomDateTime);
             someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var databaseUpdateException = new DbUpdateException();
 
@@ -78,7 +76,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 new AttachmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttachmentByIdAsync(someAttachment.Id))
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateException);
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -98,16 +96,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(someAttachment.Id),
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
                     Times.Once);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -116,8 +114,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             // given
             int randomNegativeNumber = GetNegativeRandomNumber();
             DateTimeOffset randomDateTime = GetRandomDateTime();
-            Attachment randomAttachment = CreateRandomAttachment(randomDateTime);
-            Attachment someAttachment = randomAttachment;
+            Attachment someAttachment = CreateRandomAttachment(randomDateTime);
             someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var serviceException = new Exception();
 
@@ -125,7 +122,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 new AttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttachmentByIdAsync(someAttachment.Id))
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -145,16 +142,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(someAttachment.Id),
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAttachmentServiceException))),
                     Times.Once);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -163,8 +160,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             // given
             int randomNegativeNumber = GetNegativeRandomNumber();
             DateTimeOffset randomDateTime = GetRandomDateTime();
-            Attachment randomAttachment = CreateRandomAttachment(randomDateTime);
-            Attachment someAttachment = randomAttachment;
+            Attachment someAttachment = CreateRandomAttachment(randomDateTime);
             someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
             var lockedAttachmentException = new LockedAttachmentException(databaseUpdateConcurrencyException);
@@ -173,7 +169,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 new AttachmentDependencyException(lockedAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttachmentByIdAsync(someAttachment.Id))
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -193,16 +189,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(someAttachment.Id),
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
                     Times.Once);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

@@ -387,9 +387,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -441,9 +441,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -495,9 +495,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -550,9 +550,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

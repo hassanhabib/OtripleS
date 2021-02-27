@@ -25,7 +25,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 parameterName: nameof(Attachment.Id),
                 parameterValue: inputAttachmentId);
 
-            var expectedAttachmentValidationException = new AttachmentValidationException(invalidAttachmentInputException);
+            var expectedAttachmentValidationException = 
+                new AttachmentValidationException(invalidAttachmentInputException);
 
             //when
             ValueTask<Attachment> retrieveAttachmentByIdTask =
@@ -36,14 +37,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                Times.Once);
+                    Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker => broker.GetCurrentDateTime(),
-                Times.Never);
+            this.dateTimeBrokerMock.Verify(broker => 
+                broker.GetCurrentDateTime(),
+                    Times.Never);
 
-            this.storageBrokerMock.Verify(broker =>
-                    broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
-                Times.Never);
+            this.storageBrokerMock.Verify(broker => 
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -57,14 +59,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             Guid randomAttachmentId = Guid.NewGuid();
             Guid inputAttachmentId = randomAttachmentId;
             Attachment invalidStorageAttachment = null;
-
             var notFoundAttachmentException = new NotFoundAttachmentException(inputAttachmentId);
-
-            var expectedAttachmentValidationException = new AttachmentValidationException(notFoundAttachmentException);
+            
+            var expectedAttachmentValidationException = 
+                new AttachmentValidationException(notFoundAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
-                    broker.SelectAttachmentByIdAsync(inputAttachmentId))
-                .ReturnsAsync(invalidStorageAttachment);
+                broker.SelectAttachmentByIdAsync(inputAttachmentId))
+                    .ReturnsAsync(invalidStorageAttachment);
 
             //when
             ValueTask<Attachment> retrieveAttachmentByIdTask =
@@ -74,16 +76,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>
                 retrieveAttachmentByIdTask.AsTask());
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                Times.Once);
+                    Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker => broker.GetCurrentDateTime(),
-                Times.Never);
-
-            this.storageBrokerMock.Verify(broker =>
-                    broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
-                Times.Once);
+            this.dateTimeBrokerMock.Verify(broker => 
+                broker.GetCurrentDateTime(),
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
