@@ -30,7 +30,9 @@ namespace OtripleS.Web.Api.Services.Attachments
             }
         }
 
-        private void ValidateAgainstStorageAttachmentOnModify(Attachment inputAttachment, Attachment storageAttachment)
+        private void ValidateAgainstStorageAttachmentOnModify(
+            Attachment inputAttachment,
+            Attachment storageAttachment)
         {
             switch (inputAttachment)
             {
@@ -143,32 +145,28 @@ namespace OtripleS.Web.Api.Services.Attachments
 
         private void ValidateInvalidFields(Attachment attachment)
         {
-            if (IsInvalid(attachment.Label))
+            switch (attachment)
             {
-                throw new InvalidAttachmentException(
-                    parameterName: nameof(Attachment.Label),
-                    parameterValue: attachment.Label);
-            }
+                case { } when IsInvalid(attachment.Label):
+                    throw new InvalidAttachmentException(
+                        parameterName: nameof(Attachment.Label),
+                        parameterValue: attachment.Label);
 
-            if (IsInvalid(attachment.Description))
-            {
-                throw new InvalidAttachmentException(
-                    parameterName: nameof(Attachment.Description),
-                    parameterValue: attachment.Description);
-            }
+                case { } when IsInvalid(attachment.Description):
+                    throw new InvalidAttachmentException(
+                        parameterName: nameof(Attachment.Description),
+                        parameterValue: attachment.Description);
 
-            if (IsInvalid(attachment.ContectType))
-            {
-                throw new InvalidAttachmentException(
-                    parameterName: nameof(Attachment.ContectType),
-                    parameterValue: attachment.ContectType);
-            }
+                case { } when IsInvalid(attachment.ContectType):
+                    throw new InvalidAttachmentException(
+                        parameterName: nameof(Attachment.ContectType),
+                        parameterValue: attachment.ContectType);
 
-            if (IsInvalid(attachment.Extension))
-            {
-                throw new InvalidAttachmentException(
-                    parameterName: nameof(Attachment.Extension),
-                    parameterValue: attachment.Extension);
+                case { } when IsInvalid(attachment.Extension):
+                    throw new InvalidAttachmentException(
+                        parameterName: nameof(Attachment.Extension),
+                        parameterValue: attachment.Extension);
+
             }
         }
 
