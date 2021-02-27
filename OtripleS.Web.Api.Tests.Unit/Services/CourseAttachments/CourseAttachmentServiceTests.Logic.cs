@@ -55,7 +55,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 broker.SelectCourseAttachmentByIdAsync(
                     randomCourseAttachment.CourseId,
                     randomCourseAttachment.AttachmentId))
-                        .Returns(new ValueTask<CourseAttachment>(randomCourseAttachment));
+                        .ReturnsAsync(randomCourseAttachment);
 
             // when
             CourseAttachment actualCourseAttachment = await

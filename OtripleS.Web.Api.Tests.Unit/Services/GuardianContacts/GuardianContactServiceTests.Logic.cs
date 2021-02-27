@@ -124,7 +124,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectGuardianContactByIdAsync(randomGuardianContact.GuardianId, randomGuardianContact.ContactId))
-                    .Returns(new ValueTask<GuardianContact>(randomGuardianContact));
+                    .ReturnsAsync(randomGuardianContact);
 
             // when
             GuardianContact actualGuardianContact = await

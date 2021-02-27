@@ -120,7 +120,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherContacts
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherContactByIdAsync(randomTeacherContact.TeacherId, randomTeacherContact.ContactId))
-                    .Returns(new ValueTask<TeacherContact>(randomTeacherContact));
+                    .ReturnsAsync(randomTeacherContact);
 
             // when
             TeacherContact actualTeacherContact = await
