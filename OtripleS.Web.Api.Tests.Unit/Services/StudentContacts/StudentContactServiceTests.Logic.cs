@@ -77,8 +77,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
             StudentContact expectedStudentContact = storageStudentContact;
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentContactByIdAsync(randomStudentContact.StudentId, randomStudentContact.ContactId))
-                    .Returns(new ValueTask<StudentContact>(randomStudentContact));
+                broker.SelectStudentContactByIdAsync(
+                    randomStudentContact.StudentId, 
+                    randomStudentContact.ContactId))
+                        .ReturnsAsync(randomStudentContact);
 
             // when
             StudentContact actualStudentContact = await

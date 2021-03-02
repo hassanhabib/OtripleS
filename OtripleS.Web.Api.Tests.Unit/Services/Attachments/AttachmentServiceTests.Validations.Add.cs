@@ -523,7 +523,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertAttachmentAsync(alreadyExistsAttachment))
+                broker.InsertAttachmentAsync(It.IsAny<Attachment>()))
                     .ThrowsAsync(duplicateKeyException);
 
             // when
@@ -539,7 +539,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAttachmentAsync(alreadyExistsAttachment),
+                broker.InsertAttachmentAsync(It.IsAny<Attachment>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>

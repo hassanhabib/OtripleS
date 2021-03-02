@@ -19,20 +19,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogIt()
         {
             // given
+            var someAttachmentId = Guid.NewGuid();
             var sqlException = GetSqlException();
 
             var expectedAttachmentDependencyException =
                 new AttachmentDependencyException(sqlException);
 
-            var badGuid = Guid.NewGuid();
-
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttachmentByIdAsync(badGuid))
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()))
                     .Throws(sqlException);
 
             // when 
             ValueTask<Attachment> retrieveTask =
-                this.attachmentService.RetrieveAttachmentByIdAsync(badGuid);
+                this.attachmentService.RetrieveAttachmentByIdAsync(someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<AttachmentDependencyException>(() => retrieveTask.AsTask());
@@ -42,36 +41,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(badGuid),
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogIt()
         {
             // given
+            var someAttachmentId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
-
-            var guid = Guid.NewGuid();
 
             var expectedAttachmentDependencyException =
                 new AttachmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttachmentByIdAsync(guid))
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()))
                     .Throws(databaseUpdateException);
 
             // when
             ValueTask<Attachment> retrieveTask =
-                this.attachmentService.RetrieveAttachmentByIdAsync(guid);
+                this.attachmentService.RetrieveAttachmentByIdAsync(someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<AttachmentDependencyException>(() => retrieveTask.AsTask());
@@ -81,7 +79,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(guid),
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -91,26 +89,26 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogIt()
         {
             // given
+            var someAttachmentId = Guid.NewGuid();
             var exception = new Exception();
 
             var expectedAttachmentServiceException =
                 new AttachmentServiceException(exception);
 
-            var guid = Guid.NewGuid();
-
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttachmentByIdAsync(guid))
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()))
                     .Throws(exception);
 
             // when 
             ValueTask<Attachment> retrieveTask =
-                this.attachmentService.RetrieveAttachmentByIdAsync(guid);
+                this.attachmentService.RetrieveAttachmentByIdAsync(someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<AttachmentServiceException>(() => retrieveTask.AsTask());
@@ -120,16 +118,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(guid),
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

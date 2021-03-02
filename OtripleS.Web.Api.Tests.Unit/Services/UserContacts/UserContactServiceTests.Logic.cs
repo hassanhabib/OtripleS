@@ -123,7 +123,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectUserContactByIdAsync(randomUserContact.UserId, randomUserContact.ContactId))
-                    .Returns(new ValueTask<UserContact>(randomUserContact));
+                    .ReturnsAsync(randomUserContact);
 
             // when
             UserContact actualUserContact = await

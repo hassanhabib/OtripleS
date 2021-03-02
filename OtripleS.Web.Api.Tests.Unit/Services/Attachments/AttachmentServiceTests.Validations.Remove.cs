@@ -47,8 +47,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.DeleteAttachmentAsync(It.IsAny<Attachment>()),
                     Times.Never);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -90,8 +90,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.DeleteAttachmentAsync(It.IsAny<Attachment>()),
                     Times.Never);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
