@@ -4,6 +4,9 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using OtripleS.Web.Api.Models.AssignmentAttachments;
 
 namespace OtripleS.Web.Api.Models.Assignments
 {
@@ -18,5 +21,8 @@ namespace OtripleS.Web.Api.Models.Assignments
         public DateTimeOffset UpdatedDate { get; set; }
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<AssignmentAttachment> AssignmentAttachments { get; set; }
     }
 }
