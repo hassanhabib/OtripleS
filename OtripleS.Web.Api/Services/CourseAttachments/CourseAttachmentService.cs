@@ -30,8 +30,8 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
         }
 
         public ValueTask<CourseAttachment> RemoveCourseAttachmentByIdAsync(
-            Guid courseId, 
-            Guid attachmentId) => 
+            Guid courseId,
+            Guid attachmentId) =>
         TryCatch(async () =>
         {
             ValidateCourseAttachmentIds(courseId, attachmentId);
@@ -64,7 +64,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
         });
 
         public ValueTask<CourseAttachment> RetrieveCourseAttachmentByIdAsync(
-            Guid courseId, 
+            Guid courseId,
             Guid attachmentId) =>
         TryCatch(async () =>
         {

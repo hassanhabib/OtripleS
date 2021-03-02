@@ -20,10 +20,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Attachment randomAttachment = CreateRandomAttachment(dateTime);
-            Attachment inputAttachment = randomAttachment;
-            inputAttachment.UpdatedBy = inputAttachment.CreatedBy;
-            inputAttachment.UpdatedDate = inputAttachment.CreatedDate;
+            Attachment someAttachment = CreateRandomAttachment(dateTime);
+            someAttachment.UpdatedBy = someAttachment.CreatedBy;
+            someAttachment.UpdatedDate = someAttachment.CreatedDate;
             var sqlException = GetSqlException();
 
             var expectedAttachmentDependencyException =
@@ -34,12 +33,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertAttachmentAsync(inputAttachment))
+                broker.InsertAttachmentAsync(someAttachment))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.AddAttachmentAsync(inputAttachment);
+                this.attachmentService.AddAttachmentAsync(someAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentDependencyException>(() =>
@@ -50,7 +49,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAttachmentAsync(inputAttachment),
+                broker.InsertAttachmentAsync(It.IsAny<Attachment>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -67,10 +66,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Attachment randomAttachment = CreateRandomAttachment(dateTime);
-            Attachment inputAttachment = randomAttachment;
-            inputAttachment.UpdatedBy = inputAttachment.CreatedBy;
-            inputAttachment.UpdatedDate = inputAttachment.CreatedDate;
+            Attachment someAttachment = CreateRandomAttachment(dateTime);
+            someAttachment.UpdatedBy = someAttachment.CreatedBy;
+            someAttachment.UpdatedDate = someAttachment.CreatedDate;
             var databaseUpdateException = new DbUpdateException();
 
             var expectedAttachmentDependencyException =
@@ -81,12 +79,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertAttachmentAsync(inputAttachment))
+                broker.InsertAttachmentAsync(It.IsAny<Attachment>()))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.AddAttachmentAsync(inputAttachment);
+                this.attachmentService.AddAttachmentAsync(someAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentDependencyException>(() =>
@@ -97,7 +95,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAttachmentAsync(inputAttachment),
+                broker.InsertAttachmentAsync(It.IsAny<Attachment>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -114,10 +112,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Attachment randomAttachment = CreateRandomAttachment(dateTime);
-            Attachment inputAttachment = randomAttachment;
-            inputAttachment.UpdatedBy = inputAttachment.CreatedBy;
-            inputAttachment.UpdatedDate = inputAttachment.CreatedDate;
+            Attachment someAttachment = CreateRandomAttachment(dateTime);
+            someAttachment.UpdatedBy = someAttachment.CreatedBy;
+            someAttachment.UpdatedDate = someAttachment.CreatedDate;
             var exception = new Exception();
 
             var expectedAttachmentServiceException =
@@ -128,12 +125,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertAttachmentAsync(inputAttachment))
+                broker.InsertAttachmentAsync(It.IsAny<Attachment>()))
                     .ThrowsAsync(exception);
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                 this.attachmentService.AddAttachmentAsync(inputAttachment);
+                 this.attachmentService.AddAttachmentAsync(someAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentServiceException>(() =>
@@ -144,7 +141,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAttachmentAsync(inputAttachment),
+                broker.InsertAttachmentAsync(It.IsAny<Attachment>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>

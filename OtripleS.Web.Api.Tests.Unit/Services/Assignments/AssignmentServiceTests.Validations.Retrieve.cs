@@ -39,16 +39,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                 Times.Once
             );
 
-            this.dateTimeBrokerMock.Verify(broker => broker.GetCurrentDateTime(),
-                Times.Never);
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                    broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
-                Times.Never);
+                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]

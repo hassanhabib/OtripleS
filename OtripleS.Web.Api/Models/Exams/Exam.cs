@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using OtripleS.Web.Api.Models.ExamAttachments;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Models.StudentExams;
 
@@ -29,5 +30,8 @@ namespace OtripleS.Web.Api.Models.Exams
 
         [JsonIgnore]
         public IEnumerable<StudentExam> StudentExams { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<ExamAttachment> ExamAttachments { get; set; }
     }
 }

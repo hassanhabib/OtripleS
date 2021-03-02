@@ -3,7 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -56,7 +55,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CourseAttachments
                 broker.SelectCourseAttachmentByIdAsync(
                     randomCourseAttachment.CourseId,
                     randomCourseAttachment.AttachmentId))
-                        .Returns(new ValueTask<CourseAttachment>(randomCourseAttachment));
+                        .ReturnsAsync(randomCourseAttachment);
 
             // when
             CourseAttachment actualCourseAttachment = await

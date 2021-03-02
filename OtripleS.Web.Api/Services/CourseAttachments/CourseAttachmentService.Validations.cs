@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 
         private void ValidateCourseAttachmentIds(Guid courseId, Guid attachmentId)
         {
-            switch(courseId, attachmentId)
+            switch (courseId, attachmentId)
             {
                 case { } when courseId == default:
                     throw new InvalidCourseAttachmentException(

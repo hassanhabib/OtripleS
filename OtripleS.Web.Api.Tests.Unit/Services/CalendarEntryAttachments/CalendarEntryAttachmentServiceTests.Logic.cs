@@ -88,7 +88,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectCalendarEntryAttachmentByIdAsync(
                     randomCalendarEntryAttachment.CalendarEntryId, randomCalendarEntryAttachment.AttachmentId))
-                        .Returns(new ValueTask<CalendarEntryAttachment>(randomCalendarEntryAttachment));
+                        .ReturnsAsync(randomCalendarEntryAttachment);
 
             // when
             CalendarEntryAttachment actualCalendarEntryAttachment = await

@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentGuardianByIdAsync(randomStudentGuardian.StudentId, randomStudentGuardian.GuardianId))
-                    .Returns(new ValueTask<StudentGuardian>(randomStudentGuardian));
+                    .ReturnsAsync(randomStudentGuardian);
 
             // when
             StudentGuardian actualStudentGuardian = await
