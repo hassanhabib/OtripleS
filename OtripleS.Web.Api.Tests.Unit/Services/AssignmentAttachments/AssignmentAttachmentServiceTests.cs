@@ -6,6 +6,8 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
+using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -60,5 +62,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
         }
 
         private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
     }
 }
