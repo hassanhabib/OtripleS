@@ -159,5 +159,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenReferneceExceptionAndLogItAsync()
+        {
+            // given
+            AssignmentAttachment randomAssignmentAttachment = CreateRandomAssignmentAttachment();
+            AssignmentAttachment invalidAssignmentAttachment = randomAssignmentAttachment;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var foreignKeyConstraintConflictException = new ForeignKeyConstraintConflictException(exceptionMessage);
+
+            var invalidAssignmentAttachmentReferenceException =
+                new InvalidAssignmentAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+            var expectedAssignmentAttachmentValidationException =
+                new AssignmentAttachmentValidationException(invalidAssignmentAttachmentReferenceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertAssignmentAttachmentAsync(invalidAssignmentAttachment))
+                    .ThrowsAsync(foreignKeyConstraintConflictException);
+
+            // when
+            ValueTask<AssignmentAttachment> addAssignmentAttachmentTask =
+                this.assignmentAttachmentService.AddAssignmentAttachmentAsync(invalidAssignmentAttachment);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentAttachmentValidationException>(() =>
+                addAssignmentAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedAssignmentAttachmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertAssignmentAttachmentAsync(invalidAssignmentAttachment),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
