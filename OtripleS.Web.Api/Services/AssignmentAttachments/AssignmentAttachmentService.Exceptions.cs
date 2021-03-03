@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.AssignmentAttachments;
 using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
 
@@ -44,6 +45,10 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
 
                 throw CreateAndLogValidationException(invalidAssignmentAttachmentReferenceException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
         }
 
         private AssignmentAttachmentValidationException CreateAndLogValidationException(Exception exception)
@@ -52,6 +57,14 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             this.loggingBroker.LogError(AssignmentAttachmentValidationException);
 
             return AssignmentAttachmentValidationException;
+        }
+
+        private AssignmentAttachmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var AssignmentAttachmentDependencyException = new AssignmentAttachmentDependencyException(exception);
+            this.loggingBroker.LogCritical(AssignmentAttachmentDependencyException);
+
+            return AssignmentAttachmentDependencyException;
         }
     }
 }
