@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using OtripleS.Web.Api.Models.AssignmentAttachments;
 using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
 
@@ -28,6 +29,13 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             catch (InvalidAssignmentAttachmentException invalidAssignmentAttachmentInputException)
             {
                 throw CreateAndLogValidationException(invalidAssignmentAttachmentInputException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsAssignmentAttachmentException =
+                    new AlreadyExistsAssignmentAttachmentException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsAssignmentAttachmentException);
             }
         }
 
