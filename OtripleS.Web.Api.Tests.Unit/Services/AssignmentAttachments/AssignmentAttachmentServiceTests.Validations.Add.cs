@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Moq;
 using OtripleS.Web.Api.Models.AssignmentAttachments;
 using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
@@ -112,6 +113,47 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertAssignmentAttachmentAsync(It.IsAny<AssignmentAttachment>()),
                     Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenAssignmentAttachmentAlreadyExistsAndLogItAsync()
+        {
+            // given
+            AssignmentAttachment randomAssignmentAttachment = CreateRandomAssignmentAttachment();
+            AssignmentAttachment alreadyExistsAssignmentAttachment = randomAssignmentAttachment;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsAssignmentAttachmentException =
+                new AlreadyExistsAssignmentAttachmentException(duplicateKeyException);
+
+            var expectedAssignmentAttachmentValidationException =
+                new AssignmentAttachmentValidationException(alreadyExistsAssignmentAttachmentException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertAssignmentAttachmentAsync(alreadyExistsAssignmentAttachment))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<AssignmentAttachment> addAssignmentAttachmentTask =
+                this.assignmentAttachmentService.AddAssignmentAttachmentAsync(alreadyExistsAssignmentAttachment);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentAttachmentValidationException>(() =>
+                addAssignmentAttachmentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedAssignmentAttachmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertAssignmentAttachmentAsync(alreadyExistsAssignmentAttachment),
+                    Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
