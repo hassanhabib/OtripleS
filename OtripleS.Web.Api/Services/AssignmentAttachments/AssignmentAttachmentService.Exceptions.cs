@@ -54,6 +54,10 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private AssignmentAttachmentValidationException CreateAndLogValidationException(Exception exception)
@@ -78,6 +82,14 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             this.loggingBroker.LogError(AssignmentAttachmentDependencyException);
 
             return AssignmentAttachmentDependencyException;
+        }
+
+        private AssignmentAttachmentServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var AssignmentAttachmentServiceException = new AssignmentAttachmentServiceException(exception);
+            this.loggingBroker.LogError(AssignmentAttachmentServiceException);
+
+            return AssignmentAttachmentServiceException;
         }
     }
 }
