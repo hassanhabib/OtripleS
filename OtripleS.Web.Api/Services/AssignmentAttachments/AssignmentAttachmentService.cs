@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
 
         public ValueTask<AssignmentAttachment> AddAssignmentAttachmentAsync(AssignmentAttachment assignmentAttachment)
         {
-            throw new NotImplementedException();
+            return storageBroker.InsertAssignmentAttachmentAsync(assignmentAttachment);
         }
     }
 }
