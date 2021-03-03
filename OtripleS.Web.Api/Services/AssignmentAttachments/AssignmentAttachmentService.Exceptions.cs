@@ -37,6 +37,13 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
 
                 throw CreateAndLogValidationException(alreadyExistsAssignmentAttachmentException);
             }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidAssignmentAttachmentReferenceException =
+                    new InvalidAssignmentAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidAssignmentAttachmentReferenceException);
+            }
         }
 
         private AssignmentAttachmentValidationException CreateAndLogValidationException(Exception exception)
