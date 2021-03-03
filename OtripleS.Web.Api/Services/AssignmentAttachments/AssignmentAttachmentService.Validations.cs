@@ -33,6 +33,12 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
                     parameterName: nameof(AssignmentAttachment.AssignmentId),
                     parameterValue: assignmentId);
             }
+            else if (attachmentId == default)
+            {
+                throw new InvalidAssignmentAttachmentException(
+                    parameterName: nameof(AssignmentAttachment.AttachmentId),
+                    parameterValue: attachmentId);
+            }
         }
     }
 }
