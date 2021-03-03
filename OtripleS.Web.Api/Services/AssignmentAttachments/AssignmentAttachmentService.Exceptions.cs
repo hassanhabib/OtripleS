@@ -25,6 +25,10 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             {
                 throw CreateAndLogValidationException(nullAssignmentAttachmentInputException);
             }
+            catch (InvalidAssignmentAttachmentException invalidAssignmentAttachmentInputException)
+            {
+                throw CreateAndLogValidationException(invalidAssignmentAttachmentInputException);
+            }
         }
 
         private AssignmentAttachmentValidationException CreateAndLogValidationException(Exception exception)
