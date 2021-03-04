@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -16,6 +17,7 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
     public partial class AssignmentAttachmentService
     {
         private delegate ValueTask<AssignmentAttachment> ReturningAssignmentAttachmentFunction();
+        private delegate IQueryable<AssignmentAttachment> ReturningAssignmentAttachmentsFunction();
 
         private async ValueTask<AssignmentAttachment> TryCatch(
             ReturningAssignmentAttachmentFunction returningAssignmentAttachmentFunction)
@@ -58,6 +60,20 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             {
                 throw CreateAndLogServiceException(exception);
             }
+        }
+
+        private IQueryable<AssignmentAttachment> TryCatch(
+            ReturningAssignmentAttachmentsFunction returningAssignmentAttachmentsFunction)
+        {
+            try
+            {
+                return returningAssignmentAttachmentsFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+
         }
 
         private AssignmentAttachmentValidationException CreateAndLogValidationException(Exception exception)

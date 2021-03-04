@@ -38,13 +38,15 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             return await this.storageBroker.InsertAssignmentAttachmentAsync(assignmentAttachment);
         });
 
-        public IQueryable<AssignmentAttachment> RetrieveAllAssignmentAttachments()
+        public IQueryable<AssignmentAttachment> RetrieveAllAssignmentAttachments() =>
+        TryCatch(() =>
         {
             IQueryable<AssignmentAttachment> storageAssignmentAttachments 
                 = this.storageBroker.SelectAllAssignmentAttachments();
 
             return storageAssignmentAttachments;
-        }
+
+        });
 
     }
 }
