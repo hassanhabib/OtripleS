@@ -72,11 +72,11 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
-            }            
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
-            }            
+            }
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);

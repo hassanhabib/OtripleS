@@ -3,7 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
@@ -41,7 +40,7 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
         public IQueryable<AssignmentAttachment> RetrieveAllAssignmentAttachments() =>
         TryCatch(() =>
         {
-            IQueryable<AssignmentAttachment> storageAssignmentAttachments 
+            IQueryable<AssignmentAttachment> storageAssignmentAttachments
                 = this.storageBroker.SelectAllAssignmentAttachments();
 
             ValidateStorageAssignmentAttachments(storageAssignmentAttachments);

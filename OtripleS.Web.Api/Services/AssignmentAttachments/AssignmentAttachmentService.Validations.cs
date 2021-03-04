@@ -42,7 +42,8 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             }
         }
 
-        private void ValidateStorageAssignmentAttachments(IQueryable<AssignmentAttachment> storageAssignmentAttachments)
+        private void ValidateStorageAssignmentAttachments
+            (IQueryable<AssignmentAttachment> storageAssignmentAttachments)
         {
             if (storageAssignmentAttachments.Count() == 0)
             {
