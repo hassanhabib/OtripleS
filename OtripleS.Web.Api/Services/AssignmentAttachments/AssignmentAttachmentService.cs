@@ -40,7 +40,10 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
 
         public IQueryable<AssignmentAttachment> RetrieveAllAssignmentAttachments()
         {
-            throw new NotImplementedException();
+            IQueryable<AssignmentAttachment> storageAssignmentAttachments 
+                = this.storageBroker.SelectAllAssignmentAttachments();
+
+            return storageAssignmentAttachments;
         }
 
     }
