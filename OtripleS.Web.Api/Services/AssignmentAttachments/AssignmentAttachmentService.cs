@@ -44,6 +44,8 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             IQueryable<AssignmentAttachment> storageAssignmentAttachments 
                 = this.storageBroker.SelectAllAssignmentAttachments();
 
+            ValidateStorageAssignmentAttachments(storageAssignmentAttachments);
+
             return storageAssignmentAttachments;
 
         });

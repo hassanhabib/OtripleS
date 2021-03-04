@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.AssignmentAttachments;
 using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
 
@@ -40,5 +41,14 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
                     parameterValue: attachmentId);
             }
         }
+
+        private void ValidateStorageAssignmentAttachments(IQueryable<AssignmentAttachment> storageAssignmentAttachments)
+        {
+            if (storageAssignmentAttachments.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No assignment attachments found in storage.");
+            }
+        }
+
     }
 }
