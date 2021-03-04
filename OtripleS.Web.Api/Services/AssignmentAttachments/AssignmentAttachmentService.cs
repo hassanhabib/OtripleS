@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -36,5 +37,11 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
 
             return await this.storageBroker.InsertAssignmentAttachmentAsync(assignmentAttachment);
         });
+
+        public IQueryable<AssignmentAttachment> RetrieveAllAssignmentAttachments()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
