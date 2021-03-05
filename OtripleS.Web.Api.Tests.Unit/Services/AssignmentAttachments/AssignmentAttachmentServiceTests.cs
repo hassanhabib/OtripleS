@@ -7,8 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -65,5 +67,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
 
         private AssignmentAttachment CreateRandomAssignmentAttachment(DateTimeOffset dates) =>
             CreateAssignmentAttachmentFiller(dates).Create();
+
+        private static SqlException GetSqlException() =>
+         (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
     }
 }
