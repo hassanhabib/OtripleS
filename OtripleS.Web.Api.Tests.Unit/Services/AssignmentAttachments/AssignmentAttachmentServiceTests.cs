@@ -37,8 +37,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
                 loggingBroker: this.loggingBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
-        private AssignmentAttachment CreateRandomAssignmentAttachment() =>
-           CreateAssignmentAttachmentFiller(DateTimeOffset.UtcNow).Create();
 
         private static Filler<AssignmentAttachment> CreateAssignmentAttachmentFiller(DateTimeOffset dates)
         {
@@ -59,6 +57,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
 
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
+        private AssignmentAttachment CreateRandomAssignmentAttachment() =>
+           CreateAssignmentAttachmentFiller(DateTimeOffset.UtcNow).Create();
+
+        private AssignmentAttachment CreateRandomAssignmentAttachment(DateTimeOffset dates) =>
+            CreateAssignmentAttachmentFiller(dates).Create();
     }
 }
