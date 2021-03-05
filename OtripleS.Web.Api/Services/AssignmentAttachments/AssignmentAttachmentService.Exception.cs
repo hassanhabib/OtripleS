@@ -11,7 +11,6 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.AssignmentAttachments;
 using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
-using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
 
 namespace OtripleS.Web.Api.Services.AssignmentAttachments
 {
@@ -49,6 +48,10 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private AssignmentAttachmentValidationException CreateAndLogValidationException(Exception exception)
@@ -66,12 +69,21 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
 
             return AssignmentAttachmentDependencyException;
         }
+
         private AssignmentAttachmentDependencyException CreateAndLogDependencyException(Exception exception)
         {
             var AssignmentAttachmentDependencyException = new AssignmentAttachmentDependencyException(exception);
             this.loggingBroker.LogError(AssignmentAttachmentDependencyException);
 
             return AssignmentAttachmentDependencyException;
+        }
+
+        private AssignmentAttachmentServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var AssignmentAttachmentServiceException = new AssignmentAttachmentServiceException(exception);
+            this.loggingBroker.LogError(AssignmentAttachmentServiceException);
+
+            return AssignmentAttachmentServiceException;
         }
     }
 }
