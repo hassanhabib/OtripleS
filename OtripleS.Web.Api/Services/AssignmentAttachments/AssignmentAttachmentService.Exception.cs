@@ -11,6 +11,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.AssignmentAttachments;
 using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
+using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
 
 namespace OtripleS.Web.Api.Services.AssignmentAttachments
 {
@@ -32,6 +33,13 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             catch (NotFoundAssignmentAttachmentException notFoundAssignmentAttachmentException)
             {
                 throw CreateAndLogValidationException(notFoundAssignmentAttachmentException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedAssignmentAttachmentException =
+                    new LockedAssignmentAttachmentException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedAssignmentAttachmentException);
             }
             catch (SqlException sqlException)
             {
