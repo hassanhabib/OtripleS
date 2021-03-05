@@ -30,9 +30,12 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<AssignmentAttachment> RemoveAssignmentAttachmentByIdAsync(Guid assignmentId, Guid attachmentId)
+        public async ValueTask<AssignmentAttachment> RemoveAssignmentAttachmentByIdAsync(Guid assignmentId, Guid attachmentId)
         {
-            throw new NotImplementedException();
+            AssignmentAttachment maybeAssignmentAttachment =
+                await this.storageBroker.SelectAssignmentAttachmentByIdAsync(assignmentId, attachmentId);
+
+            return await this.storageBroker.DeleteAssignmentAttachmentAsync(maybeAssignmentAttachment);
         }
     }
 }
