@@ -11,10 +11,10 @@ namespace OtripleS.Web.Api.Models.AssignmentAttachments
 {
     public class AssignmentAttachment
     {
-        public Guid AssignmentId {get; set;}
-        public Assignment Assignment {get; set;}
-        public Guid AttachmentId {get; set;}
-        public Attachment Attachment {get; set;}
-        public string Notes {get; set;}
+        public Guid AssignmentId { get; set; }
+        public Assignment Assignment { get; set; }
+        public Guid AttachmentId { get; set; }
+        public Attachment Attachment { get; set; }
+        public string Notes { get; set; }
     }
 }

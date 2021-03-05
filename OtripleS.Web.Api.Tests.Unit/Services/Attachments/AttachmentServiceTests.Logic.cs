@@ -22,10 +22,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
             DateTimeOffset dateTime = randomDateTime;
-            
-            Attachment randomAttachment = 
+
+            Attachment randomAttachment =
                 CreateRandomAttachment(randomDateTime);
-            
+
             randomAttachment.UpdatedBy = randomAttachment.CreatedBy;
             randomAttachment.UpdatedDate = randomAttachment.CreatedDate;
             Attachment inputAttachment = randomAttachment;
@@ -68,17 +68,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             int randomDays = randomNumber;
             DateTimeOffset randomDate = GetRandomDateTime();
             DateTimeOffset randomInputDate = GetRandomDateTime();
-            
-            Attachment randomAttachment = 
+
+            Attachment randomAttachment =
                 CreateRandomAttachment(randomInputDate);
 
             Attachment inputAttachment = randomAttachment;
             Attachment afterUpdateStorageAttachment = inputAttachment;
             Attachment expectedAttachment = afterUpdateStorageAttachment;
-            
-            Attachment beforeUpdateStorageAttachment = 
+
+            Attachment beforeUpdateStorageAttachment =
                 randomAttachment.DeepClone();
-            
+
             inputAttachment.UpdatedDate = randomDate;
             Guid attachmentId = inputAttachment.Id;
 
@@ -115,7 +115,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();            
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -151,10 +151,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
         {
             //given
             DateTimeOffset dateTime = GetRandomDateTime();
-            
-            Attachment randomAttachment = 
+
+            Attachment randomAttachment =
                 CreateRandomAttachment(dateTime);
-            
+
             Guid inputAttachmentId = randomAttachment.Id;
             Attachment inputAttachment = randomAttachment;
             Attachment expectedAttachment = randomAttachment;
@@ -171,7 +171,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             actualAttachment.Should().BeEquivalentTo(expectedAttachment);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(inputAttachmentId), 
+                broker.SelectAttachmentByIdAsync(inputAttachmentId),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -184,10 +184,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            
-            Attachment randomAttachment = 
+
+            Attachment randomAttachment =
                 CreateRandomAttachment(dates: dateTime);
-            
+
             Guid inputAttachmentId = randomAttachment.Id;
             Attachment inputAttachment = randomAttachment;
             Attachment storageAttachment = inputAttachment;

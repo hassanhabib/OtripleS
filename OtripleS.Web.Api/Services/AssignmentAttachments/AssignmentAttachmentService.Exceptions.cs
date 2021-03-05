@@ -41,6 +41,13 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
 
                 throw CreateAndLogValidationException(alreadyExistsAssignmentAttachmentException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedAssignmentAttachmentException =
+                    new LockedAssignmentAttachmentException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedAssignmentAttachmentException);
+            }
             catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
             {
                 var invalidAssignmentAttachmentReferenceException =
@@ -55,6 +62,10 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (NotFoundAssignmentAttachmentException notFoundAssignmentAttachmentException)
+            {
+                throw CreateAndLogValidationException(notFoundAssignmentAttachmentException);
             }
             catch (Exception exception)
             {

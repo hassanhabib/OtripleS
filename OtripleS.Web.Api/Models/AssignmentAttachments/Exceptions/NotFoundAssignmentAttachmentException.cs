@@ -7,9 +7,12 @@ using System;
 
 namespace OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions
 {
-    public class AssignmentAttachmentDependencyException : Exception
+    public class NotFoundAssignmentAttachmentException : Exception
     {
-        public AssignmentAttachmentDependencyException(Exception innerException)
-               : base("Service dependency error occurred, contact support.", innerException) { }
+        public NotFoundAssignmentAttachmentException(Guid assignmentId, Guid attachmentId)
+            : base($"Couldn't find Assignment Attachment with assignmentId: " +
+                    $"{assignmentId} " +
+                    $"and attachmentId: {attachmentId}.")
+        { }
     }
 }

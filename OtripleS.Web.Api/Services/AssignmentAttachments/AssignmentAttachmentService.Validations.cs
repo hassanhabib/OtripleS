@@ -42,6 +42,14 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             }
         }
 
+        private static void ValidateStorageAssignmentAttachment(
+            AssignmentAttachment storageAssignmentAttachment,
+            Guid assignmentId, Guid attachmentId)
+        {
+            if (storageAssignmentAttachment == null)
+                throw new NotFoundAssignmentAttachmentException(assignmentId, attachmentId);
+        }
+
         private void ValidateStorageAssignmentAttachments
             (IQueryable<AssignmentAttachment> storageAssignmentAttachments)
         {

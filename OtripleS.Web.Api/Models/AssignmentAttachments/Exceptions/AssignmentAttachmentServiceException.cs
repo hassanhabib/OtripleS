@@ -10,7 +10,6 @@ namespace OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions
     public class AssignmentAttachmentServiceException : Exception
     {
         public AssignmentAttachmentServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException)
-        { }
+            : base("Service error occurred, contact support.", innerException) { }
     }
 }

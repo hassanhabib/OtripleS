@@ -64,9 +64,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
 
-        private static string GetRandomMessage() => new MnemonicString().GetValue();
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private AssignmentAttachment CreateRandomAssignmentAttachment(DateTimeOffset dates) =>
+            CreateAssignmentAttachmentFiller(dates).Create();
 
         private static SqlException GetSqlException() =>
-            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+         (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
+
     }
 }

@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
@@ -27,6 +28,21 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
         }
+
+        public ValueTask<AssignmentAttachment> RemoveAssignmentAttachmentByIdAsync(
+            Guid assignmentId,
+            Guid attachmentId) =>
+        TryCatch(async () =>
+        {
+            ValidateAssignmentAttachmentIds(assignmentId, attachmentId);
+
+            AssignmentAttachment maybeAssignmentAttachment =
+                await this.storageBroker.SelectAssignmentAttachmentByIdAsync(assignmentId, attachmentId);
+
+            ValidateStorageAssignmentAttachment(maybeAssignmentAttachment, assignmentId, attachmentId);
+
+            return await this.storageBroker.DeleteAssignmentAttachmentAsync(maybeAssignmentAttachment);
+        });
 
         public ValueTask<AssignmentAttachment> AddAssignmentAttachmentAsync
             (AssignmentAttachment assignmentAttachment) =>

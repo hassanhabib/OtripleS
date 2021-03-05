@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions
 {
-    public class AssignmentAttachmentDependencyException : Exception
+    public class LockedAssignmentAttachmentException : Exception
     {
-        public AssignmentAttachmentDependencyException(Exception innerException)
-               : base("Service dependency error occurred, contact support.", innerException) { }
+        public LockedAssignmentAttachmentException(Exception innerException)
+          : base("Locked Assignment Attachment record exception, please try again later.", innerException) { }
     }
 }
