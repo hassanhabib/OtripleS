@@ -4,8 +4,6 @@
 //----------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.AssignmentAttachments;
 
@@ -14,7 +12,7 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
     public interface IAssignmentAttachmentService
     {
         ValueTask<AssignmentAttachment> RemoveAssignmentAttachmentByIdAsync(
-            Guid assignmentId, 
+            Guid assignmentId,
             Guid attachmentId);
     }
 }

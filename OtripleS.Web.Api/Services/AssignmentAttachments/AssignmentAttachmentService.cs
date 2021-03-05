@@ -4,8 +4,6 @@
 //----------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -38,8 +36,8 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             ValidateAssignmentAttachmentIds(assignmentId, attachmentId);
 
             AssignmentAttachment maybeAssignmentAttachment =
-                await this.storageBroker.SelectAssignmentAttachmentByIdAsync(assignmentId, attachmentId); 
-            
+                await this.storageBroker.SelectAssignmentAttachmentByIdAsync(assignmentId, attachmentId);
+
             ValidateStorageAssignmentAttachment(maybeAssignmentAttachment, assignmentId, attachmentId);
 
             return await this.storageBroker.DeleteAssignmentAttachmentAsync(maybeAssignmentAttachment);

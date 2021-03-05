@@ -6,13 +6,13 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using OtripleS.Web.Api.Models.AssignmentAttachments;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.ExamAttachments;
 using OtripleS.Web.Api.Models.GuardianAttachments;
 using OtripleS.Web.Api.Models.StudentAttachments;
 using OtripleS.Web.Api.Models.TeacherAttachments;
-using OtripleS.Web.Api.Models.AssignmentAttachments;
 
 namespace OtripleS.Web.Api.Models.Attachments
 {

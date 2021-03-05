@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 parameterName: nameof(Attachment.Id),
                 parameterValue: inputAttachmentId);
 
-            var expectedAttachmentValidationException = 
+            var expectedAttachmentValidationException =
                 new AttachmentValidationException(invalidAttachmentInputException);
 
             //when
@@ -39,11 +39,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker => 
+            this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Never);
 
-            this.storageBrokerMock.Verify(broker => 
+            this.storageBrokerMock.Verify(broker =>
                 broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
@@ -60,8 +60,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             Guid inputAttachmentId = randomAttachmentId;
             Attachment invalidStorageAttachment = null;
             var notFoundAttachmentException = new NotFoundAttachmentException(inputAttachmentId);
-            
-            var expectedAttachmentValidationException = 
+
+            var expectedAttachmentValidationException =
                 new AttachmentValidationException(notFoundAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -84,7 +84,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker => 
+            this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Never);
 
