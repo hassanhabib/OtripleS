@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.AssignmentAttachments;
 using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
 
@@ -36,6 +37,10 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
         private AssignmentAttachmentValidationException CreateAndLogValidationException(Exception exception)
@@ -50,6 +55,13 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
         {
             var AssignmentAttachmentDependencyException = new AssignmentAttachmentDependencyException(exception);
             this.loggingBroker.LogCritical(AssignmentAttachmentDependencyException);
+
+            return AssignmentAttachmentDependencyException;
+        }
+        private AssignmentAttachmentDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var AssignmentAttachmentDependencyException = new AssignmentAttachmentDependencyException(exception);
+            this.loggingBroker.LogError(AssignmentAttachmentDependencyException);
 
             return AssignmentAttachmentDependencyException;
         }
