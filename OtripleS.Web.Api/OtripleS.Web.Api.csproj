@@ -21,4 +21,8 @@
     <PackageReference Include="EFxceptions.Identity" Version="0.4.4" />
     <PackageReference Include="RESTFulSense" Version="1.7.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\AssignmentAttachments\" />
+    <Folder Include="Models\AssignmentAttachments\Exceptions\" />
+  </ItemGroup>
 </Project>

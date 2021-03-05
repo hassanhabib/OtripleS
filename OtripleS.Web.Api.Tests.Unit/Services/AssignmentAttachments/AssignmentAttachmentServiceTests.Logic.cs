@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -55,5 +56,68 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldAddAttachmentAttachmentAsync()
+        {
+            // given
+            AssignmentAttachment randomAssignmentAttachment = CreateRandomAssignmentAttachment();
+            AssignmentAttachment inputAssignmentAttachment = randomAssignmentAttachment;
+            AssignmentAttachment storageAssignmentAttachment = randomAssignmentAttachment;
+            AssignmentAttachment expectedAssignmentAttachment = storageAssignmentAttachment;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertAssignmentAttachmentAsync(inputAssignmentAttachment))
+                    .ReturnsAsync(storageAssignmentAttachment);
+
+            // when
+            AssignmentAttachment actualAttachmentAttachment =
+                await this.assignmentAttachmentService.AddAssignmentAttachmentAsync(inputAssignmentAttachment);
+
+            // then
+            actualAttachmentAttachment.Should().BeEquivalentTo(expectedAssignmentAttachment);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertAssignmentAttachmentAsync(inputAssignmentAttachment),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldRetrieveAllAssignmentAttachments()
+        {
+            // given
+            IQueryable<AssignmentAttachment> randomAssignmentAttachments =
+                CreateRandomAssignmentAttachments();
+
+            IQueryable<AssignmentAttachment> storageAssignmentAttachments =
+                randomAssignmentAttachments;
+
+            IQueryable<AssignmentAttachment> expectedAssignmentAttachments =
+                storageAssignmentAttachments;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllAssignmentAttachments())
+                    .Returns(storageAssignmentAttachments);
+
+            // when
+            IQueryable<AssignmentAttachment> actualAssignmentAttachments =
+                this.assignmentAttachmentService.RetrieveAllAssignmentAttachments();
+
+            // then
+            actualAssignmentAttachments.Should().BeEquivalentTo(expectedAssignmentAttachments);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllAssignmentAttachments(),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }

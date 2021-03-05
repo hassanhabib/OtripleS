@@ -4,7 +4,9 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.AssignmentAttachments;
@@ -14,22 +16,30 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
 {
     public partial class AssignmentAttachmentService
     {
-        private delegate ValueTask<AssignmentAttachment> ReturningAssignmentEntryAttachmentFunction();
+        private delegate ValueTask<AssignmentAttachment> ReturningAssignmentAttachmentFunction();
+        private delegate IQueryable<AssignmentAttachment> ReturningAssignmentAttachmentsFunction();
 
         private async ValueTask<AssignmentAttachment> TryCatch(
-            ReturningAssignmentEntryAttachmentFunction returningAssignmentEntryAttachmentFunction)
+            ReturningAssignmentAttachmentFunction returningAssignmentAttachmentFunction)
         {
             try
             {
-                return await returningAssignmentEntryAttachmentFunction();
+                return await returningAssignmentAttachmentFunction();
+            }
+            catch (NullAssignmentAttachmentException nullAssignmentAttachmentInputException)
+            {
+                throw CreateAndLogValidationException(nullAssignmentAttachmentInputException);
             }
             catch (InvalidAssignmentAttachmentException invalidAssignmentAttachmentInputException)
             {
                 throw CreateAndLogValidationException(invalidAssignmentAttachmentInputException);
             }
-            catch (NotFoundAssignmentAttachmentException notFoundAssignmentAttachmentException)
+            catch (DuplicateKeyException duplicateKeyException)
             {
-                throw CreateAndLogValidationException(notFoundAssignmentAttachmentException);
+                var alreadyExistsAssignmentAttachmentException =
+                    new AlreadyExistsAssignmentAttachmentException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsAssignmentAttachmentException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
@@ -37,6 +47,38 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
                     new LockedAssignmentAttachmentException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedAssignmentAttachmentException);
+            }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidAssignmentAttachmentReferenceException =
+                    new InvalidAssignmentAttachmentReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidAssignmentAttachmentReferenceException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (NotFoundAssignmentAttachmentException notFoundAssignmentAttachmentException)
+            {
+                throw CreateAndLogValidationException(notFoundAssignmentAttachmentException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private IQueryable<AssignmentAttachment> TryCatch(
+            ReturningAssignmentAttachmentsFunction returningAssignmentAttachmentsFunction)
+        {
+            try
+            {
+                return returningAssignmentAttachmentsFunction();
             }
             catch (SqlException sqlException)
             {
@@ -50,6 +92,7 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             {
                 throw CreateAndLogServiceException(exception);
             }
+
         }
 
         private AssignmentAttachmentValidationException CreateAndLogValidationException(Exception exception)

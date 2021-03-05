@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -36,6 +37,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
+        private AssignmentAttachment CreateRandomAssignmentAttachment() =>
+            CreateAssignmentAttachmentFiller(DateTimeOffset.UtcNow).Create();
+
+        private IQueryable<AssignmentAttachment> CreateRandomAssignmentAttachments() =>
+            CreateAssignmentAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
+
         private static Filler<AssignmentAttachment> CreateAssignmentAttachmentFiller(DateTimeOffset dates)
         {
             var filler = new Filler<AssignmentAttachment>();
@@ -58,14 +67,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private AssignmentAttachment CreateRandomAssignmentAttachment() =>
-           CreateAssignmentAttachmentFiller(DateTimeOffset.UtcNow).Create();
-
         private AssignmentAttachment CreateRandomAssignmentAttachment(DateTimeOffset dates) =>
             CreateAssignmentAttachmentFiller(dates).Create();
 
         private static SqlException GetSqlException() =>
          (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
 
     }
 }

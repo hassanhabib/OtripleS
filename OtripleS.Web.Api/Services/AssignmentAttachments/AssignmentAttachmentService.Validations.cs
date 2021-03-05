@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.AssignmentAttachments;
 using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
 
@@ -11,6 +12,20 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
 {
     public partial class AssignmentAttachmentService
     {
+        private void ValidateAssignmentAttachmentOnCreate(AssignmentAttachment assignmentAttachment)
+        {
+            ValidateAssignmentAttachmentIsNull(assignmentAttachment);
+            ValidateAssignmentAttachmentIds(assignmentAttachment.AssignmentId, assignmentAttachment.AttachmentId);
+        }
+
+        private void ValidateAssignmentAttachmentIsNull(AssignmentAttachment assignmentContact)
+        {
+            if (assignmentContact is null)
+            {
+                throw new NullAssignmentAttachmentException();
+            }
+        }
+
         private void ValidateAssignmentAttachmentIds(Guid assignmentId, Guid attachmentId)
         {
             if (assignmentId == default)
@@ -28,11 +43,21 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
         }
 
         private static void ValidateStorageAssignmentAttachment(
-          AssignmentAttachment storageCourseAttachment,
-          Guid courseId, Guid attachmentId)
+            AssignmentAttachment storageAssignmentAttachment,
+            Guid assignmentId, Guid attachmentId)
         {
-            if (storageCourseAttachment == null)
-                throw new NotFoundAssignmentAttachmentException(courseId, attachmentId);
+            if (storageAssignmentAttachment == null)
+                throw new NotFoundAssignmentAttachmentException(assignmentId, attachmentId);
         }
+
+        private void ValidateStorageAssignmentAttachments
+            (IQueryable<AssignmentAttachment> storageAssignmentAttachments)
+        {
+            if (storageAssignmentAttachments.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No assignment attachments found in storage.");
+            }
+        }
+
     }
 }
