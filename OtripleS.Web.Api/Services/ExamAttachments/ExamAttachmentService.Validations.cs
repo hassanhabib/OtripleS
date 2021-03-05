@@ -26,13 +26,13 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             }
         }
 
-        private void ValidateExamAttachmentIds(Guid calendarEntryId, Guid attachmentId)
+        private void ValidateExamAttachmentIds(Guid examId, Guid attachmentId)
         {
-            if (calendarEntryId == default)
+            if (examId == default)
             {
                 throw new InvalidExamAttachmentException(
                     parameterName: nameof(ExamAttachment.ExamId),
-                    parameterValue: calendarEntryId);
+                    parameterValue: examId);
             }
             else if (attachmentId == default)
             {
