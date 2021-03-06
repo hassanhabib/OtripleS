@@ -38,5 +38,36 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.AssignmentsAttachments
             await DeleteAssignmentAttachmentAsync(actualAssignmentAttachment);
         }
 
+        [Fact]
+        public async Task ShouldGetAllAssignmentAttachmentsAsync()
+        {
+            // given
+            var randomAssignmentAttachments = new List<AssignmentAttachment>();
+
+            for (var i = 0; i <= GetRandomNumber(); i++)
+            {
+                AssignmentAttachment randomAssignmentAttachment = await PostAssignmentAttachmentAsync();
+                randomAssignmentAttachments.Add(randomAssignmentAttachment);
+            }
+
+            List<AssignmentAttachment> inputAssignmentAttachments = randomAssignmentAttachments;
+            List<AssignmentAttachment> expectedAssignmentAttachments = inputAssignmentAttachments;
+
+            // when
+            List<AssignmentAttachment> actualAssignmentAttachments =
+                await this.otripleSApiBroker.GetAllAssignmentAttachmentsAsync();
+
+            // then
+            foreach (AssignmentAttachment expectedAssignmentAttachment in expectedAssignmentAttachments)
+            {
+                AssignmentAttachment actualAssignmentAttachment =
+                    actualAssignmentAttachments.Single(studentAttachment =>
+                        studentAttachment.AssignmentId == expectedAssignmentAttachment.AssignmentId);
+
+                actualAssignmentAttachment.Should().BeEquivalentTo(expectedAssignmentAttachment);
+
+                await DeleteAssignmentAttachmentAsync(actualAssignmentAttachment);
+            }
+        }
     }
 }
