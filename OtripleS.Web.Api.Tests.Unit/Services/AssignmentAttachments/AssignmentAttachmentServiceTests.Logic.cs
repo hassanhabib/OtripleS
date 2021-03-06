@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
         }
 
         [Fact]
-        public async Task ShouldRetrieveAssignmentAttachmentById()
+        public async Task ShouldRetrieveAssignmentAttachmentByIdAsync()
         {
             // given
             AssignmentAttachment randomAssignmentAttachment = CreateRandomAssignmentAttachment();

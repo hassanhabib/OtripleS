@@ -50,11 +50,11 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
 
         });
 
-        public ValueTask<AssignmentAttachment> RetrieveAssignmentAttachmentByIdAsync(
+        public async ValueTask<AssignmentAttachment> RetrieveAssignmentAttachmentByIdAsync(
             Guid assignmentId, 
             Guid attachmentId)
         {
-            throw new NotImplementedException();
+            return await this.storageBroker.SelectAssignmentAttachmentByIdAsync(assignmentId, attachmentId);
         }
 
         public ValueTask<AssignmentAttachment> RemoveAssignmentAttachmentByIdAsync(
