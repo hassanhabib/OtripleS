@@ -64,7 +64,25 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        
+        [HttpGet]
+        public ActionResult<IQueryable<AssignmentAttachment>> GetAllAssignmentAttachments()
+        {
+            try
+            {
+                IQueryable storageAssignmentAttachments =
+                    this.assignmentAttachmentService.RetrieveAllAssignmentAttachments();
+
+                return Ok(storageAssignmentAttachments);
+            }
+            catch (AssignmentAttachmentDependencyException assignmentAttachmentDependencyException)
+            {
+                return Problem(assignmentAttachmentDependencyException.Message);
+            }
+            catch (AssignmentAttachmentServiceException assignmentAttachmentServiceException)
+            {
+                return Problem(assignmentAttachmentServiceException.Message);
+            }
+        }
 
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
