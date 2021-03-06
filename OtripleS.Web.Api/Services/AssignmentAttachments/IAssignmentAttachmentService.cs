@@ -12,10 +12,15 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
 {
     public interface IAssignmentAttachmentService
     {
+        ValueTask<AssignmentAttachment> RetrieveAssignmentAttachmentByIdAsync(
+            Guid assignmentId,
+            Guid attachmentId);
+
+        ValueTask<AssignmentAttachment> AddAssignmentAttachmentAsync(AssignmentAttachment assignmentAttachment);
+        IQueryable<AssignmentAttachment> RetrieveAllAssignmentAttachments();
+
         ValueTask<AssignmentAttachment> RemoveAssignmentAttachmentByIdAsync(
             Guid assignmentId,
             Guid attachmentId);
-        ValueTask<AssignmentAttachment> AddAssignmentAttachmentAsync(AssignmentAttachment assignmentAttachment);
-        IQueryable<AssignmentAttachment> RetrieveAllAssignmentAttachments();
     }
 }
