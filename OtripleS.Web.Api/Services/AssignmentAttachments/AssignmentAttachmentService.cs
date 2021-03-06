@@ -28,22 +28,7 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
         }
-
-        public ValueTask<AssignmentAttachment> RemoveAssignmentAttachmentByIdAsync(
-            Guid assignmentId,
-            Guid attachmentId) =>
-        TryCatch(async () =>
-        {
-            ValidateAssignmentAttachmentIds(assignmentId, attachmentId);
-
-            AssignmentAttachment maybeAssignmentAttachment =
-                await this.storageBroker.SelectAssignmentAttachmentByIdAsync(assignmentId, attachmentId);
-
-            ValidateStorageAssignmentAttachment(maybeAssignmentAttachment, assignmentId, attachmentId);
-
-            return await this.storageBroker.DeleteAssignmentAttachmentAsync(maybeAssignmentAttachment);
-        });
-
+        
         public ValueTask<AssignmentAttachment> AddAssignmentAttachmentAsync
             (AssignmentAttachment assignmentAttachment) =>
         TryCatch(async () =>
@@ -65,5 +50,34 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
 
         });
 
+        public ValueTask<AssignmentAttachment> RetrieveAssignmentAttachmentByIdAsync(
+            Guid assignmentId,
+            Guid attachmentId) =>
+        TryCatch(async () =>
+        {
+            ValidateAssignmentAttachmentIds(assignmentId, attachmentId);
+
+            AssignmentAttachment storageAssignmentAttachment = 
+                await this.storageBroker.SelectAssignmentAttachmentByIdAsync(assignmentId, attachmentId);
+
+            ValidateStorageAssignmentAttachment(storageAssignmentAttachment, assignmentId, attachmentId);
+
+            return storageAssignmentAttachment;
+        });
+
+        public ValueTask<AssignmentAttachment> RemoveAssignmentAttachmentByIdAsync(
+            Guid assignmentId,
+            Guid attachmentId) =>
+        TryCatch(async () =>
+        {
+            ValidateAssignmentAttachmentIds(assignmentId, attachmentId);
+
+            AssignmentAttachment maybeAssignmentAttachment =
+                await this.storageBroker.SelectAssignmentAttachmentByIdAsync(assignmentId, attachmentId);
+
+            ValidateStorageAssignmentAttachment(maybeAssignmentAttachment, assignmentId, attachmentId);
+
+            return await this.storageBroker.DeleteAssignmentAttachmentAsync(maybeAssignmentAttachment);
+        });
     }
 }

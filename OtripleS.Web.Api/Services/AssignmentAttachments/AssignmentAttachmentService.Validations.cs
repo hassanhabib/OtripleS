@@ -15,7 +15,10 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
         private void ValidateAssignmentAttachmentOnCreate(AssignmentAttachment assignmentAttachment)
         {
             ValidateAssignmentAttachmentIsNull(assignmentAttachment);
-            ValidateAssignmentAttachmentIds(assignmentAttachment.AssignmentId, assignmentAttachment.AttachmentId);
+            
+            ValidateAssignmentAttachmentIds(
+                assignmentAttachment.AssignmentId, 
+                assignmentAttachment.AttachmentId);
         }
 
         private void ValidateAssignmentAttachmentIsNull(AssignmentAttachment assignmentContact)
