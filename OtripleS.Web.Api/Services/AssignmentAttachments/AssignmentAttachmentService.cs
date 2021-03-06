@@ -57,7 +57,12 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
         {
             ValidateAssignmentAttachmentIds(assignmentId, attachmentId);
 
-            return await this.storageBroker.SelectAssignmentAttachmentByIdAsync(assignmentId, attachmentId);
+            AssignmentAttachment storageAssignmentAttachment = 
+                await this.storageBroker.SelectAssignmentAttachmentByIdAsync(assignmentId, attachmentId);
+
+            ValidateStorageAssignmentAttachment(storageAssignmentAttachment, assignmentId, attachmentId);
+
+            return storageAssignmentAttachment;
         });
 
         public ValueTask<AssignmentAttachment> RemoveAssignmentAttachmentByIdAsync(
