@@ -91,5 +91,47 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageAssignmentAttachmentIsInvalidAndLogItAsync()
+        {
+            // given
+            AssignmentAttachment randomAssignmentAttachment = CreateRandomAssignmentAttachment();
+            Guid inputAttachmentId = randomAssignmentAttachment.AttachmentId;
+            Guid inputAssignmentId = randomAssignmentAttachment.AssignmentId;
+            AssignmentAttachment nullStorageAssignmentAttachment = null;
+
+            var notFoundAssignmentAttachmentException =
+                new NotFoundAssignmentAttachmentException(inputAssignmentId, inputAttachmentId);
+
+            var expectedAttachmentValidationException =
+                new AssignmentAttachmentValidationException(notFoundAssignmentAttachmentException);
+
+            this.storageBrokerMock.Setup(broker =>
+                 broker.SelectAssignmentAttachmentByIdAsync(inputAssignmentId, inputAttachmentId))
+                    .ReturnsAsync(nullStorageAssignmentAttachment);
+
+            // when
+            ValueTask<AssignmentAttachment> retrieveAssignmentAttachmentTask =
+                this.assignmentAttachmentService.RetrieveAssignmentAttachmentByIdAsync(
+                    inputAssignmentId,
+                    inputAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentAttachmentValidationException>(() =>
+                retrieveAssignmentAttachmentTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
