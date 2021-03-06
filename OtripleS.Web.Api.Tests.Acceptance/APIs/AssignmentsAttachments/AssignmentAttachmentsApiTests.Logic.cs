@@ -69,5 +69,29 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.AssignmentsAttachments
                 await DeleteAssignmentAttachmentAsync(actualAssignmentAttachment);
             }
         }
+
+        [Fact]
+        public async Task ShouldDeleteAssignmentAttachmentAsync()
+        {
+            // given
+            AssignmentAttachment randomAssignmentAttachment = await PostAssignmentAttachmentAsync();
+            AssignmentAttachment inputAssignmentAttachment = randomAssignmentAttachment;
+            AssignmentAttachment expectedAssignmentAttachment = inputAssignmentAttachment;
+
+            // when 
+            AssignmentAttachment deletedAssignmentAttachment =
+                await DeleteAssignmentAttachmentAsync(inputAssignmentAttachment);
+
+            ValueTask<AssignmentAttachment> getAssignmentAttachmentByIdTask =
+                this.otripleSApiBroker.GetAssignmentAttachmentByIdsAsync(
+                    inputAssignmentAttachment.AssignmentId,
+                    inputAssignmentAttachment.AttachmentId);
+
+            // then
+            deletedAssignmentAttachment.Should().BeEquivalentTo(expectedAssignmentAttachment);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getAssignmentAttachmentByIdTask.AsTask());
+        }
     }
 }
