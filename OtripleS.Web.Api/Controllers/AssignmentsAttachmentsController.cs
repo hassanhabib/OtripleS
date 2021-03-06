@@ -119,6 +119,50 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpDelete("assignments/{assignmentId}/attachments/{attachmentId}")]
+        public async ValueTask<ActionResult<bool>> DeleteAssignmentAttachmentAsync(
+            Guid assignmentId,
+            Guid attachmentId)
+        {
+            try
+            {
+                AssignmentAttachment deletedAssignmentAttachment =
+                    await this.assignmentAttachmentService.RemoveAssignmentAttachmentByIdAsync(
+                        assignmentId,
+                        attachmentId);
+
+                return Ok(deletedAssignmentAttachment);
+            }
+            catch (AssignmentAttachmentValidationException assignmentAttachmentValidationException)
+                when (assignmentAttachmentValidationException.InnerException is NotFoundAssignmentAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(assignmentAttachmentValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (AssignmentAttachmentValidationException assignmentAttachmentValidationException)
+            {
+                string innerMessage = GetInnerMessage(assignmentAttachmentValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (AssignmentAttachmentDependencyException assignmentAttachmentValidationException)
+               when (assignmentAttachmentValidationException.InnerException is LockedAssignmentAttachmentException)
+            {
+                string innerMessage = GetInnerMessage(assignmentAttachmentValidationException);
+
+                return Locked(innerMessage);
+            }
+            catch (AssignmentAttachmentDependencyException assignmentAttachmentDependencyException)
+            {
+                return Problem(assignmentAttachmentDependencyException.Message);
+            }
+            catch (AssignmentAttachmentServiceException assignmentAttachmentServiceException)
+            {
+                return Problem(assignmentAttachmentServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
