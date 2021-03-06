@@ -132,5 +132,43 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someAssignmentId = Guid.NewGuid();
+            var exception = new Exception();
+
+            var expectedAssignmentAttachmentException =
+                new AssignmentAttachmentServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<AssignmentAttachment> retrieveAssignmentAttachmentTask =
+                this.assignmentAttachmentService.RetrieveAssignmentAttachmentByIdAsync(
+                    someAssignmentId,
+                    someAttachmentId);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentAttachmentServiceException>(() =>
+                retrieveAssignmentAttachmentTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentAttachmentException))),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
