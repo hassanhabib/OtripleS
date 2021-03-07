@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OtripleS.Web.Api.Migrations
 {
-    public partial class AddAssignmentAttachments : Migration
+    public partial class AddAssignmetsAttachments : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,8 +19,8 @@ namespace OtripleS.Web.Api.Migrations
                 {
                     table.PrimaryKey("PK_AssignmentAttachments", x => new { x.AssignmentId, x.AttachmentId });
                     table.ForeignKey(
-                        name: "FK_AssignmentAttachments_Assignments_AttachmentId",
-                        column: x => x.AttachmentId,
+                        name: "FK_AssignmentAttachments_Assignments_AssignmentId",
+                        column: x => x.AssignmentId,
                         principalTable: "Assignments",
                         principalColumn: "Id");
                     table.ForeignKey(

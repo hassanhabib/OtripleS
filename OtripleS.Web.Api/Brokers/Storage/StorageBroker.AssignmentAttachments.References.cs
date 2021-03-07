@@ -17,16 +17,16 @@ namespace OtripleS.Web.Api.Brokers.Storage
                     new { assignmentAttachment.AssignmentId, assignmentAttachment.AttachmentId });
 
             modelBuilder.Entity<AssignmentAttachment>()
+                .HasOne(assignmentAttachment => assignmentAttachment.Assignment)
+                .WithMany(assignment => assignment.AssignmentAttachments)
+                .HasForeignKey(assignmentAttachment => assignmentAttachment.AssignmentId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<AssignmentAttachment>()
                 .HasOne(assignmentAttachment => assignmentAttachment.Attachment)
                 .WithMany(attachment => attachment.AssignmentAttachments)
                 .HasForeignKey(assignmentAttachment => assignmentAttachment.AttachmentId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<AssignmentAttachment>()
-                .HasOne(assignmentAttachment => assignmentAttachment.Assignment)
-                .WithMany(assignmnet => assignmnet.AssignmentAttachments)
-                .HasForeignKey(assignmentAttachment => assignmentAttachment.AttachmentId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
-    }
+    }    
 }

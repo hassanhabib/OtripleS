@@ -10,8 +10,8 @@ using OtripleS.Web.Api.Brokers.Storage;
 namespace OtripleS.Web.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20210302073042_AddAssignmentAttachments")]
-    partial class AddAssignmentAttachments
+    [Migration("20210306194515_AddAssignmetsAttachments")]
+    partial class AddAssignmetsAttachments
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1086,7 +1086,7 @@ namespace OtripleS.Web.Api.Migrations
                 {
                     b.HasOne("OtripleS.Web.Api.Models.Assignments.Assignment", "Assignment")
                         .WithMany("AssignmentAttachments")
-                        .HasForeignKey("AttachmentId")
+                        .HasForeignKey("AssignmentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 

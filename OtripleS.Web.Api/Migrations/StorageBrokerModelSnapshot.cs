@@ -1084,7 +1084,7 @@ namespace OtripleS.Web.Api.Migrations
                 {
                     b.HasOne("OtripleS.Web.Api.Models.Assignments.Assignment", "Assignment")
                         .WithMany("AssignmentAttachments")
-                        .HasForeignKey("AttachmentId")
+                        .HasForeignKey("AssignmentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
