@@ -78,7 +78,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentContactByIdAsync(
-                    randomStudentContact.StudentId, 
+                    randomStudentContact.StudentId,
                     randomStudentContact.ContactId))
                         .ReturnsAsync(randomStudentContact);
 

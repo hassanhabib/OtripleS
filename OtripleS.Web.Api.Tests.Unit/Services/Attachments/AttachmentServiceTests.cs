@@ -89,7 +89,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
                 .OnProperty(attachment => attachment.TeacherAttachments).IgnoreIt()
                 .OnProperty(attachment => attachment.CalendarEntryAttachments).IgnoreIt()
                 .OnProperty(attachment => attachment.CourseAttachments).IgnoreIt()
-                .OnProperty(attachment => attachment.ExamAttachments).IgnoreIt();
+                .OnProperty(attachment => attachment.ExamAttachments).IgnoreIt()
+                .OnProperty(attachment => attachment.AssignmentAttachments).IgnoreIt();
 
             return filler;
         }

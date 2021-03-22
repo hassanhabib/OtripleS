@@ -5,14 +5,14 @@
 
 using System;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Classrooms;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
-using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Attachments;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Classrooms;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Exams;
 using OtripleS.Web.Api.Tests.Acceptance.Models.ExamsAttachments;
+using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
 using Tynamix.ObjectFiller;
 using Xunit;
 
@@ -54,11 +54,11 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamsAttachments
                     examAttachment.AttachmentId);
 
             await this.otripleSApiBroker.DeleteAttachmentByIdAsync(examAttachment.AttachmentId);
-            
-            Exam deletedExam = 
+
+            Exam deletedExam =
                 await this.otripleSApiBroker.DeleteExamByIdAsync(examAttachment.ExamId);
 
-            SemesterCourse deletedSemesterCourse = 
+            SemesterCourse deletedSemesterCourse =
                 await this.otripleSApiBroker.DeleteSemesterCourseByIdAsync(deletedExam.SemesterCourseId);
 
             await this.otripleSApiBroker.DeleteTeacherByIdAsync(deletedSemesterCourse.TeacherId);

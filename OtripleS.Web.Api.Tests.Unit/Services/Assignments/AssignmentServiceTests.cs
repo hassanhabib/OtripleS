@@ -84,7 +84,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
             filler.Setup()
                 .OnProperty(assignment => assignment.CreatedDate).Use(dates)
                 .OnProperty(assignment => assignment.UpdatedDate).Use(dates)
-                .OnProperty(assignment => assignment.Deadline).Use(dates.AddDays(GetRandomNumber()));
+                .OnProperty(assignment => assignment.Deadline).Use(dates.AddDays(GetRandomNumber()))
+                .OnProperty(assignment => assignment.AssignmentAttachments).IgnoreIt();
 
             return filler;
         }

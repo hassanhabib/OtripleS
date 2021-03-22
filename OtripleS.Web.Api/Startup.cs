@@ -16,6 +16,7 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Brokers.UserManagement;
 using OtripleS.Web.Api.Models.Users;
+using OtripleS.Web.Api.Services.AssignmentAttachments;
 using OtripleS.Web.Api.Services.Assignments;
 using OtripleS.Web.Api.Services.Attachments;
 using OtripleS.Web.Api.Services.Attendances;
@@ -97,6 +98,7 @@ namespace OtripleS.Web.Api
             services.AddTransient<ICalendarEntryAttachmentService, CalendarEntryAttachmentService>();
             services.AddTransient<ICourseAttachmentService, CourseAttachmentService>();
             services.AddTransient<IExamAttachmentService, ExamAttachmentService>();
+            services.AddTransient<IAssignmentAttachmentService, AssignmentAttachmentService>();
 
             services.AddIdentityCore<User>()
                     .AddRoles<Role>()
