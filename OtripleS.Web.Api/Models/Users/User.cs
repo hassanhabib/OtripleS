@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using OtripleS.Web.Api.Models.UserContacts;
+using Newtonsoft.Json;
+using OtripleS.Web.Api.Models.Fees;
 
 namespace OtripleS.Web.Api.Models.Users
 {
@@ -37,5 +39,8 @@ namespace OtripleS.Web.Api.Models.Users
         public DateTimeOffset UpdatedDate { get; set; }
 
         public IEnumerable<UserContact> UserContacts { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<Fee> Fees { get; set; }
     }
 }
