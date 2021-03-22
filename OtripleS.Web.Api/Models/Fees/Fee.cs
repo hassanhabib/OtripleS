@@ -8,7 +8,7 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Fees
 {
-    public class Fee
+    public class Fee : IAuditable
     {
         public Guid Id { get; set; }
         public string Label { get; set; }
