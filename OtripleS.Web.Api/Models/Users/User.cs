@@ -41,6 +41,8 @@ namespace OtripleS.Web.Api.Models.Users
         public IEnumerable<UserContact> UserContacts { get; set; }
 
         [JsonIgnore]
-        public IEnumerable<Fee> Fees { get; set; }
+        public IEnumerable<Fee> FeesCreatedByUser { get; set; }
+        [JsonIgnore]
+        public IEnumerable<Fee> FeesUpdatedByUser { get; set; }
     }
 }

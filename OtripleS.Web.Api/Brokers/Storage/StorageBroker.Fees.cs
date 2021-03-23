@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OtripleS.Web.Api.Models.Fees;
 
 namespace OtripleS.Web.Api.Brokers.Storage
@@ -17,33 +18,37 @@ namespace OtripleS.Web.Api.Brokers.Storage
 
         public async ValueTask<Fee> InsertFeeAsync(Fee fee)
         {
-            var feeEntityEntry = await this.Fees.AddAsync(fee);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Fee> feeEntityEntry = await broker.Fees.AddAsync(fee);
+            await broker.SaveChangesAsync();
 
             return feeEntityEntry.Entity;
         }
 
-        public IQueryable<Fee> SelectAllFees() => this.Fees.AsQueryable();
+        public IQueryable<Fee> SelectAllFees() => Fees.AsQueryable();
 
         public async ValueTask<Fee> SelectFeeByIdAsync(Guid feeId)
         {
+            using var broker = new StorageBroker(this.configuration);
             this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await this.Fees.FindAsync(feeId);
+            return await broker.Fees.FindAsync(feeId);
         }
 
         public async ValueTask<Fee> UpdateFeeAsync(Fee fee)
         {
-            var feeEntityEntry = this.Fees.Update(fee);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Fee> feeEntityEntry = broker.Fees.Update(fee);
+            await broker.SaveChangesAsync();
 
             return feeEntityEntry.Entity;
         }
 
         public async ValueTask<Fee> DeleteFeeAsync(Fee fee)
         {
-            var feeEntityEntry = this.Fees.Remove(fee);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Fee> feeEntityEntry = broker.Fees.Remove(fee);
+            await broker.SaveChangesAsync();
 
             return feeEntityEntry.Entity;
         }

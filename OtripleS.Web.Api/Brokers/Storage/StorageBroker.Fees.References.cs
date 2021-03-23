@@ -14,8 +14,14 @@ namespace OtripleS.Web.Api.Brokers.Storage
         {
             modelBuilder.Entity<Fee>()
                 .HasOne(fee => fee.CreatedByUser)
-                .WithMany(feeCreatedByUser => feeCreatedByUser.Fees)
+                .WithMany(feeCreatedByUser => feeCreatedByUser.FeesCreatedByUser)
                 .HasForeignKey(fee => fee.CreatedBy)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Fee>()
+                .HasOne(fee => fee.UpdatedByUser)
+                .WithMany(feeUpdatedByUser => feeUpdatedByUser.FeesUpdatedByUser)
+                .HasForeignKey(fee => fee.UpdatedBy)                
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

@@ -13,10 +13,13 @@ namespace OtripleS.Web.Api.Models.Fees
         public Guid Id { get; set; }
         public string Label { get; set; }
         public decimal Amount { get; set; }
+
         public Guid CreatedBy { get; set; }
         public User CreatedByUser { get; set; }
+
         public Guid UpdatedBy { get; set; }
         public User UpdatedByUser { get; set; }
+
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset UpdatedDate { get; set; }
     }
