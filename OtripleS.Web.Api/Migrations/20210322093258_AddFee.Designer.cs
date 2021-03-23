@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OtripleS.Web.Api.Brokers.Storage;
 
 namespace OtripleS.Web.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    partial class StorageBrokerModelSnapshot : ModelSnapshot
+    [Migration("20210322093258_AddFee")]
+    partial class AddFee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -547,6 +549,9 @@ namespace OtripleS.Web.Api.Migrations
                     b.Property<Guid>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UpdatedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTimeOffset>("UpdatedDate")
                         .HasColumnType("datetimeoffset");
 
@@ -554,7 +559,7 @@ namespace OtripleS.Web.Api.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("UpdatedBy");
+                    b.HasIndex("UpdatedByUserId");
 
                     b.ToTable("Fees");
                 });
@@ -1214,16 +1219,14 @@ namespace OtripleS.Web.Api.Migrations
             modelBuilder.Entity("OtripleS.Web.Api.Models.Fees.Fee", b =>
                 {
                     b.HasOne("OtripleS.Web.Api.Models.Users.User", "CreatedByUser")
-                        .WithMany("FeesCreatedByUser")
+                        .WithMany("Fees")
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("OtripleS.Web.Api.Models.Users.User", "UpdatedByUser")
-                        .WithMany("FeesUpdatedByUser")
-                        .HasForeignKey("UpdatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("UpdatedByUserId");
 
                     b.Navigation("CreatedByUser");
 
@@ -1559,9 +1562,7 @@ namespace OtripleS.Web.Api.Migrations
 
             modelBuilder.Entity("OtripleS.Web.Api.Models.Users.User", b =>
                 {
-                    b.Navigation("FeesCreatedByUser");
-
-                    b.Navigation("FeesUpdatedByUser");
+                    b.Navigation("Fees");
 
                     b.Navigation("UserContacts");
                 });
