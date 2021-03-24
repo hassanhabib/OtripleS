@@ -40,10 +40,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             // then
             actualFee.Should().BeEquivalentTo(expectedFee);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertFeeAsync(inputFee),
                     Times.Once);

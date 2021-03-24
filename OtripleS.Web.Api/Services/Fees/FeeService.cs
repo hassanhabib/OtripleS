@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Services.Fees
 
         public ValueTask<Fee> AddFeeAsync(Fee fee)
         {
-            throw new NotImplementedException();
+            return this.storageBroker.InsertFeeAsync(fee);
         }
     }
 }
