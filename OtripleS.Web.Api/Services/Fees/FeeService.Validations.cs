@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
 using OtripleS.Web.Api.Models.Fees;
 using OtripleS.Web.Api.Models.Fees.Exceptions;
 
@@ -13,6 +14,7 @@ namespace OtripleS.Web.Api.Services.Fees
         private void ValidateFeeOnAdd(Fee fee)
         {
             ValidateFeeIsNotNull(fee);
+            ValidateFeeId(fee.Id);
         }
 
         private void ValidateFeeIsNotNull(Fee fee)
@@ -22,5 +24,17 @@ namespace OtripleS.Web.Api.Services.Fees
                 throw new NullFeeException();
             }
         }
+
+        private void ValidateFeeId(Guid feeId)
+        {
+            if (IsInvalid(feeId))
+            {
+                throw new InvalidFeeException(
+                    parameterName: nameof(Fee.Id),
+                    parameterValue: feeId);
+            }
+        }
+
+        private bool IsInvalid(Guid input) => input == default;
     }
 }

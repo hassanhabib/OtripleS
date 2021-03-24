@@ -24,6 +24,10 @@ namespace OtripleS.Web.Api.Services.Fees
             {
                 throw CreateAndLogValidationException(nullFeeException);
             }
+            catch (InvalidFeeException invalidFeeInputException)
+            {
+                throw CreateAndLogValidationException(invalidFeeInputException);
+            }
         }
 
         private FeeValidationException CreateAndLogValidationException(Exception exception)
