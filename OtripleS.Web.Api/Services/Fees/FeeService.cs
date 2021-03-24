@@ -27,9 +27,12 @@ namespace OtripleS.Web.Api.Services.Fees
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<Fee> AddFeeAsync(Fee fee)
+        public ValueTask<Fee> AddFeeAsync(Fee fee) =>
+        TryCatch(async () =>
         {
-            return this.storageBroker.InsertFeeAsync(fee);
-        }
+            ValidateFeeOnAdd(fee);
+
+            return await this.storageBroker.InsertFeeAsync(fee);
+        });
     }
 }
