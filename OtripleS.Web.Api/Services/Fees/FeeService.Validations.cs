@@ -38,6 +38,7 @@ namespace OtripleS.Web.Api.Services.Fees
 
         private bool IsInvalid(Guid input) => input == default;
         private bool IsInvalid(DateTimeOffset input) => input == default;
+        private bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);
 
         private void ValidateFeeAuditFieldsOnCreate(Fee fee)
         {
@@ -74,6 +75,7 @@ namespace OtripleS.Web.Api.Services.Fees
                         parameterValue: fee.CreatedDate);
             }
         }
+
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
