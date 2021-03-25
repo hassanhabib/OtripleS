@@ -39,9 +39,12 @@ namespace OtripleS.Web.Api.Services.Fees
             return storageFees;
         });
 
-        public ValueTask<Fee> RetrieveFeeByIdAsync(Guid feeId)
+        public async ValueTask<Fee> RetrieveFeeByIdAsync(Guid feeId)
         {
-            throw new NotImplementedException();
+            Fee storageFee = 
+                await this.storageBroker.SelectFeeByIdAsync(feeId);
+
+            return storageFee;
         }
     }
 }
