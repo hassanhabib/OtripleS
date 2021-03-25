@@ -46,6 +46,11 @@ namespace OtripleS.Web.Api.Services.Fees
                     throw new InvalidFeeException(
                         parameterName: nameof(Fee.CreatedBy),
                         parameterValue: fee.CreatedBy);
+
+                case { } when IsInvalid(input: fee.UpdatedBy):
+                    throw new InvalidFeeException(
+                        parameterName: nameof(Fee.UpdatedBy),
+                        parameterValue: fee.UpdatedBy);
             }
         }
     }
