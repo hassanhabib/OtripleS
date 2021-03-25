@@ -57,6 +57,11 @@ namespace OtripleS.Web.Api.Services.Fees
                     throw new InvalidFeeException(
                         parameterName: nameof(Fee.CreatedDate),
                         parameterValue: fee.CreatedDate);
+
+                case { } when IsInvalid(input: fee.UpdatedDate):
+                    throw new InvalidFeeException(
+                        parameterName: nameof(Fee.UpdatedDate),
+                        parameterValue: fee.UpdatedDate);
             }
         }
     }
