@@ -47,6 +47,8 @@ namespace OtripleS.Web.Api.Services.Fees
             Fee storageFee =
                 await this.storageBroker.SelectFeeByIdAsync(feeId);
 
+            ValidateStorageFee(storageFee, feeId);
+
             return storageFee;
         });
     }

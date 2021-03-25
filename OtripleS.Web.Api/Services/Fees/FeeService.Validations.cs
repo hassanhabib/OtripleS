@@ -29,5 +29,14 @@ namespace OtripleS.Web.Api.Services.Fees
                     parameterValue: feeId);
             }
         }
+
+
+        private void ValidateStorageFee(Fee storageFee, Guid feeId)
+        {
+            if (storageFee == null)
+            {
+                throw new NotFoundFeeException(feeId);
+            }
+        }
     }
 }
