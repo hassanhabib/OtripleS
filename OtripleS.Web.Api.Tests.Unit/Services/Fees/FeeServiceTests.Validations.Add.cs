@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Moq;
 using OtripleS.Web.Api.Models.Fees;
 using OtripleS.Web.Api.Models.Fees.Exceptions;
@@ -316,6 +317,57 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenFeeAlreadyExistsAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Fee randomFee = CreateRandomFee(dateTime);
+            Fee alreadyExistsFee = randomFee;
+            alreadyExistsFee.UpdatedBy = alreadyExistsFee.CreatedBy;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsFeeException =
+                new AlreadyExistsFeeException(duplicateKeyException);
+
+            var expectedFeeValidationException =
+                new FeeValidationException(alreadyExistsFeeException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertFeeAsync(alreadyExistsFee))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<Fee> createFeeTask =
+                this.feeService.AddFeeAsync(alreadyExistsFee);
+
+            // then
+            await Assert.ThrowsAsync<FeeValidationException>(() =>
+                createFeeTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertFeeAsync(alreadyExistsFee),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
