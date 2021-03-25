@@ -52,6 +52,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
-        
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageFeeIsNullAndLogItAsync()
+        {
+            //given
+            Guid randomFeeId = Guid.NewGuid();
+            Guid someFeeId = randomFeeId;
+            Fee invalidStorageFee = null;
+            var notFoundFeeException = new NotFoundFeeException(someFeeId);
+
+            var expectedFeeValidationException =
+                new FeeValidationException(notFoundFeeException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectFeeByIdAsync(It.IsAny<Guid>()))
+                    .ReturnsAsync(invalidStorageFee);
+
+            //when
+            ValueTask<Fee> retrieveFeeByIdTask =
+                this.feeService.RetrieveFeeByIdAsync(someFeeId);
+
+            //then
+            await Assert.ThrowsAsync<FeeValidationException>(() =>
+                retrieveFeeByIdTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectFeeByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
