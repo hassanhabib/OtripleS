@@ -25,11 +25,13 @@ namespace OtripleS.Web.Api.Services.Fees
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public IQueryable<Fee> RetrieveAllFees()
+        public IQueryable<Fee> RetrieveAllFees() =>
+        TryCatch(() =>
         {
             IQueryable<Fee> storageFees = this.storageBroker.SelectAllFees();
 
             return storageFees;
-        }
+        });
+
     }
 }
