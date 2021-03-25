@@ -40,6 +40,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
         private static IQueryable<Fee> CreateRandomFees(DateTimeOffset dates) =>
             CreateFeeFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
+
         private static Filler<Fee> CreateFeeFiller(DateTimeOffset dates)
         {
             var filler = new Filler<Fee>();
