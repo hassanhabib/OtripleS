@@ -67,7 +67,20 @@ namespace OtripleS.Web.Api.Services.Fees
                     throw new InvalidFeeException(
                         parameterName: nameof(Fee.UpdatedDate),
                         parameterValue: fee.UpdatedDate);
+
+                case { } when IsDateNotRecent(fee.CreatedDate):
+                    throw new InvalidFeeException(
+                        parameterName: nameof(Fee.CreatedDate),
+                        parameterValue: fee.CreatedDate);
             }
+        }
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
     }
 }
