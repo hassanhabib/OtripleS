@@ -1,10 +1,14 @@
-﻿// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
 using System;
+<<<<<<< HEAD
 using System.Collections.Generic;
+=======
+using System.Linq;
+>>>>>>> origin/master
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -40,6 +44,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
+<<<<<<< HEAD
         private Fee CreateRandomFee(DateTimeOffset dateTime) =>
             CreateRandomFeeFiller(dateTime).Create();
 
@@ -83,5 +88,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+=======
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
+
+        private static IQueryable<Fee> CreateRandomFees(DateTimeOffset dates) =>
+            CreateFeeFiller(dates).Create(GetRandomNumber()).AsQueryable();
+
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
+
+        private static Filler<Fee> CreateFeeFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<Fee>();
+            Guid createdById = Guid.NewGuid();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(fee => fee.CreatedByUser).IgnoreIt()
+                .OnProperty(fee => fee.UpdatedByUser).IgnoreIt();
+
+            return filler;
+        }
+
+>>>>>>> origin/master
     }
 }
