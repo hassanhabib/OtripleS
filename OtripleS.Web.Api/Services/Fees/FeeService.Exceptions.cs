@@ -5,6 +5,7 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Fees;
@@ -14,7 +15,36 @@ namespace OtripleS.Web.Api.Services.Fees
 {
     public partial class FeeService
     {
+        private delegate ValueTask<Fee> ReturningFeeFunction();
         private delegate IQueryable<Fee> ReturningQueryableFeeFunction();
+
+        private async ValueTask<Fee> TryCatch(ReturningFeeFunction returningFeeFunction)
+        {
+            try
+            {
+                return await returningFeeFunction();
+            }
+            catch (InvalidFeeInputException invalidFeeInputException)
+            {
+                throw CreateAndLogValidationException(invalidFeeInputException);
+            }
+            catch (NotFoundFeeException nullFeeException)
+            {
+                throw CreateAndLogValidationException(nullFeeException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }            
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
 
         private IQueryable<Fee> TryCatch(ReturningQueryableFeeFunction returningQueryableFeeFunction)
         {
@@ -34,6 +64,14 @@ namespace OtripleS.Web.Api.Services.Fees
             {
                 throw CreateAndLogServiceException(exception);
             }
+        }
+
+        private FeeValidationException CreateAndLogValidationException(Exception exception)
+        {
+            var feeValidationException = new FeeValidationException(exception);
+            this.loggingBroker.LogError(feeValidationException);
+
+            return feeValidationException;
         }
 
         private FeeDependencyException CreateAndLogCriticalDependencyException(Exception exception)
