@@ -15,6 +15,7 @@ namespace OtripleS.Web.Api.Services.Fees
         {
             ValidateFeeIsNotNull(fee);
             ValidateFeeId(fee.Id);
+            ValidateFeePropertiesOnCreate(fee);
             ValidateFeeAuditFieldsOnCreate(fee);
         }
 
@@ -73,6 +74,17 @@ namespace OtripleS.Web.Api.Services.Fees
                     throw new InvalidFeeException(
                         parameterName: nameof(Fee.CreatedDate),
                         parameterValue: fee.CreatedDate);
+            }
+        }
+
+        private void ValidateFeePropertiesOnCreate(Fee fee)
+        {
+            switch (fee)
+            {
+                case { } when IsInvalid(fee.Label):
+                    throw new InvalidFeeException(
+                        parameterName: nameof(Fee.Label),
+                        parameterValue: fee.Label);
             }
         }
 
