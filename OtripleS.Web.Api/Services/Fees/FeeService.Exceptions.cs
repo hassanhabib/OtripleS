@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.Fees;
 using OtripleS.Web.Api.Models.Fees.Exceptions;
 
@@ -29,6 +30,10 @@ namespace OtripleS.Web.Api.Services.Fees
             {
                 throw CreateAndLogValidationException(invalidFeeInputException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsFeeException =
@@ -44,6 +49,14 @@ namespace OtripleS.Web.Api.Services.Fees
             this.loggingBroker.LogError(feeValidationException);
 
             return feeValidationException;
+        }
+
+        private FeeDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var feeDependencyException = new FeeDependencyException(exception);
+            this.loggingBroker.LogCritical(feeDependencyException);
+
+            return feeDependencyException;
         }
     }
 }
