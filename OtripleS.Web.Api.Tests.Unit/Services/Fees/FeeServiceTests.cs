@@ -4,11 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
-<<<<<<< HEAD
 using System.Collections.Generic;
-=======
 using System.Linq;
->>>>>>> origin/master
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -44,7 +41,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-<<<<<<< HEAD
         private Fee CreateRandomFee(DateTimeOffset dateTime) =>
             CreateRandomFeeFiller(dateTime).Create();
 
@@ -88,21 +84,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
-=======
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
 
         private static IQueryable<Fee> CreateRandomFees(DateTimeOffset dates) =>
             CreateFeeFiller(dates).Create(GetRandomNumber()).AsQueryable();
-
-        private static SqlException GetSqlException() =>
-            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
-
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
-        {
-            return actualException =>
-                expectedException.Message == actualException.Message
-                && expectedException.InnerException.Message == actualException.InnerException.Message;
-        }
 
         private static Filler<Fee> CreateFeeFiller(DateTimeOffset dates)
         {
@@ -116,7 +100,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
 
             return filler;
         }
-
->>>>>>> origin/master
     }
 }

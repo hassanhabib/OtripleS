@@ -3,12 +3,8 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-<<<<<<< HEAD
-using System;
-using System.Threading.Tasks;
-=======
 using System.Linq;
->>>>>>> origin/master
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -22,12 +18,8 @@ namespace OtripleS.Web.Api.Services.Fees
         private readonly ILoggingBroker loggingBroker;
         private readonly IDateTimeBroker dateTimeBroker;
 
-<<<<<<< HEAD
-        public FeeService(IStorageBroker storageBroker,
-=======
         public FeeService(
             IStorageBroker storageBroker,
->>>>>>> origin/master
             ILoggingBroker loggingBroker,
             IDateTimeBroker dateTimeBroker)
         {
@@ -36,7 +28,6 @@ namespace OtripleS.Web.Api.Services.Fees
             this.dateTimeBroker = dateTimeBroker;
         }
 
-<<<<<<< HEAD
         public ValueTask<Fee> AddFeeAsync(Fee fee) =>
         TryCatch(async () =>
         {
@@ -44,7 +35,7 @@ namespace OtripleS.Web.Api.Services.Fees
 
             return await this.storageBroker.InsertFeeAsync(fee);
         });
-=======
+
         public IQueryable<Fee> RetrieveAllFees() =>
         TryCatch(() =>
         {
@@ -54,7 +45,5 @@ namespace OtripleS.Web.Api.Services.Fees
 
             return storageFees;
         });
-
->>>>>>> origin/master
     }
 }

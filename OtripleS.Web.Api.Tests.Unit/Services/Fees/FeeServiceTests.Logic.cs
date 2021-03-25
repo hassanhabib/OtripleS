@@ -4,11 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
-<<<<<<< HEAD
 using System.Threading.Tasks;
-=======
 using System.Linq;
->>>>>>> origin/master
 using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.Fees;
@@ -19,7 +16,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
     public partial class FeeServiceTests
     {
         [Fact]
-<<<<<<< HEAD
         public async Task ShouldAddFeeAsync()
         {
             // given
@@ -57,7 +53,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-=======
+        }
+
         public void ShouldRetrieveAllFees()
         {
             // given
@@ -89,7 +86,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
->>>>>>> origin/master
         }
     }
 }

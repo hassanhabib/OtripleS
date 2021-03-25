@@ -3,20 +3,16 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-<<<<<<< HEAD
 using System;
 using OtripleS.Web.Api.Models.Fees;
 using OtripleS.Web.Api.Models.Fees.Exceptions;
-=======
 using System.Linq;
-using OtripleS.Web.Api.Models.Fees;
->>>>>>> origin/master
 
 namespace OtripleS.Web.Api.Services.Fees
 {
     public partial class FeeService
     {
-<<<<<<< HEAD
+
         private void ValidateFeeOnAdd(Fee fee)
         {
             ValidateFeeIsNotNull(fee);
@@ -102,7 +98,7 @@ namespace OtripleS.Web.Api.Services.Fees
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
-=======
+
         private void ValidateStorageFees(IQueryable<Fee> storageFees)
         {
             if (storageFees.Count() == 0)
@@ -110,6 +106,5 @@ namespace OtripleS.Web.Api.Services.Fees
                 this.loggingBroker.LogWarning("No fees found in storage.");
             }
         }
->>>>>>> origin/master
     }
 }
