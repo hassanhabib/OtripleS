@@ -37,6 +37,7 @@ namespace OtripleS.Web.Api.Services.Fees
         }
 
         private bool IsInvalid(Guid input) => input == default;
+        private bool IsInvalid(DateTimeOffset input) => input == default;
 
         private void ValidateFeeAuditFieldsOnCreate(Fee fee)
         {
@@ -51,6 +52,11 @@ namespace OtripleS.Web.Api.Services.Fees
                     throw new InvalidFeeException(
                         parameterName: nameof(Fee.UpdatedBy),
                         parameterValue: fee.UpdatedBy);
+
+                case { } when IsInvalid(input: fee.CreatedDate):
+                    throw new InvalidFeeException(
+                        parameterName: nameof(Fee.CreatedDate),
+                        parameterValue: fee.CreatedDate);
             }
         }
     }
