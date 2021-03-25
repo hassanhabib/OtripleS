@@ -3,7 +3,9 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -37,5 +39,9 @@ namespace OtripleS.Web.Api.Services.Fees
             return storageFees;
         });
 
+        public ValueTask<Fee> RetrieveFeeByIdAsync(Guid feeId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -45,6 +45,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
         private static IQueryable<Fee> CreateRandomFees(DateTimeOffset dates) =>
             CreateFeeFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
+        private static Fee CreateRandomFee(DateTimeOffset dates) =>
+            CreateFeeFiller(dates).Create(1).First();
+
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
