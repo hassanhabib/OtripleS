@@ -410,5 +410,47 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenReferneceExceptionAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Fee randomFee = CreateRandomFee(dateTime);
+            Fee invalidFee = randomFee;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var foreignKeyConstraintConflictException = new ForeignKeyConstraintConflictException(exceptionMessage);
+
+            var invalidFeeReferenceException =
+                new InvalidFeeReferenceException(foreignKeyConstraintConflictException);
+
+            var expectedFeeValidationException =
+                new FeeValidationException(invalidFeeReferenceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertFeeAsync(invalidFee))
+                    .ThrowsAsync(foreignKeyConstraintConflictException);
+
+            // when
+            ValueTask<Fee> addFeeTask =
+                this.feeService.AddFeeAsync(invalidFee);
+
+            // then
+            await Assert.ThrowsAsync<FeeValidationException>(() =>
+                addFeeTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertFeeAsync(invalidFee),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
