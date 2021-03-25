@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using OtripleS.Web.Api.Models.Fees;
 using OtripleS.Web.Api.Models.Fees.Exceptions;
 
@@ -27,6 +28,13 @@ namespace OtripleS.Web.Api.Services.Fees
             catch (InvalidFeeException invalidFeeInputException)
             {
                 throw CreateAndLogValidationException(invalidFeeInputException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsFeeException =
+                    new AlreadyExistsFeeException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsFeeException);
             }
         }
 

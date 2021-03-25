@@ -5,9 +5,9 @@
 
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.Fees;
+using OtripleS.Web.Api.Models.Fees.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
@@ -15,16 +15,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
     public partial class FeeServiceTests
     {
         [Fact]
-        public async Task ShouldAddFeeAsync()
+        public async Task ShouldThrowDependencyExceptionOnAddWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            DateTimeOffset dateTime = randomDateTime;
-            Fee randomFee = CreateRandomFee(randomDateTime);
-            randomFee.UpdatedBy = randomFee.CreatedBy;
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Fee randomFee = CreateRandomFee(dateTime);
             Fee inputFee = randomFee;
-            Fee storageFee = randomFee;
-            Fee expectedFee = storageFee;
+            inputFee.UpdatedBy = inputFee.CreatedBy;
+            var sqlException = GetSqlException();
+
+            var expectedFeeDependencyException =
+                new FeeDependencyException(sqlException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -32,25 +33,30 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertFeeAsync(inputFee))
-                    .ReturnsAsync(storageFee);
+                    .ThrowsAsync(sqlException);
 
             // when
-            Fee actualFee =
-                await this.feeService.AddFeeAsync(inputFee);
+            ValueTask<Fee> createFeeTask =
+                this.feeService.AddFeeAsync(inputFee);
 
             // then
-            actualFee.Should().BeEquivalentTo(expectedFee);
+            await Assert.ThrowsAsync<FeeDependencyException>(() =>
+                createFeeTask.AsTask());
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(expectedFeeDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertFeeAsync(inputFee),
                     Times.Once);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
