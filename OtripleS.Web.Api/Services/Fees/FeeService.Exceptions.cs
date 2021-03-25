@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Fees;
 using OtripleS.Web.Api.Models.Fees.Exceptions;
 
@@ -41,6 +42,10 @@ namespace OtripleS.Web.Api.Services.Fees
 
                 throw CreateAndLogValidationException(alreadyExistsFeeException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
         private FeeValidationException CreateAndLogValidationException(Exception exception)
@@ -55,6 +60,14 @@ namespace OtripleS.Web.Api.Services.Fees
         {
             var feeDependencyException = new FeeDependencyException(exception);
             this.loggingBroker.LogCritical(feeDependencyException);
+
+            return feeDependencyException;
+        }
+
+        private FeeDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var feeDependencyException = new FeeDependencyException(exception);
+            this.loggingBroker.LogError(feeDependencyException);
 
             return feeDependencyException;
         }
