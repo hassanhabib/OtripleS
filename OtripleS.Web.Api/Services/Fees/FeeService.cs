@@ -27,7 +27,9 @@ namespace OtripleS.Web.Api.Services.Fees
 
         public IQueryable<Fee> RetrieveAllFees()
         {
-            throw new NotImplementedException();
+            IQueryable<Fee> storageFees = this.storageBroker.SelectAllFees();
+
+            return storageFees;
         }
     }
 }
