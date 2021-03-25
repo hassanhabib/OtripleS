@@ -46,6 +46,10 @@ namespace OtripleS.Web.Api.Services.Fees
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private FeeValidationException CreateAndLogValidationException(Exception exception)
@@ -70,6 +74,14 @@ namespace OtripleS.Web.Api.Services.Fees
             this.loggingBroker.LogError(feeDependencyException);
 
             return feeDependencyException;
+        }
+
+        private FeeServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var feeServiceException = new FeeServiceException(exception);
+            this.loggingBroker.LogError(feeServiceException);
+
+            return feeServiceException;
         }
     }
 }
