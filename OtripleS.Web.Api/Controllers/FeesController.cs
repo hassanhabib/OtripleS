@@ -109,6 +109,46 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpPut]
+        public async ValueTask<ActionResult<Fee>> PutFeeAsync(Fee fee)
+        {
+            try
+            {
+                Fee registeredFee =
+                    await this.feeService.ModifyFeeAsync(fee);
+
+                return Ok(registeredFee);
+            }
+            catch (FeeValidationException feeValidationException)
+                when (feeValidationException.InnerException is NotFoundFeeException)
+            {
+                string innerMessage = GetInnerMessage(feeValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (FeeValidationException feeValidationException)
+            {
+                string innerMessage = GetInnerMessage(feeValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (FeeDependencyException feeDependencyException)
+                when (feeDependencyException.InnerException is LockedFeeException)
+            {
+                string innerMessage = GetInnerMessage(feeDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (FeeDependencyException feeDependencyException)
+            {
+                return Problem(feeDependencyException.Message);
+            }
+            catch (FeeServiceException feeServiceException)
+            {
+                return Problem(feeServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
