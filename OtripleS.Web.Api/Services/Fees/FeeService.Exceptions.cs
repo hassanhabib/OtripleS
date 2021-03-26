@@ -35,7 +35,13 @@ namespace OtripleS.Web.Api.Services.Fees
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
-            }            
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedFeeException = new LockedFeeException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedFeeException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
