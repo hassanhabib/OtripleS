@@ -125,5 +125,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRetrieveByIdWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid someFeeId = Guid.NewGuid();
+            var exception = new Exception();
+
+            var expectedFeeServiceException =
+                new FeeServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectFeeByIdAsync(It.IsAny<Guid>()))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<Fee> retrieveByIdFeeTask =
+                this.feeService.RetrieveFeeByIdAsync(someFeeId);
+
+            // then
+            await Assert.ThrowsAsync<FeeServiceException>(() =>
+                retrieveByIdFeeTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedFeeServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectFeeByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
