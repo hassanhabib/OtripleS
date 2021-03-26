@@ -29,6 +29,11 @@ namespace OtripleS.Web.Api.Services.Fees
             this.dateTimeBroker = dateTimeBroker;
         }
 
+        public ValueTask<Fee> CreateFeeAsync(Fee fee)
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<Fee> RetrieveAllFees() =>
         TryCatch(() =>
         {
@@ -51,5 +56,15 @@ namespace OtripleS.Web.Api.Services.Fees
 
             return storageFee;
         });
+
+        public ValueTask<Fee> ModifyFeeAsync(Fee fee)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ValueTask<Fee> RemoveFeeAsync(Guid FeeId)
+        {
+            throw new NotImplementedException();
+        }        
     }
 }
