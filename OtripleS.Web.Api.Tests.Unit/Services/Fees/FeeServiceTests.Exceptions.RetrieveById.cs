@@ -85,5 +85,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task
+            ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid someFeeId = Guid.NewGuid();            
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+            
+            var lockedFeeException = 
+                new LockedFeeException(databaseUpdateConcurrencyException);
+
+            var expectedFeeDependencyException =
+                new FeeDependencyException(lockedFeeException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectFeeByIdAsync(It.IsAny<Guid>()))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
+
+            // when
+            ValueTask<Fee> retrieveByIdFeeTask =
+                this.feeService.RetrieveFeeByIdAsync(someFeeId);
+
+            // then
+            await Assert.ThrowsAsync<FeeDependencyException>(() =>
+                retrieveByIdFeeTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedFeeDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectFeeByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
