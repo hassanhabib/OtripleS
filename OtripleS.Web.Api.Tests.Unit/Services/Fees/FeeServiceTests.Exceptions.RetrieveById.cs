@@ -46,9 +46,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                 broker.SelectFeeByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -81,9 +81,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                 broker.SelectFeeByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -120,9 +120,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                 broker.SelectFeeByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -155,9 +155,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                 broker.SelectFeeByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
