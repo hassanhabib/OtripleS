@@ -56,7 +56,25 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        
+        [HttpGet]
+        public ActionResult<IQueryable<Fee>> GetAllFees()
+        {
+            try
+            {
+                IQueryable storageFee =
+                    this.feeService.RetrieveAllFees();
+
+                return Ok(storageFee);
+            }
+            catch (FeeDependencyException feeDependencyException)
+            {
+                return Problem(feeDependencyException.Message);
+            }
+            catch (FeeServiceException feeServiceException)
+            {
+                return Problem(feeServiceException.Message);
+            }
+        }
 
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
