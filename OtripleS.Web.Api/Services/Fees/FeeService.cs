@@ -1,9 +1,10 @@
-﻿// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
 using System.Linq;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
@@ -27,6 +28,14 @@ namespace OtripleS.Web.Api.Services.Fees
             this.dateTimeBroker = dateTimeBroker;
         }
 
+        public ValueTask<Fee> AddFeeAsync(Fee fee) =>
+        TryCatch(async () =>
+        {
+            ValidateFeeOnAdd(fee);
+
+            return await this.storageBroker.InsertFeeAsync(fee);
+        });
+
         public IQueryable<Fee> RetrieveAllFees() =>
         TryCatch(() =>
         {
@@ -36,6 +45,5 @@ namespace OtripleS.Web.Api.Services.Fees
 
             return storageFees;
         });
-
     }
 }

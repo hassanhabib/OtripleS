@@ -1,9 +1,11 @@
-﻿// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
 using System;
+using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using System.Linq;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +16,44 @@ namespace OtripleS.Web.Api.Services.Fees
 {
     public partial class FeeService
     {
+        private delegate ValueTask<Fee> ReturningFeeFunction();
         private delegate IQueryable<Fee> ReturningQueryableFeeFunction();
+
+        private async ValueTask<Fee> TryCatch(ReturningFeeFunction returningFeeFunction)
+        {
+            try
+            {
+                return await returningFeeFunction();
+            }
+            catch (NullFeeException nullFeeException)
+            {
+                throw CreateAndLogValidationException(nullFeeException);
+            }
+            catch (InvalidFeeException invalidFeeInputException)
+            {
+                throw CreateAndLogValidationException(invalidFeeInputException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsFeeException =
+                    new AlreadyExistsFeeException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsFeeException);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+        
 
         private IQueryable<Fee> TryCatch(ReturningQueryableFeeFunction returningQueryableFeeFunction)
         {
@@ -26,6 +65,7 @@ namespace OtripleS.Web.Api.Services.Fees
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
@@ -34,6 +74,14 @@ namespace OtripleS.Web.Api.Services.Fees
             {
                 throw CreateAndLogServiceException(exception);
             }
+        }
+
+        private FeeValidationException CreateAndLogValidationException(Exception exception)
+        {
+            var feeValidationException = new FeeValidationException(exception);
+            this.loggingBroker.LogError(feeValidationException);
+
+            return feeValidationException;
         }
 
         private FeeDependencyException CreateAndLogCriticalDependencyException(Exception exception)
@@ -59,6 +107,5 @@ namespace OtripleS.Web.Api.Services.Fees
 
             return feeServiceException;
         }
-
     }
 }
