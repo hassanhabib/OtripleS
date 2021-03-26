@@ -149,6 +149,46 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpDelete("{feeId}")]
+        public async ValueTask<ActionResult<Fee>> DeleteFeeAsync(Guid feeId)
+        {
+            try
+            {
+                Fee storageFee =
+                    await this.feeService.RemoveFeeAsync(feeId);
+
+                return Ok(storageFee);
+            }
+            catch (FeeValidationException feeValidationException)
+                when (feeValidationException.InnerException is NotFoundFeeException)
+            {
+                string innerMessage = GetInnerMessage(feeValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (FeeValidationException feeValidationException)
+            {
+                string innerMessage = GetInnerMessage(feeValidationException);
+
+                return BadRequest(feeValidationException);
+            }
+            catch (FeeDependencyException feeDependencyException)
+               when (feeDependencyException.InnerException is LockedFeeException)
+            {
+                string innerMessage = GetInnerMessage(feeDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (FeeDependencyException feeDependencyException)
+            {
+                return Problem(feeDependencyException.Message);
+            }
+            catch (FeeServiceException feeServiceException)
+            {
+                return Problem(feeServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
