@@ -163,7 +163,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
 
             // when
             Course actualCourse =
-                await this.courseService.RetrieveCourseById(inputCourseId);
+                await this.courseService.RetrieveCourseByIdAsync(inputCourseId);
 
             // then
             actualCourse.Should().BeEquivalentTo(expectedCourse);

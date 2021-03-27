@@ -14,7 +14,7 @@ namespace OtripleS.Web.Api.Services.Courses
     {
         ValueTask<Course> CreateCourseAsync(Course course);
         IQueryable<Course> RetrieveAllCourses();
-        ValueTask<Course> RetrieveCourseById(Guid courseId);
+        ValueTask<Course> RetrieveCourseByIdAsync(Guid courseId);
         ValueTask<Course> ModifyCourseAsync(Course course);
         ValueTask<Course> RemoveCourseAsync(Guid CourseId);
     }
