@@ -3,8 +3,9 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System.Threading.Tasks;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.Fees;
 
 namespace OtripleS.Web.Api.Services.Fees
@@ -13,5 +14,6 @@ namespace OtripleS.Web.Api.Services.Fees
     {
         ValueTask<Fee> AddFeeAsync(Fee fee);
         IQueryable<Fee> RetrieveAllFees();
+        ValueTask<Fee> RetrieveFeeByIdAsync(Guid feeId);
     }
 }

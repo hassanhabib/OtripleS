@@ -37,9 +37,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedFeeDependencyException))),
                     Times.Once);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
+            
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -68,8 +68,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                 broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -102,6 +102,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-
     }
 }

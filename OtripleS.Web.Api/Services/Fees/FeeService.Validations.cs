@@ -106,5 +106,13 @@ namespace OtripleS.Web.Api.Services.Fees
                 this.loggingBroker.LogWarning("No fees found in storage.");
             }
         }
+
+        private void ValidateStorageFee(Fee storageFee, Guid feeId)
+        {
+            if (storageFee == null)
+            {
+                throw new NotFoundFeeException(feeId);
+            }
+        }
     }
 }

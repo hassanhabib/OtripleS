@@ -37,12 +37,22 @@ namespace OtripleS.Web.Api.Services.Fees
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (NotFoundFeeException notFoundFeeException)
+            {
+                throw CreateAndLogValidationException(notFoundFeeException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsFeeException =
                     new AlreadyExistsFeeException(duplicateKeyException);
 
                 throw CreateAndLogValidationException(alreadyExistsFeeException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedFeeException = new LockedFeeException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedFeeException);
             }
             catch (DbUpdateException dbUpdateException)
             {
