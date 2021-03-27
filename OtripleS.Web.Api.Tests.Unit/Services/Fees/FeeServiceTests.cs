@@ -1,9 +1,10 @@
-﻿// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
@@ -40,23 +41,52 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
+        private Fee CreateRandomFee(DateTimeOffset dateTime) =>
+            CreateRandomFeeFiller(dateTime).Create();
 
-        private static IQueryable<Fee> CreateRandomFees(DateTimeOffset dates) =>
-            CreateFeeFiller(dates).Create(GetRandomNumber()).AsQueryable();
+        private Filler<Fee> CreateRandomFeeFiller(DateTimeOffset dateTime)
+        {
+            var filler = new Filler<Fee>();
 
-        private static Fee CreateRandomFee(DateTimeOffset dates) =>
-            CreateFeeFiller(dates).Create(1).First();
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dateTime)
+                .OnProperty(fee => fee.CreatedByUser).IgnoreIt()
+                .OnProperty(fee => fee.UpdatedByUser).IgnoreIt();
+
+            return filler;
+        }
+
+        private Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message &&
+                expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
+
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+        private Fee CreateRandomFee() =>
+            CreateRandomFeeFiller(DateTimeOffset.UtcNow).Create();
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
-        {
-            return actualException =>
-                expectedException.Message == actualException.Message
-                && expectedException.InnerException.Message == actualException.InnerException.Message;
-        }
+        private static IQueryable<Fee> CreateRandomFees(DateTimeOffset dates) =>
+            CreateFeeFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
         private static Filler<Fee> CreateFeeFiller(DateTimeOffset dates)
         {
@@ -70,6 +100,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
 
             return filler;
         }
-
     }
 }

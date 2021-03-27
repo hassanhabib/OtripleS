@@ -21,12 +21,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             Guid randomFeeId = default;
             Guid inputFeeId = randomFeeId;
 
-            var invalidFeeInputException = new InvalidFeeInputException(
+            var invalidFeeException = new InvalidFeeException(
                 parameterName: nameof(Fee.Id),
                 parameterValue: inputFeeId);
 
             var expectedFeeValidationException =
-                new FeeValidationException(invalidFeeInputException);
+                new FeeValidationException(invalidFeeException);
 
             //when
             ValueTask<Fee> retrieveFeeByIdTask =
@@ -39,13 +39,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                 broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker => 
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectFeeByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+               broker.GetCurrentDateTime(),
+                   Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -80,13 +80,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                 broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectFeeByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();            

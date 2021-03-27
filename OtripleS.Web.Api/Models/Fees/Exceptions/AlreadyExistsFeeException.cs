@@ -7,12 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Fees.Exceptions
 {
-    public class InvalidFeeInputException : Exception
+    public class AlreadyExistsFeeException : Exception
     {
-        public InvalidFeeInputException(string parameterName, object parameterValue)
-            : base($"Invalid Fee, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
-        { }
+        public AlreadyExistsFeeException(Exception innerException)
+            : base("Fee with the same id already exists.", innerException) { }
     }
 }
