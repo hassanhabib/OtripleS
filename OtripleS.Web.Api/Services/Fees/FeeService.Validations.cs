@@ -21,6 +21,13 @@ namespace OtripleS.Web.Api.Services.Fees
             ValidateFeeAuditFieldsOnCreate(fee);
         }
 
+
+        private void ValidateFeeOnModify(Fee fee)
+        {
+            ValidateFeeIsNotNull(fee);
+            ValidateFeeId(fee.Id);
+        }
+
         private void ValidateFeeIsNotNull(Fee fee)
         {
             if (fee == default)

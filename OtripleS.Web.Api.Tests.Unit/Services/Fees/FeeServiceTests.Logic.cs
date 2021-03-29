@@ -159,7 +159,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
-                    Times.Once);
+                    Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectFeeByIdAsync(feeId),
