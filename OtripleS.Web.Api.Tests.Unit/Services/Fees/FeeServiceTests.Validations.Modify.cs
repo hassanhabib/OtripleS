@@ -91,5 +91,49 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task ShouldThrowValidationExceptionOnModifyWhenFeeLabelIsInvalidAndLogItAsync(
+            string invalidFeeLabel)
+        {
+            // given
+            Fee randomFee = CreateRandomFee(DateTime.Now);
+            Fee invalidFee = randomFee;
+            invalidFee.Label = invalidFeeLabel;
+
+            var invalidFeeException = new InvalidFeeException(
+               parameterName: nameof(Fee.Label),
+               parameterValue: invalidFee.Label);
+
+            var expectedFeeValidationException =
+                new FeeValidationException(invalidFeeException);
+
+            // when
+            ValueTask<Fee> modifyFeeTask =
+                this.feeService.ModifyFeeAsync(invalidFee);
+
+            // then
+            await Assert.ThrowsAsync<FeeValidationException>(() =>
+                modifyFeeTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectFeeByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateFeeAsync(It.IsAny<Fee>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
