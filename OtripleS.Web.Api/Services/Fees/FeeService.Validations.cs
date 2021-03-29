@@ -18,6 +18,7 @@ namespace OtripleS.Web.Api.Services.Fees
             ValidateFeeIsNotNull(fee);
             ValidateFeeId(fee.Id);
             ValidateFeeProperties(fee);
+            ValidateFeeAuditFields(fee);
             ValidateFeeAuditFieldsOnCreate(fee);
         }
 
@@ -27,6 +28,8 @@ namespace OtripleS.Web.Api.Services.Fees
             ValidateFeeIsNotNull(fee);
             ValidateFeeId(fee.Id);
             ValidateFeeProperties(fee);
+            ValidateFeeAuditFields(fee);
+            ValidateFeeAuditFieldsOnModify(fee);
         }
 
         private void ValidateFeeIsNotNull(Fee fee)
@@ -55,6 +58,22 @@ namespace OtripleS.Web.Api.Services.Fees
         {
             switch (fee)
             {
+                case { } when fee.UpdatedDate != fee.CreatedDate:
+                    throw new InvalidFeeException(
+                        parameterName: nameof(Fee.UpdatedDate),
+                        parameterValue: fee.UpdatedDate);
+
+                case { } when IsDateNotRecent(fee.CreatedDate):
+                    throw new InvalidFeeException(
+                        parameterName: nameof(Fee.CreatedDate),
+                        parameterValue: fee.CreatedDate);
+            }
+        }
+
+        private void ValidateFeeAuditFields(Fee fee)
+        {
+            switch (fee)
+            {
                 case { } when IsInvalid(input: fee.CreatedBy):
                     throw new InvalidFeeException(
                         parameterName: nameof(Fee.CreatedBy),
@@ -74,16 +93,22 @@ namespace OtripleS.Web.Api.Services.Fees
                     throw new InvalidFeeException(
                         parameterName: nameof(Fee.UpdatedDate),
                         parameterValue: fee.UpdatedDate);
+            }
+        }
 
-                case { } when fee.UpdatedDate != fee.CreatedDate:
+        private void ValidateFeeAuditFieldsOnModify(Fee fee)
+        {
+            switch (fee)
+            {
+                case { } when fee.UpdatedDate == fee.CreatedDate:
                     throw new InvalidFeeException(
                         parameterName: nameof(Fee.UpdatedDate),
                         parameterValue: fee.UpdatedDate);
 
-                case { } when IsDateNotRecent(fee.CreatedDate):
+                case { } when IsDateNotRecent(fee.UpdatedDate):
                     throw new InvalidFeeException(
-                        parameterName: nameof(Fee.CreatedDate),
-                        parameterValue: fee.CreatedDate);
+                        parameterName: nameof(Fee.UpdatedDate),
+                        parameterValue: fee.UpdatedDate);
             }
         }
 
