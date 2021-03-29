@@ -1,11 +1,12 @@
-﻿// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
+using System.Linq;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Fees;
@@ -24,17 +25,28 @@ namespace OtripleS.Web.Api.Services.Fees
             {
                 return await returningFeeFunction();
             }
-            catch (InvalidFeeInputException invalidFeeInputException)
-            {
-                throw CreateAndLogValidationException(invalidFeeInputException);
-            }
-            catch (NotFoundFeeException nullFeeException)
+            catch (NullFeeException nullFeeException)
             {
                 throw CreateAndLogValidationException(nullFeeException);
+            }
+            catch (InvalidFeeException invalidFeeInputException)
+            {
+                throw CreateAndLogValidationException(invalidFeeInputException);
             }
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (NotFoundFeeException notFoundFeeException)
+            {
+                throw CreateAndLogValidationException(notFoundFeeException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsFeeException =
+                    new AlreadyExistsFeeException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsFeeException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
@@ -51,7 +63,7 @@ namespace OtripleS.Web.Api.Services.Fees
                 throw CreateAndLogServiceException(exception);
             }
         }
-
+        
         private IQueryable<Fee> TryCatch(ReturningQueryableFeeFunction returningQueryableFeeFunction)
         {
             try
@@ -99,6 +111,5 @@ namespace OtripleS.Web.Api.Services.Fees
 
             return feeServiceException;
         }
-
     }
 }

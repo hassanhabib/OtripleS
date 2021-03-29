@@ -7,12 +7,8 @@ using System;
 
 namespace OtripleS.Web.Api.Models.Fees.Exceptions
 {
-    public class InvalidFeeInputException : Exception
+    public class NullFeeException : Exception
     {
-        public InvalidFeeInputException(string parameterName, object parameterValue)
-            : base($"Invalid Fee, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
-        { }
+        public NullFeeException() : base("The fee is null.") { }
     }
 }
