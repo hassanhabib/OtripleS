@@ -1,4 +1,4 @@
-﻿// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
@@ -29,10 +29,13 @@ namespace OtripleS.Web.Api.Services.Fees
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<Fee> CreateFeeAsync(Fee fee)
+        public ValueTask<Fee> AddFeeAsync(Fee fee) =>
+        TryCatch(async () =>
         {
-            throw new NotImplementedException();
-        }
+            ValidateFeeOnAdd(fee);
+
+            return await this.storageBroker.InsertFeeAsync(fee);
+        });
 
         public IQueryable<Fee> RetrieveAllFees() =>
         TryCatch(() =>

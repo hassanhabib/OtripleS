@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 Fee persistedFee =
-                    await this.feeService.CreateFeeAsync(fee);
+                    await this.feeService.AddFeeAsync(fee);
 
                 return Ok(persistedFee);
             }

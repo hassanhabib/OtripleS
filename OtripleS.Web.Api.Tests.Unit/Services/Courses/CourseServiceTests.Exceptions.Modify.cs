@@ -22,8 +22,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
             // given
             int randomNegativeNumber = GetNegativeRandomNumber();
             DateTimeOffset randomDateTime = GetRandomDateTime();
-            Course randomCourse = CreateRandomCourse(randomDateTime);
-            Course someCourse = randomCourse;
+            Course someCourse = CreateRandomCourse(randomDateTime);
             someCourse.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             SqlException sqlException = GetSqlException();
 
@@ -69,8 +68,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
             // given
             int randomNegativeNumber = GetNegativeRandomNumber();
             DateTimeOffset randomDateTime = GetRandomDateTime();
-            Course randomCourse = CreateRandomCourse(randomDateTime);
-            Course someCourse = randomCourse;
+            Course someCourse = CreateRandomCourse(randomDateTime);
             someCourse.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var databaseUpdateException = new DbUpdateException();
 
