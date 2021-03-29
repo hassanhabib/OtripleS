@@ -391,5 +391,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+       
     }
 }
