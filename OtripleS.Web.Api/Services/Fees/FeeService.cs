@@ -63,6 +63,7 @@ namespace OtripleS.Web.Api.Services.Fees
         public ValueTask<Fee> ModifyFeeAsync(Fee fee) =>
         TryCatch(async () =>
         {
+            ValidateFeeOnModify(fee);
             Fee maybeFee = await this.storageBroker.SelectFeeByIdAsync(fee.Id);
             
             return await this.storageBroker.UpdateFeeAsync(fee);
