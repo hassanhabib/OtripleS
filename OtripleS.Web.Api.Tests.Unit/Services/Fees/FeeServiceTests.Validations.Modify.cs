@@ -218,7 +218,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
-        
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnModifyWhenCreatedDateIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Fee randomFee = CreateRandomFee(dateTime);
+            Fee inputFee = randomFee;
+            inputFee.CreatedDate = default;
+
+            var invalidFeeInputException = new InvalidFeeException(
+                parameterName: nameof(Fee.CreatedDate),
+                parameterValue: inputFee.CreatedDate);
+
+            var expectedFeeValidationException =
+                new FeeValidationException(invalidFeeInputException);
+
+            // when
+            ValueTask<Fee> modifyFeeTask =
+                this.feeService.ModifyFeeAsync(inputFee);
+
+            // then
+            await Assert.ThrowsAsync<FeeValidationException>(() =>
+                modifyFeeTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectFeeByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateFeeAsync(It.IsAny<Fee>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
 
     }
 }
