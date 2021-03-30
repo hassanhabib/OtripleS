@@ -46,7 +46,7 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
                 var lockedAssignmentAttachmentException =
                     new LockedAssignmentAttachmentException(dbUpdateConcurrencyException);
 
-                throw CreateAndLogDependencyException(lockedAssignmentAttachmentException);
+                throw CreateAndLogDependencyValidationException(lockedAssignmentAttachmentException);
             }
             catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
             {
@@ -101,6 +101,17 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             this.loggingBroker.LogError(AssignmentAttachmentValidationException);
 
             return AssignmentAttachmentValidationException;
+        }
+
+        private AssignmentAttachmentDependencyValidationException CreateAndLogDependencyValidationException(
+            Exception exception)
+        {
+            var assignmentAttachmentDependencyValidationException = 
+                new AssignmentAttachmentDependencyValidationException(exception);
+
+            this.loggingBroker.LogError(assignmentAttachmentDependencyValidationException);
+
+            return assignmentAttachmentDependencyValidationException;
         }
 
         private AssignmentAttachmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
