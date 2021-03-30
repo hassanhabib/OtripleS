@@ -123,6 +123,27 @@ namespace OtripleS.Web.Api.Services.Fees
             }
         }
 
+        private void ValidateAgainstStorageFeeOnModify(Fee inputFee, Fee storageFee)
+        {
+            switch (inputFee)
+            {
+                case { } when inputFee.CreatedDate != storageFee.CreatedDate:
+                    throw new InvalidFeeException(
+                        parameterName: nameof(Fee.CreatedDate),
+                        parameterValue: inputFee.CreatedDate);
+
+                case { } when inputFee.CreatedBy != storageFee.CreatedBy:
+                    throw new InvalidFeeException(
+                        parameterName: nameof(Fee.CreatedBy),
+                        parameterValue: inputFee.CreatedBy);
+
+                case { } when inputFee.UpdatedDate == storageFee.UpdatedDate:
+                    throw new InvalidFeeException(
+                        parameterName: nameof(Fee.UpdatedDate),
+                        parameterValue: inputFee.UpdatedDate);
+            }
+        }
+
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
