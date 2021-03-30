@@ -31,12 +31,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                     .ThrowsAsync(sqlException);
 
             // when
-            ValueTask<Fee> deleteFeeTask =
+            ValueTask<Fee> removeFeeTask =
                 this.feeService.RemoveFeeAsync(someFeeId);
 
             // then
             await Assert.ThrowsAsync<FeeDependencyException>(() =>
-                deleteFeeTask.AsTask());
+                removeFeeTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedFeeDependencyException))),
@@ -66,12 +66,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                     .ThrowsAsync(databaseUpdateException);
 
             // when
-            ValueTask<Fee> deleteFeeTask =
+            ValueTask<Fee> removeFeeTask =
                 this.feeService.RemoveFeeAsync(someFeeId);
 
             // then
             await Assert.ThrowsAsync<FeeDependencyException>(() =>
-                deleteFeeTask.AsTask());
+                removeFeeTask.AsTask());
 
            
             this.storageBrokerMock.Verify(broker =>
@@ -103,12 +103,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
-            ValueTask<Fee> deleteFeeTask =
+            ValueTask<Fee> removeFeeTask =
                 this.feeService.RemoveFeeAsync(someFeeId);
 
             // then
             await Assert.ThrowsAsync<FeeDependencyException>(() =>
-                deleteFeeTask.AsTask());
+                removeFeeTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectFeeByIdAsync(It.IsAny<Guid>()),
@@ -116,6 +116,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedFeeDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid someFeeId = Guid.NewGuid();
+            var exception = new Exception();
+
+            var expectedFeeServiceException =
+                new FeeServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectFeeByIdAsync(It.IsAny<Guid>()))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<Fee> removeFeeTask =
+                this.feeService.RemoveFeeAsync(someFeeId);
+
+            // then
+            await Assert.ThrowsAsync<FeeServiceException>(() =>
+                removeFeeTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectFeeByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedFeeServiceException))),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
