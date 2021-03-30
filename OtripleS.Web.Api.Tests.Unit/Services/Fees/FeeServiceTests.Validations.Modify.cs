@@ -443,5 +443,59 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedDateNotSameAsCreateDateAndLogItAsync()
+        {
+            // given
+            int randomNumber = GetRandomNumber();
+            int randomMinutes = randomNumber;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            Fee randomFee = CreateRandomFee(randomDate);
+            Fee invalidFee = randomFee;
+            invalidFee.UpdatedDate = randomDate;
+            Fee storageFee = randomFee.DeepClone();
+            Guid feeId = invalidFee.Id;
+            invalidFee.CreatedDate = storageFee.CreatedDate.AddMinutes(randomNumber);
+
+            var invalidFeeException = new InvalidFeeException(
+                parameterName: nameof(Fee.CreatedDate),
+                parameterValue: invalidFee.CreatedDate);
+
+            var expectedFeeValidationException =
+              new FeeValidationException(invalidFeeException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectFeeByIdAsync(feeId))
+                    .ReturnsAsync(storageFee);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
+            // when
+            ValueTask<Fee> modifyFeeTask =
+                this.feeService.ModifyFeeAsync(invalidFee);
+
+            // then
+            await Assert.ThrowsAsync<FeeValidationException>(() =>
+                modifyFeeTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectFeeByIdAsync(invalidFee.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
