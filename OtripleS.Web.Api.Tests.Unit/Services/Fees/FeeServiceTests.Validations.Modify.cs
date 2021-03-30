@@ -439,9 +439,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                 broker.UpdateFeeAsync(It.IsAny<Fee>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls(); 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();            
         }
 
         [Fact]
@@ -493,9 +493,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                 broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -548,9 +548,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                 broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -602,9 +602,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                 broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
