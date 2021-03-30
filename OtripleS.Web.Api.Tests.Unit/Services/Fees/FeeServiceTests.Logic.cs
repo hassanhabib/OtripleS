@@ -173,5 +173,44 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();            
         }
+
+        [Fact]
+        public async Task ShouldRemoveFeeAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Fee randomFee = CreateRandomFee(dateTime);
+            Guid inputFeeId = randomFee.Id;
+            Fee inputFee = randomFee;
+            Fee storageFee = randomFee;
+            Fee expectedFee = randomFee;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectFeeByIdAsync(inputFeeId))
+                    .ReturnsAsync(inputFee);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteFeeAsync(inputFee))
+                    .ReturnsAsync(storageFee);
+
+            // when
+            Fee actualFee =
+                await this.feeService.RemoveFeeAsync(inputFeeId);
+
+            // then
+            actualFee.Should().BeEquivalentTo(expectedFee);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectFeeByIdAsync(inputFeeId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteFeeAsync(inputFee),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
