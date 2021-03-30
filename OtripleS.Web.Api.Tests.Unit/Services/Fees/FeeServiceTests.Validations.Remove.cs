@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
     public partial class FeeServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnDeleteWhenIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRemoveWhenIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomFeeId = default;
