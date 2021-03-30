@@ -65,7 +65,8 @@ namespace OtripleS.Web.Api.Services.Fees
         {
             ValidateFeeOnModify(fee);
             Fee maybeFee = await this.storageBroker.SelectFeeByIdAsync(fee.Id);
-            
+            ValidateStorageFee(maybeFee, fee.Id);
+
             return await this.storageBroker.UpdateFeeAsync(fee);
         });
 
