@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
 
             // when
             ValueTask<Fee> removeFeeTask =
-                this.feeService.RemoveFeeAsync(someFeeId);
+                this.feeService.RemoveFeeByIdAsync(someFeeId);
 
             // then
             await Assert.ThrowsAsync<FeeDependencyException>(() =>
@@ -67,7 +67,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
 
             // when
             ValueTask<Fee> removeFeeTask =
-                this.feeService.RemoveFeeAsync(someFeeId);
+                this.feeService.RemoveFeeByIdAsync(someFeeId);
 
             // then
             await Assert.ThrowsAsync<FeeDependencyException>(() =>
@@ -104,7 +104,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
 
             // when
             ValueTask<Fee> removeFeeTask =
-                this.feeService.RemoveFeeAsync(someFeeId);
+                this.feeService.RemoveFeeByIdAsync(someFeeId);
 
             // then
             await Assert.ThrowsAsync<FeeDependencyException>(() =>
@@ -139,7 +139,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
 
             // when
             ValueTask<Fee> removeFeeTask =
-                this.feeService.RemoveFeeAsync(someFeeId);
+                this.feeService.RemoveFeeByIdAsync(someFeeId);
 
             // then
             await Assert.ThrowsAsync<FeeServiceException>(() =>

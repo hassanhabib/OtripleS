@@ -195,7 +195,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
 
             // when
             Fee actualFee =
-                await this.feeService.RemoveFeeAsync(inputFeeId);
+                await this.feeService.RemoveFeeByIdAsync(inputFeeId);
 
             // then
             actualFee.Should().BeEquivalentTo(expectedFee);

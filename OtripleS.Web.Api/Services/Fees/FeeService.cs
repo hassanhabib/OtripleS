@@ -71,7 +71,7 @@ namespace OtripleS.Web.Api.Services.Fees
             return await this.storageBroker.UpdateFeeAsync(fee);
         });
 
-        public ValueTask<Fee> RemoveFeeAsync(Guid feeId) =>
+        public ValueTask<Fee> RemoveFeeByIdAsync(Guid feeId) =>
         TryCatch(async () =>
         {
             ValidateFeeId(feeId);
