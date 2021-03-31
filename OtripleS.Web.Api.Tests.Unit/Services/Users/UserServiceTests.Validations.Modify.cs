@@ -353,5 +353,57 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
             this.userManagementBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfUserDoesntExistAndLogItAsync()
+        {
+            // given
+            int randomNegativeMinutes = GetNegativeRandomNumber();
+            DateTimeOffset dateTime = GetRandomDateTime();
+            User randomUser = CreateRandomUser(dateTime);
+            User nonExistentUser = randomUser;
+            nonExistentUser.CreatedDate = dateTime.AddMinutes(randomNegativeMinutes);
+            User noUser = null;
+            var notFoundUserException = new NotFoundUserException(nonExistentUser.Id);
+
+            var expectedUserValidationException =
+                new UserValidationException(notFoundUserException);
+
+            this.userManagementBrokerMock.Setup(broker =>
+                broker.SelectUserByIdAsync(nonExistentUser.Id))
+                    .ReturnsAsync(noUser);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            // when
+            ValueTask<User> modifyUserTask =
+                this.userService.ModifyUserAsync(nonExistentUser);
+
+            // then
+            await Assert.ThrowsAsync<UserValidationException>(() =>
+                modifyUserTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.userManagementBrokerMock.Verify(broker =>
+                broker.SelectUserByIdAsync(nonExistentUser.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),
+                    Times.Once);
+
+            this.userManagementBrokerMock.Verify(broker =>
+                broker.UpdateUserAsync(It.IsAny<User>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
