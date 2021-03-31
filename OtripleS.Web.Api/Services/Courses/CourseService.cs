@@ -69,10 +69,14 @@ namespace OtripleS.Web.Api.Services.Courses
             return storageCourses;
         });
 
-        public ValueTask<Course> RetrieveCourseById(Guid courseId) =>
+        public ValueTask<Course> RetrieveCourseByIdAsync(Guid courseId) =>
         TryCatch(async () =>
         {
-            Course storageCourse = await this.storageBroker.SelectCourseByIdAsync(courseId);
+            ValidateCourseId(courseId);
+            
+            Course storageCourse = 
+                await this.storageBroker.SelectCourseByIdAsync(courseId);
+            
             ValidateStorageCourse(storageCourse, courseId);
 
             return storageCourse;

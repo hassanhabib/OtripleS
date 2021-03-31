@@ -64,7 +64,6 @@ namespace OtripleS.Web.Api.Services.Fees
             }
         }
         
-
         private IQueryable<Fee> TryCatch(ReturningQueryableFeeFunction returningQueryableFeeFunction)
         {
             try
@@ -74,11 +73,6 @@ namespace OtripleS.Web.Api.Services.Fees
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
-            }
-            
-            catch (DbUpdateException dbUpdateException)
-            {
-                throw CreateAndLogDependencyException(dbUpdateException);
             }
             catch (Exception exception)
             {

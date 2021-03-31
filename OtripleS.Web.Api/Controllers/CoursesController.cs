@@ -82,7 +82,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 Course storageCourse =
-                    await this.courseService.RetrieveCourseById(courseId);
+                    await this.courseService.RetrieveCourseByIdAsync(courseId);
 
                 return Ok(storageCourse);
             }

@@ -44,36 +44,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
         }
 
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllFeesWhenDbExceptionOccursAndLogIt()
-        {
-            // given
-            var databaseUpdateException = new DbUpdateException();
-
-            var expectedAttachmentDependencyException =
-                new FeeDependencyException(databaseUpdateException);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllFees())
-                    .Throws(databaseUpdateException);
-
-            // when . then
-            Assert.Throws<FeeDependencyException>(() =>
-                this.feeService.RetrieveAllFees());
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllFees(),
-                    Times.Once);
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
-                    Times.Once);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
         public void ShouldThrowServiceExceptionOnRetrieveAllFeesWhenExceptionOccursAndLogIt()
         {
             // given

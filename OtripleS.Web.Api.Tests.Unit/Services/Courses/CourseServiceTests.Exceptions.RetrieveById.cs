@@ -20,20 +20,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
         public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomCourseId = Guid.NewGuid();
-            Guid inputCourseId = randomCourseId;
+            Guid someCourseId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
             var expectedCourseDependencyException =
                 new CourseDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId))
+                broker.SelectCourseByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<Course> retrieveCourseTask =
-                this.courseService.RetrieveCourseById(inputCourseId);
+                this.courseService.RetrieveCourseByIdAsync(someCourseId);
 
             // then
             await Assert.ThrowsAsync<CourseDependencyException>(() =>
@@ -44,32 +43,31 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId),
+                broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomCourseId = Guid.NewGuid();
-            Guid inputCourseId = randomCourseId;
+            Guid someCourseId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedCourseDependencyException =
                 new CourseDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId))
+                broker.SelectCourseByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<Course> retrieveByIdCourseTask =
-                this.courseService.RetrieveCourseById(inputCourseId);
+                this.courseService.RetrieveCourseByIdAsync(someCourseId);
 
             // then
             await Assert.ThrowsAsync<CourseDependencyException>(() =>
@@ -80,20 +78,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId),
+                broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        public async Task 
+            ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomCourseId = Guid.NewGuid();
-            Guid inputCourseId = randomCourseId;
+            Guid someCourseId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
             var lockedCourseException = new LockedCourseException(databaseUpdateConcurrencyException);
 
@@ -101,12 +99,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
                 new CourseDependencyException(lockedCourseException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId))
+                broker.SelectCourseByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
             ValueTask<Course> retrieveByIdCourseTask =
-                this.courseService.RetrieveCourseById(inputCourseId);
+                this.courseService.RetrieveCourseByIdAsync(someCourseId);
 
             // then
             await Assert.ThrowsAsync<CourseDependencyException>(() =>
@@ -117,32 +115,31 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId),
+                broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+                        
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public async Task ShouldThrowServiceExceptionOnRetrieveByIdWhenExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomCourseId = Guid.NewGuid();
-            Guid inputCourseId = randomCourseId;
+            Guid someCourseId = Guid.NewGuid();
             var exception = new Exception();
 
             var expectedCourseServiceException =
                 new CourseServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId))
+                broker.SelectCourseByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(exception);
 
             // when
             ValueTask<Course> retrieveByIdCourseTask =
-                this.courseService.RetrieveCourseById(inputCourseId);
+                this.courseService.RetrieveCourseByIdAsync(someCourseId);
 
             // then
             await Assert.ThrowsAsync<CourseServiceException>(() =>
@@ -153,12 +150,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseByIdAsync(inputCourseId),
+                broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+                        
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
