@@ -49,6 +49,7 @@ namespace OtripleS.Web.Api.Services.Users
             User maybeUser = await this.userManagementBroker.SelectUserByIdAsync(user.Id);
 
             ValidateStorageUser(maybeUser, user.Id);
+            ValidateAgainstStorageUserOnModify(inputUser: user, storageUser: maybeUser);
 
             return await this.userManagementBroker.UpdateUserAsync(user);
         });

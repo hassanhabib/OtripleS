@@ -91,6 +91,17 @@ namespace OtripleS.Web.Api.Services.Users
             }
         }
 
+        private void ValidateAgainstStorageUserOnModify(User inputUser, User storageUser)
+        {
+            switch (inputUser)
+            {
+                case { } when inputUser.CreatedDate != storageUser.CreatedDate:
+                    throw new InvalidUserException(
+                        parameterName: nameof(User.CreatedDate),
+                        parameterValue: inputUser.CreatedDate);
+            }
+        }
+
         private void ValidateUserFields(User user)
         {
             if (IsInvalid(user.UserName))
