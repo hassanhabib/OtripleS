@@ -460,5 +460,58 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfStorageUpdatedDateSameAsUpdatedDateAndLogItAsync()
+        {
+            // given
+            int randomNegativeMinutes = GetNegativeRandomNumber();
+            int minutesInThePast = randomNegativeMinutes;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            User randomUser = CreateRandomUser(randomDate);
+            randomUser.CreatedDate = randomUser.CreatedDate.AddMinutes(minutesInThePast);
+            User invalidUser = randomUser;
+            invalidUser.UpdatedDate = randomDate;
+            User storageUser = randomUser.DeepClone();
+            Guid UserId = invalidUser.Id;
+
+            var invalidUserInputException = new InvalidUserException(
+                parameterName: nameof(User.UpdatedDate),
+                parameterValue: invalidUser.UpdatedDate);
+
+            var expectedUserValidationException =
+              new UserValidationException(invalidUserInputException);
+
+            this.userManagementBrokerMock.Setup(broker =>
+                broker.SelectUserByIdAsync(UserId))
+                    .ReturnsAsync(storageUser);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
+            // when
+            ValueTask<User> modifyUserTask =
+                this.userService.ModifyUserAsync(invalidUser);
+
+            // then
+            await Assert.ThrowsAsync<UserValidationException>(() =>
+                modifyUserTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.userManagementBrokerMock.Verify(broker =>
+                broker.SelectUserByIdAsync(invalidUser.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.userManagementBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
