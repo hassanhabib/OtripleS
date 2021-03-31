@@ -97,7 +97,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyValidationOnRetrieveWhenDbUpdateConcurrencyOccursAndLogItAsync()
         {
             // given
             Guid someAttachmentId = Guid.NewGuid();
@@ -107,8 +107,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
             var lockedAssignmentAttachmentException =
                 new LockedAssignmentAttachmentException(databaseUpdateConcurrencyException);
 
-            var expectedAssignmentAttachmentException =
-                new AssignmentAttachmentDependencyException(lockedAssignmentAttachmentException);
+            var expectedAssignmentAttachmentDependencyValidationException =
+                new AssignmentAttachmentDependencyValidationException(lockedAssignmentAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
@@ -121,7 +121,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
                     someAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<AssignmentAttachmentDependencyException>(() =>
+            await Assert.ThrowsAsync<AssignmentAttachmentDependencyValidationException>(() =>
                 retrieveAssignmentAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
@@ -129,7 +129,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentAttachmentException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentAttachmentDependencyValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
