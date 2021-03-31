@@ -15,5 +15,7 @@ namespace OtripleS.Web.Api.Services.Fees
         ValueTask<Fee> AddFeeAsync(Fee fee);
         IQueryable<Fee> RetrieveAllFees();
         ValueTask<Fee> RetrieveFeeByIdAsync(Guid feeId);
+        ValueTask<Fee> ModifyFeeAsync(Fee fee);
+        ValueTask<Fee> RemoveFeeAsync(Guid FeeId);
     }
 }

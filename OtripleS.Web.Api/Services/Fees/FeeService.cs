@@ -59,5 +59,15 @@ namespace OtripleS.Web.Api.Services.Fees
 
             return storageFee;
         });
+
+        public ValueTask<Fee> ModifyFeeAsync(Fee fee)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ValueTask<Fee> RemoveFeeAsync(Guid FeeId)
+        {
+            throw new NotImplementedException();
+        }        
     }
 }
