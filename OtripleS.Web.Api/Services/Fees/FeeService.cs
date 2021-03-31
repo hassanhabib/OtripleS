@@ -60,10 +60,16 @@ namespace OtripleS.Web.Api.Services.Fees
             return storageFee;
         });
 
-        public ValueTask<Fee> ModifyFeeAsync(Fee fee)
+        public ValueTask<Fee> ModifyFeeAsync(Fee fee) =>
+        TryCatch(async () =>
         {
-            throw new NotImplementedException();
-        }
+            ValidateFeeOnModify(fee);
+            Fee maybeFee = await this.storageBroker.SelectFeeByIdAsync(fee.Id);
+            ValidateStorageFee(maybeFee, fee.Id);
+            ValidateAgainstStorageFeeOnModify(inputFee: fee, storageFee: maybeFee);
+
+            return await this.storageBroker.UpdateFeeAsync(fee);
+        });
 
         public ValueTask<Fee> RemoveFeeAsync(Guid FeeId)
         {
