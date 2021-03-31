@@ -155,7 +155,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 Fee storageFee =
-                    await this.feeService.RemoveFeeAsync(feeId);
+                    await this.feeService.RemoveFeeByIdAsync(feeId);
 
                 return Ok(storageFee);
             }
