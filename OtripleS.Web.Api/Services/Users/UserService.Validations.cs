@@ -83,6 +83,11 @@ namespace OtripleS.Web.Api.Services.Users
                     throw new InvalidUserException(
                         parameterName: nameof(User.UpdatedDate),
                         parameterValue: user.UpdatedDate);
+
+                case { } when IsDateNotRecent(user.UpdatedDate):
+                    throw new InvalidUserException(
+                        parameterName: nameof(User.UpdatedDate),
+                        parameterValue: user.UpdatedDate);
             }
         }
 
