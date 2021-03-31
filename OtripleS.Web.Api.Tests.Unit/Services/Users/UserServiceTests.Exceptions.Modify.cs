@@ -113,6 +113,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
                 broker.SelectUserByIdAsync(someUser.Id))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
+
             // when
             ValueTask<User> modifyUserTask =
                 this.userService.ModifyUserAsync(someUser);
@@ -120,6 +124,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
             // then
             await Assert.ThrowsAsync<UserDependencyException>(() =>
                 modifyUserTask.AsTask());
+            
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(someUser.Id),
