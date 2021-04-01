@@ -78,5 +78,26 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Fees
                 await DeleteFeeAsync(actualFee);
             }
         }
+
+        [Fact]
+        public async Task ShouldDeleteFeeAsync()
+        {
+            // given
+            Fee randomFee = await PostRandomFeeAsync();
+            Fee inputFee = randomFee;
+            Fee expectedFee = inputFee;
+
+            // when 
+            Fee deletedFee = await DeleteFeeAsync(inputFee);
+
+            ValueTask<Fee> getFeeByIdTask =
+                this.otripleSApiBroker.GetFeeByIdAsync(inputFee.Id);
+
+            // then
+            deletedFee.Should().BeEquivalentTo(expectedFee);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getFeeByIdTask.AsTask());
+        }
     }
 }
