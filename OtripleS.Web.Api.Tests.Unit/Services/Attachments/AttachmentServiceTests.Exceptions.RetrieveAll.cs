@@ -30,44 +30,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             Assert.Throws<AttachmentDependencyException>(() =>
                 this.attachmentService.RetrieveAllAttachments());
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllAttachments(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
                     Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllAttachments(),
-                    Times.Once);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllAttachmentsWhenDbExceptionOccursAndLogIt()
-        {
-            // given
-            var databaseUpdateException = new DbUpdateException();
-
-            var expectedAttachmentDependencyException =
-                new AttachmentDependencyException(databaseUpdateException);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllAttachments())
-                    .Throws(databaseUpdateException);
-
-            // when . then
-            Assert.Throws<AttachmentDependencyException>(() =>
-                this.attachmentService.RetrieveAllAttachments());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllAttachments(),
-                    Times.Once);
-
+            
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -90,12 +60,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             Assert.Throws<AttachmentServiceException>(() =>
                 this.attachmentService.RetrieveAllAttachments());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentServiceException))),
-                    Times.Once);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAttachments(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentServiceException))),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
