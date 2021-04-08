@@ -28,6 +28,7 @@ namespace OtripleS.Web.Api.Services.Users
             ValidateUserIdIsNull(user.Id);
             ValidateUserFields(user);
             ValidateInvalidAuditFields(user);
+            ValidateAuditFieldsOnModify(user);
         }
 
         private static void ValidateStorageUser(User storageUser, Guid userId)
@@ -71,6 +72,38 @@ namespace OtripleS.Web.Api.Services.Users
                     throw new InvalidUserException(
                     parameterName: nameof(User.UpdatedDate),
                     parameterValue: user.UpdatedDate);
+            }
+        }
+
+        private void ValidateAuditFieldsOnModify(User user)
+        {
+            switch (user)
+            {
+                case { } when user.UpdatedDate == user.CreatedDate:
+                    throw new InvalidUserException(
+                        parameterName: nameof(User.UpdatedDate),
+                        parameterValue: user.UpdatedDate);
+
+                case { } when IsDateNotRecent(user.UpdatedDate):
+                    throw new InvalidUserException(
+                        parameterName: nameof(User.UpdatedDate),
+                        parameterValue: user.UpdatedDate);
+            }
+        }
+
+        private void ValidateAgainstStorageUserOnModify(User inputUser, User storageUser)
+        {
+            switch (inputUser)
+            {
+                case { } when inputUser.CreatedDate != storageUser.CreatedDate:
+                    throw new InvalidUserException(
+                        parameterName: nameof(User.CreatedDate),
+                        parameterValue: inputUser.CreatedDate);
+
+                case { } when inputUser.UpdatedDate == storageUser.UpdatedDate:
+                    throw new InvalidUserException(
+                        parameterName: nameof(User.UpdatedDate),
+                        parameterValue: inputUser.UpdatedDate);
             }
         }
 

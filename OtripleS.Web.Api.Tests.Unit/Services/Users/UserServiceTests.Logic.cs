@@ -180,12 +180,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
                 broker.UpdateUserAsync(inputUser))
                     .ReturnsAsync(afterUpdateStorageUser);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
             // when
             User actualUser =
                 await this.userService.ModifyUserAsync(inputUser);
 
             // then
             actualUser.Should().BeEquivalentTo(expectedUser);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(userId),

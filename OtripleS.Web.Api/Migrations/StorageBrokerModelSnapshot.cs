@@ -526,6 +526,39 @@ namespace OtripleS.Web.Api.Migrations
                     b.ToTable("Exams");
                 });
 
+            modelBuilder.Entity("OtripleS.Web.Api.Models.Fees.Fee", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Label")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("UpdatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Fees");
+                });
+
             modelBuilder.Entity("OtripleS.Web.Api.Models.GuardianAttachments.GuardianAttachment", b =>
                 {
                     b.Property<Guid>("GuardianId")
@@ -1178,6 +1211,25 @@ namespace OtripleS.Web.Api.Migrations
                     b.Navigation("SemesterCourse");
                 });
 
+            modelBuilder.Entity("OtripleS.Web.Api.Models.Fees.Fee", b =>
+                {
+                    b.HasOne("OtripleS.Web.Api.Models.Users.User", "CreatedByUser")
+                        .WithMany("FeesCreatedByUser")
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("OtripleS.Web.Api.Models.Users.User", "UpdatedByUser")
+                        .WithMany("FeesUpdatedByUser")
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("UpdatedByUser");
+                });
+
             modelBuilder.Entity("OtripleS.Web.Api.Models.GuardianAttachments.GuardianAttachment", b =>
                 {
                     b.HasOne("OtripleS.Web.Api.Models.Attachments.Attachment", "Attachment")
@@ -1507,6 +1559,10 @@ namespace OtripleS.Web.Api.Migrations
 
             modelBuilder.Entity("OtripleS.Web.Api.Models.Users.User", b =>
                 {
+                    b.Navigation("FeesCreatedByUser");
+
+                    b.Navigation("FeesUpdatedByUser");
+
                     b.Navigation("UserContacts");
                 });
 #pragma warning restore 612, 618

@@ -20,9 +20,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Course randomCourse = CreateRandomCourse(dateTime);
-            Course inputCourse = randomCourse;
-            inputCourse.UpdatedBy = inputCourse.CreatedBy;
+            Course someCourse = CreateRandomCourse(dateTime);
+            someCourse.UpdatedBy = someCourse.CreatedBy;
             var sqlException = GetSqlException();
 
             var expectedCourseDependencyException =
@@ -33,27 +32,27 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertCourseAsync(inputCourse))
+                broker.InsertCourseAsync(It.IsAny<Course>()))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<Course> createCourseTask =
-                this.courseService.CreateCourseAsync(inputCourse);
+                this.courseService.CreateCourseAsync(someCourse);
 
             // then
             await Assert.ThrowsAsync<CourseDependencyException>(() =>
                 createCourseTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedCourseDependencyException))),
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertCourseAsync(inputCourse),
+                broker.InsertCourseAsync(It.IsAny<Course>()),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(expectedCourseDependencyException))),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -66,9 +65,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Course randomCourse = CreateRandomCourse(dateTime);
-            Course inputCourse = randomCourse;
-            inputCourse.UpdatedBy = inputCourse.CreatedBy;
+            Course someCourse = CreateRandomCourse(dateTime);
+            someCourse.UpdatedBy = someCourse.CreatedBy;
             var databaseUpdateException = new DbUpdateException();
 
             var expectedCourseDependencyException =
@@ -79,27 +77,27 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertCourseAsync(inputCourse))
+                broker.InsertCourseAsync(It.IsAny<Course>()))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<Course> createCourseTask =
-                this.courseService.CreateCourseAsync(inputCourse);
+                this.courseService.CreateCourseAsync(someCourse);
 
             // then
             await Assert.ThrowsAsync<CourseDependencyException>(() =>
                 createCourseTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseDependencyException))),
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertCourseAsync(inputCourse),
+                broker.InsertCourseAsync(It.IsAny<Course>()),
                     Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
+            
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseDependencyException))),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -112,9 +110,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Course randomCourse = CreateRandomCourse(dateTime);
-            Course inputCourse = randomCourse;
-            inputCourse.UpdatedBy = inputCourse.CreatedBy;
+            Course someCourse = CreateRandomCourse(dateTime);
+            someCourse.UpdatedBy = someCourse.CreatedBy;
             var exception = new Exception();
 
             var expectedCourseServiceException =
@@ -125,27 +122,27 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertCourseAsync(inputCourse))
+                broker.InsertCourseAsync(It.IsAny<Course>()))
                     .ThrowsAsync(exception);
 
             // when
             ValueTask<Course> createCourseTask =
-                 this.courseService.CreateCourseAsync(inputCourse);
+                 this.courseService.CreateCourseAsync(someCourse);
 
             // then
             await Assert.ThrowsAsync<CourseServiceException>(() =>
                 createCourseTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseServiceException))),
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertCourseAsync(inputCourse),
+                broker.InsertCourseAsync(It.IsAny<Course>()),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseServiceException))),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

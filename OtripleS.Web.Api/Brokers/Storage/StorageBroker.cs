@@ -41,6 +41,7 @@ namespace OtripleS.Web.Api.Brokers.Storage
             AddCourseAttachmentReferences(modelBuilder);
             AddExamAttachmentReferences(modelBuilder);
             AddAssignmentAttachmentReferences(modelBuilder);
+            AddFeeReferences(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

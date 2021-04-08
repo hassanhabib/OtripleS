@@ -100,7 +100,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyValidationOnRemoveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
             Guid someAttachmentId = Guid.NewGuid();
@@ -110,8 +110,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
             var lockedAttachmentException =
                 new LockedAssignmentAttachmentException(databaseUpdateConcurrencyException);
 
-            var expectedAssignmentAttachmentException =
-                new AssignmentAttachmentDependencyException(lockedAttachmentException);
+            var expectedAssignmentAttachmentDependencyValidationException =
+                new AssignmentAttachmentDependencyValidationException(lockedAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAssignmentAttachmentByIdAsync(someAssignmentId, someAttachmentId))
@@ -119,10 +119,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
 
             // when
             ValueTask<AssignmentAttachment> removeAssignmentAttachmentTask =
-                this.assignmentAttachmentService.RemoveAssignmentAttachmentByIdAsync(someAssignmentId, someAttachmentId);
+                this.assignmentAttachmentService
+                    .RemoveAssignmentAttachmentByIdAsync(
+                        assignmentId: someAssignmentId,
+                        attachmentId: someAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<AssignmentAttachmentDependencyException>(() =>
+            await Assert.ThrowsAsync<AssignmentAttachmentDependencyValidationException>(() =>
                 removeAssignmentAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
@@ -130,7 +133,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentAttachmentException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentAttachmentDependencyValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
