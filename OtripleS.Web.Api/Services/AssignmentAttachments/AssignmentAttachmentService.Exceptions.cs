@@ -59,10 +59,6 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
-            catch (DbUpdateException dbUpdateException)
-            {
-                throw CreateAndLogDependencyException(dbUpdateException);
-            }
             catch (NotFoundAssignmentAttachmentException notFoundAssignmentAttachmentException)
             {
                 throw CreateAndLogValidationException(notFoundAssignmentAttachmentException);
