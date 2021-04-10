@@ -80,10 +80,6 @@ namespace OtripleS.Web.Api.Services.Teachers
 
                 throw CreateAndLogDependencyException(lockedTeacherException);
             }
-            catch (DbUpdateException dbUpdateException)
-            {
-                throw CreateAndLogDependencyException(dbUpdateException);
-            }
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);
