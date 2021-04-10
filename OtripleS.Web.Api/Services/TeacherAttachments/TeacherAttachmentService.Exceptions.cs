@@ -84,10 +84,6 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
-            catch (DbUpdateException dbUpdateException)
-            {
-                throw CreateAndLogDependencyException(dbUpdateException);
-            }
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);
