@@ -44,36 +44,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntries
         }
 
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllCalendarEntriesWhenDbExceptionOccursAndLogIt()
-        {
-            // given
-            var databaseUpdateException = new DbUpdateException();
-
-            var expectedCalendarEntryDependencyException =
-                new CalendarEntryDependencyException(databaseUpdateException);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllCalendarEntries())
-                    .Throws(databaseUpdateException);
-
-            // when . then
-            Assert.Throws<CalendarEntryDependencyException>(() =>
-                this.calendarEntryService.RetrieveAllCalendarEntries());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryDependencyException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllCalendarEntries(),
-                    Times.Once);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
         public void ShouldThrowServiceExceptionOnRetrieveAllCalendarEntriesWhenExceptionOccursAndLogIt()
         {
             // given
