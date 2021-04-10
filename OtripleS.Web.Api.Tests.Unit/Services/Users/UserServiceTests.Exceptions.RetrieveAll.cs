@@ -49,36 +49,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
         }
 
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenDbExceptionOccursAndLogIt()
-        {
-            // given
-            var databaseUpdateException = new DbUpdateException();
-
-            var expectedCourseDependencyException =
-                new UserDependencyException(databaseUpdateException);
-
-            this.userManagementBrokerMock.Setup(broker =>
-                broker.SelectAllUsers())
-                    .Throws(databaseUpdateException);
-
-            // when . then
-            Assert.Throws<UserDependencyException>(() =>
-                this.userService.RetrieveAllUsers());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseDependencyException))),
-                    Times.Once);
-
-            this.userManagementBrokerMock.Verify(broker =>
-                broker.SelectAllUsers(),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.userManagementBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
