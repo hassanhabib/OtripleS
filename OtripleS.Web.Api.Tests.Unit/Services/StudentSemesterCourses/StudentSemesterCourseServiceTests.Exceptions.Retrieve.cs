@@ -43,34 +43,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourses
         }
 
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenDbExceptionOccursAndLogIt()
-        {
-            // given
-            var databaseUpdateException = new DbUpdateException();
-
-            var expectedStudentSemesterCourseDependencyException =
-                new StudentSemesterCourseDependencyException(databaseUpdateException);
-
-            this.storageBrokerMock.Setup(broker => broker.SelectAllStudentSemesterCourses())
-                .Throws(databaseUpdateException);
-
-            // when . then
-            Assert.Throws<StudentSemesterCourseDependencyException>(() =>
-                this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses());
-
-            this.loggingBrokerMock.Verify(broker =>
-                    broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseDependencyException))),
-                        Times.Once);
-
-            this.storageBrokerMock.Verify(broker => broker.SelectAllStudentSemesterCourses(),
-                Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
