@@ -30,10 +30,6 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
-            catch (DbUpdateException dbUpdateException)
-            {
-                throw CreateAndLogDependencyException(dbUpdateException);
-            }
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);

@@ -48,40 +48,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Guardians
         }
 
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenDbExceptionOccursAndLogIt()
-        {
-            // given
-            var databaseUpdateException = new DbUpdateException();
-
-            var expectedGuardianDependencyException =
-                new GuardianDependencyException(databaseUpdateException);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllGuardians())
-                    .Throws(databaseUpdateException);
-
-            // when . then
-            Assert.Throws<GuardianDependencyException>(() =>
-                this.guardianService.RetrieveAllGuardians());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianDependencyException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllGuardians(),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given

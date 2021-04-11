@@ -42,33 +42,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
         }
 
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenDbExceptionOccursAndLogIt()
-        {
-            // given
-            var databaseUpdateException = new DbUpdateException();
-
-            var expectedGuardianContactDependencyException =
-                new GuardianContactDependencyException(databaseUpdateException);
-
-            this.storageBrokerMock.Setup(broker => broker.SelectAllGuardianContacts())
-                .Throws(databaseUpdateException);
-
-            // when . then
-            Assert.Throws<GuardianContactDependencyException>(() =>
-                this.guardianContactService.RetrieveAllGuardianContacts());
-
-            this.loggingBrokerMock.Verify(broker =>
-                    broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactDependencyException))),
-                        Times.Once);
-
-            this.storageBrokerMock.Verify(broker => broker.SelectAllGuardianContacts(),
-                Times.Once);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
