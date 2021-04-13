@@ -83,10 +83,6 @@ namespace OtripleS.Web.Api.Services.UserContacts
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
-            catch (DbUpdateException dbUpdateException)
-            {
-                throw CreateAndLogDependencyException(dbUpdateException);
-            }
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);

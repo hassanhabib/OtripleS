@@ -44,36 +44,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianAttachments
         }
 
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllGuardianAttachmentsWhenDbExceptionOccursAndLogIt()
-        {
-            // given
-            var databaseUpdateException = new DbUpdateException();
-
-            var expectedGuardianAttachmentDependencyException =
-                new GuardianAttachmentDependencyException(databaseUpdateException);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllGuardianAttachments())
-                    .Throws(databaseUpdateException);
-
-            // when . then
-            Assert.Throws<GuardianAttachmentDependencyException>(() =>
-                this.guardianAttachmentService.RetrieveAllGuardianAttachments());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentDependencyException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllGuardianAttachments(),
-                    Times.Once);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
         public void ShouldThrowServiceExceptionOnRetrieveAllGuardianAttachmentsWhenExceptionOccursAndLogIt()
         {
             // given

@@ -42,36 +42,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherAttachments
         }
 
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllTeacherAttachmentsWhenDbExceptionOccursAndLogIt()
-        {
-            // given
-            var databaseUpdateException = new DbUpdateException();
-
-            var expectedAttachmentDependencyException =
-                new TeacherAttachmentDependencyException(databaseUpdateException);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllTeacherAttachments())
-                    .Throws(databaseUpdateException);
-
-            // when . then
-            Assert.Throws<TeacherAttachmentDependencyException>(() =>
-                this.teacherAttachmentService.RetrieveAllTeacherAttachments());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllTeacherAttachments(),
-                    Times.Once);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
         public void ShouldThrowServiceExceptionOnRetrieveAllTeacherAttachmentsWhenExceptionOccursAndLogIt()
         {
             // given

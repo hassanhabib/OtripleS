@@ -42,33 +42,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
         }
 
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenDbExceptionOccursAndLogIt()
-        {
-            // given
-            var databaseUpdateException = new DbUpdateException();
-
-            var expectedUserContactDependencyException =
-                new UserContactDependencyException(databaseUpdateException);
-
-            this.storageBrokerMock.Setup(broker => broker.SelectAllUserContacts())
-                .Throws(databaseUpdateException);
-
-            // when . then
-            Assert.Throws<UserContactDependencyException>(() =>
-                this.userContactService.RetrieveAllUserContacts());
-
-            this.loggingBrokerMock.Verify(broker =>
-                    broker.LogError(It.Is(SameExceptionAs(expectedUserContactDependencyException))),
-                        Times.Once);
-
-            this.storageBrokerMock.Verify(broker => broker.SelectAllUserContacts(),
-                Times.Once);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
