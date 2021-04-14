@@ -55,6 +55,11 @@ namespace OtripleS.Web.Api.Services.ExamFees
                     throw new InvalidExamFeeException(
                         parameterName: nameof(ExamFee.CreatedDate),
                         parameterValue: examFee.CreatedDate);
+
+                case { } when IsInvalid(examFee.UpdatedBy):
+                    throw new InvalidExamFeeException(
+                        parameterName: nameof(ExamFee.UpdatedBy),
+                        parameterValue: examFee.UpdatedBy);
             }
         }
 
