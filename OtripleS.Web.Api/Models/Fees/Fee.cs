@@ -5,9 +5,14 @@
 
 using System;
 using OtripleS.Web.Api.Models.Users;
+using OtripleS.Web.Api.Models.ExamFees;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace OtripleS.Web.Api.Models.Fees
 {
+    
+
     public class Fee : IAuditable
     {
         public Guid Id { get; set; }
@@ -22,5 +27,8 @@ namespace OtripleS.Web.Api.Models.Fees
 
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset UpdatedDate { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<ExamFee> ExamFees { get; set; }
     }
 }

@@ -5,6 +5,8 @@
 
 using System;
 using OtripleS.Web.Api.Models.Users;
+using OtripleS.Web.Api.Models.Exams;
+using OtripleS.Web.Api.Models.Fees;
 
 namespace OtripleS.Web.Api.Models.ExamFees
 {
@@ -12,7 +14,9 @@ namespace OtripleS.Web.Api.Models.ExamFees
     {
         public Guid Id {get; set;}
         public Guid ExamId {get; set;}
+        public Exam Exam {get;set;}
         public Guid FeeId {get; set;}
+        public Fee Fee {get;set;}
         public ExamFeeStatus Status {get; set;}
         public DateTimeOffset CreatedDate {get; set;}
         public DateTimeOffset UpdatedDate {get; set;}
@@ -20,10 +24,5 @@ namespace OtripleS.Web.Api.Models.ExamFees
         public User CreatedByUser {get; set;}
         public Guid UpdatedBy {get; set;}
         public User UpdatedByUser {get; set;}
-    }
-    public enum ExamFeeStatus
-    {
-        Active,
-        Inactive
     }
 }
