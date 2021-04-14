@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.ExamFees
 
         public ValueTask<ExamFee> AddExamFeeAsync(ExamFee examFee)
         {
-            throw new NotImplementedException();
+            return this.storageBroker.InsertExamFeeAsync(examFee);
         }
     }
 }
