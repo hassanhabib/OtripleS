@@ -106,5 +106,51 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnCreateWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            ExamFee someExamFee = CreateRandomExamFee(dateTime);
+            someExamFee.UpdatedBy = someExamFee.CreatedBy;
+            someExamFee.UpdatedDate = someExamFee.CreatedDate;
+            var exception = new Exception();
+
+            var expectedExamFeeServiceException =
+                new ExamFeeServiceException(exception);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertExamFeeAsync(It.IsAny<ExamFee>()))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<ExamFee> createExamFeeTask =
+                 this.examFeeService.AddExamFeeAsync(someExamFee);
+
+            // then
+            await Assert.ThrowsAsync<ExamFeeServiceException>(() =>
+                createExamFeeTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertExamFeeAsync(It.IsAny<ExamFee>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeServiceException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
