@@ -15,36 +15,47 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
     public partial class ExamFeeServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnAddWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnCreateWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            ExamFee randomExamFee = CreateRandomExamFee();
-            ExamFee someExamFee = randomExamFee;
+            DateTimeOffset dateTime = GetRandomDateTime();
+            ExamFee someExamFee = CreateRandomExamFee(dateTime);
+            someExamFee.UpdatedBy = someExamFee.CreatedBy;
+            someExamFee.UpdatedDate = someExamFee.CreatedDate;
             var sqlException = GetSqlException();
 
             var expectedExamFeeDependencyException =
                 new ExamFeeDependencyException(sqlException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertExamFeeAsync(someExamFee))
+                broker.InsertExamFeeAsync(It.IsAny<ExamFee>()))
                     .ThrowsAsync(sqlException);
 
             // when
-            ValueTask<ExamFee> addExamFeeTask =
+            ValueTask<ExamFee> createExamFeeTask =
                 this.examFeeService.AddExamFeeAsync(someExamFee);
 
             // then
             await Assert.ThrowsAsync<ExamFeeDependencyException>(() =>
-                addExamFeeTask.AsTask());
+                createExamFeeTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertExamFeeAsync(It.IsAny<ExamFee>()),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedExamFeeDependencyException))),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertExamFeeAsync(someExamFee),
-                    Times.Once);
-
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
