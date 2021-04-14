@@ -38,6 +38,13 @@ namespace OtripleS.Web.Api.Services.ExamFees
 
                 throw CreateAndLogValidationException(alreadyExistsExamFeeException);
             }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidExamFeeReferenceException =
+                    new InvalidExamFeeReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidExamFeeReferenceException);
+            }
         }
 
         private ExamFeeValidationException CreateAndLogValidationException(Exception exception)
