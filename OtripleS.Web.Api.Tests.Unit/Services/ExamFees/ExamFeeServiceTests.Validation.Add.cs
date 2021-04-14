@@ -154,5 +154,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenReferneceExceptionAndLogItAsync()
+        {
+            // given
+            ExamFee randomExamFee = CreateRandomExamFee();
+            ExamFee invalidExamFee = randomExamFee;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var foreignKeyConstraintConflictException = new ForeignKeyConstraintConflictException(exceptionMessage);
+
+            var invalidExamFeeReferenceException =
+                new InvalidExamFeeReferenceException(foreignKeyConstraintConflictException);
+
+            var expectedExamFeeValidationException =
+                new ExamFeeValidationException(invalidExamFeeReferenceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertExamFeeAsync(invalidExamFee))
+                    .ThrowsAsync(foreignKeyConstraintConflictException);
+
+            // when
+            ValueTask<ExamFee> addExamFeeTask =
+                this.examFeeService.AddExamFeeAsync(invalidExamFee);
+
+            // then
+            await Assert.ThrowsAsync<ExamFeeValidationException>(() =>
+                addExamFeeTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertExamFeeAsync(invalidExamFee),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
