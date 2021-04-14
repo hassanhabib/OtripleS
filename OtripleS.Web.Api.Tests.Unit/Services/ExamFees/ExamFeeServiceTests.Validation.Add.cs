@@ -117,11 +117,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenExamFeeAlreadyExistsAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnCreateWhenExamFeeAlreadyExistsAndLogItAsync()
         {
             // given
-            ExamFee randomExamFee = CreateRandomExamFee();
+            DateTimeOffset dateTime = GetRandomDateTime();
+            ExamFee randomExamFee = CreateRandomExamFee(dateTime);
             ExamFee alreadyExistsExamFee = randomExamFee;
+            alreadyExistsExamFee.UpdatedBy = alreadyExistsExamFee.CreatedBy;
             string randomMessage = GetRandomMessage();
             string exceptionMessage = randomMessage;
             var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
@@ -132,26 +134,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
             var expectedExamFeeValidationException =
                 new ExamFeeValidationException(alreadyExistsExamFeeException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertExamFeeAsync(alreadyExistsExamFee))
                     .ThrowsAsync(duplicateKeyException);
 
             // when
-            ValueTask<ExamFee> addExamFeeTask =
+            ValueTask<ExamFee> createExamFeeTask =
                 this.examFeeService.AddExamFeeAsync(alreadyExistsExamFee);
 
             // then
             await Assert.ThrowsAsync<ExamFeeValidationException>(() =>
-                addExamFeeTask.AsTask());
+                createExamFeeTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertExamFeeAsync(alreadyExistsExamFee),
                     Times.Once);
 
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
@@ -160,7 +171,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
         public async void ShouldThrowValidationExceptionOnAddWhenReferneceExceptionAndLogItAsync()
         {
             // given
-            ExamFee randomExamFee = CreateRandomExamFee();
+            DateTimeOffset dateTime = GetRandomDateTime();
+            ExamFee randomExamFee = CreateRandomExamFee(dateTime);
+            randomExamFee.UpdatedBy = randomExamFee.CreatedBy;
+            randomExamFee.UpdatedDate = randomExamFee.CreatedDate;
             ExamFee invalidExamFee = randomExamFee;
             string randomMessage = GetRandomMessage();
             string exceptionMessage = randomMessage;
@@ -171,6 +185,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
 
             var expectedExamFeeValidationException =
                 new ExamFeeValidationException(invalidExamFeeReferenceException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertExamFeeAsync(invalidExamFee))
@@ -184,14 +202,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
             await Assert.ThrowsAsync<ExamFeeValidationException>(() =>
                 addExamFeeTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
-                    Times.Once);
+            this.dateTimeBrokerMock.Verify(broker =>
+               broker.GetCurrentDateTime(),
+                   Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertExamFeeAsync(invalidExamFee),
                     Times.Once);
 
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
