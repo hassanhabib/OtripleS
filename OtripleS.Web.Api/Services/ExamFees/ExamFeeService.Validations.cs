@@ -14,6 +14,7 @@ namespace OtripleS.Web.Api.Services.ExamFees
         public void ValidateExamFeeOnCreate(ExamFee examFee)
         {
             ValidateExamFeeIsNull(examFee);
+            ValidateExamFeeIds(examFee.ExamId, examFee.FeeId);
         }
 
         private void ValidateExamFeeIsNull(ExamFee examFee)
@@ -21,6 +22,16 @@ namespace OtripleS.Web.Api.Services.ExamFees
             if (examFee is null)
             {
                 throw new NullExamFeeException();
+            }
+        }
+
+        private void ValidateExamFeeIds(Guid examId, Guid FeeId)
+        {
+            if (examId == default)
+            {
+                throw new InvalidExamFeeException(
+                    parameterName: nameof(ExamFee.ExamId),
+                    parameterValue: examId);
             }
         }
     }
