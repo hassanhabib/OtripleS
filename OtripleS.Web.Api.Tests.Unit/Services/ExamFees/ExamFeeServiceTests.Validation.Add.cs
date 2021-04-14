@@ -418,5 +418,54 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [MemberData(nameof(InvalidMinuteCases))]
+        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedDateIsNotRecentAndLogItAsync(
+            int minutes)
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            ExamFee randomExamFee = CreateRandomExamFee(dateTime);
+            ExamFee inputExamFee = randomExamFee;
+            inputExamFee.UpdatedBy = inputExamFee.CreatedBy;
+            inputExamFee.CreatedDate = dateTime.AddMinutes(minutes);
+            inputExamFee.UpdatedDate = inputExamFee.CreatedDate;
+
+            var invalidExamFeeInputException = new InvalidExamFeeException(
+                parameterName: nameof(ExamFee.CreatedDate),
+                parameterValue: inputExamFee.CreatedDate);
+
+            var expectedExamFeeValidationException =
+                new ExamFeeValidationException(invalidExamFeeInputException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            // when
+            ValueTask<ExamFee> createExamFeeTask =
+                this.examFeeService.AddExamFeeAsync(inputExamFee);
+
+            // then
+            await Assert.ThrowsAsync<ExamFeeValidationException>(() =>
+                createExamFeeTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamFeeByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
