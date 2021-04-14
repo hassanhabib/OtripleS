@@ -26,5 +26,6 @@
     <Folder Include="Models\AssignmentAttachments\Exceptions\" />
     <Folder Include="Services\Fees\" />
     <Folder Include="Models\Fees\Exceptions\" />
+    <Folder Include="Services\ExamFees\" />
   </ItemGroup>
 </Project>
