@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Moq;
 using OtripleS.Web.Api.Models.ExamFees;
 using OtripleS.Web.Api.Models.ExamFees.Exceptions;
@@ -112,6 +113,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenExamFeeAlreadyExistsAndLogItAsync()
+        {
+            // given
+            ExamFee randomExamFee = CreateRandomExamFee();
+            ExamFee alreadyExistsExamFee = randomExamFee;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsExamFeeException =
+                new AlreadyExistsExamFeeException(duplicateKeyException);
+
+            var expectedExamFeeValidationException =
+                new ExamFeeValidationException(alreadyExistsExamFeeException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertExamFeeAsync(alreadyExistsExamFee))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<ExamFee> addExamFeeTask =
+                this.examFeeService.AddExamFeeAsync(alreadyExistsExamFee);
+
+            // then
+            await Assert.ThrowsAsync<ExamFeeValidationException>(() =>
+                addExamFeeTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertExamFeeAsync(alreadyExistsExamFee),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
