@@ -28,9 +28,12 @@ namespace OtripleS.Web.Api.Services.ExamFees
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<ExamFee> AddExamFeeAsync(ExamFee examFee)
+        public ValueTask<ExamFee> AddExamFeeAsync(ExamFee examFee) =>
+        TryCatch(async () =>
         {
-            return this.storageBroker.InsertExamFeeAsync(examFee);
-        }
+            ValidateExamFeeOnCreate(examFee);
+
+            return await this.storageBroker.InsertExamFeeAsync(examFee);
+        });
     }
 }
