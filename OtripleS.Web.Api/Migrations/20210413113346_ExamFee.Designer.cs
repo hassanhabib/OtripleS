@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OtripleS.Web.Api.Brokers.Storage;
 
 namespace OtripleS.Web.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    partial class StorageBrokerModelSnapshot : ModelSnapshot
+    [Migration("20210413113346_ExamFee")]
+    partial class ExamFee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -488,10 +490,8 @@ namespace OtripleS.Web.Api.Migrations
 
             modelBuilder.Entity("OtripleS.Web.Api.Models.ExamFees.ExamFee", b =>
                 {
-                    b.Property<Guid>("ExamId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("FeeId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CreatedBy")
@@ -500,7 +500,10 @@ namespace OtripleS.Web.Api.Migrations
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("ExamId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FeeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Status")
@@ -512,13 +515,11 @@ namespace OtripleS.Web.Api.Migrations
                     b.Property<DateTimeOffset>("UpdatedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.HasKey("ExamId", "FeeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("FeeId");
-
-                    b.HasIndex("UpdatedBy");
 
                     b.ToTable("ExamFees");
                 });
@@ -1245,29 +1246,13 @@ namespace OtripleS.Web.Api.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("OtripleS.Web.Api.Models.Exams.Exam", "Exam")
-                        .WithMany("ExamFees")
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("OtripleS.Web.Api.Models.Fees.Fee", "Fee")
-                        .WithMany("ExamFees")
+                    b.HasOne("OtripleS.Web.Api.Models.Users.User", "UpdatedByUser")
+                        .WithMany("ExamFeesUpdatedByUser")
                         .HasForeignKey("FeeId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("OtripleS.Web.Api.Models.Users.User", "UpdatedByUser")
-                        .WithMany("ExamFeesUpdatedByUser")
-                        .HasForeignKey("UpdatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("CreatedByUser");
-
-                    b.Navigation("Exam");
-
-                    b.Navigation("Fee");
 
                     b.Navigation("UpdatedByUser");
                 });
@@ -1586,14 +1571,7 @@ namespace OtripleS.Web.Api.Migrations
                 {
                     b.Navigation("ExamAttachments");
 
-                    b.Navigation("ExamFees");
-
                     b.Navigation("StudentExams");
-                });
-
-            modelBuilder.Entity("OtripleS.Web.Api.Models.Fees.Fee", b =>
-                {
-                    b.Navigation("ExamFees");
                 });
 
             modelBuilder.Entity("OtripleS.Web.Api.Models.Guardians.Guardian", b =>

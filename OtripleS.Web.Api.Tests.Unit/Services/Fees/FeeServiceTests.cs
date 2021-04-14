@@ -51,7 +51,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dateTime)
                 .OnProperty(fee => fee.CreatedByUser).IgnoreIt()
-                .OnProperty(fee => fee.UpdatedByUser).IgnoreIt();
+                .OnProperty(fee => fee.UpdatedByUser).IgnoreIt()
+                .OnProperty(fee => fee.ExamFees).IgnoreIt();
 
             return filler;
         }
@@ -96,7 +97,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates)
                 .OnProperty(fee => fee.CreatedByUser).IgnoreIt()
-                .OnProperty(fee => fee.UpdatedByUser).IgnoreIt();
+                .OnProperty(fee => fee.UpdatedByUser).IgnoreIt()
+                .OnProperty(fee => fee.ExamFees).IgnoreIt();
 
             return filler;
         }
