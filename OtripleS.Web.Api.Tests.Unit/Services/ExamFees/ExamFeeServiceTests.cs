@@ -59,5 +59,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
         }
 
         private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private ExamFee CreateRandomExamFee(DateTimeOffset dates) =>
+            CreateExamFeeFiller(dates).Create();
     }
 }
