@@ -25,13 +25,19 @@ namespace OtripleS.Web.Api.Services.ExamFees
             }
         }
 
-        private void ValidateExamFeeIds(Guid examId, Guid FeeId)
+        private void ValidateExamFeeIds(Guid examId, Guid feeId)
         {
             if (examId == default)
             {
                 throw new InvalidExamFeeException(
                     parameterName: nameof(ExamFee.ExamId),
                     parameterValue: examId);
+            }
+            else if (feeId == default)
+            {
+                throw new InvalidExamFeeException(
+                    parameterName: nameof(ExamFee.FeeId),
+                    parameterValue: feeId);
             }
         }
     }
