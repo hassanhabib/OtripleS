@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.ExamFees;
 using OtripleS.Web.Api.Models.ExamFees.Exceptions;
 
@@ -50,6 +51,10 @@ namespace OtripleS.Web.Api.Services.ExamFees
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
         private ExamFeeValidationException CreateAndLogValidationException(Exception exception)
@@ -64,6 +69,14 @@ namespace OtripleS.Web.Api.Services.ExamFees
         {
             var examFeeDependencyException = new ExamFeeDependencyException(exception);
             this.loggingBroker.LogCritical(examFeeDependencyException);
+
+            return examFeeDependencyException;
+        }
+
+        private ExamFeeDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var examFeeDependencyException = new ExamFeeDependencyException(exception);
+            this.loggingBroker.LogError(examFeeDependencyException);
 
             return examFeeDependencyException;
         }
