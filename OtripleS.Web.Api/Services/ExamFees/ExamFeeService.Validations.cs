@@ -103,5 +103,15 @@ namespace OtripleS.Web.Api.Services.ExamFees
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
+
+        private void ValidateExamFeeId(Guid examFeeId)
+        {
+            if (examFeeId == Guid.Empty)
+            {
+                throw new InvalidExamFeeException(
+                    parameterName: nameof(ExamFee.Id),
+                    parameterValue: examFeeId);
+            }
+        }
     }
 }
