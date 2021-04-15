@@ -45,5 +45,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public void ShouldThrowServiceExceptionOnRetrieveAllExamFeesWhenExceptionOccursAndLogIt()
+        {
+            // given
+            var exception = new Exception();
+
+            var expectedExamFeeServiceException =
+                new ExamFeeServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllExamFees())
+                    .Throws(exception);
+
+            // when . then
+            Assert.Throws<ExamFeeServiceException>(() =>
+                this.examFeeService.RetrieveAllExamFees());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllExamFees(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
