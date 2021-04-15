@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -16,6 +17,7 @@ namespace OtripleS.Web.Api.Services.ExamFees
     public partial class ExamFeeService
     {
         private delegate ValueTask<ExamFee> ReturningExamFeeFunction();
+        private delegate IQueryable<ExamFee> ReturningExamFeesFunction();
 
         private async ValueTask<ExamFee> TryCatch(
             ReturningExamFeeFunction returningExamFeeFunction)
@@ -59,6 +61,20 @@ namespace OtripleS.Web.Api.Services.ExamFees
             {
                 throw CreateAndLogServiceException(exception);
             }
+        }
+
+        private IQueryable<ExamFee> TryCatch(
+            ReturningExamFeesFunction returningExamFeesFunction)
+        {
+            try
+            {
+                return returningExamFeesFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+
         }
 
         private ExamFeeValidationException CreateAndLogValidationException(Exception exception)
