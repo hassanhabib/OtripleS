@@ -74,6 +74,10 @@ namespace OtripleS.Web.Api.Services.ExamFees
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
 
         }
 
