@@ -48,6 +48,11 @@ namespace OtripleS.Web.Api.Services.ExamFees
 
         });
 
+        public ValueTask<ExamFee> RetrieveExamFeeByIdAsync(Guid examFeeId)
+        {
+            throw new NotImplementedException();
+        }
+
         public ValueTask<ExamFee> RemoveExamFeeByIdAsync(Guid examFeeId) =>
         TryCatch(async () =>
         {
