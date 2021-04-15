@@ -53,10 +53,6 @@ namespace OtripleS.Web.Api.Services.ExamFees
 
                 throw CreateAndLogValidationException(invalidExamFeeReferenceException);
             }
-            catch (SqlException sqlException)
-            {
-                throw CreateAndLogCriticalDependencyException(sqlException);
-            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
