@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Services.ExamFees
 
         public ValueTask<ExamFee> RetrieveExamFeeByIdAsync(Guid examFeeId)
         {
-            throw new NotImplementedException();
+            return this.storageBroker.SelectExamFeeByIdAsync(examFeeId);
         }
 
         public ValueTask<ExamFee> RemoveExamFeeByIdAsync(Guid examFeeId) =>
