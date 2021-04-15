@@ -57,6 +57,12 @@ namespace OtripleS.Web.Api.Services.ExamFees
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedExamFeeException = new LockedExamFeeException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedExamFeeException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
