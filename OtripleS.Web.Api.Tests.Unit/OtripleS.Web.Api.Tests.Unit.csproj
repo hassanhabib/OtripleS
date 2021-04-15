@@ -31,5 +31,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\AssignmentAttachments\" />
+    <Folder Include="Services\ExamFees\" />
   </ItemGroup>
 </Project>
