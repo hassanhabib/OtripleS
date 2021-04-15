@@ -67,10 +67,6 @@ namespace OtripleS.Web.Api.Services.ExamFees
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
-            catch (Exception exception)
-            {
-                throw CreateAndLogServiceException(exception);
-            }
         }
 
         private IQueryable<ExamFee> TryCatch(
