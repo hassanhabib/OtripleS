@@ -120,5 +120,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomExamFeeId = Guid.NewGuid();
+            Guid inputExamFeeId = randomExamFeeId;
+            var exception = new Exception();
+
+            var expectedExamFeeServiceException = new ExamFeeServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                 broker.SelectExamFeeByIdAsync(inputExamFeeId))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<ExamFee> deleteExamFeeTask =
+                this.examFeeService.RemoveExamFeeByIdAsync(inputExamFeeId);
+
+            // then
+            await Assert.ThrowsAsync<ExamFeeServiceException>(() =>
+                deleteExamFeeTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamFeeByIdAsync(inputExamFeeId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
