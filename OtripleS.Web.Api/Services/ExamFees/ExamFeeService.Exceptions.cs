@@ -63,10 +63,6 @@ namespace OtripleS.Web.Api.Services.ExamFees
 
                 throw CreateAndLogDependencyException(lockedExamFeeException);
             }
-            catch (DbUpdateException dbUpdateException)
-            {
-                throw CreateAndLogDependencyException(dbUpdateException);
-            }
             catch (Exception exception)
             {
                 throw CreateAndLogServiceException(exception);
