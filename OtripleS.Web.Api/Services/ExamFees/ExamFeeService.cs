@@ -39,7 +39,9 @@ namespace OtripleS.Web.Api.Services.ExamFees
 
         public IQueryable<ExamFee> RetrieveAllExamFees()
         {
-            throw new NotImplementedException();
+            IQueryable<ExamFee> storageExamFees = this.storageBroker.SelectAllExamFees();
+
+            return storageExamFees;
         }
     }
 }
