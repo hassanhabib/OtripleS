@@ -88,5 +88,43 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldDeleteExamFeeAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            ExamFee randomExamFee = CreateRandomExamFee(dateTime);
+            Guid inputExamFeeId = randomExamFee.Id;
+            ExamFee inputExamFee = randomExamFee;
+            ExamFee storageExamFee = inputExamFee;
+            ExamFee expectedExamFee = storageExamFee;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectExamFeeByIdAsync(inputExamFeeId))
+                    .ReturnsAsync(inputExamFee);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteExamFeeAsync(inputExamFee))
+                    .ReturnsAsync(storageExamFee);
+
+            // when
+            ExamFee actualExamFee =
+                await this.examFeeService.RemoveExamFeeByIdAsync(inputExamFeeId);
+
+            //then
+            actualExamFee.Should().BeEquivalentTo(expectedExamFee);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamFeeByIdAsync(inputExamFeeId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteExamFeeAsync(inputExamFee),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
