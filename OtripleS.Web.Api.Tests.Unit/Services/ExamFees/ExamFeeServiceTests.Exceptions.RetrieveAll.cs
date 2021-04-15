@@ -4,10 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.ExamFees;
 using OtripleS.Web.Api.Models.ExamFees.Exceptions;
 using Xunit;
 
