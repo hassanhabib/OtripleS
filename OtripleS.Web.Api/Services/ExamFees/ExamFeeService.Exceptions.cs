@@ -35,6 +35,10 @@ namespace OtripleS.Web.Api.Services.ExamFees
             {
                 throw CreateAndLogValidationException(invalidExamFeeInputException);
             }
+            catch (NotFoundExamFeeException nullExamFeeException)
+            {
+                throw CreateAndLogValidationException(nullExamFeeException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsExamFeeException =

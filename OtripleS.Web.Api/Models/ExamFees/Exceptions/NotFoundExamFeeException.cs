@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.ExamFees.Exceptions
     public class NotFoundExamFeeException : Exception
     {
         public NotFoundExamFeeException(Guid examFeeId)
-            : base($"Couldn't find SemesterCourse with Id: {examFeeId}.") { }
+            : base($"Couldn't find ExamFee with Id: {examFeeId}.") { }
     }
 }

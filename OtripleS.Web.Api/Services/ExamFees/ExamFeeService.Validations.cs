@@ -113,5 +113,13 @@ namespace OtripleS.Web.Api.Services.ExamFees
                     parameterValue: examFeeId);
             }
         }
+
+        private static void ValidateStorageExamFee(ExamFee storageExamFee, Guid examFeeId)
+        {
+            if (storageExamFee == null)
+            {
+                throw new NotFoundExamFeeException(examFeeId);
+            }
+        }
     }
 }
