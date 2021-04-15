@@ -56,6 +56,8 @@ namespace OtripleS.Web.Api.Services.ExamFees
             ExamFee storageExamFee =
                 await this.storageBroker.SelectExamFeeByIdAsync(examFeeId);
 
+            ValidateStorageExamFee(storageExamFee, examFeeId);
+
             return storageExamFee;
         });
 
