@@ -35,6 +35,10 @@ namespace OtripleS.Web.Api.Services.ExamFees
             {
                 throw CreateAndLogValidationException(invalidExamFeeInputException);
             }
+            catch (NotFoundExamFeeException nullExamFeeException)
+            {
+                throw CreateAndLogValidationException(nullExamFeeException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsExamFeeException =
@@ -52,6 +56,12 @@ namespace OtripleS.Web.Api.Services.ExamFees
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedExamFeeException = new LockedExamFeeException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedExamFeeException);
             }
             catch (DbUpdateException dbUpdateException)
             {

@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
@@ -47,5 +48,17 @@ namespace OtripleS.Web.Api.Services.ExamFees
 
         });
 
+        public ValueTask<ExamFee> RemoveExamFeeByIdAsync(Guid examFeeId) =>
+        TryCatch(async () =>
+        {
+            ValidateExamFeeId(examFeeId);
+
+            ExamFee maybeExamFee =
+                await this.storageBroker.SelectExamFeeByIdAsync(examFeeId);
+
+            ValidateStorageExamFee(maybeExamFee, examFeeId);
+
+            return await this.storageBroker.DeleteExamFeeAsync(maybeExamFee);
+        });
     }
 }
