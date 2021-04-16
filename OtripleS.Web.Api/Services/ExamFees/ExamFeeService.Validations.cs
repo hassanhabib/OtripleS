@@ -24,6 +24,7 @@ namespace OtripleS.Web.Api.Services.ExamFees
         {
             ValidateExamFeeIsNull(examFee);
             ValidateExamFeeId(examFee.Id);
+            ValidateExamFeeIds(examFee.ExamId, examFee.FeeId);
             ValidateInvalidAuditFields(examFee);
             ValidateInvalidAuditFieldsOnModify(examFee);
         }
