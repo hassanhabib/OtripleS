@@ -22,6 +22,7 @@ namespace OtripleS.Web.Api.Services.ExamFees
         private void ValidateExamFeeOnModify(ExamFee examFee)
         {
             ValidateExamFeeIsNull(examFee);
+            ValidateExamFeeId(examFee.Id);
         }
 
         private void ValidateExamFeeIsNull(ExamFee examFee)
