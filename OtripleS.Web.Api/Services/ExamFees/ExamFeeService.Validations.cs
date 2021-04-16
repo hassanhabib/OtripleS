@@ -44,6 +44,19 @@ namespace OtripleS.Web.Api.Services.ExamFees
             }
         }
 
+        private void ValidateAgainstStorageExamFeeOnModify(ExamFee inputExamFee, ExamFee storageExamFee)
+        {
+            switch (inputExamFee)
+            {
+                case { } when inputExamFee.CreatedDate != storageExamFee.CreatedDate:
+                    throw new InvalidExamFeeException(
+                        parameterName: nameof(ExamFee.CreatedDate),
+                        parameterValue: inputExamFee.CreatedDate);
+
+                
+            }
+        }
+
         private void ValidateExamFeeIsNull(ExamFee examFee)
         {
             if (examFee is null)
