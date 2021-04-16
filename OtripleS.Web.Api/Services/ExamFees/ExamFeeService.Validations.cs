@@ -17,12 +17,14 @@ namespace OtripleS.Web.Api.Services.ExamFees
             ValidateExamFeeIsNull(examFee);
             ValidateExamFeeIds(examFee.ExamId, examFee.FeeId);
             ValidateInvalidAuditFields(examFee);
+            ValidateInvalidAuditFieldsOnCreate(examFee);
         }
 
         private void ValidateExamFeeOnModify(ExamFee examFee)
         {
             ValidateExamFeeIsNull(examFee);
             ValidateExamFeeId(examFee.Id);
+            ValidateInvalidAuditFields(examFee);
         }
 
         private void ValidateExamFeeIsNull(ExamFee examFee)
@@ -72,7 +74,13 @@ namespace OtripleS.Web.Api.Services.ExamFees
                     throw new InvalidExamFeeException(
                         parameterName: nameof(ExamFee.UpdatedDate),
                         parameterValue: examFee.UpdatedDate);
+            }
+        }
 
+        private void ValidateInvalidAuditFieldsOnCreate(ExamFee examFee)
+        {
+            switch (examFee)
+            {
                 case { } when examFee.UpdatedBy != examFee.CreatedBy:
                     throw new InvalidExamFeeException(
                         parameterName: nameof(ExamFee.UpdatedBy),
