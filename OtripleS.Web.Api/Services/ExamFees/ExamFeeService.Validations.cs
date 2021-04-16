@@ -53,7 +53,10 @@ namespace OtripleS.Web.Api.Services.ExamFees
                         parameterName: nameof(ExamFee.CreatedDate),
                         parameterValue: inputExamFee.CreatedDate);
 
-                
+                case { } when inputExamFee.CreatedBy != storageExamFee.CreatedBy:
+                    throw new InvalidExamFeeException(
+                        parameterName: nameof(ExamFee.CreatedBy),
+                        parameterValue: inputExamFee.CreatedBy);
             }
         }
 
