@@ -19,6 +19,11 @@ namespace OtripleS.Web.Api.Services.ExamFees
             ValidateInvalidAuditFields(examFee);
         }
 
+        private void ValidateExamFeeOnModify(ExamFee examFee)
+        {
+            ValidateExamFeeIsNull(examFee);
+        }
+
         private void ValidateExamFeeIsNull(ExamFee examFee)
         {
             if (examFee is null)
