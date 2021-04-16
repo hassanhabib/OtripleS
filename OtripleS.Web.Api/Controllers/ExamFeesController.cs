@@ -149,6 +149,46 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpDelete("{examFeeId}")]
+        public async ValueTask<ActionResult<ExamFee>> DeleteExamFeeAsync(Guid examFeeId)
+        {
+            try
+            {
+                ExamFee storageExamFee =
+                    await this.examFeeService.RemoveExamFeeByIdAsync(examFeeId);
+
+                return Ok(storageExamFee);
+            }
+            catch (ExamFeeValidationException examFeeValidationException)
+                when (examFeeValidationException.InnerException is NotFoundExamFeeException)
+            {
+                string innerMessage = GetInnerMessage(examFeeValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (ExamFeeValidationException examFeeValidationException)
+            {
+                string innerMessage = GetInnerMessage(examFeeValidationException);
+
+                return BadRequest(examFeeValidationException);
+            }
+            catch (ExamFeeDependencyException examFeeDependencyException)
+               when (examFeeDependencyException.InnerException is LockedExamFeeException)
+            {
+                string innerMessage = GetInnerMessage(examFeeDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (ExamFeeDependencyException examFeeDependencyException)
+            {
+                return Problem(examFeeDependencyException.Message);
+            }
+            catch (ExamFeeServiceException examFeeServiceException)
+            {
+                return Problem(examFeeServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
