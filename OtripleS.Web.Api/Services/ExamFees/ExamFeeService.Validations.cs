@@ -35,7 +35,12 @@ namespace OtripleS.Web.Api.Services.ExamFees
                 case { } when examFee.UpdatedDate == examFee.CreatedDate:
                     throw new InvalidExamFeeException(
                         parameterName: nameof(ExamFee.UpdatedDate),
-                        parameterValue: examFee.UpdatedDate);                
+                        parameterValue: examFee.UpdatedDate);
+
+                case { } when IsDateNotRecent(examFee.UpdatedDate):
+                    throw new InvalidExamFeeException(
+                        parameterName: nameof(ExamFee.UpdatedDate),
+                        parameterValue: examFee.UpdatedDate);
             }
         }
 
