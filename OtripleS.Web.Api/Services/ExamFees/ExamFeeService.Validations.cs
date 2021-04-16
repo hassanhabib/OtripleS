@@ -25,6 +25,18 @@ namespace OtripleS.Web.Api.Services.ExamFees
             ValidateExamFeeIsNull(examFee);
             ValidateExamFeeId(examFee.Id);
             ValidateInvalidAuditFields(examFee);
+            ValidateInvalidAuditFieldsOnModify(examFee);
+        }
+
+        private void ValidateInvalidAuditFieldsOnModify(ExamFee examFee)
+        {
+            switch (examFee)
+            {
+                case { } when examFee.UpdatedDate == examFee.CreatedDate:
+                    throw new InvalidExamFeeException(
+                        parameterName: nameof(ExamFee.UpdatedDate),
+                        parameterValue: examFee.UpdatedDate);                
+            }
         }
 
         private void ValidateExamFeeIsNull(ExamFee examFee)
