@@ -25,9 +25,6 @@ namespace OtripleS.Web.Api.Brokers.Storage
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<ExamFee>()
-                .HasKey(examFee => new { examFee.ExamId, examFee.FeeId });
-
-            modelBuilder.Entity<ExamFee>()
                 .HasOne(examFee => examFee.Exam)
                 .WithMany(examFee => examFee.ExamFees)
                 .HasForeignKey(examfee => examfee.ExamId)
@@ -38,7 +35,6 @@ namespace OtripleS.Web.Api.Brokers.Storage
                 .WithMany(examFee => examFee.ExamFees)
                 .HasForeignKey(examfee => examfee.FeeId)
                 .OnDelete(DeleteBehavior.NoAction);
-
         }
     }
 }
