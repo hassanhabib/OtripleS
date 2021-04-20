@@ -28,6 +28,7 @@ using OtripleS.Web.Api.Services.Contacts;
 using OtripleS.Web.Api.Services.CourseAttachments;
 using OtripleS.Web.Api.Services.Courses;
 using OtripleS.Web.Api.Services.ExamAttachments;
+using OtripleS.Web.Api.Services.ExamFees;
 using OtripleS.Web.Api.Services.Exams;
 using OtripleS.Web.Api.Services.Fees;
 using OtripleS.Web.Api.Services.GuardianAttachments;
@@ -101,6 +102,7 @@ namespace OtripleS.Web.Api
             services.AddTransient<IExamAttachmentService, ExamAttachmentService>();
             services.AddTransient<IAssignmentAttachmentService, AssignmentAttachmentService>();
             services.AddTransient<IFeeService, FeeService>();
+            services.AddTransient<IExamFeeService, ExamFeeService>();
 
             services.AddIdentityCore<User>()
                     .AddRoles<Role>()
