@@ -54,7 +54,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
                 .OnProperty(examFee => examFee.Exam).IgnoreIt()
                 .OnProperty(examFee => examFee.Fee).IgnoreIt()
                 .OnProperty(examFee => examFee.CreatedByUser).IgnoreIt()
-                .OnProperty(examFee => examFee.UpdatedByUser).IgnoreIt();
+                .OnProperty(examFee => examFee.UpdatedByUser).IgnoreIt()
+                .OnProperty(examFee => examFee.StudentExamFees).IgnoreIt();
 
             return filler;
         }
