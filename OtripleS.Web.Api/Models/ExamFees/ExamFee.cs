@@ -7,6 +7,9 @@ using System;
 using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Models.Exams;
 using OtripleS.Web.Api.Models.Fees;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using OtripleS.Web.Api.Models.StudentExamFees;
 
 namespace OtripleS.Web.Api.Models.ExamFees
 {
@@ -24,5 +27,8 @@ namespace OtripleS.Web.Api.Models.ExamFees
         public User CreatedByUser {get; set;}
         public Guid UpdatedBy {get; set;}
         public User UpdatedByUser {get; set;}
+
+        [JsonIgnore]
+        public IEnumerable<StudentExamFee> StudentExamFees { get; set; }
     }
 }

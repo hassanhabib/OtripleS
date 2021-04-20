@@ -11,6 +11,7 @@ using OtripleS.Web.Api.Models.StudentContacts;
 using OtripleS.Web.Api.Models.StudentExams;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
+using OtripleS.Web.Api.Models.StudentExamFees;
 
 namespace OtripleS.Web.Api.Models.Students
 {
@@ -43,5 +44,8 @@ namespace OtripleS.Web.Api.Models.Students
 
         [JsonIgnore]
         public IEnumerable<StudentAttachment> StudentAttachments { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<StudentExamFee> StudentExamFees { get; set; }
     }
 }
