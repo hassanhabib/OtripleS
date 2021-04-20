@@ -55,6 +55,6 @@ namespace OtripleS.Web.Api.Models.Users
         [JsonIgnore]
         public IEnumerable<StudentExamFee> StudentExamFeesCreatedByUser { get; set; }
         [JsonIgnore]
-        public IEnumerable<StudentExamFee> StudentFeesUpdatedByUser { get; set; }
+        public IEnumerable<StudentExamFee> StudentExamFeesUpdatedByUser { get; set; }
     }
 }
