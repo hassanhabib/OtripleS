@@ -58,6 +58,11 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
                     throw new InvalidStudentExamFeeException(
                     parameterName: nameof(StudentExamFee.CreatedBy),
                     parameterValue: studentExamFee.CreatedBy);
+
+                case { } when IsInvalid(studentExamFee.UpdatedBy):
+                    throw new InvalidStudentExamFeeException(
+                    parameterName: nameof(StudentExamFee.UpdatedBy),
+                    parameterValue: studentExamFee.UpdatedBy);
             }
         }
 
