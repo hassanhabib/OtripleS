@@ -83,10 +83,24 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
                     throw new InvalidStudentExamFeeException(
                     parameterName: nameof(StudentExamFee.UpdatedDate),
                     parameterValue: studentExamFee.UpdatedDate);
+
+                case { } when IsDateNotRecent(studentExamFee.CreatedDate):
+                    throw new InvalidStudentExamFeeException(
+                    parameterName: nameof(StudentExamFee.CreatedDate),
+                    parameterValue: studentExamFee.CreatedDate);
             }
         }
 
         private static bool IsInvalid(Guid input) => input == default;
         private static bool IsInvalid(DateTimeOffset input) => input == default;
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
     }
 }
