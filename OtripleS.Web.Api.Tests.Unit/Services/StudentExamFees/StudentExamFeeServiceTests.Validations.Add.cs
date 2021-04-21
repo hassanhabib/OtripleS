@@ -379,5 +379,54 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [MemberData(nameof(InvalidMinuteCases))]
+        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedDateIsNotRecentAndLogItAsync(
+            int minutes)
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentExamFee randomStudentExamFee = CreateRandomStudentExamFee(dateTime);
+            StudentExamFee inputStudentExamFee = randomStudentExamFee;
+            inputStudentExamFee.UpdatedBy = inputStudentExamFee.CreatedBy;
+            inputStudentExamFee.CreatedDate = dateTime.AddMinutes(minutes);
+            inputStudentExamFee.UpdatedDate = inputStudentExamFee.CreatedDate;
+
+            var invalidStudentExamFeeInputException = new InvalidStudentExamFeeException(
+                parameterName: nameof(StudentExamFee.CreatedDate),
+                parameterValue: inputStudentExamFee.CreatedDate);
+
+            var expectedStudentExamFeeValidationException =
+                new StudentExamFeeValidationException(invalidStudentExamFeeInputException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            // when
+            ValueTask<StudentExamFee> createStudentExamFeeTask =
+                this.studentExamFeeService.AddStudentExamFeeAsync(inputStudentExamFee);
+
+            // then
+            await Assert.ThrowsAsync<StudentExamFeeValidationException>(() =>
+                createStudentExamFeeTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
