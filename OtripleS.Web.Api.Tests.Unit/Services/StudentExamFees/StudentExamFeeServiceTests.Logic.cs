@@ -26,6 +26,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             StudentExamFee storageStudentExamFee = randomStudentExamFee;
             StudentExamFee expectedStudentExamFee = randomStudentExamFee;
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertStudentExamFeeAsync(inputStudentExamFee))
                     .ReturnsAsync(storageStudentExamFee);
@@ -36,6 +40,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
 
             // then
             actualStudentExamFee.Should().BeEquivalentTo(expectedStudentExamFee);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentExamFeeAsync(inputStudentExamFee),

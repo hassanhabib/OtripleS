@@ -445,7 +445,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             var alreadyExistsStudentExamFeeException =
                 new AlreadyExistsStudentExamFeeException(duplicateKeyException);
 
-            var expectedStudentExamFeeValidationException =
+            var expectedExamFeeValidationException =
                 new StudentExamFeeValidationException(alreadyExistsStudentExamFeeException);
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -473,7 +473,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeValidationException))),
+               broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

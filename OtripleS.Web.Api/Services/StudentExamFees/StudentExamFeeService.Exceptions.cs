@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using OtripleS.Web.Api.Models.StudentExamFees;
 using OtripleS.Web.Api.Models.StudentExamFees.Exceptions;
 
@@ -28,6 +29,13 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             catch (InvalidStudentExamFeeException invalidStudentExamFeeInputException)
             {
                 throw CreateAndLogValidationException(invalidStudentExamFeeInputException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsStudentExamFeeException =
+                    new AlreadyExistsStudentExamFeeException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsStudentExamFeeException);
             }
         }
 
