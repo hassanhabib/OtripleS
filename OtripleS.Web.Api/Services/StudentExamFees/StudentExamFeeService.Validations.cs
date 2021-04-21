@@ -33,6 +33,13 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
                     parameterName: nameof(StudentExamFee.Id),
                     parameterValue: studentExamFeeId);
             }
+
+            if (studentId == default)
+            {
+                throw new InvalidStudentExamFeeException(
+                    parameterName: nameof(StudentExamFee.StudentId),
+                    parameterValue: studentId);
+            }
         }
     }
 }
