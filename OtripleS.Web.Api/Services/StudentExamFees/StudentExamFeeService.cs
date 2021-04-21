@@ -12,7 +12,7 @@ using OtripleS.Web.Api.Services.StudentStudentExamFees;
 
 namespace OtripleS.Web.Api.Services.StudentExamFees
 {
-    public class StudentExamFeeService : IStudentExamFeeService
+    public partial class StudentExamFeeService : IStudentExamFeeService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -28,9 +28,12 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<StudentExamFee> AddStudentExamFeeAsync(StudentExamFee studentExamFee)
+        public ValueTask<StudentExamFee> AddStudentExamFeeAsync(StudentExamFee studentExamFee) =>
+        TryCatch(async () =>
         {
-            return this.storageBroker.InsertStudentExamFeeAsync(studentExamFee);
-        }
+            ValidateStudentExamFeeOnCreate(studentExamFee);
+
+            return await this.storageBroker.InsertStudentExamFeeAsync(studentExamFee);
+        });
     }
 }
