@@ -15,6 +15,7 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
         {
             ValidateStudentExamFeeIsNull(studentExamFee);
             ValidateStudentExamFeeIdsAreNull(studentExamFee.Id, studentExamFee.StudentId, studentExamFee.ExamFeeId);
+            ValidateInvalidAuditFields(studentExamFee);
         }
 
         private void ValidateStudentExamFeeIsNull(StudentExamFee studentExamFee)
@@ -48,5 +49,18 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
                     parameterValue: examFeeId);
             }
         }
+
+        private void ValidateInvalidAuditFields(StudentExamFee studentExamFee)
+        {
+            switch (studentExamFee)
+            {
+                case { } when IsInvalid(studentExamFee.CreatedBy):
+                    throw new InvalidStudentExamFeeException(
+                    parameterName: nameof(StudentExamFee.CreatedBy),
+                    parameterValue: studentExamFee.CreatedBy);
+            }
+        }
+
+        private static bool IsInvalid(Guid input) => input == default;
     }
 }
