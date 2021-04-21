@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Moq;
 using OtripleS.Web.Api.Models.StudentExamFees;
 using OtripleS.Web.Api.Models.StudentExamFees.Exceptions;
@@ -427,6 +428,57 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenStudentExamFeeAlreadyExistsAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentExamFee randomStudentExamFee = CreateRandomStudentExamFee(dateTime);
+            StudentExamFee alreadyExistsStudentExamFee = randomStudentExamFee;
+            alreadyExistsStudentExamFee.UpdatedBy = alreadyExistsStudentExamFee.CreatedBy;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsStudentExamFeeException =
+                new AlreadyExistsStudentExamFeeException(duplicateKeyException);
+
+            var expectedStudentExamFeeValidationException =
+                new StudentExamFeeValidationException(alreadyExistsStudentExamFeeException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertStudentExamFeeAsync(alreadyExistsStudentExamFee))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<StudentExamFee> createStudentExamFeeTask =
+                this.studentExamFeeService.AddStudentExamFeeAsync(alreadyExistsStudentExamFee);
+
+            // then
+            await Assert.ThrowsAsync<StudentExamFeeValidationException>(() =>
+                createStudentExamFeeTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentExamFeeAsync(alreadyExistsStudentExamFee),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
