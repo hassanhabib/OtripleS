@@ -1,9 +1,20 @@
+<<<<<<< HEAD
 ﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
 using System;
+=======
+﻿//---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+//----------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+>>>>>>> ef731125589f73b5a7c937a68dc7df752e17ae8c
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -13,6 +24,10 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.StudentExamFees;
 using OtripleS.Web.Api.Services.StudentExamFees;
+<<<<<<< HEAD
+=======
+using OtripleS.Web.Api.Services.StudentStudentExamFees;
+>>>>>>> ef731125589f73b5a7c937a68dc7df752e17ae8c
 using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
@@ -22,7 +37,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
         private readonly Mock<IStorageBroker> storageBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
+<<<<<<< HEAD
         private readonly IStudentExamFeeService StudentExamFeeService;
+=======
+        private readonly IStudentExamFeeService studentExamFeeService;
+>>>>>>> ef731125589f73b5a7c937a68dc7df752e17ae8c
 
         public StudentExamFeeServiceTests()
         {
@@ -30,11 +49,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
             this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
 
+<<<<<<< HEAD
             this.StudentExamFeeService = new StudentExamFeeService(
+=======
+            this.studentExamFeeService = new StudentExamFeeService(
+>>>>>>> ef731125589f73b5a7c937a68dc7df752e17ae8c
                 storageBroker: this.storageBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
+<<<<<<< HEAD
         private StudentExamFee CreateRandomStudentExamFee() =>
            CreateStudentExamFeeFiller(DateTimeOffset.UtcNow).Create();
 
@@ -44,10 +68,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
+=======
+
+        private StudentExamFee CreateRandomStudentExamFee() =>
+            CreateStudentExamFeeFiller(DateTimeOffset.UtcNow).Create();
+
+        private IQueryable<StudentExamFee> CreateRandomStudentExamFees() =>
+            CreateStudentExamFeeFiller(DateTimeOffset.UtcNow)
+                .Create(GetRandomNumber()).AsQueryable();
+>>>>>>> ef731125589f73b5a7c937a68dc7df752e17ae8c
 
         private static Filler<StudentExamFee> CreateStudentExamFeeFiller(DateTimeOffset dates)
         {
             var filler = new Filler<StudentExamFee>();
+<<<<<<< HEAD
 
             filler.Setup()
                 .OnProperty(studentExamFee => studentExamFee.CreatedDate).Use(dates)
@@ -56,18 +90,57 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 .OnProperty(studentExamFee => studentExamFee.ExamFee).IgnoreIt()
                 .OnProperty(studentExamFee => studentExamFee.CreatedByUser).IgnoreIt()
                 .OnProperty(studentExamFee => studentExamFee.UpdatedByUser).IgnoreIt();
+=======
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(studentExamFee => studentExamFee.CreatedByUser).IgnoreIt()
+                .OnProperty(studentExamFee => studentExamFee.UpdatedByUser).IgnoreIt()
+                .OnProperty(studentExamFee => studentExamFee.Student).IgnoreIt()
+                .OnProperty(studentExamFee => studentExamFee.ExamFee).IgnoreIt();
+>>>>>>> ef731125589f73b5a7c937a68dc7df752e17ae8c
 
             return filler;
         }
 
+<<<<<<< HEAD
+=======
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
+
+>>>>>>> ef731125589f73b5a7c937a68dc7df752e17ae8c
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private StudentExamFee CreateRandomStudentExamFee(DateTimeOffset dates) =>
             CreateStudentExamFeeFiller(dates).Create();
 
+<<<<<<< HEAD
         private static SqlException GetSqlException() =>
         (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
+=======
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+>>>>>>> ef731125589f73b5a7c937a68dc7df752e17ae8c
     }
 }
