@@ -57,5 +57,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
 
             return filler;
         }
+
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private StudentExamFee CreateRandomStudentExamFee(DateTimeOffset dates) =>
+            CreateStudentExamFeeFiller(dates).Create();
     }
 }
