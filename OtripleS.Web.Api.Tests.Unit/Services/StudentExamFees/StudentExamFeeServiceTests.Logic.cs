@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Models.StudentExamFees;
 using OtripleS.Web.Api.Models.StudentExamFees.Exceptions;
@@ -126,6 +127,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteStudentExamFeeAsync(It.IsAny<StudentExamFee>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRemoveWhenSqlExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid studentExamFeeId = Guid.NewGuid();
+            SqlException sqlException = GetSqlException();
+
+            var expectedStudentExamFeeDependencyException =
+                new StudentExamFeeDependencyException(sqlException);
+
+            this.storageBrokerMock.Setup(broker =>
+                 broker.SelectStudentExamFeeByIdAsync(studentExamFeeId))
+                    .ThrowsAsync(sqlException);
+
+            // when
+            ValueTask<StudentExamFee> removeStudentExamFeeTask =
+                this.StudentExamFeeService.RemoveStudentExamFeeByIdAsync(
+                    studentExamFeeId);
+
+            // then
+            await Assert.ThrowsAsync<StudentExamFeeDependencyException>(() =>
+                removeStudentExamFeeTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentExamFeeByIdAsync(studentExamFeeId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentExamFeeDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
