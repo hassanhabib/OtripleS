@@ -22,6 +22,10 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             {
                 throw CreateAndLogValidationException(invalidStudentExamFeeInputException);
             }
+            catch (NotFoundStudentExamFeeException notFoundStudentExamFeeException)
+            {
+                throw CreateAndLogValidationException(notFoundStudentExamFeeException);
+            }
         }
 
         private StudentExamFeeValidationException CreateAndLogValidationException(Exception exception)
