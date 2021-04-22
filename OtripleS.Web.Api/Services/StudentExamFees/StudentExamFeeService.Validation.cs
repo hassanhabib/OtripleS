@@ -1,4 +1,9 @@
-﻿using System;
+﻿//---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+//----------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,6 +30,14 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
         {
             if (storageStudentExamFee == null)
                 throw new NotFoundStudentExamFeeException(studentExamFeeId);
+        }
+
+        private StudentExamFeeDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var studentExamFeeIdDependencyException = new StudentExamFeeDependencyException(exception);
+            this.loggingBroker.LogCritical(studentExamFeeIdDependencyException);
+
+            return studentExamFeeIdDependencyException;
         }
     }
 }

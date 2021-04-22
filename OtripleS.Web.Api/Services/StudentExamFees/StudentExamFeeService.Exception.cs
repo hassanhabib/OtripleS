@@ -1,7 +1,13 @@
-﻿using System;
+﻿//---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+//----------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.StudentExamFees;
 using OtripleS.Web.Api.Models.StudentExamFees.Exceptions;
 
@@ -25,6 +31,10 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             catch (NotFoundStudentExamFeeException notFoundStudentExamFeeException)
             {
                 throw CreateAndLogValidationException(notFoundStudentExamFeeException);
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
             }
         }
 
