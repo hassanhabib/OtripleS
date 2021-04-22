@@ -28,9 +28,12 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<StudentExamFee> RemoveStudentExamFeeByIdAsync(Guid studentExamFeeId)
+        public async ValueTask<StudentExamFee> RemoveStudentExamFeeByIdAsync(Guid studentExamFeeId)
         {
-            throw new NotImplementedException();
+            StudentExamFee maybeStudentExamFee =
+                await this.storageBroker.SelectStudentExamFeeByIdAsync(studentExamFeeId);
+
+            return await this.storageBroker.DeleteStudentExamFeeAsync(maybeStudentExamFee);
         }
     }
 }
