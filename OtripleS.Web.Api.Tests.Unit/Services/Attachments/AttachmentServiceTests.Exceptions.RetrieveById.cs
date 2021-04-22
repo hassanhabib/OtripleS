@@ -115,7 +115,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
-            
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAttachmentServiceException))),
                     Times.Once);

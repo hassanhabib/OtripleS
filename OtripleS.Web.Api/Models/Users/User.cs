@@ -3,14 +3,14 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using OtripleS.Web.Api.Models.ExamFees;
-using OtripleS.Web.Api.Models.StudentExamFees;
 using OtripleS.Web.Api.Models.Fees;
+using OtripleS.Web.Api.Models.StudentExamFees;
 using OtripleS.Web.Api.Models.UserContacts;
-using System;
-using System.Collections.Generic;
 
 namespace OtripleS.Web.Api.Models.Users
 {

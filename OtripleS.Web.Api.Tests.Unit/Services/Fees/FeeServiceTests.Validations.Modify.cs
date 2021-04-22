@@ -439,9 +439,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                 broker.UpdateFeeAsync(It.IsAny<Fee>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls(); 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();            
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]

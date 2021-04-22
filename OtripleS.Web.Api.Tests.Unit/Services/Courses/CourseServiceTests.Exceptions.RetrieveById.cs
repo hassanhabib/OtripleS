@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
-            
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -87,7 +87,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
         }
 
         [Fact]
-        public async Task 
+        public async Task
             ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
@@ -117,7 +117,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
-                        
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -152,7 +152,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
-                        
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

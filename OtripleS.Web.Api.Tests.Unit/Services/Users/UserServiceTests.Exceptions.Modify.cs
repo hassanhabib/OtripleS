@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
             this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(someUser.Id))
                     .ThrowsAsync(sqlException);
-            
+
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
                     .Returns(randomDateTime);
@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
             // then
             await Assert.ThrowsAsync<UserDependencyException>(() =>
                 modifyUserTask.AsTask());
-            
+
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Once);
@@ -91,7 +91,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
             // then
             await Assert.ThrowsAsync<UserDependencyException>(() =>
                 modifyUserTask.AsTask());
-            
+
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Once);
@@ -139,7 +139,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
             // then
             await Assert.ThrowsAsync<UserDependencyException>(() =>
                 modifyUserTask.AsTask());
-            
+
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Once);
@@ -174,7 +174,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
             this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(someUser.Id))
                     .ThrowsAsync(serviceException);
-            
+
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
                     .Returns(randomDateTime);
@@ -186,7 +186,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
             // then
             await Assert.ThrowsAsync<UserServiceException>(() =>
                 modifyUserTask.AsTask());
-            
+
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Once);

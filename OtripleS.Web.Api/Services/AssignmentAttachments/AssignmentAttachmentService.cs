@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
         }
-        
+
         public ValueTask<AssignmentAttachment> AddAssignmentAttachmentAsync
             (AssignmentAttachment assignmentAttachment) =>
         TryCatch(async () =>
@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
         {
             ValidateAssignmentAttachmentIds(assignmentId, attachmentId);
 
-            AssignmentAttachment storageAssignmentAttachment = 
+            AssignmentAttachment storageAssignmentAttachment =
                 await this.storageBroker.SelectAssignmentAttachmentByIdAsync(assignmentId, attachmentId);
 
             ValidateStorageAssignmentAttachment(storageAssignmentAttachment, assignmentId, attachmentId);

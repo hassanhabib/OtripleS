@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAssignmentAttachmentByIdAsync(
-                    It.IsAny<Guid>(), 
+                    It.IsAny<Guid>(),
                     It.IsAny<Guid>()),
                         Times.Once);
 
@@ -83,7 +83,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAssignmentAttachmentByIdAsync(
-                    It.IsAny<Guid>(), 
+                    It.IsAny<Guid>(),
                     It.IsAny<Guid>()),
                         Times.Once);
 
@@ -117,7 +117,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
             // when
             ValueTask<AssignmentAttachment> retrieveAssignmentAttachmentTask =
                 this.assignmentAttachmentService.RetrieveAssignmentAttachmentByIdAsync(
-                    someAssignmentId, 
+                    someAssignmentId,
                     someAttachmentId);
 
             // then

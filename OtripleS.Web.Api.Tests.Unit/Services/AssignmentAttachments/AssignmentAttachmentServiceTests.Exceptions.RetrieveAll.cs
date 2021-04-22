@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
 using Xunit;

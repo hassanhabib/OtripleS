@@ -30,10 +30,10 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
 
         public ValueTask<StudentExamFee> RemoveStudentExamFeeByIdAsync(
             Guid studentExamFeeId) =>
-            TryCatch(async () => 
+            TryCatch(async () =>
             {
                 ValidateStudentExamFeeId(studentExamFeeId);
-                
+
                 StudentExamFee maybeStudentExamFee =
                     await this.storageBroker.SelectStudentExamFeeByIdAsync(studentExamFeeId);
 

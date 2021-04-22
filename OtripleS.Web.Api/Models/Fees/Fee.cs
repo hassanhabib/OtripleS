@@ -4,14 +4,14 @@
 // ---------------------------------------------------------------
 
 using System;
-using OtripleS.Web.Api.Models.Users;
-using OtripleS.Web.Api.Models.ExamFees;
-using Newtonsoft.Json;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using OtripleS.Web.Api.Models.ExamFees;
+using OtripleS.Web.Api.Models.Users;
 
 namespace OtripleS.Web.Api.Models.Fees
 {
-    
+
 
     public class Fee : IAuditable
     {

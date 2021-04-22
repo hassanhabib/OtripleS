@@ -73,7 +73,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             await Assert.ThrowsAsync<FeeDependencyException>(() =>
                 removeFeeTask.AsTask());
 
-           
+
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectFeeByIdAsync(It.IsAny<Guid>()),
                     Times.Once);

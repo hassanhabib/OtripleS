@@ -7,9 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using OtripleS.Web.Api.Models.ExamAttachments;
+using OtripleS.Web.Api.Models.ExamFees;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Models.StudentExams;
-using OtripleS.Web.Api.Models.ExamFees;
 
 namespace OtripleS.Web.Api.Models.Exams
 {

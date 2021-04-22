@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 using Xunit;

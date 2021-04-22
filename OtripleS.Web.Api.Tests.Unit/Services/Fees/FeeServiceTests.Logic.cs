@@ -4,14 +4,13 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Threading.Tasks;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Fees;
 using Xunit;
-using Force.DeepCloner;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
 {
@@ -107,7 +106,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                     .ReturnsAsync(storageFee);
 
             // when
-            Fee actualFee = 
+            Fee actualFee =
                 await this.feeService.RetrieveFeeByIdAsync(inputFeeId);
 
             // then
@@ -171,7 +170,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();            
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]

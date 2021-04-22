@@ -95,7 +95,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCourseAsync(It.IsAny<Course>()),
                     Times.Once);
-            
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseDependencyException))),
                     Times.Once);
