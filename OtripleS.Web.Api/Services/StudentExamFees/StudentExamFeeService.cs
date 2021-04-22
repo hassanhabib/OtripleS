@@ -37,11 +37,13 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             return await this.storageBroker.InsertStudentExamFeeAsync(studentExamFee);
         });
 
-        public IQueryable<StudentExamFee> RetrieveAllStudentExamFees()
+        public IQueryable<StudentExamFee> RetrieveAllStudentExamFees() =>
+        TryCatch(() =>
         {
             IQueryable<StudentExamFee> storageStudentExamFees = this.storageBroker.SelectAllStudentExamFees();
 
             return storageStudentExamFees;
-        }
+        });
+
     }
 }
