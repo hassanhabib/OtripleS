@@ -42,6 +42,8 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
         {
             IQueryable<StudentExamFee> storageStudentExamFees = this.storageBroker.SelectAllStudentExamFees();
 
+            ValidateStorageStudentExamFees(storageStudentExamFees);
+
             return storageStudentExamFees;
         });
 
