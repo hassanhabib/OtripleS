@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -40,6 +41,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
 
         private StudentExamFee CreateRandomStudentExamFee() =>
             CreateStudentExamFeeFiller(DateTimeOffset.UtcNow).Create();
+
+        private IQueryable<StudentExamFee> CreateRandomStudentExamFees() =>
+            CreateStudentExamFeeFiller(DateTimeOffset.UtcNow)
+                .Create(GetRandomNumber()).AsQueryable();
 
         private static Filler<StudentExamFee> CreateStudentExamFeeFiller(DateTimeOffset dates)
         {
