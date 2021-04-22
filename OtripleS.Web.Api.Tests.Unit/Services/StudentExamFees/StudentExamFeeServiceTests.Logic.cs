@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.StudentExamFees;
+using OtripleS.Web.Api.Models.StudentExamFees.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
@@ -47,6 +48,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteStudentExamFeeAsync(storageStudentExamFee),
                     Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidatonExceptionOnRemoveWhenStudentExamFeeIdIsInvalidAndLogItAsync()
+        {
+            // given
+            Guid randomStudentExamFeeId = default;
+            Guid inputStudentExamFeeId = randomStudentExamFeeId;
+
+            var invalidStudentExamFeeInputException = new InvalidStudentExamFeeException(
+                parameterName: nameof(StudentExamFee.Id),
+                parameterValue: inputStudentExamFeeId);
+
+            var expectedStudentExamFeeValidationException =
+                new StudentExamFeeValidationException(invalidStudentExamFeeInputException);
+
+            // when
+            ValueTask<StudentExamFee> removeStudentExamFeeTask =
+                this.StudentExamFeeService.RemoveStudentExamFeeByIdAsync(inputStudentExamFeeId);
+
+            // then
+            await Assert.ThrowsAsync<StudentExamFeeValidationException>(() =>
+                removeStudentExamFeeTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteStudentExamFeeAsync(It.IsAny<StudentExamFee>()),
+                    Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
