@@ -48,6 +48,10 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private StudentExamFeeValidationException CreateAndLogValidationException(Exception exception)
