@@ -42,7 +42,6 @@ using OtripleS.Web.Api.Services.StudentExams;
 using OtripleS.Web.Api.Services.StudentGuardians;
 using OtripleS.Web.Api.Services.Students;
 using OtripleS.Web.Api.Services.StudentSemesterCourses;
-using OtripleS.Web.Api.Services.StudentStudentExamFees;
 using OtripleS.Web.Api.Services.TeacherAttachments;
 using OtripleS.Web.Api.Services.TeacherContacts;
 using OtripleS.Web.Api.Services.Teachers;

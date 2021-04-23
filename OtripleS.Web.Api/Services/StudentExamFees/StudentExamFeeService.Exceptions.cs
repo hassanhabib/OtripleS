@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
 using OtripleS.Web.Api.Models.StudentExamFees;
 using OtripleS.Web.Api.Models.StudentExamFees.Exceptions;
 
@@ -30,6 +31,10 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             {
                 throw CreateAndLogValidationException(nullStudentExamFeeException);
             }
+            catch (NotFoundStudentExamFeeException notFoundStudentExamFeeException)
+            {
+                throw CreateAndLogValidationException(notFoundStudentExamFeeException);
+            }
             catch (InvalidStudentExamFeeException invalidStudentExamFeeInputException)
             {
                 throw CreateAndLogValidationException(invalidStudentExamFeeInputException);
@@ -44,6 +49,13 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedAssignmentAttachmentException =
+                    new LockedAssignmentAttachmentException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedAssignmentAttachmentException);
             }
             catch (DbUpdateException dbUpdateException)
             {
