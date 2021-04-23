@@ -91,10 +91,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            Guid someFeeId = Guid.NewGuid();            
+            Guid someFeeId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
-            
-            var lockedFeeException = 
+
+            var lockedFeeException =
                 new LockedFeeException(databaseUpdateConcurrencyException);
 
             var expectedFeeDependencyException =

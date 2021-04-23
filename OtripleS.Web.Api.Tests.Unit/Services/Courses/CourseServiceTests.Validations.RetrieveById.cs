@@ -39,7 +39,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker => 
+            this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Never);
 
@@ -89,7 +89,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();            
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }

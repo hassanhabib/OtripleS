@@ -109,7 +109,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.AssignmentsAttachments
 
             return filler.Create();
         }
-                
+
         private Filler<Attachment> CreateRandomAttachmentFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;

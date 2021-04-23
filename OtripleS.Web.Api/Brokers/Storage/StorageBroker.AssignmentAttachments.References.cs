@@ -28,5 +28,5 @@ namespace OtripleS.Web.Api.Brokers.Storage
                 .HasForeignKey(assignmentAttachment => assignmentAttachment.AttachmentId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
-    }    
+    }
 }

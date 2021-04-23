@@ -5,7 +5,6 @@
 
 using System;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.StudentGuardians.Exceptions;
 using Xunit;

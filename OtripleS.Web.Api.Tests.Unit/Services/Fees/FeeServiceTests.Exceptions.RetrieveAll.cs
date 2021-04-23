@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Fees.Exceptions;
 using Xunit;
@@ -37,7 +36,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedFeeDependencyException))),
                     Times.Once);
-            
+
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

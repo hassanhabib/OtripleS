@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Fees
         {
             Fee deletedFee =
                 await this.otripleSApiBroker.DeleteFeeByIdAsync(fee.Id);
-            
+
             await this.otripleSApiBroker.DeleteUserByIdAsync(fee.CreatedBy);
 
             return deletedFee;

@@ -4,9 +4,9 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
-using System.Linq;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Fees;
@@ -63,7 +63,7 @@ namespace OtripleS.Web.Api.Services.Fees
                 throw CreateAndLogServiceException(exception);
             }
         }
-        
+
         private IQueryable<Fee> TryCatch(ReturningQueryableFeeFunction returningQueryableFeeFunction)
         {
             try

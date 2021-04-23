@@ -73,10 +73,10 @@ namespace OtripleS.Web.Api.Services.Courses
         TryCatch(async () =>
         {
             ValidateCourseId(courseId);
-            
-            Course storageCourse = 
+
+            Course storageCourse =
                 await this.storageBroker.SelectCourseByIdAsync(courseId);
-            
+
             ValidateStorageCourse(storageCourse, courseId);
 
             return storageCourse;

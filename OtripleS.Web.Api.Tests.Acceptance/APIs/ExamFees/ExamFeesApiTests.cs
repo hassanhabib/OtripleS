@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamFees
         {
             ExamFee deletedExamFee =
                 await this.otripleSApiBroker.DeleteExamFeeByIdAsync(examFee.Id);
-            
+
             await this.otripleSApiBroker.DeleteFeeByIdAsync(deletedExamFee.FeeId);
             await this.otripleSApiBroker.DeleteUserByIdAsync(deletedExamFee.CreatedBy);
 

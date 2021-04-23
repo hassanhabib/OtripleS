@@ -1,4 +1,4 @@
-﻿//---------------------------------------------------------------
+//---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
@@ -15,7 +15,6 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
 using OtripleS.Web.Api.Models.StudentExamFees;
 using OtripleS.Web.Api.Services.StudentExamFees;
-using OtripleS.Web.Api.Services.StudentStudentExamFees;
 using Tynamix.ObjectFiller;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
@@ -25,6 +24,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
         private readonly Mock<IStorageBroker> storageBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
+        private readonly IStudentExamFeeService StudentExamFeeService;
         private readonly IStudentExamFeeService studentExamFeeService;
 
         public StudentExamFeeServiceTests()
@@ -38,26 +38,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 loggingBroker: this.loggingBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
-
         private StudentExamFee CreateRandomStudentExamFee() =>
-            CreateStudentExamFeeFiller(DateTimeOffset.UtcNow).Create();
-
-        private IQueryable<StudentExamFee> CreateRandomStudentExamFees() =>
-            CreateStudentExamFeeFiller(DateTimeOffset.UtcNow)
-                .Create(GetRandomNumber()).AsQueryable();
-
-        private static Filler<StudentExamFee> CreateStudentExamFeeFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<StudentExamFee>();
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(studentExamFee => studentExamFee.CreatedByUser).IgnoreIt()
-                .OnProperty(studentExamFee => studentExamFee.UpdatedByUser).IgnoreIt()
-                .OnProperty(studentExamFee => studentExamFee.Student).IgnoreIt()
-                .OnProperty(studentExamFee => studentExamFee.ExamFee).IgnoreIt();
-
-            return filler;
-        }
+           CreateStudentExamFeeFiller(DateTimeOffset.UtcNow).Create();
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
@@ -66,11 +48,33 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
 
+        private IQueryable<StudentExamFee> CreateRandomStudentExamFees() =>
+            CreateStudentExamFeeFiller(DateTimeOffset.UtcNow)
+                .Create(GetRandomNumber()).AsQueryable();
+
+        private static Filler<StudentExamFee> CreateStudentExamFeeFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<StudentExamFee>();
+
+            filler.Setup()
+                .OnProperty(studentExamFee => studentExamFee.CreatedDate).Use(dates)
+                .OnProperty(studentExamFee => studentExamFee.UpdatedDate).Use(dates)
+                .OnProperty(studentExamFee => studentExamFee.Student).IgnoreIt()
+                .OnProperty(studentExamFee => studentExamFee.ExamFee).IgnoreIt()
+                .OnProperty(studentExamFee => studentExamFee.CreatedByUser).IgnoreIt()
+                .OnProperty(studentExamFee => studentExamFee.UpdatedByUser).IgnoreIt();
+
+            return filler;
+        }
+
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private StudentExamFee CreateRandomStudentExamFee(DateTimeOffset dates) =>
             CreateStudentExamFeeFiller(dates).Create();
+
+        private static SqlException GetSqlException() =>
+        (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         public static IEnumerable<object[]> InvalidMinuteCases()
         {
@@ -88,7 +92,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
 
-        private static SqlException GetSqlException() =>
-            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
     }
 }

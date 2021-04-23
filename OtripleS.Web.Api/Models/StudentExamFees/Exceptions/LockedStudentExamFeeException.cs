@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.StudentExamFees.Exceptions
 {
-    public class StudentExamFeeDependencyException : Exception
+    public class LockedStudentExamFeeException : Exception
     {
-        public StudentExamFeeDependencyException(Exception innerException)
-            : base("Service dependency error occurred, contact support.", innerException) { }
+        public LockedStudentExamFeeException(Exception innerException)
+          : base("Locked Assignment Attachment record exception, please try again later.", innerException) { }
     }
 }

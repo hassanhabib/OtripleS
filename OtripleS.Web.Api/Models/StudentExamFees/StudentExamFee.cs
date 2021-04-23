@@ -11,17 +11,17 @@ namespace OtripleS.Web.Api.Models.StudentExamFees
 {
     public class StudentExamFee : IAuditable
     {
-        public Guid Id {get; set;}
-        public Guid ExamFeeId {get; set;}
-        public ExamFee ExamFee {get; set;}
-        public Guid StudentId {get; set;}
-        public Student Student {get; set;}
-        public StudentExamFeeStatus Status {get; set;}
-        public DateTimeOffset CreatedDate {get; set;}
-        public DateTimeOffset UpdatedDate {get; set;}
-        public Guid CreatedBy {get; set;}
-        public User CreatedByUser {get; set;}
-        public Guid UpdatedBy {get; set;}
-        public User UpdatedByUser {get; set;}
+        public Guid Id { get; set; }
+        public Guid ExamFeeId { get; set; }
+        public ExamFee ExamFee { get; set; }
+        public Guid StudentId { get; set; }
+        public Student Student { get; set; }
+        public StudentExamFeeStatus Status { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
+        public DateTimeOffset UpdatedDate { get; set; }
+        public Guid CreatedBy { get; set; }
+        public User CreatedByUser { get; set; }
+        public Guid UpdatedBy { get; set; }
+        public User UpdatedByUser { get; set; }
     }
 }

@@ -4,9 +4,9 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.Fees;
 using OtripleS.Web.Api.Models.Fees.Exceptions;
-using System.Linq;
 
 namespace OtripleS.Web.Api.Services.Fees
 {

@@ -8,10 +8,10 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using OtripleS.Web.Api.Models.StudentAttachments;
 using OtripleS.Web.Api.Models.StudentContacts;
+using OtripleS.Web.Api.Models.StudentExamFees;
 using OtripleS.Web.Api.Models.StudentExams;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
-using OtripleS.Web.Api.Models.StudentExamFees;
 
 namespace OtripleS.Web.Api.Models.Students
 {

@@ -102,7 +102,7 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
         private AssignmentAttachmentDependencyValidationException CreateAndLogDependencyValidationException(
             Exception exception)
         {
-            var assignmentAttachmentDependencyValidationException = 
+            var assignmentAttachmentDependencyValidationException =
                 new AssignmentAttachmentDependencyValidationException(exception);
 
             this.loggingBroker.LogError(assignmentAttachmentDependencyValidationException);

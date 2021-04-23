@@ -89,7 +89,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
                     Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();            
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
