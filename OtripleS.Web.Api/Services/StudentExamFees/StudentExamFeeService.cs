@@ -61,9 +61,12 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             return await this.storageBroker.DeleteStudentExamFeeAsync(maybeStudentExamFee);
         });
 
-        public ValueTask<StudentExamFee> ModifyStudentExamFeeAsync(StudentExamFee studentExamFee)
+        public async ValueTask<StudentExamFee> ModifyStudentExamFeeAsync(StudentExamFee studentExamFee)
         {
-            throw new NotImplementedException();
+            StudentExamFee maybeStudentExamFee =
+               await storageBroker.SelectStudentExamFeeByIdAsync(studentExamFee.Id);
+
+            return await storageBroker.UpdateStudentExamFeeAsync(studentExamFee);
         }
     }
 }
