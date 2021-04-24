@@ -153,5 +153,56 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            int randomNegativeNumber = GetNegativeRandomNumber();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            StudentExamFee randomStudentExamFee = CreateRandomStudentExamFee(randomDateTime);
+            StudentExamFee someStudentExamFee = randomStudentExamFee;
+            someStudentExamFee.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+            var lockedStudentExamFeeException = 
+                new LockedStudentExamFeeException(databaseUpdateConcurrencyException);
+
+            var expectedStudentExamFeeDependencyException =
+                new StudentExamFeeDependencyException(lockedStudentExamFeeException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentExamFeeByIdAsync
+                (someStudentExamFee.Id))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
+
+            // when
+            ValueTask<StudentExamFee> modifyStudentExamFeeTask =
+                this.studentExamFeeService.ModifyStudentExamFeeAsync(someStudentExamFee);
+
+            // then
+            await Assert.ThrowsAsync<StudentExamFeeDependencyException>(() =>
+                modifyStudentExamFeeTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeDependencyException))),
+                    Times.Once);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
