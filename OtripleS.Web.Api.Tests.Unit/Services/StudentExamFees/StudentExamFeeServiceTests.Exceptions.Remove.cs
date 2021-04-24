@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 new StudentExamFeeDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectStudentExamFeeByIdAsync(studentExamFeeId))
+                 broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(sqlException);
 
             // when
@@ -68,7 +68,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 new StudentExamFeeDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentExamFeeByIdAsync(someStudentExamFeeId))
+                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
@@ -81,7 +81,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 removestudentExamFeeIdTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamFeeByIdAsync(someStudentExamFeeId),
+                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -123,7 +123,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 removeStudentExamFeeTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamFeeByIdAsync(someStudentExamFeeId),
+                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -148,7 +148,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             var expectedStudentExamFeeException = new StudentExamFeeServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentExamFeeByIdAsync(someStudentExamFeeId))
+                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(exception);
 
             // when
@@ -161,7 +161,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 removeStudentExamFeeTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamFeeByIdAsync(someStudentExamFeeId),
+                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
