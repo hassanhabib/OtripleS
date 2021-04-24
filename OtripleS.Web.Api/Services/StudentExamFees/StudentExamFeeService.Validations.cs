@@ -154,6 +154,16 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             }
         }
 
+        private void ValidateAgainstStorageStudentExamFeeOnModify(
+            StudentExamFee inputStudentExamFee,
+            StudentExamFee storageStudentExamFee)
+        {
+            if (inputStudentExamFee.CreatedDate != storageStudentExamFee.CreatedDate)
+                throw new InvalidStudentExamFeeException(
+                    parameterName: nameof(StudentExamFee.CreatedDate),
+                    parameterValue: inputStudentExamFee.CreatedDate);
+        }
+
         private void ValidateStorageStudentExamFees(IQueryable<StudentExamFee> storageStudentExamFees)
         {
             if (storageStudentExamFees.Count() == 0)

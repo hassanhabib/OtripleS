@@ -71,6 +71,9 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
 
             ValidateStorageStudentExamFee(maybeStudentExamFee, studentExamFee.Id);
 
+            ValidateAgainstStorageStudentExamFeeOnModify(
+                inputStudentExamFee: studentExamFee, storageStudentExamFee: maybeStudentExamFee);
+
             return await storageBroker.UpdateStudentExamFeeAsync(studentExamFee);
         });
     }
