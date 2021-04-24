@@ -1,4 +1,9 @@
-﻿using System;
+﻿//---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+//----------------------------------------------------------------
+
+using System;
 using System.Threading.Tasks;
 using Moq;
 using OtripleS.Web.Api.Models.StudentExamFees;
@@ -44,8 +49,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 broker.DeleteStudentExamFeeAsync(It.IsAny<StudentExamFee>()),
                     Times.Never);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();            
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -92,6 +97,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-
     }
 }
