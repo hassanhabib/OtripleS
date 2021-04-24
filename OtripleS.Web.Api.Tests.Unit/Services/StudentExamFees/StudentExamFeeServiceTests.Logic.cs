@@ -144,9 +144,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 broker.UpdateStudentExamFeeAsync(inputStudentExamFee),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();            
         }
 
         [Fact]
