@@ -160,8 +160,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             // given
             int randomNegativeNumber = GetNegativeRandomNumber();
             DateTimeOffset randomDateTime = GetRandomDateTime();
-            StudentExamFee randomStudentExamFee = CreateRandomStudentExamFee(randomDateTime);
-            StudentExamFee someStudentExamFee = randomStudentExamFee;
+            StudentExamFee someStudentExamFee = CreateRandomStudentExamFee(randomDateTime);
             someStudentExamFee.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
@@ -172,8 +171,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 new StudentExamFeeDependencyException(lockedStudentExamFeeException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentExamFeeByIdAsync
-                (someStudentExamFee.Id))
+                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -200,9 +198,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeDependencyException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
