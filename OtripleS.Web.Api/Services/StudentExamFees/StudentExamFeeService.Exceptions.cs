@@ -68,7 +68,7 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
         }
 
         private IQueryable<StudentExamFee> TryCatch(
-        ReturningStudentExamFeesFunction returningStudentExamFeesFunction)
+            ReturningStudentExamFeesFunction returningStudentExamFeesFunction)
         {
             try
             {

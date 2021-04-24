@@ -29,20 +29,6 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<StudentExamFee> RemoveStudentExamFeeByIdAsync(
-            Guid studentExamFeeId) =>
-            TryCatch(async () =>
-            {
-                ValidateStudentExamFeeId(studentExamFeeId);
-
-                StudentExamFee maybeStudentExamFee =
-                    await this.storageBroker.SelectStudentExamFeeByIdAsync(studentExamFeeId);
-
-                ValidateStorageStudentExamFee(maybeStudentExamFee, studentExamFeeId);
-
-                return await this.storageBroker.DeleteStudentExamFeeAsync(maybeStudentExamFee);
-            });
-
         public ValueTask<StudentExamFee> AddStudentExamFeeAsync(StudentExamFee studentExamFee) =>
         TryCatch(async () =>
         {
@@ -54,12 +40,25 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
         public IQueryable<StudentExamFee> RetrieveAllStudentExamFees() =>
         TryCatch(() =>
         {
-            IQueryable<StudentExamFee> storageStudentExamFees = this.storageBroker.SelectAllStudentExamFees();
+            IQueryable<StudentExamFee> storageStudentExamFees = 
+                this.storageBroker.SelectAllStudentExamFees();
 
             ValidateStorageStudentExamFees(storageStudentExamFees);
 
             return storageStudentExamFees;
         });
 
+        public ValueTask<StudentExamFee> RemoveStudentExamFeeByIdAsync(Guid studentExamFeeId) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentExamFeeId(studentExamFeeId);
+
+            StudentExamFee maybeStudentExamFee =
+                await this.storageBroker.SelectStudentExamFeeByIdAsync(studentExamFeeId);
+
+            ValidateStorageStudentExamFee(maybeStudentExamFee, studentExamFeeId);
+
+            return await this.storageBroker.DeleteStudentExamFeeAsync(maybeStudentExamFee);
+        });
     }
 }
