@@ -180,5 +180,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedByIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            StudentExamFee randomStudentExamFee = CreateRandomStudentExamFee(dateTime);
+            StudentExamFee inputStudentExamFee = randomStudentExamFee;
+            inputStudentExamFee.UpdatedBy = default;
+
+            var invalidStudentExamFeeInputException = new InvalidStudentExamFeeException(
+                parameterName: nameof(StudentExamFee.UpdatedBy),
+                parameterValue: inputStudentExamFee.UpdatedBy);
+
+            var expectedStudentExamFeeValidationException =
+                new StudentExamFeeValidationException(invalidStudentExamFeeInputException);
+
+            // when
+            ValueTask<StudentExamFee> modifyStudentExamFeeTask =
+                this.studentExamFeeService.ModifyStudentExamFeeAsync(inputStudentExamFee);
+
+            // then
+            await Assert.ThrowsAsync<StudentExamFeeValidationException>(() =>
+                modifyStudentExamFeeTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
