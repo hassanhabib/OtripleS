@@ -20,10 +20,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            StudentExamFee randomStudentExamFee = CreateRandomStudentExamFee(dateTime);
-            StudentExamFee inputStudentExamFee = randomStudentExamFee;
-            inputStudentExamFee.UpdatedBy = inputStudentExamFee.CreatedBy;
-            inputStudentExamFee.UpdatedDate = inputStudentExamFee.CreatedDate;
+            StudentExamFee someStudentExamFee = CreateRandomStudentExamFee(dateTime);
+            someStudentExamFee.UpdatedBy = someStudentExamFee.CreatedBy;
+            someStudentExamFee.UpdatedDate = someStudentExamFee.CreatedDate;
             var sqlException = GetSqlException();
 
             var expectedStudentExamFeeDependencyException =
@@ -34,12 +33,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentExamFeeAsync(inputStudentExamFee))
+                broker.InsertStudentExamFeeAsync(It.IsAny<StudentExamFee>()))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<StudentExamFee> createStudentExamFeeTask =
-                this.studentExamFeeService.AddStudentExamFeeAsync(inputStudentExamFee);
+                this.studentExamFeeService.AddStudentExamFeeAsync(someStudentExamFee);
 
             // then
             await Assert.ThrowsAsync<StudentExamFeeDependencyException>(() =>
@@ -50,7 +49,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentExamFeeAsync(inputStudentExamFee),
+                broker.InsertStudentExamFeeAsync(It.IsAny<StudentExamFee>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -58,8 +57,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls(); 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -67,10 +66,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            StudentExamFee randomStudentExamFee = CreateRandomStudentExamFee(dateTime);
-            StudentExamFee inputStudentExamFee = randomStudentExamFee;
-            inputStudentExamFee.UpdatedBy = inputStudentExamFee.CreatedBy;
-            inputStudentExamFee.UpdatedDate = inputStudentExamFee.CreatedDate;
+            StudentExamFee someStudentExamFee = CreateRandomStudentExamFee(dateTime);
+            someStudentExamFee.UpdatedBy = someStudentExamFee.CreatedBy;
+            someStudentExamFee.UpdatedDate = someStudentExamFee.CreatedDate;
             var databaseUpdateException = new DbUpdateException();
 
             var expectedStudentExamFeeDependencyException =
@@ -81,12 +79,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentExamFeeAsync(inputStudentExamFee))
+                broker.InsertStudentExamFeeAsync(It.IsAny<StudentExamFee>()))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<StudentExamFee> createStudentExamFeeTask =
-                this.studentExamFeeService.AddStudentExamFeeAsync(inputStudentExamFee);
+                this.studentExamFeeService.AddStudentExamFeeAsync(someStudentExamFee);
 
             // then
             await Assert.ThrowsAsync<StudentExamFeeDependencyException>(() =>
@@ -97,7 +95,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentExamFeeAsync(inputStudentExamFee),
+                broker.InsertStudentExamFeeAsync(It.IsAny<StudentExamFee>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -105,8 +103,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -114,10 +112,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            StudentExamFee randomStudentExamFee = CreateRandomStudentExamFee(dateTime);
-            StudentExamFee inputStudentExamFee = randomStudentExamFee;
-            inputStudentExamFee.UpdatedBy = inputStudentExamFee.CreatedBy;
-            inputStudentExamFee.UpdatedDate = inputStudentExamFee.CreatedDate;
+            StudentExamFee someStudentExamFee = CreateRandomStudentExamFee(dateTime);
+            someStudentExamFee.UpdatedBy = someStudentExamFee.CreatedBy;
+            someStudentExamFee.UpdatedDate = someStudentExamFee.CreatedDate;
             var exception = new Exception();
 
             var expectedStudentExamFeeServiceException =
@@ -128,12 +125,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentExamFeeAsync(inputStudentExamFee))
+                broker.InsertStudentExamFeeAsync(It.IsAny<StudentExamFee>()))
                     .ThrowsAsync(exception);
 
             // when
             ValueTask<StudentExamFee> createStudentExamFeeTask =
-                this.studentExamFeeService.AddStudentExamFeeAsync(inputStudentExamFee);
+                this.studentExamFeeService.AddStudentExamFeeAsync(someStudentExamFee);
 
             // then
             await Assert.ThrowsAsync<StudentExamFeeServiceException>(() =>
@@ -144,7 +141,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentExamFeeAsync(inputStudentExamFee),
+                broker.InsertStudentExamFeeAsync(It.IsAny<StudentExamFee>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -152,8 +149,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

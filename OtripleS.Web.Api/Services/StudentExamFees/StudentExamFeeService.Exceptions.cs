@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
 using OtripleS.Web.Api.Models.StudentExamFees;
 using OtripleS.Web.Api.Models.StudentExamFees.Exceptions;
 
@@ -52,10 +51,10 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                var lockedAssignmentAttachmentException =
-                    new LockedAssignmentAttachmentException(dbUpdateConcurrencyException);
+                var lockedStudentExamFeeException =
+                    new LockedStudentExamFeeException(dbUpdateConcurrencyException);
 
-                throw CreateAndLogDependencyException(lockedAssignmentAttachmentException);
+                throw CreateAndLogDependencyException(lockedStudentExamFeeException);
             }
             catch (DbUpdateException dbUpdateException)
             {

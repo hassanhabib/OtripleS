@@ -43,6 +43,19 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             ValidateInvalidAuditFieldsOnCreate(studentExamFee);
         }
 
+        private void ValidateStudentExamFeeOnModify(StudentExamFee studentExamFee)
+        {
+            ValidateStudentExamFeeIsNull(studentExamFee);
+
+            ValidateStudentExamFeeIdsAreNull(
+                studentExamFee.Id,
+                studentExamFee.StudentId,
+                studentExamFee.ExamFeeId);
+
+            ValidateInvalidAuditFields(studentExamFee);
+            ValidateInvalidAuditFieldsOnUpdate(studentExamFee);
+        }
+
         private void ValidateStudentExamFeeIsNull(StudentExamFee studentExamFee)
         {
             if (studentExamFee is null)
@@ -123,6 +136,32 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
                     parameterName: nameof(StudentExamFee.CreatedDate),
                     parameterValue: studentExamFee.CreatedDate);
             }
+        }
+
+        private void ValidateInvalidAuditFieldsOnUpdate(StudentExamFee studentExamFee)
+        {
+            switch (studentExamFee)
+            {
+                case { } when studentExamFee.UpdatedDate == studentExamFee.CreatedDate:
+                    throw new InvalidStudentExamFeeException(
+                    parameterName: nameof(StudentExamFee.UpdatedDate),
+                    parameterValue: studentExamFee.UpdatedDate);
+
+                case { } when IsDateNotRecent(studentExamFee.UpdatedDate):
+                    throw new InvalidStudentExamFeeException(
+                    parameterName: nameof(StudentExamFee.UpdatedDate),
+                    parameterValue: studentExamFee.UpdatedDate);
+            }
+        }
+
+        private void ValidateAgainstStorageStudentExamFeeOnModify(
+            StudentExamFee inputStudentExamFee,
+            StudentExamFee storageStudentExamFee)
+        {
+            if (inputStudentExamFee.CreatedDate != storageStudentExamFee.CreatedDate)
+                throw new InvalidStudentExamFeeException(
+                    parameterName: nameof(StudentExamFee.CreatedDate),
+                    parameterValue: inputStudentExamFee.CreatedDate);
         }
 
         private void ValidateStorageStudentExamFees(IQueryable<StudentExamFee> storageStudentExamFees)
