@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
-using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Brokers.UserManagement;
 using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Services.AssignmentAttachments;
@@ -60,14 +60,7 @@ namespace OtripleS.Web.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
-            services.AddMvc().AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-            });
-
+            AddNewtonSoftJson(services);
             services.AddDbContext<StorageBroker>();
             services.AddScoped<IUserManagementBroker, UserManagementBroker>();
             services.AddScoped<IStorageBroker, StorageBroker>();
@@ -112,20 +105,26 @@ namespace OtripleS.Web.Api
                     .AddDefaultTokenProviders();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder applicationBuilder, IWebHostEnvironment webHostEnvironment)
         {
-            if (env.IsDevelopment())
+            if (webHostEnvironment.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                applicationBuilder.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-            app.UseRouting();
-            app.UseAuthorization();
+            applicationBuilder.UseHttpsRedirection();
+            applicationBuilder.UseRouting();
+            applicationBuilder.UseAuthorization();
+            applicationBuilder.UseEndpoints(endpoints => endpoints.MapControllers());
+        }
 
-            app.UseEndpoints(endpoints =>
+        private static void AddNewtonSoftJson(IServiceCollection services)
+        {
+            services.AddMvc().AddNewtonsoftJson(options =>
             {
-                endpoints.MapControllers();
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             });
         }
     }

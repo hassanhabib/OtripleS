@@ -10,16 +10,14 @@ namespace OtripleS.Web.Api
 {
     public class Program
     {
-        public static void Main(string[] args) =>
-            CreateHostBuilder(args).Build().Run();
+        public static void Main(string[] arguments) =>
+            CreateHostBuilder(arguments).Build().Run();
 
-        public static IHostBuilder CreateHostBuilder(string[] args)
+        public static IHostBuilder CreateHostBuilder(string[] arguments)
         {
-            return Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+            return Host.CreateDefaultBuilder(arguments)
+                .ConfigureWebHostDefaults(webBuilder => 
+                    webBuilder.UseStartup<Startup>());
         }
     }
 }
