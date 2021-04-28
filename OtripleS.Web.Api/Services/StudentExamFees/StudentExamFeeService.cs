@@ -40,7 +40,7 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
         public IQueryable<StudentExamFee> RetrieveAllStudentExamFees() =>
         TryCatch(() =>
         {
-            IQueryable<StudentExamFee> storageStudentExamFees = 
+            IQueryable<StudentExamFee> storageStudentExamFees =
                 this.storageBroker.SelectAllStudentExamFees();
 
             ValidateStorageStudentExamFees(storageStudentExamFees);
@@ -48,15 +48,22 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             return storageStudentExamFees;
         });
 
-        public ValueTask<StudentExamFee> RemoveStudentExamFeeByIdAsync(Guid studentExamFeeId) =>
+        public ValueTask<StudentExamFee> RemoveStudentExamFeeByIdAsync(
+            Guid studentId,
+            Guid examFeeId) =>
         TryCatch(async () =>
         {
-            ValidateStudentExamFeeId(studentExamFeeId);
+            ValidateStudentExamFeeIdsAreNull(studentId, examFeeId);
+
+            IQueryable<StudentExamFee> queryableStudentExamFee =
+                storageBroker.SelectAllStudentExamFees();
 
             StudentExamFee maybeStudentExamFee =
-                await this.storageBroker.SelectStudentExamFeeByIdAsync(studentExamFeeId);
+                queryableStudentExamFee.Where(studentExamFee =>
+                    studentExamFee.ExamFeeId == studentExamFee.ExamFeeId &&
+                    studentExamFee.StudentId == studentExamFee.StudentId).FirstOrDefault();
 
-            ValidateStorageStudentExamFee(maybeStudentExamFee, studentExamFeeId);
+            ValidateStorageStudentExamFee(maybeStudentExamFee, studentId, examFeeId);
 
             return await this.storageBroker.DeleteStudentExamFeeAsync(maybeStudentExamFee);
         });
@@ -66,10 +73,18 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
         {
             ValidateStudentExamFeeOnModify(studentExamFee);
 
-            StudentExamFee maybeStudentExamFee =
-               await storageBroker.SelectStudentExamFeeByIdAsync(studentExamFee.Id);
+            IQueryable<StudentExamFee> queryableStudentExamFee =
+                storageBroker.SelectAllStudentExamFees();
 
-            ValidateStorageStudentExamFee(maybeStudentExamFee, studentExamFee.Id);
+            StudentExamFee maybeStudentExamFee =
+                queryableStudentExamFee.Where(studentExamFee => 
+                    studentExamFee.ExamFeeId == studentExamFee.ExamFeeId &&
+                    studentExamFee.StudentId == studentExamFee.StudentId).FirstOrDefault();
+
+            ValidateStorageStudentExamFee(
+                maybeStudentExamFee, 
+                studentExamFee.StudentId,
+                studentExamFee.ExamFeeId);
 
             ValidateAgainstStorageStudentExamFeeOnModify(
                 inputStudentExamFee: studentExamFee, storageStudentExamFee: maybeStudentExamFee);

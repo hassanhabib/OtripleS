@@ -740,8 +740,10 @@ namespace OtripleS.Web.Api.Migrations
 
             modelBuilder.Entity("OtripleS.Web.Api.Models.StudentExamFees.StudentExamFee", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ExamFeeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CreatedBy")
@@ -750,14 +752,8 @@ namespace OtripleS.Web.Api.Migrations
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid>("ExamFeeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
-
-                    b.Property<Guid>("StudentId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -765,13 +761,11 @@ namespace OtripleS.Web.Api.Migrations
                     b.Property<DateTimeOffset>("UpdatedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.HasKey("Id");
+                    b.HasKey("StudentId", "ExamFeeId");
 
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("ExamFeeId");
-
-                    b.HasIndex("StudentId");
 
                     b.HasIndex("UpdatedBy");
 
