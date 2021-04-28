@@ -10,8 +10,8 @@ using OtripleS.Web.Api.Brokers.Storages;
 namespace OtripleS.Web.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20210417033159_RemoveCompositeKeyForExamFees")]
-    partial class RemoveCompositeKeyForExamFees
+    [Migration("20210428021550_AddStudentExamFees")]
+    partial class AddStudentExamFees
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -740,6 +740,40 @@ namespace OtripleS.Web.Api.Migrations
                     b.ToTable("StudentContacts");
                 });
 
+            modelBuilder.Entity("OtripleS.Web.Api.Models.StudentExamFees.StudentExamFee", b =>
+                {
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ExamFeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("UpdatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("StudentId", "ExamFeeId");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("ExamFeeId");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("StudentExamFees");
+                });
+
             modelBuilder.Entity("OtripleS.Web.Api.Models.StudentExams.StudentExam", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1410,6 +1444,41 @@ namespace OtripleS.Web.Api.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("OtripleS.Web.Api.Models.StudentExamFees.StudentExamFee", b =>
+                {
+                    b.HasOne("OtripleS.Web.Api.Models.Users.User", "CreatedByUser")
+                        .WithMany("StudentExamFeesCreatedByUser")
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("OtripleS.Web.Api.Models.ExamFees.ExamFee", "ExamFee")
+                        .WithMany("StudentExamFees")
+                        .HasForeignKey("ExamFeeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("OtripleS.Web.Api.Models.Students.Student", "Student")
+                        .WithMany("StudentExamFees")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("OtripleS.Web.Api.Models.Users.User", "UpdatedByUser")
+                        .WithMany("StudentExamFeesUpdatedByUser")
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("ExamFee");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("UpdatedByUser");
+                });
+
             modelBuilder.Entity("OtripleS.Web.Api.Models.StudentExams.StudentExam", b =>
                 {
                     b.HasOne("OtripleS.Web.Api.Models.Exams.Exam", "Exam")
@@ -1587,6 +1656,11 @@ namespace OtripleS.Web.Api.Migrations
                     b.Navigation("SemesterCourses");
                 });
 
+            modelBuilder.Entity("OtripleS.Web.Api.Models.ExamFees.ExamFee", b =>
+                {
+                    b.Navigation("StudentExamFees");
+                });
+
             modelBuilder.Entity("OtripleS.Web.Api.Models.Exams.Exam", b =>
                 {
                     b.Navigation("ExamAttachments");
@@ -1623,6 +1697,8 @@ namespace OtripleS.Web.Api.Migrations
 
                     b.Navigation("StudentContacts");
 
+                    b.Navigation("StudentExamFees");
+
                     b.Navigation("StudentExams");
 
                     b.Navigation("StudentGuardians");
@@ -1650,6 +1726,10 @@ namespace OtripleS.Web.Api.Migrations
                     b.Navigation("FeesCreatedByUser");
 
                     b.Navigation("FeesUpdatedByUser");
+
+                    b.Navigation("StudentExamFeesCreatedByUser");
+
+                    b.Navigation("StudentExamFeesUpdatedByUser");
 
                     b.Navigation("UserContacts");
                 });
