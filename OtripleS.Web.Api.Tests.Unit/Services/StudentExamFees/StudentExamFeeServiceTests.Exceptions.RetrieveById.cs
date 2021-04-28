@@ -54,5 +54,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomStudentExamFeeId = Guid.NewGuid();
+            Guid inputStudentExamFeeId = randomStudentExamFeeId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedStudentExamFeeDependencyException =
+                new StudentExamFeeDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentExamFeeByIdAsync(inputStudentExamFeeId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<StudentExamFee> retrieveStudentExamFeeByIdTask =
+                this.studentExamFeeService.RetrieveStudentExamFeeByIdAsync(inputStudentExamFeeId);
+
+            // then
+            await Assert.ThrowsAsync<StudentExamFeeDependencyException>(() =>
+                retrieveStudentExamFeeByIdTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentExamFeeByIdAsync(inputStudentExamFeeId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeDependencyException))),
+                    Times.Once);
+            
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
