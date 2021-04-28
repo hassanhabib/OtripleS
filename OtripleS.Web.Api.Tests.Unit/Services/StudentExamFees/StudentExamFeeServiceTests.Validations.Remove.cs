@@ -48,8 +48,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllStudentExamFees(),
-                    Times.Never);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    It.IsAny<Guid>(), It.IsAny<Guid>()),
+                        Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteStudentExamFeeAsync(It.IsAny<StudentExamFee>()),
@@ -91,8 +92,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllStudentExamFees(),
-                    Times.Never);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    It.IsAny<Guid>(), It.IsAny<Guid>()),
+                        Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteStudentExamFeeAsync(It.IsAny<StudentExamFee>()),
@@ -111,7 +113,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             StudentExamFee randomStudentExamFee = CreateRandomStudentExamFee(randomDateTime);
             Guid inputStudentId = randomStudentExamFee.StudentId;
             Guid inputExamFeeId = randomStudentExamFee.ExamFeeId;
-            var emptyStudentExamFees = new List<StudentExamFee>();
+            StudentExamFee nullStudentExamFees = null;
 
             var notFoundStudentExamFeeException =
                 new NotFoundStudentExamFeeException(inputStudentId, inputExamFeeId);
@@ -120,8 +122,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 new StudentExamFeeValidationException(notFoundStudentExamFeeException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectAllStudentExamFees())
-                    .Returns(emptyStudentExamFees.AsQueryable());
+                 broker.SelectStudentExamFeeByIdsAsync(
+                    It.IsAny<Guid>(), It.IsAny<Guid>()))
+                        .ReturnsAsync(nullStudentExamFees);
 
             // when
             ValueTask<StudentExamFee> removeStudentExamFeeTask =
@@ -134,8 +137,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 removeStudentExamFeeTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllStudentExamFees(),
-                    Times.Once);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    It.IsAny<Guid>(), It.IsAny<Guid>()),
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
