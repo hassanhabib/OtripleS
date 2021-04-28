@@ -11,7 +11,6 @@ namespace OtripleS.Web.Api.Models.StudentExamFees
 {
     public class StudentExamFee : IAuditable
     {
-        //public Guid Id { get; set; }
         public Guid ExamFeeId { get; set; }
         public ExamFee ExamFee { get; set; }
         public Guid StudentId { get; set; }
