@@ -141,8 +141,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    It.IsAny<Guid>(),
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -178,8 +180,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    It.IsAny<Guid>(),
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -215,8 +219,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    It.IsAny<Guid>(),
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -252,8 +258,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    It.IsAny<Guid>(), It.IsAny<Guid>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -288,8 +295,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    It.IsAny<Guid>(),
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -336,8 +345,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    It.IsAny<Guid>(),
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -353,19 +364,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             StudentExamFee randomStudentExamFee = CreateRandomStudentExamFee(dateTime);
             StudentExamFee nonExistentStudentExamFee = randomStudentExamFee;
             nonExistentStudentExamFee.CreatedDate = dateTime.AddMinutes(randomNegativeMinutes);
-            var emptyStudentExamFees = new List<StudentExamFee>();
+            StudentExamFee noStudentExamFee = null;
 
-            var notFoundStudentExamFeeException = 
+            var notFoundStudentExamFeeException =
                 new NotFoundStudentExamFeeException(
-                    nonExistentStudentExamFee.StudentId, 
+                    nonExistentStudentExamFee.StudentId,
                     nonExistentStudentExamFee.ExamFeeId);
 
             var expectedStudentExamFeeValidationException =
                 new StudentExamFeeValidationException(notFoundStudentExamFeeException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllStudentExamFees())
-                    .Returns(emptyStudentExamFees.AsQueryable());
+                broker.SelectStudentExamFeeByIdsAsync(
+                    nonExistentStudentExamFee.StudentId,
+                    nonExistentStudentExamFee.ExamFeeId))
+                        .ReturnsAsync(noStudentExamFee);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -384,8 +397,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllStudentExamFees(),
-                    Times.Once);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    nonExistentStudentExamFee.StudentId,
+                    nonExistentStudentExamFee.ExamFeeId),
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeValidationException))),
@@ -410,7 +425,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             Guid studentId = invalidStudentExamFee.StudentId;
             Guid semesterCourseId = invalidStudentExamFee.ExamFeeId;
             invalidStudentExamFee.CreatedDate = storageStudentExamFee.CreatedDate.AddMinutes(randomNumber);
-            var storageStudentExamFees = new List<StudentExamFee> { storageStudentExamFee };
 
             var invalidStudentExamFeeInputException = new InvalidStudentExamFeeException(
                 parameterName: nameof(StudentExamFee.CreatedDate),
@@ -420,8 +434,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 new StudentExamFeeValidationException(invalidStudentExamFeeInputException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllStudentExamFees())
-                    .Returns(storageStudentExamFees.AsQueryable());
+                broker.SelectStudentExamFeeByIdsAsync(
+                    invalidStudentExamFee.StudentId,
+                    invalidStudentExamFee.ExamFeeId))
+                        .ReturnsAsync(storageStudentExamFee);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -440,8 +456,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllStudentExamFees(),
-                    Times.Once);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    invalidStudentExamFee.StudentId,
+                    invalidStudentExamFee.ExamFeeId),
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeValidationException))),
