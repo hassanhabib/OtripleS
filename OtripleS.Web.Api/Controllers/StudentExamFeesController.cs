@@ -56,7 +56,26 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        
+        [HttpGet]
+        public ActionResult<IQueryable<StudentExamFee>> GetAllStudentExamFees()
+        {
+            try
+            {
+                IQueryable storageStudentExamFee =
+                    this.studentExamFeeService.RetrieveAllStudentExamFees();
+
+                return Ok(storageStudentExamFee);
+            }
+            catch (StudentExamFeeDependencyException studentExamFeeDependencyException)
+            {
+                return Problem(studentExamFeeDependencyException.Message);
+            }
+            catch (StudentExamFeeServiceException studentExamFeeServiceException)
+            {
+                return Problem(studentExamFeeServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
