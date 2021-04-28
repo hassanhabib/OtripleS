@@ -37,6 +37,12 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             return await this.storageBroker.InsertStudentExamFeeAsync(studentExamFee);
         });
 
+
+        public ValueTask<StudentExamFee> RetrieveStudentExamFeeByIdAsync(Guid studentExamFeeId)
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<StudentExamFee> RetrieveAllStudentExamFees() =>
         TryCatch(() =>
         {
@@ -46,19 +52,6 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             ValidateStorageStudentExamFees(storageStudentExamFees);
 
             return storageStudentExamFees;
-        });
-
-        public ValueTask<StudentExamFee> RemoveStudentExamFeeByIdAsync(Guid studentExamFeeId) =>
-        TryCatch(async () =>
-        {
-            ValidateStudentExamFeeId(studentExamFeeId);
-
-            StudentExamFee maybeStudentExamFee =
-                await this.storageBroker.SelectStudentExamFeeByIdAsync(studentExamFeeId);
-
-            ValidateStorageStudentExamFee(maybeStudentExamFee, studentExamFeeId);
-
-            return await this.storageBroker.DeleteStudentExamFeeAsync(maybeStudentExamFee);
         });
 
         public ValueTask<StudentExamFee> ModifyStudentExamFeeAsync(StudentExamFee studentExamFee) =>
@@ -75,6 +68,19 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
                 inputStudentExamFee: studentExamFee, storageStudentExamFee: maybeStudentExamFee);
 
             return await storageBroker.UpdateStudentExamFeeAsync(studentExamFee);
+        });
+
+        public ValueTask<StudentExamFee> RemoveStudentExamFeeByIdAsync(Guid studentExamFeeId) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentExamFeeId(studentExamFeeId);
+
+            StudentExamFee maybeStudentExamFee =
+                await this.storageBroker.SelectStudentExamFeeByIdAsync(studentExamFeeId);
+
+            ValidateStorageStudentExamFee(maybeStudentExamFee, studentExamFeeId);
+
+            return await this.storageBroker.DeleteStudentExamFeeAsync(maybeStudentExamFee);
         });
     }
 }
