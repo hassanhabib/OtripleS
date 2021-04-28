@@ -55,13 +55,8 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
         {
             ValidateStudentExamFeeIdsAreNull(studentId, examFeeId);
 
-            IQueryable<StudentExamFee> queryableStudentExamFee =
-                storageBroker.SelectAllStudentExamFees();
-
             StudentExamFee maybeStudentExamFee =
-                queryableStudentExamFee.Where(studentExamFee =>
-                    studentExamFee.ExamFeeId == studentExamFee.ExamFeeId &&
-                    studentExamFee.StudentId == studentExamFee.StudentId).FirstOrDefault();
+                await storageBroker.SelectStudentExamFeeByIdsAsync(studentId, examFeeId);
 
             ValidateStorageStudentExamFee(maybeStudentExamFee, studentId, examFeeId);
 
@@ -73,13 +68,10 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
         {
             ValidateStudentExamFeeOnModify(studentExamFee);
 
-            IQueryable<StudentExamFee> queryableStudentExamFee =
-                storageBroker.SelectAllStudentExamFees();
-
             StudentExamFee maybeStudentExamFee =
-                queryableStudentExamFee.Where(studentExamFee => 
-                    studentExamFee.ExamFeeId == studentExamFee.ExamFeeId &&
-                    studentExamFee.StudentId == studentExamFee.StudentId).FirstOrDefault();
+                await storageBroker.SelectStudentExamFeeByIdsAsync(
+                    studentExamFee.StudentId,
+                    studentExamFee.ExamFeeId);
 
             ValidateStorageStudentExamFee(
                 maybeStudentExamFee, 
