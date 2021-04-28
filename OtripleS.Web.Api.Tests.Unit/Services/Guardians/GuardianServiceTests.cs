@@ -12,7 +12,7 @@ using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
-using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.Guardians;
 using OtripleS.Web.Api.Services.Guardians;
 using Tynamix.ObjectFiller;

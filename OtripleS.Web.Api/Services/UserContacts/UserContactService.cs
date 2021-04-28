@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
-using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.UserContacts;
 
 namespace OtripleS.Web.Api.Services.UserContacts
