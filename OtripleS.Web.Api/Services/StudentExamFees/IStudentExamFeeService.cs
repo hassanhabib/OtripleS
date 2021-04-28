@@ -13,6 +13,7 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
     public interface IStudentExamFeeService
     {
         ValueTask<StudentExamFee> AddStudentExamFeeAsync(StudentExamFee studentExamFee);
+        ValueTask<StudentExamFee> RetrieveStudentExamFeeByIdAsync(Guid studentExamFeeId);
         IQueryable<StudentExamFee> RetrieveAllStudentExamFees();
         ValueTask<StudentExamFee> ModifyStudentExamFeeAsync(StudentExamFee studentExamFee);
         ValueTask<StudentExamFee> RemoveStudentExamFeeByIdAsync(Guid studentExamFeeId);

@@ -90,6 +90,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
         }
 
         [Fact]
+        public async Task ShouldRetrieveStudentExamFeeByIdAsync()
+        {
+            // given
+            Guid randomStudentExamFeeId = Guid.NewGuid();
+            Guid inputStudentExamFeeId = randomStudentExamFeeId;
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            
+            StudentExamFee randomStudentExamFee = 
+                CreateRandomStudentExamFee(randomDateTime);
+            
+            StudentExamFee storageStudentExamFee = randomStudentExamFee;
+            StudentExamFee expectedStudentExamFee = storageStudentExamFee;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentExamFeeByIdAsync(inputStudentExamFeeId))
+                    .ReturnsAsync(storageStudentExamFee);
+
+            // when
+            StudentExamFee actualStudentExamFee =
+                await this.studentExamFeeService.RetrieveStudentExamFeeByIdAsync(
+                    inputStudentExamFeeId);
+
+            // then
+            actualStudentExamFee.Should().BeEquivalentTo(expectedStudentExamFee);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentExamFeeByIdAsync(inputStudentExamFeeId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public async Task ShouldModifyStudentExamFeeAsync()
         {
             // given
