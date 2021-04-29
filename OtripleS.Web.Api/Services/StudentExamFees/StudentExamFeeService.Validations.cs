@@ -12,22 +12,23 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
 {
     public partial class StudentExamFeeService
     {
-        private void ValidateStudentExamFeeId(Guid studentExamFeeId)
-        {
-            if (studentExamFeeId == default)
-            {
-                throw new InvalidStudentExamFeeException(
-                    parameterName: nameof(StudentExamFee.Id),
-                    parameterValue: studentExamFeeId);
-            }
-        }
+        //private void ValidateStudentExamFeeId(Guid studentExamFeeId)
+        //{
+        //    if (studentExamFeeId == default)
+        //    {
+        //        throw new InvalidStudentExamFeeException(
+        //            parameterName: nameof(StudentExamFee.Id),
+        //            parameterValue: studentExamFeeId);
+        //    }
+        //}
 
         private static void ValidateStorageStudentExamFee(
           StudentExamFee storageStudentExamFee,
-          Guid studentExamFeeId)
+          Guid studentId,
+          Guid examFeeId)
         {
             if (storageStudentExamFee == null)
-                throw new NotFoundStudentExamFeeException(studentExamFeeId);
+                throw new NotFoundStudentExamFeeException(studentId, examFeeId);
         }
 
         private void ValidateStudentExamFeeOnCreate(StudentExamFee studentExamFee)
@@ -35,7 +36,6 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             ValidateStudentExamFeeIsNull(studentExamFee);
             
             ValidateStudentExamFeeIdsAreNull(
-                studentExamFee.Id, 
                 studentExamFee.StudentId, 
                 studentExamFee.ExamFeeId);
             
@@ -48,7 +48,6 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             ValidateStudentExamFeeIsNull(studentExamFee);
 
             ValidateStudentExamFeeIdsAreNull(
-                studentExamFee.Id,
                 studentExamFee.StudentId,
                 studentExamFee.ExamFeeId);
 
@@ -65,25 +64,16 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
         }
 
         private void ValidateStudentExamFeeIdsAreNull(
-            Guid studentExamFeeId, 
             Guid studentId, 
             Guid examFeeId)
         {
-            if (studentExamFeeId == default)
-            {
-                throw new InvalidStudentExamFeeException(
-                    parameterName: nameof(StudentExamFee.Id),
-                    parameterValue: studentExamFeeId);
-            }
-
             if (studentId == default)
             {
                 throw new InvalidStudentExamFeeException(
                     parameterName: nameof(StudentExamFee.StudentId),
                     parameterValue: studentId);
             }
-
-            if (examFeeId == default)
+            else if (examFeeId == default)
             {
                 throw new InvalidStudentExamFeeException(
                     parameterName: nameof(StudentExamFee.ExamFeeId),
