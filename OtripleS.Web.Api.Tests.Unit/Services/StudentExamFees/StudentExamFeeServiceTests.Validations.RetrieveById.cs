@@ -15,22 +15,25 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
     public partial class StudentExamFeeServiceTests
     {
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveWhenIdIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveWhenStudentIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomStudentExamFeeId = default;
-            Guid inputStudentExamFeeId = randomStudentExamFeeId;
+            Guid randomStudentId = default;
+            Guid inputStudentId = randomStudentId;
+            Guid randomExamFeeId = Guid.NewGuid();
+            Guid inputExamFeeId = randomExamFeeId;
 
             var invalidStudentExamFeeInputException = new InvalidStudentExamFeeException(
-                parameterName: nameof(StudentExamFee.Id),
-                parameterValue: inputStudentExamFeeId);
+                parameterName: nameof(StudentExamFee.StudentId),
+                parameterValue: inputStudentId);
 
             var expectedStudentExamFeeValidationException =
                 new StudentExamFeeValidationException(invalidStudentExamFeeInputException);
 
             // when
             ValueTask<StudentExamFee> retrieveStudentExamFeeByIdTask =
-                this.studentExamFeeService.RetrieveStudentExamFeeByIdAsync(inputStudentExamFeeId);
+                this.studentExamFeeService.RetrieveStudentExamFeeByIdsAsync(
+                    inputStudentId, inputExamFeeId);
 
             // then
             await Assert.ThrowsAsync<StudentExamFeeValidationException>(() =>
@@ -45,42 +48,94 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamFeeByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    It.IsAny<Guid>(), It.IsAny<Guid>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveWhenStorageStudentExamFeeIsNullAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveWhenExamFeeIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomStudentExamFeeId = Guid.NewGuid();
-            Guid inputStudentExamFeeId = randomStudentExamFeeId;
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputStudentId = randomStudentId;
+            Guid randomExamFeeId = default;
+            Guid inputExamFeeId = randomExamFeeId;
+
+            var invalidStudentExamFeeInputException = new InvalidStudentExamFeeException(
+                parameterName: nameof(StudentExamFee.ExamFeeId),
+                parameterValue: inputExamFeeId);
+
+            var expectedStudentExamFeeValidationException =
+                new StudentExamFeeValidationException(invalidStudentExamFeeInputException);
+
+            // when
+            ValueTask<StudentExamFee> retrieveStudentExamFeeByIdTask =
+                this.studentExamFeeService.RetrieveStudentExamFeeByIdsAsync(
+                    inputStudentId, inputExamFeeId);
+
+            // then
+            await Assert.ThrowsAsync<StudentExamFeeValidationException>(() =>
+                retrieveStudentExamFeeByIdTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentExamFeeByIdsAsync(
+                    It.IsAny<Guid>(), It.IsAny<Guid>()),
+                        Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void 
+            ShouldThrowValidationExceptionOnRetrieveWhenStorageStudentExamFeeIsNullAndLogItAsync()
+        {
+            // given
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputStudentId = randomStudentId;
+            Guid randomExamFeeId = Guid.NewGuid();
+            Guid inputExamFeeId = randomExamFeeId;
             StudentExamFee invalidStorageStudentExamFee = null;
-            var notFoundStudentExamFeeException = new NotFoundStudentExamFeeException(inputStudentExamFeeId);
+            
+            var notFoundStudentExamFeeException = 
+                new NotFoundStudentExamFeeException(
+                    inputStudentId, inputExamFeeId);
 
             var expectedStudentExamFeeValidationException =
                 new StudentExamFeeValidationException(notFoundStudentExamFeeException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentExamFeeByIdAsync(inputStudentExamFeeId))
-                    .ReturnsAsync(invalidStorageStudentExamFee);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    inputStudentId, inputExamFeeId))
+                        .ReturnsAsync(invalidStorageStudentExamFee);
 
             // when
             ValueTask<StudentExamFee> retrieveStudentExamFeeByIdTask =
-                this.studentExamFeeService.RetrieveStudentExamFeeByIdAsync(inputStudentExamFeeId);
+                this.studentExamFeeService.RetrieveStudentExamFeeByIdsAsync(
+                    inputStudentId, inputExamFeeId);
 
             // then
             await Assert.ThrowsAsync<StudentExamFeeValidationException>(() =>
                 retrieveStudentExamFeeByIdTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamFeeByIdAsync(inputStudentExamFeeId),
-                    Times.Once);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    inputStudentId, inputExamFeeId),
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeValidationException))),

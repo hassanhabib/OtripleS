@@ -37,15 +37,19 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             return await this.storageBroker.InsertStudentExamFeeAsync(studentExamFee);
         });
 
-        public ValueTask<StudentExamFee> RetrieveStudentExamFeeByIdAsync(Guid studentExamFeeId) =>
+        public ValueTask<StudentExamFee> RetrieveStudentExamFeeByIdsAsync(
+            Guid studentId,
+            Guid examFeeId) =>
         TryCatch(async () =>
         {
-            ValidateStudentExamFeeId(studentExamFeeId);
+            ValidateStudentExamFeeIdsAreNull(studentId, examFeeId);
 
             StudentExamFee storageStudentExamFee =
-                await this.storageBroker.SelectStudentExamFeeByIdAsync(studentExamFeeId);
+                await this.storageBroker.SelectStudentExamFeeByIdsAsync(
+                    studentId,
+                    examFeeId);
 
-            ValidateStorageStudentExamFee(storageStudentExamFee, studentExamFeeId);
+            ValidateStorageStudentExamFee(storageStudentExamFee, studentId, examFeeId);
 
             return storageStudentExamFee;
         });
@@ -87,7 +91,7 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
                     studentExamFee.ExamFeeId);
 
             ValidateStorageStudentExamFee(
-                maybeStudentExamFee, 
+                maybeStudentExamFee,
                 studentExamFee.StudentId,
                 studentExamFee.ExamFeeId);
 

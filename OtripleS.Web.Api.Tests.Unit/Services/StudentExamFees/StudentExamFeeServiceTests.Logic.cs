@@ -94,8 +94,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
         public async Task ShouldRetrieveStudentExamFeeByIdAsync()
         {
             // given
-            Guid randomStudentExamFeeId = Guid.NewGuid();
-            Guid inputStudentExamFeeId = randomStudentExamFeeId;
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputStudentId = randomStudentId;
+            Guid randomExamFeeId = Guid.NewGuid();
+            Guid inputExamFeeId = randomExamFeeId;
             DateTimeOffset randomDateTime = GetRandomDateTime();
             
             StudentExamFee randomStudentExamFee = 
@@ -105,13 +107,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             StudentExamFee expectedStudentExamFee = storageStudentExamFee;
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentExamFeeByIdAsync(inputStudentExamFeeId))
-                    .ReturnsAsync(storageStudentExamFee);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    inputStudentId, inputExamFeeId))
+                        .ReturnsAsync(storageStudentExamFee);
 
             // when
             StudentExamFee actualStudentExamFee =
-                await this.studentExamFeeService.RetrieveStudentExamFeeByIdAsync(
-                    inputStudentExamFeeId);
+                await this.studentExamFeeService.RetrieveStudentExamFeeByIdsAsync(
+                    inputStudentId, inputExamFeeId);
 
             // then
             actualStudentExamFee.Should().BeEquivalentTo(expectedStudentExamFee);
@@ -121,8 +124,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamFeeByIdAsync(inputStudentExamFeeId),
-                    Times.Once);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    inputStudentId, inputExamFeeId),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();

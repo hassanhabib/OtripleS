@@ -76,38 +76,41 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        //[HttpGet("{studentExamFeeId}")]
-        //public async ValueTask<ActionResult<StudentExamFee>> GetStudentExamFeeAsync(Guid studentExamFeeId)
-        //{
-        //    try
-        //    {
-        //        StudentExamFee storageStudentExamFee =
-        //            await this.studentExamFeeService.RetrieveStudentExamFeeByIdAsync(studentExamFeeId);
+        [HttpGet("studentid/{studentId}/examfeeid/{examFeeId}/")]
+        public async ValueTask<ActionResult<StudentExamFee>> GetStudentExamFeeByIdAsync(
+            Guid studentId,
+            Guid examFeeId)
+        {
+            try
+            {
+                StudentExamFee storageStudentExamFee =
+                    await this.studentExamFeeService.RetrieveStudentExamFeeByIdsAsync(
+                        studentId, examFeeId);
 
-        //        return Ok(storageStudentExamFee);
-        //    }
-        //    catch (StudentExamFeeValidationException studentExamFeeValidationException)
-        //        when (studentExamFeeValidationException.InnerException is NotFoundStudentExamFeeException)
-        //    {
-        //        string innerMessage = GetInnerMessage(studentExamFeeValidationException);
+                return Ok(storageStudentExamFee);
+            }
+            catch (StudentExamFeeValidationException studentExamFeeValidationException)
+                when (studentExamFeeValidationException.InnerException is NotFoundStudentExamFeeException)
+            {
+                string innerMessage = GetInnerMessage(studentExamFeeValidationException);
 
-        //        return NotFound(innerMessage);
-        //    }
-        //    catch (StudentExamFeeValidationException studentExamFeeValidationException)
-        //    {
-        //        string innerMessage = GetInnerMessage(studentExamFeeValidationException);
+                return NotFound(innerMessage);
+            }
+            catch (StudentExamFeeValidationException studentExamFeeValidationException)
+            {
+                string innerMessage = GetInnerMessage(studentExamFeeValidationException);
 
-        //        return BadRequest(innerMessage);
-        //    }
-        //    catch (StudentExamFeeDependencyException studentExamFeeDependencyException)
-        //    {
-        //        return Problem(studentExamFeeDependencyException.Message);
-        //    }
-        //    catch (StudentExamFeeServiceException studentExamFeeServiceException)
-        //    {
-        //        return Problem(studentExamFeeServiceException.Message);
-        //    }
-        //}
+                return BadRequest(innerMessage);
+            }
+            catch (StudentExamFeeDependencyException studentExamFeeDependencyException)
+            {
+                return Problem(studentExamFeeDependencyException.Message);
+            }
+            catch (StudentExamFeeServiceException studentExamFeeServiceException)
+            {
+                return Problem(studentExamFeeServiceException.Message);
+            }
+        }
 
         [HttpPut]
         public async ValueTask<ActionResult<StudentExamFee>> PutStudentExamFeeAsync(StudentExamFee studentExamFee)
