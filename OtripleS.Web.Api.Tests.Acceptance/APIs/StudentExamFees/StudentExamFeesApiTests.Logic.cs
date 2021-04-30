@@ -86,5 +86,27 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExamFees
             }
         }
 
+        [Fact]
+        public async Task ShouldDeleteStudentExamFeeAsync()
+        {
+            // given
+            StudentExamFee randomStudentExamFee = await PostRandomStudentExamFeeAsync();
+            StudentExamFee inputStudentExamFee = randomStudentExamFee;
+            StudentExamFee expectedStudentExamFee = inputStudentExamFee;
+
+            // when 
+            StudentExamFee deletedStudentExamFee = await DeleteStudentExamFeeAsync(inputStudentExamFee);
+
+            ValueTask<StudentExamFee> getStudentExamFeeByIdTask =
+                this.otripleSApiBroker.GetStudentExamFeeByIdsAsync(
+                   randomStudentExamFee.StudentId,
+                   randomStudentExamFee.ExamFeeId);
+
+            // then
+            deletedStudentExamFee.Should().BeEquivalentTo(expectedStudentExamFee);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getStudentExamFeeByIdTask.AsTask());
+        }
     }
 }
