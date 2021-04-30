@@ -36,6 +36,24 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExamFees
             await DeleteStudentExamFeeAsync(actualStudentExamFee);
         }
 
-        
+        [Fact]
+        public async Task ShouldPutStudentExamFeeAsync()
+        {
+            // given
+            StudentExamFee randomStudentExamFee = await PostRandomStudentExamFeeAsync();
+            StudentExamFee modifiedStudentExamFee = await UpdateStudentExamFeeRandom(randomStudentExamFee);
+
+            // when
+            await this.otripleSApiBroker.PutStudentExamFeeAsync(modifiedStudentExamFee);
+
+            StudentExamFee actualStudentExamFee =
+                await this.otripleSApiBroker.GetStudentExamFeeByIdsAsync(
+                   randomStudentExamFee.StudentId,
+                   randomStudentExamFee.ExamFeeId);
+
+            // then
+            actualStudentExamFee.Should().BeEquivalentTo(modifiedStudentExamFee);
+            await DeleteStudentExamFeeAsync(actualStudentExamFee);
+        }
     }
 }
