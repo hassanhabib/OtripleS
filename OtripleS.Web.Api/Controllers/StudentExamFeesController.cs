@@ -161,7 +161,7 @@ namespace OtripleS.Web.Api.Controllers
             {
                 StudentExamFee storageStudentExamFee =
                     await this.studentExamFeeService.RemoveStudentExamFeeByIdAsync(
-                        studentId, 
+                        studentId,
                         examFeeId);
 
                 return Ok(storageStudentExamFee);
