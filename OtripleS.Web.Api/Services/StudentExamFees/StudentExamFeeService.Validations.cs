@@ -11,7 +11,7 @@ using OtripleS.Web.Api.Models.StudentExamFees.Exceptions;
 namespace OtripleS.Web.Api.Services.StudentExamFees
 {
     public partial class StudentExamFeeService
-    {        
+    {
         private static void ValidateStorageStudentExamFee(
           StudentExamFee storageStudentExamFee,
           Guid studentId,

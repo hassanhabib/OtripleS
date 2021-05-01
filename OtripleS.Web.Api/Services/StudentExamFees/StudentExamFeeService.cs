@@ -48,19 +48,21 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             return storageStudentExamFees;
         });
 
-        public ValueTask<StudentExamFee> RemoveStudentExamFeeByIdAsync(
+        public ValueTask<StudentExamFee> RetrieveStudentExamFeeByIdsAsync(
             Guid studentId,
             Guid examFeeId) =>
         TryCatch(async () =>
         {
             ValidateStudentExamFeeIdsAreNull(studentId, examFeeId);
 
-            StudentExamFee maybeStudentExamFee =
-                await storageBroker.SelectStudentExamFeeByIdsAsync(studentId, examFeeId);
+            StudentExamFee storageStudentExamFee =
+                await this.storageBroker.SelectStudentExamFeeByIdsAsync(
+                    studentId,
+                    examFeeId);
 
-            ValidateStorageStudentExamFee(maybeStudentExamFee, studentId, examFeeId);
+            ValidateStorageStudentExamFee(storageStudentExamFee, studentId, examFeeId);
 
-            return await this.storageBroker.DeleteStudentExamFeeAsync(maybeStudentExamFee);
+            return storageStudentExamFee;
         });
 
         public ValueTask<StudentExamFee> ModifyStudentExamFeeAsync(StudentExamFee studentExamFee) =>
@@ -74,7 +76,7 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
                     studentExamFee.ExamFeeId);
 
             ValidateStorageStudentExamFee(
-                maybeStudentExamFee, 
+                maybeStudentExamFee,
                 studentExamFee.StudentId,
                 studentExamFee.ExamFeeId);
 
@@ -82,6 +84,21 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
                 inputStudentExamFee: studentExamFee, storageStudentExamFee: maybeStudentExamFee);
 
             return await storageBroker.UpdateStudentExamFeeAsync(studentExamFee);
+        });
+
+        public ValueTask<StudentExamFee> RemoveStudentExamFeeByIdAsync(
+            Guid studentId,
+            Guid examFeeId) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentExamFeeIdsAreNull(studentId, examFeeId);
+
+            StudentExamFee maybeStudentExamFee =
+                await storageBroker.SelectStudentExamFeeByIdsAsync(studentId, examFeeId);
+
+            ValidateStorageStudentExamFee(maybeStudentExamFee, studentId, examFeeId);
+
+            return await this.storageBroker.DeleteStudentExamFeeAsync(maybeStudentExamFee);
         });
     }
 }
