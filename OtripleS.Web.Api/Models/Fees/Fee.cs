@@ -11,8 +11,6 @@ using OtripleS.Web.Api.Models.Users;
 
 namespace OtripleS.Web.Api.Models.Fees
 {
-
-
     public class Fee : IAuditable
     {
         public Guid Id { get; set; }
