@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -100,11 +101,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             
             StudentExamFee randomStudentExamFee = 
                 CreateRandomStudentExamFee(randomInputDate);
-            
+
             StudentExamFee inputStudentExamFee = randomStudentExamFee;
-            StudentExamFee afterUpdateStorageStudentExamFee = inputStudentExamFee;
-            StudentExamFee expectedStudentExamFee = afterUpdateStorageStudentExamFee;
-            
+            StudentExamFee afterUpdateStorageStudentExamFee = randomStudentExamFee;
+            StudentExamFee expectedStudentExamFee = randomStudentExamFee;
+
             StudentExamFee beforeUpdateStorageStudentExamFee = 
                 randomStudentExamFee.DeepClone();
             
@@ -117,8 +118,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     .Returns(randomDate);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentExamFeeByIdAsync(inputStudentExamFee.Id))
-                    .ReturnsAsync(beforeUpdateStorageStudentExamFee);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    inputStudentExamFee.StudentId,
+                    inputStudentExamFee.ExamFeeId))
+                        .ReturnsAsync(beforeUpdateStorageStudentExamFee);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.UpdateStudentExamFeeAsync(inputStudentExamFee))
@@ -137,8 +140,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamFeeByIdAsync(inputStudentExamFee.Id),
-                    Times.Once);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    inputStudentExamFee.StudentId,
+                    inputStudentExamFee.ExamFeeId),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.UpdateStudentExamFeeAsync(inputStudentExamFee),
@@ -153,16 +158,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
         public async Task ShouldRemoveStudentExamFeeAsync()
         {
             // given
-            var randomStudentExamFeeId = Guid.NewGuid();
-            Guid inputStudentExamFeeId = randomStudentExamFeeId;
+            var randomStudentId = Guid.NewGuid();
+            var randomExamFeeId = Guid.NewGuid();
+            Guid inputStudentId = randomStudentId;
+            Guid inputExamFeeId = randomExamFeeId;
             StudentExamFee randomStudentExamFee = CreateRandomStudentExamFee();
-            randomStudentExamFee.Id = inputStudentExamFeeId;
+            randomStudentExamFee.StudentId = inputStudentId;
+            randomStudentExamFee.ExamFeeId = inputExamFeeId;
             StudentExamFee storageStudentExamFee = randomStudentExamFee;
             StudentExamFee expectedStudentExamFee = storageStudentExamFee;
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentExamFeeByIdAsync(inputStudentExamFeeId))
-                    .ReturnsAsync(storageStudentExamFee);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    inputStudentId, inputExamFeeId))
+                        .ReturnsAsync(storageStudentExamFee);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.DeleteStudentExamFeeAsync(storageStudentExamFee))
@@ -170,14 +179,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
 
             // when
             StudentExamFee actualStudentExamFee =
-                await this.studentExamFeeService.RemoveStudentExamFeeByIdAsync(inputStudentExamFeeId);
+                await this.studentExamFeeService.RemoveStudentExamFeeByIdAsync(
+                    inputStudentId, inputExamFeeId);
 
             // then
             actualStudentExamFee.Should().BeEquivalentTo(expectedStudentExamFee);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamFeeByIdAsync(inputStudentExamFeeId),
-                    Times.Once);
+                broker.SelectStudentExamFeeByIdsAsync(
+                    inputStudentId, inputExamFeeId),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteStudentExamFeeAsync(storageStudentExamFee),

@@ -40,7 +40,7 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
         public IQueryable<StudentExamFee> RetrieveAllStudentExamFees() =>
         TryCatch(() =>
         {
-            IQueryable<StudentExamFee> storageStudentExamFees = 
+            IQueryable<StudentExamFee> storageStudentExamFees =
                 this.storageBroker.SelectAllStudentExamFees();
 
             ValidateStorageStudentExamFees(storageStudentExamFees);
@@ -48,15 +48,17 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             return storageStudentExamFees;
         });
 
-        public ValueTask<StudentExamFee> RemoveStudentExamFeeByIdAsync(Guid studentExamFeeId) =>
+        public ValueTask<StudentExamFee> RemoveStudentExamFeeByIdAsync(
+            Guid studentId,
+            Guid examFeeId) =>
         TryCatch(async () =>
         {
-            ValidateStudentExamFeeId(studentExamFeeId);
+            ValidateStudentExamFeeIdsAreNull(studentId, examFeeId);
 
             StudentExamFee maybeStudentExamFee =
-                await this.storageBroker.SelectStudentExamFeeByIdAsync(studentExamFeeId);
+                await storageBroker.SelectStudentExamFeeByIdsAsync(studentId, examFeeId);
 
-            ValidateStorageStudentExamFee(maybeStudentExamFee, studentExamFeeId);
+            ValidateStorageStudentExamFee(maybeStudentExamFee, studentId, examFeeId);
 
             return await this.storageBroker.DeleteStudentExamFeeAsync(maybeStudentExamFee);
         });
@@ -67,9 +69,14 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             ValidateStudentExamFeeOnModify(studentExamFee);
 
             StudentExamFee maybeStudentExamFee =
-               await storageBroker.SelectStudentExamFeeByIdAsync(studentExamFee.Id);
+                await storageBroker.SelectStudentExamFeeByIdsAsync(
+                    studentExamFee.StudentId,
+                    studentExamFee.ExamFeeId);
 
-            ValidateStorageStudentExamFee(maybeStudentExamFee, studentExamFee.Id);
+            ValidateStorageStudentExamFee(
+                maybeStudentExamFee, 
+                studentExamFee.StudentId,
+                studentExamFee.ExamFeeId);
 
             ValidateAgainstStorageStudentExamFeeOnModify(
                 inputStudentExamFee: studentExamFee, storageStudentExamFee: maybeStudentExamFee);
