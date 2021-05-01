@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,14 +23,16 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExamFees
             StudentExamFee randomStudentExamFee = await CreateRandomStudentExamFeeAsync();
             StudentExamFee inputStudentExamFee = randomStudentExamFee;
             StudentExamFee expectedStudentExamFee = inputStudentExamFee;
+            Guid inputStudentId = inputStudentExamFee.StudentId;
+            Guid inputExamFeeId = inputStudentExamFee.ExamFeeId;
 
             // when 
             await this.otripleSApiBroker.PostStudentExamFeeAsync(inputStudentExamFee);
 
             StudentExamFee actualStudentExamFee =
                await this.otripleSApiBroker.GetStudentExamFeeByIdsAsync(
-                   inputStudentExamFee.StudentId,
-                   inputStudentExamFee.ExamFeeId);
+                   inputStudentId,
+                   inputExamFeeId);
 
             // then
             actualStudentExamFee.Should().BeEquivalentTo(expectedStudentExamFee);
@@ -40,16 +43,18 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExamFees
         public async Task ShouldPutStudentExamFeeAsync()
         {
             // given
-            StudentExamFee randomStudentExamFee = await PostRandomStudentExamFeeAsync();
+            StudentExamFee randomStudentExamFee = await PostRandomStudentExamFeeAsync();            
             StudentExamFee modifiedStudentExamFee = await UpdateStudentExamFeeRandom(randomStudentExamFee);
+            Guid inputStudentId = randomStudentExamFee.StudentId;
+            Guid inputExamFeeId = randomStudentExamFee.ExamFeeId;
 
             // when
             await this.otripleSApiBroker.PutStudentExamFeeAsync(modifiedStudentExamFee);
 
             StudentExamFee actualStudentExamFee =
                 await this.otripleSApiBroker.GetStudentExamFeeByIdsAsync(
-                   randomStudentExamFee.StudentId,
-                   randomStudentExamFee.ExamFeeId);
+                   inputStudentId,
+                   inputExamFeeId);
 
             // then
             actualStudentExamFee.Should().BeEquivalentTo(modifiedStudentExamFee);
@@ -72,14 +77,16 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExamFees
             List<StudentExamFee> expectedStudentExamFees = inputStudentExamFees.ToList();
 
             // when
-            List<StudentExamFee> actualStudentExamFees = await this.otripleSApiBroker.GetAllStudentExamFeesAsync();
+            List<StudentExamFee> actualStudentExamFees = 
+                await this.otripleSApiBroker.GetAllStudentExamFeesAsync();
 
             // then
             foreach (StudentExamFee expectedStudentExamFee in expectedStudentExamFees)
             {
                 StudentExamFee actualStudentExamFee = actualStudentExamFees.Single(
-                    studentExamFee => studentExamFee.StudentId == expectedStudentExamFee.StudentId &&
-                                      studentExamFee.ExamFeeId == expectedStudentExamFee.ExamFeeId);
+                    studentExamFee => 
+                        studentExamFee.StudentId == expectedStudentExamFee.StudentId &&
+                        studentExamFee.ExamFeeId == expectedStudentExamFee.ExamFeeId);
 
                 actualStudentExamFee.Should().BeEquivalentTo(expectedStudentExamFee);
                 await DeleteStudentExamFeeAsync(actualStudentExamFee);
@@ -93,14 +100,17 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExamFees
             StudentExamFee randomStudentExamFee = await PostRandomStudentExamFeeAsync();
             StudentExamFee inputStudentExamFee = randomStudentExamFee;
             StudentExamFee expectedStudentExamFee = inputStudentExamFee;
+            Guid inputStudentId = randomStudentExamFee.StudentId;
+            Guid inputExamFeeId = randomStudentExamFee.ExamFeeId;
 
             // when 
-            StudentExamFee deletedStudentExamFee = await DeleteStudentExamFeeAsync(inputStudentExamFee);
+            StudentExamFee deletedStudentExamFee = 
+                await DeleteStudentExamFeeAsync(inputStudentExamFee);
 
             ValueTask<StudentExamFee> getStudentExamFeeByIdTask =
                 this.otripleSApiBroker.GetStudentExamFeeByIdsAsync(
-                   randomStudentExamFee.StudentId,
-                   randomStudentExamFee.ExamFeeId);
+                    inputStudentId,
+                    inputExamFeeId);
 
             // then
             deletedStudentExamFee.Should().BeEquivalentTo(expectedStudentExamFee);
