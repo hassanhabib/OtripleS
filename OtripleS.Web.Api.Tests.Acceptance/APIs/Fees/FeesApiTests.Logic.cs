@@ -39,7 +39,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Fees
         {
             // given
             Fee randomFee = await PostRandomFeeAsync();
-            Fee modifiedFee = await UpdateFeeRandom(randomFee);
+            Fee modifiedFee = UpdateFeeRandom(randomFee);
 
             // when
             await this.otripleSApiBroker.PutFeeAsync(modifiedFee);

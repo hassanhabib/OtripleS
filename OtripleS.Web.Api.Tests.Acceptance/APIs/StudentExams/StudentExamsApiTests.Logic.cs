@@ -41,7 +41,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             StudentExam randomStudentExam = await PostRandomStudentExamAsync();
 
             StudentExam modifiedStudentExam =
-                await UpdateStudentExamRandom(randomStudentExam);
+                UpdateStudentExamRandom(randomStudentExam);
 
             // when
             await this.otripleSApiBroker.PutStudentExamAsync(modifiedStudentExam);
