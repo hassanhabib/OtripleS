@@ -63,7 +63,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();            
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -176,7 +176,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             someStudentExamFee.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
-            var lockedStudentExamFeeException = 
+            var lockedStudentExamFeeException =
                 new LockedStudentExamFeeException(databaseUpdateConcurrencyException);
 
             var expectedStudentExamFeeDependencyException =

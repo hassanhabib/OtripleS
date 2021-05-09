@@ -35,7 +35,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             // when
             ValueTask<StudentExamFee> removeStudentExamFeeTask =
                 this.studentExamFeeService.RemoveStudentExamFeeByIdAsync(
-                    someStudentId, 
+                    someStudentId,
                     someExamFeeId);
 
             // then

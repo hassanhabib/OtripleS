@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Classrooms;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
-using OtripleS.Web.Api.Tests.Acceptance.Models.StudentExamFees;
+using OtripleS.Web.Api.Tests.Acceptance.Models.ExamFees;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Exams;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Fees;
 using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
+using OtripleS.Web.Api.Tests.Acceptance.Models.StudentExamFees;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
 using OtripleS.Web.Api.Tests.Acceptance.Models.Users;
 using Tynamix.ObjectFiller;
 using Xunit;
-using OtripleS.Web.Api.Tests.Acceptance.Models.ExamFees;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExamFees
 {

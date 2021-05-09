@@ -91,7 +91,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeDependencyException))),
                     Times.Once);
-            
+
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Never);
@@ -129,8 +129,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentExamFeeByIdsAsync(
                     It.IsAny<Guid>(), It.IsAny<Guid>()),
-                        Times.Once); 
-            
+                        Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeServiceException))),
                     Times.Once);
@@ -138,7 +138,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Never);
-                        
+
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

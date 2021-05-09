@@ -16,5 +16,5 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Models.StudentExamFees
         public DateTimeOffset UpdatedDate { get; set; }
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
-   }
+    }
 }

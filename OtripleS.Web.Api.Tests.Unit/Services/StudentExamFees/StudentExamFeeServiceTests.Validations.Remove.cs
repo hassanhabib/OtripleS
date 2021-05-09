@@ -4,8 +4,6 @@
 //----------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using OtripleS.Web.Api.Models.StudentExamFees;
@@ -57,7 +55,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                     Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();            
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -65,7 +63,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
         public async Task ShouldThrowValidatonExceptionOnRemoveWhenExamFeeIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomStudentId = Guid.NewGuid();            
+            Guid randomStudentId = Guid.NewGuid();
             Guid inputStudentId = randomStudentId;
             Guid randomExamFeeId = default;
             Guid inputExamFeeId = randomExamFeeId;

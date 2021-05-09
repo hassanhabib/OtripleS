@@ -16,11 +16,11 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
 
         public async ValueTask<StudentExamFee> PostStudentExamFeeAsync(StudentExamFee studentExamFee) =>
             await this.apiFactoryClient.PostContentAsync(
-                StudentExamFeesRelativeUrl, 
+                StudentExamFeesRelativeUrl,
                 studentExamFee);
 
         public async ValueTask<StudentExamFee> GetStudentExamFeeByIdsAsync(
-            Guid studentId, 
+            Guid studentId,
             Guid examFeeId) =>
                 await this.apiFactoryClient.GetContentAsync<StudentExamFee>(
                     $"{StudentExamFeesRelativeUrl}/studentid/{studentId}/examfeeid/{examFeeId}");
@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
 
         public async ValueTask<StudentExamFee> PutStudentExamFeeAsync(StudentExamFee studentExamFee) =>
             await this.apiFactoryClient.PutContentAsync(
-                StudentExamFeesRelativeUrl, 
+                StudentExamFeesRelativeUrl,
                 studentExamFee);
 
         public async ValueTask<List<StudentExamFee>> GetAllStudentExamFeesAsync() =>

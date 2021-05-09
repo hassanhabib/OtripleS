@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -99,10 +98,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             Guid randomExamFeeId = Guid.NewGuid();
             Guid inputExamFeeId = randomExamFeeId;
             DateTimeOffset randomDateTime = GetRandomDateTime();
-            
-            StudentExamFee randomStudentExamFee = 
+
+            StudentExamFee randomStudentExamFee =
                 CreateRandomStudentExamFee(randomDateTime);
-            
+
             StudentExamFee storageStudentExamFee = randomStudentExamFee;
             StudentExamFee expectedStudentExamFee = storageStudentExamFee;
 
@@ -141,17 +140,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             int randomDays = randomNumber;
             DateTimeOffset randomDate = GetRandomDateTime();
             DateTimeOffset randomInputDate = GetRandomDateTime();
-            
-            StudentExamFee randomStudentExamFee = 
+
+            StudentExamFee randomStudentExamFee =
                 CreateRandomStudentExamFee(randomInputDate);
 
             StudentExamFee inputStudentExamFee = randomStudentExamFee;
             StudentExamFee afterUpdateStorageStudentExamFee = randomStudentExamFee;
             StudentExamFee expectedStudentExamFee = randomStudentExamFee;
 
-            StudentExamFee beforeUpdateStorageStudentExamFee = 
+            StudentExamFee beforeUpdateStorageStudentExamFee =
                 randomStudentExamFee.DeepClone();
-            
+
             inputStudentExamFee.UpdatedDate = randomDate;
             Guid studentId = inputStudentExamFee.StudentId;
             Guid guardianId = inputStudentExamFee.ExamFeeId;
@@ -194,7 +193,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();            
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]

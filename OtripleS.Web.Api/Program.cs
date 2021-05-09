@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api
         public static IHostBuilder CreateHostBuilder(string[] arguments)
         {
             return Host.CreateDefaultBuilder(arguments)
-                .ConfigureWebHostDefaults(webBuilder => 
+                .ConfigureWebHostDefaults(webBuilder =>
                     webBuilder.UseStartup<Startup>());
         }
     }

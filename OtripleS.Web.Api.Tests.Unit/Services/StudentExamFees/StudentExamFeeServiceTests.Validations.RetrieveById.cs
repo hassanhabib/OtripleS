@@ -101,7 +101,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
         }
 
         [Fact]
-        public async void 
+        public async void
             ShouldThrowValidationExceptionOnRetrieveWhenStorageStudentExamFeeIsNullAndLogItAsync()
         {
             // given
@@ -110,8 +110,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             Guid randomExamFeeId = Guid.NewGuid();
             Guid inputExamFeeId = randomExamFeeId;
             StudentExamFee invalidStorageStudentExamFee = null;
-            
-            var notFoundStudentExamFeeException = 
+
+            var notFoundStudentExamFeeException =
                 new NotFoundStudentExamFeeException(
                     inputStudentId, inputExamFeeId);
 
@@ -144,7 +144,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Never);
-          
+
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
