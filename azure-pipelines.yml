@@ -14,7 +14,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '5.0.100-rc.1.20452.10'
+    version: '6.0.100-preview.3.21202.5'
     includePreviewVersions: true
 - task: DotNetCoreCLI@2
   displayName: 'Restore'
