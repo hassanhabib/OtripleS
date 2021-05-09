@@ -130,7 +130,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             return await this.otripleSApiBroker.PostStudentAsync(student);
         }
 
-        private async ValueTask<StudentExam> UpdateStudentExamRandomAsync(StudentExam studentExam)
+        private StudentExam UpdateStudentExamRandom(StudentExam studentExam)
         {
             studentExam.Score = GetRandomNumber();
             studentExam.UpdatedDate = DateTimeOffset.UtcNow;

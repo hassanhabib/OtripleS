@@ -90,17 +90,21 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
             Classroom randomClassroom,
             Course randomCourse)
         {
-            SemesterCourse randomSemesterCourse = await CreateRandomSemesterCourseAsync(
-                randomTeacher, randomClassroom, randomCourse);
+            SemesterCourse randomSemesterCourse =
+                CreateRandomSemesterCourse(
+                    randomTeacher,
+                    randomClassroom,
+                    randomCourse);
+
             await this.otripleSApiBroker.PostSemesterCourseAsync(randomSemesterCourse);
 
             return randomSemesterCourse;
         }
 
-        private async ValueTask<SemesterCourse> CreateRandomSemesterCourseAsync(
-            Teacher randomTeacher,
-            Classroom randomClassroom,
-            Course randomCourse)
+        private SemesterCourse CreateRandomSemesterCourse(
+            Teacher teacher,
+            Classroom classroom,
+            Course course)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
 
@@ -112,9 +116,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
                 .OnProperty(semesterCourse => semesterCourse.UpdatedBy).Use(userId)
                 .OnProperty(semesterCourse => semesterCourse.CreatedDate).Use(now)
                 .OnProperty(semesterCourse => semesterCourse.UpdatedDate).Use(now)
-                .OnProperty(semesterCourse => semesterCourse.TeacherId).Use(randomTeacher.Id)
-                .OnProperty(semesterCourse => semesterCourse.ClassroomId).Use(randomClassroom.Id)
-                .OnProperty(semesterCourse => semesterCourse.CourseId).Use(randomCourse.Id)
+                .OnProperty(semesterCourse => semesterCourse.TeacherId).Use(teacher.Id)
+                .OnProperty(semesterCourse => semesterCourse.ClassroomId).Use(classroom.Id)
+                .OnProperty(semesterCourse => semesterCourse.CourseId).Use(course.Id)
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             SemesterCourse semesterCourse = filler.Create();

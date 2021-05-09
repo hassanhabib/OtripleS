@@ -51,7 +51,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Fees
         private async ValueTask<Fee> CreateRandomFeeAsync() =>
             await CreateRandomFeeFiller();
 
-        private async ValueTask<Fee> UpdateFeeRandom(Fee fee)
+        private Fee UpdateFeeRandom(Fee fee)
         {
             fee.Label = GetRandomString();
             fee.UpdatedDate = DateTimeOffset.UtcNow;

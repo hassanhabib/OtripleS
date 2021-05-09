@@ -61,7 +61,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.AssignmentsAttachments
 
         private async ValueTask<Assignment> PostAssignmentAsync()
         {
-            Assignment randomAssignment = await CreateRandomAssignmentAsync();
+            Assignment randomAssignment = CreateRandomAssignment();
             Assignment inputAssignment = randomAssignment;
 
             return await this.otripleSApiBroker.PostAssignmentAsync(inputAssignment);
@@ -94,7 +94,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.AssignmentsAttachments
             return filler;
         }
 
-        private async ValueTask<Assignment> CreateRandomAssignmentAsync()
+        private Assignment CreateRandomAssignment()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();

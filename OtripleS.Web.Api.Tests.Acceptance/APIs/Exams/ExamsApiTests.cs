@@ -90,7 +90,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Exams
             return await this.otripleSApiBroker.PostClassroomAsync(classroom);
         }
 
-        private async ValueTask<Exam> UpdateExamRandom(Exam exam)
+        private Exam UpdateExamRandom(Exam exam)
         {
             exam.Label = GetRandomString();
             exam.UpdatedDate = DateTimeOffset.UtcNow;
