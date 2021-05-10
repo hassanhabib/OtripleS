@@ -30,3 +30,5 @@ This project is aiming toward directing all the software development funds and h
 <img width=20 src="https://www.searchmarketingaustralia.com.au/wp-content/uploads/2017/10/original_images_YouTube.png" /> [OtripleS 006: Building References and Relationships](https://www.youtube.com/watch?v=XoDwJ-dvhI0)
 
 <img width=20 src="https://www.searchmarketingaustralia.com.au/wp-content/uploads/2017/10/original_images_YouTube.png" /> [OtripleS 007: Upgrading to .NET 5.0 RC](https://www.youtube.com/watch?v=ufjtuAel538)
+
+<img width=20 src="https://www.searchmarketingaustralia.com.au/wp-content/uploads/2017/10/original_images_YouTube.png" /> [OtripleS 008: Upgrading to .NET 6.0 Preview 3](https://www.youtube.com/watch?v=juyZCgF9g2E)
