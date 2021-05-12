@@ -171,7 +171,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
 
         private void ValidateStorageClassrooms(IQueryable<Classroom> storageClassrooms)
         {
-            if (storageClassrooms.Count() == 0)
+            if (!storageClassrooms.Any())
             {
                 this.loggingBroker.LogWarning("No classrooms found in storage.");
             }

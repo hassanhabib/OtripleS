@@ -49,7 +49,7 @@ namespace OtripleS.Web.Api.Services.Assignments
             }
         }
 
-        private void ValidateAssignmentFields(Assignment assignment)
+        private static void ValidateAssignmentFields(Assignment assignment)
         {
             switch (assignment)
             {
@@ -65,7 +65,7 @@ namespace OtripleS.Web.Api.Services.Assignments
             }
         }
 
-        private void ValidateInvalidAuditFields(Assignment assignment)
+        private static void ValidateInvalidAuditFields(Assignment assignment)
         {
             switch (assignment)
             {
@@ -117,7 +117,7 @@ namespace OtripleS.Web.Api.Services.Assignments
             }
         }
 
-        private void ValidateDatesAreNotSame(Assignment assignment)
+        private static void ValidateDatesAreNotSame(Assignment assignment)
         {
             if (assignment.CreatedDate == assignment.UpdatedDate)
             {
@@ -137,7 +137,7 @@ namespace OtripleS.Web.Api.Services.Assignments
             }
         }
 
-        private void ValidateStorageAssignment(Assignment storageAssignment, Guid assignmentId)
+        private static void ValidateStorageAssignment(Assignment storageAssignment, Guid assignmentId)
         {
             if (storageAssignment == null)
             {
@@ -145,7 +145,7 @@ namespace OtripleS.Web.Api.Services.Assignments
             }
         }
 
-        private void ValidateAgainstStorageAssignmentOnModify(
+        private static void ValidateAgainstStorageAssignmentOnModify(
             Assignment inputAssignment,
             Assignment storageAssignment)
         {
@@ -170,7 +170,7 @@ namespace OtripleS.Web.Api.Services.Assignments
 
         private void ValidateStorageAssignments(IQueryable<Assignment> storageAssignments)
         {
-            if (storageAssignments.Count() == 0)
+            if (!storageAssignments.Any())
             {
                 this.loggingBroker.LogWarning("No Assignments found in storage.");
             }

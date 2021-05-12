@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Services.ExamFees
             }
         }
 
-        private void ValidateAgainstStorageExamFeeOnModify(ExamFee inputExamFee, ExamFee storageExamFee)
+        private static void ValidateAgainstStorageExamFeeOnModify(ExamFee inputExamFee, ExamFee storageExamFee)
         {
             switch (inputExamFee)
             {
@@ -74,7 +74,7 @@ namespace OtripleS.Web.Api.Services.ExamFees
             }
         }
 
-        private void ValidateExamFeeIds(Guid examId, Guid feeId)
+        private static void ValidateExamFeeIds(Guid examId, Guid feeId)
         {
             if (examId == default)
             {
@@ -90,7 +90,7 @@ namespace OtripleS.Web.Api.Services.ExamFees
             }
         }
 
-        private void ValidateInvalidAuditFields(ExamFee examFee)
+        private static void ValidateInvalidAuditFields(ExamFee examFee)
         {
             switch (examFee)
             {
@@ -139,7 +139,7 @@ namespace OtripleS.Web.Api.Services.ExamFees
 
         private void ValidateStorageExamFees(IQueryable<ExamFee> storageExamFees)
         {
-            if (storageExamFees.Count() == 0)
+            if (!storageExamFees.Any())
             {
                 this.loggingBroker.LogWarning("No exam fees found in storage.");
             }
@@ -157,7 +157,7 @@ namespace OtripleS.Web.Api.Services.ExamFees
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
-        private void ValidateExamFeeId(Guid examFeeId)
+        private static void ValidateExamFeeId(Guid examFeeId)
         {
             if (examFeeId == Guid.Empty)
             {

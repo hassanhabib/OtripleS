@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
 
         private static SqlException GetSqlException() =>
          (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
-        private IQueryable<ExamAttachment> CreateRandomExamAttachments() =>
+        private static IQueryable<ExamAttachment> CreateRandomExamAttachments() =>
             CreateExamAttachmentFiller(DateTimeOffset.UtcNow)
                 .Create(GetRandomNumber()).AsQueryable();
 

@@ -23,13 +23,13 @@ namespace OtripleS.Web.Api.Services.Attendances
 
         private void ValidateStorageAttendances(IQueryable<Attendance> storageAttendances)
         {
-            if (storageAttendances.Count() == 0)
+            if (!storageAttendances.Any())
             {
                 this.loggingBroker.LogWarning("No Attendances found in storage.");
             }
         }
 
-        private void ValidateAttendanceIsNull(Attendance attendance)
+        private static void ValidateAttendanceIsNull(Attendance attendance)
         {
             if (attendance is null)
             {
@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Services.Attendances
             }
         }
 
-        private void ValidateAttendanceId(Guid attendanceId)
+        private static void ValidateAttendanceId(Guid attendanceId)
         {
             if (attendanceId == default)
             {

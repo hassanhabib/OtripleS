@@ -41,10 +41,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private Fee CreateRandomFee(DateTimeOffset dateTime) =>
+        private static Fee CreateRandomFee(DateTimeOffset dateTime) =>
             CreateRandomFeeFiller(dateTime).Create();
 
-        private Filler<Fee> CreateRandomFeeFiller(DateTimeOffset dateTime)
+        private static Filler<Fee> CreateRandomFeeFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Fee>();
 
@@ -80,7 +80,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
 
-        private Fee CreateRandomFee() =>
+        private static Fee CreateRandomFee() =>
             CreateRandomFeeFiller(DateTimeOffset.UtcNow).Create();
 
         private static SqlException GetSqlException() =>

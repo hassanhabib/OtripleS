@@ -105,7 +105,7 @@ namespace OtripleS.Web.Api.Services.Contacts
             }
         }
 
-        private void ValidateStorageContact(Contact storageContact, Guid contactId)
+        private static void ValidateStorageContact(Contact storageContact, Guid contactId)
         {
             if (storageContact is null)
             {
@@ -122,7 +122,7 @@ namespace OtripleS.Web.Api.Services.Contacts
             ValidateUpdatedDateIsRecent(contact);
         }
 
-        private void ValidateAgainstStorageContactOnModify(Contact inputContact, Contact storageContact)
+        private static void ValidateAgainstStorageContactOnModify(Contact inputContact, Contact storageContact)
         {
             switch (inputContact)
             {
@@ -143,7 +143,7 @@ namespace OtripleS.Web.Api.Services.Contacts
             }
         }
 
-        private void ValidateDatesAreNotSame(Contact contact)
+        private static void ValidateDatesAreNotSame(Contact contact)
         {
             if (contact.CreatedDate == contact.UpdatedDate)
             {

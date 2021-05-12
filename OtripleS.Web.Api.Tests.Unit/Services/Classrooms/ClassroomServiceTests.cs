@@ -65,7 +65,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Classrooms
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
 
-        private Classroom CreateRandomClassroom() =>
+        private static Classroom CreateRandomClassroom() =>
             CreateClassroomFiller(dates: DateTimeOffset.UtcNow).Create();
 
         public static IEnumerable<object[]> InvalidMinuteCases()

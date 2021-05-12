@@ -34,7 +34,7 @@ namespace OtripleS.Web.Api.Services.Courses
             ValidateUpdatedDateIsRecent(course);
         }
 
-        private void ValidateCourse(Course course)
+        private static void ValidateCourse(Course course)
         {
             if (course is null)
             {
@@ -42,7 +42,7 @@ namespace OtripleS.Web.Api.Services.Courses
             }
         }
 
-        private void ValidateCourseId(Guid courseId)
+        private static void ValidateCourseId(Guid courseId)
         {
             if (courseId == Guid.Empty)
             {
@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Services.Courses
             }
         }
 
-        private void ValidateCourseIds(Course course)
+        private static void ValidateCourseIds(Course course)
         {
             switch (course)
             {
@@ -68,7 +68,7 @@ namespace OtripleS.Web.Api.Services.Courses
             }
         }
 
-        private void ValidateCourseStrings(Course course)
+        private static void ValidateCourseStrings(Course course)
         {
             switch (course)
             {
@@ -84,7 +84,7 @@ namespace OtripleS.Web.Api.Services.Courses
             }
         }
 
-        private void ValidateCourseDates(Course course)
+        private static void ValidateCourseDates(Course course)
         {
             switch (course)
             {
@@ -100,7 +100,7 @@ namespace OtripleS.Web.Api.Services.Courses
             }
         }
 
-        private void ValidateCreatedSignature(Course course)
+        private static void ValidateCreatedSignature(Course course)
         {
             if (course.CreatedBy != course.UpdatedBy)
             {
@@ -125,7 +125,7 @@ namespace OtripleS.Web.Api.Services.Courses
             }
         }
 
-        private void ValidateDatesAreNotSame(Course course)
+        private static void ValidateDatesAreNotSame(Course course)
         {
             if (course.CreatedDate == course.UpdatedDate)
             {
@@ -145,7 +145,7 @@ namespace OtripleS.Web.Api.Services.Courses
             }
         }
 
-        private void ValidateStorageCourse(Course storageCourse, Guid courseId)
+        private static void ValidateStorageCourse(Course storageCourse, Guid courseId)
         {
             if (storageCourse == null)
             {
@@ -164,13 +164,13 @@ namespace OtripleS.Web.Api.Services.Courses
 
         private void ValidateStorageCourses(IQueryable<Course> storageCourses)
         {
-            if (storageCourses.Count() == 0)
+            if (!storageCourses.Any())
             {
                 this.loggingBroker.LogWarning("No courses found in storage.");
             }
         }
 
-        private void ValidateAgainstStorageCourseOnModify(Course inputCourse, Course storageCourse)
+        private static void ValidateAgainstStorageCourseOnModify(Course inputCourse, Course storageCourse)
         {
             switch (inputCourse)
             {

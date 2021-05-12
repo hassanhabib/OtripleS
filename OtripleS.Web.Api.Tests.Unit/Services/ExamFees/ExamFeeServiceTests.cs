@@ -41,7 +41,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
         private static ExamFee CreateRandomExamFee() =>
             CreateExamFeeFiller(DateTimeOffset.UtcNow).Create();
 
-        private IQueryable<ExamFee> CreateRandomExamFees() =>
+        private static IQueryable<ExamFee> CreateRandomExamFees() =>
             CreateExamFeeFiller(DateTimeOffset.UtcNow)
                 .Create(GetRandomNumber()).AsQueryable();
 
