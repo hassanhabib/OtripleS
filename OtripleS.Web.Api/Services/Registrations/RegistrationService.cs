@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Services.Registrations
         }
         public ValueTask<Registration> RetrieveRegistrationByIdAsync(Guid registrationId)
         {
-            throw new NotImplementedException();
+            return this.storageBroker.SelectRegistrationByIdAsync(registrationId);
         }
     }
 }
