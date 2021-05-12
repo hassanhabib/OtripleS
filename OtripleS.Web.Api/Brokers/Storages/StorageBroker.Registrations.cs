@@ -34,5 +34,14 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
             return RegistrationEntityEntry.Entity;
         }
+
+        public async ValueTask<Registration> DeleteRegistrationAsync(Registration Registration)
+        {
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Registration> RegistrationEntityEntry = broker.Registrations.Remove(Registration);
+            await broker.SaveChangesAsync();
+
+            return RegistrationEntityEntry.Entity;
+        }
     }
 }
