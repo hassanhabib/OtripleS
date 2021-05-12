@@ -65,7 +65,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private Filler<Course> CreateRandomCourseFiller(DateTimeOffset dateTime)
+        private static Filler<Course> CreateRandomCourseFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Course>();
 

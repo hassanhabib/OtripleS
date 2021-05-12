@@ -49,7 +49,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attendances
 
         private static Filler<Attendance> GetAttendanceFiller(DateTimeOffset dateTime)
         {
-            Filler<Attendance> attendance = new Filler<Attendance>();
+            var attendance = new Filler<Attendance>();
 
             attendance.Setup()
                 .OnType<DateTimeOffset>().Use(dateTime);
@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attendances
             return attendance;
         }
 
-        private Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
                 expectedException.Message == actualException.Message &&

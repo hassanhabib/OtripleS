@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Fees
             return filler;
         }
 
-        private Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
                 expectedException.Message == actualException.Message &&

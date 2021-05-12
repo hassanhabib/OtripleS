@@ -41,14 +41,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private IQueryable<Attachment> CreateRandomAttachments() =>
+        private static IQueryable<Attachment> CreateRandomAttachments() =>
             CreateAttachmentFiller(dates: DateTimeOffset.UtcNow)
             .Create(GetRandomNumber()).AsQueryable();
 
-        private Attachment CreateRandomAttachment() =>
+        private static Attachment CreateRandomAttachment() =>
             CreateAttachmentFiller(dates: DateTimeOffset.UtcNow).Create();
 
-        private Attachment CreateRandomAttachment(DateTimeOffset dates) =>
+        private static Attachment CreateRandomAttachment(DateTimeOffset dates) =>
             CreateAttachmentFiller(dates).Create();
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)

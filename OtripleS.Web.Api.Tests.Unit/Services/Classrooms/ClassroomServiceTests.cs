@@ -44,7 +44,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Classrooms
         private static IQueryable<Classroom> CreateRandomClassrooms(DateTimeOffset dates) =>
             CreateClassroomFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
-        private Classroom CreateRandomClassroom(DateTimeOffset dates) =>
+        private static Classroom CreateRandomClassroom(DateTimeOffset dates) =>
             CreateClassroomFiller(dates).Create();
 
         private static Filler<Classroom> CreateClassroomFiller(DateTimeOffset dates)

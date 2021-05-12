@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
-        private ExamFee CreateRandomExamFee() =>
+        private static ExamFee CreateRandomExamFee() =>
             CreateExamFeeFiller(DateTimeOffset.UtcNow).Create();
 
         private IQueryable<ExamFee> CreateRandomExamFees() =>
@@ -72,7 +72,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamFees
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private ExamFee CreateRandomExamFee(DateTimeOffset dates) =>
+        private static ExamFee CreateRandomExamFee(DateTimeOffset dates) =>
             CreateExamFeeFiller(dates).Create();
 
         public static IEnumerable<object[]> InvalidMinuteCases()

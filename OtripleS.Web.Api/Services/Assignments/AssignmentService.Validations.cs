@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Services.Assignments
             ValidateUpdatedDateIsRecent(assignment);
         }
 
-        private void ValidateAssignmentIsNull(Assignment assignment)
+        private static void ValidateAssignmentIsNull(Assignment assignment)
         {
             if (assignment is null)
             {
@@ -39,7 +39,7 @@ namespace OtripleS.Web.Api.Services.Assignments
             }
         }
 
-        private void ValidateAssignmentIdIsNull(Guid assignmentId)
+        private static void ValidateAssignmentIdIsNull(Guid assignmentId)
         {
             if (IsInvalid(assignmentId))
             {

@@ -41,7 +41,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private Assignment CreateRandomAssignment(DateTimeOffset dates) =>
+        private static Assignment CreateRandomAssignment(DateTimeOffset dates) =>
             CreateAssignmentFiller(dates).Create();
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
@@ -53,7 +53,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Assignments
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
 
-        private Assignment CreateRandomAssignment() =>
+        private static Assignment CreateRandomAssignment() =>
             CreateAssignmentFiller(dates: DateTimeOffset.UtcNow).Create();
 
         private static IQueryable<Assignment> CreateRandomAssignments(DateTimeOffset dates) =>

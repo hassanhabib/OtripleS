@@ -60,13 +60,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
         private IQueryable<Exam> CreateRandomExams(DateTimeOffset dateTime) =>
             CreateRandomExamFiller(dateTime: dateTime).Create(GetRandomNumber()).AsQueryable();
 
-        private Exam CreateRandomExam(DateTimeOffset dateTime) =>
+        private static Exam CreateRandomExam(DateTimeOffset dateTime) =>
             CreateRandomExamFiller(dateTime).Create();
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
-        private Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
                 expectedException.Message == actualException.Message &&
@@ -87,7 +87,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
             return (ExamType)randomOutOfRangeEnumValue;
         }
 
-        private Filler<Exam> CreateRandomExamFiller(DateTimeOffset dateTime)
+        private static Filler<Exam> CreateRandomExamFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Exam>();
 

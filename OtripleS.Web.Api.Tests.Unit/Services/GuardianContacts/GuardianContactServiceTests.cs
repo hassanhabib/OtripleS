@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
         private GuardianContact CreateRandomGuardianContact() =>
             CreateGuardianContactFiller(DateTimeOffset.UtcNow).Create();
 
-        private IQueryable<GuardianContact> CreateRandomGuardianContacts() =>
+        private static IQueryable<GuardianContact> CreateRandomGuardianContacts() =>
             CreateGuardianContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private GuardianContact CreateRandomGuardianContact(DateTimeOffset dates) =>
