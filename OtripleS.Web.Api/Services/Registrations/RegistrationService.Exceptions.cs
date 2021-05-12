@@ -44,6 +44,10 @@ namespace OtripleS.Web.Api.Services.Registrations
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private RegistrationValidationException CreateAndLogValidationException(Exception exception)
@@ -68,6 +72,14 @@ namespace OtripleS.Web.Api.Services.Registrations
             this.loggingBroker.LogError(registrationDependencyException);
 
             return registrationDependencyException;
+        }
+
+        private RegistrationServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var registrationServiceException = new RegistrationServiceException(exception);
+            this.loggingBroker.LogError(registrationServiceException);
+
+            return registrationServiceException;
         }
     }
 }
