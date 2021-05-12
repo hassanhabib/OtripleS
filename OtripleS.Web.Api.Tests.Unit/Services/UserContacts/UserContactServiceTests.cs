@@ -33,14 +33,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
                 loggingBroker: this.loggingBrokerMock.Object);
         }
 
-        private UserContact CreateRandomUserContact() =>
+        private static UserContact CreateRandomUserContact() =>
             CreateUserContactFiller(DateTimeOffset.UtcNow).Create();
 
-        private IQueryable<UserContact> CreateRandomUserContacts() =>
+        private static IQueryable<UserContact> CreateRandomUserContacts() =>
             CreateUserContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
-
-        private UserContact CreateRandomUserContact(DateTimeOffset dates) =>
-            CreateUserContactFiller(dates).Create();
 
         private static Filler<UserContact> CreateUserContactFiller(DateTimeOffset dates)
         {

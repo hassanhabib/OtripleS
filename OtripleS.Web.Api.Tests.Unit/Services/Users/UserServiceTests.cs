@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
-        private User CreateRandomUser()
+        private static User CreateRandomUser()
         {
             var user = new User
             {

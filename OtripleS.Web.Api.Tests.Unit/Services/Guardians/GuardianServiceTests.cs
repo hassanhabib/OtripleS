@@ -53,17 +53,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Guardians
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private Guardian CreateRandomGuardian(DateTimeOffset dateTime) =>
+        private static Guardian CreateRandomGuardian(DateTimeOffset dateTime) =>
             CreateRandomGuardianFiller(dateTime).Create();
 
-        private IQueryable<Guardian> CreateRandomGuardians(DateTimeOffset dateTime) =>
+        private static IQueryable<Guardian> CreateRandomGuardians(DateTimeOffset dateTime) =>
             CreateRandomGuardianFiller(dateTime).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
 
-        private Filler<Guardian> CreateRandomGuardianFiller(DateTimeOffset dateTime)
+        private static Filler<Guardian> CreateRandomGuardianFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Guardian>();
 
@@ -76,7 +76,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Guardians
             return filler;
         }
 
-        private Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
                 expectedException.Message == actualException.Message &&

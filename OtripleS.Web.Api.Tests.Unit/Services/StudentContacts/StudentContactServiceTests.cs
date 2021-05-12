@@ -33,13 +33,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentContacts
                 loggingBroker: this.loggingBrokerMock.Object);
         }
 
-        private StudentContact CreateRandomStudentContact() =>
+        private static StudentContact CreateRandomStudentContact() =>
             CreateStudentContactFiller(DateTimeOffset.UtcNow).Create();
 
-        private IQueryable<StudentContact> CreateRandomStudentContacts() =>
+        private static IQueryable<StudentContact> CreateRandomStudentContacts() =>
             CreateStudentContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
-        private StudentContact CreateRandomStudentContact(DateTimeOffset dates) =>
+        private static StudentContact CreateRandomStudentContact(DateTimeOffset dates) =>
             CreateStudentContactFiller(dates).Create();
 
         private static Filler<StudentContact> CreateStudentContactFiller(DateTimeOffset dates)

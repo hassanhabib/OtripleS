@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private IQueryable<Exam> CreateRandomExams(DateTimeOffset dateTime) =>
+        private static IQueryable<Exam> CreateRandomExams(DateTimeOffset dateTime) =>
             CreateRandomExamFiller(dateTime: dateTime).Create(GetRandomNumber()).AsQueryable();
 
         private static Exam CreateRandomExam(DateTimeOffset dateTime) =>
@@ -73,7 +73,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
                 expectedException.InnerException.Message == actualException.InnerException.Message;
         }
 
-        private ExamType GetInValidExamType()
+        private static ExamType GetInValidExamType()
         {
             int maxExamType =
                 (int)Enum.GetValues(typeof(ExamType))

@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
-        private IQueryable<StudentAttachment> CreateRandomStudentAttachments() =>
+        private static IQueryable<StudentAttachment> CreateRandomStudentAttachments() =>
             CreateStudentAttachmentFiller(DateTimeOffset.UtcNow)
             .Create(GetRandomNumber()).AsQueryable();
 
@@ -46,10 +46,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentAttachments
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private StudentAttachment CreateRandomStudentAttachment() =>
+        private static StudentAttachment CreateRandomStudentAttachment() =>
             CreateStudentAttachmentFiller(DateTimeOffset.UtcNow).Create();
 
-        private StudentAttachment CreateRandomStudentAttachment(DateTimeOffset dates) =>
+        private static StudentAttachment CreateRandomStudentAttachment(DateTimeOffset dates) =>
             CreateStudentAttachmentFiller(dates).Create();
 
         private static Filler<StudentAttachment> CreateStudentAttachmentFiller(DateTimeOffset dates)

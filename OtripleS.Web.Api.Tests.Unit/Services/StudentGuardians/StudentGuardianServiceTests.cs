@@ -40,10 +40,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentGuardians
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private StudentGuardian CreateRandomStudentGuardian(DateTimeOffset dates) =>
+        private static StudentGuardian CreateRandomStudentGuardian(DateTimeOffset dates) =>
             CreateStudentGuardianFiller(dates).Create();
 
-        private IQueryable<StudentGuardian> CreateRandomStudentGuardians() =>
+        private static IQueryable<StudentGuardian> CreateRandomStudentGuardians() =>
             CreateStudentGuardianFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static Filler<StudentGuardian> CreateStudentGuardianFiller(DateTimeOffset dates)
