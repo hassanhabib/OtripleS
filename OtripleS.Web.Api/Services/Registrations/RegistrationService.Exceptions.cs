@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using OtripleS.Web.Api.Models.Registrations;
 using OtripleS.Web.Api.Models.Registrations.Exceptions;
 
@@ -28,6 +29,10 @@ namespace OtripleS.Web.Api.Services.Registrations
             {
                 throw CreateAndLogValidationException(notFoundRegistrationException);
             }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
         }
 
         private RegistrationValidationException CreateAndLogValidationException(Exception exception)
@@ -36,6 +41,14 @@ namespace OtripleS.Web.Api.Services.Registrations
             this.loggingBroker.LogError(RegistrationValidationException);
 
             return RegistrationValidationException;
+        }
+
+        private RegistrationDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        {
+            var RegistrationDependencyException = new RegistrationDependencyException(exception);
+            this.loggingBroker.LogCritical(RegistrationDependencyException);
+
+            return RegistrationDependencyException;
         }
     }
 }
