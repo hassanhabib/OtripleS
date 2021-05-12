@@ -35,6 +35,8 @@ namespace OtripleS.Web.Api.Services.Registrations
             Registration storageRegistration =
                 await this.storageBroker.SelectRegistrationByIdAsync(registrationId);
 
+            ValidateStorageRegistration(storageRegistration, registrationId);
+
             return storageRegistration;
         });
     }

@@ -22,5 +22,13 @@ namespace OtripleS.Web.Api.Services.Registrations
         }
 
         private bool IsInvalid(Guid input) => input == default;
+
+        private void ValidateStorageRegistration(Registration storageRegistration, Guid registrationId)
+        {
+            if (storageRegistration == null)
+            {
+                throw new NotFoundRegistrationException(registrationId);
+            }
+        }
     }
 }
