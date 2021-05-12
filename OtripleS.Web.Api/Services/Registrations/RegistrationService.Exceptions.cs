@@ -62,6 +62,10 @@ namespace OtripleS.Web.Api.Services.Registrations
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private RegistrationValidationException CreateAndLogValidationException(Exception exception)
