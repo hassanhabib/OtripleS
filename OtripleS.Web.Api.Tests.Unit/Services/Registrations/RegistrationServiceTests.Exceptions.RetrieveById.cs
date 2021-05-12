@@ -124,5 +124,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRetrieveByIdWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid someRegistrationId = Guid.NewGuid();
+            var exception = new Exception();
+
+            var expectedRegistrationServiceException =
+                new RegistrationServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<Registration> retrieveByIdRegistrationTask =
+                this.registrationService.RetrieveRegistrationByIdAsync(someRegistrationId);
+
+            // then
+            await Assert.ThrowsAsync<RegistrationServiceException>(() =>
+                retrieveByIdRegistrationTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
