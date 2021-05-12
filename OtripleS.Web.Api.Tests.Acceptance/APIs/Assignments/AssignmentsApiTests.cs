@@ -15,14 +15,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
     [Collection(nameof(ApiTestCollection))]
     public partial class AssignmentsApiTests
     {
-        private OtripleSApiBroker otripleSApiBroker;
+        private readonly OtripleSApiBroker otripleSApiBroker;
 
         public AssignmentsApiTests(OtripleSApiBroker otripleSApiBroker) =>
             this.otripleSApiBroker = otripleSApiBroker;
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private Assignment CreateRandomAssignment() =>
+        private static Assignment CreateRandomAssignment() =>
             CreateRandomAssignmentFiller().Create();
 
         private async ValueTask<Assignment> PostRandomAssignmentAsync()
@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
             return randomAssignment;
         }
 
-        private Assignment UpdateAssignmentRandom(Assignment inputAssignment)
+        private static Assignment UpdateAssignmentRandom(Assignment inputAssignment)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
 
@@ -53,7 +53,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private Filler<Assignment> CreateRandomAssignmentFiller()
+        private static Filler<Assignment> CreateRandomAssignmentFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();

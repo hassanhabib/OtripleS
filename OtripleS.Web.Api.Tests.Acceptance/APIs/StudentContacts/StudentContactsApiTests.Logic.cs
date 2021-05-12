@@ -21,7 +21,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
         {
             // given
             Student randomStudent = await PostRandomStudentAsync();
-            List<StudentContact> randomStudentContacts = new List<StudentContact>();
+            var randomStudentContacts = new List<StudentContact>();
 
             for (int i = 0; i < GetRandomNumber(); i++)
             {

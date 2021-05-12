@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Contacts
             return randomContact;
         }
 
-        private Contact UpdateContactRandom(Contact contact)
+        private static Contact UpdateContactRandom(Contact contact)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             var filler = new Filler<Contact>();
@@ -58,8 +58,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Contacts
 
         private static Filler<Contact> CreateRandomContactFiller()
         {
-            Filler<Contact> filler = new Filler<Contact>();
-            Guid randomCreatedUpdatedById = Guid.NewGuid();
+            var filler = new Filler<Contact>();
+            var randomCreatedUpdatedById = Guid.NewGuid();
 
             filler.Setup()
                 .OnProperty(contact => contact.CreatedBy).Use(randomCreatedUpdatedById)

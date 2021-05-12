@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private SemesterCourse CreateExpectedSemesterCourse(SemesterCourse semesterCourse)
+        private static SemesterCourse CreateExpectedSemesterCourse(SemesterCourse semesterCourse)
         {
             SemesterCourse expectedSemesterCourse = semesterCourse.DeepClone();
 
@@ -116,7 +116,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             return deletedSemesterCourse;
         }
 
-        private SemesterCourse UpdateSemesterCourseRandom(SemesterCourse semesterCourse)
+        private static SemesterCourse UpdateSemesterCourseRandom(SemesterCourse semesterCourse)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             var filler = new Filler<SemesterCourse>();
@@ -142,7 +142,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             return await this.otripleSApiBroker.PostTeacherAsync(randomTeacher);
         }
 
-        private Filler<Classroom> CreateRandomClassroomFiller()
+        private static Filler<Classroom> CreateRandomClassroomFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
@@ -159,7 +159,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             return filler;
         }
 
-        private Filler<Teacher> CreateRandomTeacherFiller()
+        private static Filler<Teacher> CreateRandomTeacherFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
@@ -176,7 +176,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             return filler;
         }
 
-        private Filler<Course> CreateRandomCourseFiller()
+        private static Filler<Course> CreateRandomCourseFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();

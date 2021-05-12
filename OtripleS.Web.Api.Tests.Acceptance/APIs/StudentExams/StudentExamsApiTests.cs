@@ -130,7 +130,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             return await this.otripleSApiBroker.PostStudentAsync(student);
         }
 
-        private StudentExam UpdateStudentExamRandom(StudentExam studentExam)
+        private static StudentExam UpdateStudentExamRandom(StudentExam studentExam)
         {
             studentExam.Score = GetRandomNumber();
             studentExam.UpdatedDate = DateTimeOffset.UtcNow;
@@ -141,11 +141,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private Filler<Teacher> CreateRandomTeacherFiller()
+        private static Filler<Teacher> CreateRandomTeacherFiller()
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid userId = Guid.NewGuid();
-
+            var now = DateTimeOffset.UtcNow;
+            var userId = Guid.NewGuid();
             var filler = new Filler<Teacher>();
 
             filler.Setup()
@@ -158,11 +157,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             return filler;
         }
 
-        private Filler<Exam> CreateRandomExamFiller(SemesterCourse semesterCourse)
+        private static Filler<Exam> CreateRandomExamFiller(SemesterCourse semesterCourse)
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid userId = Guid.NewGuid();
-
+            var now = DateTimeOffset.UtcNow;
+            var userId = Guid.NewGuid();
             var filler = new Filler<Exam>();
 
             filler.Setup()
@@ -176,7 +174,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             return filler;
         }
 
-        private Filler<SemesterCourse> CreateRandomSemesterCourseFiller(
+        private static Filler<SemesterCourse> CreateRandomSemesterCourseFiller(
             Teacher teacher,
             Course course,
             Classroom classroom)
@@ -199,11 +197,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             return filler;
         }
 
-        private Filler<Course> CreateRandomCourseFiller()
+        private static Filler<Course> CreateRandomCourseFiller()
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid userId = Guid.NewGuid();
-
+            var now = DateTimeOffset.UtcNow;
+            var userId = Guid.NewGuid();
             var filler = new Filler<Course>();
 
             filler.Setup()
@@ -216,11 +213,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             return filler;
         }
 
-        private Filler<Classroom> CreateRandomClassroomFiller()
+        private static Filler<Classroom> CreateRandomClassroomFiller()
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid userId = Guid.NewGuid();
-
+            var now = DateTimeOffset.UtcNow;
+            var userId = Guid.NewGuid();
             var filler = new Filler<Classroom>();
 
             filler.Setup()
@@ -233,7 +229,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             return filler;
         }
 
-        private Filler<Student> CreateRandomStudentFiller()
+        private static Filler<Student> CreateRandomStudentFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid userId = Guid.NewGuid();

@@ -76,8 +76,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentContacts
 
         private static Filler<Contact> CreateContactFiller()
         {
-            Filler<Contact> filler = new Filler<Contact>();
-            Guid randomCreatedUpdatedById = Guid.NewGuid();
+            var filler = new Filler<Contact>();
+            var randomCreatedUpdatedById = Guid.NewGuid();
 
             filler.Setup()
                 .OnProperty(contact => contact.CreatedBy).Use(randomCreatedUpdatedById)

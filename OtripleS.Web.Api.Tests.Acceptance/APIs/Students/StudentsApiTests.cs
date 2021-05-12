@@ -25,10 +25,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private IEnumerable<Student> GetRandomStudents() =>
+        private static IEnumerable<Student> GetRandomStudents() =>
             CreateRandomStudentFiller().Create(GetRandomNumber());
 
-        private Student CreateRandomStudent() =>
+        private static Student CreateRandomStudent() =>
             CreateRandomStudentFiller().Create();
 
         private async ValueTask<Student> PostRandomStudentAsync()
@@ -39,10 +39,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
             return randomStudent;
         }
 
-        private Filler<Student> CreateRandomStudentFiller()
+        private static Filler<Student> CreateRandomStudentFiller()
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid userId = Guid.NewGuid();
+            var now = DateTimeOffset.UtcNow;
+            var userId = Guid.NewGuid();
             var filler = new Filler<Student>();
 
             filler.Setup()
@@ -55,9 +55,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Students
             return filler;
         }
 
-        private Student UpdateStudentRandom(Student student)
+        private static Student UpdateStudentRandom(Student student)
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
+            var now = DateTimeOffset.UtcNow;
             student.UpdatedDate = now;
 
             return student;

@@ -55,8 +55,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CoursesAttachments
             return deletedCourseAttachment;
         }
 
-        private Course CreateRandomCourse() => CreateRandomCourseFiller().Create();
-        private Attachment CreateRandomAttachment() => CreateRandomAttachmentFiller().Create();
+        private static Course CreateRandomCourse() => CreateRandomCourseFiller().Create();
+        private static Attachment CreateRandomAttachment() => CreateRandomAttachmentFiller().Create();
 
         private async ValueTask<Course> PostCourseAsync()
         {
@@ -79,7 +79,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CoursesAttachments
 
         private static int GetRandomNumber() => new IntRange(min: 1, max: 5).GetValue();
 
-        private Filler<CourseAttachment> CreateRandomCourseAttachmentFiller(Guid courseId, Guid attachmentId)
+        private static Filler<CourseAttachment> CreateRandomCourseAttachmentFiller(Guid courseId, Guid attachmentId)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
@@ -93,7 +93,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CoursesAttachments
             return filler;
         }
 
-        private Filler<Course> CreateRandomCourseFiller()
+        private static Filler<Course> CreateRandomCourseFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
@@ -109,7 +109,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CoursesAttachments
             return filler;
         }
 
-        private Filler<Attachment> CreateRandomAttachmentFiller()
+        private static Filler<Attachment> CreateRandomAttachmentFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();

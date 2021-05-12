@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
             return randomCalendar;
         }
 
-        private Calendar CreateRandomCalendar() =>
+        private static Calendar CreateRandomCalendar() =>
              CreateRandomCalendarFiller().Create();
 
         private async ValueTask<Calendar> PostRandomGuardianAsync()
@@ -39,7 +39,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
             return randomCalendar;
         }
 
-        private Calendar UpdateCalendarRandom(Calendar calendar)
+        private static Calendar UpdateCalendarRandom(Calendar calendar)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             var filler = new Filler<Calendar>();
@@ -55,7 +55,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Calendars
             return filler.Create();
         }
 
-        private Filler<Calendar> CreateRandomCalendarFiller()
+        private static Filler<Calendar> CreateRandomCalendarFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();

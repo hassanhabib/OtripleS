@@ -22,7 +22,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Classrooms
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private Classroom CreateRandomClassroom() =>
+        private static Classroom CreateRandomClassroom() =>
             CreateRandomClassroomFiller().Create();
 
         private async ValueTask<Classroom> PostRandomClassroomAsync()
@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Classrooms
             return randomClassroom;
         }
 
-        private Classroom UpdateClassroomRandom(Classroom classroom)
+        private static Classroom UpdateClassroomRandom(Classroom classroom)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
 
@@ -53,7 +53,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Classrooms
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private Filler<Classroom> CreateRandomClassroomFiller()
+        private static Filler<Classroom> CreateRandomClassroomFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();

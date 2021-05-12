@@ -51,7 +51,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.GuardianContacts
             return filler.Create();
         }
 
-        private Guardian CreateRandomGuardian() =>
+        private static Guardian CreateRandomGuardian() =>
             CreateRandomGuardianFiller().Create();
 
         private static Contact CreateRandomContact() =>
@@ -86,7 +86,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.GuardianContacts
 
         private static Filler<Contact> CreateRandomContactFiller()
         {
-            Filler<Contact> filler = new Filler<Contact>();
+            var filler = new Filler<Contact>();
             Guid randomCreatedUpdatedById = Guid.NewGuid();
 
             filler.Setup()
@@ -97,7 +97,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.GuardianContacts
             return filler;
         }
 
-        private Filler<Guardian> CreateRandomGuardianFiller()
+        private static Filler<Guardian> CreateRandomGuardianFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();

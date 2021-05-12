@@ -73,12 +73,12 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamFees
 
         private async ValueTask<User> PostRandomUserAsync()
         {
-            User user = CreateRandomUserAsync();
+            User user = CreateRandomUser();
 
             return await this.otripleSApiBroker.PostUserAsync(user);
         }
 
-        private User CreateRandomUserAsync() =>
+        private static User CreateRandomUser() =>
             CreateRandomUserFiller().Create();
 
         private async ValueTask<ExamFee> CreateRandomExamFeeAsync() =>
@@ -104,7 +104,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamFees
             return filler.Create();
         }
 
-        private ValueTask<ExamFee> UpdateExamFeeRandom(ExamFee examFee)
+        private static ValueTask<ExamFee> UpdateExamFeeRandom(ExamFee examFee)
         {
             examFee.UpdatedDate = DateTimeOffset.UtcNow;
 
@@ -114,10 +114,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamFees
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private string GetRandomString() => new MnemonicString().GetValue();
-        private int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+        private static string GetRandomString() => new MnemonicString().GetValue();
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private ValueTask<Fee> CreateRandomFeeFiller(User user)
+        private static ValueTask<Fee> CreateRandomFeeFiller(User user)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             var filler = new Filler<Fee>();
@@ -132,7 +132,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamFees
             return new ValueTask<Fee>(filler.Create());
         }
 
-        private Filler<User> CreateRandomUserFiller()
+        private static Filler<User> CreateRandomUserFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             DateTimeOffset? nullableDateTime = null;
@@ -204,7 +204,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamFees
             return await this.otripleSApiBroker.PostTeacherAsync(randomTeacher);
         }
 
-        private Filler<Teacher> CreateRandomTeacherFiller()
+        private static Filler<Teacher> CreateRandomTeacherFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
@@ -228,7 +228,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamFees
             return await this.otripleSApiBroker.PostClassroomAsync(randomClassroom);
         }
 
-        private Filler<Classroom> CreateRandomClassroomFiller()
+        private static Filler<Classroom> CreateRandomClassroomFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
@@ -252,7 +252,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamFees
             return await this.otripleSApiBroker.PostCourseAsync(randomCourse);
         }
 
-        private Filler<Course> CreateRandomCourseFiller()
+        private static Filler<Course> CreateRandomCourseFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();

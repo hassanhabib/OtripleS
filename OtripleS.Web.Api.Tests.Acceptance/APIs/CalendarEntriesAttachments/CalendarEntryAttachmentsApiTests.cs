@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntryAttachments
             return deletedCalendarEntryAttachment;
         }
 
-        private Attachment CreateRandomAttachment() => CreateRandomAttachmentFiller().Create();
+        private static Attachment CreateRandomAttachment() => CreateRandomAttachmentFiller().Create();
 
         private async ValueTask<CalendarEntry> PostCalendarEntryAsync()
         {
@@ -80,7 +80,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntryAttachments
         private static int GetRandomNumber() => new IntRange(min: 1, max: 5).GetValue();
 
 
-        private Filler<CalendarEntryAttachment> CreateRandomCalendarEntryAttachmentFiller(
+        private static Filler<CalendarEntryAttachment> CreateRandomCalendarEntryAttachmentFiller(
             Guid calendarEntryId, Guid attachmentId)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -97,7 +97,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntryAttachments
             return filler;
         }
 
-        private string GetRandomString() => new MnemonicString().GetValue();
+        private static string GetRandomString() => new MnemonicString().GetValue();
 
         private async ValueTask<CalendarEntry> PostRandomCalendarEntryAsync()
         {
@@ -135,7 +135,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntryAttachments
             return randomCalendar;
         }
 
-        private Filler<Attachment> CreateRandomAttachmentFiller()
+        private static Filler<Attachment> CreateRandomAttachmentFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
@@ -151,7 +151,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntryAttachments
             return filler;
         }
 
-        private Calendar CreateRandomCalendar()
+        private static Calendar CreateRandomCalendar()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();

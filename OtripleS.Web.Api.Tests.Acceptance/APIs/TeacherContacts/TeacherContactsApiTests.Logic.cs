@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherContacts
         {
             // given
             Teacher randomTeacher = await PostRandomTeacherAsync();
-            List<TeacherContact> randomTeacherContacts = new List<TeacherContact>();
+            var randomTeacherContacts = new List<TeacherContact>();
 
             for (int i = 0; i < GetRandomNumber(); i++)
             {

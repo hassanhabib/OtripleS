@@ -68,7 +68,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamsAttachments
             return deletedExamAttachment;
         }
 
-        private Attachment CreateRandomAttachment() => CreateRandomAttachmentFiller().Create();
+        private static Attachment CreateRandomAttachment() => CreateRandomAttachmentFiller().Create();
 
         private async ValueTask<Exam> PostExamAsync()
         {
@@ -91,7 +91,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamsAttachments
 
         private static int GetRandomNumber() => new IntRange(min: 1, max: 5).GetValue();
 
-        private Filler<ExamAttachment> CreateRandomExamAttachmentFiller(Guid examId, Guid attachmentId)
+        private static Filler<ExamAttachment> CreateRandomExamAttachmentFiller(Guid examId, Guid attachmentId)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
@@ -162,11 +162,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamsAttachments
             return await this.otripleSApiBroker.PostTeacherAsync(randomTeacher);
         }
 
-        private Filler<Teacher> CreateRandomTeacherFiller()
+        private static Filler<Teacher> CreateRandomTeacherFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
-
             var filler = new Filler<Teacher>();
 
             filler.Setup()
@@ -186,7 +185,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamsAttachments
             return await this.otripleSApiBroker.PostClassroomAsync(randomClassroom);
         }
 
-        private Filler<Classroom> CreateRandomClassroomFiller()
+        private static Filler<Classroom> CreateRandomClassroomFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
@@ -210,7 +209,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamsAttachments
             return await this.otripleSApiBroker.PostCourseAsync(randomCourse);
         }
 
-        private Filler<Course> CreateRandomCourseFiller()
+        private static Filler<Course> CreateRandomCourseFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
@@ -226,10 +225,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.ExamsAttachments
             return filler;
         }
 
-        private Filler<Attachment> CreateRandomAttachmentFiller()
+        private static Filler<Attachment> CreateRandomAttachmentFiller()
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid posterId = Guid.NewGuid();
+            var now = DateTimeOffset.UtcNow;
+            var posterId = Guid.NewGuid();
             var filler = new Filler<Attachment>();
 
             filler.Setup()

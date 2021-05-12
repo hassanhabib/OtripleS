@@ -22,7 +22,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private Course CreateRandomCourse() =>
+        private static Course CreateRandomCourse() =>
             CreateRandomCourseFiller().Create();
 
         private async ValueTask<Course> PostRandomCourseAsync()
@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
             return randomCourse;
         }
 
-        private Course UpdateCourseRandom(Course course)
+        private static Course UpdateCourseRandom(Course course)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             var filler = new Filler<Course>();
@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private Filler<Course> CreateRandomCourseFiller()
+        private static Filler<Course> CreateRandomCourseFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();

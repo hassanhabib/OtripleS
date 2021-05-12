@@ -60,7 +60,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
         public async Task ShouldGetAllSemesterCoursesAsync()
         {
             // given
-            List<SemesterCourse> randomSemesterCourses = new List<SemesterCourse>();
+            var randomSemesterCourses = new List<SemesterCourse>();
 
             for (int i = 0; i <= GetRandomNumber(); i++)
             {

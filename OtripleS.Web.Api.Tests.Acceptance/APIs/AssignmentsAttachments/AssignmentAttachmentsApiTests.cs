@@ -42,7 +42,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.AssignmentsAttachments
             return randomAssignmentAttachment;
         }
 
-        private async ValueTask<AssignmentAttachment> DeleteAssignmentAttachmentAsync(AssignmentAttachment assignmentAttachment)
+        private async ValueTask<AssignmentAttachment> DeleteAssignmentAttachmentAsync(
+            AssignmentAttachment assignmentAttachment)
         {
             AssignmentAttachment deletedAssignmentAttachment =
                 await this.otripleSApiBroker.DeleteAssignmentAttachmentByIdsAsync(
@@ -50,14 +51,12 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.AssignmentsAttachments
                     assignmentAttachment.AttachmentId);
 
             await this.otripleSApiBroker.DeleteAttachmentByIdAsync(assignmentAttachment.AttachmentId);
-
-            Assignment deletedAssignment =
-                await this.otripleSApiBroker.DeleteAssignmentByIdAsync(assignmentAttachment.AssignmentId);
+            await this.otripleSApiBroker.DeleteAssignmentByIdAsync(assignmentAttachment.AssignmentId);
 
             return deletedAssignmentAttachment;
         }
 
-        private Attachment CreateRandomAttachment() => CreateRandomAttachmentFiller().Create();
+        private static Attachment CreateRandomAttachment() => CreateRandomAttachmentFiller().Create();
 
         private async ValueTask<Assignment> PostAssignmentAsync()
         {
@@ -80,7 +79,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.AssignmentsAttachments
 
         private static int GetRandomNumber() => new IntRange(min: 1, max: 5).GetValue();
 
-        private Filler<AssignmentAttachment> CreateRandomAssignmentAttachmentFiller(Guid assignmentId, Guid attachmentId)
+        private static Filler<AssignmentAttachment> CreateRandomAssignmentAttachmentFiller(
+            Guid assignmentId, 
+            Guid attachmentId)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
@@ -94,7 +95,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.AssignmentsAttachments
             return filler;
         }
 
-        private Assignment CreateRandomAssignment()
+        private static Assignment CreateRandomAssignment()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
@@ -110,7 +111,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.AssignmentsAttachments
             return filler.Create();
         }
 
-        private Filler<Attachment> CreateRandomAttachmentFiller()
+        private static Filler<Attachment> CreateRandomAttachmentFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();

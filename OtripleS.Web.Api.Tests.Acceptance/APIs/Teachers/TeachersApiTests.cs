@@ -21,13 +21,13 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
         public TeachersApiTests(OtripleSApiBroker otripleSApiBroker) =>
             this.otripleSApiBroker = otripleSApiBroker;
 
-        private Teacher CreateRandomTeacher() =>
+        private static Teacher CreateRandomTeacher() =>
             CreateRandomTeacherFiller().Create();
 
-        private IEnumerable<Teacher> CreateRandomTeachers() =>
+        private static IEnumerable<Teacher> CreateRandomTeachers() =>
             CreateRandomTeacherFiller().Create(GetRandomNumber());
 
-        private Teacher UpdateTeacherRandom(Teacher teacher)
+        private static Teacher UpdateTeacherRandom(Teacher teacher)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             var filler = new Filler<Teacher>();
@@ -57,11 +57,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Teachers
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private Filler<Teacher> CreateRandomTeacherFiller()
+        private static Filler<Teacher> CreateRandomTeacherFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid userId = Guid.NewGuid();
-
             var filler = new Filler<Teacher>();
 
             filler.Setup()
