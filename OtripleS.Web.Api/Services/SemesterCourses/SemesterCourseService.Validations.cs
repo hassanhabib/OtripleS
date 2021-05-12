@@ -46,7 +46,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             }
         }
 
-        private void ValidateSemesterCourseId(Guid semesterCourseId)
+        private static void ValidateSemesterCourseId(Guid semesterCourseId)
         {
             if (semesterCourseId == Guid.Empty)
             {
