@@ -27,9 +27,15 @@ namespace OtripleS.Web.Api.Services.Registrations
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
         }
-        public ValueTask<Registration> RetrieveRegistrationByIdAsync(Guid registrationId)
+        public ValueTask<Registration> RetrieveRegistrationByIdAsync(Guid registrationId) =>
+        TryCatch(async () =>
         {
-            return this.storageBroker.SelectRegistrationByIdAsync(registrationId);
-        }
+            ValidateRegistrationId(registrationId);
+
+            Registration storageRegistration =
+                await this.storageBroker.SelectRegistrationByIdAsync(registrationId);
+
+            return storageRegistration;
+        });
     }
 }
