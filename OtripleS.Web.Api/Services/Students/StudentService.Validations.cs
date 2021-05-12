@@ -121,7 +121,7 @@ namespace OtripleS.Web.Api.Services.Students
             }
         }
 
-        private void ValidateStudentStrings(Student student)
+        private static void ValidateStudentStrings(Student student)
         {
             switch (student)
             {
@@ -142,7 +142,7 @@ namespace OtripleS.Web.Api.Services.Students
             }
         }
 
-        private void ValidateDatesAreNotSame(Student student)
+        private static void ValidateDatesAreNotSame(Student student)
         {
             if (student.CreatedDate == student.UpdatedDate)
             {
@@ -218,7 +218,7 @@ namespace OtripleS.Web.Api.Services.Students
 
         private void ValidateStorageStudents(IQueryable<Student> storageStudents)
         {
-            if (storageStudents.Count() == 0)
+            if (!storageStudents.Any())
             {
                 this.loggingBroker.LogWarning("No students found in storage.");
             }

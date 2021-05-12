@@ -12,7 +12,7 @@ namespace OtripleS.Web.Api.Services.StudentContacts
 {
     public partial class StudentContactService
     {
-        private void ValidateStudentContactOnCreate(StudentContact studentContact)
+        private static void ValidateStudentContactOnCreate(StudentContact studentContact)
         {
             ValidateStudentContactIsNull(studentContact);
             ValidateStudentContactRequiredFields(studentContact);
@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Services.StudentContacts
             }
         }
 
-        private void ValidateStudentContactIdIsNull(Guid studentId, Guid contactId)
+        private static void ValidateStudentContactIdIsNull(Guid studentId, Guid contactId)
         {
             if (studentId == default)
             {

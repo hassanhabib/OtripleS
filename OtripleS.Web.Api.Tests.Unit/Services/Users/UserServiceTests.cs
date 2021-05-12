@@ -81,7 +81,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
         private static int GetRandomNumber() => new IntRange(min: 2, max: 90).GetValue();
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
 
-        private User CreateRandomUser(DateTimeOffset dates)
+        private static User CreateRandomUser(DateTimeOffset dates)
         {
             var user = new User
             {
@@ -100,7 +100,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Users
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
-        private IQueryable<User> CreateRandomUsers(DateTimeOffset dates)
+        private static IQueryable<User> CreateRandomUsers(DateTimeOffset dates)
         {
             var users = new List<User>();
             for (int i = 0; i < GetRandomNumber(); i++)

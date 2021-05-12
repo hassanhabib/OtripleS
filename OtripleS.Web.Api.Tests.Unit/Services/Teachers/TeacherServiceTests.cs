@@ -51,7 +51,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Teachers
         private IEnumerable<Teacher> CreateRandomTeachers(DateTimeOffset dateTime) =>
             CreateRandomTeacherFiller(dateTime).Create(GetRandomNumber());
 
-        private Teacher CreateRandomTeacher(DateTimeOffset dateTime) =>
+        private static Teacher CreateRandomTeacher(DateTimeOffset dateTime) =>
             CreateRandomTeacherFiller(dateTime).Create();
 
         private static IQueryable<Teacher> CreateRandomTeachers() =>

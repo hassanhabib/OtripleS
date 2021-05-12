@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
             }
         }
 
-        private void ValidateStudentGuardianRequiredFields(StudentGuardian studentGuardian)
+        private static void ValidateStudentGuardianRequiredFields(StudentGuardian studentGuardian)
         {
             switch (studentGuardian)
             {
@@ -66,7 +66,7 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
             }
         }
 
-        private void ValidateStudentGuardianIdIsNull(Guid studentId, Guid guardianId)
+        private static void ValidateStudentGuardianIdIsNull(Guid studentId, Guid guardianId)
         {
             if (studentId == default)
             {
@@ -84,7 +84,7 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
 
         private void ValidateStorageStudentGuardians(IQueryable<StudentGuardian> studentGuardians)
         {
-            if (studentGuardians.Count() == 0)
+            if (!studentGuardians.Any())
             {
                 this.loggingBroker.LogWarning("No Student Guardians found in storage.");
             }
@@ -101,7 +101,7 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
             }
         }
 
-        private void ValidateAgainstStorageStudentGuardianOnModify
+        private static void ValidateAgainstStorageStudentGuardianOnModify
             (StudentGuardian inputStudentGuardian, StudentGuardian storageStudentGuardian)
         {
             switch (inputStudentGuardian)
@@ -113,14 +113,14 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
             }
         }
 
-        private void ValidateStudentGuardianIsNull(StudentGuardian studentGuardian)
+        private static void ValidateStudentGuardianIsNull(StudentGuardian studentGuardian)
         {
             if (studentGuardian is null)
             {
                 throw new NullStudentGuardianException();
             }
         }
-        private void ValidateStudentGuardianId(Guid studentGuardianId)
+        private static void ValidateStudentGuardianId(Guid studentGuardianId)
         {
             if (studentGuardianId == Guid.Empty)
             {
@@ -129,7 +129,7 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
                     parameterValue: studentGuardianId);
             }
         }
-        private void ValidateStudentId(Guid studentId)
+        private static void ValidateStudentId(Guid studentId)
         {
             if (studentId == Guid.Empty)
             {
@@ -139,7 +139,7 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
             }
         }
 
-        private void ValidateInvalidAuditFields(StudentGuardian studentGuardian)
+        private static void ValidateInvalidAuditFields(StudentGuardian studentGuardian)
         {
             switch (studentGuardian)
             {
@@ -165,7 +165,7 @@ namespace OtripleS.Web.Api.Services.StudentGuardians
             }
         }
 
-        private void ValidateDatesAreNotSame(StudentGuardian studentGuardian)
+        private static void ValidateDatesAreNotSame(StudentGuardian studentGuardian)
         {
             if (studentGuardian.CreatedDate == studentGuardian.UpdatedDate)
             {

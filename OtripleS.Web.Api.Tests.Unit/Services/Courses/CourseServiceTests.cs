@@ -41,7 +41,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private IEnumerable<Course> CreateRandomCourses(DateTimeOffset dateTime) =>
+        private static IEnumerable<Course> CreateRandomCourses(DateTimeOffset dateTime) =>
             CreateRandomCourseFiller(dateTime).Create(GetRandomNumber());
 
         private Course CreateRandomCourse(DateTimeOffset dateTime) =>

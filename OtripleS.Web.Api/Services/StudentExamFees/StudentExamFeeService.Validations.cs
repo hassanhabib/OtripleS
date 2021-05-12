@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             ValidateInvalidAuditFieldsOnUpdate(studentExamFee);
         }
 
-        private void ValidateStudentExamFeeIsNull(StudentExamFee studentExamFee)
+        private static void ValidateStudentExamFeeIsNull(StudentExamFee studentExamFee)
         {
             if (studentExamFee is null)
             {
@@ -53,7 +53,7 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             }
         }
 
-        private void ValidateStudentExamFeeIdsAreNull(
+        private static void ValidateStudentExamFeeIdsAreNull(
             Guid studentId,
             Guid examFeeId)
         {
@@ -71,7 +71,7 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             }
         }
 
-        private void ValidateInvalidAuditFields(StudentExamFee studentExamFee)
+        private static void ValidateInvalidAuditFields(StudentExamFee studentExamFee)
         {
             switch (studentExamFee)
             {
@@ -134,7 +134,7 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
             }
         }
 
-        private void ValidateAgainstStorageStudentExamFeeOnModify(
+        private static void ValidateAgainstStorageStudentExamFeeOnModify(
             StudentExamFee inputStudentExamFee,
             StudentExamFee storageStudentExamFee)
         {
@@ -146,7 +146,7 @@ namespace OtripleS.Web.Api.Services.StudentExamFees
 
         private void ValidateStorageStudentExamFees(IQueryable<StudentExamFee> storageStudentExamFees)
         {
-            if (storageStudentExamFees.Count() == 0)
+            if (!storageStudentExamFees.Any())
             {
                 this.loggingBroker.LogWarning("No student exam fees found in storage.");
             }

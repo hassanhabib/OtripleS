@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Services.UserContacts
             ValidateUserContactRequiredFields(userContact);
         }
 
-        private void ValidateUserContactIsNull(UserContact userContact)
+        private static void ValidateUserContactIsNull(UserContact userContact)
         {
             if (userContact is null)
             {
@@ -51,7 +51,7 @@ namespace OtripleS.Web.Api.Services.UserContacts
             }
         }
 
-        private void ValidateUserContactIdIsNull(Guid userId, Guid contactId)
+        private static void ValidateUserContactIdIsNull(Guid userId, Guid contactId)
         {
             if (userId == default)
             {
@@ -76,7 +76,6 @@ namespace OtripleS.Web.Api.Services.UserContacts
             }
         }
 
-        private bool IsInvalid(Guid input) => input == default;
-
+        private static bool IsInvalid(Guid input) => input == default;
     }
 }

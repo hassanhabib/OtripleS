@@ -41,7 +41,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
         private static Contact CreateRandomContact(DateTimeOffset dateTime) =>
             CreateRandomContactFiller(dateTime).Create();
 
-        private IQueryable<Contact> CreateRandomContacts(DateTimeOffset dateTime) =>
+        private static IQueryable<Contact> CreateRandomContacts(DateTimeOffset dateTime) =>
             CreateRandomContactFiller(dateTime).Create(GetRandomNumber()).AsQueryable();
 
         private static DateTimeOffset GetRandomDateTime() =>
@@ -75,7 +75,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Contacts
 
         private static Filler<Contact> CreateRandomContactFiller(DateTimeOffset dateTime)
         {
-            Filler<Contact> filler = new Filler<Contact>();
+            var filler = new Filler<Contact>();
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dateTime)

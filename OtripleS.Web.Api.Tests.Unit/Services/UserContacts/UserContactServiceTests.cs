@@ -56,9 +56,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
 
-        private static DateTimeOffset GetRandomDateTime() =>
-            new DateTimeRange(earliestDate: new DateTime()).GetValue();
-
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 

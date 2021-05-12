@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             }
         }
 
-        private void ValidateSemesterCourseFields(SemesterCourse semesterCourse)
+        private static void ValidateSemesterCourseFields(SemesterCourse semesterCourse)
         {
             if (IsInvalid(semesterCourse.StartDate))
             {
