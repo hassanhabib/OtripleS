@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Services.Registrations
 
         public IQueryable<Registration> RetrieveAllRegistrations()
         {
-            throw new NotImplementedException();
+            return this.storageBroker.SelectAllRegistrations();
         }
 
         public ValueTask<Registration> RetrieveRegistrationByIdAsync(Guid registrationId) =>
