@@ -55,10 +55,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
             return deletedStudentGuardian;
         }
 
-        private Student CreateRandomStudent() =>
+        private static Student CreateRandomStudent() =>
             CreateRandomStudentFiller().Create();
 
-        private Guardian CreateRandomGuardian() =>
+        private static Guardian CreateRandomGuardian() =>
             CreateRandomGuardianFiller().Create();
 
         private async ValueTask<Student> PostStudentAsync()
@@ -82,10 +82,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
 
         private static int GetRandomNumber() => new IntRange(min: 1, max: 5).GetValue();
 
-        private Filler<StudentGuardian> CreateRandomStudentGuardianFiller()
+        private static Filler<StudentGuardian> CreateRandomStudentGuardianFiller()
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid posterId = Guid.NewGuid();
+            var now = DateTimeOffset.UtcNow;
+            var posterId = Guid.NewGuid();
             var filler = new Filler<StudentGuardian>();
 
             filler.Setup()
@@ -98,10 +98,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
             return filler;
         }
 
-        private Filler<StudentGuardian> CreateRandomStudentGuardianFiller(Guid studentId, Guid guardianId)
+        private static Filler<StudentGuardian> CreateRandomStudentGuardianFiller(Guid studentId, Guid guardianId)
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid posterId = Guid.NewGuid();
+            var now = DateTimeOffset.UtcNow;
+            var posterId = Guid.NewGuid();
             var filler = new Filler<StudentGuardian>();
 
             filler.Setup()
@@ -116,10 +116,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
             return filler;
         }
 
-        private Filler<Student> CreateRandomStudentFiller()
+        private static Filler<Student> CreateRandomStudentFiller()
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid posterId = Guid.NewGuid();
+            var now = DateTimeOffset.UtcNow;
+            var posterId = Guid.NewGuid();
             var filler = new Filler<Student>();
 
             filler.Setup()
@@ -132,10 +132,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentGuardians
             return filler;
         }
 
-        private Filler<Guardian> CreateRandomGuardianFiller()
+        private static Filler<Guardian> CreateRandomGuardianFiller()
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid posterId = Guid.NewGuid();
+            var now = DateTimeOffset.UtcNow;
+            var posterId = Guid.NewGuid();
             var filler = new Filler<Guardian>();
 
             filler.Setup()

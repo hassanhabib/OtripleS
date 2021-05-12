@@ -19,14 +19,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
     [Collection(nameof(ApiTestCollection))]
     public partial class AttendancesApiTests
     {
-        private OtripleSApiBroker otripleSApiBroker;
+        private readonly OtripleSApiBroker otripleSApiBroker;
 
         public AttendancesApiTests(OtripleSApiBroker otripleSApiBroker) =>
             this.otripleSApiBroker = otripleSApiBroker;
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private Attendance UpdateAttendanceRandom(Attendance inputAttendance)
+        private static Attendance UpdateAttendanceRandom(Attendance inputAttendance)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             inputAttendance.UpdatedDate = now;
@@ -48,8 +48,12 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
             Teacher randomTeacher = await PostTeacherAsync();
             Classroom randomClassroom = await PostClassRoomAsync();
             Course randomCourse = await PostCourseAsync();
+
             SemesterCourse semesterCourse = await PostRandomSemesterCourseAsync(
-                randomTeacher, randomClassroom, randomCourse);
+                teacher: randomTeacher,
+                classroom: randomClassroom,
+                course: randomCourse);
+            
             Guid posterId = Guid.NewGuid();
 
             var filler = new Filler<Attendance>();
@@ -86,22 +90,22 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private async ValueTask<SemesterCourse> PostRandomSemesterCourseAsync(
-            Teacher randomTeacher,
-            Classroom randomClassroom,
-            Course randomCourse)
+            Teacher teacher,
+            Classroom classroom,
+            Course course)
         {
             SemesterCourse randomSemesterCourse =
                 CreateRandomSemesterCourse(
-                    randomTeacher,
-                    randomClassroom,
-                    randomCourse);
+                    teacher: teacher,
+                    classroom: classroom,
+                    course: course);
 
             await this.otripleSApiBroker.PostSemesterCourseAsync(randomSemesterCourse);
 
             return randomSemesterCourse;
         }
 
-        private SemesterCourse CreateRandomSemesterCourse(
+        private static SemesterCourse CreateRandomSemesterCourse(
             Teacher teacher,
             Classroom classroom,
             Course course)
@@ -147,11 +151,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
             return await this.otripleSApiBroker.PostTeacherAsync(randomTeacher);
         }
 
-        private Filler<Classroom> CreateRandomClassroomFiller()
+        private static Filler<Classroom> CreateRandomClassroomFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
-
             var filler = new Filler<Classroom>();
 
             filler.Setup()
@@ -164,11 +167,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
             return filler;
         }
 
-        private Filler<Teacher> CreateRandomTeacherFiller()
+        private static Filler<Teacher> CreateRandomTeacherFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();
-
             var filler = new Filler<Teacher>();
 
             filler.Setup()
@@ -181,7 +183,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
             return filler;
         }
 
-        private Filler<Course> CreateRandomCourseFiller()
+        private static Filler<Course> CreateRandomCourseFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();

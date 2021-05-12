@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Classrooms
         public async Task ShouldGetAllClassroomsAsync()
         {
             // given
-            List<Classroom> randomClassrooms = new List<Classroom>();
+            var randomClassrooms = new List<Classroom>();
 
             for (int i = 0; i <= GetRandomNumber(); i++)
             {

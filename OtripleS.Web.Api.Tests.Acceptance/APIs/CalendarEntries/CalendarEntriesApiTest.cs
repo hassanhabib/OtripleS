@@ -92,7 +92,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.CalendarEntries
             return filler.Create();
         }
 
-        private Calendar CreateRandomCalendar()
+        private static Calendar CreateRandomCalendar()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid posterId = Guid.NewGuid();

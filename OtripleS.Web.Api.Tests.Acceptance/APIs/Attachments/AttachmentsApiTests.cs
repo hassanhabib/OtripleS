@@ -15,14 +15,14 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attachments
     [Collection(nameof(ApiTestCollection))]
     public partial class AttachmentsApiTests
     {
-        private OtripleSApiBroker otripleSApiBroker;
+        private readonly OtripleSApiBroker otripleSApiBroker;
 
         public AttachmentsApiTests(OtripleSApiBroker otripleSApiBroker) =>
             this.otripleSApiBroker = otripleSApiBroker;
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private Attachment CreateRandomAttachment() =>
+        private static Attachment CreateRandomAttachment() =>
             CreateRandomAttachmentFiller().Create();
 
         private async ValueTask<Attachment> PostRandomAttachmentAsync()
@@ -33,10 +33,9 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attachments
             return randomAttachment;
         }
 
-        private Attachment UpdateAttachmentRandom(Attachment inputAttachment)
+        private static Attachment UpdateAttachmentRandom(Attachment inputAttachment)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
-
             var filler = new Filler<Attachment>();
 
             filler.Setup()
@@ -52,11 +51,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attachments
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private Filler<Attachment> CreateRandomAttachmentFiller()
+        private static Filler<Attachment> CreateRandomAttachmentFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid creatorId = Guid.NewGuid();
-
             var filler = new Filler<Attachment>();
 
             filler.Setup()

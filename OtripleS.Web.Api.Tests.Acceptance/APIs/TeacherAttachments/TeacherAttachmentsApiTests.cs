@@ -55,8 +55,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherAttachments
             return deletedTeacherAttachment;
         }
 
-        private Teacher CreateRandomTeacher() => CreateRandomTeacherFiller().Create();
-        private Attachment CreateRandomAttachment() => CreateRandomAttachmentFiller().Create();
+        private static Teacher CreateRandomTeacher() => CreateRandomTeacherFiller().Create();
+        private static Attachment CreateRandomAttachment() => CreateRandomAttachmentFiller().Create();
 
         private async ValueTask<Teacher> PostTeacherAsync()
         {
@@ -79,10 +79,12 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherAttachments
 
         private static int GetRandomNumber() => new IntRange(min: 1, max: 5).GetValue();
 
-        private Filler<TeacherAttachment> CreateRandomTeacherAttachmentFiller(Guid teacherId, Guid attachmentId)
+        private static Filler<TeacherAttachment> CreateRandomTeacherAttachmentFiller(
+            Guid teacherId, 
+            Guid attachmentId)
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid posterId = Guid.NewGuid();
+            var now = DateTimeOffset.UtcNow;
+            var posterId = Guid.NewGuid();
             var filler = new Filler<TeacherAttachment>();
 
             filler.Setup()
@@ -93,10 +95,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherAttachments
             return filler;
         }
 
-        private Filler<Teacher> CreateRandomTeacherFiller()
+        private static Filler<Teacher> CreateRandomTeacherFiller()
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid posterId = Guid.NewGuid();
+            var now = DateTimeOffset.UtcNow;
+            var posterId = Guid.NewGuid();
             var filler = new Filler<Teacher>();
 
             filler.Setup()
@@ -109,10 +111,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherAttachments
             return filler;
         }
 
-        private Filler<Attachment> CreateRandomAttachmentFiller()
+        private static Filler<Attachment> CreateRandomAttachmentFiller()
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid posterId = Guid.NewGuid();
+            var now = DateTimeOffset.UtcNow;
+            var posterId = Guid.NewGuid();
             var filler = new Filler<Attachment>();
 
             filler.Setup()

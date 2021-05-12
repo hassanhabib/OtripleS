@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
         public GuardiansApiTests(OtripleSApiBroker otripleSApiBroker) =>
             this.otripleSApiBroker = otripleSApiBroker;
 
-        private Guardian CreateRandomGuardian() =>
+        private static Guardian CreateRandomGuardian() =>
             CreateRandomGuardianFiller().Create();
 
         private async ValueTask<Guardian> PostRandomGuardianAsync()
@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
             return randomGuardian;
         }
 
-        private Guardian UpdateGuardianRandom(Guardian guardian)
+        private static Guardian UpdateGuardianRandom(Guardian guardian)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             var filler = new Filler<Guardian>();
@@ -52,10 +52,10 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Guardians
 
         private static int GetRandomNumber() => new IntRange(min: 1, max: 10).GetValue();
 
-        private Filler<Guardian> CreateRandomGuardianFiller()
+        private static Filler<Guardian> CreateRandomGuardianFiller()
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
-            Guid posterId = Guid.NewGuid();
+            var now = DateTimeOffset.UtcNow;
+            var posterId = Guid.NewGuid();
             var filler = new Filler<Guardian>();
 
             filler.Setup()

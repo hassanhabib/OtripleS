@@ -40,18 +40,18 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Fees
 
         private async ValueTask<User> PostRandomUserAsync()
         {
-            User user = CreateRandomUserAsync();
+            User user = CreateRandomUser();
 
             return await this.otripleSApiBroker.PostUserAsync(user);
         }
 
-        private User CreateRandomUserAsync() =>
+        private static User CreateRandomUser() =>
             CreateRandomUserFiller().Create();
 
         private async ValueTask<Fee> CreateRandomFeeAsync() =>
             await CreateRandomFeeFiller();
 
-        private Fee UpdateFeeRandom(Fee fee)
+        private static Fee UpdateFeeRandom(Fee fee)
         {
             fee.Label = GetRandomString();
             fee.UpdatedDate = DateTimeOffset.UtcNow;
@@ -62,8 +62,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Fees
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private string GetRandomString() => new MnemonicString().GetValue();
-        private int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+        private static string GetRandomString() => new MnemonicString().GetValue();
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
         private async ValueTask<Fee> CreateRandomFeeFiller()
         {
@@ -83,7 +83,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Fees
             return filler.Create();
         }
 
-        private Filler<User> CreateRandomUserFiller()
+        private static Filler<User> CreateRandomUserFiller()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             DateTimeOffset? nullableDateTime = null;
