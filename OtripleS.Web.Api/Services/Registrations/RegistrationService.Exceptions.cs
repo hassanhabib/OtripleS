@@ -58,9 +58,9 @@ namespace OtripleS.Web.Api.Services.Registrations
             {
                 return returningQueryableRegistrationFunction();
             }
-            catch (Exception exception)
+            catch (SqlException sqlException)
             {
-                throw CreateAndLogServiceException(exception);
+                throw CreateAndLogCriticalDependencyException(sqlException);
             }
         }
 
