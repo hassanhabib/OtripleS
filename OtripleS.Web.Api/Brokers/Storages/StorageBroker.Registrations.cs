@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Registrations;
@@ -21,5 +22,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
             return await broker.Registrations.FindAsync(RegistrationId);
         }
+
+        public IQueryable<Registration> SelectAllRegistrations() => Registrations.AsQueryable();
     }
 }
