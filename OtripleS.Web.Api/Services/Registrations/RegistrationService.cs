@@ -29,10 +29,15 @@ namespace OtripleS.Web.Api.Services.Registrations
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public IQueryable<Registration> RetrieveAllRegistrations()
+        public IQueryable<Registration> RetrieveAllRegistrations() =>
+        TryCatch(() =>
         {
-            return this.storageBroker.SelectAllRegistrations();
-        }
+            IQueryable<Registration> storageRegistrations = this.storageBroker.SelectAllRegistrations();
+
+            ValidateStorageRegistrations(storageRegistrations);
+
+            return storageRegistrations;
+        });
 
         public ValueTask<Registration> RetrieveRegistrationByIdAsync(Guid registrationId) =>
         TryCatch(async () =>
