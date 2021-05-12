@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Models.Registrations;
 
@@ -11,6 +12,7 @@ namespace OtripleS.Web.Api.Services.Registrations
 {
     public interface IRegistrationService
     {
+        IQueryable<Registration> RetrieveAllRegistrations();
         ValueTask<Registration> RetrieveRegistrationByIdAsync(Guid registrationId);
     }
 }
