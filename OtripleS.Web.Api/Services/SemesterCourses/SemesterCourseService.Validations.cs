@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
 
         private void ValidateStorageSemesterCourses(IQueryable<SemesterCourse> semesterCourses)
         {
-            if (semesterCourses.Count() == 0)
+            if (!semesterCourses.Any())
             {
                 this.loggingBroker.LogWarning("No semesterSemesterCourses found in storage.");
             }
@@ -94,7 +94,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             }
         }
 
-        private void ValidateInvalidAuditFields(SemesterCourse semesterCourse)
+        private static void ValidateInvalidAuditFields(SemesterCourse semesterCourse)
         {
             switch (semesterCourse)
             {
@@ -148,15 +148,8 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
                 throw new NotFoundSemesterCourseException(semesterCourseId);
             }
         }
-        private void ValidateStorageSemesterCourse(IQueryable<SemesterCourse> storageSemesterCourse)
-        {
-            if (storageSemesterCourse.Count() == 0)
-            {
-                this.loggingBroker.LogWarning("No classrooms found in storage.");
-            }
-        }
 
-        private void ValidateSemesterCourseIdIsNull(Guid semesterCourseId)
+        private static void ValidateSemesterCourseIdIsNull(Guid semesterCourseId)
         {
             if (semesterCourseId == default)
             {
@@ -189,7 +182,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             }
         }
 
-        private void ValidateAgainstStorageSemesterCourseOnModify(SemesterCourse inputSemesterCourse, SemesterCourse storageSemesterCourse)
+        private static void ValidateAgainstStorageSemesterCourseOnModify(SemesterCourse inputSemesterCourse, SemesterCourse storageSemesterCourse)
         {
             switch (inputSemesterCourse)
             {

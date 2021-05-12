@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Services.GuardianAttachments
             ValidateGuardianAttachmentIdIsNull(guardianAttachment.GuardianId, guardianAttachment.AttachmentId);
         }
 
-        private void ValidateGuardianAttachmentIsNull(GuardianAttachment guardianAttachment)
+        private static void ValidateGuardianAttachmentIsNull(GuardianAttachment guardianAttachment)
         {
             if (guardianAttachment is null)
             {
@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Services.GuardianAttachments
             }
         }
 
-        private void ValidateGuardianAttachmentIdIsNull(Guid guardianId, Guid attachmentId)
+        private static void ValidateGuardianAttachmentIdIsNull(Guid guardianId, Guid attachmentId)
         {
             if (guardianId == default)
             {
@@ -55,7 +55,7 @@ namespace OtripleS.Web.Api.Services.GuardianAttachments
 
         private void ValidateStorageGuardianAttachments(IQueryable<GuardianAttachment> storageGuardianAttachments)
         {
-            if (storageGuardianAttachments.Count() == 0)
+            if (!storageGuardianAttachments.Any())
             {
                 this.loggingBroker.LogWarning("No guardian attachments found in storage.");
             }

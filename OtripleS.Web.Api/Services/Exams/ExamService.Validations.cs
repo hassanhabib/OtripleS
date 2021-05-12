@@ -23,13 +23,13 @@ namespace OtripleS.Web.Api.Services.Exams
 
         private void ValidateStorageExams(IQueryable<Exam> storageExams)
         {
-            if (storageExams.Count() == 0)
+            if (!storageExams.Any())
             {
                 this.loggingBroker.LogWarning("No exams found in storage.");
             }
         }
 
-        private void ValidateExamId(Guid examId)
+        private static void ValidateExamId(Guid examId)
         {
             if (IsInvalid(examId))
             {
@@ -39,7 +39,7 @@ namespace OtripleS.Web.Api.Services.Exams
             }
         }
 
-        private void ValidateStorageExam(Exam storageExam, Guid examId)
+        private static void ValidateStorageExam(Exam storageExam, Guid examId)
         {
             if (storageExam == null)
             {
@@ -47,7 +47,7 @@ namespace OtripleS.Web.Api.Services.Exams
             }
         }
 
-        private void ValidateExamType(Exam exam)
+        private static void ValidateExamType(Exam exam)
         {
             if (IsInvalid(exam.Type))
             {
@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Services.Exams
             }
         }
 
-        private void ValidateExamIdIsNotNull(Exam exam)
+        private static void ValidateExamIdIsNotNull(Exam exam)
         {
             if (exam == default)
             {
@@ -106,9 +106,8 @@ namespace OtripleS.Web.Api.Services.Exams
             }
         }
 
-        private bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);
-        private bool IsInvalid(Guid input) => input == default;
-        private bool IsInvalid(DateTimeOffset input) => input == default;
+        private static bool IsInvalid(Guid input) => input == default;
+        private static bool IsInvalid(DateTimeOffset input) => input == default;
         private static bool IsInvalid(ExamType type) => Enum.IsDefined(type) == false;
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
@@ -139,7 +138,7 @@ namespace OtripleS.Web.Api.Services.Exams
             }
         }
 
-        private void ValidateDatesAreNotSame(Exam exam)
+        private static void ValidateDatesAreNotSame(Exam exam)
         {
             if (exam.CreatedDate == exam.UpdatedDate)
             {
@@ -149,7 +148,7 @@ namespace OtripleS.Web.Api.Services.Exams
             }
         }
 
-        private void ValidateExamtAuditFields(Exam exam)
+        private static void ValidateExamtAuditFields(Exam exam)
         {
             switch (exam)
             {
@@ -175,7 +174,7 @@ namespace OtripleS.Web.Api.Services.Exams
             }
         }
 
-        private void ValidateExamIsNotNull(Exam exam)
+        private static void ValidateExamIsNotNull(Exam exam)
         {
             if (exam is null)
             {
@@ -183,7 +182,7 @@ namespace OtripleS.Web.Api.Services.Exams
             }
         }
 
-        private void ValidateAgainstStorageExamOnModify(Exam inputExam, Exam storageExam)
+        private static void ValidateAgainstStorageExamOnModify(Exam inputExam, Exam storageExam)
         {
             switch (inputExam)
             {

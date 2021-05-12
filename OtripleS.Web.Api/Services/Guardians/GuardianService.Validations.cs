@@ -61,7 +61,7 @@ namespace OtripleS.Web.Api.Services.Guardians
             }
         }
 
-        private void ValidateGuardianRequiredFields(Guardian guardian)
+        private static void ValidateGuardianRequiredFields(Guardian guardian)
         {
             switch (guardian)
             {
@@ -77,9 +77,9 @@ namespace OtripleS.Web.Api.Services.Guardians
             }
         }
 
-        private bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);
-        private bool IsInvalid(Guid input) => input == default;
-        private bool IsInvalid(DateTimeOffset input) => input == default;
+        private static bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);
+        private static bool IsInvalid(Guid input) => input == default;
+        private static bool IsInvalid(DateTimeOffset input) => input == default;
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
@@ -90,7 +90,7 @@ namespace OtripleS.Web.Api.Services.Guardians
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
-        private void ValidateGuardianIdIsNotNull(Guardian guardian)
+        private static void ValidateGuardianIdIsNotNull(Guardian guardian)
         {
             if (guardian == default)
             {
@@ -98,7 +98,7 @@ namespace OtripleS.Web.Api.Services.Guardians
             }
         }
 
-        private void ValidateGuardianId(Guid guardianId)
+        private static void ValidateGuardianId(Guid guardianId)
         {
             if (IsInvalid(guardianId))
             {
@@ -108,7 +108,7 @@ namespace OtripleS.Web.Api.Services.Guardians
             }
         }
 
-        private void ValidateStorageGuardian(Guardian storageGuardian, Guid guardianId)
+        private static void ValidateStorageGuardian(Guardian storageGuardian, Guid guardianId)
         {
             if (storageGuardian == null)
             {
@@ -126,7 +126,7 @@ namespace OtripleS.Web.Api.Services.Guardians
             ValidateUpdatedDateIsRecent(guardian);
         }
 
-        private void ValidateGuardianIds(Guardian guardian)
+        private static void ValidateGuardianIds(Guardian guardian)
         {
             switch (guardian)
             {
@@ -142,7 +142,7 @@ namespace OtripleS.Web.Api.Services.Guardians
             }
         }
 
-        private void ValidateGuardianDates(Guardian guardian)
+        private static void ValidateGuardianDates(Guardian guardian)
         {
             switch (guardian)
             {
@@ -158,7 +158,7 @@ namespace OtripleS.Web.Api.Services.Guardians
             }
         }
 
-        private void ValidateDatesAreNotSame(Guardian guardian)
+        private static void ValidateDatesAreNotSame(Guardian guardian)
         {
             if (guardian.CreatedDate == guardian.UpdatedDate)
             {
@@ -178,7 +178,7 @@ namespace OtripleS.Web.Api.Services.Guardians
             }
         }
 
-        private void ValidateAgainstStorageGuardianOnModify(Guardian inputGuardian, Guardian storageGuardian)
+        private static void ValidateAgainstStorageGuardianOnModify(Guardian inputGuardian, Guardian storageGuardian)
         {
             switch (inputGuardian)
             {
@@ -201,7 +201,7 @@ namespace OtripleS.Web.Api.Services.Guardians
 
         private void ValidateStorageGuardians(IQueryable<Guardian> storageGuardians)
         {
-            if (storageGuardians.Count() == 0)
+            if (!storageGuardians.Any())
             {
                 this.loggingBroker.LogWarning("No guardians found in storage.");
             }

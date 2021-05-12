@@ -12,7 +12,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 {
     public partial class CourseAttachmentService
     {
-        private void ValidateCourseAttachmentOnCreate(CourseAttachment courseAttachment)
+        private static void ValidateCourseAttachmentOnCreate(CourseAttachment courseAttachment)
         {
             ValidateCourseAttachmentIsNull(courseAttachment);
             ValidateCourseAttachmentIds(courseAttachment.CourseId, courseAttachment.AttachmentId);

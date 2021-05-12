@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Services.Fees
             ValidateFeeAuditFieldsOnModify(fee);
         }
 
-        private void ValidateFeeIsNotNull(Fee fee)
+        private static void ValidateFeeIsNotNull(Fee fee)
         {
             if (fee == default)
             {
@@ -40,7 +40,7 @@ namespace OtripleS.Web.Api.Services.Fees
             }
         }
 
-        private void ValidateFeeId(Guid feeId)
+        private static void ValidateFeeId(Guid feeId)
         {
             if (IsInvalid(feeId))
             {
@@ -50,9 +50,9 @@ namespace OtripleS.Web.Api.Services.Fees
             }
         }
 
-        private bool IsInvalid(Guid input) => input == default;
-        private bool IsInvalid(DateTimeOffset input) => input == default;
-        private bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);
+        private static bool IsInvalid(Guid input) => input == default;
+        private static bool IsInvalid(DateTimeOffset input) => input == default;
+        private static bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);
 
         private void ValidateFeeAuditFieldsOnCreate(Fee fee)
         {
@@ -70,7 +70,7 @@ namespace OtripleS.Web.Api.Services.Fees
             }
         }
 
-        private void ValidateFeeAuditFields(Fee fee)
+        private static void ValidateFeeAuditFields(Fee fee)
         {
             switch (fee)
             {
@@ -112,7 +112,7 @@ namespace OtripleS.Web.Api.Services.Fees
             }
         }
 
-        private void ValidateFeeProperties(Fee fee)
+        private static void ValidateFeeProperties(Fee fee)
         {
             switch (fee)
             {
@@ -123,7 +123,7 @@ namespace OtripleS.Web.Api.Services.Fees
             }
         }
 
-        private void ValidateAgainstStorageFeeOnModify(Fee inputFee, Fee storageFee)
+        private static void ValidateAgainstStorageFeeOnModify(Fee inputFee, Fee storageFee)
         {
             switch (inputFee)
             {
@@ -155,13 +155,13 @@ namespace OtripleS.Web.Api.Services.Fees
 
         private void ValidateStorageFees(IQueryable<Fee> storageFees)
         {
-            if (storageFees.Count() == 0)
+            if (!storageFees.Any())
             {
                 this.loggingBroker.LogWarning("No fees found in storage.");
             }
         }
 
-        private void ValidateStorageFee(Fee storageFee, Guid feeId)
+        private static void ValidateStorageFee(Fee storageFee, Guid feeId)
         {
             if (storageFee == null)
             {

@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             ValidateStudentAttachmentIdIsNull(studentAttachment.StudentId, studentAttachment.AttachmentId);
         }
 
-        private void ValidateStudentAttachmentIsNull(StudentAttachment studentContact)
+        private static void ValidateStudentAttachmentIsNull(StudentAttachment studentContact)
         {
             if (studentContact is null)
             {
@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
             }
         }
 
-        private void ValidateStudentAttachmentIdIsNull(Guid studentId, Guid attachmentId)
+        private static void ValidateStudentAttachmentIdIsNull(Guid studentId, Guid attachmentId)
         {
             if (studentId == default)
             {
@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Services.StudentAttachments
 
         private void ValidateStorageStudentAttachments(IQueryable<StudentAttachment> storageStudentAttachments)
         {
-            if (storageStudentAttachments.Count() == 0)
+            if (!storageStudentAttachments.Any())
             {
                 this.loggingBroker.LogWarning("No student attachments found in storage.");
             }

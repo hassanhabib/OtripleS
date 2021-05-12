@@ -66,7 +66,7 @@ namespace OtripleS.Web.Api.Services.ExamFees
             }
         }
 
-        private void ValidateExamFeeIsNull(ExamFee examFee)
+        private static void ValidateExamFeeIsNull(ExamFee examFee)
         {
             if (examFee is null)
             {

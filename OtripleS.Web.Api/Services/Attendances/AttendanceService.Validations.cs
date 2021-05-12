@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Services.Attendances
             }
         }
 
-        private void ValidateStorageAttendance(Attendance storageAttendance, Guid attendanceId)
+        private static void ValidateStorageAttendance(Attendance storageAttendance, Guid attendanceId)
         {
             if (storageAttendance is null)
             {

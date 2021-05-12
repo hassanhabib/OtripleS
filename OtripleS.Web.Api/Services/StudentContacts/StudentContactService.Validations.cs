@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Services.StudentContacts
             ValidateStudentContactRequiredFields(studentContact);
         }
 
-        private void ValidateStudentContactIsNull(StudentContact studentContact)
+        private static void ValidateStudentContactIsNull(StudentContact studentContact)
         {
             if (studentContact is null)
             {
@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Services.StudentContacts
             }
         }
 
-        private void ValidateStudentContactRequiredFields(StudentContact studentContact)
+        private static void ValidateStudentContactRequiredFields(StudentContact studentContact)
         {
             switch (studentContact)
             {
