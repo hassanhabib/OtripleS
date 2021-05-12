@@ -13,7 +13,7 @@ namespace OtripleS.Web.Api.Services.UserContacts
     public partial class UserContactService
     {
 
-        private void ValidateUserContactOnAdd(UserContact userContact)
+        private static void ValidateUserContactOnAdd(UserContact userContact)
         {
             ValidateUserContactIsNull(userContact);
             ValidateUserContactRequiredFields(userContact);
@@ -35,7 +35,7 @@ namespace OtripleS.Web.Api.Services.UserContacts
             }
         }
 
-        private void ValidateUserContactRequiredFields(UserContact userContact)
+        private static void ValidateUserContactRequiredFields(UserContact userContact)
         {
             switch (userContact)
             {

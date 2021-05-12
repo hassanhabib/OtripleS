@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Services.SemesterCourses
             }
         }
 
-        private void ValidateSemesterCourseIsNull(SemesterCourse semesterCourse)
+        private static void ValidateSemesterCourseIsNull(SemesterCourse semesterCourse)
         {
             if (semesterCourse is null)
             {

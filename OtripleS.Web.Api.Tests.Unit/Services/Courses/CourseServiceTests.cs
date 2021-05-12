@@ -44,10 +44,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
         private static IEnumerable<Course> CreateRandomCourses(DateTimeOffset dateTime) =>
             CreateRandomCourseFiller(dateTime).Create(GetRandomNumber());
 
-        private Course CreateRandomCourse(DateTimeOffset dateTime) =>
+        private static Course CreateRandomCourse(DateTimeOffset dateTime) =>
             CreateRandomCourseFiller(dateTime).Create();
 
-        private IQueryable<Course> CreateRandomCourses() =>
+        private static IQueryable<Course> CreateRandomCourses() =>
             CreateRandomCourseFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static SqlException GetSqlException() =>
