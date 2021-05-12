@@ -85,5 +85,44 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task
+            ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid someRegistrationId = Guid.NewGuid();
+            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+            var lockedRegistrationException =
+                new LockedRegistrationException(databaseUpdateConcurrencyException);
+
+            var expectedRegistrationDependencyException =
+                new RegistrationDependencyException(lockedRegistrationException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()))
+                    .ThrowsAsync(databaseUpdateConcurrencyException);
+
+            // when
+            ValueTask<Registration> retrieveByIdRegistrationTask =
+                this.registrationService.RetrieveRegistrationByIdAsync(someRegistrationId);
+
+            // then
+            await Assert.ThrowsAsync<RegistrationDependencyException>(() =>
+                retrieveByIdRegistrationTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
