@@ -57,8 +57,8 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
         }
 
         private static bool IsInvalid(Guid input) => input == Guid.Empty;
-        private bool IsInvalid(DateTimeOffset input) => input == default;
-        private bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);
+        private static bool IsInvalid(DateTimeOffset input) => input == default;
+        private static bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);
 
         private void ValidateCalendarEntryAuditFieldsOnCreate(CalendarEntry calendarEntry)
         {
@@ -137,7 +137,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             }
         }
 
-        private void ValidateAgainstStorageCalendarEntryOnModify(
+        private static void ValidateAgainstStorageCalendarEntryOnModify(
             CalendarEntry inputCalendarEntry,
             CalendarEntry storageCalendarEntry)
         {
@@ -170,7 +170,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
-        private void ValidateCalendarEntryRequiredFields(CalendarEntry calendarEntry)
+        private static void ValidateCalendarEntryRequiredFields(CalendarEntry calendarEntry)
         {
             switch (calendarEntry)
             {
@@ -188,7 +188,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntries
 
         private void ValidateStorageCalendarEntries(IQueryable<CalendarEntry> storageCalendarEntries)
         {
-            if (storageCalendarEntries.Count() == 0)
+            if (!storageCalendarEntries.Any())
             {
                 this.loggingBroker.LogWarning("No calendar entries found in storage.");
             }

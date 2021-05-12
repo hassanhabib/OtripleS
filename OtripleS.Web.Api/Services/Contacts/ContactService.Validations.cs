@@ -99,7 +99,7 @@ namespace OtripleS.Web.Api.Services.Contacts
 
         private void ValidateStorageContacts(IQueryable<Contact> storageContacts)
         {
-            if (storageContacts.Count() == 0)
+            if (!storageContacts.Any())
             {
                 this.loggingBroker.LogWarning("No contacts found in storage.");
             }

@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
             }
         }
 
-        private void ValidateInvalidAuditFields(Classroom classroom)
+        private static void ValidateInvalidAuditFields(Classroom classroom)
         {
             switch (classroom)
             {
@@ -83,7 +83,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
             }
         }
 
-        private void ValidateClassroomFields(Classroom classroom)
+        private static void ValidateClassroomFields(Classroom classroom)
         {
             if (IsInvalid(classroom.Name))
             {
@@ -93,7 +93,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
             }
         }
 
-        private void ValidateClassroomIsNull(Classroom classroom)
+        private static void ValidateClassroomIsNull(Classroom classroom)
         {
             if (classroom is null)
             {
@@ -101,7 +101,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
             }
         }
 
-        private void ValidateClassroomIdIsNull(Guid classroomId)
+        private static void ValidateClassroomIdIsNull(Guid classroomId)
         {
             if (classroomId == default)
             {
@@ -111,7 +111,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
             }
         }
 
-        private void ValidateDatesAreNotSame(Classroom classroom)
+        private static void ValidateDatesAreNotSame(Classroom classroom)
         {
             if (classroom.CreatedDate == classroom.UpdatedDate)
             {
@@ -140,7 +140,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
-        private void ValidateStorageClassroom(Classroom storageClassroom, Guid classroomId)
+        private static void ValidateStorageClassroom(Classroom storageClassroom, Guid classroomId)
         {
             if (storageClassroom == null)
             {
@@ -148,7 +148,7 @@ namespace OtripleS.Web.Api.Services.Classrooms
             }
         }
 
-        private void ValidateAgainstStorageClassroomOnModify(Classroom inputClassroom, Classroom storageClassroom)
+        private static void ValidateAgainstStorageClassroomOnModify(Classroom inputClassroom, Classroom storageClassroom)
         {
             switch (inputClassroom)
             {

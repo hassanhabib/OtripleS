@@ -47,10 +47,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.ExamAttachments
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private ExamAttachment CreateRandomExamAttachment() =>
+        private static ExamAttachment CreateRandomExamAttachment() =>
             CreateExamAttachmentFiller(DateTimeOffset.UtcNow).Create();
 
-        private ExamAttachment CreateRandomExamAttachment(DateTimeOffset dates) =>
+        private static ExamAttachment CreateRandomExamAttachment(DateTimeOffset dates) =>
             CreateExamAttachmentFiller(dates).Create();
 
         private static string GetRandomMessage() => new MnemonicString().GetValue();

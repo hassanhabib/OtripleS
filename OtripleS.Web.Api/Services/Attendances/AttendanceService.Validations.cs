@@ -136,7 +136,7 @@ namespace OtripleS.Web.Api.Services.Attendances
             }
         }
 
-        private void ValidateAgainstStorageAttendanceOnModify(Attendance inputAttendance, Attendance storageAttendance)
+        private static void ValidateAgainstStorageAttendanceOnModify(Attendance inputAttendance, Attendance storageAttendance)
         {
             switch (inputAttendance)
             {
@@ -157,7 +157,7 @@ namespace OtripleS.Web.Api.Services.Attendances
             }
         }
 
-        private void ValidateDatesAreNotSame(Attendance attendance)
+        private static void ValidateDatesAreNotSame(Attendance attendance)
         {
             if (attendance.CreatedDate == attendance.UpdatedDate)
             {
@@ -167,7 +167,7 @@ namespace OtripleS.Web.Api.Services.Attendances
             }
         }
 
-        private void ValidateInvalidAuditFields(Attendance attendance)
+        private static void ValidateInvalidAuditFields(Attendance attendance)
         {
             switch (attendance)
             {
