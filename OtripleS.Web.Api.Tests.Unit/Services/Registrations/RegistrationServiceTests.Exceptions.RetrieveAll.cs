@@ -41,5 +41,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public void ShouldThrowServiceExceptionOnRetrieveAllRegistrationsWhenExceptionOccursAndLogIt()
+        {
+            // given
+            var exception = new Exception();
+
+            var expectedRegistrationServiceException =
+                new RegistrationServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllRegistrations())
+                    .Throws(exception);
+
+            // when . then
+            Assert.Throws<RegistrationServiceException>(() =>
+                this.registrationService.RetrieveAllRegistrations());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllRegistrations(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
