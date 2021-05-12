@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Registrations;
 using OtripleS.Web.Api.Models.Registrations.Exceptions;
@@ -39,6 +40,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedRegistrationDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid someRegistrationId = Guid.NewGuid();
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedRegistrationDependencyException =
+                new RegistrationDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<Registration> retrieveByIdRegistrationTask =
+                this.registrationService.RetrieveRegistrationByIdAsync(someRegistrationId);
+
+            // then
+            await Assert.ThrowsAsync<RegistrationDependencyException>(() =>
+                retrieveByIdRegistrationTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
