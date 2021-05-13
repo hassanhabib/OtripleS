@@ -12,7 +12,7 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
 {
     public partial class GuardianContactService
     {
-        private void ValidateGuardianContactOnCreate(GuardianContact guardianContact)
+        private static void ValidateGuardianContactOnCreate(GuardianContact guardianContact)
         {
             ValidateGuardianContactIsNull(guardianContact);
             ValidateGuardianContactRequiredFields(guardianContact);
@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
             }
         }
 
-        private void ValidateGuardianContactIsNull(GuardianContact guardianContact)
+        private static void ValidateGuardianContactIsNull(GuardianContact guardianContact)
         {
             if (guardianContact is null)
             {
@@ -34,7 +34,7 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
             }
         }
 
-        private void ValidateGuardianContactIdIsNull(Guid guardianId, Guid contactId)
+        private static void ValidateGuardianContactIdIsNull(Guid guardianId, Guid contactId)
         {
             if (guardianId == default)
             {
@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Services.GuardianContacts
             }
         }
 
-        private void ValidateGuardianContactRequiredFields(GuardianContact guardianContact)
+        private static void ValidateGuardianContactRequiredFields(GuardianContact guardianContact)
         {
             switch (guardianContact)
             {

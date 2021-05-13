@@ -41,10 +41,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentSemesterCourses
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private StudentSemesterCourse CreateRandomStudentSemesterCourse(DateTimeOffset dates) =>
+        private static StudentSemesterCourse CreateRandomStudentSemesterCourse(DateTimeOffset dates) =>
             CreateStudentSemesterCourseFiller(dates).Create();
 
-        private IQueryable<StudentSemesterCourse> CreateRandomStudentSemesterCourses() =>
+        private static IQueryable<StudentSemesterCourse> CreateRandomStudentSemesterCourses() =>
             CreateStudentSemesterCourseFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static Filler<StudentSemesterCourse> CreateStudentSemesterCourseFiller(DateTimeOffset dates)

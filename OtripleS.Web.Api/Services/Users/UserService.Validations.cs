@@ -49,7 +49,7 @@ namespace OtripleS.Web.Api.Services.Users
             }
         }
 
-        private void ValidateAuditFieldsDataOnCreate(User user)
+        private static void ValidateAuditFieldsDataOnCreate(User user)
         {
             switch (user)
             {
@@ -60,7 +60,7 @@ namespace OtripleS.Web.Api.Services.Users
             }
         }
 
-        private void ValidateInvalidAuditFields(User user)
+        private static void ValidateInvalidAuditFields(User user)
         {
             switch (user)
             {
@@ -91,7 +91,7 @@ namespace OtripleS.Web.Api.Services.Users
             }
         }
 
-        private void ValidateAgainstStorageUserOnModify(User inputUser, User storageUser)
+        private static void ValidateAgainstStorageUserOnModify(User inputUser, User storageUser)
         {
             switch (inputUser)
             {
@@ -107,7 +107,7 @@ namespace OtripleS.Web.Api.Services.Users
             }
         }
 
-        private void ValidateUserFields(User user)
+        private static void ValidateUserFields(User user)
         {
             if (IsInvalid(user.UserName))
             {
@@ -129,7 +129,7 @@ namespace OtripleS.Web.Api.Services.Users
             }
         }
 
-        private void ValidateUserIdIsNull(Guid userId)
+        private static void ValidateUserIdIsNull(Guid userId)
         {
             if (userId == default)
             {
@@ -139,7 +139,7 @@ namespace OtripleS.Web.Api.Services.Users
             }
         }
 
-        private void ValidateUserIsNull(User user)
+        private static void ValidateUserIsNull(User user)
         {
             if (user is null)
             {
@@ -161,7 +161,7 @@ namespace OtripleS.Web.Api.Services.Users
 
         private void ValidateStorageUsers(IQueryable<User> storageUsers)
         {
-            if (storageUsers.Count() == 0)
+            if (!storageUsers.Any())
             {
                 this.loggingBroker.LogWarning("No users found in storage.");
             }

@@ -12,13 +12,13 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
 {
     public partial class CourseAttachmentService
     {
-        private void ValidateCourseAttachmentOnCreate(CourseAttachment courseAttachment)
+        private static void ValidateCourseAttachmentOnCreate(CourseAttachment courseAttachment)
         {
             ValidateCourseAttachmentIsNull(courseAttachment);
             ValidateCourseAttachmentIds(courseAttachment.CourseId, courseAttachment.AttachmentId);
         }
 
-        private void ValidateCourseAttachmentIsNull(CourseAttachment courseAttachment)
+        private static void ValidateCourseAttachmentIsNull(CourseAttachment courseAttachment)
         {
             if (courseAttachment is null)
             {
@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             }
         }
 
-        private void ValidateCourseAttachmentIds(Guid courseId, Guid attachmentId)
+        private static void ValidateCourseAttachmentIds(Guid courseId, Guid attachmentId)
         {
             switch (courseId, attachmentId)
             {
@@ -42,7 +42,7 @@ namespace OtripleS.Web.Api.Services.CourseAttachments
             }
         }
 
-        private void ValidateStorageCourseAttachment(
+        private static void ValidateStorageCourseAttachment(
             CourseAttachment storageCourseAttachment,
             Guid courseId,
             Guid attachmentId)

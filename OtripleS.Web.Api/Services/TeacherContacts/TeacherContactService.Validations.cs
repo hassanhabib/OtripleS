@@ -12,13 +12,13 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
 {
     public partial class TeacherContactService
     {
-        private void ValidateTeacherContactOnAdd(TeacherContact teacherContact)
+        private static void ValidateTeacherContactOnAdd(TeacherContact teacherContact)
         {
             ValidateTeacherContactIsNull(teacherContact);
             ValidateTeacherContactRequiredFields(teacherContact);
         }
 
-        private void ValidateTeacherContactIsNull(TeacherContact teacherContact)
+        private static void ValidateTeacherContactIsNull(TeacherContact teacherContact)
         {
             if (teacherContact is null)
             {
@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
             }
         }
 
-        private void ValidateTeacherContactRequiredFields(TeacherContact teacherContact)
+        private static void ValidateTeacherContactRequiredFields(TeacherContact teacherContact)
         {
             switch (teacherContact)
             {
@@ -42,7 +42,7 @@ namespace OtripleS.Web.Api.Services.TeacherContacts
             }
         }
 
-        private void ValidateTeacherContactIdIsNull(Guid teacherId, Guid contactId)
+        private static void ValidateTeacherContactIdIsNull(Guid teacherId, Guid contactId)
         {
             if (teacherId == default)
             {

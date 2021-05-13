@@ -44,10 +44,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.SemesterCourses
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private SemesterCourse CreateRandomSemesterCourse(DateTimeOffset dates) =>
+        private static SemesterCourse CreateRandomSemesterCourse(DateTimeOffset dates) =>
             CreateSemesterCourseFiller(dates).Create();
 
-        private IQueryable<SemesterCourse> CreateRandomSemesterCourses() =>
+        private static IQueryable<SemesterCourse> CreateRandomSemesterCourses() =>
             CreateSemesterCourseFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static Filler<SemesterCourse> CreateSemesterCourseFiller(DateTimeOffset dates)

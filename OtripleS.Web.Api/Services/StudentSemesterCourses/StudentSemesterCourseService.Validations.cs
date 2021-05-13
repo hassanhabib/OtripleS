@@ -40,7 +40,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             }
         }
 
-        private void ValidateDatesAreNotSame(StudentSemesterCourse studentSemesterCourse)
+        private static void ValidateDatesAreNotSame(StudentSemesterCourse studentSemesterCourse)
         {
             if (studentSemesterCourse.CreatedDate == studentSemesterCourse.UpdatedDate)
             {
@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             }
         }
 
-        private void ValidateStudentSemesterCourseFields(StudentSemesterCourse studentSemesterCourse)
+        private static void ValidateStudentSemesterCourseFields(StudentSemesterCourse studentSemesterCourse)
         {
             if (IsInvalid(studentSemesterCourse.Grade))
             {
@@ -67,7 +67,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             }
         }
 
-        private void ValidateStudentSemesterCourseIsNull(StudentSemesterCourse studentSemesterCourse)
+        private static void ValidateStudentSemesterCourseIsNull(StudentSemesterCourse studentSemesterCourse)
         {
             if (studentSemesterCourse is null)
             {
@@ -75,7 +75,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             }
         }
 
-        private void ValidateStudentSemesterCourseIdIsNull(Guid studentId, Guid semesterCourseId)
+        private static void ValidateStudentSemesterCourseIdIsNull(Guid studentId, Guid semesterCourseId)
         {
             if (studentId == default)
             {
@@ -92,7 +92,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             }
         }
 
-        private void ValidateInvalidAuditFields(StudentSemesterCourse studentSemesterCourse)
+        private static void ValidateInvalidAuditFields(StudentSemesterCourse studentSemesterCourse)
         {
             switch (studentSemesterCourse)
             {
@@ -161,7 +161,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             }
         }
 
-        private void ValidateAgainstStorageStudentSemesterCourseOnModify
+        private static void ValidateAgainstStorageStudentSemesterCourseOnModify
             (StudentSemesterCourse inputStudentSemesterCourse, StudentSemesterCourse storageStudentSemesterCourse)
         {
             switch (inputStudentSemesterCourse)
@@ -173,7 +173,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             }
         }
 
-        private void ValidateSemesterCourseId(Guid semesterCourseId)
+        private static void ValidateSemesterCourseId(Guid semesterCourseId)
         {
             if (semesterCourseId == Guid.Empty)
             {
@@ -183,7 +183,7 @@ namespace OtripleS.Web.Api.Services.StudentSemesterCourses
             }
         }
 
-        private void ValidateStudentId(Guid studentId)
+        private static void ValidateStudentId(Guid studentId)
         {
             if (studentId == Guid.Empty)
             {

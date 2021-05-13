@@ -39,10 +39,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Calendars
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
-        private Calendar CreateRandomCalendar(DateTimeOffset dates) =>
+        private static Calendar CreateRandomCalendar(DateTimeOffset dates) =>
             CreateCalendarFiller(dates).Create();
 
-        private IQueryable<Calendar> CreateRandomCalendars() =>
+        private static IQueryable<Calendar> CreateRandomCalendars() =>
             CreateCalendarFiller(dates: DateTimeOffset.UtcNow)
                 .Create(GetRandomNumber()).AsQueryable();
 

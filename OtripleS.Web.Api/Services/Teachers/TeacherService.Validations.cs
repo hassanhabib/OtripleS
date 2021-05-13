@@ -12,7 +12,7 @@ namespace OtripleS.Web.Api.Services.Teachers
 {
     public partial class TeacherService
     {
-        private void ValidateTeacherId(Guid teacherId)
+        private static void ValidateTeacherId(Guid teacherId)
         {
             if (teacherId == default)
             {
@@ -22,7 +22,7 @@ namespace OtripleS.Web.Api.Services.Teachers
             }
         }
 
-        private void ValidateStorageTeacher(Teacher maybeTeacher, Guid teacherId)
+        private static void ValidateStorageTeacher(Teacher maybeTeacher, Guid teacherId)
         {
             if (maybeTeacher is null)
             {
@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Services.Teachers
 
         private void ValidateStorageTeachers(IQueryable<Teacher> storageTeachers)
         {
-            if (storageTeachers.Count() == 0)
+            if (!storageTeachers.Any())
             {
                 this.loggingBroker.LogWarning("No teachers found in storage.");
             }
@@ -78,7 +78,7 @@ namespace OtripleS.Web.Api.Services.Teachers
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
-        private void ValidateTeacherDates(Teacher teacher)
+        private static void ValidateTeacherDates(Teacher teacher)
         {
             switch (teacher)
             {
@@ -94,7 +94,7 @@ namespace OtripleS.Web.Api.Services.Teachers
             }
         }
 
-        private void ValidateTeacherIds(Teacher teacher)
+        private static void ValidateTeacherIds(Teacher teacher)
         {
             switch (teacher)
             {
@@ -110,7 +110,7 @@ namespace OtripleS.Web.Api.Services.Teachers
             }
         }
 
-        private void ValidateUpdatedSignatureOnCreate(Teacher teacher)
+        private static void ValidateUpdatedSignatureOnCreate(Teacher teacher)
         {
             switch (teacher)
             {
@@ -142,7 +142,7 @@ namespace OtripleS.Web.Api.Services.Teachers
             }
         }
 
-        private void ValidateTeacher(Teacher teacher)
+        private static void ValidateTeacher(Teacher teacher)
         {
             if (teacher == default)
             {
@@ -150,7 +150,7 @@ namespace OtripleS.Web.Api.Services.Teachers
             }
         }
 
-        private void ValidateTeacherStrings(Teacher teacher)
+        private static void ValidateTeacherStrings(Teacher teacher)
         {
             switch (teacher)
             {
@@ -176,7 +176,7 @@ namespace OtripleS.Web.Api.Services.Teachers
             }
         }
 
-        private void ValidateAginstStorageTeacherOnModify(Teacher inputTeacher, Teacher storageTeacher)
+        private static void ValidateAginstStorageTeacherOnModify(Teacher inputTeacher, Teacher storageTeacher)
         {
             switch (inputTeacher)
             {

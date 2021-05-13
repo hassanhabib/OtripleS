@@ -12,13 +12,13 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
 {
     public partial class TeacherAttachmentService
     {
-        private void ValidateTeacherAttachmentOnCreate(TeacherAttachment teacherAttachment)
+        private static void ValidateTeacherAttachmentOnCreate(TeacherAttachment teacherAttachment)
         {
             ValidateTeacherAttachmentIsNull(teacherAttachment);
             ValidateTeacherAttachmentIds(teacherAttachment.TeacherId, teacherAttachment.AttachmentId);
         }
 
-        private void ValidateTeacherAttachmentIsNull(TeacherAttachment teacherContact)
+        private static void ValidateTeacherAttachmentIsNull(TeacherAttachment teacherContact)
         {
             if (teacherContact is null)
             {
@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
             }
         }
 
-        private void ValidateTeacherAttachmentIds(Guid teacherId, Guid attachmentId)
+        private static void ValidateTeacherAttachmentIds(Guid teacherId, Guid attachmentId)
         {
             if (teacherId == default)
             {
@@ -55,7 +55,7 @@ namespace OtripleS.Web.Api.Services.TeacherAttachments
 
         private void ValidateStorageTeacherAttachments(IQueryable<TeacherAttachment> storageTeacherAttachments)
         {
-            if (storageTeacherAttachments.Count() == 0)
+            if (!storageTeacherAttachments.Any())
             {
                 this.loggingBroker.LogWarning("No teacher attachments found in storage.");
             }

@@ -10,7 +10,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        private void AddExamReferences(ModelBuilder modelBuilder)
+        private static void AddExamReferences(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Exam>()
                 .HasOne(exam => exam.SemesterCourse)

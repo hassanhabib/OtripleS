@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             ValidateExamAttachmentIds(examAttachment.ExamId, examAttachment.AttachmentId);
         }
 
-        private void ValidateExamAttachmentIsNull(ExamAttachment examAttachment)
+        private static void ValidateExamAttachmentIsNull(ExamAttachment examAttachment)
         {
             if (examAttachment is null)
             {
@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
             }
         }
 
-        private void ValidateExamAttachmentIds(Guid examId, Guid attachmentId)
+        private static void ValidateExamAttachmentIds(Guid examId, Guid attachmentId)
         {
             if (examId == default)
             {
@@ -52,12 +52,10 @@ namespace OtripleS.Web.Api.Services.ExamAttachments
 
         private void ValidateStorageExamAttachments(IQueryable<ExamAttachment> storageExamAttachments)
         {
-            if (storageExamAttachments.Count() == 0)
+            if (!storageExamAttachments.Any())
             {
                 this.loggingBroker.LogWarning("No exam attachments found in storage.");
             }
         }
-
-        private bool IsInvalid(Guid input) => input == default;
     }
 }

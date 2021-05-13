@@ -23,13 +23,13 @@ namespace OtripleS.Web.Api.Services.Attendances
 
         private void ValidateStorageAttendances(IQueryable<Attendance> storageAttendances)
         {
-            if (storageAttendances.Count() == 0)
+            if (!storageAttendances.Any())
             {
                 this.loggingBroker.LogWarning("No Attendances found in storage.");
             }
         }
 
-        private void ValidateAttendanceIsNull(Attendance attendance)
+        private static void ValidateAttendanceIsNull(Attendance attendance)
         {
             if (attendance is null)
             {
@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Services.Attendances
             }
         }
 
-        private void ValidateAttendanceId(Guid attendanceId)
+        private static void ValidateAttendanceId(Guid attendanceId)
         {
             if (attendanceId == default)
             {
@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Services.Attendances
             }
         }
 
-        private void ValidateStorageAttendance(Attendance storageAttendance, Guid attendanceId)
+        private static void ValidateStorageAttendance(Attendance storageAttendance, Guid attendanceId)
         {
             if (storageAttendance is null)
             {
@@ -136,7 +136,7 @@ namespace OtripleS.Web.Api.Services.Attendances
             }
         }
 
-        private void ValidateAgainstStorageAttendanceOnModify(Attendance inputAttendance, Attendance storageAttendance)
+        private static void ValidateAgainstStorageAttendanceOnModify(Attendance inputAttendance, Attendance storageAttendance)
         {
             switch (inputAttendance)
             {
@@ -157,7 +157,7 @@ namespace OtripleS.Web.Api.Services.Attendances
             }
         }
 
-        private void ValidateDatesAreNotSame(Attendance attendance)
+        private static void ValidateDatesAreNotSame(Attendance attendance)
         {
             if (attendance.CreatedDate == attendance.UpdatedDate)
             {
@@ -167,7 +167,7 @@ namespace OtripleS.Web.Api.Services.Attendances
             }
         }
 
-        private void ValidateInvalidAuditFields(Attendance attendance)
+        private static void ValidateInvalidAuditFields(Attendance attendance)
         {
             switch (attendance)
             {

@@ -41,10 +41,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExams
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private StudentExam CreateRandomStudentExam(DateTimeOffset dateTime) =>
+        private static StudentExam CreateRandomStudentExam(DateTimeOffset dateTime) =>
             CreateStudentExamFiller(dateTime).Create();
 
-        private IQueryable<StudentExam> CreateRandomStudentExams() =>
+        private static IQueryable<StudentExam> CreateRandomStudentExams() =>
            CreateStudentExamFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static Filler<StudentExam> CreateStudentExamFiller(DateTimeOffset dates)

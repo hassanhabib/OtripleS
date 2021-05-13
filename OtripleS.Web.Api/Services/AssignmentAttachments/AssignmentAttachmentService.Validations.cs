@@ -12,7 +12,7 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
 {
     public partial class AssignmentAttachmentService
     {
-        private void ValidateAssignmentAttachmentOnCreate(AssignmentAttachment assignmentAttachment)
+        private static void ValidateAssignmentAttachmentOnCreate(AssignmentAttachment assignmentAttachment)
         {
             ValidateAssignmentAttachmentIsNull(assignmentAttachment);
 
@@ -21,7 +21,7 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
                 assignmentAttachment.AttachmentId);
         }
 
-        private void ValidateAssignmentAttachmentIsNull(AssignmentAttachment assignmentContact)
+        private static void ValidateAssignmentAttachmentIsNull(AssignmentAttachment assignmentContact)
         {
             if (assignmentContact is null)
             {
@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
             }
         }
 
-        private void ValidateAssignmentAttachmentIds(Guid assignmentId, Guid attachmentId)
+        private static void ValidateAssignmentAttachmentIds(Guid assignmentId, Guid attachmentId)
         {
             if (assignmentId == default)
             {
@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Services.AssignmentAttachments
         private void ValidateStorageAssignmentAttachments
             (IQueryable<AssignmentAttachment> storageAssignmentAttachments)
         {
-            if (storageAssignmentAttachments.Count() == 0)
+            if (!storageAssignmentAttachments.Any())
             {
                 this.loggingBroker.LogWarning("No assignment attachments found in storage.");
             }

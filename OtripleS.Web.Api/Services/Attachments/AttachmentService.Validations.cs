@@ -12,7 +12,7 @@ namespace OtripleS.Web.Api.Services.Attachments
 {
     public partial class AttachmentService : IAttachmentService
     {
-        private void ValidateAttachmentId(Guid attachmentId)
+        private static void ValidateAttachmentId(Guid attachmentId)
         {
             if (IsInvalid(attachmentId))
             {
@@ -22,7 +22,7 @@ namespace OtripleS.Web.Api.Services.Attachments
             }
         }
 
-        private void ValidateStorageAttachment(Attachment storageAttachment, Guid attachmentId)
+        private static void ValidateStorageAttachment(Attachment storageAttachment, Guid attachmentId)
         {
             if (storageAttachment == null)
             {
@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.Attachments
             }
         }
 
-        private void ValidateAgainstStorageAttachmentOnModify(
+        private static void ValidateAgainstStorageAttachmentOnModify(
             Attachment inputAttachment,
             Attachment storageAttachment)
         {
@@ -53,7 +53,7 @@ namespace OtripleS.Web.Api.Services.Attachments
             }
         }
 
-        private bool IsInvalid(Guid input) => input == Guid.Empty;
+        private static bool IsInvalid(Guid input) => input == Guid.Empty;
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(DateTimeOffset input) => input == default;
 
@@ -97,7 +97,7 @@ namespace OtripleS.Web.Api.Services.Attachments
             }
         }
 
-        private void ValidateDatesAreNotSame(Attachment attachment)
+        private static void ValidateDatesAreNotSame(Attachment attachment)
         {
             if (attachment.CreatedDate == attachment.UpdatedDate)
             {
@@ -117,7 +117,7 @@ namespace OtripleS.Web.Api.Services.Attachments
             }
         }
 
-        private void ValidateInvalidAuditFields(Attachment attachment)
+        private static void ValidateInvalidAuditFields(Attachment attachment)
         {
             switch (attachment)
             {
@@ -143,7 +143,7 @@ namespace OtripleS.Web.Api.Services.Attachments
             }
         }
 
-        private void ValidateInvalidFields(Attachment attachment)
+        private static void ValidateInvalidFields(Attachment attachment)
         {
             switch (attachment)
             {
@@ -170,7 +170,7 @@ namespace OtripleS.Web.Api.Services.Attachments
             }
         }
 
-        private void ValidateAttachmentIdIsNull(Guid attachmentId)
+        private static void ValidateAttachmentIdIsNull(Guid attachmentId)
         {
             if (attachmentId == default)
             {
@@ -180,7 +180,7 @@ namespace OtripleS.Web.Api.Services.Attachments
             }
         }
 
-        private void ValidateAttachmentIsNull(Attachment attachment)
+        private static void ValidateAttachmentIsNull(Attachment attachment)
         {
             if (attachment is null)
             {
@@ -190,7 +190,7 @@ namespace OtripleS.Web.Api.Services.Attachments
 
         private void ValidateStorageAttachments(IQueryable<Attachment> storageAttachments)
         {
-            if (storageAttachments.Count() == 0)
+            if (!storageAttachments.Any())
             {
                 this.loggingBroker.LogWarning("No attachments found in storage.");
             }

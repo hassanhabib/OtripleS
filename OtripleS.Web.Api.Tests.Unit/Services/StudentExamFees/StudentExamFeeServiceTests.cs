@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
                 loggingBroker: this.loggingBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
-        private StudentExamFee CreateRandomStudentExamFee() =>
+        private static StudentExamFee CreateRandomStudentExamFee() =>
            CreateStudentExamFeeFiller(DateTimeOffset.UtcNow).Create();
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentExamFees
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private StudentExamFee CreateRandomStudentExamFee(DateTimeOffset dates) =>
+        private static StudentExamFee CreateRandomStudentExamFee(DateTimeOffset dates) =>
             CreateStudentExamFeeFiller(dates).Create();
 
         private static SqlException GetSqlException() =>

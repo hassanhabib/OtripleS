@@ -10,7 +10,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        private void AddGuardianAttachmentReferences(ModelBuilder modelBuilder)
+        private static void AddGuardianAttachmentReferences(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<GuardianAttachment>()
                 .HasKey(guardianAttachment =>

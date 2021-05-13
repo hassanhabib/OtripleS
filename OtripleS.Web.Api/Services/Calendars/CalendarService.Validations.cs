@@ -34,13 +34,13 @@ namespace OtripleS.Web.Api.Services.Calendars
 
         private void ValidateStorageCalendars(IQueryable<Calendar> storageCalendar)
         {
-            if (storageCalendar.Count() == 0)
+            if (!storageCalendar.Any())
             {
                 this.loggingBroker.LogWarning("No calendars found in storage.");
             }
         }
 
-        private void ValidateCalendarIsNull(Calendar calendar)
+        private static void ValidateCalendarIsNull(Calendar calendar)
         {
             if (calendar is null)
             {
@@ -48,7 +48,7 @@ namespace OtripleS.Web.Api.Services.Calendars
             }
         }
 
-        private void ValidateAgainstStorageCalendarOnModify(Calendar inputCalendar, Calendar storageCalendar)
+        private static void ValidateAgainstStorageCalendarOnModify(Calendar inputCalendar, Calendar storageCalendar)
         {
             switch (inputCalendar)
             {
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Services.Calendars
             }
         }
 
-        private void ValidateCalendarIdIsNull(Guid calendarId)
+        private static void ValidateCalendarIdIsNull(Guid calendarId)
         {
             if (IsInvalid(calendarId))
             {
@@ -79,7 +79,7 @@ namespace OtripleS.Web.Api.Services.Calendars
             }
         }
 
-        private void ValidateCalendarFields(Calendar calendar)
+        private static void ValidateCalendarFields(Calendar calendar)
         {
             if (IsInvalid(calendar.Label))
             {
@@ -89,7 +89,7 @@ namespace OtripleS.Web.Api.Services.Calendars
             }
         }
 
-        private void ValidateInvalidAuditFields(Calendar calendar)
+        private static void ValidateInvalidAuditFields(Calendar calendar)
         {
             switch (calendar)
             {
@@ -115,7 +115,7 @@ namespace OtripleS.Web.Api.Services.Calendars
             }
         }
 
-        private void ValidateAuditFieldDataAreSame(Calendar calendar)
+        private static void ValidateAuditFieldDataAreSame(Calendar calendar)
         {
             switch (calendar)
             {
@@ -131,7 +131,7 @@ namespace OtripleS.Web.Api.Services.Calendars
             }
         }
 
-        private void ValidateDatesAreNotSame(Calendar calendar)
+        private static void ValidateDatesAreNotSame(Calendar calendar)
         {
             if (calendar.CreatedDate == calendar.UpdatedDate)
             {
@@ -161,7 +161,7 @@ namespace OtripleS.Web.Api.Services.Calendars
             }
         }
 
-        private void ValidateCalendarId(Guid calendarId)
+        private static void ValidateCalendarId(Guid calendarId)
         {
             if (calendarId == Guid.Empty)
             {

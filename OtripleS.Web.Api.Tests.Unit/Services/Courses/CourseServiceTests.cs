@@ -41,13 +41,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private IEnumerable<Course> CreateRandomCourses(DateTimeOffset dateTime) =>
+        private static IEnumerable<Course> CreateRandomCourses(DateTimeOffset dateTime) =>
             CreateRandomCourseFiller(dateTime).Create(GetRandomNumber());
 
-        private Course CreateRandomCourse(DateTimeOffset dateTime) =>
+        private static Course CreateRandomCourse(DateTimeOffset dateTime) =>
             CreateRandomCourseFiller(dateTime).Create();
 
-        private IQueryable<Course> CreateRandomCourses() =>
+        private static IQueryable<Course> CreateRandomCourses() =>
             CreateRandomCourseFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static SqlException GetSqlException() =>
@@ -65,7 +65,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Courses
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private Filler<Course> CreateRandomCourseFiller(DateTimeOffset dateTime)
+        private static Filler<Course> CreateRandomCourseFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Course>();
 

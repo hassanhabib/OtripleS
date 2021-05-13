@@ -33,13 +33,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.GuardianContacts
                 loggingBroker: this.loggingBrokerMock.Object);
         }
 
-        private GuardianContact CreateRandomGuardianContact() =>
+        private static GuardianContact CreateRandomGuardianContact() =>
             CreateGuardianContactFiller(DateTimeOffset.UtcNow).Create();
 
-        private IQueryable<GuardianContact> CreateRandomGuardianContacts() =>
+        private static IQueryable<GuardianContact> CreateRandomGuardianContacts() =>
             CreateGuardianContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
-        private GuardianContact CreateRandomGuardianContact(DateTimeOffset dates) =>
+        private static GuardianContact CreateRandomGuardianContact(DateTimeOffset dates) =>
             CreateGuardianContactFiller(dates).Create();
 
         private static Filler<GuardianContact> CreateGuardianContactFiller(DateTimeOffset dates)

@@ -188,7 +188,7 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private string GetInnerMessage(Exception exception) =>
+        private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
 
     }

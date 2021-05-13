@@ -12,7 +12,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
 {
     public partial class StudentExamService
     {
-        private void ValidateStudentExamId(Guid studentExamId)
+        private static void ValidateStudentExamId(Guid studentExamId)
         {
             if (studentExamId == Guid.Empty)
             {
@@ -32,13 +32,13 @@ namespace OtripleS.Web.Api.Services.StudentExams
 
         private void ValidateStorageStudentExams(IQueryable<StudentExam> studentExams)
         {
-            if (studentExams.Count() == 0)
+            if (!studentExams.Any())
             {
                 this.loggingBroker.LogWarning("No Student Exams found in storage.");
             }
         }
 
-        private void ValidateInvalidAuditFields(StudentExam studentExam)
+        private static void ValidateInvalidAuditFields(StudentExam studentExam)
         {
             switch (studentExam)
             {
@@ -64,7 +64,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
             }
         }
 
-        private void ValidateDatesAreNotSame(StudentExam studentExam)
+        private static void ValidateDatesAreNotSame(StudentExam studentExam)
         {
             if (studentExam.CreatedDate == studentExam.UpdatedDate)
             {
@@ -84,7 +84,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
             }
         }
 
-        private void ValidateAgainstStorageStudentExamOnModify(
+        private static void ValidateAgainstStorageStudentExamOnModify(
             StudentExam inputStudentExam,
             StudentExam storageStudentExam)
         {
@@ -106,7 +106,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
-        private void ValidateStudentExamIsNotNull(StudentExam studentExam)
+        private static void ValidateStudentExamIsNotNull(StudentExam studentExam)
         {
             if (studentExam is null)
             {
@@ -124,7 +124,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
             ValidateUpdatedDateIsRecent(studentExam);
         }
 
-        private void ValidateStudentExamFieldsOnModify(StudentExam studentExam)
+        private static void ValidateStudentExamFieldsOnModify(StudentExam studentExam)
         {
             switch (studentExam)
             {
@@ -171,7 +171,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
             }
         }
 
-        private void ValidateStudentExamStrings(StudentExam studentExam)
+        private static void ValidateStudentExamStrings(StudentExam studentExam)
         {
             switch (studentExam)
             {
@@ -213,7 +213,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
         }
 
 
-        private void ValidateStudentExamDates(StudentExam StudentExam)
+        private static void ValidateStudentExamDates(StudentExam StudentExam)
         {
             switch (StudentExam)
             {
@@ -229,7 +229,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
             }
         }
 
-        private void ValidateStudentExamIds(StudentExam studentExam)
+        private static void ValidateStudentExamIds(StudentExam studentExam)
         {
             switch (studentExam)
             {
@@ -265,7 +265,7 @@ namespace OtripleS.Web.Api.Services.StudentExams
             }
         }
 
-        private void ValidateStudentExam(StudentExam StudentExam)
+        private static void ValidateStudentExam(StudentExam StudentExam)
         {
             if (StudentExam is null)
             {

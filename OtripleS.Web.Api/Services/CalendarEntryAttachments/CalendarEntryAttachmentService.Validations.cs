@@ -12,7 +12,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
 {
     public partial class CalendarEntryAttachmentService
     {
-        private void ValidateCalendarEntryAttachmentOnCreate(CalendarEntryAttachment calendarEntryAttachment)
+        private static void ValidateCalendarEntryAttachmentOnCreate(CalendarEntryAttachment calendarEntryAttachment)
         {
             ValidateCalendarEntryAttachmentIsNull(calendarEntryAttachment);
 
@@ -21,7 +21,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
                 calendarEntryAttachment.AttachmentId);
         }
 
-        private void ValidateCalendarEntryAttachmentIsNull(CalendarEntryAttachment calendarEntryAttachment)
+        private static void ValidateCalendarEntryAttachmentIsNull(CalendarEntryAttachment calendarEntryAttachment)
         {
             if (calendarEntryAttachment is null)
             {
@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
             }
         }
 
-        private void ValidateCalendarEntryAttachmentIds(Guid calendarEntryId, Guid attachmentId)
+        private static void ValidateCalendarEntryAttachmentIds(Guid calendarEntryId, Guid attachmentId)
         {
             if (calendarEntryId == default)
             {
@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Services.CalendarEntryAttachments
         private void ValidateStorageCalendarEntryAttachments(
             IQueryable<CalendarEntryAttachment> storageCalendarEntryAttachments)
         {
-            if (storageCalendarEntryAttachments.Count() == 0)
+            if (!storageCalendarEntryAttachments.Any())
             {
                 this.loggingBroker.LogWarning("No calendarentry attachments found in storage.");
             }

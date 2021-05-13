@@ -33,14 +33,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
                 loggingBroker: this.loggingBrokerMock.Object);
         }
 
-        private UserContact CreateRandomUserContact() =>
+        private static UserContact CreateRandomUserContact() =>
             CreateUserContactFiller(DateTimeOffset.UtcNow).Create();
 
-        private IQueryable<UserContact> CreateRandomUserContacts() =>
+        private static IQueryable<UserContact> CreateRandomUserContacts() =>
             CreateUserContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
-
-        private UserContact CreateRandomUserContact(DateTimeOffset dates) =>
-            CreateUserContactFiller(dates).Create();
 
         private static Filler<UserContact> CreateUserContactFiller(DateTimeOffset dates)
         {
@@ -55,9 +52,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.UserContacts
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
-
-        private static DateTimeOffset GetRandomDateTime() =>
-            new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));

@@ -57,23 +57,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private IQueryable<Exam> CreateRandomExams(DateTimeOffset dateTime) =>
+        private static IQueryable<Exam> CreateRandomExams(DateTimeOffset dateTime) =>
             CreateRandomExamFiller(dateTime: dateTime).Create(GetRandomNumber()).AsQueryable();
 
-        private Exam CreateRandomExam(DateTimeOffset dateTime) =>
+        private static Exam CreateRandomExam(DateTimeOffset dateTime) =>
             CreateRandomExamFiller(dateTime).Create();
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
-        private Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
                 expectedException.Message == actualException.Message &&
                 expectedException.InnerException.Message == actualException.InnerException.Message;
         }
 
-        private ExamType GetInValidExamType()
+        private static ExamType GetInValidExamType()
         {
             int maxExamType =
                 (int)Enum.GetValues(typeof(ExamType))
@@ -87,7 +87,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Exams
             return (ExamType)randomOutOfRangeEnumValue;
         }
 
-        private Filler<Exam> CreateRandomExamFiller(DateTimeOffset dateTime)
+        private static Filler<Exam> CreateRandomExamFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Exam>();
 

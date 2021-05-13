@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
-        private IQueryable<CalendarEntryAttachment> CreateRandomCalendarEntryAttachments() =>
+        private static IQueryable<CalendarEntryAttachment> CreateRandomCalendarEntryAttachments() =>
             CreateCalendarEntryAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
@@ -47,10 +47,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.CalendarEntryAttachments
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private CalendarEntryAttachment CreateRandomCalendarEntryAttachment() =>
+        private static CalendarEntryAttachment CreateRandomCalendarEntryAttachment() =>
             CreateCalendarEntryAttachmentFiller(DateTimeOffset.UtcNow).Create();
 
-        private CalendarEntryAttachment CreateRandomCalendarEntryAttachment(DateTimeOffset dates) =>
+        private static CalendarEntryAttachment CreateRandomCalendarEntryAttachment(DateTimeOffset dates) =>
             CreateCalendarEntryAttachmentFiller(dates).Create();
 
         private static Filler<CalendarEntryAttachment> CreateCalendarEntryAttachmentFiller(DateTimeOffset dates)

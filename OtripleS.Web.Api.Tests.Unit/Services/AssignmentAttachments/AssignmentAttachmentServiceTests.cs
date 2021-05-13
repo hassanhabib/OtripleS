@@ -37,10 +37,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
-        private AssignmentAttachment CreateRandomAssignmentAttachment() =>
+        private static AssignmentAttachment CreateRandomAssignmentAttachment() =>
             CreateAssignmentAttachmentFiller(DateTimeOffset.UtcNow).Create();
 
-        private IQueryable<AssignmentAttachment> CreateRandomAssignmentAttachments() =>
+        private static IQueryable<AssignmentAttachment> CreateRandomAssignmentAttachments() =>
             CreateAssignmentAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
@@ -67,7 +67,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.AssignmentAttachments
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private AssignmentAttachment CreateRandomAssignmentAttachment(DateTimeOffset dates) =>
+        private static AssignmentAttachment CreateRandomAssignmentAttachment(DateTimeOffset dates) =>
             CreateAssignmentAttachmentFiller(dates).Create();
 
         private static SqlException GetSqlException() =>
