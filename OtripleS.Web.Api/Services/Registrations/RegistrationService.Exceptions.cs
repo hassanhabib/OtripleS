@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Registrations;
@@ -39,6 +40,13 @@ namespace OtripleS.Web.Api.Services.Registrations
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsRegistrationException =
+                    new AlreadyExistsRegistrationException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsRegistrationException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
