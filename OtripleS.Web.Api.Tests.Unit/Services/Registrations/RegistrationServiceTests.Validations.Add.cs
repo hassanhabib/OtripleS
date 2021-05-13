@@ -129,6 +129,48 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
 
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task ShouldThrowValidationExceptionOnAddWhenSubmitterEmailIsInvalidAndLogItAsync(
+    string invalidRegistrationSubmitterEmail)
+        {
+            // given
+            DateTimeOffset datetime = DateTimeOffset.UtcNow;
+            Registration randomRegistration = CreateRandomRegistration(datetime);
+            Registration invalidRegistration = randomRegistration;
+            invalidRegistration.SubmitterEmail = invalidRegistrationSubmitterEmail;
+
+            var invalidRegistrationInputException = new InvalidRegistrationException(
+               parameterName: nameof(Registration.SubmitterName),
+               parameterValue: invalidRegistration.SubmitterName);
+
+            var expectedRegistrationValidationException =
+                new RegistrationValidationException(invalidRegistrationInputException);
+
+            // when
+            ValueTask<Registration> registerRegistrationTask =
+                this.registrationService.AddRegistrationAsync(invalidRegistration);
+
+            // then
+            await Assert.ThrowsAsync<RegistrationValidationException>(() =>
+                registerRegistrationTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertRegistrationAsync(It.IsAny<Registration>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+
+        }
+
 
         [Fact]
         public async void ShouldThrowValidationExceptionOnAddWhenIdIsInvalidAndLogItAsync()
