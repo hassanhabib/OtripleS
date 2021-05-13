@@ -143,8 +143,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             invalidRegistration.SubmitterEmail = invalidRegistrationSubmitterEmail;
 
             var invalidRegistrationInputException = new InvalidRegistrationException(
-               parameterName: nameof(Registration.SubmitterName),
-               parameterValue: invalidRegistration.SubmitterName);
+               parameterName: nameof(Registration.SubmitterEmail),
+               parameterValue: invalidRegistration.SubmitterEmail);
 
             var expectedRegistrationValidationException =
                 new RegistrationValidationException(invalidRegistrationInputException);
