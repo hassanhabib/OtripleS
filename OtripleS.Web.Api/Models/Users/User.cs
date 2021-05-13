@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using OtripleS.Web.Api.Models.ExamFees;
 using OtripleS.Web.Api.Models.Fees;
+using OtripleS.Web.Api.Models.Registrations;
 using OtripleS.Web.Api.Models.StudentExamFees;
 using OtripleS.Web.Api.Models.UserContacts;
 
@@ -56,5 +57,10 @@ namespace OtripleS.Web.Api.Models.Users
         public IEnumerable<StudentExamFee> StudentExamFeesCreatedByUser { get; set; }
         [JsonIgnore]
         public IEnumerable<StudentExamFee> StudentExamFeesUpdatedByUser { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<Registration> RegistrationsCreatedByUser { get; set; }
+        [JsonIgnore]
+        public IEnumerable<Registration> RegistrationsUpdatedByUser { get; set; }
     }
 }
