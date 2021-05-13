@@ -24,6 +24,11 @@ namespace OtripleS.Web.Api.Services.Registrations
                         parameterName: nameof(registration.Id),
                         parameterValue: registration.Id);
 
+                case { } when IsInvalid(registration.StudentName):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.StudentName),
+                        parameterValue: registration.StudentName);
+
                 case { } when IsInvalid(registration.CreatedBy):
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.CreatedBy),
@@ -100,5 +105,6 @@ namespace OtripleS.Web.Api.Services.Registrations
         private static bool IsNotSame(DateTimeOffset firstDate, DateTimeOffset secondDate) =>
             firstDate != secondDate;
         private static bool IsInvalid(DateTimeOffset date) => date == default;
+        private static bool IsInvalid(String input) => String.IsNullOrWhiteSpace(input);
     }
 }
