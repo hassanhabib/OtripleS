@@ -29,9 +29,9 @@ namespace OtripleS.Web.Api.Services.Registrations
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<Registration> AddRegistrationAsync(Registration registration)
+        public async ValueTask<Registration> AddRegistrationAsync(Registration registration)
         {
-            throw new NotImplementedException();
+            return await this.storageBroker.InsertRegistrationAsync(registration);
         }
 
         public IQueryable<Registration> RetrieveAllRegistrations() =>

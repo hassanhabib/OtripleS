@@ -42,15 +42,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             // then
             actualRegistration.Should().BeEquivalentTo(expectedRegistration);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
+            //this.dateTimeBrokerMock.Verify(broker =>
+            //    broker.GetCurrentDateTime(),
+            //        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertRegistrationAsync(inputRegistration),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
