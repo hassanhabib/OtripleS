@@ -3,9 +3,6 @@ using Moq;
 using OtripleS.Web.Api.Models.Registrations;
 using OtripleS.Web.Api.Models.Registrations.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -145,6 +142,48 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             var invalidRegistrationInputException = new InvalidRegistrationException(
                parameterName: nameof(Registration.SubmitterEmail),
                parameterValue: invalidRegistration.SubmitterEmail);
+
+            var expectedRegistrationValidationException =
+                new RegistrationValidationException(invalidRegistrationInputException);
+
+            // when
+            ValueTask<Registration> registerRegistrationTask =
+                this.registrationService.AddRegistrationAsync(invalidRegistration);
+
+            // then
+            await Assert.ThrowsAsync<RegistrationValidationException>(() =>
+                registerRegistrationTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertRegistrationAsync(It.IsAny<Registration>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task ShouldThrowValidationExceptionOnAddWhenSubmitterPhoneIsInvalidAndLogItAsync(
+            string invalidRegistrationSubmitterPhone)
+        {
+            // given
+            DateTimeOffset datetime = DateTimeOffset.UtcNow;
+            Registration randomRegistration = CreateRandomRegistration(datetime);
+            Registration invalidRegistration = randomRegistration;
+            invalidRegistration.SubmitterPhone = invalidRegistrationSubmitterPhone;
+
+            var invalidRegistrationInputException = new InvalidRegistrationException(
+               parameterName: nameof(Registration.SubmitterPhone),
+               parameterValue: invalidRegistration.SubmitterPhone);
 
             var expectedRegistrationValidationException =
                 new RegistrationValidationException(invalidRegistrationInputException);
