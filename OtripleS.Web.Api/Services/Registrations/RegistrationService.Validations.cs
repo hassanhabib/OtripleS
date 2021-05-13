@@ -43,6 +43,11 @@ namespace OtripleS.Web.Api.Services.Registrations
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.UpdatedBy),
                         parameterValue: registration.UpdatedBy);
+
+                case { } when IsDateNotRecent(registration.CreatedDate):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.CreatedDate),
+                        parameterValue: registration.CreatedDate);
             }
         }
 
@@ -62,6 +67,15 @@ namespace OtripleS.Web.Api.Services.Registrations
                     parameterName: nameof(Registration.Id),
                     parameterValue: registrationId);
             }
+        }
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
         private bool IsInvalid(Guid input) => input == default;
