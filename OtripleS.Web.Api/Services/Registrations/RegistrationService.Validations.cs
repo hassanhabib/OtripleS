@@ -3,10 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
 using OtripleS.Web.Api.Models.Registrations;
 using OtripleS.Web.Api.Models.Registrations.Exceptions;
+using System;
+using System.Linq;
 
 namespace OtripleS.Web.Api.Services.Registrations
 {
@@ -42,13 +42,13 @@ namespace OtripleS.Web.Api.Services.Registrations
                 case { } when IsInvalid(registration.SubmitterName):
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.SubmitterName),
-                        parameterValue: registration.SubmitterName);                
-                
+                        parameterValue: registration.SubmitterName);
+
                 case { } when IsInvalid(registration.SubmitterEmail):
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.SubmitterEmail),
-                        parameterValue: registration.SubmitterEmail);                
-                
+                        parameterValue: registration.SubmitterEmail);
+
                 case { } when IsInvalid(registration.SubmitterPhone):
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.SubmitterPhone),
@@ -78,14 +78,6 @@ namespace OtripleS.Web.Api.Services.Registrations
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.CreatedDate),
                         parameterValue: registration.CreatedDate);
-            }
-        }
-
-        private void ValidateRegistrationIsNotNull(Registration registration)
-        {
-            if (registration == default)
-            {
-                throw new NullRegistrationException();
             }
         }
 
