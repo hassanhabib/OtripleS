@@ -38,6 +38,11 @@ namespace OtripleS.Web.Api.Services.Registrations
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.UpdatedDate),
                         parameterValue: registration.UpdatedDate);
+
+                case { } when IsNotSame(registration.CreatedBy, registration.UpdatedBy):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.UpdatedBy),
+                        parameterValue: registration.UpdatedBy);
             }
         }
 
@@ -77,6 +82,7 @@ namespace OtripleS.Web.Api.Services.Registrations
             }
         }
 
+        private static bool IsNotSame(Guid firstId, Guid secondId) => firstId != secondId;
         private static bool IsNotSame(DateTimeOffset firstDate, DateTimeOffset secondDate) =>
             firstDate != secondDate;
         private static bool IsInvalid(DateTimeOffset date) => date == default;
