@@ -34,6 +34,7 @@ using OtripleS.Web.Api.Services.Fees;
 using OtripleS.Web.Api.Services.GuardianAttachments;
 using OtripleS.Web.Api.Services.GuardianContacts;
 using OtripleS.Web.Api.Services.Guardians;
+using OtripleS.Web.Api.Services.Registrations;
 using OtripleS.Web.Api.Services.SemesterCourses;
 using OtripleS.Web.Api.Services.StudentAttachments;
 using OtripleS.Web.Api.Services.StudentContacts;
@@ -98,6 +99,7 @@ namespace OtripleS.Web.Api
             services.AddTransient<IFeeService, FeeService>();
             services.AddTransient<IExamFeeService, ExamFeeService>();
             services.AddTransient<IStudentExamFeeService, StudentExamFeeService>();
+            services.AddTransient<IRegistrationService, RegistrationService>();
 
             services.AddIdentityCore<User>()
                     .AddRoles<Role>()

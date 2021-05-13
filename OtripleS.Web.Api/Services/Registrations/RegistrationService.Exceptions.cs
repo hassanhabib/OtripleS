@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace OtripleS.Web.Api.Services.Registrations
     public partial class RegistrationService
     {
         private delegate ValueTask<Registration> ReturningRegistrationFunction();
+        private delegate IQueryable<Registration> ReturningQueryableRegistrationFunction();
 
         private async ValueTask<Registration> TryCatch(ReturningRegistrationFunction returningRegistrationFunction)
         {
@@ -43,6 +45,22 @@ namespace OtripleS.Web.Api.Services.Registrations
             catch (DbUpdateException dbUpdateException)
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
+        private IQueryable<Registration> TryCatch(ReturningQueryableRegistrationFunction returningQueryableRegistrationFunction)
+        {
+            try
+            {
+                return returningQueryableRegistrationFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
             }
             catch (Exception exception)
             {

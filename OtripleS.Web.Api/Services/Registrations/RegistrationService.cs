@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -27,6 +28,17 @@ namespace OtripleS.Web.Api.Services.Registrations
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
         }
+
+        public IQueryable<Registration> RetrieveAllRegistrations() =>
+        TryCatch(() =>
+        {
+            IQueryable<Registration> storageRegistrations = this.storageBroker.SelectAllRegistrations();
+
+            ValidateStorageRegistrations(storageRegistrations);
+
+            return storageRegistrations;
+        });
+
         public ValueTask<Registration> RetrieveRegistrationByIdAsync(Guid registrationId) =>
         TryCatch(async () =>
         {

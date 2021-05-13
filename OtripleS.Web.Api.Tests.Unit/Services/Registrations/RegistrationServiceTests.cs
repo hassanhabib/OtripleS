@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -63,5 +64,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static IQueryable<Registration> CreateRandomRegistrations(DateTimeOffset dates) =>
+            CreateRegistrationFiller(dates).Create(GetRandomNumber()).AsQueryable();
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+
+        private static Filler<Registration> CreateRegistrationFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<Registration>();
+            Guid createdById = Guid.NewGuid();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(Registration => Registration.CreatedByUser).IgnoreIt()
+                .OnProperty(Registration => Registration.UpdatedByUser).IgnoreIt();
+
+            return filler;
+        }
     }
 }

@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OtripleS.Web.Api.Models.Registrations;
 using OtripleS.Web.Api.Models.Registrations.Exceptions;
 
@@ -28,6 +29,14 @@ namespace OtripleS.Web.Api.Services.Registrations
             if (storageRegistration == null)
             {
                 throw new NotFoundRegistrationException(registrationId);
+            }
+        }
+
+        private void ValidateStorageRegistrations(IQueryable<Registration> storageRegistrations)
+        {
+            if (storageRegistrations.Count() == 0)
+            {
+                this.loggingBroker.LogWarning("No Registrations found in storage.");
             }
         }
     }
