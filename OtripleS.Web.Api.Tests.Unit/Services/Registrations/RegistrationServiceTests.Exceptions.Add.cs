@@ -105,5 +105,52 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnAddWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Registration randomRegistration = CreateRandomRegistration(dateTime);
+            Registration inputRegistration = randomRegistration;
+            inputRegistration.UpdatedBy = inputRegistration.CreatedBy;
+            var exception = new Exception();
+
+            var expectedRegistrationServiceException =
+                new RegistrationServiceException(exception);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertRegistrationAsync(inputRegistration))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<Registration> createRegistrationTask =
+                 this.registrationService.AddRegistrationAsync(inputRegistration);
+
+            // then
+            await Assert.ThrowsAsync<RegistrationServiceException>(() =>
+                createRegistrationTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertRegistrationAsync(inputRegistration),
+                    Times.Once);
+
+            //this.dateTimeBrokerMock.Verify(broker =>
+            //    broker.GetCurrentDateTime(),
+            //        Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+
     }
 }
