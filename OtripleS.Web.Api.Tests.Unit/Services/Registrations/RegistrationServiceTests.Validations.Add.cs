@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using EFxceptions.Models.Exceptions;
+using Moq;
 using OtripleS.Web.Api.Models.Registrations;
 using OtripleS.Web.Api.Models.Registrations.Exceptions;
 using System;
@@ -314,6 +315,57 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenRegistrationAlreadyExistsAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Registration randomRegistration = CreateRandomRegistration(dateTime);
+            Registration alreadyExistsRegistration = randomRegistration;
+            alreadyExistsRegistration.UpdatedBy = alreadyExistsRegistration.CreatedBy;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsRegistrationException =
+                new AlreadyExistsRegistrationException(duplicateKeyException);
+
+            var expectedRegistrationValidationException =
+                new RegistrationValidationException(alreadyExistsRegistrationException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertRegistrationAsync(alreadyExistsRegistration))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<Registration> registerRegistrationTask =
+                this.registrationService.AddRegistrationAsync(alreadyExistsRegistration);
+
+            // then
+            await Assert.ThrowsAsync<RegistrationValidationException>(() =>
+                registerRegistrationTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertRegistrationAsync(alreadyExistsRegistration),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedRegistrationValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
     }
