@@ -37,7 +37,12 @@ namespace OtripleS.Web.Api.Services.Registrations
                 case { } when IsInvalid(registration.SubmitterEmail):
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.SubmitterEmail),
-                        parameterValue: registration.SubmitterEmail);
+                        parameterValue: registration.SubmitterEmail);                
+                
+                case { } when IsInvalid(registration.SubmitterPhone):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.SubmitterPhone),
+                        parameterValue: registration.SubmitterPhone);
 
                 case { } when IsInvalid(registration.CreatedBy):
                     throw new InvalidRegistrationException(
