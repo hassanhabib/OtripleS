@@ -14,8 +14,17 @@ namespace OtripleS.Web.Api.Services.Registrations
     {
         private void ValidateRegistrationOnAdd(Registration registration)
         {
-            ValidateRegistrationIsNotNull(registration);
+            switch (registration)
+            {
+                case null:
+                    throw new NullRegistrationException();
 
+                case { } when IsInvalid(registration.Id):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(registration.Id),
+                        parameterValue: registration.Id);
+
+            }
         }
 
         private void ValidateRegistrationIsNotNull(Registration registration)
