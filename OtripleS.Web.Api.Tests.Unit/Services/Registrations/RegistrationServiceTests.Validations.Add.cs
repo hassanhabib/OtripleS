@@ -131,7 +131,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
         [InlineData("")]
         [InlineData("   ")]
         public async Task ShouldThrowValidationExceptionOnAddWhenStudentPhoneIsInvalidAndLogItAsync(
-    string invalidRegistrationStudentPhone)
+            string invalidRegistrationStudentPhone)
         {
             // given
             DateTimeOffset datetime = DateTimeOffset.UtcNow;
