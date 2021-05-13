@@ -12,6 +12,7 @@ namespace OtripleS.Web.Api.Services.Registrations
 {
     public interface IRegistrationService
     {
+        ValueTask<Registration> AddRegistrationAsync(Registration registration);
         IQueryable<Registration> RetrieveAllRegistrations();
         ValueTask<Registration> RetrieveRegistrationByIdAsync(Guid registrationId);
     }

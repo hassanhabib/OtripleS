@@ -16,6 +16,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
     public partial class RegistrationServiceTests
     {
         [Fact]
+        public async Task ShouldAddRegistrationAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            DateTimeOffset dateTime = randomDateTime;
+            Registration randomRegistration = CreateRandomRegistration(randomDateTime);
+            randomRegistration.UpdatedBy = randomRegistration.CreatedBy;
+            Registration inputRegistration = randomRegistration;
+            Registration storageRegistration = randomRegistration;
+            Registration expectedRegistration = storageRegistration;
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertRegistrationAsync(inputRegistration))
+                    .ReturnsAsync(storageRegistration);
+
+            // when
+            Registration actualRegistration =
+                await this.registrationService.AddRegistrationAsync(inputRegistration);
+
+            // then
+            actualRegistration.Should().BeEquivalentTo(expectedRegistration);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertRegistrationAsync(inputRegistration),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public void ShouldRetrieveAllRegistrations()
         {
             // given

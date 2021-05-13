@@ -29,6 +29,11 @@ namespace OtripleS.Web.Api.Services.Registrations
             this.dateTimeBroker = dateTimeBroker;
         }
 
+        public ValueTask<Registration> AddRegistrationAsync(Registration registration)
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<Registration> RetrieveAllRegistrations() =>
         TryCatch(() =>
         {
@@ -51,5 +56,6 @@ namespace OtripleS.Web.Api.Services.Registrations
 
             return storageRegistration;
         });
+
     }
 }
