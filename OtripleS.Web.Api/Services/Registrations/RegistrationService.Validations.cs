@@ -33,6 +33,11 @@ namespace OtripleS.Web.Api.Services.Registrations
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.UpdatedBy),
                         parameterValue: registration.UpdatedBy);
+
+                case { } when IsNotSame(registration.CreatedDate, registration.UpdatedDate):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.UpdatedDate),
+                        parameterValue: registration.UpdatedDate);
             }
         }
 
@@ -71,5 +76,9 @@ namespace OtripleS.Web.Api.Services.Registrations
                 this.loggingBroker.LogWarning("No Registrations found in storage.");
             }
         }
+
+        private static bool IsNotSame(DateTimeOffset firstDate, DateTimeOffset secondDate) =>
+            firstDate != secondDate;
+        private static bool IsInvalid(DateTimeOffset date) => date == default;
     }
 }
