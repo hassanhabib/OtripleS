@@ -24,6 +24,11 @@ namespace OtripleS.Web.Api.Services.Registrations
                         parameterName: nameof(registration.Id),
                         parameterValue: registration.Id);
 
+                case { } when IsInvalid(registration.CreatedBy):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.CreatedBy),
+                        parameterValue: registration.CreatedBy);
+
             }
         }
 
