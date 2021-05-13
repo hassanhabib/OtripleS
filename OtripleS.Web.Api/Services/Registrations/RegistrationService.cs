@@ -32,6 +32,8 @@ namespace OtripleS.Web.Api.Services.Registrations
         public ValueTask<Registration> AddRegistrationAsync(Registration registration) =>
         TryCatch(async () =>
         {
+            ValidateRegistrationOnAdd(registration);
+
             return await this.storageBroker.InsertRegistrationAsync(registration);
         });
 

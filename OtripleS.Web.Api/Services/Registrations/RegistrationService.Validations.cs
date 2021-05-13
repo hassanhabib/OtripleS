@@ -12,6 +12,20 @@ namespace OtripleS.Web.Api.Services.Registrations
 {
     public partial class RegistrationService
     {
+        private void ValidateRegistrationOnAdd(Registration registration)
+        {
+            ValidateRegistrationIsNotNull(registration);
+
+        }
+
+        private void ValidateRegistrationIsNotNull(Registration registration)
+        {
+            if (registration == default)
+            {
+                throw new NullRegistrationException();
+            }
+        }
+
         private void ValidateRegistrationId(Guid registrationId)
         {
             if (IsInvalid(registrationId))

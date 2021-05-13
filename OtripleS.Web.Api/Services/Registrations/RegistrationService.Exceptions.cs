@@ -24,6 +24,10 @@ namespace OtripleS.Web.Api.Services.Registrations
             {
                 return await returningRegistrationFunction();
             }
+            catch (NullRegistrationException nullRegistrationException)
+            {
+                throw CreateAndLogValidationException(nullRegistrationException);
+            }
             catch (InvalidRegistrationException invalidRegistrationInputException)
             {
                 throw CreateAndLogValidationException(invalidRegistrationInputException);
