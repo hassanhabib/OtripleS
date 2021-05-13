@@ -3,10 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
@@ -14,7 +10,12 @@ using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.Registrations;
 using OtripleS.Web.Api.Services.Registrations;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
+using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
 {
@@ -55,6 +56,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             return filler;
         }
 
+        public static TheoryData InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new TheoryData<int>
+            {
+                randomMoreThanMinuteFromNow ,
+                randomMoreThanMinuteBeforeNow
+            };
+        }
+
         private Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
@@ -69,7 +82,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             CreateRegistrationFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
-
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
         private static Filler<Registration> CreateRegistrationFiller(DateTimeOffset dates)
         {
             var filler = new Filler<Registration>();

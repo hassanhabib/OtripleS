@@ -3,13 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.Registrations;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.Registrations
 {
@@ -28,6 +28,14 @@ namespace OtripleS.Web.Api.Services.Registrations
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
         }
+
+        public ValueTask<Registration> AddRegistrationAsync(Registration registration) =>
+        TryCatch(async () =>
+        {
+            ValidateRegistrationOnAdd(registration);
+
+            return await this.storageBroker.InsertRegistrationAsync(registration);
+        });
 
         public IQueryable<Registration> RetrieveAllRegistrations() =>
         TryCatch(() =>
@@ -51,5 +59,6 @@ namespace OtripleS.Web.Api.Services.Registrations
 
             return storageRegistration;
         });
+
     }
 }

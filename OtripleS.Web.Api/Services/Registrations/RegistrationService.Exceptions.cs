@@ -3,13 +3,14 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Registrations;
 using OtripleS.Web.Api.Models.Registrations.Exceptions;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.Registrations
 {
@@ -24,6 +25,10 @@ namespace OtripleS.Web.Api.Services.Registrations
             {
                 return await returningRegistrationFunction();
             }
+            catch (NullRegistrationException nullRegistrationException)
+            {
+                throw CreateAndLogValidationException(nullRegistrationException);
+            }
             catch (InvalidRegistrationException invalidRegistrationInputException)
             {
                 throw CreateAndLogValidationException(invalidRegistrationInputException);
@@ -35,6 +40,13 @@ namespace OtripleS.Web.Api.Services.Registrations
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsRegistrationException =
+                    new AlreadyExistsRegistrationException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsRegistrationException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
