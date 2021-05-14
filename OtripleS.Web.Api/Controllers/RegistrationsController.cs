@@ -76,6 +76,39 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpGet("{registrationId}")]
+        public async ValueTask<ActionResult<Registration>> GetRegistrationAsync(Guid registrationId)
+        {
+            try
+            {
+                Registration storageRegistration =
+                    await this.registrationService.RetrieveRegistrationByIdAsync(registrationId);
+
+                return Ok(storageRegistration);
+            }
+            catch (RegistrationValidationException registrationValidationException)
+                when (registrationValidationException.InnerException is NotFoundRegistrationException)
+            {
+                string innerMessage = GetInnerMessage(registrationValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (RegistrationValidationException registrationValidationException)
+            {
+                string innerMessage = GetInnerMessage(registrationValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (RegistrationDependencyException registrationDependencyException)
+            {
+                return Problem(registrationDependencyException.Message);
+            }
+            catch (RegistrationServiceException registrationServiceException)
+            {
+                return Problem(registrationServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
