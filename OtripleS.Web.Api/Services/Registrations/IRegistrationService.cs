@@ -15,5 +15,6 @@ namespace OtripleS.Web.Api.Services.Registrations
         ValueTask<Registration> AddRegistrationAsync(Registration registration);
         IQueryable<Registration> RetrieveAllRegistrations();
         ValueTask<Registration> RetrieveRegistrationByIdAsync(Guid registrationId);
+        ValueTask<Registration> ModifyRegistrationAsync(Registration registration);
     }
 }

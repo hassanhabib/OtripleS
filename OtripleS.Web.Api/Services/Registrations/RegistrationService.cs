@@ -60,5 +60,9 @@ namespace OtripleS.Web.Api.Services.Registrations
             return storageRegistration;
         });
 
+        public ValueTask<Registration> ModifyRegistrationAsync(Registration registration)
+        {
+            return this.storageBroker.UpdateRegistrationAsync(registration);
+        }
     }
 }

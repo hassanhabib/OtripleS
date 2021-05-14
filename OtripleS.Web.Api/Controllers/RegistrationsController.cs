@@ -109,6 +109,46 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpPut]
+        public async ValueTask<ActionResult<Registration>> PutRegistrationAsync(Registration registration)
+        {
+            try
+            {
+                Registration registeredRegistration =
+                    await this.registrationService.ModifyRegistrationAsync(registration);
+
+                return Ok(registeredRegistration);
+            }
+            catch (RegistrationValidationException registrationValidationException)
+                when (registrationValidationException.InnerException is NotFoundRegistrationException)
+            {
+                string innerMessage = GetInnerMessage(registrationValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (RegistrationValidationException registrationValidationException)
+            {
+                string innerMessage = GetInnerMessage(registrationValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (RegistrationDependencyException registrationDependencyException)
+                when (registrationDependencyException.InnerException is LockedRegistrationException)
+            {
+                string innerMessage = GetInnerMessage(registrationDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (RegistrationDependencyException registrationDependencyException)
+            {
+                return Problem(registrationDependencyException.Message);
+            }
+            catch (RegistrationServiceException registrationServiceException)
+            {
+                return Problem(registrationServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
