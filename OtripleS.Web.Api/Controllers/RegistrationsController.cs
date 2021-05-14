@@ -149,6 +149,46 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
+        [HttpDelete("{registrationId}")]
+        public async ValueTask<ActionResult<Registration>> DeleteRegistrationAsync(Guid registrationId)
+        {
+            try
+            {
+                Registration storageRegistration =
+                    await this.registrationService.RemoveRegistrationByIdAsync(registrationId);
+
+                return Ok(storageRegistration);
+            }
+            catch (RegistrationValidationException registrationValidationException)
+                when (registrationValidationException.InnerException is NotFoundRegistrationException)
+            {
+                string innerMessage = GetInnerMessage(registrationValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (RegistrationValidationException registrationValidationException)
+            {
+                string innerMessage = GetInnerMessage(registrationValidationException);
+
+                return BadRequest(registrationValidationException);
+            }
+            catch (RegistrationDependencyException registrationDependencyException)
+               when (registrationDependencyException.InnerException is LockedRegistrationException)
+            {
+                string innerMessage = GetInnerMessage(registrationDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (RegistrationDependencyException registrationDependencyException)
+            {
+                return Problem(registrationDependencyException.Message);
+            }
+            catch (RegistrationServiceException registrationServiceException)
+            {
+                return Problem(registrationServiceException.Message);
+            }
+        }
+
         private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
