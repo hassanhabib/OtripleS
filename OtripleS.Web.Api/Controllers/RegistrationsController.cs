@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Registrations;
@@ -52,6 +53,26 @@ namespace OtripleS.Web.Api.Controllers
             catch (RegistrationServiceException registrationServiceException)
             {
                 return Problem(registrationServiceException.Message);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<IQueryable<Registration>> GetAllRegistrations()
+        {
+            try
+            {
+                IQueryable storageRegistration =
+                    this.registrationService.RetrieveAllRegistrations();
+
+                return Ok(storageRegistration);
+            }
+            catch (RegistrationDependencyException RegistrationDependencyException)
+            {
+                return Problem(RegistrationDependencyException.Message);
+            }
+            catch (RegistrationServiceException RegistrationServiceException)
+            {
+                return Problem(RegistrationServiceException.Message);
             }
         }
 
