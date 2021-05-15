@@ -41,7 +41,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-
-        
     }
 }
