@@ -598,5 +598,58 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void 
+            ShouldThrowValidationExceptionOnModifyWhenCreatedDateIsNotSameAsStorageCreatedDateIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            DateTimeOffset randomOtherDateTime = GetRandomDateTime();
+            Registration randomRegistration = CreateRandomRegistration(dateTime);
+            Registration inputRegistration = randomRegistration;
+            inputRegistration.UpdatedDate = default;
+            Registration storageRegistration = randomRegistration.DeepClone();
+            storageRegistration.CreatedDate = randomOtherDateTime;
+
+            var invalidRegistrationInputException = new InvalidRegistrationException(
+                parameterName: nameof(Registration.UpdatedDate),
+                parameterValue: inputRegistration.UpdatedDate);
+
+            var expectedRegistrationValidationException =
+                new RegistrationValidationException(invalidRegistrationInputException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectRegistrationByIdAsync(inputRegistration.Id))
+                    .ReturnsAsync(storageRegistration);
+
+            // when
+            ValueTask<Registration> modifyRegistrationTask =
+                this.registrationService.ModifyRegistrationAsync(inputRegistration);
+
+            // then
+            await Assert.ThrowsAsync<RegistrationValidationException>(() =>
+                modifyRegistrationTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateRegistrationAsync(It.IsAny<Registration>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();            
+        }
     }
 }
