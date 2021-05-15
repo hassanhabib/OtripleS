@@ -66,7 +66,12 @@ namespace OtripleS.Web.Api.Services.Registrations
                 case { } when IsInvalid(registration.UpdatedBy):
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.UpdatedBy),
-                        parameterValue: registration.UpdatedBy);                
+                        parameterValue: registration.UpdatedBy);
+
+                case { } when IsInvalid(registration.CreatedDate):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.CreatedDate),
+                        parameterValue: registration.CreatedDate);
             }
         }
 
@@ -206,8 +211,10 @@ namespace OtripleS.Web.Api.Services.Registrations
             phoneNumber.All(character => Char.IsDigit(character) || character == '-');
 
         private static bool IsNotSame(Guid firstId, Guid secondId) => firstId != secondId;
+
         private static bool IsNotSame(DateTimeOffset firstDate, DateTimeOffset secondDate) =>
             firstDate != secondDate;
+        
         private static bool IsInvalid(DateTimeOffset date) => date == default;
         private static bool IsInvalid(String input) => String.IsNullOrWhiteSpace(input);
     }
