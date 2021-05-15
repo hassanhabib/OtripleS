@@ -12,6 +12,19 @@ namespace OtripleS.Web.Api.Services.Registrations
 {
     public partial class RegistrationService
     {
+        private void ValidateRegistrationOnModify(Registration registration)
+        {
+            ValidateRegistrationNotNull(registration);
+        }
+
+        private void ValidateRegistrationNotNull(Registration registration)
+        {
+            if (registration is null)
+            {
+                throw new NullRegistrationException();
+            }
+        }
+
         private void ValidateRegistrationOnAdd(Registration registration)
         {
             switch (registration)
