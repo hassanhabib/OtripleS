@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Registrations;
@@ -822,6 +823,69 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationOnModifyIfForeignKeyConstraintConflictExceptionOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            DateTimeOffset dateTime = randomDateTime;
+            Registration randomRegistration = CreateRandomRegistration(dateTime);
+            Registration storageRegistration = randomRegistration;
+            Registration foreignKeyConflictedRegistration = storageRegistration.DeepClone();
+            storageRegistration.UpdatedDate = dateTime.AddMinutes(GetNegativeRandomNumber());
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+
+            var foreignKeyConstraintConflictException =
+                new ForeignKeyConstraintConflictException(exceptionMessage);
+
+            var invalidRegistrationReferenceException =
+                new InvalidRegistrationReferenceException(foreignKeyConstraintConflictException);
+
+            var registrationValidationException =
+                new RegistrationValidationException(invalidRegistrationReferenceException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectRegistrationByIdAsync(foreignKeyConflictedRegistration.Id))
+                    .ReturnsAsync(storageRegistration);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.UpdateRegistrationAsync(foreignKeyConflictedRegistration))
+                    .ThrowsAsync(foreignKeyConstraintConflictException);
+
+            // when
+            ValueTask<Registration> modifyRegistrationTask =
+                this.registrationService.ModifyRegistrationAsync(foreignKeyConflictedRegistration);
+
+            // then
+            await Assert.ThrowsAsync<RegistrationValidationException>(() =>
+                modifyRegistrationTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectRegistrationByIdAsync(foreignKeyConflictedRegistration.Id),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateRegistrationAsync(foreignKeyConflictedRegistration),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(registrationValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
