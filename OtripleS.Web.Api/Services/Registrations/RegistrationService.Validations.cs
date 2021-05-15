@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Services.Registrations
                         parameterName: nameof(Registration.StudentEmail),
                         parameterValue: registration.StudentEmail);
 
-                case { } when IsInvalid(registration.StudentPhone):
+                case { } when IsNotValidPhoneNumber(registration.StudentPhone):
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.StudentPhone),
                         parameterValue: registration.StudentPhone);
@@ -198,6 +198,12 @@ namespace OtripleS.Web.Api.Services.Registrations
                 pattern: @"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}",
                 options: RegexOptions.IgnoreCase);
         }
+
+        private static bool IsNotValidPhoneNumber(string phoneNumber) =>
+            string.IsNullOrWhiteSpace(phoneNumber) || IsValidPhoneNumberFormat(phoneNumber) == false;
+
+        private static bool IsValidPhoneNumberFormat(string phoneNumber) =>
+            phoneNumber.All(character => Char.IsDigit(character) || character == '-');
 
         private static bool IsNotSame(Guid firstId, Guid secondId) => firstId != secondId;
         private static bool IsNotSame(DateTimeOffset firstDate, DateTimeOffset secondDate) =>
