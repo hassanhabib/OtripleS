@@ -57,7 +57,8 @@ namespace OtripleS.Web.Api.Services.Registrations
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                var lockedRegistrationException = new LockedRegistrationException(dbUpdateConcurrencyException);
+                var lockedRegistrationException = 
+                    new LockedRegistrationException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedRegistrationException);
             }
