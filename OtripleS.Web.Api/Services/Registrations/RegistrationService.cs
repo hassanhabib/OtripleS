@@ -65,6 +65,7 @@ namespace OtripleS.Web.Api.Services.Registrations
         {
             ValidateRegistrationOnModify(registration);
             Registration maybeRegistration = await storageBroker.SelectRegistrationByIdAsync(registration.Id);
+            ValidateStorageRegistration(maybeRegistration, registration.Id);
 
             ValidateAgainstStorageRegistrationOnModify(
                 inputRegistration: registration, 
