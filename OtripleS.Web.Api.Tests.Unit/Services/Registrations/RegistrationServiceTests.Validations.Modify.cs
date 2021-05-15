@@ -327,7 +327,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             string invalidRegistrationSubmitterPhone)
         {
             // given
-            DateTimeOffset datetime = DateTimeOffset.UtcNow;
+            DateTimeOffset datetime = GetRandomDateTime();
             Registration randomRegistration = CreateRandomRegistration(datetime);
             Registration invalidRegistration = randomRegistration;
             invalidRegistration.SubmitterPhone = invalidRegistrationSubmitterPhone;
@@ -346,6 +346,51 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             // then
             await Assert.ThrowsAsync<RegistrationValidationException>(() =>
                 registerRegistrationTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateRegistrationAsync(It.IsAny<Registration>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnModifyWhenCreatedByIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Registration randomRegistration = CreateRandomRegistration(dateTime);
+            Registration inputRegistration = randomRegistration;
+            inputRegistration.CreatedBy = default;
+
+            var invalidRegistrationInputException = new InvalidRegistrationException(
+                parameterName: nameof(Registration.CreatedBy),
+                parameterValue: inputRegistration.CreatedBy);
+
+            var expectedRegistrationValidationException =
+                new RegistrationValidationException(invalidRegistrationInputException);
+
+            // when
+            ValueTask<Registration> modifyRegistrationTask =
+                this.registrationService.AddRegistrationAsync(inputRegistration);
+
+            // then
+            await Assert.ThrowsAsync<RegistrationValidationException>(() =>
+                modifyRegistrationTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedRegistrationValidationException))),
