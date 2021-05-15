@@ -27,11 +27,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             var expectedException = new RegistrationDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectRegistrationByIdAsync(inputRegistrationId))
+                broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()))
                     .ReturnsAsync(storageRegistration);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.DeleteRegistrationAsync(storageRegistration))
+                broker.DeleteRegistrationAsync(It.IsAny<Registration>()))
                     .ThrowsAsync(sqlException);
 
             // when
@@ -43,11 +43,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
                  deleteRegistrationTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectRegistrationByIdAsync(inputRegistrationId),
+                broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteRegistrationAsync(storageRegistration),
+                broker.DeleteRegistrationAsync(It.IsAny<Registration>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -55,6 +55,52 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();            
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRemoveIfDbUpdateExceptionOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Registration someRegistration = CreateRandomRegistration(dateTime: randomDateTime);
+            Guid someRegistrationId = someRegistration.Id;
+            Registration storageRegistration = someRegistration;
+            var dbUpdateException = new DbUpdateException();
+
+            var expectedRegistrationDependencyException =
+                new RegistrationDependencyException(dbUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()))
+                    .ReturnsAsync(storageRegistration);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteRegistrationAsync(It.IsAny<Registration>()))
+                    .ThrowsAsync(dbUpdateException);
+
+            // when
+            ValueTask<Registration> deleteRegistrationTask =
+                this.registrationService.RemoveRegistrationByIdAsync(someRegistrationId);
+
+            // then
+            await Assert.ThrowsAsync<RegistrationDependencyException>(() =>
+                deleteRegistrationTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteRegistrationAsync(It.IsAny<Registration>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
