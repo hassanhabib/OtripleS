@@ -48,9 +48,17 @@ namespace OtripleS.Web.Api.Services.Registrations
 
                 throw CreateAndLogValidationException(alreadyExistsRegistrationException);
             }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidRegistrationReferenceException =
+                    new InvalidRegistrationReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidRegistrationReferenceException);
+            }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                var lockedRegistrationException = new LockedRegistrationException(dbUpdateConcurrencyException);
+                var lockedRegistrationException = 
+                    new LockedRegistrationException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedRegistrationException);
             }

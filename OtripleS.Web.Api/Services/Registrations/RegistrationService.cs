@@ -60,10 +60,19 @@ namespace OtripleS.Web.Api.Services.Registrations
             return storageRegistration;
         });
 
-        public ValueTask<Registration> ModifyRegistrationAsync(Registration registration)
+        public ValueTask<Registration> ModifyRegistrationAsync(Registration registration) =>
+        TryCatch(async () =>
         {
-            return this.storageBroker.UpdateRegistrationAsync(registration);
-        }
+            ValidateRegistrationOnModify(registration);
+            Registration maybeRegistration = await storageBroker.SelectRegistrationByIdAsync(registration.Id);
+            ValidateStorageRegistration(maybeRegistration, registration.Id);
+
+            ValidateAgainstStorageRegistrationOnModify(
+                inputRegistration: registration, 
+                storageRegistration: maybeRegistration);
+
+            return await this.storageBroker.UpdateRegistrationAsync(registration);
+        });
 
         public async ValueTask<Registration> RemoveRegistrationByIdAsync(Guid registrationId)
         {

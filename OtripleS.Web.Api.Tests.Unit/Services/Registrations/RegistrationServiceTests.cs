@@ -41,20 +41,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private Registration CreateRandomRegistration(DateTimeOffset dateTime) =>
+        private static Registration CreateRandomRegistration(DateTimeOffset dateTime) =>
             CreateRandomRegistrationFiller(dateTime).Create();
-
-        private Filler<Registration> CreateRandomRegistrationFiller(DateTimeOffset dateTime)
-        {
-            var filler = new Filler<Registration>();
-
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dateTime)
-                .OnProperty(Registration => Registration.CreatedByUser).IgnoreIt()
-                .OnProperty(Registration => Registration.UpdatedByUser).IgnoreIt();
-
-            return filler;
-        }
 
         public static TheoryData InvalidMinuteCases()
         {
@@ -68,7 +56,29 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             };
         }
 
-        private Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        public static TheoryData InvalidEmailAddressCases()
+        {
+            string noString = null;
+            string emptyString = string.Empty;
+            string whiteSpaceString = "     ";
+            string letterString = "NotAnEmail";
+            string characterString = "\n\r\bnotanema1l76^8&";
+            string domainString = "location.com";
+            string incompleteEmailString = "hassan@piorsoft";
+
+            return new TheoryData<string>
+            {
+                noString,
+                emptyString,
+                whiteSpaceString,
+                letterString,
+                characterString,
+                domainString,
+                incompleteEmailString
+            };
+        }
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
                 expectedException.Message == actualException.Message &&
@@ -79,18 +89,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static IQueryable<Registration> CreateRandomRegistrations(DateTimeOffset dates) =>
-            CreateRegistrationFiller(dates).Create(GetRandomNumber()).AsQueryable();
+            CreateRandomRegistrationFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
-        private static Filler<Registration> CreateRegistrationFiller(DateTimeOffset dates)
+        private static string CreateRandomEmailAddress() => new EmailAddresses().GetValue();
+
+        private static Filler<Registration> CreateRandomRegistrationFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Registration>();
-            Guid createdById = Guid.NewGuid();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
+                .OnType<DateTimeOffset>().Use(dateTime)
+                .OnProperty(registration => registration.StudentEmail).Use(CreateRandomEmailAddress())
+                .OnProperty(registration => registration.SubmitterEmail).Use(CreateRandomEmailAddress())
+                .OnProperty(registration => registration.StudentPhone).Use(new PatternGenerator("{N:3}-{N:3}-{N:4}"))
+                .OnProperty(registration => registration.SubmitterPhone).Use(new PatternGenerator("{N:3}-{N:3}-{N:4}"))
                 .OnProperty(Registration => Registration.CreatedByUser).IgnoreIt()
                 .OnProperty(Registration => Registration.UpdatedByUser).IgnoreIt();
 
