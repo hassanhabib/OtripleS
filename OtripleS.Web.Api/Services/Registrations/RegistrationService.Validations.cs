@@ -15,6 +15,58 @@ namespace OtripleS.Web.Api.Services.Registrations
         private void ValidateRegistrationOnModify(Registration registration)
         {
             ValidateRegistrationNotNull(registration);
+            ValidateRegistrationRequiredFields(registration);
+        }
+
+        private void ValidateRegistrationRequiredFields(Registration registration)
+        {
+            switch (registration)
+            {
+                case { } when IsInvalid(registration.Id):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(registration.Id),
+                        parameterValue: registration.Id);
+
+                case { } when IsInvalid(registration.StudentName):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.StudentName),
+                        parameterValue: registration.StudentName);
+
+                case { } when IsInvalid(registration.StudentEmail):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.StudentEmail),
+                        parameterValue: registration.StudentEmail);
+
+                case { } when IsInvalid(registration.StudentPhone):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.StudentPhone),
+                        parameterValue: registration.StudentPhone);
+
+                case { } when IsInvalid(registration.SubmitterName):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.SubmitterName),
+                        parameterValue: registration.SubmitterName);
+
+                case { } when IsInvalid(registration.SubmitterEmail):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.SubmitterEmail),
+                        parameterValue: registration.SubmitterEmail);
+
+                case { } when IsInvalid(registration.SubmitterPhone):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.SubmitterPhone),
+                        parameterValue: registration.SubmitterPhone);
+
+                case { } when IsInvalid(registration.CreatedBy):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.CreatedBy),
+                        parameterValue: registration.CreatedBy);
+
+                case { } when IsInvalid(registration.UpdatedBy):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.UpdatedBy),
+                        parameterValue: registration.UpdatedBy);                
+            }
         }
 
         private void ValidateRegistrationNotNull(Registration registration)
