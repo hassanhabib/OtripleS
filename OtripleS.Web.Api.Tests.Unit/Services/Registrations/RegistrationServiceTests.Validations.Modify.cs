@@ -243,12 +243,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
                 new RegistrationValidationException(invalidRegistrationInputException);
 
             // when
-            ValueTask<Registration> registerRegistrationTask =
-                this.registrationService.AddRegistrationAsync(invalidRegistration);
+            ValueTask<Registration> modifyRegistrationTask =
+                this.registrationService.ModifyRegistrationAsync(invalidRegistration);
 
             // then
             await Assert.ThrowsAsync<RegistrationValidationException>(() =>
-                registerRegistrationTask.AsTask());
+                modifyRegistrationTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedRegistrationValidationException))),
@@ -340,12 +340,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
                 new RegistrationValidationException(invalidRegistrationInputException);
 
             // when
-            ValueTask<Registration> registerRegistrationTask =
+            ValueTask<Registration> modifyRegistrationTask =
                 this.registrationService.ModifyRegistrationAsync(invalidRegistration);
 
             // then
             await Assert.ThrowsAsync<RegistrationValidationException>(() =>
-                registerRegistrationTask.AsTask());
+                modifyRegistrationTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedRegistrationValidationException))),
@@ -606,18 +606,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             DateTimeOffset randomOtherDateTime = GetRandomDateTime();
+            int randomNumber = GetRandomNumber();
             Registration randomRegistration = CreateRandomRegistration(dateTime);
             Registration inputRegistration = randomRegistration;
-            inputRegistration.UpdatedDate = default;
+            inputRegistration.CreatedDate = dateTime.AddMinutes(randomNumber * -1);
             Registration storageRegistration = randomRegistration.DeepClone();
             storageRegistration.CreatedDate = randomOtherDateTime;
 
             var invalidRegistrationInputException = new InvalidRegistrationException(
-                parameterName: nameof(Registration.UpdatedDate),
-                parameterValue: inputRegistration.UpdatedDate);
+                parameterName: nameof(Registration.CreatedDate),
+                parameterValue: inputRegistration.CreatedDate);
 
             var expectedRegistrationValidationException =
                 new RegistrationValidationException(invalidRegistrationInputException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectRegistrationByIdAsync(inputRegistration.Id))

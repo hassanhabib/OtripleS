@@ -162,6 +162,31 @@ namespace OtripleS.Web.Api.Services.Registrations
             }
         }
 
+
+
+        private void ValidateAgainstStorageRegistrationOnModify(
+            Registration inputRegistration, 
+            Registration storageRegistration)
+        {
+            switch (inputRegistration)
+            {
+                case { } when inputRegistration.CreatedDate != storageRegistration.CreatedDate:
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.CreatedDate),
+                        parameterValue: inputRegistration.CreatedDate);
+
+                case { } when inputRegistration.CreatedBy != storageRegistration.CreatedBy:
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.CreatedBy),
+                        parameterValue: inputRegistration.CreatedBy);
+
+                case { } when inputRegistration.UpdatedDate == storageRegistration.UpdatedDate:
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.UpdatedDate),
+                        parameterValue: inputRegistration.UpdatedDate);
+            }
+        }
+
         private void ValidateRegistrationId(Guid registrationId)
         {
             if (IsInvalid(registrationId))
