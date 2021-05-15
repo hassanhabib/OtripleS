@@ -341,7 +341,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
 
             // when
             ValueTask<Registration> registerRegistrationTask =
-                this.registrationService.AddRegistrationAsync(invalidRegistration);
+                this.registrationService.ModifyRegistrationAsync(invalidRegistration);
 
             // then
             await Assert.ThrowsAsync<RegistrationValidationException>(() =>
@@ -386,7 +386,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
 
             // when
             ValueTask<Registration> modifyRegistrationTask =
-                this.registrationService.AddRegistrationAsync(inputRegistration);
+                this.registrationService.ModifyRegistrationAsync(inputRegistration);
 
             // then
             await Assert.ThrowsAsync<RegistrationValidationException>(() =>
