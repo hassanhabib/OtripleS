@@ -77,6 +77,11 @@ namespace OtripleS.Web.Api.Services.Registrations
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.UpdatedDate),
                         parameterValue: registration.UpdatedDate);
+
+                case { } when IsDateNotRecent(registration.UpdatedDate):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.UpdatedDate),
+                        parameterValue: registration.UpdatedDate);
             }
         }
 
