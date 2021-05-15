@@ -41,10 +41,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private Registration CreateRandomRegistration(DateTimeOffset dateTime) =>
+        private static Registration CreateRandomRegistration(DateTimeOffset dateTime) =>
             CreateRandomRegistrationFiller(dateTime).Create();
 
-        private Filler<Registration> CreateRandomRegistrationFiller(DateTimeOffset dateTime)
+        private static Filler<Registration> CreateRandomRegistrationFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Registration>();
 
@@ -68,7 +68,29 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             };
         }
 
-        private Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        public static TheoryData InvalidEmailAddressCases()
+        {
+            string noString = null;
+            string emptyString = string.Empty;
+            string whiteSpaceString = "     ";
+            string letterString = "NotAnEmail";
+            string characterString = "\n\r\bnotanema1l76^8&";
+            string domainString = "location.com";
+            string incompleteEmailString = "hassan@piorsoft";
+
+            return new TheoryData<string>
+            {
+                noString,
+                emptyString,
+                whiteSpaceString,
+                letterString,
+                characterString,
+                domainString,
+                incompleteEmailString
+            };
+        }
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
                 expectedException.Message == actualException.Message &&
@@ -84,6 +106,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
+
         private static Filler<Registration> CreateRegistrationFiller(DateTimeOffset dates)
         {
             var filler = new Filler<Registration>();

@@ -7,6 +7,7 @@ using OtripleS.Web.Api.Models.Registrations;
 using OtripleS.Web.Api.Models.Registrations.Exceptions;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace OtripleS.Web.Api.Services.Registrations
 {
@@ -32,7 +33,7 @@ namespace OtripleS.Web.Api.Services.Registrations
                         parameterName: nameof(Registration.StudentName),
                         parameterValue: registration.StudentName);
 
-                case { } when IsInvalid(registration.StudentEmail):
+                case { } when IsInvalidEmailAddress(registration.StudentEmail):
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.StudentEmail),
                         parameterValue: registration.StudentEmail);
@@ -181,6 +182,21 @@ namespace OtripleS.Web.Api.Services.Registrations
             {
                 this.loggingBroker.LogWarning("No Registrations found in storage.");
             }
+        }
+
+        private static bool IsInvalidEmailAddress(string emailAddress)
+        {
+            bool isInvalid = IsInvalid(emailAddress);
+
+            return isInvalid || IsValidEmailFormat(emailAddress) == false;
+        }
+
+        private static bool IsValidEmailFormat(string emailAddress)
+        {
+            return Regex.IsMatch(
+                input: emailAddress,
+                pattern: @"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}",
+                options: RegexOptions.IgnoreCase);
         }
 
         private static bool IsNotSame(Guid firstId, Guid secondId) => firstId != secondId;
