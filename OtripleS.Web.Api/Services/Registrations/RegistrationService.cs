@@ -74,12 +74,15 @@ namespace OtripleS.Web.Api.Services.Registrations
             return await this.storageBroker.UpdateRegistrationAsync(registration);
         });
 
-        public async ValueTask<Registration> RemoveRegistrationByIdAsync(Guid registrationId)
+        public ValueTask<Registration> RemoveRegistrationByIdAsync(Guid registrationId) =>
+        TryCatch(async () =>
         {
+            ValidateRegistrationId(registrationId);
+
             Registration maybeRegistration =
                await this.storageBroker.SelectRegistrationByIdAsync(registrationId);
-               
-            return await this.storageBroker.DeleteRegistrationAsync (maybeRegistration);
-        }
+
+            return await this.storageBroker.DeleteRegistrationAsync(maybeRegistration);
+        });
     }
 }

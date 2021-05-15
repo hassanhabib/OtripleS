@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
     public partial class RegistrationServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnDeleteIfIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRemoveIfIdIsInvalidAndLogItAsync()
         {
             // given
             Guid invalidTaskCategotyId = Guid.Empty;
