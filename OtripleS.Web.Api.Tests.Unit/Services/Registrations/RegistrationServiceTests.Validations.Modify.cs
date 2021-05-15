@@ -510,22 +510,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             DateTimeOffset dateTime = GetRandomDateTime();
             Registration randomRegistration = CreateRandomRegistration(dateTime);
             Registration inputRegistration = randomRegistration;
-            inputRegistration.CreatedDate = default;
+            inputRegistration.UpdatedDate = default;
 
             var invalidRegistrationInputException = new InvalidRegistrationException(
-                parameterName: nameof(Registration.CreatedDate),
-                parameterValue: inputRegistration.CreatedDate);
+                parameterName: nameof(Registration.UpdatedDate),
+                parameterValue: inputRegistration.UpdatedDate);
 
             var expectedRegistrationValidationException =
                 new RegistrationValidationException(invalidRegistrationInputException);
 
             // when
-            ValueTask<Registration> registerRegistrationTask =
-                this.registrationService.AddRegistrationAsync(inputRegistration);
+            ValueTask<Registration> modifyRegistrationTask =
+                this.registrationService.ModifyRegistrationAsync(inputRegistration);
 
             // then
             await Assert.ThrowsAsync<RegistrationValidationException>(() =>
-                registerRegistrationTask.AsTask());
+                modifyRegistrationTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedRegistrationValidationException))),
