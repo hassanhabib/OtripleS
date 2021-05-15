@@ -82,6 +82,8 @@ namespace OtripleS.Web.Api.Services.Registrations
             Registration maybeRegistration =
                await this.storageBroker.SelectRegistrationByIdAsync(registrationId);
 
+            ValidateStorageRegistration(maybeRegistration, registrationId);
+
             return await this.storageBroker.DeleteRegistrationAsync(maybeRegistration);
         });
     }
