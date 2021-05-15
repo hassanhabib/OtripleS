@@ -169,11 +169,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             var expectedServiceException = new RegistrationServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectRegistrationByIdAsync(someRegistrationId))
+                broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()))
                     .ReturnsAsync(storageRegistration);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.DeleteRegistrationAsync(storageRegistration))
+                broker.DeleteRegistrationAsync(It.IsAny<Registration>()))
                     .ThrowsAsync(exception);
 
             // when
@@ -185,11 +185,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
                 deleteRegistrationTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectRegistrationByIdAsync(someRegistrationId),
+                broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteRegistrationAsync(storageRegistration),
+                broker.DeleteRegistrationAsync(It.IsAny<Registration>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>

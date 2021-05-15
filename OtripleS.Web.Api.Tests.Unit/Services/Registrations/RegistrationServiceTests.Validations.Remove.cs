@@ -58,7 +58,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
             Registration randomRegistration = CreateRandomRegistration(dateTime: randomDateTime);
-            Guid actualRegistrationId = randomRegistration.Id;
+            Guid inputRegistrationId = randomRegistration.Id;
             Registration noRegistration = null;
 
             var notFoundRegistrationException =
@@ -68,12 +68,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
                 new RegistrationValidationException(notFoundRegistrationException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectRegistrationByIdAsync(actualRegistrationId)).
+                broker.SelectRegistrationByIdAsync(It.IsAny<Guid>())).
                     ReturnsAsync(noRegistration);
 
             // when
             ValueTask<Registration> removeRegistrationByIdTask =
-                this.registrationService.RemoveRegistrationByIdAsync(actualRegistrationId);
+                this.registrationService.RemoveRegistrationByIdAsync(inputRegistrationId);
 
             // then
             await Assert.ThrowsAsync<RegistrationValidationException>(() =>
