@@ -85,7 +85,7 @@ namespace OtripleS.Web.Api.Services.Registrations
             }
         }
 
-        private void ValidateRegistrationNotNull(Registration registration)
+        private static void ValidateRegistrationNotNull(Registration registration)
         {
             if (registration is null)
             {
@@ -162,9 +162,7 @@ namespace OtripleS.Web.Api.Services.Registrations
             }
         }
 
-
-
-        private void ValidateAgainstStorageRegistrationOnModify(
+        private static void ValidateAgainstStorageRegistrationOnModify(
             Registration inputRegistration, 
             Registration storageRegistration)
         {
@@ -187,7 +185,7 @@ namespace OtripleS.Web.Api.Services.Registrations
             }
         }
 
-        private void ValidateRegistrationId(Guid registrationId)
+        private static void ValidateRegistrationId(Guid registrationId)
         {
             if (IsInvalid(registrationId))
             {
@@ -206,9 +204,11 @@ namespace OtripleS.Web.Api.Services.Registrations
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
-        private bool IsInvalid(Guid input) => input == default;
+        private static bool IsInvalid(Guid input) => input == default;
 
-        private void ValidateStorageRegistration(Registration storageRegistration, Guid registrationId)
+        private static void ValidateStorageRegistration
+            (Registration storageRegistration, 
+            Guid registrationId)
         {
             if (storageRegistration == null)
             {
@@ -218,7 +218,7 @@ namespace OtripleS.Web.Api.Services.Registrations
 
         private void ValidateStorageRegistrations(IQueryable<Registration> storageRegistrations)
         {
-            if (storageRegistrations.Count() == 0)
+            if (!storageRegistrations.Any())
             {
                 this.loggingBroker.LogWarning("No Registrations found in storage.");
             }

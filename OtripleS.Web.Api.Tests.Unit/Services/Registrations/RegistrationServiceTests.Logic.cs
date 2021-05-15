@@ -158,7 +158,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
-                    Times.Never);
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectRegistrationByIdAsync(guardianId),
