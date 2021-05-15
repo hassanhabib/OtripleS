@@ -72,6 +72,11 @@ namespace OtripleS.Web.Api.Services.Registrations
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.CreatedDate),
                         parameterValue: registration.CreatedDate);
+
+                case { } when IsInvalid(registration.UpdatedDate):
+                    throw new InvalidRegistrationException(
+                        parameterName: nameof(Registration.UpdatedDate),
+                        parameterValue: registration.UpdatedDate);
             }
         }
 
