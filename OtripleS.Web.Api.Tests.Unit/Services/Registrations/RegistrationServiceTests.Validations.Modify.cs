@@ -90,8 +90,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             invalidRegistration.StudentName = invalidRegistrationStudentName;
 
             var invalidRegistrationInputException = new InvalidRegistrationException(
-               parameterName: nameof(Registration.StudentName),
-               parameterValue: invalidRegistration.StudentName);
+                parameterName: nameof(Registration.StudentName),
+                parameterValue: invalidRegistration.StudentName);
 
             var expectedRegistrationValidationException =
                 new RegistrationValidationException(invalidRegistrationInputException);
@@ -137,8 +137,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             invalidRegistration.StudentEmail = invalidRegistrationStudentEmail;
 
             var invalidRegistrationInputException = new InvalidRegistrationException(
-               parameterName: nameof(Registration.StudentEmail),
-               parameterValue: invalidRegistration.StudentEmail);
+                parameterName: nameof(Registration.StudentEmail),
+                parameterValue: invalidRegistration.StudentEmail);
 
             var expectedRegistrationValidationException =
                 new RegistrationValidationException(invalidRegistrationInputException);
@@ -187,8 +187,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             invalidRegistration.StudentPhone = invalidRegistrationStudentPhone;
 
             var invalidRegistrationInputException = new InvalidRegistrationException(
-               parameterName: nameof(Registration.StudentPhone),
-               parameterValue: invalidRegistration.StudentPhone);
+                parameterName: nameof(Registration.StudentPhone),
+                parameterValue: invalidRegistration.StudentPhone);
 
             var expectedRegistrationValidationException =
                 new RegistrationValidationException(invalidRegistrationInputException);
@@ -200,6 +200,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             // then
             await Assert.ThrowsAsync<RegistrationValidationException>(() =>
                 modifyRegistrationTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationValidationException))),
+                    Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),

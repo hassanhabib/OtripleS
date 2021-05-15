@@ -44,18 +44,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
         private static Registration CreateRandomRegistration(DateTimeOffset dateTime) =>
             CreateRandomRegistrationFiller(dateTime).Create();
 
-        private static Filler<Registration> CreateRandomRegistrationFiller(DateTimeOffset dateTime)
-        {
-            var filler = new Filler<Registration>();
-
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dateTime)
-                .OnProperty(Registration => Registration.CreatedByUser).IgnoreIt()
-                .OnProperty(Registration => Registration.UpdatedByUser).IgnoreIt();
-
-            return filler;
-        }
-
         public static TheoryData InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
@@ -101,19 +89,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static IQueryable<Registration> CreateRandomRegistrations(DateTimeOffset dates) =>
-            CreateRegistrationFiller(dates).Create(GetRandomNumber()).AsQueryable();
+            CreateRandomRegistrationFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
+        private static string CreateRandomEmailAddress() => new EmailAddresses().GetValue();
 
-        private static Filler<Registration> CreateRegistrationFiller(DateTimeOffset dates)
+        private static Filler<Registration> CreateRandomRegistrationFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Registration>();
-            Guid createdById = Guid.NewGuid();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
+                .OnType<DateTimeOffset>().Use(dateTime)
+                .OnProperty(registration => registration.StudentEmail).Use(CreateRandomEmailAddress())
                 .OnProperty(Registration => Registration.CreatedByUser).IgnoreIt()
                 .OnProperty(Registration => Registration.UpdatedByUser).IgnoreIt();
 
