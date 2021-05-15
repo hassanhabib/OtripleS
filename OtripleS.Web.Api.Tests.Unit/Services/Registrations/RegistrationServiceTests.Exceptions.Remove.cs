@@ -9,11 +9,56 @@ using OtripleS.Web.Api.Models.Registrations.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Xunit;
+using Microsoft.Data.SqlClient;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
 {
     public partial class RegistrationServiceTests
     {
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRemoveIfSqlExceptionOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Registration someRegistration = CreateRandomRegistration(dateTime: randomDateTime);
+            Guid inputRegistrationId = someRegistration.Id;
+            Registration storageRegistration = someRegistration;
+            SqlException sqlException = GetSqlException();
+            var expectedException = new RegistrationDependencyException(sqlException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectRegistrationByIdAsync(inputRegistrationId))
+                    .ReturnsAsync(storageRegistration);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteRegistrationAsync(storageRegistration))
+                    .ThrowsAsync(sqlException);
+
+            // when
+            ValueTask<Registration> deleteRegistrationTask =
+                this.registrationService.RemoveRegistrationByIdAsync(inputRegistrationId);
+
+            // then
+            await Assert.ThrowsAsync<RegistrationDependencyException>(() =>
+                 deleteRegistrationTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectRegistrationByIdAsync(inputRegistrationId),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteRegistrationAsync(storageRegistration),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(expectedException))),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();            
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Fact]
         public async Task ShouldThrowDependencyExceptionOnRemoveByIdIfDbConcurrencyExceptionOccursAndLogItAsync()
         {
