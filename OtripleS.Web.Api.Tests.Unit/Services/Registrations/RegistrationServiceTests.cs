@@ -103,6 +103,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dateTime)
                 .OnProperty(registration => registration.StudentEmail).Use(CreateRandomEmailAddress())
+                .OnProperty(registration => registration.SubmitterEmail).Use(CreateRandomEmailAddress())
                 .OnProperty(registration => registration.StudentPhone).Use(new PatternGenerator("{N:3}-{N:3}-{N:4}"))
                 .OnProperty(Registration => Registration.CreatedByUser).IgnoreIt()
                 .OnProperty(Registration => Registration.UpdatedByUser).IgnoreIt();
