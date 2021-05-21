@@ -7,7 +7,7 @@ using System;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Models.Registrations
 {
-    public class Registration : IAuditable
+    public class Registration
     {
         public Guid Id { get; set; }
         public RegistrationStatus Status { get; set; }
