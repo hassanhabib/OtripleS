@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentRegistrations;
 
@@ -12,5 +13,14 @@ namespace OtripleS.Web.Api.Brokers.Storages
     public partial class StorageBroker
     {
         public DbSet<StudentRegistration> StudentRegistrations { get; set; }
+
+        public async ValueTask<StudentRegistration> SelectStudentRegistrationByIdAsync(
+            Guid studentId,
+            Guid registrationId)
+        {
+            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
+            return await this.StudentRegistrations.FindAsync(studentId, registrationId);
+        }
     }
 }
