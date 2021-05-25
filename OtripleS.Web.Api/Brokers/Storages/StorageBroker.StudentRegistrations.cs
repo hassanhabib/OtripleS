@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentRegistrations;
@@ -13,6 +14,9 @@ namespace OtripleS.Web.Api.Brokers.Storages
     public partial class StorageBroker
     {
         public DbSet<StudentRegistration> StudentRegistrations { get; set; }
+
+        public IQueryable<StudentRegistration> SelectAllStudentRegistrations() =>
+            this.StudentRegistrations.AsQueryable();
 
         public async ValueTask<StudentRegistration> SelectStudentRegistrationByIdAsync(
             Guid studentId,
