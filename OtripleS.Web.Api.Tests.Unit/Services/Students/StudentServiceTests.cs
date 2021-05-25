@@ -92,7 +92,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Students
                 .OnProperty(student => student.StudentContacts).IgnoreIt()
                 .OnProperty(student => student.StudentExams).IgnoreIt()
                 .OnProperty(student => student.StudentAttachments).IgnoreIt()
-                .OnProperty(student => student.StudentExamFees).IgnoreIt();
+                .OnProperty(student => student.StudentExamFees).IgnoreIt()
+                .OnProperty(student => student.StudentRegistrations).IgnoreIt();
 
             return filler;
         }
