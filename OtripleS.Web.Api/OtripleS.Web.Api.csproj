@@ -31,5 +31,6 @@
     <Folder Include="Services\StudentExamFees\" />
     <Folder Include="Models\StudentExamFees\Exceptions\" />
     <Folder Include="Services\Registrations\" />
+    <Folder Include="Models\StudentRegistrations\" />
   </ItemGroup>
 </Project>

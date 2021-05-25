@@ -4,6 +4,9 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using OtripleS.Web.Api.Models.StudentRegistrations;
 using OtripleS.Web.Api.Models.Users;
 
 namespace OtripleS.Web.Api.Models.Registrations
@@ -27,5 +30,8 @@ namespace OtripleS.Web.Api.Models.Registrations
 
         public Guid UpdatedBy { get; set; }
         public User UpdatedByUser { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<StudentRegistration> StudentRegistrations { get; set; }
     }
 }
