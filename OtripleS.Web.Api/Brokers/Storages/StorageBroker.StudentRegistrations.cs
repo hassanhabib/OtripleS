@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OtripleS.Web.Api.Models.StudentRegistrations;
 
 namespace OtripleS.Web.Api.Brokers.Storages
@@ -14,6 +15,17 @@ namespace OtripleS.Web.Api.Brokers.Storages
     public partial class StorageBroker
     {
         public DbSet<StudentRegistration> StudentRegistrations { get; set; }
+
+        public async ValueTask<StudentRegistration> InsertStudentRegistrationAsync(
+            StudentRegistration StudentRegistration)
+        {
+            EntityEntry<StudentRegistration> StudentRegistrationEntityEntry =
+                await this.StudentRegistrations.AddAsync(StudentRegistration);
+
+            await this.SaveChangesAsync();
+
+            return StudentRegistrationEntityEntry.Entity;
+        }
 
         public IQueryable<StudentRegistration> SelectAllStudentRegistrations() =>
             this.StudentRegistrations.AsQueryable();
