@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.StudentRegistrations;
 using OtripleS.Web.Api.Models.StudentRegistrations.Exceptions;
@@ -41,6 +42,48 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentRegistrationDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputStudentId = randomStudentId;
+            Guid randomRegistrationId = Guid.NewGuid();
+            Guid inputRegistrationId = randomRegistrationId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedStudentExamDependencyException =
+                new StudentRegistrationDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentRegistrationByIdAsync(inputStudentId,inputRegistrationId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<StudentRegistration> retrieveStudentRegistrationByIdTask =
+                this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId);
+
+            // then
+            await Assert.ThrowsAsync<StudentRegistrationDependencyException>(() =>
+                retrieveStudentRegistrationByIdTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
