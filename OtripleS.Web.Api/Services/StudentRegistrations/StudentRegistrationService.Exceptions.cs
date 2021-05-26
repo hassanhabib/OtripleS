@@ -25,6 +25,10 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             {
                 throw CreateAndLogValidationException(invalidStudentRegistrationInputException);
             }
+            catch (NotFoundStudentRegistrationException nullStudentRegistrationException)
+            {
+                throw CreateAndLogValidationException(nullStudentRegistrationException);
+            }
         }
 
         private StudentRegistrationValidationException CreateAndLogValidationException(Exception exception)
