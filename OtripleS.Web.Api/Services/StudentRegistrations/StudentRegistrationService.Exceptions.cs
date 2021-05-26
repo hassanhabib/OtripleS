@@ -23,7 +23,7 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             }
             catch (InvalidStudentRegistrationInputException invalidStudentRegistrationInputException)
             {
-                throw new NotImplementedException();
+                throw CreateAndLogValidationException(invalidStudentRegistrationInputException);
             }
         }
 
