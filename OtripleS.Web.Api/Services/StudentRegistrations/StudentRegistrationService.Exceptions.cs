@@ -39,6 +39,10 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private StudentRegistrationValidationException CreateAndLogValidationException(Exception exception)
@@ -63,6 +67,14 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             this.loggingBroker.LogError(StudentRegistrationDependencyException);
 
             return StudentRegistrationDependencyException;
+        }
+
+        private StudentRegistrationServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var studentRegistrationServiceException = new StudentRegistrationServiceException(exception);
+            this.loggingBroker.LogError(studentRegistrationServiceException);
+
+            return studentRegistrationServiceException;
         }
     }
 }
