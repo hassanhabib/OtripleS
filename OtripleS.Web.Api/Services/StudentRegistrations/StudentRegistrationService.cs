@@ -28,9 +28,16 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<StudentRegistration> RetrieveStudentRegistrationByIdAsync(Guid studentId, Guid registrationId)
+        public ValueTask<StudentRegistration> RetrieveStudentRegistrationByIdAsync(Guid studentId, Guid registrationId) =>
+        TryCatch(async () =>
         {
-            return storageBroker.SelectStudentRegistrationByIdAsync(studentId, registrationId);
-        }
+            ValidateStudentRegistrationId(studentId, registrationId);
+
+            StudentRegistration storageStudentRegistration =
+            await this.storageBroker.SelectStudentRegistrationByIdAsync(studentId, registrationId);
+
+            ValidateStudentRegistrationId(studentId, registrationId);
+            return storageStudentRegistration;
+        });
     }
 }
