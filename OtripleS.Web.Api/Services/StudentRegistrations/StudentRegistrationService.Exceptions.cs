@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentRegistrations;
 using OtripleS.Web.Api.Models.StudentRegistrations.Exceptions;
 
@@ -34,6 +35,10 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
         private StudentRegistrationValidationException CreateAndLogValidationException(Exception exception)
@@ -43,10 +48,19 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
 
             return StudentRegistrationValidationException;
         }
+
         private StudentRegistrationDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
             var StudentRegistrationDependencyException = new StudentRegistrationDependencyException(exception);
             this.loggingBroker.LogCritical(StudentRegistrationDependencyException);
+
+            return StudentRegistrationDependencyException;
+        }
+
+        private StudentRegistrationDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var StudentRegistrationDependencyException = new StudentRegistrationDependencyException(exception);
+            this.loggingBroker.LogError(StudentRegistrationDependencyException);
 
             return StudentRegistrationDependencyException;
         }
