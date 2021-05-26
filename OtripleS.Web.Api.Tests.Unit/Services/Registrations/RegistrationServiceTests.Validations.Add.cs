@@ -90,9 +90,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
         }
 
         [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData("   ")]
+        [MemberData(nameof(InvalidEmailAddressCases))]
         public async Task ShouldThrowValidationExceptionOnAddWhenStudentEmailIsInvalidAndLogItAsync(
             string invalidRegistrationStudentEmail)
         {
@@ -135,6 +133,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
+        [InlineData("b1234567890")]
         public async Task ShouldThrowValidationExceptionOnAddWhenStudentPhoneIsInvalidAndLogItAsync(
             string invalidRegistrationStudentPhone)
         {
@@ -216,9 +215,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
         }
 
         [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData("   ")]
+        [MemberData(nameof(InvalidEmailAddressCases))]
         public async Task ShouldThrowValidationExceptionOnAddWhenSubmitterEmailIsInvalidAndLogItAsync(
     string invalidRegistrationSubmitterEmail)
         {
@@ -261,6 +258,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
+        [InlineData("b1234567890")]
         public async Task ShouldThrowValidationExceptionOnAddWhenSubmitterPhoneIsInvalidAndLogItAsync(
             string invalidRegistrationSubmitterPhone)
         {

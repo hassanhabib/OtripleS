@@ -110,12 +110,12 @@ namespace OtripleS.Web.Api.Services.Registrations
                         parameterName: nameof(Registration.StudentName),
                         parameterValue: registration.StudentName);
 
-                case { } when IsInvalid(registration.StudentEmail):
+                case { } when IsInvalidEmailAddress(registration.StudentEmail):
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.StudentEmail),
                         parameterValue: registration.StudentEmail);
 
-                case { } when IsInvalid(registration.StudentPhone):
+                case { } when IsNotValidPhoneNumber(registration.StudentPhone):
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.StudentPhone),
                         parameterValue: registration.StudentPhone);
@@ -125,12 +125,12 @@ namespace OtripleS.Web.Api.Services.Registrations
                         parameterName: nameof(Registration.SubmitterName),
                         parameterValue: registration.SubmitterName);
 
-                case { } when IsInvalid(registration.SubmitterEmail):
+                case { } when IsInvalidEmailAddress(registration.SubmitterEmail):
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.SubmitterEmail),
                         parameterValue: registration.SubmitterEmail);
 
-                case { } when IsInvalid(registration.SubmitterPhone):
+                case { } when IsNotValidPhoneNumber(registration.SubmitterPhone):
                     throw new InvalidRegistrationException(
                         parameterName: nameof(Registration.SubmitterPhone),
                         parameterValue: registration.SubmitterPhone);
