@@ -17,14 +17,14 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public DbSet<StudentRegistration> StudentRegistrations { get; set; }
 
         public async ValueTask<StudentRegistration> InsertStudentRegistrationAsync(
-            StudentRegistration StudentRegistration)
+            StudentRegistration studentRegistration)
         {
-            EntityEntry<StudentRegistration> StudentRegistrationEntityEntry =
-                await this.StudentRegistrations.AddAsync(StudentRegistration);
+            EntityEntry<StudentRegistration> studentRegistrationEntityEntry =
+                await this.StudentRegistrations.AddAsync(studentRegistration);
 
             await this.SaveChangesAsync();
 
-            return StudentRegistrationEntityEntry.Entity;
+            return studentRegistrationEntityEntry.Entity;
         }
 
         public IQueryable<StudentRegistration> SelectAllStudentRegistrations() =>
@@ -40,10 +40,10 @@ namespace OtripleS.Web.Api.Brokers.Storages
         }
 
         public async ValueTask<StudentRegistration> UpdateStudentRegistrationAsync(
-            StudentRegistration StudentRegistration)
+            StudentRegistration studentRegistration)
         {
             EntityEntry<StudentRegistration> studentRegistrationEntityEntry =
-                this.StudentRegistrations.Update(StudentRegistration);
+                this.StudentRegistrations.Update(studentRegistration);
 
             await this.SaveChangesAsync();
 
@@ -51,10 +51,10 @@ namespace OtripleS.Web.Api.Brokers.Storages
         }
 
         public async ValueTask<StudentRegistration> DeleteStudentRegistrationAsync(
-            StudentRegistration StudentRegistration)
+            StudentRegistration studentRegistration)
         {
             EntityEntry<StudentRegistration> studentRegistrationEntityEntry =
-                this.StudentRegistrations.Remove(StudentRegistration);
+                this.StudentRegistrations.Remove(studentRegistration);
 
             await this.SaveChangesAsync();
 
