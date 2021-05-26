@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
 
         public ValueTask<StudentRegistration> RetrieveStudentRegistrationByIdAsync(Guid studentId, Guid registrationId)
         {
-            throw new NotImplementedException();
+            return storageBroker.SelectStudentRegistrationByIdAsync(studentId, registrationId);
         }
     }
 }
