@@ -36,7 +36,8 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             StudentRegistration storageStudentRegistration =
             await this.storageBroker.SelectStudentRegistrationByIdAsync(studentId, registrationId);
 
-            ValidateStudentRegistrationId(studentId, registrationId);
+            ValidateStorageStudentRegistration(storageStudentRegistration, studentId, registrationId);
+
             return storageStudentRegistration;
         });
     }

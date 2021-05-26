@@ -53,5 +53,47 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnRetrieveWhenStorageStudentRegistrationIsNullAndLogItAsync()
+        {
+            // given
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputStudentId = randomStudentId;
+            Guid randomRegistrationId = Guid.NewGuid();
+            Guid inputRegistrationId = randomRegistrationId;
+            StudentRegistration invalidStorageStudentRegistration = null;
+            var notFoundStudentRegistrationException = new NotFoundStudentRegistrationException(inputStudentId, inputRegistrationId);
+
+            var expectedStudentRegistrationValidationException =
+                new StudentRegistrationValidationException(notFoundStudentRegistrationException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentRegistrationByIdAsync(inputStudentId,inputRegistrationId))
+                    .ReturnsAsync(invalidStorageStudentRegistration);
+
+            // when
+            ValueTask<StudentRegistration> retrieveStudentRegistrationByIdTask =
+                this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId);
+
+            // then
+            await Assert.ThrowsAsync<StudentRegistrationValidationException>(() =>
+                retrieveStudentRegistrationByIdTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }

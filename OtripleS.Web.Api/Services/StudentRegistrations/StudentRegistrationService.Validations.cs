@@ -20,5 +20,12 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
                     parameterValue: studentId);
             }
         }
+        private static void ValidateStorageStudentRegistration(StudentRegistration storageStudentRegistration, Guid studentId, Guid registrationId)
+        {
+            if (storageStudentRegistration == null)
+            {
+                throw new NotFoundStudentRegistrationException(studentId,registrationId);
+            }
+        }
     }
 }
