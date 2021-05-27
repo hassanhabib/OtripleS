@@ -26,6 +26,10 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private StudentRegistrationValidationException CreateAndLogValidationException(Exception exception)
