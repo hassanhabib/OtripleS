@@ -23,9 +23,9 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<StudentRegistration> AddStudentRegistrationAsync(StudentRegistration studentRegistration)
+        public async ValueTask<StudentRegistration> AddStudentRegistrationAsync(StudentRegistration studentRegistration)
         {
-            throw new NotImplementedException();
+            return await storageBroker.InsertStudentRegistrationAsync(studentRegistration);
         }
     }
 }
