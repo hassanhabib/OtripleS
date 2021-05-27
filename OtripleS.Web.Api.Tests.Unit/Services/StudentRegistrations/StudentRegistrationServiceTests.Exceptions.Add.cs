@@ -83,5 +83,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnAddWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            StudentRegistration someStudentRegistration = CreateRandomStudentRegistration();
+            var exception = new Exception();
+
+            var expectedStudentRegistrationServiceException =
+                new StudentRegistrationServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertStudentRegistrationAsync(It.IsAny<StudentRegistration>()))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<StudentRegistration> addStudentRegistrationTask =
+                 this.studentRegistrationService.AddStudentRegistrationAsync(someStudentRegistration);
+
+            // then
+            await Assert.ThrowsAsync<StudentRegistrationServiceException>(() =>
+                addStudentRegistrationTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentRegistrationAsync(It.IsAny<StudentRegistration>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
