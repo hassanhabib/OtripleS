@@ -32,7 +32,10 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
 
         public IQueryable<StudentRegistration> RetrieveAllStudentRegistrations()
         {
-            throw new NotImplementedException();
+            IQueryable<StudentRegistration> storageStudentRegistrations 
+                = this.storageBroker.SelectAllStudentRegistrations();
+
+            return storageStudentRegistrations;
         }
     }
 }
