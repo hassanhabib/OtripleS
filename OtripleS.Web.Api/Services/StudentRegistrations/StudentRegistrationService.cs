@@ -36,6 +36,8 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
              IQueryable<StudentRegistration> storageStudentRegistrations
                 = this.storageBroker.SelectAllStudentRegistrations();
 
+             ValidateStorageStudentRegistrations(storageStudentRegistrations);
+
              return storageStudentRegistrations;
          });
     }
