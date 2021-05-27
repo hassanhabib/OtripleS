@@ -34,6 +34,13 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
 
                 throw CreateAndLogValidationException(alreadyExistsStudentRegistrationException);
             }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidStudentRegistrationReferenceException =
+                    new InvalidStudentRegistrationReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidStudentRegistrationReferenceException);
+            }
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
