@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.StudentRegistrations.Exceptions
 {
     public class StudentRegistrationDependencyException : Exception
