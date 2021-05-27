@@ -14,7 +14,7 @@ using OtripleS.Web.Api.Models.StudentRegistrations;
 
 namespace OtripleS.Web.Api.Services.StudentRegistrations
 {
-    public class StudentRegistrationService : IStudentRegistrationService
+    public partial class StudentRegistrationService : IStudentRegistrationService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -31,11 +31,12 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
         }
 
         public IQueryable<StudentRegistration> RetrieveAllStudentRegistrations()
-        {
-            IQueryable<StudentRegistration> storageStudentRegistrations 
+         => TryCatch(() =>
+         {
+             IQueryable<StudentRegistration> storageStudentRegistrations
                 = this.storageBroker.SelectAllStudentRegistrations();
 
-            return storageStudentRegistrations;
-        }
+             return storageStudentRegistrations;
+         });
     }
 }
