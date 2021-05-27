@@ -6,8 +6,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -44,6 +47,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
 
         private static IQueryable<StudentRegistration> CreateRandomStudentRegistrations(DateTimeOffset dates) =>
             CreateStudentRegistrationFiller(dates).Create(GetRandomNumber()).AsQueryable();
+
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
 
         private static Filler<StudentRegistration> CreateStudentRegistrationFiller(DateTimeOffset dates)
         {
