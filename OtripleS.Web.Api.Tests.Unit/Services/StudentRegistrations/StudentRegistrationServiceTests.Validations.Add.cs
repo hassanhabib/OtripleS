@@ -74,5 +74,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenRegistrationIdIsInvalidAndLogItAsync()
+        {
+            // given
+            StudentRegistration randomStudentRegistration = CreateRandomStudentRegistration();
+            StudentRegistration inputStudentRegistration = randomStudentRegistration;
+            inputStudentRegistration.RegistrationId = default;
+
+            var invalidStudentRegistrationInputException = new InvalidStudentRegistrationException(
+                parameterName: nameof(StudentRegistration.RegistrationId),
+                parameterValue: inputStudentRegistration.RegistrationId);
+
+            var expectedStudentRegistrationValidationException =
+                new StudentRegistrationValidationException(invalidStudentRegistrationInputException);
+
+            // when
+            ValueTask<StudentRegistration> addStudentRegistrationTask =
+                this.studentRegistrationService.AddStudentRegistrationAsync(inputStudentRegistration);
+
+            // then
+            await Assert.ThrowsAsync<StudentRegistrationValidationException>(() =>
+                addStudentRegistrationTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentRegistrationAsync(It.IsAny<StudentRegistration>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
