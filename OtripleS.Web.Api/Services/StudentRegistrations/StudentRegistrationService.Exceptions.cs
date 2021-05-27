@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentRegistrations;
@@ -25,6 +26,13 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             catch (InvalidStudentRegistrationException invalidStudentRegistrationException) 
             {
                 throw CreateAndLogValidationException(invalidStudentRegistrationException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsStudentRegistrationException =
+                    new AlreadyExistsStudentRegistrationException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsStudentRegistrationException);
             }
             catch (SqlException sqlException)
             {
