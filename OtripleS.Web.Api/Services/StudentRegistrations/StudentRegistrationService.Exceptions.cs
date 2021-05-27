@@ -24,14 +24,26 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private StudentRegistrationDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
-            var feeDependencyException = new StudentRegistrationDependencyException(exception);
-            this.loggingBroker.LogCritical(feeDependencyException);
+            var StudentRegistrationDependencyException = new StudentRegistrationDependencyException(exception);
+            this.loggingBroker.LogCritical(StudentRegistrationDependencyException);
 
-            return feeDependencyException;
+            return StudentRegistrationDependencyException;
+        }
+
+        private StudentRegistrationServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var studentRegistrationServiceException = new StudentRegistrationServiceException(exception);
+            this.loggingBroker.LogError(studentRegistrationServiceException);
+
+            return studentRegistrationServiceException;
         }
     }
 }
