@@ -7,7 +7,7 @@ using OtripleS.Web.Api.Models.StudentRegistrations;
 
 namespace OtripleS.Web.Api.Services.StudentRegistrations
 {
-    public class StudentRegistrationService : IStudentRegistrationService
+    public partial class StudentRegistrationService : IStudentRegistrationService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -23,9 +23,12 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async ValueTask<StudentRegistration> AddStudentRegistrationAsync(StudentRegistration studentRegistration)
+        public ValueTask<StudentRegistration> AddStudentRegistrationAsync(StudentRegistration studentRegistration) =>
+        TryCatch(async () =>
         {
             return await storageBroker.InsertStudentRegistrationAsync(studentRegistration);
-        }
+
+        });
+        
     }
 }
