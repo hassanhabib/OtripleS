@@ -53,7 +53,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
                 teacher: randomTeacher,
                 classroom: randomClassroom,
                 course: randomCourse);
-            
+
             Guid posterId = Guid.NewGuid();
 
             var filler = new Filler<Attendance>();

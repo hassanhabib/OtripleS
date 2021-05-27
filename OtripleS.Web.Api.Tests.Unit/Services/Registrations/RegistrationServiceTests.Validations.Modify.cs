@@ -653,7 +653,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
         }
 
         [Fact]
-        public async void 
+        public async void
             ShouldThrowValidationExceptionOnModifyWhenCreatedDateIsNotSameAsStorageCreatedDateIsInvalidAndLogItAsync()
         {
             // given
@@ -707,7 +707,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();            
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -886,6 +886,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-        }        
+        }
     }
 }

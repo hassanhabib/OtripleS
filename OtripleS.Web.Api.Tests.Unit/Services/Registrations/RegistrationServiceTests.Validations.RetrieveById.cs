@@ -12,8 +12,8 @@ using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
 {
-	public partial class RegistrationServiceTests
-	{
+    public partial class RegistrationServiceTests
+    {
         [Fact]
         public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenIdIsInvalidAndLogItAsync()
         {

@@ -3,11 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using OtripleS.Web.Api.Models.Registrations;
-using OtripleS.Web.Api.Models.Registrations.Exceptions;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using OtripleS.Web.Api.Models.Registrations;
+using OtripleS.Web.Api.Models.Registrations.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Registrations
 {
@@ -163,7 +163,7 @@ namespace OtripleS.Web.Api.Services.Registrations
         }
 
         private static void ValidateAgainstStorageRegistrationOnModify(
-            Registration inputRegistration, 
+            Registration inputRegistration,
             Registration storageRegistration)
         {
             switch (inputRegistration)
@@ -207,7 +207,7 @@ namespace OtripleS.Web.Api.Services.Registrations
         private static bool IsInvalid(Guid input) => input == default;
 
         private static void ValidateStorageRegistration
-            (Registration storageRegistration, 
+            (Registration storageRegistration,
             Guid registrationId)
         {
             if (storageRegistration == null)
@@ -249,7 +249,7 @@ namespace OtripleS.Web.Api.Services.Registrations
 
         private static bool IsNotSame(DateTimeOffset firstDate, DateTimeOffset secondDate) =>
             firstDate != secondDate;
-        
+
         private static bool IsInvalid(DateTimeOffset date) => date == default;
         private static bool IsInvalid(String input) => String.IsNullOrWhiteSpace(input);
     }

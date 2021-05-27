@@ -4,10 +4,9 @@
 
 using System;
 using System.Threading.Tasks;
+using Moq;
 using OtripleS.Web.Api.Models.Registrations;
 using OtripleS.Web.Api.Models.Registrations.Exceptions;
-using Microsoft.EntityFrameworkCore;
-using Moq;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
@@ -48,7 +47,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
                     Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls(); 
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -91,9 +90,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
                 broker.LogError(It.Is(SameExceptionAs(expectedRegistrationValidationException))),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();            
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }        
+        }
     }
 }
