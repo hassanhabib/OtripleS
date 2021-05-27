@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Moq;
 using OtripleS.Web.Api.Models.StudentRegistrations;
 using OtripleS.Web.Api.Models.StudentRegistrations.Exceptions;
@@ -105,6 +106,47 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentRegistrationAsync(It.IsAny<StudentRegistration>()),
                     Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnAddWhenStudentRegistrationAlreadyExistsAndLogItAsync()
+        {
+            // given
+            StudentRegistration randomStudentRegistration = CreateRandomStudentRegistration();
+            StudentRegistration alreadyExistsStudentRegistration = randomStudentRegistration;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsStudentRegistrationException =
+                new AlreadyExistsStudentRegistrationException(duplicateKeyException);
+
+            var expectedStudentRegistrationValidationException =
+                new StudentRegistrationValidationException(alreadyExistsStudentRegistrationException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertStudentRegistrationAsync(alreadyExistsStudentRegistration))
+                    .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<StudentRegistration> addStudentRegistrationTask =
+                this.studentRegistrationService.AddStudentRegistrationAsync(alreadyExistsStudentRegistration);
+
+            // then
+            await Assert.ThrowsAsync<StudentRegistrationValidationException>(() =>
+                addStudentRegistrationTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentRegistrationAsync(It.IsAny<StudentRegistration>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationValidationException))),
+                    Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

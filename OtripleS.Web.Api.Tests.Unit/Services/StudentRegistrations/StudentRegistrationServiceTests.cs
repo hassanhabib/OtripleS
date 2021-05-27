@@ -59,5 +59,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
     }
 }
