@@ -22,6 +22,10 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             {
                 throw CreateAndLogValidationException(nullStudentRegistrationException);
             }
+            catch (InvalidStudentRegistrationException invalidStudentRegistrationException) 
+            {
+                throw CreateAndLogValidationException(invalidStudentRegistrationException);
+            }
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
