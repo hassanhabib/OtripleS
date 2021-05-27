@@ -26,6 +26,8 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
         public ValueTask<StudentRegistration> AddStudentRegistrationAsync(StudentRegistration studentRegistration) =>
         TryCatch(async () =>
         {
+            ValidateStudentRegistrationOnCreate(studentRegistration);
+
             return await storageBroker.InsertStudentRegistrationAsync(studentRegistration);
 
         });

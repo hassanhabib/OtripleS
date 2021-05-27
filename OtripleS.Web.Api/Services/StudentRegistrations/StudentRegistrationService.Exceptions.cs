@@ -18,6 +18,10 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             {
                 return await returningStudentRegistrationFunction();
             }
+            catch (NullStudentRegistrationException nullStudentRegistrationException) 
+            {
+                throw CreateAndLogValidationException(nullStudentRegistrationException);
+            }
             catch (SqlException sqlException)
             {
                 throw CreateAndLogCriticalDependencyException(sqlException);
