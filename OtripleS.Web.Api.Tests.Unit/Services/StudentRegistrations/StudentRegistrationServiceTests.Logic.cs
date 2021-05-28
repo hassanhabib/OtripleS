@@ -48,6 +48,36 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        public async Task ShouldAddStudentRegistrationAsync()
+        {
+            // given
+            StudentRegistration randomStudentRegistration = CreateRandomStudentRegistration();
+            StudentRegistration inputStudentRegistration = randomStudentRegistration;
+            StudentRegistration storageStudentRegistration = randomStudentRegistration;
+            StudentRegistration expectedStudentRegistration = storageStudentRegistration;
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertStudentRegistrationAsync(inputStudentRegistration))
+                    .ReturnsAsync(storageStudentRegistration);
+
+            // when
+            StudentRegistration actualStudentRegistration =
+                await this.studentRegistrationService.AddStudentRegistrationAsync(inputStudentRegistration);
+
+            // then
+            actualStudentRegistration.Should().BeEquivalentTo(expectedStudentRegistration);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentRegistrationAsync(inputStudentRegistration),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+          
+        [Fact]
         public async Task ShouldRetrieveStudentRegistrationByIdAsync()
         {
             // given
@@ -61,7 +91,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
             StudentRegistration expectedStudentRegistration = storageStudentRegistration;
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputStudentId,inputRegistrationId))
+                broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId))
                     .ReturnsAsync(storageStudentRegistration);
 
             // when

@@ -5,8 +5,9 @@
 
 using System;
 using System.Linq;
-using Microsoft.Data.SqlClient;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.StudentRegistrations;
 using OtripleS.Web.Api.Models.StudentRegistrations.Exceptions;
@@ -44,6 +45,14 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             {
                 return await returningStudentRegistrationFunction();
             }
+            catch (NullStudentRegistrationException nullStudentRegistrationException)
+            {
+                throw CreateAndLogValidationException(nullStudentRegistrationException);
+            }
+            catch (InvalidStudentRegistrationException invalidStudentRegistrationException)
+            {
+                throw CreateAndLogValidationException(invalidStudentRegistrationException);
+            }
             catch (InvalidStudentRegistrationInputException invalidStudentRegistrationInputException)
             {
                 throw CreateAndLogValidationException(invalidStudentRegistrationInputException);
@@ -51,6 +60,20 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             catch (NotFoundStudentRegistrationException nullStudentRegistrationException)
             {
                 throw CreateAndLogValidationException(nullStudentRegistrationException);
+            }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsStudentRegistrationException =
+                    new AlreadyExistsStudentRegistrationException(duplicateKeyException);
+
+                throw CreateAndLogValidationException(alreadyExistsStudentRegistrationException);
+            }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidStudentRegistrationReferenceException =
+                    new InvalidStudentRegistrationReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogValidationException(invalidStudentRegistrationReferenceException);
             }
             catch (SqlException sqlException)
             {
@@ -68,34 +91,34 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
 
         private StudentRegistrationValidationException CreateAndLogValidationException(Exception exception)
         {
-            var StudentRegistrationValidationException = new StudentRegistrationValidationException(exception);
-            this.loggingBroker.LogError(StudentRegistrationValidationException);
+            var studentRegistrationValidationException = new StudentRegistrationValidationException(exception);
+            this.loggingBroker.LogError(studentRegistrationValidationException);
 
-            return StudentRegistrationValidationException;
+            return studentRegistrationValidationException;
         }
 
         private StudentRegistrationDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
-            var StudentRegistrationDependencyException = new StudentRegistrationDependencyException(exception);
-            this.loggingBroker.LogCritical(StudentRegistrationDependencyException);
+            var studentRegistrationDependencyException = new StudentRegistrationDependencyException(exception);
+            this.loggingBroker.LogCritical(studentRegistrationDependencyException);
 
-            return StudentRegistrationDependencyException;
+            return studentRegistrationDependencyException;
         }
 
         private StudentRegistrationDependencyException CreateAndLogDependencyException(Exception exception)
         {
-            var StudentRegistrationDependencyException = new StudentRegistrationDependencyException(exception);
-            this.loggingBroker.LogError(StudentRegistrationDependencyException);
+            var studentRegistrationDependencyException = new StudentRegistrationDependencyException(exception);
+            this.loggingBroker.LogError(studentRegistrationDependencyException);
 
-            return StudentRegistrationDependencyException;
+            return studentRegistrationDependencyException;
         }
 
         private StudentRegistrationServiceException CreateAndLogServiceException(Exception exception)
         {
-            var studentRegistrationServiceException = new StudentRegistrationServiceException(exception);
-            this.loggingBroker.LogError(studentRegistrationServiceException);
+            var StudentRegistrationServiceException = new StudentRegistrationServiceException(exception);
+            this.loggingBroker.LogError(StudentRegistrationServiceException);
 
-            return studentRegistrationServiceException;
+            return StudentRegistrationServiceException;
         }
     }
 }

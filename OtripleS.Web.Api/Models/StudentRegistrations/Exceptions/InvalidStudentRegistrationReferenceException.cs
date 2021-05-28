@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.StudentRegistrations.Exceptions
 {
-    public class StudentRegistrationServiceException : Exception
+    public class InvalidStudentRegistrationReferenceException : Exception
     {
-        public StudentRegistrationServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+        public InvalidStudentRegistrationReferenceException(Exception innerException)
+            : base("Invalid student registration reference error occurred.", innerException) { }
     }
 }

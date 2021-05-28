@@ -7,9 +7,12 @@ using System;
 
 namespace OtripleS.Web.Api.Models.StudentRegistrations.Exceptions
 {
-    public class StudentRegistrationServiceException : Exception
+    public class InvalidStudentRegistrationException : Exception
     {
-        public StudentRegistrationServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+        public InvalidStudentRegistrationException(string parameterName, object parameterValue)
+            : base($"Invalid StudentRegistration, " +
+                  $"ParameterNmae: {parameterName}, " +
+                  $"ParameterValue: {parameterValue}.")
+        { }
     }
 }

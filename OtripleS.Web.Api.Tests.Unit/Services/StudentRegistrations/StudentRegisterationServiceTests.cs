@@ -41,6 +41,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
+        private StudentRegistration CreateRandomStudentRegistration() =>
+            CreateStudentRegistrationFiller(DateTimeOffset.UtcNow).Create();
 
         private StudentRegistration CreateRandomStudentRegistration(DateTimeOffset dates) =>
             CreateStudentRegistrationFiller(dates).Create();
@@ -66,5 +68,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
                 .OnProperty(StudentRegistration => StudentRegistration.Registration).IgnoreIt();
             return filler;
         }
+
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
     }
 }
