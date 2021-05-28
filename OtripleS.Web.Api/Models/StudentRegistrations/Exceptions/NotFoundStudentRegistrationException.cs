@@ -6,10 +6,11 @@
 using System;
 namespace OtripleS.Web.Api.Models.StudentRegistrations.Exceptions
 {
-    public class StudentRegistrationDependencyException : Exception
+    public class NotFoundStudentRegistrationException : Exception
     {
-        public StudentRegistrationDependencyException(Exception innerException)
-            : base("Service dependency error occured, contact support.", innerException)
-        { }
+        public NotFoundStudentRegistrationException(Guid studentId, Guid registrationId)
+            : base($"Couldn't find StudentRegistration with Student Id: {studentId} " +
+                  $" and Registration Id: {registrationId}.") { }
     }
 }
+

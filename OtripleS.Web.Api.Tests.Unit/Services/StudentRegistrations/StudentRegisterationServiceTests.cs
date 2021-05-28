@@ -42,6 +42,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
 
+        private StudentRegistration CreateRandomStudentRegistration(DateTimeOffset dates) =>
+            CreateStudentRegistrationFiller(dates).Create();
         private static IQueryable<StudentRegistration> CreateRandomStudentRegistrations(DateTimeOffset dates) =>
             CreateStudentRegistrationFiller(dates).Create(GetRandomNumber()).AsQueryable();
 

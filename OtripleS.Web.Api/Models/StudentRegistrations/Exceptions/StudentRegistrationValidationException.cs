@@ -6,10 +6,11 @@
 using System;
 namespace OtripleS.Web.Api.Models.StudentRegistrations.Exceptions
 {
-    public class StudentRegistrationDependencyException : Exception
+    public class StudentRegistrationValidationException : Exception
     {
-        public StudentRegistrationDependencyException(Exception innerException)
-            : base("Service dependency error occured, contact support.", innerException)
-        { }
+        public StudentRegistrationValidationException(Exception innerException)
+            : base("Invalid input, contact support.", innerException)
+        {
+        }
     }
 }
