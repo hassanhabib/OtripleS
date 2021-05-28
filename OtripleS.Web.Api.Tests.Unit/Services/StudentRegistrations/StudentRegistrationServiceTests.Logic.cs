@@ -49,6 +49,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
         public async Task ShouldAddStudentRegistrationAsync()
         {
             // given
