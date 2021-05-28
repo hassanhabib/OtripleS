@@ -32,6 +32,14 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             {
                 throw CreateAndLogValidationException(invalidStudentRegistrationException);
             }
+            catch (InvalidStudentRegistrationInputException invalidStudentRegistrationInputException)
+            {
+                throw CreateAndLogValidationException(invalidStudentRegistrationInputException);
+            }
+            catch (NotFoundStudentRegistrationException nullStudentRegistrationException)
+            {
+                throw CreateAndLogValidationException(nullStudentRegistrationException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsStudentRegistrationException =

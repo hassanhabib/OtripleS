@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
         }
 
         private static void ValidateStudentRegistrationIsNull(StudentRegistration studentRegistration)
-        {
+            {
             if (studentRegistration is null)
             {
                 throw new NullStudentRegistrationException();
@@ -38,6 +38,23 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
                     throw new InvalidStudentRegistrationException(
                         parameterName: nameof(StudentRegistration.RegistrationId),
                         parameterValue: registrationId);
+            }
+        }
+
+        private void ValidateStudentRegistrationId(Guid studentId, Guid registrationId)
+        {
+            if (studentId == Guid.Empty)
+            {
+                throw new InvalidStudentRegistrationInputException(
+                    parameterName: nameof(StudentRegistration.StudentId),
+                    parameterValue: studentId);
+            }
+        }
+        private static void ValidateStorageStudentRegistration(StudentRegistration storageStudentRegistration, Guid studentId, Guid registrationId)
+        {
+            if (storageStudentRegistration == null)
+            {
+                throw new NotFoundStudentRegistrationException(studentId, registrationId);
             }
         }
     }

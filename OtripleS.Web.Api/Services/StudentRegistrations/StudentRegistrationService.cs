@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -36,5 +37,17 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
 
         });
 
+        public ValueTask<StudentRegistration> RetrieveStudentRegistrationByIdAsync(Guid studentId, Guid registrationId) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentRegistrationId(studentId, registrationId);
+
+            StudentRegistration storageStudentRegistration =
+            await this.storageBroker.SelectStudentRegistrationByIdAsync(studentId, registrationId);
+
+            ValidateStorageStudentRegistration(storageStudentRegistration, studentId, registrationId);
+
+            return storageStudentRegistration;
+        });
     }
 }
