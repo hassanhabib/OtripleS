@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq.Expressions;
@@ -39,6 +39,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
+        private StudentRegistration CreateRandomStudentRegistration() =>
+            CreateStudentRegistrationFiller(DateTimeOffset.UtcNow).Create();
+
         private StudentRegistration CreateRandomStudentRegistration(DateTimeOffset dates) =>
             CreateStudentRegistrationFiller(dates).Create();
 
@@ -51,13 +54,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
                 .OnProperty(StudentRegistration => StudentRegistration.Registration).IgnoreIt();
             return filler;
         }
+
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
+
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
     }
 }

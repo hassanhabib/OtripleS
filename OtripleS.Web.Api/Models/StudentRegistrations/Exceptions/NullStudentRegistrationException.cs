@@ -7,9 +7,8 @@ using System;
 
 namespace OtripleS.Web.Api.Models.StudentRegistrations.Exceptions
 {
-    public class StudentRegistrationServiceException : Exception
+    public class NullStudentRegistrationException : Exception
     {
-        public StudentRegistrationServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+        public NullStudentRegistrationException() : base("The StudentRegistration is null.") { }
     }
 }
