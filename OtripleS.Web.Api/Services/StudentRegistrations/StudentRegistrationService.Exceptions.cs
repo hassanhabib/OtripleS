@@ -52,11 +52,7 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             catch (InvalidStudentRegistrationException invalidStudentRegistrationException)
             {
                 throw CreateAndLogValidationException(invalidStudentRegistrationException);
-            }
-            catch (InvalidStudentRegistrationInputException invalidStudentRegistrationInputException)
-            {
-                throw CreateAndLogValidationException(invalidStudentRegistrationInputException);
-            }
+            }            
             catch (NotFoundStudentRegistrationException nullStudentRegistrationException)
             {
                 throw CreateAndLogValidationException(nullStudentRegistrationException);

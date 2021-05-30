@@ -53,7 +53,7 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             Guid registrationId) =>
         TryCatch(async () =>
         {
-            ValidateStudentRegistrationId(studentId, registrationId);
+            ValidateStudentRegistrationIds(studentId, registrationId);
 
             StudentRegistration storageStudentRegistration =
             await this.storageBroker.SelectStudentRegistrationByIdAsync(studentId, registrationId);
@@ -63,14 +63,17 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             return storageStudentRegistration;
         });
 
-        public async ValueTask<StudentRegistration> RemoveStudentRegistrationByIdsAsync(
-            Guid studentId, 
-            Guid registrationId)
+        public ValueTask<StudentRegistration> RemoveStudentRegistrationByIdsAsync(
+            Guid studentId,
+            Guid registrationId) =>
+        TryCatch(async () =>
         {
+            ValidateStudentRegistrationIds(studentId, registrationId);
+
             StudentRegistration storageStudentRegistration =
                 await this.storageBroker.SelectStudentRegistrationByIdAsync(studentId, registrationId);
 
             return await this.storageBroker.DeleteStudentRegistrationAsync(storageStudentRegistration);
-        }
+        });
     }
 }

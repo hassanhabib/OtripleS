@@ -19,26 +19,26 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
         {
             // given
             Guid randomStudentRegistrationId = default;
-            Guid randomStudentId = default;
+            Guid randomStudentId = Guid.NewGuid();
             Guid inputStudentRegistrationId = randomStudentRegistrationId;
             Guid inputStudentId = randomStudentId;
 
-            var invalidStudentRegistrationInputException = new InvalidStudentRegistrationInputException(
+            var invalidStudentRegistrationInputException = new InvalidStudentRegistrationException(
                 parameterName: nameof(StudentRegistration.RegistrationId),
                 parameterValue: inputStudentRegistrationId);
 
             var expectedStudentRegistrationValidationException =
                 new StudentRegistrationValidationException(invalidStudentRegistrationInputException);
 
-            //when
+            // when
             ValueTask<StudentRegistration> actualStudentRegistrationDeleteTask =
                 this.studentRegistrationService.RemoveStudentRegistrationByIdsAsync(
-                    inputStudentRegistrationId, 
-                    inputStudentId);
+                    inputStudentId,
+                    inputStudentRegistrationId);
 
-            //then
-            await Assert.ThrowsAsync<StudentRegistrationValidationException>(
-                () => actualStudentRegistrationDeleteTask.AsTask());
+            // then
+            await Assert.ThrowsAsync<StudentRegistrationValidationException>(() => 
+                actualStudentRegistrationDeleteTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationValidationException))),
