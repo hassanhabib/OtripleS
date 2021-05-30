@@ -51,11 +51,50 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentRegistrationDependencyException))),
                     Times.Once);
             
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputStudentId = randomStudentId;
+            Guid randomRegistrationId = Guid.NewGuid();
+            Guid inputRegistrationId = randomRegistrationId;
+            var databaseUpdateException = new DbUpdateException();
+
+            var expectedStudentRegistrationDependencyException =
+                new StudentRegistrationDependencyException(databaseUpdateException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentRegistrationByIdAsync(inputRegistrationId, inputStudentId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<StudentRegistration> deleteStudentRegistrationTask =
+                this.studentRegistrationService.RemoveStudentRegistrationByIdsAsync(
+                    inputRegistrationId, 
+                    inputStudentId);
+
+            // then
+            await Assert.ThrowsAsync<StudentRegistrationDependencyException>(() => 
+                deleteStudentRegistrationTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentRegistrationByIdAsync(inputRegistrationId, inputStudentId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
 
     }
 }
