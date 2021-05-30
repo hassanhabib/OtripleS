@@ -63,11 +63,14 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             return storageStudentRegistration;
         });
 
-        public ValueTask<StudentRegistration> RemoveStudentRegistrationByIdsAsync(
+        public async ValueTask<StudentRegistration> RemoveStudentRegistrationByIdsAsync(
             Guid studentId, 
             Guid registrationId)
         {
-            throw new NotImplementedException();
+            StudentRegistration storageStudentRegistration =
+                await this.storageBroker.SelectStudentRegistrationByIdAsync(studentId, registrationId);
+
+            return await this.storageBroker.DeleteStudentRegistrationAsync(storageStudentRegistration);
         }
     }
 }
