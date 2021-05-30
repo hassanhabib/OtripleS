@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
     public partial class StudentRegistrationServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnDeleteWhenStudentIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRemoveWhenStudentIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomStudentId = default;
@@ -58,7 +58,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnDeleteWhenStudentRegistrationIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRemoveWhenStudentRegistrationIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomStudentId = Guid.NewGuid();
@@ -101,7 +101,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnDeleteWhenStorageStudentRegistrationIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRemoveWhenStorageStudentRegistrationIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
