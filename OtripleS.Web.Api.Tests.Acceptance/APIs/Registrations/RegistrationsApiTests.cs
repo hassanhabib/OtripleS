@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Registrations
         {
             Registration deletedRegistration =
                 await this.otripleSApiBroker.DeleteRegistrationByIdAsync(registration.Id);
-            
+
             await this.otripleSApiBroker.DeleteUserByIdAsync(deletedRegistration.CreatedBy);
 
             return deletedRegistration;
@@ -80,7 +80,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Registrations
 
         private static string GetRandomPhoneNumber() =>
             new PatternGenerator("{N:3}-{N:3}-{N:4}").GetValue();
-        
+
         private static Filler<User> CreateRandomUserFiller()
         {
             var now = DateTimeOffset.UtcNow;

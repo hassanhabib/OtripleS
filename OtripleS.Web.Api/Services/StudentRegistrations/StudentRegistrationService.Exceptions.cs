@@ -1,9 +1,10 @@
-﻿// ---------------------------------------------------------------
+﻿﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -15,6 +16,26 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
 {
     public partial class StudentRegistrationService
     {
+        private delegate IQueryable<StudentRegistration>
+            ReturningQueryableStudentRegistrationFunction();
+
+        private IQueryable<StudentRegistration> TryCatch
+            (ReturningQueryableStudentRegistrationFunction returningQueryableStudentRegistrationFunction)
+        {
+            try
+            {
+                return returningQueryableStudentRegistrationFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
+        }
+
         private delegate ValueTask<StudentRegistration> ReturningStudentRegistrationFunction();
 
         private async ValueTask<StudentRegistration> TryCatch(

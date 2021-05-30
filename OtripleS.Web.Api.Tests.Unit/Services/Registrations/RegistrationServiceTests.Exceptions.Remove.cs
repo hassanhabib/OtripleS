@@ -4,12 +4,12 @@
 
 using System;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Registrations;
-using OtripleS.Web.Api.Models.Registrations.Exceptions;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using OtripleS.Web.Api.Models.Registrations;
+using OtripleS.Web.Api.Models.Registrations.Exceptions;
 using Xunit;
-using Microsoft.Data.SqlClient;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
 {
@@ -54,7 +54,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
                 broker.LogCritical(It.Is(SameExceptionAs(expectedException))),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();            
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
@@ -196,7 +196,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Registrations
                 broker.LogError(It.Is(SameExceptionAs(expectedServiceException))),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();            
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }

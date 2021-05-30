@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -39,11 +40,24 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
         private StudentRegistration CreateRandomStudentRegistration() =>
             CreateStudentRegistrationFiller(DateTimeOffset.UtcNow).Create();
 
         private StudentRegistration CreateRandomStudentRegistration(DateTimeOffset dates) =>
             CreateStudentRegistrationFiller(dates).Create();
+        private static IQueryable<StudentRegistration> CreateRandomStudentRegistrations(DateTimeOffset dates) =>
+            CreateStudentRegistrationFiller(dates).Create(GetRandomNumber()).AsQueryable();
+
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
 
         private static Filler<StudentRegistration> CreateStudentRegistrationFiller(DateTimeOffset dates)
         {
@@ -54,16 +68,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
                 .OnProperty(StudentRegistration => StudentRegistration.Registration).IgnoreIt();
             return filler;
         }
-
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
-        {
-            return actualException =>
-                expectedException.Message == actualException.Message
-                && expectedException.InnerException.Message == actualException.InnerException.Message;
-        }
-
-        private static SqlException GetSqlException() =>
-            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static string GetRandomMessage() => new MnemonicString().GetValue();
     }

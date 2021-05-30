@@ -80,7 +80,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.TeacherAttachments
         private static int GetRandomNumber() => new IntRange(min: 1, max: 5).GetValue();
 
         private static Filler<TeacherAttachment> CreateRandomTeacherAttachmentFiller(
-            Guid teacherId, 
+            Guid teacherId,
             Guid attachmentId)
         {
             var now = DateTimeOffset.UtcNow;

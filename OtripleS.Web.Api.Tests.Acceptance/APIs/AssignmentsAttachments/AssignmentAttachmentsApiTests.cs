@@ -80,7 +80,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.AssignmentsAttachments
         private static int GetRandomNumber() => new IntRange(min: 1, max: 5).GetValue();
 
         private static Filler<AssignmentAttachment> CreateRandomAssignmentAttachmentFiller(
-            Guid assignmentId, 
+            Guid assignmentId,
             Guid attachmentId)
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
