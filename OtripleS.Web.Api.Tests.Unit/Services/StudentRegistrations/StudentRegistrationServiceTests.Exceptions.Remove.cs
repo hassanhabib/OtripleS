@@ -157,13 +157,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
             Guid inputStudentId = randomStudentId;
             Guid randomRegistrationId = Guid.NewGuid();
             Guid inputRegistrationId = randomRegistrationId;
+            DateTimeOffset someDateTime = GetRandomDateTime();
+            StudentRegistration someStudentRegistration = CreateRandomStudentRegistration(someDateTime);
             var exception = new Exception();
 
             var expectedStudentRegistrationException =
                 new StudentRegistrationServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputRegistrationId, inputStudentId))
+                broker.SelectStudentRegistrationByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                    .ReturnsAsync(someStudentRegistration);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteStudentRegistrationAsync(It.IsAny<StudentRegistration>()))
                     .ThrowsAsync(exception);
 
             // when
@@ -177,7 +183,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
                 deleteStudentRegistrationTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputRegistrationId, inputStudentId),
+                broker.SelectStudentRegistrationByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteStudentRegistrationAsync(It.IsAny<StudentRegistration>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
