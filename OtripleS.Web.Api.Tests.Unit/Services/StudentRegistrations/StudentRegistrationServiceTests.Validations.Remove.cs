@@ -100,6 +100,50 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-        
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnDeleteWhenStorageStudentRegistrationIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            StudentRegistration randomStudentRegistration = CreateRandomStudentRegistration(randomDateTime);
+            Guid inputStudentRegistrationId = randomStudentRegistration.RegistrationId;
+            Guid inputStudentId = randomStudentRegistration.StudentId;
+            StudentRegistration nullStorageStudentRegistration = null;
+
+            var notFoundStudentRegistrationException =
+                new NotFoundStudentRegistrationException(inputStudentRegistrationId, inputStudentId);
+
+            var expectedStudentRegistrationValidationException =
+                new StudentRegistrationValidationException(notFoundStudentRegistrationException);
+
+            this.storageBrokerMock.Setup(broker =>
+                 broker.SelectStudentRegistrationByIdAsync(inputStudentRegistrationId, inputStudentId))
+                    .ReturnsAsync(nullStorageStudentRegistration);
+            // when
+            ValueTask<StudentRegistration> actualStudentRegistrationDeleteTask =
+                this.studentRegistrationService.RemoveStudentRegistrationByIdsAsync(
+                    inputStudentRegistrationId, 
+                    inputStudentId);
+
+            // then
+            await Assert.ThrowsAsync<StudentRegistrationValidationException>(() =>
+                actualStudentRegistrationDeleteTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentRegistrationByIdAsync(inputStudentRegistrationId, inputStudentId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteStudentRegistrationAsync(It.IsAny<StudentRegistration>()),
+                    Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
