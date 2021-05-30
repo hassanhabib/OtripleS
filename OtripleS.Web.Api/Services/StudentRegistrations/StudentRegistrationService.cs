@@ -48,7 +48,9 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
 
         });
 
-        public ValueTask<StudentRegistration> RetrieveStudentRegistrationByIdAsync(Guid studentId, Guid registrationId) =>
+        public ValueTask<StudentRegistration> RetrieveStudentRegistrationByIdAsync(
+            Guid studentId, 
+            Guid registrationId) =>
         TryCatch(async () =>
         {
             ValidateStudentRegistrationId(studentId, registrationId);
@@ -60,5 +62,12 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
 
             return storageStudentRegistration;
         });
+
+        public ValueTask<StudentRegistration> RemoveStudentRegistrationByIdsAsync(
+            Guid studentId, 
+            Guid registrationId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
