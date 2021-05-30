@@ -17,7 +17,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
     public partial class StudentRegistrationServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnDeleteWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRemoveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
             Guid randomStudentId = Guid.NewGuid();
@@ -30,21 +30,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
                 new StudentRegistrationDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectStudentRegistrationByIdAsync(inputRegistrationId, inputStudentId))
+                 broker.SelectStudentRegistrationByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<StudentRegistration> deleteStudentRegistrationTask =
                 this.studentRegistrationService.RemoveStudentRegistrationByIdsAsync(
-                    inputRegistrationId, 
-                    inputStudentId);
+                    inputStudentId,
+                    inputRegistrationId);
 
             // then
             await Assert.ThrowsAsync<StudentRegistrationDependencyException>(() =>
                 deleteStudentRegistrationTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputRegistrationId, inputStudentId),
+                broker.SelectStudentRegistrationByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
             Guid randomStudentId = Guid.NewGuid();
@@ -70,21 +70,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
                 new StudentRegistrationDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputRegistrationId, inputStudentId))
+                broker.SelectStudentRegistrationByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<StudentRegistration> deleteStudentRegistrationTask =
                 this.studentRegistrationService.RemoveStudentRegistrationByIdsAsync(
-                    inputRegistrationId, 
-                    inputStudentId);
+                    inputStudentId,
+                    inputRegistrationId);
 
             // then
             await Assert.ThrowsAsync<StudentRegistrationDependencyException>(() => 
                 deleteStudentRegistrationTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputRegistrationId, inputStudentId),
+                broker.SelectStudentRegistrationByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -97,44 +97,94 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given            
             Guid randomStudentId = Guid.NewGuid();
             Guid inputStudentId = randomStudentId;
-            Guid randomStudentRegistrationId = Guid.NewGuid();
-            Guid inputStudentRegistrationId = randomStudentRegistrationId;
+            Guid randomRegistrationId = Guid.NewGuid();
+            Guid inputRegistrationId = randomRegistrationId;
+            DateTimeOffset someDateTime = GetRandomDateTime();
+            StudentRegistration someStudentRegistration = CreateRandomStudentRegistration(someDateTime);
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
             var lockedStudentRegistrationException =
                 new LockedStudentRegistrationException(databaseUpdateConcurrencyException);
 
-            var expectedStudentRegistrationException =
+            var expectedStudentRegistrationDependencyException =
                 new StudentRegistrationDependencyException(lockedStudentRegistrationException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputStudentRegistrationId, inputStudentId))
+                broker.SelectStudentRegistrationByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                    .ReturnsAsync(someStudentRegistration);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.DeleteStudentRegistrationAsync(It.IsAny<StudentRegistration>()))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
             ValueTask<StudentRegistration> deleteStudentRegistrationTask =
                 this.studentRegistrationService.RemoveStudentRegistrationByIdsAsync(
-                    inputStudentRegistrationId, 
-                    inputStudentId);
+                    inputStudentId,
+                    inputRegistrationId);
 
             // then
             await Assert.ThrowsAsync<StudentRegistrationDependencyException>(() => 
                 deleteStudentRegistrationTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputStudentRegistrationId, inputStudentId),
+                broker.SelectStudentRegistrationByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteStudentRegistrationAsync(It.IsAny<StudentRegistration>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationDependencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
+        {
+            // given            
+            Guid randomStudentId = Guid.NewGuid();
+            Guid inputStudentId = randomStudentId;
+            Guid randomRegistrationId = Guid.NewGuid();
+            Guid inputRegistrationId = randomRegistrationId;
+            var exception = new Exception();
+
+            var expectedStudentRegistrationException =
+                new StudentRegistrationServiceException(exception);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentRegistrationByIdAsync(inputRegistrationId, inputStudentId))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<StudentRegistration> deleteStudentRegistrationTask =
+                this.studentRegistrationService.RemoveStudentRegistrationByIdsAsync(
+                    inputStudentId,
+                    inputRegistrationId);
+
+            // then
+            await Assert.ThrowsAsync<StudentRegistrationServiceException>(() =>
+                deleteStudentRegistrationTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentRegistrationByIdAsync(inputRegistrationId, inputStudentId),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationException))),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls(); 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }

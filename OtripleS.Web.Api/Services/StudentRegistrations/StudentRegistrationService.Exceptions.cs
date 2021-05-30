@@ -1,4 +1,4 @@
-﻿﻿// ---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
@@ -52,7 +52,11 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             catch (InvalidStudentRegistrationException invalidStudentRegistrationException)
             {
                 throw CreateAndLogValidationException(invalidStudentRegistrationException);
-            }            
+            }
+            catch (SqlException sqlException)
+            {
+                throw CreateAndLogCriticalDependencyException(sqlException);
+            }
             catch (NotFoundStudentRegistrationException nullStudentRegistrationException)
             {
                 throw CreateAndLogValidationException(nullStudentRegistrationException);
@@ -64,16 +68,19 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
 
                 throw CreateAndLogValidationException(alreadyExistsStudentRegistrationException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedStudentRegistrationException =
+                    new LockedStudentRegistrationException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyException(lockedStudentRegistrationException);
+            }
             catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
             {
                 var invalidStudentRegistrationReferenceException =
                     new InvalidStudentRegistrationReferenceException(foreignKeyConstraintConflictException);
 
                 throw CreateAndLogValidationException(invalidStudentRegistrationReferenceException);
-            }
-            catch (SqlException sqlException)
-            {
-                throw CreateAndLogCriticalDependencyException(sqlException);
             }
             catch (DbUpdateException dbUpdateException)
             {
