@@ -70,10 +70,12 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
         {
             ValidateStudentRegistrationIds(studentId, registrationId);
 
-            StudentRegistration storageStudentRegistration =
+            StudentRegistration maybeStudentRegistration =
                 await this.storageBroker.SelectStudentRegistrationByIdAsync(studentId, registrationId);
 
-            return await this.storageBroker.DeleteStudentRegistrationAsync(storageStudentRegistration);
+            ValidateStorageStudentRegistration(maybeStudentRegistration, studentId, registrationId);
+
+            return await this.storageBroker.DeleteStudentRegistrationAsync(maybeStudentRegistration);
         });
     }
 }
