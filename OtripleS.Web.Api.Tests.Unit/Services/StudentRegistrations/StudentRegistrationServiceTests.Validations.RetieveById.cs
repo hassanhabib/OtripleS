@@ -22,7 +22,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.StudentRegistrations
             Guid inputStudentId = randomStudentId;
             Guid randomRegistrationId = default;
             Guid inputRegistrationId = randomRegistrationId;
-            var invalidStudentRegistrationInputException = new InvalidStudentRegistrationInputException(
+            var invalidStudentRegistrationInputException = new InvalidStudentRegistrationException(
                 parameterName: nameof(StudentRegistration.StudentId),
                 parameterValue: inputStudentId);
 

@@ -37,27 +37,20 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
         {
             switch (studentId, registrationId)
             {
-                case { } when studentId == default:
+                case { } when IsInvalid(studentId):
                     throw new InvalidStudentRegistrationException(
                         parameterName: nameof(StudentRegistration.StudentId),
                         parameterValue: studentId);
 
-                case { } when registrationId == default:
+                case { } when IsInvalid(registrationId):
                     throw new InvalidStudentRegistrationException(
                         parameterName: nameof(StudentRegistration.RegistrationId),
                         parameterValue: registrationId);
             }
         }
 
-        private void ValidateStudentRegistrationId(Guid studentId, Guid registrationId)
-        {
-            if (studentId == Guid.Empty)
-            {
-                throw new InvalidStudentRegistrationInputException(
-                    parameterName: nameof(StudentRegistration.StudentId),
-                    parameterValue: studentId);
-            }
-        }
+        private static bool IsInvalid(Guid input) => input == Guid.Empty;
+
         private static void ValidateStorageStudentRegistration(StudentRegistration storageStudentRegistration, Guid studentId, Guid registrationId)
         {
             if (storageStudentRegistration == null)

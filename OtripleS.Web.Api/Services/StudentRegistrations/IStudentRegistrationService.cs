@@ -15,5 +15,6 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
         IQueryable<StudentRegistration> RetrieveAllStudentRegistrations();
         ValueTask<StudentRegistration> AddStudentRegistrationAsync(StudentRegistration studentRegistration);
         ValueTask<StudentRegistration> RetrieveStudentRegistrationByIdAsync(Guid studentId, Guid registrationId);
+        ValueTask<StudentRegistration> RemoveStudentRegistrationByIdsAsync(Guid studentId, Guid registrationId);
     }
 }
