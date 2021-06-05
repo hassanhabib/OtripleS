@@ -69,5 +69,29 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentRegistrations
                 await DeleteStudentRegistrationAsync(actualStudentRegistration);
             }
         }
+
+        [Fact]
+        public async Task ShouldDeleteStudentRegistrationAsync()
+        {
+            // given
+            StudentRegistration randomStudentRegistration = await PostStudentRegistrationAsync();
+            StudentRegistration inputStudentRegistration = randomStudentRegistration;
+            StudentRegistration expectedStudentRegistration = inputStudentRegistration;
+
+            // when 
+            StudentRegistration deletedStudentRegistration =
+                await DeleteStudentRegistrationAsync(inputStudentRegistration);
+
+            ValueTask<StudentRegistration> getStudentRegistrationByIdTask =
+                this.otripleSApiBroker.GetStudentRegistrationByIdsAsync(
+                    inputStudentRegistration.StudentId,
+                    inputStudentRegistration.RegistrationId);
+
+            // then
+            deletedStudentRegistration.Should().BeEquivalentTo(expectedStudentRegistration);
+
+            await Assert.ThrowsAsync<HttpResponseNotFoundException>(() =>
+               getStudentRegistrationByIdTask.AsTask());
+        }
     }
 }
