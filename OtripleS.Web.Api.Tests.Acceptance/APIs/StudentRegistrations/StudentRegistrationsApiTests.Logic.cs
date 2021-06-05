@@ -38,6 +38,36 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentRegistrations
             await DeleteStudentRegistrationAsync(actualStudentRegistration);
         }
 
-        
+        [Fact]
+        public async Task ShouldGetAllStudentRegistrationsAsync()
+        {
+            // given
+            var randomStudentRegistrations = new List<StudentRegistration>();
+
+            for (var i = 0; i <= GetRandomNumber(); i++)
+            {
+                StudentRegistration randomStudentRegistration = await PostStudentRegistrationAsync();
+                randomStudentRegistrations.Add(randomStudentRegistration);
+            }
+
+            List<StudentRegistration> inputStudentRegistrations = randomStudentRegistrations;
+            List<StudentRegistration> expectedStudentRegistrations = inputStudentRegistrations;
+
+            // when
+            List<StudentRegistration> actualStudentRegistrations =
+                await this.otripleSApiBroker.GetAllStudentRegistrationsAsync();
+
+            // then
+            foreach (StudentRegistration expectedStudentRegistration in expectedStudentRegistrations)
+            {
+                StudentRegistration actualStudentRegistration =
+                    actualStudentRegistrations.Single(studentRegistration =>
+                    studentRegistration.StudentId == expectedStudentRegistration.StudentId);
+
+                actualStudentRegistration.Should().BeEquivalentTo(expectedStudentRegistration);
+
+                await DeleteStudentRegistrationAsync(actualStudentRegistration);
+            }
+        }
     }
 }
