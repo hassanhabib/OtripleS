@@ -45,7 +45,6 @@ namespace OtripleS.Web.Api.Services.StudentRegistrations
             ValidateStudentRegistrationOnCreate(studentRegistration);
 
             return await storageBroker.InsertStudentRegistrationAsync(studentRegistration);
-
         });
 
         public ValueTask<StudentRegistration> RetrieveStudentRegistrationByIdAsync(

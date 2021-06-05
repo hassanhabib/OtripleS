@@ -155,9 +155,15 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentRegistrations
                 .OnProperty(registration => registration.UpdatedBy).Use(user.Id)
                 .OnProperty(registration => registration.CreatedDate).Use(now)
                 .OnProperty(registration => registration.UpdatedDate).Use(now)
+                .OnProperty(registration => registration.StudentEmail).Use(CreateRandomEmailAddress)
+                .OnProperty(registration => registration.StudentPhone).Use(new PatternGenerator("{N:3}-{N:3}-{N:4}"))
+                .OnProperty(registration => registration.SubmitterEmail).Use(CreateRandomEmailAddress)
+                .OnProperty(registration => registration.SubmitterPhone).Use(new PatternGenerator("{N:3}-{N:3}-{N:4}"))
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
         }
+
+        private static string CreateRandomEmailAddress() => new EmailAddresses().GetValue();
     }
 }
