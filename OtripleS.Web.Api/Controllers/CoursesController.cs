@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Controllers
                 Course persistedCourse =
                     await this.courseService.CreateCourseAsync(course);
 
-                return Ok(persistedCourse);
+                return Created(persistedCourse);
             }
             catch (CourseValidationException courseValidationException)
                 when (courseValidationException.InnerException is AlreadyExistsCourseException)
