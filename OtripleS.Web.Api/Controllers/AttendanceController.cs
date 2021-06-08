@@ -84,7 +84,7 @@ namespace OtripleS.Web.Api.Controllers
                 Attendance persistedAttendance =
                     await this.attendanceService.CreateAttendanceAsync(attendance);
 
-                return Ok(persistedAttendance);
+                return Created(persistedAttendance);
             }
             catch (AttendanceValidationException attendanceValidationException)
                 when (attendanceValidationException.InnerException is AlreadyExistsAttendanceException)
