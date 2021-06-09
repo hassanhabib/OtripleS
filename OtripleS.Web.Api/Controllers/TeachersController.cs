@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Controllers
                 Teacher persistedTeacher =
                     await this.teacherService.CreateTeacherAsync(teacher);
 
-                return Ok(persistedTeacher);
+                return Created(persistedTeacher);
             }
             catch (TeacherValidationException teacherValidationException)
                 when (teacherValidationException.InnerException is AlreadyExistsTeacherException)
