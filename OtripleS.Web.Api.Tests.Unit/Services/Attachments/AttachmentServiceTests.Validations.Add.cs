@@ -166,11 +166,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Attachments
             // given
             Attachment randomAttachment = CreateRandomAttachment();
             Attachment invalidAttachment = randomAttachment;
-            invalidAttachment.ContectType = invalidAttachmentContectType;
+            invalidAttachment.ContentType = invalidAttachmentContectType;
 
             var invalidAttachmentException = new InvalidAttachmentException(
-               parameterName: nameof(Attachment.ContectType),
-               parameterValue: invalidAttachment.ContectType);
+               parameterName: nameof(Attachment.ContentType),
+               parameterValue: invalidAttachment.ContentType);
 
             var expectedAttachmentValidationException =
                 new AttachmentValidationException(invalidAttachmentException);
