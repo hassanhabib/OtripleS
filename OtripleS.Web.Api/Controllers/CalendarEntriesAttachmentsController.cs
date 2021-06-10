@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Controllers
                 CalendarEntryAttachment persistedCalendarEntryAttachment =
                     await this.calendarEntryAttachmentService.AddCalendarEntryAttachmentAsync(calendarEntryAttachment);
 
-                return Ok(persistedCalendarEntryAttachment);
+                return Created(persistedCalendarEntryAttachment);
             }
             catch (CalendarEntryAttachmentValidationException calendarEntryAttachmentValidationException)
                 when (calendarEntryAttachmentValidationException.InnerException is AlreadyExistsCalendarEntryAttachmentException)
