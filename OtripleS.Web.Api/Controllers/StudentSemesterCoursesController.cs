@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Controllers
                 StudentSemesterCourse persistedStudentSemesterCourse =
                     await this.studentSemesterCourseService.CreateStudentSemesterCourseAsync(studentSemesterCourse);
 
-                return Ok(persistedStudentSemesterCourse);
+                return Created(persistedStudentSemesterCourse);
             }
             catch (StudentSemesterCourseValidationException studentSemesterCourseValidationException)
                 when (studentSemesterCourseValidationException.InnerException is AlreadyExistsStudentSemesterCourseException)
