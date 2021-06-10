@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Controllers
                 StudentRegistration persistedStudentRegistration =
                     await this.studentRegistrationService.AddStudentRegistrationAsync(studentRegistration);
 
-                return Ok(persistedStudentRegistration);
+                return Created(persistedStudentRegistration);
             }
             catch (StudentRegistrationValidationException studentRegistrationValidationException)
                 when (studentRegistrationValidationException.InnerException is AlreadyExistsStudentRegistrationException)

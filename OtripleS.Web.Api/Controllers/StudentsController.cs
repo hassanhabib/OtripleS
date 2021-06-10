@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Controllers
                 Student registeredStudent =
                     await this.studentService.RegisterStudentAsync(student);
 
-                return Ok(registeredStudent);
+                return Created(registeredStudent);
             }
             catch (StudentValidationException studentValidationException)
                 when (studentValidationException.InnerException is AlreadyExistsStudentException)

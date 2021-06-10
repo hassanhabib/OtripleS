@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Controllers
                 TeacherContact persistedTeacherContact =
                     await this.teacherContactService.AddTeacherContactAsync(teacherContact);
 
-                return Ok(persistedTeacherContact);
+                return Created(persistedTeacherContact);
             }
             catch (TeacherContactValidationException teacherContactValidationException)
                 when (teacherContactValidationException.InnerException is AlreadyExistsTeacherContactException)

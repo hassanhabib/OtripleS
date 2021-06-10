@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Controllers
                 Calendar persistedCalendar =
                     await this.calendarService.AddCalendarAsync(calendar);
 
-                return Ok(persistedCalendar);
+                return Created(persistedCalendar);
             }
             catch (CalendarValidationException calendarValidationException)
                 when (calendarValidationException.InnerException is AlreadyExistsCalendarException)

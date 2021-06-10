@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Controllers
                 Exam persistedExam =
                     await this.examService.AddExamAsync(exam);
 
-                return Ok(persistedExam);
+                return Created(persistedExam);
             }
             catch (ExamValidationException examValidationException)
                 when (examValidationException.InnerException is AlreadyExistsExamException)
