@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Controllers
                 ExamFee persistedExamFee =
                     await this.examFeeService.AddExamFeeAsync(examFee);
 
-                return Ok(persistedExamFee);
+                return Created(persistedExamFee);
             }
             catch (ExamFeeValidationException examFeeValidationException)
                 when (examFeeValidationException.InnerException is AlreadyExistsExamFeeException)
