@@ -142,7 +142,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Students
         }
 
         [Fact]
-        public async Task ShouldDeleteStudentAsync()
+        public async Task ShouldRemoveStudentByIdAsync()
         {
             // given
             Student randomStudent = CreateRandomStudent();
