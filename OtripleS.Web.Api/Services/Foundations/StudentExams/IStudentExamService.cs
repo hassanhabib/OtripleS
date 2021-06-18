@@ -5,7 +5,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.StudentExams;
+using OtripleS.Web.Api.Models.Foundations.StudentExams;
 
 namespace OtripleS.Web.Api.Services.Foundations.StudentExams
 {

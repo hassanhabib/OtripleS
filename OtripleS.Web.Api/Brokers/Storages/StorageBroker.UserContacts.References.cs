@@ -4,8 +4,8 @@
 // ---------------------------------------------------------------
 
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.UserContacts;
-using OtripleS.Web.Api.Models.Users;
+using OtripleS.Web.Api.Models.Foundations.UserContacts;
+using OtripleS.Web.Api.Models.Foundations.Users;
 
 namespace OtripleS.Web.Api.Brokers.Storages
 {

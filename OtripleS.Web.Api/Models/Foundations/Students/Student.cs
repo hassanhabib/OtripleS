@@ -6,13 +6,13 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using OtripleS.Web.Api.Models.StudentAttachments;
-using OtripleS.Web.Api.Models.StudentContacts;
-using OtripleS.Web.Api.Models.StudentExamFees;
-using OtripleS.Web.Api.Models.StudentExams;
-using OtripleS.Web.Api.Models.StudentGuardians;
-using OtripleS.Web.Api.Models.StudentRegistrations;
-using OtripleS.Web.Api.Models.StudentSemesterCourses;
+using OtripleS.Web.Api.Models.Foundations.StudentAttachments;
+using OtripleS.Web.Api.Models.Foundations.StudentContacts;
+using OtripleS.Web.Api.Models.Foundations.StudentExamFees;
+using OtripleS.Web.Api.Models.Foundations.StudentExams;
+using OtripleS.Web.Api.Models.Foundations.StudentGuardians;
+using OtripleS.Web.Api.Models.Foundations.StudentRegistrations;
+using OtripleS.Web.Api.Models.Foundations.StudentSemesterCourses;
 
 namespace OtripleS.Web.Api.Models.Foundations.Students
 {

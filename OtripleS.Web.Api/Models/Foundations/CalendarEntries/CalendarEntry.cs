@@ -6,8 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using OtripleS.Web.Api.Models.CalendarEntryAttachments;
-using OtripleS.Web.Api.Models.Calendars;
+using OtripleS.Web.Api.Models.Foundations.CalendarEntryAttachments;
+using OtripleS.Web.Api.Models.Foundations.Calendars;
 
 namespace OtripleS.Web.Api.Models.Foundations.CalendarEntries
 {

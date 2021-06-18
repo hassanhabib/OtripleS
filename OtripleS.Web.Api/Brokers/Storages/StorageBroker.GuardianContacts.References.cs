@@ -4,7 +4,7 @@
 // ---------------------------------------------------------------
 
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.GuardianContacts;
+using OtripleS.Web.Api.Models.Foundations.GuardianContacts;
 
 namespace OtripleS.Web.Api.Brokers.Storages
 {

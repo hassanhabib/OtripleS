@@ -7,9 +7,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.Attendances;
-using OtripleS.Web.Api.Models.Attendances.Exceptions;
-using OtripleS.Web.Api.Services.Attendances;
+using OtripleS.Web.Api.Models.Foundations.Attendances;
+using OtripleS.Web.Api.Models.Foundations.Attendances.Exceptions;
+using OtripleS.Web.Api.Services.Foundations.Attendances;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers

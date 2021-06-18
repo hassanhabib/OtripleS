@@ -4,8 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
-using OtripleS.Web.Api.Models.Guardians;
-using OtripleS.Web.Api.Models.Students;
+using OtripleS.Web.Api.Models.Foundations.Guardians;
+using OtripleS.Web.Api.Models.Foundations.Students;
 
 namespace OtripleS.Web.Api.Models.Foundations.StudentGuardians
 {

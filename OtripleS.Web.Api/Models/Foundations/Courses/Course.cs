@@ -6,8 +6,8 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using OtripleS.Web.Api.Models.CourseAttachments;
-using OtripleS.Web.Api.Models.SemesterCourses;
+using OtripleS.Web.Api.Models.Foundations.CourseAttachments;
+using OtripleS.Web.Api.Models.Foundations.SemesterCourses;
 
 namespace OtripleS.Web.Api.Models.Foundations.Courses
 {

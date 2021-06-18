@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.Registrations;
-using OtripleS.Web.Api.Models.Registrations.Exceptions;
+using OtripleS.Web.Api.Models.Foundations.Registrations;
+using OtripleS.Web.Api.Models.Foundations.Registrations.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Registrations
 {

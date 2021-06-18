@@ -5,7 +5,7 @@
 
 using System;
 using System.Collections.Generic;
-using OtripleS.Web.Api.Models.SemesterCourses;
+using OtripleS.Web.Api.Models.Foundations.SemesterCourses;
 
 namespace OtripleS.Web.Api.Models.Foundations.Classrooms
 {

@@ -6,8 +6,8 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using OtripleS.Web.Api.Models.ExamFees;
-using OtripleS.Web.Api.Models.Users;
+using OtripleS.Web.Api.Models.Foundations.ExamFees;
+using OtripleS.Web.Api.Models.Foundations.Users;
 
 namespace OtripleS.Web.Api.Models.Foundations.Fees
 {

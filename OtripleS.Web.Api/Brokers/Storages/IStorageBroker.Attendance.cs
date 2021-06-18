@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Attendances;
+using OtripleS.Web.Api.Models.Foundations.Attendances;
 
 namespace OtripleS.Web.Api.Brokers.Storages
 {

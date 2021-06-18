@@ -6,10 +6,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using OtripleS.Web.Api.Models.ExamAttachments;
-using OtripleS.Web.Api.Models.ExamFees;
-using OtripleS.Web.Api.Models.SemesterCourses;
-using OtripleS.Web.Api.Models.StudentExams;
+using OtripleS.Web.Api.Models.Foundations.ExamAttachments;
+using OtripleS.Web.Api.Models.Foundations.ExamFees;
+using OtripleS.Web.Api.Models.Foundations.SemesterCourses;
+using OtripleS.Web.Api.Models.Foundations.StudentExams;
 
 namespace OtripleS.Web.Api.Models.Foundations.Exams
 {

@@ -3,9 +3,9 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 using System;
-using OtripleS.Web.Api.Models.ExamFees;
-using OtripleS.Web.Api.Models.Students;
-using OtripleS.Web.Api.Models.Users;
+using OtripleS.Web.Api.Models.Foundations.ExamFees;
+using OtripleS.Web.Api.Models.Foundations.Students;
+using OtripleS.Web.Api.Models.Foundations.Users;
 
 namespace OtripleS.Web.Api.Models.Foundations.StudentExamFees
 {

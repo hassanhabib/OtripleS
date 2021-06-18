@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using OtripleS.Web.Api.Models.Calendars;
+using OtripleS.Web.Api.Models.Foundations.Calendars;
 
 namespace OtripleS.Web.Api.Brokers.Storages
 {

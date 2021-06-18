@@ -7,7 +7,7 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200907054733_AddGuardian.cs" />
     <Compile Remove="Migrations\20200907054733_AddGuardian.Designer.cs" />
-    <Compile Remove="Services\CalendarEntries\CalendarEntry.cs" />
+    <Compile Remove="Services\Foundations\CalendarEntries\CalendarEntry.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,14 +22,10 @@
     <PackageReference Include="RESTFulSense" Version="1.8.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\AssignmentAttachments\" />
-    <Folder Include="Models\AssignmentAttachments\Exceptions\" />
-    <Folder Include="Services\Fees\" />
-    <Folder Include="Models\Fees\Exceptions\" />
-    <Folder Include="Services\ExamFees\" />
-    <Folder Include="Models\ExamFees\Exceptions\" />
-    <Folder Include="Services\StudentExamFees\" />
-    <Folder Include="Models\StudentExamFees\Exceptions\" />
-    <Folder Include="Services\Registrations\" />
+    <Folder Include="Services\Foundations\AssignmentAttachments\" />
+    <Folder Include="Services\Foundations\Fees\" />
+    <Folder Include="Services\Foundations\ExamFees\" />
+    <Folder Include="Services\Foundations\StudentExamFees\" />
+    <Folder Include="Services\Foundations\Registrations\" />
   </ItemGroup>
 </Project>

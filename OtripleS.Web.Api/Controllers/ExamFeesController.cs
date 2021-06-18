@@ -7,9 +7,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.ExamFees;
-using OtripleS.Web.Api.Models.ExamFees.Exceptions;
-using OtripleS.Web.Api.Services.ExamFees;
+using OtripleS.Web.Api.Models.Foundations.ExamFees;
+using OtripleS.Web.Api.Models.Foundations.ExamFees.Exceptions;
+using OtripleS.Web.Api.Services.Foundations.ExamFees;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers

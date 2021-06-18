@@ -6,11 +6,11 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using OtripleS.Web.Api.Models.Classrooms;
-using OtripleS.Web.Api.Models.Courses;
-using OtripleS.Web.Api.Models.Exams;
-using OtripleS.Web.Api.Models.StudentSemesterCourses;
-using OtripleS.Web.Api.Models.Teachers;
+using OtripleS.Web.Api.Models.Foundations.Classrooms;
+using OtripleS.Web.Api.Models.Foundations.Courses;
+using OtripleS.Web.Api.Models.Foundations.Exams;
+using OtripleS.Web.Api.Models.Foundations.StudentSemesterCourses;
+using OtripleS.Web.Api.Models.Foundations.Teachers;
 
 namespace OtripleS.Web.Api.Models.Foundations.SemesterCourses
 {

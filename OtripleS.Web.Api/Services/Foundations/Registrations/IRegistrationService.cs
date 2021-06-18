@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Registrations;
+using OtripleS.Web.Api.Models.Foundations.Registrations;
 
 namespace OtripleS.Web.Api.Services.Foundations.Registrations
 {

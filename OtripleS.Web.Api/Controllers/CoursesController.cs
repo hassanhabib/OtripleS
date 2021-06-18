@@ -7,9 +7,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.Courses;
-using OtripleS.Web.Api.Models.Courses.Exceptions;
-using OtripleS.Web.Api.Services.Courses;
+using OtripleS.Web.Api.Models.Foundations.Courses;
+using OtripleS.Web.Api.Models.Foundations.Courses.Exceptions;
+using OtripleS.Web.Api.Services.Foundations.Courses;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers

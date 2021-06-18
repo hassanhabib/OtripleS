@@ -5,8 +5,8 @@
 
 using System;
 using System.Linq;
-using OtripleS.Web.Api.Models.CalendarEntries;
-using OtripleS.Web.Api.Models.CalendarEntries.Exceptions;
+using OtripleS.Web.Api.Models.Foundations.CalendarEntries;
+using OtripleS.Web.Api.Models.Foundations.CalendarEntries.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
 {

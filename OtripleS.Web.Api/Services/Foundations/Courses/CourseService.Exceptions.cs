@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.Courses;
-using OtripleS.Web.Api.Models.Courses.Exceptions;
+using OtripleS.Web.Api.Models.Foundations.Courses;
+using OtripleS.Web.Api.Models.Foundations.Courses.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Courses
 {

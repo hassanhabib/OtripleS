@@ -4,8 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
-using OtripleS.Web.Api.Models.Contacts;
-using OtripleS.Web.Api.Models.Students;
+using OtripleS.Web.Api.Models.Foundations.Contacts;
+using OtripleS.Web.Api.Models.Foundations.Students;
 
 namespace OtripleS.Web.Api.Models.Foundations.StudentContacts
 {

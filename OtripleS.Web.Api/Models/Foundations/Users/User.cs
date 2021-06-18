@@ -7,11 +7,11 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
-using OtripleS.Web.Api.Models.ExamFees;
-using OtripleS.Web.Api.Models.Fees;
-using OtripleS.Web.Api.Models.Registrations;
-using OtripleS.Web.Api.Models.StudentExamFees;
-using OtripleS.Web.Api.Models.UserContacts;
+using OtripleS.Web.Api.Models.Foundations.ExamFees;
+using OtripleS.Web.Api.Models.Foundations.Fees;
+using OtripleS.Web.Api.Models.Foundations.Registrations;
+using OtripleS.Web.Api.Models.Foundations.StudentExamFees;
+using OtripleS.Web.Api.Models.Foundations.UserContacts;
 
 namespace OtripleS.Web.Api.Models.Foundations.Users
 {

@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using OtripleS.Web.Api.Models.AssignmentAttachments;
+using OtripleS.Web.Api.Models.Foundations.AssignmentAttachments;
 
 namespace OtripleS.Web.Api.Models.Foundations.Assignments
 {

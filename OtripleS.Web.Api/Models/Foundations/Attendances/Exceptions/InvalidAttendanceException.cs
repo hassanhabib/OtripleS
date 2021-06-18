@@ -5,7 +5,7 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Models.Attendances.Exceptions
+namespace OtripleS.Web.Api.Models.Foundations.Attendances.Exceptions
 {
     public class InvalidAttendanceException : Exception
     {

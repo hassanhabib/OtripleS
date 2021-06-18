@@ -4,8 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
-using OtripleS.Web.Api.Models.Attachments;
-using OtripleS.Web.Api.Models.CalendarEntries;
+using OtripleS.Web.Api.Models.Foundations.Attachments;
+using OtripleS.Web.Api.Models.Foundations.CalendarEntries;
 
 namespace OtripleS.Web.Api.Models.Foundations.CalendarEntryAttachments
 {

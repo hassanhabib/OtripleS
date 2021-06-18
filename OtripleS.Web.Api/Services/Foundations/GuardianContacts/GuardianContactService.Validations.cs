@@ -5,8 +5,8 @@
 
 using System;
 using System.Linq;
-using OtripleS.Web.Api.Models.GuardianContacts;
-using OtripleS.Web.Api.Models.GuardianContacts.Exceptions;
+using OtripleS.Web.Api.Models.Foundations.GuardianContacts;
+using OtripleS.Web.Api.Models.Foundations.GuardianContacts.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
 {

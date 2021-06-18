@@ -7,9 +7,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.TeacherAttachments;
-using OtripleS.Web.Api.Models.TeacherAttachments.Exceptions;
-using OtripleS.Web.Api.Services.TeacherAttachments;
+using OtripleS.Web.Api.Models.Foundations.TeacherAttachments;
+using OtripleS.Web.Api.Models.Foundations.TeacherAttachments.Exceptions;
+using OtripleS.Web.Api.Services.Foundations.TeacherAttachments;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers

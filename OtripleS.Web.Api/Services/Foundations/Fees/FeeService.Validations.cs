@@ -5,8 +5,8 @@
 
 using System;
 using System.Linq;
-using OtripleS.Web.Api.Models.Fees;
-using OtripleS.Web.Api.Models.Fees.Exceptions;
+using OtripleS.Web.Api.Models.Foundations.Fees;
+using OtripleS.Web.Api.Models.Foundations.Fees.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Fees
 {

@@ -5,8 +5,8 @@
 
 using System;
 using System.Linq;
-using OtripleS.Web.Api.Models.Assignments;
-using OtripleS.Web.Api.Models.Assignments.Exceptions;
+using OtripleS.Web.Api.Models.Foundations.Assignments;
+using OtripleS.Web.Api.Models.Foundations.Assignments.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Assignments
 {

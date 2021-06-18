@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.StudentGuardians;
+using OtripleS.Web.Api.Models.Foundations.StudentGuardians;
 
 namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
 {

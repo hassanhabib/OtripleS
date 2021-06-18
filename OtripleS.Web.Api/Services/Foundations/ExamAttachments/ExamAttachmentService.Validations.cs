@@ -5,8 +5,8 @@
 
 using System;
 using System.Linq;
-using OtripleS.Web.Api.Models.ExamAttachments;
-using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
+using OtripleS.Web.Api.Models.Foundations.ExamAttachments;
+using OtripleS.Web.Api.Models.Foundations.ExamAttachments.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
 {

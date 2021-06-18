@@ -4,7 +4,7 @@
 // ---------------------------------------------------------------
 
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.CalendarEntries;
+using OtripleS.Web.Api.Models.Foundations.CalendarEntries;
 
 namespace OtripleS.Web.Api.Brokers.Storages
 {

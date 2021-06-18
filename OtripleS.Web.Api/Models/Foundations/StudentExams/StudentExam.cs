@@ -4,9 +4,9 @@
 // ---------------------------------------------------------------
 
 using System;
-using OtripleS.Web.Api.Models.Exams;
-using OtripleS.Web.Api.Models.Students;
-using OtripleS.Web.Api.Models.Teachers;
+using OtripleS.Web.Api.Models.Foundations.Exams;
+using OtripleS.Web.Api.Models.Foundations.Students;
+using OtripleS.Web.Api.Models.Foundations.Teachers;
 
 namespace OtripleS.Web.Api.Models.Foundations.StudentExams
 {

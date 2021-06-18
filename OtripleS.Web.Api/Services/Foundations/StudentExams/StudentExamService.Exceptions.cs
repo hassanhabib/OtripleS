@@ -8,8 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.StudentExams;
-using OtripleS.Web.Api.Models.StudentExams.Exceptions;
+using OtripleS.Web.Api.Models.Foundations.StudentExams;
+using OtripleS.Web.Api.Models.Foundations.StudentExams.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.StudentExams
 {

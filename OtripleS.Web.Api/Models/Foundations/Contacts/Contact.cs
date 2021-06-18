@@ -6,10 +6,10 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using OtripleS.Web.Api.Models.GuardianContacts;
-using OtripleS.Web.Api.Models.StudentContacts;
-using OtripleS.Web.Api.Models.TeacherContacts;
-using OtripleS.Web.Api.Models.UserContacts;
+using OtripleS.Web.Api.Models.Foundations.GuardianContacts;
+using OtripleS.Web.Api.Models.Foundations.StudentContacts;
+using OtripleS.Web.Api.Models.Foundations.TeacherContacts;
+using OtripleS.Web.Api.Models.Foundations.UserContacts;
 
 namespace OtripleS.Web.Api.Models.Foundations.Contacts
 {

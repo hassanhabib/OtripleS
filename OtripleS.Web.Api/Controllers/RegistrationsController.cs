@@ -7,9 +7,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.Registrations;
-using OtripleS.Web.Api.Models.Registrations.Exceptions;
-using OtripleS.Web.Api.Services.Registrations;
+using OtripleS.Web.Api.Models.Foundations.Registrations;
+using OtripleS.Web.Api.Models.Foundations.Registrations.Exceptions;
+using OtripleS.Web.Api.Services.Foundations.Registrations;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers

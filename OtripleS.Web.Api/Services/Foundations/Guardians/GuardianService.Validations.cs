@@ -5,8 +5,8 @@
 
 using System;
 using System.Linq;
-using OtripleS.Web.Api.Models.Guardians;
-using OtripleS.Web.Api.Models.Guardians.Exceptions;
+using OtripleS.Web.Api.Models.Foundations.Guardians;
+using OtripleS.Web.Api.Models.Foundations.Guardians.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Guardians
 {

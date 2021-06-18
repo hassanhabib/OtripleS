@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.GuardianContacts;
+using OtripleS.Web.Api.Models.Foundations.GuardianContacts;
 
 namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
 {

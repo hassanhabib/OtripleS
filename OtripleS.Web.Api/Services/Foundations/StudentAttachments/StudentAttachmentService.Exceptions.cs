@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.StudentAttachments;
-using OtripleS.Web.Api.Models.StudentAttachments.Exceptions;
+using OtripleS.Web.Api.Models.Foundations.StudentAttachments;
+using OtripleS.Web.Api.Models.Foundations.StudentAttachments.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.StudentAttachments
 {

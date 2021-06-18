@@ -5,7 +5,7 @@
 
 using System;
 
-namespace OtripleS.Web.Api.Models.Fees.Exceptions
+namespace OtripleS.Web.Api.Models.Foundations.Fees.Exceptions
 {
     public class NotFoundFeeException : Exception
     {

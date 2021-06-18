@@ -5,7 +5,7 @@
 
 using System;
 using System.Collections.Generic;
-using OtripleS.Web.Api.Models.CalendarEntries;
+using OtripleS.Web.Api.Models.Foundations.CalendarEntries;
 
 namespace OtripleS.Web.Api.Models.Foundations.Calendars
 {

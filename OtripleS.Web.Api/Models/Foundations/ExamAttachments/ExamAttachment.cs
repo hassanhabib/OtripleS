@@ -4,8 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
-using OtripleS.Web.Api.Models.Attachments;
-using OtripleS.Web.Api.Models.Exams;
+using OtripleS.Web.Api.Models.Foundations.Attachments;
+using OtripleS.Web.Api.Models.Foundations.Exams;
 
 namespace OtripleS.Web.Api.Models.Foundations.ExamAttachments
 {

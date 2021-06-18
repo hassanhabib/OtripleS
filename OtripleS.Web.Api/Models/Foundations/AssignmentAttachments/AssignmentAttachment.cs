@@ -4,8 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
-using OtripleS.Web.Api.Models.Assignments;
-using OtripleS.Web.Api.Models.Attachments;
+using OtripleS.Web.Api.Models.Foundations.Assignments;
+using OtripleS.Web.Api.Models.Foundations.Attachments;
 
 namespace OtripleS.Web.Api.Models.Foundations.AssignmentAttachments
 {

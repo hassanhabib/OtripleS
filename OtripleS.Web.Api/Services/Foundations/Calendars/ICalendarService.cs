@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Calendars;
+using OtripleS.Web.Api.Models.Foundations.Calendars;
 
 namespace OtripleS.Web.Api.Services.Foundations.Calendars
 {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storages;
-using OtripleS.Web.Api.Models.CourseAttachments;
+using OtripleS.Web.Api.Models.Foundations.CourseAttachments;
 
 namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
 {

@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.CalendarEntries;
-using OtripleS.Web.Api.Models.CalendarEntries.Exceptions;
+using OtripleS.Web.Api.Models.Foundations.CalendarEntries;
+using OtripleS.Web.Api.Models.Foundations.CalendarEntries.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
 {

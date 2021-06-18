@@ -6,9 +6,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using OtripleS.Web.Api.Models.GuardianAttachments;
-using OtripleS.Web.Api.Models.GuardianContacts;
-using OtripleS.Web.Api.Models.StudentGuardians;
+using OtripleS.Web.Api.Models.Foundations.GuardianAttachments;
+using OtripleS.Web.Api.Models.Foundations.GuardianContacts;
+using OtripleS.Web.Api.Models.Foundations.StudentGuardians;
 
 namespace OtripleS.Web.Api.Models.Foundations.Guardians
 {
