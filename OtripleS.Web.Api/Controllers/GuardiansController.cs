@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Controllers
                 Guardian persistedGuardian =
                     await this.guardianService.CreateGuardianAsync(guardian);
 
-                return Ok(persistedGuardian);
+                return Created(persistedGuardian);
             }
             catch (GuardianValidationException guardianValidationException)
                 when (guardianValidationException.InnerException is AlreadyExistsGuardianException)

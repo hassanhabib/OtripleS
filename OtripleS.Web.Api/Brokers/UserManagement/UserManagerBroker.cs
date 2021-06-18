@@ -23,26 +23,31 @@ namespace OtripleS.Web.Api.Brokers.UserManagement
 
         public async ValueTask<User> SelectUserByIdAsync(Guid userId)
         {
-            return await this.userManagement.FindByIdAsync(userId.ToString());
+            var broker = new UserManagementBroker(this.userManagement);
+
+            return await broker.userManagement.FindByIdAsync(userId.ToString());
         }
 
         public async ValueTask<User> InsertUserAsync(User user, string password)
         {
-            await this.userManagement.CreateAsync(user, password);
+            var broker = new UserManagementBroker(this.userManagement);
+            await broker.userManagement.CreateAsync(user, password);
 
             return user;
         }
 
         public async ValueTask<User> UpdateUserAsync(User user)
         {
-            await this.userManagement.UpdateAsync(user);
+            var broker = new UserManagementBroker(this.userManagement);
+            await broker.userManagement.UpdateAsync(user);
 
             return user;
         }
 
         public async ValueTask<User> DeleteUserAsync(User user)
         {
-            await this.userManagement.DeleteAsync(user);
+            var broker = new UserManagementBroker(this.userManagement);
+            await broker.userManagement.DeleteAsync(user);
 
             return user;
         }

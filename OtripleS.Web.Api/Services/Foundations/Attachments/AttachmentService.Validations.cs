@@ -157,10 +157,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
                         parameterName: nameof(Attachment.Description),
                         parameterValue: attachment.Description);
 
-                case { } when IsInvalid(attachment.ContectType):
+                case { } when IsInvalid(attachment.ContentType):
                     throw new InvalidAttachmentException(
-                        parameterName: nameof(Attachment.ContectType),
-                        parameterValue: attachment.ContectType);
+                        parameterName: nameof(Attachment.ContentType),
+                        parameterValue: attachment.ContentType);
 
                 case { } when IsInvalid(attachment.Extension):
                     throw new InvalidAttachmentException(

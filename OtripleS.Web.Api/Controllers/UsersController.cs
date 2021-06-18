@@ -84,7 +84,7 @@ namespace OtripleS.Web.Api.Controllers
                 User persistedUser =
                     await this.userService.RegisterUserAsync(user, password);
 
-                return Ok(persistedUser);
+                return Created(persistedUser);
             }
             catch (UserValidationException userValidationException)
                 when (userValidationException.InnerException is AlreadyExistsUserException)

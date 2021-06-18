@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Controllers
                 Attachment persistedAttachment =
                     await this.attachmentService.AddAttachmentAsync(attachment);
 
-                return Ok(persistedAttachment);
+                return Created(persistedAttachment);
             }
             catch (AttachmentValidationException attachmentValidationException)
                 when (attachmentValidationException.InnerException is AlreadyExistsAttachmentException)

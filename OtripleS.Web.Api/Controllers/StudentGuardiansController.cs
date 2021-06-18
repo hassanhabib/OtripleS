@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Controllers
                 StudentGuardian persistedStudentGuardian =
                     await studentGuardianService.AddStudentGuardianAsync(studentGuardian);
 
-                return Ok(persistedStudentGuardian);
+                return Created(persistedStudentGuardian);
             }
             catch (StudentGuardianValidationException studentGuarduanValidationException)
                 when (studentGuarduanValidationException.InnerException is AlreadyExistsStudentGuardianException)

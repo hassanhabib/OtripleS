@@ -84,7 +84,7 @@ namespace OtripleS.Web.Api.Controllers
                 Assignment persistedAssignment =
                     await this.assignmentService.CreateAssignmentAsync(assignment);
 
-                return Ok(persistedAssignment);
+                return Created(persistedAssignment);
             }
             catch (AssignmentValidationException assignmentValidationException)
                 when (assignmentValidationException.InnerException is AlreadyExistsAssignmentException)

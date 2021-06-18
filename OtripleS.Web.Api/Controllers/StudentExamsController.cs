@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Controllers
                 StudentExam persistedStudentExam =
                     await this.studentExamService.AddStudentExamAsync(studentExam);
 
-                return Ok(persistedStudentExam);
+                return Created(persistedStudentExam);
             }
             catch (StudentExamValidationException studentExamValidationException)
                 when (studentExamValidationException.InnerException is AlreadyExistsStudentExamException)

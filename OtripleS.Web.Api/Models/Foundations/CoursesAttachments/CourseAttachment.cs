@@ -16,6 +16,5 @@ namespace OtripleS.Web.Api.Models.Foundations.CourseAttachments
         public Guid AttachmentId { get; set; }
         public Attachment Attachment { get; set; }
         public string Notes { get; set; }
-
     }
 }

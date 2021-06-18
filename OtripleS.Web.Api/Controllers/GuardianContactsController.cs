@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Controllers
                 GuardianContact persistedGuardianContact =
                     await this.guardianContactService.AddGuardianContactAsync(guardianContact);
 
-                return Ok(persistedGuardianContact);
+                return Created(persistedGuardianContact);
             }
             catch (GuardianContactValidationException guardianContactValidationException)
                 when (guardianContactValidationException.InnerException is AlreadyExistsGuardianContactException)

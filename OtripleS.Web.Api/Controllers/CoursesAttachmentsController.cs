@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Controllers
                 CourseAttachment persistedCourseAttachment =
                     await this.courseAttachmentService.AddCourseAttachmentAsync(courseAttachment);
 
-                return Ok(persistedCourseAttachment);
+                return Created(persistedCourseAttachment);
             }
             catch (CourseAttachmentValidationException courseAttachmentValidationException)
                 when (courseAttachmentValidationException.InnerException is AlreadyExistsCourseAttachmentException)

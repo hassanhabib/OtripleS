@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Controllers
                 UserContact persistedUserContact =
                     await this.userContactService.AddUserContactAsync(userContact);
 
-                return Ok(persistedUserContact);
+                return Created(persistedUserContact);
             }
             catch (UserContactValidationException userContactValidationException)
                 when (userContactValidationException.InnerException is AlreadyExistsUserContactException)

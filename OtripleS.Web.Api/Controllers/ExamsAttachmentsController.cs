@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Controllers
                 ExamAttachment persistedExamAttachment =
                     await this.examAttachmentService.AddExamAttachmentAsync(examAttachment);
 
-                return Ok(persistedExamAttachment);
+                return Created(persistedExamAttachment);
             }
             catch (ExamAttachmentValidationException examAttachmentValidationException)
                 when (examAttachmentValidationException.InnerException is AlreadyExistsExamAttachmentException)

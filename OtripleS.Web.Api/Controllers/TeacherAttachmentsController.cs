@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Controllers
                 TeacherAttachment persistedTeacherAttachment =
                     await this.teacherAttachmentService.AddTeacherAttachmentAsync(teacherAttachment);
 
-                return Ok(persistedTeacherAttachment);
+                return Created(persistedTeacherAttachment);
             }
             catch (TeacherAttachmentValidationException teacherAttachmentValidationException)
                 when (teacherAttachmentValidationException.InnerException is AlreadyExistsTeacherAttachmentException)
