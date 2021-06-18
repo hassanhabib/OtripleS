@@ -6,10 +6,10 @@
 using System;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Registrations;
-using OtripleS.Web.Api.Tests.Acceptance.Models.StudentRegistrations;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Users;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.Registrations;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.StudentRegistrations;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.Students;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.Users;
 using Tynamix.ObjectFiller;
 using Xunit;
 

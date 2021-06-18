@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
-using OtripleS.Web.Api.Tests.Acceptance.Models.StudentRegistrations;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.StudentRegistrations;
 using RESTFulSense.Exceptions;
 using Xunit;
 

@@ -6,10 +6,10 @@
 using System;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Attachments;
-using OtripleS.Web.Api.Tests.Acceptance.Models.CalendarEntries;
-using OtripleS.Web.Api.Tests.Acceptance.Models.CalendarEntriesAttachments;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Calendars;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.Attachments;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.CalendarEntries;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.CalendarEntriesAttachments;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.Calendars;
 using Tynamix.ObjectFiller;
 using Xunit;
 

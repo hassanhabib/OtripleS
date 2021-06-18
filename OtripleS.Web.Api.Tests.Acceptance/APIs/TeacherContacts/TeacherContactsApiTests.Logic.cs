@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using OtripleS.Web.Api.Tests.Acceptance.Models.TeacherContacts;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.TeacherContacts;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.Teachers;
 using RESTFulSense.Exceptions;
 using Xunit;
 

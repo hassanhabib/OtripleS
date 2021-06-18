@@ -6,9 +6,9 @@
 using System;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Assignments;
-using OtripleS.Web.Api.Tests.Acceptance.Models.AssignmentsAttachments;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Attachments;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.Assignments;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.AssignmentsAttachments;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.Attachments;
 using Tynamix.ObjectFiller;
 using Xunit;
 
