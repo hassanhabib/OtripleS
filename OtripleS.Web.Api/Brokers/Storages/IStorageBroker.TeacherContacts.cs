@@ -13,13 +13,9 @@ namespace OtripleS.Web.Api.Brokers.Storages
     public partial interface IStorageBroker
     {
         ValueTask<TeacherContact> InsertTeacherContactAsync(TeacherContact teacherContact);
-
         IQueryable<TeacherContact> SelectAllTeacherContacts();
-
         ValueTask<TeacherContact> SelectTeacherContactByIdAsync(Guid teacherId, Guid contactId);
-
         ValueTask<TeacherContact> UpdateTeacherContactAsync(TeacherContact teacherContact);
-
         ValueTask<TeacherContact> DeleteTeacherContactAsync(TeacherContact teacherContact);
     }
 }

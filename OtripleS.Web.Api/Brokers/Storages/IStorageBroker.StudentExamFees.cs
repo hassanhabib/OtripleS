@@ -13,7 +13,6 @@ namespace OtripleS.Web.Api.Brokers.Storages
     public partial interface IStorageBroker
     {
         ValueTask<StudentExamFee> InsertStudentExamFeeAsync(StudentExamFee examFee);
-
         IQueryable<StudentExamFee> SelectAllStudentExamFees();
 
         ValueTask<StudentExamFee> SelectStudentExamFeeByIdsAsync(
@@ -21,7 +20,6 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid ExamFeeId);
 
         ValueTask<StudentExamFee> UpdateStudentExamFeeAsync(StudentExamFee examFee);
-
         ValueTask<StudentExamFee> DeleteStudentExamFeeAsync(StudentExamFee examFee);
     }
 }
