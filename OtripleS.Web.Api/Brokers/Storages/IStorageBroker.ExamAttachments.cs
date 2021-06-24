@@ -12,19 +12,19 @@ namespace OtripleS.Web.Api.Brokers.Storages
 {
     public partial interface IStorageBroker
     {
-        public ValueTask<ExamAttachment> InsertExamAttachmentAsync(
-            ExamAttachment examAttachment);
+        ValueTask<ExamAttachment> InsertExamAttachmentAsync(
+           ExamAttachment examAttachment);
 
-        public IQueryable<ExamAttachment> SelectAllExamAttachments();
+        IQueryable<ExamAttachment> SelectAllExamAttachments();
 
-        public ValueTask<ExamAttachment> SelectExamAttachmentByIdAsync(
+        ValueTask<ExamAttachment> SelectExamAttachmentByIdAsync(
             Guid examId,
             Guid attachmentId);
 
-        public ValueTask<ExamAttachment> UpdateExamAttachmentAsync(
+        ValueTask<ExamAttachment> UpdateExamAttachmentAsync(
             ExamAttachment examAttachment);
 
-        public ValueTask<ExamAttachment> DeleteExamAttachmentAsync(
+        ValueTask<ExamAttachment> DeleteExamAttachmentAsync(
             ExamAttachment examAttachment);
     }
 }

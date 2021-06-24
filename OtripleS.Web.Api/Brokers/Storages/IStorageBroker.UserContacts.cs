@@ -12,19 +12,19 @@ namespace OtripleS.Web.Api.Brokers.Storages
 {
     public partial interface IStorageBroker
     {
-        public ValueTask<UserContact> InsertUserContactAsync(
-            UserContact userContact);
+        ValueTask<UserContact> InsertUserContactAsync(
+           UserContact userContact);
 
-        public IQueryable<UserContact> SelectAllUserContacts();
+        IQueryable<UserContact> SelectAllUserContacts();
 
-        public ValueTask<UserContact> SelectUserContactByIdAsync(
-            Guid userId,
-            Guid contactId);
+        ValueTask<UserContact> SelectUserContactByIdAsync(
+           Guid userId,
+           Guid contactId);
 
-        public ValueTask<UserContact> UpdateUserContactAsync(
-            UserContact userContact);
+        ValueTask<UserContact> UpdateUserContactAsync(
+           UserContact userContact);
 
-        public ValueTask<UserContact> DeleteUserContactAsync(
-            UserContact userContact);
+        ValueTask<UserContact> DeleteUserContactAsync(
+           UserContact userContact);
     }
 }
