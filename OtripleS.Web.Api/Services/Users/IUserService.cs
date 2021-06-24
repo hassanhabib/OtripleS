@@ -16,6 +16,6 @@ namespace OtripleS.Web.Api.Services.Users
         ValueTask<User> RemoveUserByIdAsync(Guid userId);
         ValueTask<User> RetrieveUserByIdAsync(Guid userId);
         IQueryable<User> RetrieveAllUsers();
-        ValueTask<User> ModifyUserAsync(User course);
+        ValueTask<User> ModifyUserAsync(User user);
     }
 }
