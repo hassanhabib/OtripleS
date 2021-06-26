@@ -10,6 +10,7 @@ using OtripleS.Web.Api.Models.AssignmentAttachments;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.ExamAttachments;
+using OtripleS.Web.Api.Models;
 using OtripleS.Web.Api.Models.GuardianAttachments;
 using OtripleS.Web.Api.Models.StudentAttachments;
 using OtripleS.Web.Api.Models.TeacherAttachments;

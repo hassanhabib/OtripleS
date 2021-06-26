@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.StudentContacts;
 using OtripleS.Web.Api.Models.StudentContacts.Exceptions;
-using OtripleS.Web.Api.Services.StudentContacts;
+using OtripleS.Web.Api.Services.Foundations.StudentContacts;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers

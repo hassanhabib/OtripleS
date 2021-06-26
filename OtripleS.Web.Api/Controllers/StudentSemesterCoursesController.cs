@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
 using OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions;
-using OtripleS.Web.Api.Services.StudentSemesterCourses;
+using OtripleS.Web.Api.Services.Foundations.StudentSemesterCourses;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers

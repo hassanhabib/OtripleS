@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.StudentExamFees;
 using OtripleS.Web.Api.Models.StudentExamFees.Exceptions;
-using OtripleS.Web.Api.Services.StudentExamFees;
+using OtripleS.Web.Api.Services.Foundations.StudentExamFees;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers

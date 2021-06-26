@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions;
-using OtripleS.Web.Api.Services.CalendarEntryAttachments;
+using OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers

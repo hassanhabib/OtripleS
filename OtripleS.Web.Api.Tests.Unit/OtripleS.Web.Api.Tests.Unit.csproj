@@ -29,6 +29,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\AssignmentAttachments\" />
+    <Folder Include="Services\Foundations\AssignmentAttachments\" />
   </ItemGroup>
 </Project>

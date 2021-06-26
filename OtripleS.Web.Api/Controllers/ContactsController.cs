@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Contacts;
 using OtripleS.Web.Api.Models.Contacts.Exceptions;
-using OtripleS.Web.Api.Services.Contacts;
+using OtripleS.Web.Api.Services.Foundations.Contacts;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers

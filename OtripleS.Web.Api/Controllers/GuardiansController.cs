@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Guardians;
 using OtripleS.Web.Api.Models.Guardians.Exceptions;
-using OtripleS.Web.Api.Services.Guardians;
+using OtripleS.Web.Api.Services.Foundations.Guardians;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers

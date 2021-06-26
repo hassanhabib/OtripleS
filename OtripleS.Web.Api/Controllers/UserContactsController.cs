@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.UserContacts;
 using OtripleS.Web.Api.Models.UserContacts.Exceptions;
-using OtripleS.Web.Api.Services.UserContacts;
+using OtripleS.Web.Api.Services.Foundations.UserContacts;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers

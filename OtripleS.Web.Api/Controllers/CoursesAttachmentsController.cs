@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
-using OtripleS.Web.Api.Services.CourseAttachments;
+using OtripleS.Web.Api.Services.Foundations.CourseAttachments;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers

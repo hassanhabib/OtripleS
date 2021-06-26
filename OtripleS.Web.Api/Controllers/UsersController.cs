@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Models.Users.Exceptions;
-using OtripleS.Web.Api.Services.Users;
+using OtripleS.Web.Api.Services.Foundations.Users;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers
