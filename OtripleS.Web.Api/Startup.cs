@@ -63,10 +63,10 @@ namespace OtripleS.Web.Api
         {
             services.AddControllers();
             AddNewtonSoftJson(services);
+            services.AddLogging();
             services.AddDbContext<StorageBroker>();
             services.AddScoped<IUserManagementBroker, UserManagementBroker>();
             services.AddScoped<IStorageBroker, StorageBroker>();
-            services.AddTransient<ILogger, Logger<LoggingBroker>>();
             services.AddTransient<ILoggingBroker, LoggingBroker>();
             services.AddTransient<IDateTimeBroker, DateTimeBroker>();
             services.AddTransient<IStudentService, StudentService>();
