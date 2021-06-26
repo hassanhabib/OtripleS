@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.ExamFees;
+using OtripleS.Web.Api.Tests.Acceptance.Models.ExamFees;
 using RESTFulSense.Exceptions;
 using Xunit;
 

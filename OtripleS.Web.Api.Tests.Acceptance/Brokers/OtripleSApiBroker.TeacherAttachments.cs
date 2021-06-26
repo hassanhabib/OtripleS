@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.TeacherAttachments;
+using OtripleS.Web.Api.Tests.Acceptance.Models.TeacherAttachments;
 
 namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
 {

@@ -6,16 +6,16 @@
 using System;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.Classrooms;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.Courses;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.ExamFees;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.Exams;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.Fees;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.SemesterCourses;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.StudentExamFees;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.Students;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.Teachers;
-using OtripleS.Web.Api.Tests.Acceptance.Models.Foundations.Users;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Classrooms;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Courses;
+using OtripleS.Web.Api.Tests.Acceptance.Models.ExamFees;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Exams;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Fees;
+using OtripleS.Web.Api.Tests.Acceptance.Models.SemesterCourses;
+using OtripleS.Web.Api.Tests.Acceptance.Models.StudentExamFees;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Students;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Teachers;
+using OtripleS.Web.Api.Tests.Acceptance.Models.Users;
 using Tynamix.ObjectFiller;
 using Xunit;
 
