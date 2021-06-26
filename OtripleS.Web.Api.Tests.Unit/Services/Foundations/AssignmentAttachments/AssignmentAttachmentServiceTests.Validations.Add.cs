@@ -6,8 +6,8 @@
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.AssignmentAttachments;
-using OtripleS.Web.Api.Models.Foundations.AssignmentAttachments.Exceptions;
+using OtripleS.Web.Api.Models.AssignmentAttachments;
+using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments

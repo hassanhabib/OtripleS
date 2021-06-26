@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.Foundations.GuardianContacts;
-using OtripleS.Web.Api.Models.Foundations.GuardianContacts.Exceptions;
+using OtripleS.Web.Api.Models.GuardianContacts;
+using OtripleS.Web.Api.Models.GuardianContacts.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
 {

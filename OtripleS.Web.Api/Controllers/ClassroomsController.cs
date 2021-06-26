@@ -7,8 +7,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.Foundations.Classrooms;
-using OtripleS.Web.Api.Models.Foundations.Classrooms.Exceptions;
+using OtripleS.Web.Api.Models.Classrooms;
+using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Classrooms;
 using RESTFulSense.Controllers;
 

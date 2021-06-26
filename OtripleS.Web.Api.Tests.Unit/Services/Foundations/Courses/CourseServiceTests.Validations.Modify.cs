@@ -7,8 +7,8 @@ using System;
 using System.Threading.Tasks;
 using Force.DeepCloner;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.Courses;
-using OtripleS.Web.Api.Models.Foundations.Courses.Exceptions;
+using OtripleS.Web.Api.Models.Courses;
+using OtripleS.Web.Api.Models.Courses.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses

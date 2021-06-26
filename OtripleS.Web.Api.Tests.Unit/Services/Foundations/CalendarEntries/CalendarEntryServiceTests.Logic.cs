@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.CalendarEntries;
+using OtripleS.Web.Api.Models.CalendarEntries;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries

@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Foundations.Users;
+using OtripleS.Web.Api.Models.Users;
 
 namespace OtripleS.Web.Api.Brokers.UserManagement
 {

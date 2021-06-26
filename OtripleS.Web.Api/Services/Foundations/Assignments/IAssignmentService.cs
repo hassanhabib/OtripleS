@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Foundations.Assignments;
+using OtripleS.Web.Api.Models.Assignments;
 
 namespace OtripleS.Web.Api.Services.Foundations.Assignments
 {

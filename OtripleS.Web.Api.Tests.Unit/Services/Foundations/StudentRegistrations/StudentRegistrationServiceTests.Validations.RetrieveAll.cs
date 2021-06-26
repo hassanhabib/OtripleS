@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.StudentRegistrations;
+using OtripleS.Web.Api.Models.StudentRegistrations;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations

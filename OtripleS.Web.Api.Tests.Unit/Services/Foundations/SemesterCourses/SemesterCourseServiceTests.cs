@@ -13,7 +13,7 @@ using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storages;
-using OtripleS.Web.Api.Models.Foundations.SemesterCourses;
+using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Services.Foundations.SemesterCourses;
 using Tynamix.ObjectFiller;
 

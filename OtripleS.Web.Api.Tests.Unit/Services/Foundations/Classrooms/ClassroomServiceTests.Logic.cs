@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.Classrooms;
+using OtripleS.Web.Api.Models.Classrooms;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms

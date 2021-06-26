@@ -6,8 +6,8 @@
 using System;
 using System.Threading.Tasks;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.Assignments;
-using OtripleS.Web.Api.Models.Foundations.Assignments.Exceptions;
+using OtripleS.Web.Api.Models.Assignments;
+using OtripleS.Web.Api.Models.Assignments.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments

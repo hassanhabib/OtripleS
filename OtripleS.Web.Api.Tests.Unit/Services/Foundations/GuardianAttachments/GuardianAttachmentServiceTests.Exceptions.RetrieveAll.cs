@@ -5,7 +5,7 @@
 
 using System;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.GuardianAttachments.Exceptions;
+using OtripleS.Web.Api.Models.GuardianAttachments.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments

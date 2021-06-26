@@ -1,6 +1,6 @@
 ﻿using System;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.StudentRegistrations.Exceptions;
+using OtripleS.Web.Api.Models.StudentRegistrations.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations

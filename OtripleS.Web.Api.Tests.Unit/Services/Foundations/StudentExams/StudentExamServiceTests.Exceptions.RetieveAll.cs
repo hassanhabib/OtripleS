@@ -6,7 +6,7 @@
 using System;
 using Microsoft.Data.SqlClient;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.StudentExams.Exceptions;
+using OtripleS.Web.Api.Models.StudentExams.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams

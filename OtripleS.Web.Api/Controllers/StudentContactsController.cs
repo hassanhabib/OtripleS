@@ -7,8 +7,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.Foundations.StudentContacts;
-using OtripleS.Web.Api.Models.Foundations.StudentContacts.Exceptions;
+using OtripleS.Web.Api.Models.StudentContacts;
+using OtripleS.Web.Api.Models.StudentContacts.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.StudentContacts;
 using RESTFulSense.Controllers;
 

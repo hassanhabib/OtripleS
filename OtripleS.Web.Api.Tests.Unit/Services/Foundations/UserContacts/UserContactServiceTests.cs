@@ -11,7 +11,7 @@ using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storages;
-using OtripleS.Web.Api.Models.Foundations.UserContacts;
+using OtripleS.Web.Api.Models.UserContacts;
 using OtripleS.Web.Api.Services.Foundations.UserContacts;
 using Tynamix.ObjectFiller;
 

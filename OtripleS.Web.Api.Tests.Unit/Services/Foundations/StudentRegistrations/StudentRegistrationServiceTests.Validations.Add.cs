@@ -6,8 +6,8 @@
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.StudentRegistrations;
-using OtripleS.Web.Api.Models.Foundations.StudentRegistrations.Exceptions;
+using OtripleS.Web.Api.Models.StudentRegistrations;
+using OtripleS.Web.Api.Models.StudentRegistrations.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations

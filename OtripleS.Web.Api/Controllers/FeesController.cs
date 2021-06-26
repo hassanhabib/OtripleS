@@ -7,8 +7,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.Foundations.Fees;
-using OtripleS.Web.Api.Models.Foundations.Fees.Exceptions;
+using OtripleS.Web.Api.Models.Fees;
+using OtripleS.Web.Api.Models.Fees.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Fees;
 using RESTFulSense.Controllers;
 

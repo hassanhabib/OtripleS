@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.Foundations.Attendances;
-using OtripleS.Web.Api.Models.Foundations.Attendances.Exceptions;
+using OtripleS.Web.Api.Models.Attendances;
+using OtripleS.Web.Api.Models.Attendances.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Attendances
 {

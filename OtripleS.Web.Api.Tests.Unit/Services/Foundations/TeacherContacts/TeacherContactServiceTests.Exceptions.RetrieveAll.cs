@@ -6,7 +6,7 @@
 using System;
 using Microsoft.Data.SqlClient;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.TeacherContacts.Exceptions;
+using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts

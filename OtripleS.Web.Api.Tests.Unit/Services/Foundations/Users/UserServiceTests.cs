@@ -13,7 +13,7 @@ using Moq;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.UserManagement;
-using OtripleS.Web.Api.Models.Foundations.Users;
+using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Services.Foundations.Users;
 using Tynamix.ObjectFiller;
 

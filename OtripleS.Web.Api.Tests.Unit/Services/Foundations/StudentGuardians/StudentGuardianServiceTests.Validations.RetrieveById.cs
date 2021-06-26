@@ -6,8 +6,8 @@
 using System;
 using System.Threading.Tasks;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.StudentGuardians;
-using OtripleS.Web.Api.Models.Foundations.StudentGuardians.Exceptions;
+using OtripleS.Web.Api.Models.StudentGuardians;
+using OtripleS.Web.Api.Models.StudentGuardians.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians

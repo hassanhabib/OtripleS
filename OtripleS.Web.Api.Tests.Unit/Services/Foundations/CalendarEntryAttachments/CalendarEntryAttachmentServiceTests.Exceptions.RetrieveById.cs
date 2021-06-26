@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.CalendarEntryAttachments;
-using OtripleS.Web.Api.Models.Foundations.CalendarEntryAttachments.Exceptions;
+using OtripleS.Web.Api.Models.CalendarEntryAttachments;
+using OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachments

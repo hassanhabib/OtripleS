@@ -5,8 +5,8 @@
 
 using System;
 using System.Linq;
-using OtripleS.Web.Api.Models.Foundations.StudentSemesterCourses;
-using OtripleS.Web.Api.Models.Foundations.StudentSemesterCourses.Exceptions;
+using OtripleS.Web.Api.Models.StudentSemesterCourses;
+using OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.StudentSemesterCourses
 {

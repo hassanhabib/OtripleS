@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using OtripleS.Web.Api.Models.Foundations.Users;
+using OtripleS.Web.Api.Models.Users;
 
 namespace OtripleS.Web.Api.Brokers.UserManagement
 {

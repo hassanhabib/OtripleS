@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Foundations.GuardianAttachments;
+using OtripleS.Web.Api.Models.GuardianAttachments;
 
 namespace OtripleS.Web.Api.Brokers.Storages
 {

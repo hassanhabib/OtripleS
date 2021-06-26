@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storages;
-using OtripleS.Web.Api.Models.Foundations.TeacherContacts;
+using OtripleS.Web.Api.Models.TeacherContacts;
 
 namespace OtripleS.Web.Api.Services.Foundations.TeacherContacts
 {

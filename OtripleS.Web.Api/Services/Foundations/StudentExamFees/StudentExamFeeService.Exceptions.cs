@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.Foundations.StudentExamFees;
-using OtripleS.Web.Api.Models.Foundations.StudentExamFees.Exceptions;
+using OtripleS.Web.Api.Models.StudentExamFees;
+using OtripleS.Web.Api.Models.StudentExamFees.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.StudentExamFees
 {

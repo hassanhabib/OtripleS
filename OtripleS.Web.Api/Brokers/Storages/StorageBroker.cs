@@ -7,7 +7,7 @@ using System;
 using EFxceptions.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using OtripleS.Web.Api.Models.Foundations.Users;
+using OtripleS.Web.Api.Models.Users;
 
 namespace OtripleS.Web.Api.Brokers.Storages
 {

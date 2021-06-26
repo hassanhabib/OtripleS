@@ -7,8 +7,8 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.GuardianContacts;
-using OtripleS.Web.Api.Models.Foundations.GuardianContacts.Exceptions;
+using OtripleS.Web.Api.Models.GuardianContacts;
+using OtripleS.Web.Api.Models.GuardianContacts.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts

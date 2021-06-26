@@ -7,8 +7,8 @@ using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.Classrooms;
-using OtripleS.Web.Api.Models.Foundations.Classrooms.Exceptions;
+using OtripleS.Web.Api.Models.Classrooms;
+using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms

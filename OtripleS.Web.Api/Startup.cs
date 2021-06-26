@@ -15,7 +15,7 @@ using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Brokers.UserManagement;
-using OtripleS.Web.Api.Models.Foundations.Users;
+using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Services.Foundations.AssignmentAttachments;
 using OtripleS.Web.Api.Services.Foundations.Assignments;
 using OtripleS.Web.Api.Services.Foundations.Attachments;

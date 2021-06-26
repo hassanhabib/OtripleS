@@ -6,8 +6,8 @@
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.ExamAttachments;
-using OtripleS.Web.Api.Models.Foundations.ExamAttachments.Exceptions;
+using OtripleS.Web.Api.Models.ExamAttachments;
+using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments

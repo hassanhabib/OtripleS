@@ -9,8 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.Students;
-using OtripleS.Web.Api.Models.Foundations.Students.Exceptions;
+using OtripleS.Web.Api.Models.Students;
+using OtripleS.Web.Api.Models.Students.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students

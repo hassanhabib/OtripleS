@@ -7,8 +7,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.Foundations.ExamAttachments;
-using OtripleS.Web.Api.Models.Foundations.ExamAttachments.Exceptions;
+using OtripleS.Web.Api.Models.ExamAttachments;
+using OtripleS.Web.Api.Models.ExamAttachments.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.ExamAttachments;
 using RESTFulSense.Controllers;
 

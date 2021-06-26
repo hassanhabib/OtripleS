@@ -5,8 +5,8 @@
 
 using System;
 using System.Linq;
-using OtripleS.Web.Api.Models.Foundations.TeacherContacts;
-using OtripleS.Web.Api.Models.Foundations.TeacherContacts.Exceptions;
+using OtripleS.Web.Api.Models.TeacherContacts;
+using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.TeacherContacts
 {

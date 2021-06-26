@@ -5,7 +5,7 @@
 
 using System;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.Attachments.Exceptions;
+using OtripleS.Web.Api.Models.Attachments.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments

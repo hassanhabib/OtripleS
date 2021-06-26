@@ -7,8 +7,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.Foundations.Guardians;
-using OtripleS.Web.Api.Models.Foundations.Guardians.Exceptions;
+using OtripleS.Web.Api.Models.Guardians;
+using OtripleS.Web.Api.Models.Guardians.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Guardians;
 using RESTFulSense.Controllers;
 

@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.Foundations.StudentContacts;
-using OtripleS.Web.Api.Models.Foundations.StudentContacts.Exceptions;
+using OtripleS.Web.Api.Models.StudentContacts;
+using OtripleS.Web.Api.Models.StudentContacts.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.StudentContacts
 {

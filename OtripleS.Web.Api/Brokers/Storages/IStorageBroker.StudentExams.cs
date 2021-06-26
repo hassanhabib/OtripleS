@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Foundations.StudentExams;
+using OtripleS.Web.Api.Models.StudentExams;
 
 namespace OtripleS.Web.Api.Brokers.Storages
 {

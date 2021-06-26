@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.Contacts;
-using OtripleS.Web.Api.Models.Foundations.Contacts.Exceptions;
+using OtripleS.Web.Api.Models.Contacts;
+using OtripleS.Web.Api.Models.Contacts.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts

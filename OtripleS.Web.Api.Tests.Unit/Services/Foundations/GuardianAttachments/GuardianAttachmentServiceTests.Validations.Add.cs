@@ -6,8 +6,8 @@
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.GuardianAttachments;
-using OtripleS.Web.Api.Models.Foundations.GuardianAttachments.Exceptions;
+using OtripleS.Web.Api.Models.GuardianAttachments;
+using OtripleS.Web.Api.Models.GuardianAttachments.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments

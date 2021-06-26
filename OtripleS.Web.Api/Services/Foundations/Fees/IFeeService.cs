@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Foundations.Fees;
+using OtripleS.Web.Api.Models.Fees;
 
 namespace OtripleS.Web.Api.Services.Foundations.Fees
 {

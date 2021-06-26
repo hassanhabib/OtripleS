@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.UserContacts;
+using OtripleS.Web.Api.Models.UserContacts;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts

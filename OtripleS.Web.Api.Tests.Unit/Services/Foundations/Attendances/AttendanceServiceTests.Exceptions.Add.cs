@@ -7,8 +7,8 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.Attendances;
-using OtripleS.Web.Api.Models.Foundations.Attendances.Exceptions;
+using OtripleS.Web.Api.Models.Attendances;
+using OtripleS.Web.Api.Models.Attendances.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances

@@ -7,8 +7,8 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.Exams;
-using OtripleS.Web.Api.Models.Foundations.Exams.Exceptions;
+using OtripleS.Web.Api.Models.Exams;
+using OtripleS.Web.Api.Models.Exams.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams

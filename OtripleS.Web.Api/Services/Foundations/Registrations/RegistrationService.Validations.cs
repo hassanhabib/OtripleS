@@ -6,8 +6,8 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using OtripleS.Web.Api.Models.Foundations.Registrations;
-using OtripleS.Web.Api.Models.Foundations.Registrations.Exceptions;
+using OtripleS.Web.Api.Models.Registrations;
+using OtripleS.Web.Api.Models.Registrations.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Registrations
 {

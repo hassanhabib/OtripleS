@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.ExamFees;
-using OtripleS.Web.Api.Models.Foundations.ExamFees.Exceptions;
+using OtripleS.Web.Api.Models.ExamFees;
+using OtripleS.Web.Api.Models.ExamFees.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees

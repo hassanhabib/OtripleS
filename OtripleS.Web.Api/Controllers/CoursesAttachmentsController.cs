@@ -7,8 +7,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.Foundations.CourseAttachments;
-using OtripleS.Web.Api.Models.Foundations.CourseAttachments.Exceptions;
+using OtripleS.Web.Api.Models.CourseAttachments;
+using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.CourseAttachments;
 using RESTFulSense.Controllers;
 

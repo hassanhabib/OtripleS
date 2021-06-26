@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Foundations.StudentExamFees;
+using OtripleS.Web.Api.Models.StudentExamFees;
 
 namespace OtripleS.Web.Api.Services.Foundations.StudentExamFees
 {

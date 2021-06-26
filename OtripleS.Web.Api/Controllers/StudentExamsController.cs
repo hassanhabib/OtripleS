@@ -7,8 +7,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.Foundations.StudentExams;
-using OtripleS.Web.Api.Models.Foundations.StudentExams.Exceptions;
+using OtripleS.Web.Api.Models.StudentExams;
+using OtripleS.Web.Api.Models.StudentExams.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.StudentExams;
 using RESTFulSense.Controllers;
 

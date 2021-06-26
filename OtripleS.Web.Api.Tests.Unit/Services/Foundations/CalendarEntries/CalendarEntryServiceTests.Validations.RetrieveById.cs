@@ -6,8 +6,8 @@
 using System;
 using System.Threading.Tasks;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.CalendarEntries;
-using OtripleS.Web.Api.Models.Foundations.CalendarEntries.Exceptions;
+using OtripleS.Web.Api.Models.CalendarEntries;
+using OtripleS.Web.Api.Models.CalendarEntries.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries

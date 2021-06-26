@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.Foundations.Users;
-using OtripleS.Web.Api.Models.Foundations.Users.Exceptions;
+using OtripleS.Web.Api.Models.Users;
+using OtripleS.Web.Api.Models.Users.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Users
 {

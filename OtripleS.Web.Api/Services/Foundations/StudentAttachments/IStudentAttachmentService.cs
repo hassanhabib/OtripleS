@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Foundations.StudentAttachments;
+using OtripleS.Web.Api.Models.StudentAttachments;
 
 namespace OtripleS.Web.Api.Services.Foundations.StudentAttachments
 {

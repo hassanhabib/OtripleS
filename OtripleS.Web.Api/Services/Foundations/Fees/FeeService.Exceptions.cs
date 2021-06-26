@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OtripleS.Web.Api.Models.Foundations.Fees;
-using OtripleS.Web.Api.Models.Foundations.Fees.Exceptions;
+using OtripleS.Web.Api.Models.Fees;
+using OtripleS.Web.Api.Models.Fees.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Fees
 {

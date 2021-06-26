@@ -7,8 +7,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.Foundations.GuardianContacts;
-using OtripleS.Web.Api.Models.Foundations.GuardianContacts.Exceptions;
+using OtripleS.Web.Api.Models.GuardianContacts;
+using OtripleS.Web.Api.Models.GuardianContacts.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.GuardianContacts;
 using RESTFulSense.Controllers;
 

@@ -6,8 +6,8 @@
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.UserContacts;
-using OtripleS.Web.Api.Models.Foundations.UserContacts.Exceptions;
+using OtripleS.Web.Api.Models.UserContacts;
+using OtripleS.Web.Api.Models.UserContacts.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.TeacherAttachments;
+using OtripleS.Web.Api.Models.TeacherAttachments;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments

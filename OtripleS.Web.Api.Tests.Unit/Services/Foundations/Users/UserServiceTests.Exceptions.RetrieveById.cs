@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.Users;
-using OtripleS.Web.Api.Models.Foundations.Users.Exceptions;
+using OtripleS.Web.Api.Models.Users;
+using OtripleS.Web.Api.Models.Users.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users

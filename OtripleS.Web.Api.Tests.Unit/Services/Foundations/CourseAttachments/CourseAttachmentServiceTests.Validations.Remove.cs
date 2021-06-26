@@ -6,8 +6,8 @@
 using System;
 using System.Threading.Tasks;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.CourseAttachments;
-using OtripleS.Web.Api.Models.Foundations.CourseAttachments.Exceptions;
+using OtripleS.Web.Api.Models.CourseAttachments;
+using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments

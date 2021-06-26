@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.GuardianContacts;
+using OtripleS.Web.Api.Models.GuardianContacts;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts

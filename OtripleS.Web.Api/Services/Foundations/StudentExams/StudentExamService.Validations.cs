@@ -5,8 +5,8 @@
 
 using System;
 using System.Linq;
-using OtripleS.Web.Api.Models.Foundations.StudentExams;
-using OtripleS.Web.Api.Models.Foundations.StudentExams.Exceptions;
+using OtripleS.Web.Api.Models.StudentExams;
+using OtripleS.Web.Api.Models.StudentExams.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.StudentExams
 {

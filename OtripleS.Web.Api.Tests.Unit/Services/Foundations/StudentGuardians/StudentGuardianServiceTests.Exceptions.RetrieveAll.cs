@@ -6,7 +6,7 @@
 using System;
 using Microsoft.Data.SqlClient;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.StudentGuardians.Exceptions;
+using OtripleS.Web.Api.Models.StudentGuardians.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians

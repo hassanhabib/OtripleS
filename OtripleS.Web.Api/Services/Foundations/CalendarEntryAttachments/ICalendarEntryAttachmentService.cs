@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Models.Foundations.CalendarEntryAttachments;
+using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 
 namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
 {

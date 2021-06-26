@@ -7,8 +7,8 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using OtripleS.Web.Api.Models.Foundations.TeacherContacts;
-using OtripleS.Web.Api.Models.Foundations.TeacherContacts.Exceptions;
+using OtripleS.Web.Api.Models.TeacherContacts;
+using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts

@@ -5,8 +5,8 @@
 
 using System;
 using System.Linq;
-using OtripleS.Web.Api.Models.Foundations.CourseAttachments;
-using OtripleS.Web.Api.Models.Foundations.CourseAttachments.Exceptions;
+using OtripleS.Web.Api.Models.CourseAttachments;
+using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
 {

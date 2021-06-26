@@ -7,8 +7,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OtripleS.Web.Api.Models.Foundations.StudentRegistrations;
-using OtripleS.Web.Api.Models.Foundations.StudentRegistrations.Exceptions;
+using OtripleS.Web.Api.Models.StudentRegistrations;
+using OtripleS.Web.Api.Models.StudentRegistrations.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.StudentRegistrations;
 using RESTFulSense.Controllers;
 

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using OtripleS.Web.Api.Models.Foundations.Teachers;
+using OtripleS.Web.Api.Models.Teachers;
 
 namespace OtripleS.Web.Api.Brokers.Storages
 {
