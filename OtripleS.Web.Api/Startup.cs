@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -49,6 +48,7 @@ using OtripleS.Web.Api.Services.Foundations.TeacherContacts;
 using OtripleS.Web.Api.Services.Foundations.Teachers;
 using OtripleS.Web.Api.Services.Foundations.UserContacts;
 using OtripleS.Web.Api.Services.Foundations.Users;
+using JsonStringEnumConverter = Newtonsoft.Json.Converters.StringEnumConverter;
 
 namespace OtripleS.Web.Api
 {
@@ -109,7 +109,9 @@ namespace OtripleS.Web.Api
                     .AddDefaultTokenProviders();
         }
 
-        public void Configure(IApplicationBuilder applicationBuilder, IWebHostEnvironment webHostEnvironment)
+        public void Configure(
+            IApplicationBuilder applicationBuilder,
+            IWebHostEnvironment webHostEnvironment)
         {
             if (webHostEnvironment.IsDevelopment())
             {
@@ -127,7 +129,7 @@ namespace OtripleS.Web.Api
             services.AddMvc().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                options.SerializerSettings.Converters.Add(new JsonStringEnumConverter());
                 options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             });
         }
