@@ -6,10 +6,10 @@ variables:
   buildConfiguration: 'Release'
 steps:
 - task: UseDotNet@2
-  displayName: 'Use DotNet 6.0'
+  displayName: 'Use .NET 6.0 Preview'
   inputs:
     packageType: 'sdk'
-    version: '6.0.100-preview.3.21202.5'
+    version: '6.0.100-preview.5.21302.13'
     includePreviewVersions: true
 - task: DotNetCoreCLI@2
   displayName: 'Restore'
@@ -26,7 +26,7 @@ steps:
     command: 'test'
     projects: '**/*Unit*.csproj'
 - task: DotNetCoreCLI@2
-  displayName: 'Publish'
+  displayName: 'Publish XYZ'
   inputs:
     command: 'publish'
     publishWebProjects: true
