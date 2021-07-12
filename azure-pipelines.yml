@@ -24,7 +24,7 @@ steps:
   displayName: 'Test'
   inputs:
     command: 'test'
-    projects: '**/*Unit*.csproj'
+    projects: '**/*[Tt]ests*/*.csproj'
 - task: DotNetCoreCLI@2
   displayName: 'Publish'
   inputs:
