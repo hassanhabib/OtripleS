@@ -23,7 +23,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             DateTimeOffset randomDateTime = GetRandomDateTime();
             DateTimeOffset dateTime = randomDateTime;
             Student randomStudent = CreateRandomStudent(randomDateTime);
-            randomStudent.UpdatedBy = randomStudent.CreatedBy;
             Student inputStudent = randomStudent;
             Student storageStudent = randomStudent;
             Student expectedStudent = storageStudent;
@@ -52,7 +51,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -138,7 +136,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -174,7 +171,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
