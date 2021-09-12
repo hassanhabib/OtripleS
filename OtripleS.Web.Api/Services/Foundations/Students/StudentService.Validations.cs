@@ -25,7 +25,14 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
                 (Rule: IsInvalidX(student.CreatedBy), Parameter: nameof(Student.CreatedBy)),
                 (Rule: IsInvalidX(student.UpdatedBy), Parameter: nameof(Student.UpdatedBy)),
                 (Rule: IsInvalidX(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
-                (Rule: IsInvalidX(student.UpdatedDate), Parameter: nameof(Student.UpdatedDate)));
+                (Rule: IsInvalidX(student.UpdatedDate), Parameter: nameof(Student.UpdatedDate)),
+                
+                (Rule: IsNotSame(
+                    firstId: student.UpdatedBy,
+                    secondId: student.CreatedBy,
+                    secondIdName: nameof(Student.CreatedBy)),
+                Parameter: nameof(Student.UpdatedBy))
+            );
         }
 
         private static void ValidateStudentIsNotNull(Student student)
@@ -53,6 +60,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             Condition = date == default,
             Message = "Date cannot be default."
         };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not the same as {secondIdName}."
+            };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
