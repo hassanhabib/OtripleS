@@ -12,7 +12,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 {
     public partial class StudentService
     {
-        private static void ValidateStudentOnRegister(Student student)
+        private void ValidateStudentOnRegister(Student student)
         {
             ValidateStudent(student);
 
@@ -26,6 +26,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
                 (Rule: IsInvalidX(student.UpdatedBy), Parameter: nameof(Student.UpdatedBy)),
                 (Rule: IsInvalidX(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
                 (Rule: IsInvalidX(student.UpdatedDate), Parameter: nameof(Student.UpdatedDate)),
+                (Rule: IsNotRecent(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
                 
                 (Rule: IsNotSame(
                     firstId: student.UpdatedBy,
@@ -84,6 +85,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
                 Condition = firstDate != secondDate,
                 Message = $"Date is not the same as {secondDateName}."
             };
+
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
+        {
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent."
+        };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {

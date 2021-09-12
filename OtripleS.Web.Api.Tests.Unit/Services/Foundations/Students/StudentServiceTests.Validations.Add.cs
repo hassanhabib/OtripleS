@@ -111,6 +111,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 registerStudentTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameValidationExceptionAs(
                     expectedStudentValidationException))),
@@ -143,6 +147,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentInputException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
             // when
             ValueTask<Student> registerStudentTask =
                 this.studentService.RegisterStudentAsync(invalidStudent);
@@ -150,6 +158,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             // then
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 registerStudentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameValidationExceptionAs(
@@ -182,6 +194,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
             // when
             ValueTask<Student> registerStudentTask =
                 this.studentService.RegisterStudentAsync(invalidStudent);
@@ -189,6 +205,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             // then
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 registerStudentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameValidationExceptionAs(
@@ -210,27 +230,28 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             int minutes)
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent(dateTime);
-            Student inputStudent = randomStudent;
-            inputStudent.UpdatedBy = inputStudent.CreatedBy;
-            inputStudent.CreatedDate = dateTime.AddMinutes(minutes);
-            inputStudent.UpdatedDate = inputStudent.CreatedDate;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            Student randomStudent = CreateRandomStudent(randomDate);
+            Student invalidStudent = randomStudent;
+            invalidStudent.CreatedDate = randomDate.AddMinutes(minutes);
+            invalidStudent.UpdatedDate = invalidStudent.CreatedDate;
 
-            var invalidStudentInputException = new InvalidStudentException(
-                parameterName: nameof(Student.CreatedDate),
-                parameterValue: inputStudent.CreatedDate);
+            var invalidStudentException = new InvalidStudentException();
+
+            invalidStudentException.AddData(
+                key: nameof(Student.CreatedDate),
+                values: $"Date is not recent.");
 
             var expectedStudentValidationException =
-                new StudentValidationException(invalidStudentInputException);
+                new StudentValidationException(invalidStudentException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
+                    .Returns(randomDate);
 
             // when
             ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(inputStudent);
+                this.studentService.RegisterStudentAsync(invalidStudent);
 
             // then
             await Assert.ThrowsAsync<StudentValidationException>(() =>
@@ -241,8 +262,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedStudentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentAsync(It.IsAny<Student>()),
