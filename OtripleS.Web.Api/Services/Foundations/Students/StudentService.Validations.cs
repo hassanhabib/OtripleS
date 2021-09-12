@@ -17,7 +17,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             ValidateStudent(student);
 
             Validate(
-                (Rule: IsInvalidX(student.Id), Parameter: nameof(Student.Id)));
+                (Rule: IsInvalidX(student.Id), Parameter: nameof(Student.Id)),
+                (Rule: IsInvalidX(student.UserId), Parameter: nameof(Student.UserId)),
+                (Rule: IsInvalidX(student.IdentityNumber), Parameter: nameof(Student.IdentityNumber)),
+                (Rule: IsInvalidX(student.FirstName), Parameter: nameof(Student.FirstName)),
+                (Rule: IsInvalidX(student.BirthDate), Parameter: nameof(Student.BirthDate)),
+                (Rule: IsInvalidX(student.CreatedBy), Parameter: nameof(Student.CreatedBy)),
+                (Rule: IsInvalidX(student.UpdatedBy), Parameter: nameof(Student.UpdatedBy)),
+                (Rule: IsInvalidX(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
+                (Rule: IsInvalidX(student.UpdatedDate), Parameter: nameof(Student.UpdatedDate)));
         }
 
         private static void ValidateStudentIsNotNull(Student student)
@@ -32,6 +40,18 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
         {
             Condition = id == Guid.Empty,
             Message = "Id cannot be empty."
+        };
+
+        private static dynamic IsInvalidX(string text) => new
+        {
+            Condition = String.IsNullOrWhiteSpace(text),
+            Message = "Text cannot be null, empty or whitespace."
+        };
+
+        private static dynamic IsInvalidX(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date cannot be default."
         };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
