@@ -42,7 +42,7 @@ namespace OtripleS.Web.Api.Infrastructure.Build
 
                         Inputs = new UseDotNetTasksInputs
                         {
-                            Version = "6.0.100-preview.5.21302.13",
+                            Version = "6.0.100-preview.7.21379.14",
                             IncludePreviewVersions = true
                         }
                     },
