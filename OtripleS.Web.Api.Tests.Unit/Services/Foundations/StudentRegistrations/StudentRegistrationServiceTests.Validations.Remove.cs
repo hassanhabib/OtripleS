@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                     inputRegistrationId);
 
             //then
-            await Assert.ThrowsAsync<StudentRegistrationValidationException>(() => 
+            await Assert.ThrowsAsync<StudentRegistrationValidationException>(() =>
                 actualStudentRegistrationDeleteTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
@@ -80,7 +80,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                     inputRegistrationId);
 
             // then
-            await Assert.ThrowsAsync<StudentRegistrationValidationException>(() => 
+            await Assert.ThrowsAsync<StudentRegistrationValidationException>(() =>
                 actualStudentRegistrationDeleteTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
@@ -96,7 +96,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                     Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();            
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -122,7 +122,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
             // when
             ValueTask<StudentRegistration> actualStudentRegistrationDeleteTask =
                 this.studentRegistrationService.RemoveStudentRegistrationByIdsAsync(
-                    inputStudentRegistrationId, 
+                    inputStudentRegistrationId,
                     inputStudentId);
 
             // then

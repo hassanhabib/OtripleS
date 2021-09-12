@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentRegistrations
         }
 
         private static void ValidateStudentRegistrationIsNull(StudentRegistration studentRegistration)
-            {
+        {
             if (studentRegistration is null)
             {
                 throw new NullStudentRegistrationException();

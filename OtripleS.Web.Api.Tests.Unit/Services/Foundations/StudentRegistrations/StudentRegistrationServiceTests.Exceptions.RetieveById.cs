@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 new StudentRegistrationDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputStudentId,inputRegistrationId))
+                broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId))
                     .ThrowsAsync(sqlException);
 
             // when
@@ -71,7 +71,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 new StudentRegistrationDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputStudentId,inputRegistrationId))
+                broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
@@ -112,7 +112,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 new StudentRegistrationServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputStudentId,inputRegistrationId))
+                broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId))
                     .ThrowsAsync(exception);
 
             // when

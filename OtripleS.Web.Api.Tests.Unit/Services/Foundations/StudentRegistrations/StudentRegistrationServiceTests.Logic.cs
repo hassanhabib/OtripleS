@@ -77,7 +77,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-          
+
         [Fact]
         public async Task ShouldRetrieveStudentRegistrationByIdAsync()
         {

@@ -119,7 +119,7 @@ namespace OtripleS.Web.Api.Controllers
             {
                 StudentRegistration deletedStudentRegistration =
                     await this.studentRegistrationService.RemoveStudentRegistrationByIdsAsync(
-                        studentId, 
+                        studentId,
                         registrationId);
 
                 return Ok(deletedStudentRegistration);

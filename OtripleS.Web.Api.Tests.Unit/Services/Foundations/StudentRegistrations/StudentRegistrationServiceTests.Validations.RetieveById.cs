@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
 
             // when
             ValueTask<StudentRegistration> retrieveStudentRegistrationByIdTask =
-                this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(inputStudentId , inputRegistrationId);
+                this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId);
 
             // then
             await Assert.ThrowsAsync<StudentRegistrationValidationException>(() =>
@@ -68,7 +68,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 new StudentRegistrationValidationException(notFoundStudentRegistrationException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputStudentId,inputRegistrationId))
+                broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId))
                     .ReturnsAsync(invalidStorageStudentRegistration);
 
             // when
