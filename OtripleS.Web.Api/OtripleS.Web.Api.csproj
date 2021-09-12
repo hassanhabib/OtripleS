@@ -11,15 +11,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0-preview.5.21301.17" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0-preview.5.21301.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0-preview.5.21301.9">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0-preview.7.21378.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0-preview.7.21378.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0-preview.7.21378.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.0-preview.5.21321.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.0-preview.7.21413.1" />
     <PackageReference Include="EFxceptions.Identity" Version="0.4.5" />
-    <PackageReference Include="RESTFulSense" Version="1.9.0" />
+    <PackageReference Include="RESTFulSense" Version="2.0.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="6.0.0-preview.7.21377.19" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Foundations\AssignmentAttachments\" />

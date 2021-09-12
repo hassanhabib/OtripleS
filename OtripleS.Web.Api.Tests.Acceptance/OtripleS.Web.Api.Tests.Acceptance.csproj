@@ -8,17 +8,17 @@
 
   <ItemGroup>
     <PackageReference Include="DeepCloner" Version="0.10.2" />
-    <PackageReference Include="FluentAssertions" Version="6.0.0-beta0001" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0-preview.5.21301.17" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
-    <PackageReference Include="RESTFulSense" Version="1.9.0" />
+    <PackageReference Include="FluentAssertions" Version="6.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0-preview.7.21378.6" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="RESTFulSense" Version="2.0.0" />
     <PackageReference Include="Tynamix.ObjectFiller" Version="1.5.6" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="3.0.3">
+    <PackageReference Include="coverlet.collector" Version="3.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
