@@ -47,11 +47,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnRegisterIfStudentIsInvalidAndLogItAsync()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async void ShouldThrowValidationExceptionOnRegisterIfStudentIsInvalidAndLogItAsync(
+            string invalidText)
         {
             // given
-            var invalidStuent = new Student();
+            var invalidStuent = new Student
+            {
+                UserId = invalidText,
+                IdentityNumber = invalidText,
+                FirstName = invalidText
+            };
+
             var invalidStudentException = new InvalidStudentException();
 
             invalidStudentException.AddData(
