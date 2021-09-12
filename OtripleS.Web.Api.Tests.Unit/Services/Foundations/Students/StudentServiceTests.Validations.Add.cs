@@ -58,6 +58,38 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 key: nameof(Student.Id),
                 values: "Id cannot be empty.");
 
+            invalidStudentException.AddData(
+                key: nameof(Student.UserId),
+                values: "Text cannot be null, empty or whitespace.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.IdentityNumber),
+                values: "Text cannot be null, empty or whitespace.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.FirstName),
+                values: "Text cannot be null, empty or whitespace.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.BirthDate),
+                values: "Date cannot be default.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.CreatedBy),
+                values: "Id cannot be empty.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.UpdatedBy),
+                values: "Id cannot be empty.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.CreatedDate),
+                values: "Date cannot be default.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.UpdatedDate),
+                values: "Date cannot be default.");
+
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
 

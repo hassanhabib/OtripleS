@@ -12,7 +12,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 {
     public partial class StudentService
     {
-        private void ValidateStudentOnRegister(Student student)
+        private static void ValidateStudentOnRegister(Student student)
         {
             ValidateStudent(student);
 
