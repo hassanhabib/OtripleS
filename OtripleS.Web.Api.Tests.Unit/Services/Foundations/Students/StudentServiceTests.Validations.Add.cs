@@ -19,9 +19,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         public async void ShouldThrowValidationExceptionOnRegisterWhenStudentIsNullAndLogItAsync()
         {
             // given
-            Student randomStudent = null;
-            Student nullStudent = randomStudent;
-
+            Student nullStudent = null;
             var nullStudentException = new NullStudentException();
 
             var expectedStudentValidationException =
@@ -36,52 +34,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 registerStudentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentAsync(It.IsAny<Student>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnRegisterWhenIdIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent(dateTime);
-            Student inputStudent = randomStudent;
-            inputStudent.Id = default;
-
-            var invalidStudentInputException = new InvalidStudentException(
-                parameterName: nameof(Student.Id),
-                parameterValue: inputStudent.Id);
-
-            var expectedStudentValidationException =
-                new StudentValidationException(invalidStudentInputException);
-
-            // when
-            ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(inputStudent);
-
-            // then
-            await Assert.ThrowsAsync<StudentValidationException>(() =>
-                registerStudentTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(It.IsAny<Student>()),
-                    Times.Never);
-
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -89,261 +51,74 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
-        public async Task ShouldThrowValidationExceptionOnRegisterWhenStudentUserIdIsInvalidAndLogItAsync(
-            string invalidStudentUserId)
+        public async void ShouldThrowValidationExceptionOnRegisterIfStudentIsInvalidAndLogItAsync(
+            string invalidText)
         {
             // given
-            Student randomStudent = CreateRandomStudent();
-            Student invalidStudent = randomStudent;
-            invalidStudent.UserId = invalidStudentUserId;
+            var invalidStuent = new Student
+            {
+                UserId = invalidText,
+                IdentityNumber = invalidText,
+                FirstName = invalidText
+            };
 
-            var invalidStudentException = new InvalidStudentException(
-               parameterName: nameof(Student.UserId),
-               parameterValue: invalidStudent.UserId);
+            var invalidStudentException = new InvalidStudentException();
+
+            invalidStudentException.AddData(
+                key: nameof(Student.Id),
+                values: "Id cannot be empty.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.UserId),
+                values: "Text cannot be null, empty or whitespace.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.IdentityNumber),
+                values: "Text cannot be null, empty or whitespace.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.FirstName),
+                values: "Text cannot be null, empty or whitespace.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.BirthDate),
+                values: "Date cannot be default.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.CreatedBy),
+                values: "Id cannot be empty.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.UpdatedBy),
+                values: "Id cannot be empty.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.CreatedDate),
+                values: "Date cannot be default.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.UpdatedDate),
+                values: "Date cannot be default.");
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
 
             // when
             ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(invalidStudent);
+                this.studentService.RegisterStudentAsync(invalidStuent);
 
             // then
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 registerStudentTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(It.IsAny<Student>()),
-                    Times.Never);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-
-        }
-
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData("   ")]
-        public async Task ShouldThrowValidationExceptionOnRegisterWhenStudentFirstNameIsInvalidAndLogItAsync(
-            string invalidStudentFirstName)
-        {
-            // given
-            Student randomStudent = CreateRandomStudent();
-            Student invalidStudent = randomStudent;
-            invalidStudent.FirstName = invalidStudentFirstName;
-
-            var invalidStudentException = new InvalidStudentException(
-               parameterName: nameof(Student.FirstName),
-               parameterValue: invalidStudent.FirstName);
-
-            var expectedStudentValidationException =
-                new StudentValidationException(invalidStudentException);
-
-            // when
-            ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(invalidStudent);
-
-            // then
-            await Assert.ThrowsAsync<StudentValidationException>(() =>
-                registerStudentTask.AsTask());
-
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(It.IsAny<Student>()),
-                    Times.Never);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData("   ")]
-        public async Task ShouldThrowValidationExceptionOnRegisterWhenStudentIdentityNumberIsInvalidAndLogItAsync(
-            string invalidStudentIdentityNumber)
-        {
-            // given
-            Student randomStudent = CreateRandomStudent();
-            Student invalidStudent = randomStudent;
-            invalidStudent.IdentityNumber = invalidStudentIdentityNumber;
-
-            var invalidStudentException = new InvalidStudentException(
-               parameterName: nameof(Student.IdentityNumber),
-               parameterValue: invalidStudent.IdentityNumber);
-
-            var expectedStudentValidationException =
-                new StudentValidationException(invalidStudentException);
-
-            // when
-            ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(invalidStudent);
-
-            // then
-            await Assert.ThrowsAsync<StudentValidationException>(() =>
-                registerStudentTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(It.IsAny<Student>()),
-                    Times.Never);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnRegisterWhenBirthDateIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent(dateTime);
-            Student inputStudent = randomStudent;
-            inputStudent.BirthDate = default;
-
-            var invalidStudentInputException = new InvalidStudentException(
-                parameterName: nameof(Student.BirthDate),
-                parameterValue: inputStudent.BirthDate);
-
-            var expectedStudentValidationException =
-                new StudentValidationException(invalidStudentInputException);
-
-            // when
-            ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(inputStudent);
-
-            // then
-            await Assert.ThrowsAsync<StudentValidationException>(() =>
-                registerStudentTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(It.IsAny<Student>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnRegisterWhenCreatedByIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent(dateTime);
-            Student inputStudent = randomStudent;
-            inputStudent.CreatedBy = default;
-
-            var invalidStudentInputException = new InvalidStudentException(
-                parameterName: nameof(Student.CreatedBy),
-                parameterValue: inputStudent.CreatedBy);
-
-            var expectedStudentValidationException =
-                new StudentValidationException(invalidStudentInputException);
-
-            // when
-            ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(inputStudent);
-
-            // then
-            await Assert.ThrowsAsync<StudentValidationException>(() =>
-                registerStudentTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(It.IsAny<Student>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnRegisterWhenUpdatedByIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent(dateTime);
-            Student inputStudent = randomStudent;
-            inputStudent.UpdatedBy = default;
-
-            var invalidStudentInputException = new InvalidStudentException(
-                parameterName: nameof(Student.UpdatedBy),
-                parameterValue: inputStudent.UpdatedBy);
-
-            var expectedStudentValidationException =
-                new StudentValidationException(invalidStudentInputException);
-
-            // when
-            ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(inputStudent);
-
-            // then
-            await Assert.ThrowsAsync<StudentValidationException>(() =>
-                registerStudentTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(It.IsAny<Student>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnRegisterWhenUpdatedDateIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent(dateTime);
-            Student inputStudent = randomStudent;
-            inputStudent.UpdatedDate = default;
-
-            var invalidStudentInputException = new InvalidStudentException(
-                parameterName: nameof(Student.UpdatedDate),
-                parameterValue: inputStudent.UpdatedDate);
-
-            var expectedStudentValidationException =
-                new StudentValidationException(invalidStudentInputException);
-
-            // when
-            ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(inputStudent);
-
-            // then
-            await Assert.ThrowsAsync<StudentValidationException>(() =>
-                registerStudentTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedStudentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentAsync(It.IsAny<Student>()),
@@ -360,27 +135,38 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             Student randomStudent = CreateRandomStudent(dateTime);
-            Student inputStudent = randomStudent;
-            inputStudent.UpdatedBy = Guid.NewGuid();
+            Student invalidStudent = randomStudent;
+            invalidStudent.UpdatedBy = Guid.NewGuid();
 
-            var invalidStudentInputException = new InvalidStudentException(
-                parameterName: nameof(Student.UpdatedBy),
-                parameterValue: inputStudent.UpdatedBy);
+            var invalidStudentInputException = new InvalidStudentException();
+
+            invalidStudentInputException.AddData(
+                key: nameof(Student.UpdatedBy),
+                values: $"Id is not the same as {nameof(Student.CreatedBy)}.");
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentInputException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
             // when
             ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(inputStudent);
+                this.studentService.RegisterStudentAsync(invalidStudent);
 
             // then
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 registerStudentTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedStudentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentAsync(It.IsAny<Student>()),
@@ -397,28 +183,37 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             Student randomStudent = CreateRandomStudent(dateTime);
-            Student inputStudent = randomStudent;
-            inputStudent.UpdatedBy = randomStudent.CreatedBy;
-            inputStudent.UpdatedDate = GetRandomDateTime();
+            Student invalidStudent = randomStudent;
+            invalidStudent.UpdatedDate = GetRandomDateTime();
+            var invalidStudentException = new InvalidStudentException();
 
-            var invalidStudentInputException = new InvalidStudentException(
-                parameterName: nameof(Student.UpdatedDate),
-                parameterValue: inputStudent.UpdatedDate);
+            invalidStudentException.AddData(
+                key: nameof(Student.UpdatedDate),
+                values: $"Date is not the same as {nameof(Student.CreatedDate)}.");
 
             var expectedStudentValidationException =
-                new StudentValidationException(invalidStudentInputException);
+                new StudentValidationException(invalidStudentException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
 
             // when
             ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(inputStudent);
+                this.studentService.RegisterStudentAsync(invalidStudent);
 
             // then
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 registerStudentTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedStudentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentAsync(It.IsAny<Student>()),
@@ -435,27 +230,28 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             int minutes)
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent(dateTime);
-            Student inputStudent = randomStudent;
-            inputStudent.UpdatedBy = inputStudent.CreatedBy;
-            inputStudent.CreatedDate = dateTime.AddMinutes(minutes);
-            inputStudent.UpdatedDate = inputStudent.CreatedDate;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            Student randomStudent = CreateRandomStudent(randomDate);
+            Student invalidStudent = randomStudent;
+            invalidStudent.CreatedDate = randomDate.AddMinutes(minutes);
+            invalidStudent.UpdatedDate = invalidStudent.CreatedDate;
 
-            var invalidStudentInputException = new InvalidStudentException(
-                parameterName: nameof(Student.CreatedDate),
-                parameterValue: inputStudent.CreatedDate);
+            var invalidStudentException = new InvalidStudentException();
+
+            invalidStudentException.AddData(
+                key: nameof(Student.CreatedDate),
+                values: $"Date is not recent.");
 
             var expectedStudentValidationException =
-                new StudentValidationException(invalidStudentInputException);
+                new StudentValidationException(invalidStudentException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
+                    .Returns(randomDate);
 
             // when
             ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(inputStudent);
+                this.studentService.RegisterStudentAsync(invalidStudent);
 
             // then
             await Assert.ThrowsAsync<StudentValidationException>(() =>
@@ -466,8 +262,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedStudentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentAsync(It.IsAny<Student>()),

@@ -15,6 +15,7 @@ using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Services.Foundations.Students;
 using Tynamix.ObjectFiller;
+using Xeptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
@@ -54,6 +55,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 randomMoreThanMinuteFromNow ,
                 randomMoreThanMinuteBeforeNow
             };
+        }
+
+        private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)

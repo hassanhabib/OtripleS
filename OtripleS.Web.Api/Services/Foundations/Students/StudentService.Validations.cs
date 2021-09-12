@@ -12,6 +12,104 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 {
     public partial class StudentService
     {
+        private void ValidateStudentOnRegister(Student student)
+        {
+            ValidateStudent(student);
+
+            Validate(
+                (Rule: IsInvalidX(student.Id), Parameter: nameof(Student.Id)),
+                (Rule: IsInvalidX(student.UserId), Parameter: nameof(Student.UserId)),
+                (Rule: IsInvalidX(student.IdentityNumber), Parameter: nameof(Student.IdentityNumber)),
+                (Rule: IsInvalidX(student.FirstName), Parameter: nameof(Student.FirstName)),
+                (Rule: IsInvalidX(student.BirthDate), Parameter: nameof(Student.BirthDate)),
+                (Rule: IsInvalidX(student.CreatedBy), Parameter: nameof(Student.CreatedBy)),
+                (Rule: IsInvalidX(student.UpdatedBy), Parameter: nameof(Student.UpdatedBy)),
+                (Rule: IsInvalidX(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
+                (Rule: IsInvalidX(student.UpdatedDate), Parameter: nameof(Student.UpdatedDate)),
+                (Rule: IsNotRecent(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
+                
+                (Rule: IsNotSame(
+                    firstId: student.UpdatedBy,
+                    secondId: student.CreatedBy,
+                    secondIdName: nameof(Student.CreatedBy)),
+                Parameter: nameof(Student.UpdatedBy)),
+
+                (Rule: IsNotSame(
+                    firstDate: student.UpdatedDate,
+                    secondDate: student.CreatedDate,
+                    secondDateName: nameof(Student.CreatedDate)),
+                Parameter: nameof(Student.UpdatedDate))
+            );
+        }
+
+        private static void ValidateStudentIsNotNull(Student student)
+        {
+            if (student is null)
+            {
+                throw new NullStudentException();
+            }
+        }
+
+        private static dynamic IsInvalidX(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id cannot be empty."
+        };
+
+        private static dynamic IsInvalidX(string text) => new
+        {
+            Condition = String.IsNullOrWhiteSpace(text),
+            Message = "Text cannot be null, empty or whitespace."
+        };
+
+        private static dynamic IsInvalidX(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date cannot be default."
+        };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not the same as {secondIdName}."
+            };
+
+        private static dynamic IsNotSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not the same as {secondDateName}."
+            };
+
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
+        {
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent."
+        };
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidStudentException = new InvalidStudentException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidStudentException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidStudentException.ThrowIfContainsErrors();
+        }
+
+
         private static void ValidateStudentId(Guid studentId)
         {
             if (studentId == Guid.Empty)
