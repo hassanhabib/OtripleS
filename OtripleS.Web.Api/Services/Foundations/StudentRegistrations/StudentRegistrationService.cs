@@ -48,7 +48,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentRegistrations
         });
 
         public ValueTask<StudentRegistration> RetrieveStudentRegistrationByIdAsync(
-            Guid studentId, 
+            Guid studentId,
             Guid registrationId) =>
         TryCatch(async () =>
         {

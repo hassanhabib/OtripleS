@@ -10,7 +10,8 @@ namespace OtripleS.Web.Api.Models.StudentRegistrations.Exceptions
     {
         public NotFoundStudentRegistrationException(Guid studentId, Guid registrationId)
             : base($"Couldn't find StudentRegistration with Student Id: {studentId} " +
-                  $" and Registration Id: {registrationId}.") { }
+                  $" and Registration Id: {registrationId}.")
+        { }
     }
 }
 

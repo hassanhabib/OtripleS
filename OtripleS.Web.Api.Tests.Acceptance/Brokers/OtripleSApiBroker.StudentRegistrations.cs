@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
             StudentRegistration studentRegistration)
         {
             return await this.apiFactoryClient.PostContentAsync(
-                StudentRegistrationsRelativeUrl, 
+                StudentRegistrationsRelativeUrl,
                 studentRegistration);
         }
 
@@ -42,7 +42,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
             StudentRegistration studentRegistration)
         {
             return await this.apiFactoryClient.PutContentAsync(
-                StudentRegistrationsRelativeUrl, 
+                StudentRegistrationsRelativeUrl,
                 studentRegistration);
         }
 

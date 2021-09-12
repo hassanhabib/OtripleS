@@ -53,8 +53,8 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentRegistrations
                     studentRegistration.RegistrationId);
 
             await this.otripleSApiBroker.DeleteRegistrationByIdAsync(studentRegistration.RegistrationId);
-            
-            Student deletedStudent = 
+
+            Student deletedStudent =
                 await this.otripleSApiBroker.DeleteStudentByIdAsync(studentRegistration.StudentId);
 
             await this.otripleSApiBroker.DeleteUserByIdAsync(deletedStudent.CreatedBy);
@@ -115,7 +115,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentRegistrations
         }
 
         private static Filler<StudentRegistration> CreateRandomStudentRegistrationFiller(
-            Guid studentId, 
+            Guid studentId,
             Guid registrationId)
         {
             var now = DateTimeOffset.UtcNow;

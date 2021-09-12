@@ -21,9 +21,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
         {
             // given
             Guid randomStudentId = Guid.NewGuid();
-            Guid inputStudentId = randomStudentId; 
+            Guid inputStudentId = randomStudentId;
             Guid randomRegistrationId = Guid.NewGuid();
-            Guid inputRegistrationId = randomRegistrationId;            
+            Guid inputRegistrationId = randomRegistrationId;
             SqlException sqlException = GetSqlException();
 
             var expectedStudentRegistrationDependencyException =
@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentRegistrationDependencyException))),
                     Times.Once);
-            
+
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -80,7 +80,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                     inputRegistrationId);
 
             // then
-            await Assert.ThrowsAsync<StudentRegistrationDependencyException>(() => 
+            await Assert.ThrowsAsync<StudentRegistrationDependencyException>(() =>
                 deleteStudentRegistrationTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
@@ -129,7 +129,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                     inputRegistrationId);
 
             // then
-            await Assert.ThrowsAsync<StudentRegistrationDependencyException>(() => 
+            await Assert.ThrowsAsync<StudentRegistrationDependencyException>(() =>
                 deleteStudentRegistrationTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
@@ -194,7 +194,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationException))),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls(); 
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
