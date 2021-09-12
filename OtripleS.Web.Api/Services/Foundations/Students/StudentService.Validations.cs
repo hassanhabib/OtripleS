@@ -12,6 +12,46 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 {
     public partial class StudentService
     {
+        private void ValidateStudentOnRegister(Student student)
+        {
+            ValidateStudent(student);
+
+            Validate(
+                (Rule: IsInvalidX(student.Id), Parameter: nameof(Student.Id)));
+        }
+
+        private static void ValidateStudentIsNotNull(Student student)
+        {
+            if (student is null)
+            {
+                throw new NullStudentException();
+            }
+        }
+
+        private static dynamic IsInvalidX(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id cannot be empty."
+        };
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidStudentException = new InvalidStudentException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidStudentException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidStudentException.ThrowIfContainsErrors();
+        }
+
+
         private static void ValidateStudentId(Guid studentId)
         {
             if (studentId == Guid.Empty)

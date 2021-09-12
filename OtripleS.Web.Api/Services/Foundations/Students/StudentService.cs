@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
         public ValueTask<Student> RegisterStudentAsync(Student student) =>
         TryCatch(async () =>
         {
-            ValidateStudentOnCreate(student);
+            ValidateStudentOnRegister(student);
 
             return await this.storageBroker.InsertStudentAsync(student);
         });

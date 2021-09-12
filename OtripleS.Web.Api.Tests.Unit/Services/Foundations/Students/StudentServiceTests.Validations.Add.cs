@@ -52,7 +52,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         {
             // given
             var invalidStuent = new Student();
-
             var invalidStudentException = new InvalidStudentException();
 
             invalidStudentException.AddData(
