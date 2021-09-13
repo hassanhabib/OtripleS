@@ -74,7 +74,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             string secondIdName) => new
             {
                 Condition = firstId != secondId,
-                Message = $"Id is not the same as {secondIdName}."
+                Message = $"Id is not the same as {secondIdName}"
             };
 
         private static dynamic IsNotSame(
@@ -83,13 +83,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             string secondDateName) => new
             {
                 Condition = firstDate != secondDate,
-                Message = $"Date is not the same as {secondDateName}."
+                Message = $"Date is not the same as {secondDateName}"
             };
 
         private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
         {
             Condition = IsDateNotRecent(dateTimeOffset),
-            Message = "Date is not recent."
+            Message = "Date is not recent"
         };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
@@ -108,7 +108,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 
             invalidStudentException.ThrowIfContainsErrors();
         }
-
 
         private static void ValidateStudentId(Guid studentId)
         {
