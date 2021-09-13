@@ -53,19 +53,19 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
         private static dynamic IsInvalidX(Guid id) => new
         {
             Condition = id == Guid.Empty,
-            Message = "Id cannot be empty."
+            Message = "Id is required"
         };
 
         private static dynamic IsInvalidX(string text) => new
         {
             Condition = String.IsNullOrWhiteSpace(text),
-            Message = "Text cannot be null, empty or whitespace."
+            Message = "Text is required"
         };
 
         private static dynamic IsInvalidX(DateTimeOffset date) => new
         {
             Condition = date == default,
-            Message = "Date cannot be default."
+            Message = "Date is required"
         };
 
         private static dynamic IsNotSame(
