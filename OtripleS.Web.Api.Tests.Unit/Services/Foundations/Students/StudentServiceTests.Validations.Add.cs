@@ -142,7 +142,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             invalidStudentInputException.AddData(
                 key: nameof(Student.UpdatedBy),
-                values: $"Id is not the same as {nameof(Student.CreatedBy)}.");
+                values: $"Id is not the same as {nameof(Student.CreatedBy)}");
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentInputException);
@@ -189,7 +189,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             invalidStudentException.AddData(
                 key: nameof(Student.UpdatedDate),
-                values: $"Date is not the same as {nameof(Student.CreatedDate)}.");
+                values: $"Date is not the same as {nameof(Student.CreatedDate)}");
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
@@ -240,7 +240,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             invalidStudentException.AddData(
                 key: nameof(Student.CreatedDate),
-                values: $"Date is not recent.");
+                values: $"Date is not recent");
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
