@@ -20,6 +20,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
                 (Rule: IsInvalidX(attendance.Id), Parameter: nameof(Attendance.Id)),
                 (Rule: IsInvalidX(attendance.StudentSemesterCourseId), Parameter: nameof(Attendance.StudentSemesterCourseId)),
                 (Rule: IsInvalidX(attendance.AttendanceDate), Parameter: nameof(Attendance.AttendanceDate)),
+                (Rule: IsNotRecent(attendance.AttendanceDate), Parameter: nameof(Attendance.AttendanceDate)),
                 (Rule: IsInvalidX(attendance.Notes), Parameter: nameof(Attendance.Notes)),
                 (Rule: IsInvalidX(attendance.CreatedBy), Parameter: nameof(Attendance.CreatedBy)),
                 (Rule: IsInvalidX(attendance.UpdatedBy), Parameter: nameof(Attendance.UpdatedBy)),
@@ -27,7 +28,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
                 (Rule: IsInvalidX(attendance.UpdatedDate), Parameter: nameof(Attendance.UpdatedDate))
             );
 
-            ValidateAttendanceDatesOnAdd(attendance);
             ValidateAttendanceAuditFields(attendance);
         }
 
@@ -56,6 +56,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
         {
             Condition = date == default,
             Message = "Date is required"
+        };
+
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
+        {
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent"
         };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
