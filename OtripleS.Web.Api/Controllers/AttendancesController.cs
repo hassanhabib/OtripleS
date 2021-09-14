@@ -23,6 +23,35 @@ namespace OtripleS.Web.Api.Controllers
         public AttendancesController(IAttendanceService attendanceService) =>
             this.attendanceService = attendanceService;
 
+        [HttpPost]
+        public async ValueTask<ActionResult<Attendance>> PostAttendanceAsync(Attendance attendance)
+        {
+            try
+            {
+                Attendance registeredAttendance =
+                    await this.attendanceService.CreateAttendanceAsync(attendance);
+
+                return Created(registeredAttendance);
+            }
+            catch (AttendanceValidationException attendanceValidationException)
+                when (attendanceValidationException.InnerException is AlreadyExistsAttendanceException)
+            {
+                return Conflict(attendanceValidationException.InnerException);
+            }
+            catch (AttendanceValidationException attendanceValidationException)
+            {
+                return BadRequest(attendanceValidationException.InnerException);
+            }
+            catch (AttendanceDependencyException attendanceDependencyException)
+            {
+                return InternalServerError(attendanceDependencyException);
+            }
+            catch (AttendanceServiceException attendanceServiceException)
+            {
+                return InternalServerError(attendanceServiceException);
+            }
+        }
+
         [HttpGet]
         public ActionResult<IQueryable<Attendance>> GetAllAttendances()
         {
@@ -75,40 +104,6 @@ namespace OtripleS.Web.Api.Controllers
                 return Problem(attendanceServiceException.Message);
             }
         }
-
-        [HttpPost]
-        public async ValueTask<ActionResult<Attendance>> PostAttendanceAsync(Attendance attendance)
-        {
-            try
-            {
-                Attendance persistedAttendance =
-                    await this.attendanceService.CreateAttendanceAsync(attendance);
-
-                return Created(persistedAttendance);
-            }
-            catch (AttendanceValidationException attendanceValidationException)
-                when (attendanceValidationException.InnerException is AlreadyExistsAttendanceException)
-            {
-                string innerMessage = GetInnerMessage(attendanceValidationException);
-
-                return Conflict(innerMessage);
-            }
-            catch (AttendanceValidationException attendanceValidationException)
-            {
-                string innerMessage = GetInnerMessage(attendanceValidationException);
-
-                return BadRequest(innerMessage);
-            }
-            catch (AttendanceDependencyException attendanceDependencyException)
-            {
-                return Problem(attendanceDependencyException.Message);
-            }
-            catch (AttendanceServiceException attendanceServiceException)
-            {
-                return Problem(attendanceServiceException.Message);
-            }
-        }
-
 
         [HttpDelete("{attendanceId}")]
         public async ValueTask<ActionResult<Attendance>> DeleteAttendanceAsync(Guid attendanceId)
