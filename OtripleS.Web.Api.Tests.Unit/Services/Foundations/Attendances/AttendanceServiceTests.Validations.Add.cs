@@ -256,6 +256,54 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         }
 
         [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedByIsNotSameToCreatedByAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Attendance randomAttendance = CreateRandomAttendance(dateTime);
+            Attendance invalidAttendance = randomAttendance;
+            invalidAttendance.UpdatedBy = Guid.NewGuid();
+
+            var invalidAttendanceInputException = new InvalidAttendanceException();
+
+            invalidAttendanceInputException.AddData(
+                key: nameof(Attendance.UpdatedBy),
+                values: $"Id is not the same as {nameof(Attendance.CreatedBy)}");
+
+            var expectedAttendanceValidationException =
+                new AttendanceValidationException(invalidAttendanceInputException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            // when
+            ValueTask<Attendance> createAttendanceTask =
+                this.attendanceService.CreateAttendanceAsync(invalidAttendance);
+
+            // then
+            await Assert.ThrowsAsync<AttendanceValidationException>(() =>
+                createAttendanceTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedAttendanceValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertAttendanceAsync(It.IsAny<Attendance>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public async void ShouldThrowValidationExceptionOnCreateWhenAttendanceAlreadyExistsAndLogItAsync()
         {
             // given
