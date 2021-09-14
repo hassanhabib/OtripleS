@@ -139,7 +139,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             var invalidAttendanceException = new InvalidAttendanceException();
 
             invalidAttendanceException.AddData(
-                key: nameof(Attendance.CreatedDate),
+                key: nameof(Attendance.AttendanceDate),
                 values: $"Date is not recent");
 
             var expectedAttendanceValidationException =
@@ -187,9 +187,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             inputAttendance.CreatedDate = dateTime.AddMinutes(invallidMinutes);
             inputAttendance.UpdatedDate = inputAttendance.CreatedDate;
 
-            var invalidAttendanceException = new InvalidAttendanceException(
-                parameterName: nameof(Attendance.CreatedDate),
-                parameterValue: inputAttendance.CreatedDate);
+            var invalidAttendanceException = new InvalidAttendanceException();
+
+            invalidAttendanceException.AddData(
+                key: nameof(Attendance.CreatedDate),
+                values: $"Date is not recent");
 
             var expectedAttendanceValidationException =
                 new AttendanceValidationException(invalidAttendanceException);
