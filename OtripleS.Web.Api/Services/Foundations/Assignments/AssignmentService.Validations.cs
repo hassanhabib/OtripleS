@@ -25,6 +25,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
                 (Rule: IsInvalidX(assignment.UpdatedBy), Parameter: nameof(Assignment.UpdatedBy)),
                 (Rule: IsInvalidX(assignment.CreatedDate), Parameter: nameof(Assignment.CreatedDate)),
                 (Rule: IsInvalidX(assignment.UpdatedDate), Parameter: nameof(Assignment.UpdatedDate)),
+                (Rule: IsNotRecent(assignment.CreatedDate), Parameter: nameof(Assignment.CreatedDate)),
 
                 (Rule: IsNotSame(
                     firstId: assignment.UpdatedBy,
@@ -38,8 +39,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
                     secondDateName: nameof(Assignment.CreatedDate)),
                 Parameter: nameof(Assignment.UpdatedDate))
             );
-
-            ValidateAuditFieldsDataOnCreate(assignment);
         }
 
         private static dynamic IsInvalidX(Guid id) => new
@@ -77,6 +76,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
                 Condition = firstDate != secondDate,
                 Message = $"Date is not the same as {secondDateName}"
             };
+
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
+        {
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent"
+        };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
