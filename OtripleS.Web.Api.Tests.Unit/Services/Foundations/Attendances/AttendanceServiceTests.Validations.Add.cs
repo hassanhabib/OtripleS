@@ -165,13 +165,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 broker.InsertAttendanceAsync(It.IsAny<Attendance>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Theory]
@@ -216,11 +211,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 broker.InsertAttendanceAsync(It.IsAny<Attendance>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.AtLeastOnce);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
@@ -262,11 +252,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 broker.InsertAttendanceAsync(It.IsAny<Attendance>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
