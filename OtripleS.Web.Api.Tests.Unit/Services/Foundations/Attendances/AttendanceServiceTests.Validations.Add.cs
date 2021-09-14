@@ -76,6 +76,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 values: "Id is required");
 
             invalidAttendanceException.AddData(
+                key: nameof(Attendance.AttendanceDate),
+                values: "Date is required");
+
+            invalidAttendanceException.AddData(
                 key: nameof(Attendance.Notes),
                 values: "Text is required");
 
@@ -105,10 +109,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             // then
             await Assert.ThrowsAsync<AttendanceValidationException>(() =>
                 createAttendanceTask.AsTask());
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameValidationExceptionAs(

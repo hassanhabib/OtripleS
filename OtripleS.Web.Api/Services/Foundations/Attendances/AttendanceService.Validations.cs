@@ -12,6 +12,25 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
 {
     public partial class AttendanceService
     {
+        private void ValidateAttendanceOnCreate(Attendance attendance)
+        {
+            ValidateAttendanceIsNull(attendance);
+
+            Validate(
+                (Rule: IsInvalidX(attendance.Id), Parameter: nameof(Attendance.Id)),
+                (Rule: IsInvalidX(attendance.StudentSemesterCourseId), Parameter: nameof(Attendance.StudentSemesterCourseId)),
+                (Rule: IsInvalidX(attendance.AttendanceDate), Parameter: nameof(Attendance.AttendanceDate)),
+                (Rule: IsInvalidX(attendance.Notes), Parameter: nameof(Attendance.Notes)),
+                (Rule: IsInvalidX(attendance.CreatedBy), Parameter: nameof(Attendance.CreatedBy)),
+                (Rule: IsInvalidX(attendance.UpdatedBy), Parameter: nameof(Attendance.UpdatedBy)),
+                (Rule: IsInvalidX(attendance.CreatedDate), Parameter: nameof(Attendance.CreatedDate)),
+                (Rule: IsInvalidX(attendance.UpdatedDate), Parameter: nameof(Attendance.UpdatedDate))
+            );
+
+            ValidateAttendanceDatesOnAdd(attendance);
+            ValidateAttendanceAuditFields(attendance);
+        }
+
         private void ValidateAttendanceOnModify(Attendance attendance)
         {
             ValidateAttendanceIsNull(attendance);
@@ -19,6 +38,41 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             ValidateInvalidAuditFields(attendance);
             ValidateDatesAreNotSame(attendance);
             ValidateUpdatedDateIsRecent(attendance);
+        }
+
+        private static dynamic IsInvalidX(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static dynamic IsInvalidX(string text) => new
+        {
+            Condition = String.IsNullOrWhiteSpace(text),
+            Message = "Text is required"
+        };
+
+        private static dynamic IsInvalidX(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required"
+        };
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidAttendanceException = new InvalidAttendanceException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidAttendanceException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidAttendanceException.ThrowIfContainsErrors();
         }
 
         private void ValidateStorageAttendances(IQueryable<Attendance> storageAttendances)
@@ -65,37 +119,29 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             }
         }
 
-        private void ValidateAttendanceOnCreate(Attendance attendance)
-        {
-            ValidateAttendanceIsNull(attendance);
-            ValidateMandatoryFields(attendance);
-            ValidateAttendanceDatesOnAdd(attendance);
-            ValidateAttendanceAuditFields(attendance);
-        }
-
         private void ValidateAttendanceAuditFields(Attendance attendance)
         {
             switch (attendance)
             {
-                case { } when IsInvalid(attendance.CreatedBy):
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.CreatedBy),
-                        parameterValue: attendance.CreatedBy);
+                //case { } when IsInvalid(attendance.CreatedBy):
+                //    throw new InvalidAttendanceException(
+                //        parameterName: nameof(attendance.CreatedBy),
+                //        parameterValue: attendance.CreatedBy);
 
-                case { } when IsInvalid(attendance.UpdatedBy):
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.UpdatedBy),
-                        parameterValue: attendance.UpdatedBy);
+                //case { } when IsInvalid(attendance.UpdatedBy):
+                //    throw new InvalidAttendanceException(
+                //        parameterName: nameof(attendance.UpdatedBy),
+                //        parameterValue: attendance.UpdatedBy);
 
-                case { } when IsInvalid(attendance.CreatedDate):
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.CreatedDate),
-                        parameterValue: attendance.CreatedDate);
+                //case { } when IsInvalid(attendance.CreatedDate):
+                //    throw new InvalidAttendanceException(
+                //        parameterName: nameof(attendance.CreatedDate),
+                //        parameterValue: attendance.CreatedDate);
 
-                case { } when IsInvalid(attendance.UpdatedDate):
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.UpdatedDate),
-                        parameterValue: attendance.UpdatedDate);
+                //case { } when IsInvalid(attendance.UpdatedDate):
+                //    throw new InvalidAttendanceException(
+                //        parameterName: nameof(attendance.UpdatedDate),
+                //        parameterValue: attendance.UpdatedDate);
 
                 case { } when attendance.CreatedDate != attendance.UpdatedDate:
                     throw new InvalidAttendanceException(
