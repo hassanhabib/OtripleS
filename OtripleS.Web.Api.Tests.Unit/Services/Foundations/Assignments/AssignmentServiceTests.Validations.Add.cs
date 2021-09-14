@@ -126,30 +126,41 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             Assignment randomAssignment = CreateRandomAssignment(dateTime);
-            Assignment inputAssignment = randomAssignment;
-            inputAssignment.UpdatedBy = Guid.NewGuid();
+            Assignment invalidAssignment = randomAssignment;
+            invalidAssignment.UpdatedBy = Guid.NewGuid();
 
-            var invalidAssignmentInputException = new InvalidAssignmentException(
-                parameterName: nameof(Assignment.UpdatedBy),
-                parameterValue: inputAssignment.UpdatedBy);
+            var invalidAssignmentInputException = new InvalidAssignmentException();
+
+            invalidAssignmentInputException.AddData(
+                key: nameof(Assignment.UpdatedBy),
+                values: $"Id is not the same as {nameof(Assignment.CreatedBy)}");
 
             var expectedAssignmentValidationException =
                 new AssignmentValidationException(invalidAssignmentInputException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
             // when
             ValueTask<Assignment> createAssignmentTask =
-                this.assignmentService.CreateAssignmentAsync(inputAssignment);
+                this.assignmentService.CreateAssignmentAsync(invalidAssignment);
 
             // then
             await Assert.ThrowsAsync<AssignmentValidationException>(() =>
                 createAssignmentTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Once);
 
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedAssignmentValidationException))),
+                        Times.Once);
+
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
+                broker.InsertAssignmentAsync(It.IsAny<Assignment>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
