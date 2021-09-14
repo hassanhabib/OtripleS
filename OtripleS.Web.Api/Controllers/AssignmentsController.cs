@@ -81,31 +81,27 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Assignment persistedAssignment =
+                Assignment registeredAssignment =
                     await this.assignmentService.CreateAssignmentAsync(assignment);
 
-                return Created(persistedAssignment);
+                return Created(registeredAssignment);
             }
             catch (AssignmentValidationException assignmentValidationException)
                 when (assignmentValidationException.InnerException is AlreadyExistsAssignmentException)
             {
-                string innerMessage = GetInnerMessage(assignmentValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(assignmentValidationException.InnerException);
             }
             catch (AssignmentValidationException assignmentValidationException)
             {
-                string innerMessage = GetInnerMessage(assignmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(assignmentValidationException.InnerException);
             }
             catch (AssignmentDependencyException assignmentDependencyException)
             {
-                return Problem(assignmentDependencyException.Message);
+                return InternalServerError(assignmentDependencyException);
             }
             catch (AssignmentServiceException assignmentServiceException)
             {
-                return Problem(assignmentServiceException.Message);
+                return InternalServerError(assignmentServiceException);
             }
         }
 
