@@ -150,10 +150,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             await Assert.ThrowsAsync<AssignmentValidationException>(() =>
                 createAssignmentTask.AsTask());
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameValidationExceptionAs(
                     expectedAssignmentValidationException))),

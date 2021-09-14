@@ -24,7 +24,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
                 (Rule: IsInvalidX(assignment.CreatedBy), Parameter: nameof(Assignment.CreatedBy)),
                 (Rule: IsInvalidX(assignment.UpdatedBy), Parameter: nameof(Assignment.UpdatedBy)),
                 (Rule: IsInvalidX(assignment.CreatedDate), Parameter: nameof(Assignment.CreatedDate)),
-                (Rule: IsInvalidX(assignment.UpdatedDate), Parameter: nameof(Assignment.UpdatedDate))
+                (Rule: IsInvalidX(assignment.UpdatedDate), Parameter: nameof(Assignment.UpdatedDate)),
+
+                (Rule: IsNotSame(
+                    firstId: assignment.UpdatedBy,
+                    secondId: assignment.CreatedBy,
+                    secondIdName: nameof(Assignment.CreatedBy)),
+                Parameter: nameof(Assignment.UpdatedBy))
             );
 
             ValidateAuditFieldsDataOnCreate(assignment);
@@ -47,6 +53,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
             Condition = date == default,
             Message = "Date is required"
         };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not the same as {secondIdName}"
+            };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
