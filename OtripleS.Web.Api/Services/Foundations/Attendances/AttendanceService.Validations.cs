@@ -123,26 +123,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
         {
             switch (attendance)
             {
-                //case { } when IsInvalid(attendance.CreatedBy):
-                //    throw new InvalidAttendanceException(
-                //        parameterName: nameof(attendance.CreatedBy),
-                //        parameterValue: attendance.CreatedBy);
-
-                //case { } when IsInvalid(attendance.UpdatedBy):
-                //    throw new InvalidAttendanceException(
-                //        parameterName: nameof(attendance.UpdatedBy),
-                //        parameterValue: attendance.UpdatedBy);
-
-                //case { } when IsInvalid(attendance.CreatedDate):
-                //    throw new InvalidAttendanceException(
-                //        parameterName: nameof(attendance.CreatedDate),
-                //        parameterValue: attendance.CreatedDate);
-
-                //case { } when IsInvalid(attendance.UpdatedDate):
-                //    throw new InvalidAttendanceException(
-                //        parameterName: nameof(attendance.UpdatedDate),
-                //        parameterValue: attendance.UpdatedDate);
-
                 case { } when attendance.CreatedDate != attendance.UpdatedDate:
                     throw new InvalidAttendanceException(
                         parameterName: nameof(attendance.UpdatedDate),

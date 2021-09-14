@@ -130,23 +130,25 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             int invallidMinutes)
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Attendance randomAttendance = CreateRandomAttendance(dateTime: dateTime);
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Attendance randomAttendance = CreateRandomAttendance(dateTime: randomDateTime);
             Attendance invalidAttendance = randomAttendance;
             invalidAttendance.UpdatedBy = invalidAttendance.CreatedBy;
             invalidAttendance.UpdatedDate = invalidAttendance.CreatedDate;
-            invalidAttendance.AttendanceDate = dateTime.AddMinutes(invallidMinutes);
+            invalidAttendance.AttendanceDate = randomDateTime.AddMinutes(invallidMinutes);
 
-            var invalidAttendanceException = new InvalidAttendanceException(
-               parameterName: nameof(Attendance.AttendanceDate),
-               parameterValue: invalidAttendance.AttendanceDate);
+            var invalidAttendanceException = new InvalidAttendanceException();
+
+            invalidAttendanceException.AddData(
+                key: nameof(Attendance.CreatedDate),
+                values: $"Date is not recent");
 
             var expectedAttendanceValidationException =
                 new AttendanceValidationException(invalidAttendanceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
+                    .Returns(randomDateTime);
 
             // when
             ValueTask<Attendance> createAttendanceTask =
