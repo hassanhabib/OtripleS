@@ -32,7 +32,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
                     firstDate: attendance.UpdatedDate,
                     secondDate: attendance.CreatedDate,
                     secondDateName: nameof(Attendance.CreatedDate)),
-                Parameter: nameof(Attendance.UpdatedDate))
+                Parameter: nameof(Attendance.UpdatedDate)),
+
+                (Rule: IsNotSame(
+                    firstId: attendance.UpdatedBy,
+                    secondId: attendance.CreatedBy,
+                    secondIdName: nameof(Attendance.CreatedBy)),
+                Parameter: nameof(Attendance.UpdatedBy))
             );
         }
 
@@ -76,6 +82,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             {
                 Condition = firstDate != secondDate,
                 Message = $"Date is not the same as {secondDateName}"
+            };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not the same as {secondIdName}"
             };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)

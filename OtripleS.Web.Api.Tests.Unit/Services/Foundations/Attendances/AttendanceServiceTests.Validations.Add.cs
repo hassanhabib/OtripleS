@@ -285,10 +285,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             await Assert.ThrowsAsync<AttendanceValidationException>(() =>
                 createAttendanceTask.AsTask());
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameValidationExceptionAs(
                     expectedAttendanceValidationException))),
@@ -298,7 +294,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 broker.InsertAttendanceAsync(It.IsAny<Attendance>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
