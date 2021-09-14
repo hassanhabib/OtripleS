@@ -15,10 +15,53 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
         private void ValidateAssignmentOnCreate(Assignment assignment)
         {
             ValidateAssignmentIsNull(assignment);
-            ValidateAssignmentIdIsNull(assignment.Id);
-            ValidateAssignmentFields(assignment);
-            ValidateInvalidAuditFields(assignment);
+
+            Validate(
+                (Rule: IsInvalidX(assignment.Id), Parameter: nameof(Assignment.Id)),
+                (Rule: IsInvalidX(assignment.Label), Parameter: nameof(Assignment.Label)),
+                (Rule: IsInvalidX(assignment.Content), Parameter: nameof(Assignment.Content)),
+                (Rule: IsInvalidX(assignment.Deadline), Parameter: nameof(Assignment.Deadline)),
+                (Rule: IsInvalidX(assignment.CreatedBy), Parameter: nameof(Assignment.CreatedBy)),
+                (Rule: IsInvalidX(assignment.UpdatedBy), Parameter: nameof(Assignment.UpdatedBy)),
+                (Rule: IsInvalidX(assignment.CreatedDate), Parameter: nameof(Assignment.CreatedDate)),
+                (Rule: IsInvalidX(assignment.UpdatedDate), Parameter: nameof(Assignment.UpdatedDate))
+            );
             ValidateAuditFieldsDataOnCreate(assignment);
+        }
+
+        private static dynamic IsInvalidX(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static dynamic IsInvalidX(string text) => new
+        {
+            Condition = String.IsNullOrWhiteSpace(text),
+            Message = "Text is required"
+        };
+
+        private static dynamic IsInvalidX(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required"
+        };
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidAssignmentException = new InvalidAssignmentException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidAssignmentException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidAssignmentException.ThrowIfContainsErrors();
         }
 
         private void ValidateAssignmentOnModify(Assignment assignment)
