@@ -135,7 +135,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             invalidAttendance.UpdatedBy = invalidAttendance.CreatedBy;
             invalidAttendance.UpdatedDate = invalidAttendance.CreatedDate;
             invalidAttendance.AttendanceDate = randomDateTime.AddMinutes(invallidMinutes);
-
             var invalidAttendanceException = new InvalidAttendanceException();
 
             invalidAttendanceException.AddData(
@@ -181,7 +180,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             inputAttendance.UpdatedBy = inputAttendance.CreatedBy;
             inputAttendance.CreatedDate = dateTime.AddMinutes(invallidMinutes);
             inputAttendance.UpdatedDate = inputAttendance.CreatedDate;
-
             var invalidAttendanceException = new InvalidAttendanceException();
 
             invalidAttendanceException.AddData(
@@ -224,10 +222,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             Attendance inputAttendance = randomAttendance.DeepClone();
             inputAttendance.UpdatedBy = randomAttendance.CreatedBy;
             inputAttendance.UpdatedDate = GetRandomDateTime();
+            var invalidAttendanceException = new InvalidAttendanceException();
 
-            var invalidAttendanceException = new InvalidAttendanceException(
-                parameterName: nameof(Attendance.UpdatedDate),
-                parameterValue: inputAttendance.UpdatedDate);
+            invalidAttendanceException.AddData(
+                key: nameof(Attendance.UpdatedDate),
+                values: $"Date is not the same as {nameof(Attendance.CreatedDate)}");
 
             var expectedAttendanceValidationException =
                 new AttendanceValidationException(invalidAttendanceException);
