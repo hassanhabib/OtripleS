@@ -122,6 +122,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
                 (Rule: IsInvalidX(assignment.UpdatedBy), Parameter: nameof(Assignment.UpdatedBy)),
                 (Rule: IsInvalidX(assignment.CreatedDate), Parameter: nameof(Assignment.CreatedDate)),
                 (Rule: IsInvalidX(assignment.UpdatedDate), Parameter: nameof(Assignment.UpdatedDate)),
+                (Rule: IsNotRecent(assignment.UpdatedDate), Parameter: nameof(Assignment.UpdatedDate)),
 
                 (Rule: IsSame(
                     firstDate: assignment.UpdatedDate,
