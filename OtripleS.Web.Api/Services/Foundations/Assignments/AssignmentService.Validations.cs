@@ -77,6 +77,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
                 Message = $"Date is not the same as {secondDateName}"
             };
 
+        private static dynamic IsSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate == secondDate,
+                Message = $"Date is the same as {secondDateName}"
+            };
+
         private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
         {
             Condition = IsDateNotRecent(dateTimeOffset),
@@ -112,7 +121,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
                 (Rule: IsInvalidX(assignment.CreatedBy), Parameter: nameof(Assignment.CreatedBy)),
                 (Rule: IsInvalidX(assignment.UpdatedBy), Parameter: nameof(Assignment.UpdatedBy)),
                 (Rule: IsInvalidX(assignment.CreatedDate), Parameter: nameof(Assignment.CreatedDate)),
-                (Rule: IsInvalidX(assignment.UpdatedDate), Parameter: nameof(Assignment.UpdatedDate))
+                (Rule: IsInvalidX(assignment.UpdatedDate), Parameter: nameof(Assignment.UpdatedDate)),
+
+                (Rule: IsSame(
+                    firstDate: assignment.UpdatedDate,
+                    secondDate: assignment.CreatedDate,
+                    secondDateName: nameof(Assignment.CreatedDate)),
+                Parameter: nameof(Assignment.UpdatedDate))
             );
 
             ValidateUpdatedDateIsRecent(assignment);
