@@ -158,13 +158,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             Assignment inputAssignment = randomAssignment;
             inputAssignment.UpdatedBy = inputAssignment.CreatedBy;
             inputAssignment.UpdatedDate = dateTime.AddMinutes(minutes);
+            var invalidAssignmentException = new InvalidAssignmentException();
 
-            var invalidAssignmentInputException = new InvalidAssignmentException(
-                parameterName: nameof(Assignment.UpdatedDate),
-                parameterValue: inputAssignment.UpdatedDate);
+            invalidAssignmentException.AddData(
+                key: nameof(Assignment.CreatedDate),
+                values: $"Date is not recent");
 
             var expectedAssignmentValidationException =
-                new AssignmentValidationException(invalidAssignmentInputException);
+                new AssignmentValidationException(invalidAssignmentException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())

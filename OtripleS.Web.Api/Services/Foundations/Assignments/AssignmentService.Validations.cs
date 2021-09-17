@@ -130,7 +130,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
                 Parameter: nameof(Assignment.UpdatedDate))
             );
 
-            ValidateUpdatedDateIsRecent(assignment);
+            //ValidateUpdatedDateIsRecent(assignment);
         }
 
         private static void ValidateAssignmentIsNull(Assignment assignment)
