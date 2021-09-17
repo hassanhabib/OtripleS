@@ -129,8 +129,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
                     secondDateName: nameof(Assignment.CreatedDate)),
                 Parameter: nameof(Assignment.UpdatedDate))
             );
-
-            //ValidateUpdatedDateIsRecent(assignment);
         }
 
         private static void ValidateAssignmentIsNull(Assignment assignment)
