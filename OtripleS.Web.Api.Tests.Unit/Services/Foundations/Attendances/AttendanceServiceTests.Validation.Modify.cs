@@ -42,19 +42,52 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-        [Fact]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenAttendanceIdIsInvalidAndLogItAsync()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task ShouldThrowValidationExceptionOnModifyIfAttendanceIsInvalidAndLogItAsync(
+            string invalidText)
         {
             //given
-            Guid invalidAttendanceId = Guid.Empty;
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Attendance randomAttendance = CreateRandomAttendance(dateTime);
-            Attendance invalidAttendance = randomAttendance;
-            invalidAttendance.Id = invalidAttendanceId;
+            var invalidAttendance = new Attendance
+            {
+                Notes = invalidText
+            };
 
-            var invalidAttendanceException = new InvalidAttendanceException(
-                parameterName: nameof(Attendance.Id),
-                parameterValue: invalidAttendance.Id);
+            var invalidAttendanceException = new InvalidAttendanceException();
+
+            invalidAttendanceException.AddData(
+                key: nameof(Attendance.Id),
+                values: "Id is required");
+
+            invalidAttendanceException.AddData(
+                key: nameof(Attendance.StudentSemesterCourseId),
+                values: "Id is required");
+
+            invalidAttendanceException.AddData(
+                key: nameof(Attendance.AttendanceDate),
+                values: "Date is required");
+
+            invalidAttendanceException.AddData(
+                key: nameof(Attendance.Notes),
+                values: "Text is required");
+
+            invalidAttendanceException.AddData(
+                key: nameof(Attendance.CreatedBy),
+                values: "Id is required");
+
+            invalidAttendanceException.AddData(
+                key: nameof(Attendance.UpdatedBy),
+                values: "Id is required");
+
+            invalidAttendanceException.AddData(
+                key: nameof(Attendance.CreatedDate),
+                values: "Date is required");
+
+            invalidAttendanceException.AddData(
+                key: nameof(Attendance.UpdatedDate),
+                values: "Date is required");
 
             var expectedAttendanceValidationException =
                 new AttendanceValidationException(invalidAttendanceException);
@@ -71,157 +104,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
                 Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenCreatedByIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Attendance randomAttendance = CreateRandomAttendance(dateTime);
-            Attendance inputAttendance = randomAttendance;
-            inputAttendance.CreatedBy = default;
-
-            var invalidAttendanceException = new InvalidAttendanceException(
-                parameterName: nameof(Attendance.CreatedBy),
-                parameterValue: inputAttendance.CreatedBy);
-
-            var expectedAttendanceValidationException =
-                new AttendanceValidationException(invalidAttendanceException);
-
-            // when
-            ValueTask<Attendance> modifyAttendanceTask =
-                this.attendanceService.ModifyAttendanceAsync(inputAttendance);
-
-            // then
-            await Assert.ThrowsAsync<AttendanceValidationException>(() =>
-                modifyAttendanceTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
-                    Times.Once);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAttendanceByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenCreatedDateIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Attendance randomAttendance = CreateRandomAttendance(dateTime);
-            Attendance inputAttendance = randomAttendance;
-            inputAttendance.CreatedDate = default;
-
-            var invalidAttendanceException = new InvalidAttendanceException(
-                parameterName: nameof(Attendance.CreatedDate),
-                parameterValue: inputAttendance.CreatedDate);
-
-            var expectedAttendanceValidationException =
-                new AttendanceValidationException(invalidAttendanceException);
-
-            // when
-            ValueTask<Attendance> modifyAttendanceTask =
-                this.attendanceService.ModifyAttendanceAsync(inputAttendance);
-
-            // then
-            await Assert.ThrowsAsync<AttendanceValidationException>(() =>
-                modifyAttendanceTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttendanceByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedByIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Attendance randomAttendance = CreateRandomAttendance(dateTime);
-            Attendance inputAttendance = randomAttendance;
-            inputAttendance.UpdatedBy = default;
-
-            var invalidAttendanceException = new InvalidAttendanceException(
-                parameterName: nameof(Attendance.UpdatedBy),
-                parameterValue: inputAttendance.UpdatedBy);
-
-            var expectedAttendanceValidationException =
-                new AttendanceValidationException(invalidAttendanceException);
-
-            // when
-            ValueTask<Attendance> modifyAttendanceTask =
-                this.attendanceService.ModifyAttendanceAsync(inputAttendance);
-
-            // then
-            await Assert.ThrowsAsync<AttendanceValidationException>(() =>
-                modifyAttendanceTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttendanceByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Attendance randomAttendance = CreateRandomAttendance(dateTime);
-            Attendance inputAttendance = randomAttendance;
-            inputAttendance.UpdatedDate = default;
-
-            var invalidAttendanceException = new InvalidAttendanceException(
-                parameterName: nameof(Attendance.UpdatedDate),
-                parameterValue: inputAttendance.UpdatedDate);
-
-            var expectedAttendanceValidationException =
-                new AttendanceValidationException(invalidAttendanceException);
-
-            // when
-            ValueTask<Attendance> modifyAttendanceTask =
-                this.attendanceService.ModifyAttendanceAsync(inputAttendance);
-
-            // then
-            await Assert.ThrowsAsync<AttendanceValidationException>(() =>
-                modifyAttendanceTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttendanceByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
