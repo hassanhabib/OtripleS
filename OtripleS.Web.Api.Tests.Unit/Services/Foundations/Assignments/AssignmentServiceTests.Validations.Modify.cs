@@ -116,18 +116,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             Assignment randomAssignment = CreateRandomAssignment(dateTime);
-            Assignment inputAssignment = randomAssignment;
+            Assignment invalidAssignment = randomAssignment;
+            var invalidAssignmentException = new InvalidAssignmentException();
 
-            var invalidAssignmentInputException = new InvalidAssignmentException(
-                parameterName: nameof(Assignment.UpdatedDate),
-                parameterValue: inputAssignment.UpdatedDate);
+            invalidAssignmentException.AddData(
+                key: nameof(Assignment.UpdatedDate),
+                values: $"UpdatedDate is the same as {nameof(Assignment.CreatedDate)}");
 
             var expectedAssignmentValidationException =
-                new AssignmentValidationException(invalidAssignmentInputException);
+                new AssignmentValidationException(invalidAssignmentException);
 
             // when
             ValueTask<Assignment> modifyAssignmentTask =
-                this.assignmentService.ModifyAssignmentAsync(inputAssignment);
+                this.assignmentService.ModifyAssignmentAsync(invalidAssignment);
 
             // then
             await Assert.ThrowsAsync<AssignmentValidationException>(() =>

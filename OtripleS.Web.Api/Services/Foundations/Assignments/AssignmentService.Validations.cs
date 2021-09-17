@@ -115,7 +115,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
                 (Rule: IsInvalidX(assignment.UpdatedDate), Parameter: nameof(Assignment.UpdatedDate))
             );
 
-            ValidateDatesAreNotSame(assignment);
             ValidateUpdatedDateIsRecent(assignment);
         }
 
