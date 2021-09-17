@@ -46,7 +46,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenIfAssignmentIsInvalidAndLogItAsync(
+        public async Task ShouldThrowValidationExceptionOnModifyWhenAssignmentIsInvalidAndLogItAsync(
             string invalidText)
         {
             // given
@@ -101,11 +101,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             await Assert.ThrowsAsync<AssignmentValidationException>(() =>
                 modifyAssignmentTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
                 Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
@@ -133,6 +137,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             // then
             await Assert.ThrowsAsync<AssignmentValidationException>(() =>
                 modifyAssignmentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
