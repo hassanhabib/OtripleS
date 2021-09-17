@@ -103,9 +103,18 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
         private void ValidateAssignmentOnModify(Assignment assignment)
         {
             ValidateAssignmentIsNull(assignment);
-            ValidateAssignmentIdIsNull(assignment.Id);
-            ValidateAssignmentFields(assignment);
-            ValidateInvalidAuditFields(assignment);
+
+            Validate(
+                (Rule: IsInvalidX(assignment.Id), Parameter: nameof(Assignment.Id)),
+                (Rule: IsInvalidX(assignment.Label), Parameter: nameof(Assignment.Label)),
+                (Rule: IsInvalidX(assignment.Content), Parameter: nameof(Assignment.Content)),
+                (Rule: IsInvalidX(assignment.Deadline), Parameter: nameof(Assignment.Deadline)),
+                (Rule: IsInvalidX(assignment.CreatedBy), Parameter: nameof(Assignment.CreatedBy)),
+                (Rule: IsInvalidX(assignment.UpdatedBy), Parameter: nameof(Assignment.UpdatedBy)),
+                (Rule: IsInvalidX(assignment.CreatedDate), Parameter: nameof(Assignment.CreatedDate)),
+                (Rule: IsInvalidX(assignment.UpdatedDate), Parameter: nameof(Assignment.UpdatedDate))
+            );
+
             ValidateDatesAreNotSame(assignment);
             ValidateUpdatedDateIsRecent(assignment);
         }
