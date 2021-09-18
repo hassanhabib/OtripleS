@@ -54,13 +54,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
                 (Rule: IsInvalidX(attendance.CreatedBy), Parameter: nameof(Attendance.CreatedBy)),
                 (Rule: IsInvalidX(attendance.UpdatedBy), Parameter: nameof(Attendance.UpdatedBy)),
                 (Rule: IsInvalidX(attendance.CreatedDate), Parameter: nameof(Attendance.CreatedDate)),
-                (Rule: IsInvalidX(attendance.UpdatedDate), Parameter: nameof(Attendance.UpdatedDate)),
-                (Rule: IsNotRecent(attendance.CreatedDate), Parameter: nameof(Attendance.CreatedDate))
+                (Rule: IsInvalidX(attendance.UpdatedDate), Parameter: nameof(Attendance.UpdatedDate))
             );
 
-            //ValidateAttendanceId(attendance.Id);
-            //ValidateInvalidAuditFields(attendance);
-            ValidateDatesAreNotSame(attendance);
             ValidateUpdatedDateIsRecent(attendance);
         }
 

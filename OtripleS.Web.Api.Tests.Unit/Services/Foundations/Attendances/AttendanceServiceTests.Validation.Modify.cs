@@ -124,10 +124,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             DateTimeOffset dateTime = GetRandomDateTime();
             Attendance randomAttendance = CreateRandomAttendance(dateTime);
             Attendance inputAttendance = randomAttendance;
+            var invalidAttendanceException = new InvalidAttendanceException();
 
-            var invalidAttendanceException = new InvalidAttendanceException(
-                parameterName: nameof(Attendance.UpdatedDate),
-                parameterValue: inputAttendance.UpdatedDate);
+            invalidAttendanceException.AddData(
+                key: nameof(Attendance.UpdatedDate),
+                values: $"UpdatedDate is the same as {nameof(Attendance.CreatedDate)}");
 
             var expectedAttendanceValidationException =
                 new AttendanceValidationException(invalidAttendanceException);
@@ -147,6 +148,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAttendanceByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
