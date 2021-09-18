@@ -165,10 +165,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             Attendance inputAttendance = randomAttendance;
             inputAttendance.UpdatedBy = inputAttendance.CreatedBy;
             inputAttendance.UpdatedDate = dateTime.AddMinutes(minutes);
+            var invalidAttendanceException = new InvalidAttendanceException();
 
-            var invalidAttendanceException = new InvalidAttendanceException(
-                parameterName: nameof(Attendance.UpdatedDate),
-                parameterValue: inputAttendance.UpdatedDate);
+            invalidAttendanceException.AddData(
+                key: nameof(Attendance.UpdatedDate),
+                values: $"Date is not recent");
 
             var expectedAttendanceValidationException =
                 new AttendanceValidationException(invalidAttendanceException);
