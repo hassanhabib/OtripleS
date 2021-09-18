@@ -149,6 +149,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 broker.SelectAttendanceByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
