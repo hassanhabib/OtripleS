@@ -3,16 +3,19 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Assignments.Exceptions
 {
-    public class InvalidAssignmentException : Exception
+    public class InvalidAssignmentException : Xeption
     {
         public InvalidAssignmentException(string parameterName, object parameterValue)
             : base($"Invalid Assignment, " +
                   $"ParameterName: {parameterName}, " +
                   $"ParameterValue: {parameterValue}.")
         { }
+
+        public InvalidAssignmentException()
+            : base("Invalid assignment. Please fix the errors and try again.") { }
     }
 }
