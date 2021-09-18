@@ -45,8 +45,21 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
         private void ValidateAttendanceOnModify(Attendance attendance)
         {
             ValidateAttendanceIsNull(attendance);
-            ValidateAttendanceId(attendance.Id);
-            ValidateInvalidAuditFields(attendance);
+
+            Validate(
+                (Rule: IsInvalidX(attendance.Id), Parameter: nameof(Attendance.Id)),
+                (Rule: IsInvalidX(attendance.StudentSemesterCourseId), Parameter: nameof(Attendance.StudentSemesterCourseId)),
+                (Rule: IsInvalidX(attendance.AttendanceDate), Parameter: nameof(Attendance.AttendanceDate)),
+                (Rule: IsInvalidX(attendance.Notes), Parameter: nameof(Attendance.Notes)),
+                (Rule: IsInvalidX(attendance.CreatedBy), Parameter: nameof(Attendance.CreatedBy)),
+                (Rule: IsInvalidX(attendance.UpdatedBy), Parameter: nameof(Attendance.UpdatedBy)),
+                (Rule: IsInvalidX(attendance.CreatedDate), Parameter: nameof(Attendance.CreatedDate)),
+                (Rule: IsInvalidX(attendance.UpdatedDate), Parameter: nameof(Attendance.UpdatedDate)),
+                (Rule: IsNotRecent(attendance.CreatedDate), Parameter: nameof(Attendance.CreatedDate))
+            );
+
+            //ValidateAttendanceId(attendance.Id);
+            //ValidateInvalidAuditFields(attendance);
             ValidateDatesAreNotSame(attendance);
             ValidateUpdatedDateIsRecent(attendance);
         }
