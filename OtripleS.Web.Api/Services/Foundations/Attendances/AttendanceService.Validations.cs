@@ -55,6 +55,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
                 (Rule: IsInvalidX(attendance.UpdatedBy), Parameter: nameof(Attendance.UpdatedBy)),
                 (Rule: IsInvalidX(attendance.CreatedDate), Parameter: nameof(Attendance.CreatedDate)),
                 (Rule: IsInvalidX(attendance.UpdatedDate), Parameter: nameof(Attendance.UpdatedDate)),
+                (Rule: IsNotRecent(attendance.UpdatedDate), Parameter: nameof(Attendance.UpdatedDate)),
 
                 (Rule: IsSame(
                     firstDate: attendance.UpdatedDate,
@@ -62,8 +63,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
                     secondDateName: nameof(Attendance.CreatedDate)),
                 Parameter: nameof(Attendance.UpdatedDate))
             );
-
-            ValidateUpdatedDateIsRecent(attendance);
         }
 
         private static dynamic IsInvalidX(Guid id) => new
