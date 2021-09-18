@@ -159,59 +159,11 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             }
         }
 
-        private void ValidateUpdatedDateIsRecent(Attendance attendance)
-        {
-            if (IsDateNotRecent(attendance.UpdatedDate))
-            {
-                throw new InvalidAttendanceException(
-                    parameterName: nameof(attendance.UpdatedDate),
-                    parameterValue: attendance.UpdatedDate);
-            }
-        }
-
         private static void ValidateStorageAttendance(Attendance storageAttendance, Guid attendanceId)
         {
             if (storageAttendance is null)
             {
                 throw new NotFoundAttendanceException(attendanceId);
-            }
-        }
-
-        private void ValidateAttendanceAuditFields(Attendance attendance)
-        {
-            switch (attendance)
-            {
-                case { } when attendance.CreatedDate != attendance.UpdatedDate:
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.UpdatedDate),
-                        parameterValue: attendance.UpdatedDate);
-            }
-        }
-
-        private void ValidateAttendanceDatesOnAdd(Attendance attendance)
-        {
-            switch (attendance)
-            {
-                case { } when IsDateNotRecent(attendance.AttendanceDate):
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.AttendanceDate),
-                        parameterValue: attendance.AttendanceDate);
-            }
-        }
-
-        private static void ValidateMandatoryFields(Attendance attendance)
-        {
-            switch (attendance)
-            {
-                case { } when IsInvalid(attendance.Id):
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.Id),
-                        parameterValue: attendance.Id);
-
-                case { } when IsInvalid(attendance.StudentSemesterCourseId):
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.StudentSemesterCourseId),
-                        parameterValue: attendance.StudentSemesterCourseId);
             }
         }
 
@@ -236,41 +188,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             }
         }
 
-        private static void ValidateDatesAreNotSame(Attendance attendance)
-        {
-            if (attendance.CreatedDate == attendance.UpdatedDate)
-            {
-                throw new InvalidAttendanceException(
-                    parameterName: nameof(Attendance.UpdatedDate),
-                    parameterValue: attendance.UpdatedDate);
-            }
-        }
-
-        private static void ValidateInvalidAuditFields(Attendance attendance)
-        {
-            switch (attendance)
-            {
-                case { } when IsInvalid(attendance.CreatedBy):
-                    throw new InvalidAttendanceException(
-                    parameterName: nameof(attendance.CreatedBy),
-                    parameterValue: attendance.CreatedBy);
-
-                case { } when IsInvalid(attendance.CreatedDate):
-                    throw new InvalidAttendanceException(
-                    parameterName: nameof(Attendance.CreatedDate),
-                    parameterValue: attendance.CreatedDate);
-
-                case { } when IsInvalid(attendance.UpdatedBy):
-                    throw new InvalidAttendanceException(
-                    parameterName: nameof(Attendance.UpdatedBy),
-                    parameterValue: attendance.UpdatedBy);
-
-                case { } when IsInvalid(attendance.UpdatedDate):
-                    throw new InvalidAttendanceException(
-                    parameterName: nameof(Attendance.UpdatedDate),
-                    parameterValue: attendance.UpdatedDate);
-            }
-        }
         private static bool IsInvalid(Guid inputId) => inputId == default;
         private static bool IsInvalid(DateTimeOffset inputDateTimeOffset) => inputDateTimeOffset == default;
 
