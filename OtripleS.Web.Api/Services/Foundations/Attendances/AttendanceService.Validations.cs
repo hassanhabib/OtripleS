@@ -54,7 +54,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
                 (Rule: IsInvalidX(attendance.CreatedBy), Parameter: nameof(Attendance.CreatedBy)),
                 (Rule: IsInvalidX(attendance.UpdatedBy), Parameter: nameof(Attendance.UpdatedBy)),
                 (Rule: IsInvalidX(attendance.CreatedDate), Parameter: nameof(Attendance.CreatedDate)),
-                (Rule: IsInvalidX(attendance.UpdatedDate), Parameter: nameof(Attendance.UpdatedDate))
+                (Rule: IsInvalidX(attendance.UpdatedDate), Parameter: nameof(Attendance.UpdatedDate)),
+
+                (Rule: IsSame(
+                    firstDate: attendance.UpdatedDate,
+                    secondDate: attendance.CreatedDate,
+                    secondDateName: nameof(Attendance.CreatedDate)),
+                Parameter: nameof(Attendance.UpdatedDate))
             );
 
             ValidateUpdatedDateIsRecent(attendance);
@@ -100,6 +106,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             {
                 Condition = firstId != secondId,
                 Message = $"Id is not the same as {secondIdName}"
+            };
+
+        private static dynamic IsSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate == secondDate,
+                Message = $"Date is the same as {secondDateName}"
             };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
