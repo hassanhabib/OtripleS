@@ -77,6 +77,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
                 Message = $"Date is not the same as {secondDateName}"
             };
 
+        private static dynamic IsSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate == secondDate,
+                Message = $"Date is the same as {secondDateName}"
+            };
+
         private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
         {
             Condition = IsDateNotRecent(dateTimeOffset),
@@ -103,11 +112,24 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
         private void ValidateAssignmentOnModify(Assignment assignment)
         {
             ValidateAssignmentIsNull(assignment);
-            ValidateAssignmentIdIsNull(assignment.Id);
-            ValidateAssignmentFields(assignment);
-            ValidateInvalidAuditFields(assignment);
-            ValidateDatesAreNotSame(assignment);
-            ValidateUpdatedDateIsRecent(assignment);
+
+            Validate(
+                (Rule: IsInvalidX(assignment.Id), Parameter: nameof(Assignment.Id)),
+                (Rule: IsInvalidX(assignment.Label), Parameter: nameof(Assignment.Label)),
+                (Rule: IsInvalidX(assignment.Content), Parameter: nameof(Assignment.Content)),
+                (Rule: IsInvalidX(assignment.Deadline), Parameter: nameof(Assignment.Deadline)),
+                (Rule: IsInvalidX(assignment.CreatedBy), Parameter: nameof(Assignment.CreatedBy)),
+                (Rule: IsInvalidX(assignment.UpdatedBy), Parameter: nameof(Assignment.UpdatedBy)),
+                (Rule: IsInvalidX(assignment.CreatedDate), Parameter: nameof(Assignment.CreatedDate)),
+                (Rule: IsInvalidX(assignment.UpdatedDate), Parameter: nameof(Assignment.UpdatedDate)),
+                (Rule: IsNotRecent(assignment.UpdatedDate), Parameter: nameof(Assignment.UpdatedDate)),
+
+                (Rule: IsSame(
+                    firstDate: assignment.UpdatedDate,
+                    secondDate: assignment.CreatedDate,
+                    secondDateName: nameof(Assignment.CreatedDate)),
+                Parameter: nameof(Assignment.UpdatedDate))
+            );
         }
 
         private static void ValidateAssignmentIsNull(Assignment assignment)

@@ -55,7 +55,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             string invalidText)
         {
             // given
-            var invalidStuent = new Assignment
+            var invalidAssignment = new Assignment
             {
                 Label = invalidText,
                 Content = invalidText
@@ -100,7 +100,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
 
             // when
             ValueTask<Assignment> createAssignmentTask =
-                this.assignmentService.CreateAssignmentAsync(invalidStuent);
+                this.assignmentService.CreateAssignmentAsync(invalidAssignment);
 
             // then
             await Assert.ThrowsAsync<AssignmentValidationException>(() =>
@@ -132,7 +132,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             Assignment randomAssignment = CreateRandomAssignment(dateTime);
             Assignment invalidAssignment = randomAssignment;
             invalidAssignment.UpdatedBy = Guid.NewGuid();
-
             var invalidAssignmentInputException = new InvalidAssignmentException();
 
             invalidAssignmentInputException.AddData(
@@ -230,7 +229,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             Assignment invalidAssignment = randomAssignment;
             invalidAssignment.CreatedDate = randomDate.AddMinutes(minutes);
             invalidAssignment.UpdatedDate = invalidAssignment.CreatedDate;
-
             var invalidAssignmentException = new InvalidAssignmentException();
 
             invalidAssignmentException.AddData(
