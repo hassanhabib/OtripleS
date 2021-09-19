@@ -45,6 +45,33 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
 
         }
 
+        private void ValidateCalendarEntryOnModify(CalendarEntry calendarEntry)
+        {
+            ValidateCalendarEntryIsNotNull(calendarEntry);
+
+            Validate
+            (
+                (Rule: IsInvalidX(calendarEntry.Id), Parameter: nameof(CalendarEntry.Id)),
+                (Rule: IsInvalidX(calendarEntry.Label), Parameter: nameof(CalendarEntry.Label)),
+                (Rule: IsInvalidX(calendarEntry.Description), Parameter: nameof(CalendarEntry.Description)),
+                (Rule: IsInvalidX(calendarEntry.StartDate), Parameter: nameof(CalendarEntry.StartDate)),
+                (Rule: IsInvalidX(calendarEntry.EndDate), Parameter: nameof(CalendarEntry.EndDate)),
+                (Rule: IsInvalidX(calendarEntry.RemindAtDateTime), Parameter: nameof(CalendarEntry.RemindAtDateTime)),
+                (Rule: IsInvalidX(calendarEntry.CreatedBy), Parameter: nameof(CalendarEntry.CreatedBy)),
+                (Rule: IsInvalidX(calendarEntry.UpdatedBy), Parameter: nameof(CalendarEntry.UpdatedBy)),
+                (Rule: IsInvalidX(calendarEntry.CreatedDate), Parameter: nameof(CalendarEntry.CreatedDate)),
+                (Rule: IsInvalidX(calendarEntry.UpdatedDate), Parameter: nameof(CalendarEntry.UpdatedDate)),
+                (Rule: IsNotRecent(calendarEntry.UpdatedDate), Parameter: nameof(CalendarEntry.UpdatedDate)),
+
+                (Rule: IsSame(
+                    firstDate: calendarEntry.UpdatedDate,
+                    secondDate: calendarEntry.CreatedDate,
+                    secondDateName: nameof(CalendarEntry.CreatedDate)),
+                Parameter: nameof(CalendarEntry.UpdatedDate))
+            );
+
+        }
+
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidCalendarEntryException = new InvalidCalendarEntryException();
@@ -112,33 +139,6 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
                 Condition = firstDate == secondDate,
                 Message = $"Date is the same as {secondDateName}"
             };
-
-        private void ValidateCalendarEntryOnModify(CalendarEntry calendarEntry)
-        {
-            ValidateCalendarEntryIsNotNull(calendarEntry);
-
-            Validate
-            (
-                (Rule: IsInvalidX(calendarEntry.Id), Parameter: nameof(CalendarEntry.Id)),
-                (Rule: IsInvalidX(calendarEntry.Label), Parameter: nameof(CalendarEntry.Label)),
-                (Rule: IsInvalidX(calendarEntry.Description), Parameter: nameof(CalendarEntry.Description)),
-                (Rule: IsInvalidX(calendarEntry.StartDate), Parameter: nameof(CalendarEntry.StartDate)),
-                (Rule: IsInvalidX(calendarEntry.EndDate), Parameter: nameof(CalendarEntry.EndDate)),
-                (Rule: IsInvalidX(calendarEntry.RemindAtDateTime), Parameter: nameof(CalendarEntry.RemindAtDateTime)),
-                (Rule: IsInvalidX(calendarEntry.CreatedBy), Parameter: nameof(CalendarEntry.CreatedBy)),
-                (Rule: IsInvalidX(calendarEntry.UpdatedBy), Parameter: nameof(CalendarEntry.UpdatedBy)),
-                (Rule: IsInvalidX(calendarEntry.CreatedDate), Parameter: nameof(CalendarEntry.CreatedDate)),
-                (Rule: IsInvalidX(calendarEntry.UpdatedDate), Parameter: nameof(CalendarEntry.UpdatedDate)),
-                (Rule: IsNotRecent(calendarEntry.CreatedDate), Parameter: nameof(CalendarEntry.CreatedDate)),
-
-                (Rule: IsSame(
-                    firstDate: calendarEntry.UpdatedDate,
-                    secondDate: calendarEntry.CreatedDate,
-                    secondDateName: nameof(CalendarEntry.CreatedDate)),
-                Parameter: nameof(CalendarEntry.UpdatedDate))
-            );
-
-        }
 
         private static void ValidateCalendarEntryIsNotNull(CalendarEntry CalendarEntry)
         {
