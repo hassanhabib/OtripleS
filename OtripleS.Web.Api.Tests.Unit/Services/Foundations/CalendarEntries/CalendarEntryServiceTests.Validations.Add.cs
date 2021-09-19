@@ -48,6 +48,91 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async void ShouldThrowValidationExceptionOnCreateIfCalendarEntryIsInvalidAndLogItAsync(
+            string invalidText)
+        {
+            // given
+            var invalidCalendarEntry = new CalendarEntry
+            {
+                Label = invalidText,
+                Description = invalidText
+            };
+
+            var invalidCalendarEntryException = new InvalidCalendarEntryException();
+
+            invalidCalendarEntryException.AddData(
+                key: nameof(CalendarEntry.Id),
+                values: "Id is required");
+
+            invalidCalendarEntryException.AddData(
+                key: nameof(CalendarEntry.Label),
+                values: "Text is required");
+
+            invalidCalendarEntryException.AddData(
+                key: nameof(CalendarEntry.Description),
+                values: "Text is required");
+
+            invalidCalendarEntryException.AddData(
+                key: nameof(CalendarEntry.StartDate),
+                values: "Date is required");
+
+            invalidCalendarEntryException.AddData(
+                key: nameof(CalendarEntry.EndDate),
+                values: "Date is required");
+
+            invalidCalendarEntryException.AddData(
+                key: nameof(CalendarEntry.RemindAtDateTime),
+                values: "Date is required");
+
+            invalidCalendarEntryException.AddData(
+                key: nameof(CalendarEntry.CreatedDate),
+                values: "Date is required");
+
+            invalidCalendarEntryException.AddData(
+                key: nameof(CalendarEntry.UpdatedDate),
+                values: "Date is required");
+
+            invalidCalendarEntryException.AddData(
+                key: nameof(CalendarEntry.CreatedBy),
+                values: "Id is required");
+
+            invalidCalendarEntryException.AddData(
+                key: nameof(CalendarEntry.UpdatedBy),
+                values: "Id is required");
+
+            var expectedCalendarEntryValidationException =
+                new CalendarEntryValidationException(invalidCalendarEntryException);
+
+            // when
+            ValueTask<CalendarEntry> createCalendarEntryTask =
+                this.calendarEntryService.AddCalendarEntryAsync(invalidCalendarEntry);
+
+            // then
+            await Assert.ThrowsAsync<CalendarEntryValidationException>(() =>
+                createCalendarEntryTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedCalendarEntryValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Fact]
         public async void ShouldThrowValidationExceptionOnAddWhenIdIsInvalidAndLogItAsync()
         {
