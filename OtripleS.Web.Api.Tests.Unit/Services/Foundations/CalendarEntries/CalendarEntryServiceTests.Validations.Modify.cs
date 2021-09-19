@@ -392,13 +392,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             CalendarEntry inputCalendarEntry = randomCalendarEntry;
             inputCalendarEntry.UpdatedBy = inputCalendarEntry.CreatedBy;
             inputCalendarEntry.UpdatedDate = dateTime.AddMinutes(minutes);
+            var invalidCalendarEntryException = new InvalidCalendarEntryException();
 
-            var invalidCalendarEntryInputException = new InvalidCalendarEntryException(
-                parameterName: nameof(CalendarEntry.UpdatedDate),
-                parameterValue: inputCalendarEntry.UpdatedDate);
+            invalidCalendarEntryException.AddData(
+                key: nameof(CalendarEntry.UpdatedDate),
+                values: $"Date is not recent");
 
             var expectedCalendarEntryValidationException =
-                new CalendarEntryValidationException(invalidCalendarEntryInputException);
+                new CalendarEntryValidationException(invalidCalendarEntryException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -417,7 +418,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedCalendarEntryValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
@@ -427,6 +428,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        
         }
 
         [Fact]
