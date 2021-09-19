@@ -227,256 +227,33 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenCreatedByIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(dateTime);
-            CalendarEntry inputCalendarEntry = randomCalendarEntry;
-            inputCalendarEntry.CreatedBy = default;
-
-            var invalidCalendarEntryInputException = new InvalidCalendarEntryException(
-                parameterName: nameof(CalendarEntry.CreatedBy),
-                parameterValue: inputCalendarEntry.CreatedBy);
-
-            var expectedCalendarEntryValidationException =
-                new CalendarEntryValidationException(invalidCalendarEntryInputException);
-
-            // when
-            ValueTask<CalendarEntry> addCalendarEntryTask =
-                this.calendarEntryService.AddCalendarEntryAsync(inputCalendarEntry);
-
-            // then
-            await Assert.ThrowsAsync<CalendarEntryValidationException>(() =>
-                addCalendarEntryTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenCreatedDateIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(dateTime);
-            CalendarEntry inputCalendarEntry = randomCalendarEntry;
-            inputCalendarEntry.CreatedDate = default;
-
-            var invalidCalendarEntryInputException = new InvalidCalendarEntryException(
-                parameterName: nameof(CalendarEntry.CreatedDate),
-                parameterValue: inputCalendarEntry.CreatedDate);
-
-            var expectedCalendarEntryValidationException =
-                new CalendarEntryValidationException(invalidCalendarEntryInputException);
-
-            // when
-            ValueTask<CalendarEntry> createCalendarEntryTask =
-                this.calendarEntryService.AddCalendarEntryAsync(inputCalendarEntry);
-
-            // then
-            await Assert.ThrowsAsync<CalendarEntryValidationException>(() =>
-                createCalendarEntryTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenUpdatedByIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(dateTime);
-            CalendarEntry inputCalendarEntry = randomCalendarEntry;
-            inputCalendarEntry.UpdatedBy = default;
-
-            var invalidCalendarEntryInputException = new InvalidCalendarEntryException(
-                parameterName: nameof(CalendarEntry.UpdatedBy),
-                parameterValue: inputCalendarEntry.UpdatedBy);
-
-            var expectedCalendarEntryValidationException =
-                new CalendarEntryValidationException(invalidCalendarEntryInputException);
-
-            // when
-            ValueTask<CalendarEntry> createCalendarEntryTask =
-                this.calendarEntryService.AddCalendarEntryAsync(inputCalendarEntry);
-
-            // then
-            await Assert.ThrowsAsync<CalendarEntryValidationException>(() =>
-                createCalendarEntryTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenUpdatedDateIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(dateTime);
-            CalendarEntry inputCalendarEntry = randomCalendarEntry;
-            inputCalendarEntry.UpdatedDate = default;
-
-            var invalidCalendarEntryInputException = new InvalidCalendarEntryException(
-                parameterName: nameof(CalendarEntry.UpdatedDate),
-                parameterValue: inputCalendarEntry.UpdatedDate);
-
-            var expectedCalendarEntryValidationException =
-                new CalendarEntryValidationException(invalidCalendarEntryInputException);
-
-            // when
-            ValueTask<CalendarEntry> createCalendarEntryTask =
-                this.calendarEntryService.AddCalendarEntryAsync(inputCalendarEntry);
-
-            // then
-            await Assert.ThrowsAsync<CalendarEntryValidationException>(() =>
-                createCalendarEntryTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenUpdatedByIsNotSameToCreatedByAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(dateTime);
-            CalendarEntry inputCalendarEntry = randomCalendarEntry;
-            inputCalendarEntry.UpdatedBy = Guid.NewGuid();
-
-            var invalidCalendarEntryInputException = new InvalidCalendarEntryException(
-                parameterName: nameof(CalendarEntry.UpdatedBy),
-                parameterValue: inputCalendarEntry.UpdatedBy);
-
-            var expectedCalendarEntryValidationException =
-                new CalendarEntryValidationException(invalidCalendarEntryInputException);
-
-            // when
-            ValueTask<CalendarEntry> createCalendarEntryTask =
-                this.calendarEntryService.AddCalendarEntryAsync(inputCalendarEntry);
-
-            // then
-            await Assert.ThrowsAsync<CalendarEntryValidationException>(() =>
-                createCalendarEntryTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenUpdatedDateIsNotSameToCreatedDateAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(dateTime);
-            CalendarEntry inputCalendarEntry = randomCalendarEntry;
-            inputCalendarEntry.UpdatedBy = randomCalendarEntry.CreatedBy;
-            inputCalendarEntry.UpdatedDate = GetRandomDateTime();
-
-            var invalidCalendarEntryInputException = new InvalidCalendarEntryException(
-                parameterName: nameof(CalendarEntry.UpdatedDate),
-                parameterValue: inputCalendarEntry.UpdatedDate);
-
-            var expectedCalendarEntryValidationException =
-                new CalendarEntryValidationException(invalidCalendarEntryInputException);
-
-            // when
-            ValueTask<CalendarEntry> createCalendarEntryTask =
-                this.calendarEntryService.AddCalendarEntryAsync(inputCalendarEntry);
-
-            // then
-            await Assert.ThrowsAsync<CalendarEntryValidationException>(() =>
-                createCalendarEntryTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
         [Theory]
         [MemberData(nameof(InvalidMinuteCases))]
-        public async void ShouldThrowValidationExceptionOnAddWhenCreatedDateIsNotRecentAndLogItAsync(
+        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedDateIsNotRecentAndLogItAsync(
             int minutes)
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(dateTime);
-            CalendarEntry inputCalendarEntry = randomCalendarEntry;
-            inputCalendarEntry.UpdatedBy = inputCalendarEntry.CreatedBy;
-            inputCalendarEntry.CreatedDate = dateTime.AddMinutes(minutes);
-            inputCalendarEntry.UpdatedDate = inputCalendarEntry.CreatedDate;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(randomDate);
+            CalendarEntry invalidCalendarEntry = randomCalendarEntry;
+            invalidCalendarEntry.CreatedDate = randomDate.AddMinutes(minutes);
+            invalidCalendarEntry.UpdatedDate = invalidCalendarEntry.CreatedDate;
+            var invalidCalendarEntryException = new InvalidCalendarEntryException();
 
-            var invalidCalendarEntryInputException = new InvalidCalendarEntryException(
-                parameterName: nameof(CalendarEntry.CreatedDate),
-                parameterValue: inputCalendarEntry.CreatedDate);
+            invalidCalendarEntryException.AddData(
+                key: nameof(CalendarEntry.CreatedDate),
+                values: $"Date is not recent");
 
             var expectedCalendarEntryValidationException =
-                new CalendarEntryValidationException(invalidCalendarEntryInputException);
+                new CalendarEntryValidationException(invalidCalendarEntryException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
+                    .Returns(randomDate);
 
             // when
             ValueTask<CalendarEntry> createCalendarEntryTask =
-                this.calendarEntryService.AddCalendarEntryAsync(inputCalendarEntry);
+                this.calendarEntryService.AddCalendarEntryAsync(invalidCalendarEntry);
 
             // then
             await Assert.ThrowsAsync<CalendarEntryValidationException>(() =>
@@ -487,8 +264,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedCalendarEntryValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
@@ -497,88 +275,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData("   ")]
-        public async Task ShouldThrowValidationExceptionOnAddWhenCalendarEntryLabelIsInvalidAndLogItAsync(
-            string invalidCalendarEntryLabel)
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(dateTime);
-            CalendarEntry invalidCalendarEntry = randomCalendarEntry;
-            invalidCalendarEntry.Label = invalidCalendarEntryLabel;
-
-            var invalidCalendarEntryException = new InvalidCalendarEntryException(
-               parameterName: nameof(CalendarEntry.Label),
-               parameterValue: invalidCalendarEntry.Label);
-
-            var expectedCalendarEntryValidationException =
-                new CalendarEntryValidationException(invalidCalendarEntryException);
-
-            // when
-            ValueTask<CalendarEntry> createCalendarEntryTask =
-                this.calendarEntryService.AddCalendarEntryAsync(invalidCalendarEntry);
-
-            // then
-            await Assert.ThrowsAsync<CalendarEntryValidationException>(() =>
-                createCalendarEntryTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData("   ")]
-        public async Task ShouldThrowValidationExceptionOnAddWhenCalendarEntryDescriptionIsInvalidAndLogItAsync(
-            string invalidCalendarEntryDescription)
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(dateTime);
-            CalendarEntry invalidCalendarEntry = randomCalendarEntry;
-            invalidCalendarEntry.Description = invalidCalendarEntryDescription;
-
-            var invalidCalendarEntryException = new InvalidCalendarEntryException(
-               parameterName: nameof(CalendarEntry.Description),
-               parameterValue: invalidCalendarEntry.Description);
-
-            var expectedCalendarEntryValidationException =
-                new CalendarEntryValidationException(invalidCalendarEntryException);
-
-            // when
-            ValueTask<CalendarEntry> createCalendarEntryTask =
-                this.calendarEntryService.AddCalendarEntryAsync(invalidCalendarEntry);
-
-            // then
-            await Assert.ThrowsAsync<CalendarEntryValidationException>(() =>
-                createCalendarEntryTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
