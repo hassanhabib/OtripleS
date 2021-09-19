@@ -134,32 +134,42 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenIdIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedByIsNotSameToCreatedByAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(dateTime);
-            CalendarEntry inputCalendarEntry = randomCalendarEntry;
-            inputCalendarEntry.Id = Guid.Empty;
+            CalendarEntry invalidCalendarEntry = randomCalendarEntry;
+            invalidCalendarEntry.UpdatedBy = Guid.NewGuid();
+            var invalidCalendarEntryException = new InvalidCalendarEntryException();
 
-            var invalidCalendarEntryException = new InvalidCalendarEntryException(
-                parameterName: nameof(CalendarEntry.Id),
-                parameterValue: inputCalendarEntry.Id);
+            invalidCalendarEntryException.AddData(
+                key: nameof(CalendarEntry.UpdatedBy),
+                values: $"Id is not the same as {nameof(CalendarEntry.CreatedBy)}");
 
             var expectedCalendarEntryValidationException =
                 new CalendarEntryValidationException(invalidCalendarEntryException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
             // when
-            ValueTask<CalendarEntry> addCalendarEntryTask =
-                this.calendarEntryService.AddCalendarEntryAsync(inputCalendarEntry);
+            ValueTask<CalendarEntry> createCalendarEntryTask =
+                this.calendarEntryService.AddCalendarEntryAsync(invalidCalendarEntry);
 
             // then
             await Assert.ThrowsAsync<CalendarEntryValidationException>(() =>
-                addCalendarEntryTask.AsTask());
+                createCalendarEntryTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedCalendarEntryValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
