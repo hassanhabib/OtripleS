@@ -89,7 +89,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
 
             invalidCalendarEntryException.AddData(
                 key: nameof(CalendarEntry.UpdatedDate),
-                values: new string[] { 
+                values: new string[] {
                     "Date is required",
                     $"Date is the same as {nameof(CalendarEntry.CreatedDate)}"
                 });
@@ -174,7 +174,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-        
+
         }
 
         [Fact]
