@@ -67,7 +67,14 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
                     firstDate: calendarEntry.UpdatedDate,
                     secondDate: calendarEntry.CreatedDate,
                     secondDateName: nameof(CalendarEntry.CreatedDate)),
-                Parameter: nameof(CalendarEntry.UpdatedDate))
+                Parameter: nameof(CalendarEntry.UpdatedDate)),
+
+                (Rule: IsBefore(
+                    firstDate: calendarEntry.EndDate,
+                    secondDate: calendarEntry.StartDate,
+                    secondDateName: nameof(CalendarEntry.StartDate)),
+                Parameter: nameof(CalendarEntry.EndDate))
+
             );
 
         }
@@ -138,6 +145,15 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
             {
                 Condition = firstDate == secondDate,
                 Message = $"Date is the same as {secondDateName}"
+            };
+
+        private static dynamic IsBefore(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate < secondDate,
+                Message = $"Date is before {secondDateName}"
             };
 
         private static void ValidateCalendarEntryIsNotNull(CalendarEntry CalendarEntry)
