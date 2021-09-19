@@ -278,6 +278,55 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
         }
 
         [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenEndDateIsBeforeStartDateAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(dateTime);
+            CalendarEntry inputCalendarEntry = randomCalendarEntry;
+            int randomMinutes = GetRandomNumber();
+            inputCalendarEntry.UpdatedDate = dateTime.AddMinutes(randomMinutes);
+            inputCalendarEntry.StartDate = dateTime.AddMinutes(randomMinutes);
+            var invalidCalendarEntryException = new InvalidCalendarEntryException();
+
+            invalidCalendarEntryException.AddData(
+                key: nameof(CalendarEntry.EndDate),
+                values: $"Date is before StartDate");
+
+            var expectedCalendarEntryValidationException =
+                new CalendarEntryValidationException(invalidCalendarEntryException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            // when
+            ValueTask<CalendarEntry> modifyCalendarEntryTask =
+                this.calendarEntryService.AddCalendarEntryAsync(inputCalendarEntry);
+
+            // then
+            await Assert.ThrowsAsync<CalendarEntryValidationException>(() =>
+                modifyCalendarEntryTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedCalendarEntryValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+
+        }
+
+        [Fact]
         public async void ShouldThrowValidationExceptionOnAddWhenCalendarEntryAlreadyExistsAndLogItAsync()
         {
             // given
