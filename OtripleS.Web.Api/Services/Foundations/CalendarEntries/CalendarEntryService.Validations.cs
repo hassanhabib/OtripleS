@@ -15,10 +15,94 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
         private void ValidateCalendarEntryOnCreate(CalendarEntry calendarEntry)
         {
             ValidateCalendarEntryIsNotNull(calendarEntry);
-            ValidateCalendarEntryId(calendarEntry.Id);
-            ValidateCalendarEntryRequiredFields(calendarEntry);
-            ValidateCalendarEntryAuditFieldsOnCreate(calendarEntry);
+
+            Validate
+            (
+                (Rule: IsInvalidX(calendarEntry.Id), Parameter: nameof(CalendarEntry.Id)),
+                (Rule: IsInvalidX(calendarEntry.Label), Parameter: nameof(CalendarEntry.Label)),
+                (Rule: IsInvalidX(calendarEntry.Description), Parameter: nameof(CalendarEntry.Description)),
+                (Rule: IsInvalidX(calendarEntry.StartDate), Parameter: nameof(CalendarEntry.StartDate)),
+                (Rule: IsInvalidX(calendarEntry.EndDate), Parameter: nameof(CalendarEntry.EndDate)),
+                (Rule: IsInvalidX(calendarEntry.RemindAtDateTime), Parameter: nameof(CalendarEntry.RemindAtDateTime)),
+                (Rule: IsInvalidX(calendarEntry.CreatedBy), Parameter: nameof(CalendarEntry.CreatedBy)),
+                (Rule: IsInvalidX(calendarEntry.UpdatedBy), Parameter: nameof(CalendarEntry.UpdatedBy)),
+                (Rule: IsInvalidX(calendarEntry.CreatedDate), Parameter: nameof(CalendarEntry.CreatedDate)),
+                (Rule: IsInvalidX(calendarEntry.UpdatedDate), Parameter: nameof(CalendarEntry.UpdatedDate)),
+                (Rule: IsNotRecent(calendarEntry.CreatedDate), Parameter: nameof(CalendarEntry.CreatedDate)),
+
+                (Rule: IsNotSame(
+                    firstId: calendarEntry.UpdatedBy,
+                    secondId: calendarEntry.CreatedBy,
+                    secondIdName: nameof(CalendarEntry.CreatedBy)),
+                Parameter: nameof(CalendarEntry.UpdatedBy)),
+
+                (Rule: IsNotSame(
+                    firstDate: calendarEntry.UpdatedDate,
+                    secondDate: calendarEntry.CreatedDate,
+                    secondDateName: nameof(CalendarEntry.CreatedDate)),
+                Parameter: nameof(CalendarEntry.UpdatedDate))
+            );
+
         }
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidCalendarEntryException = new InvalidCalendarEntryException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidCalendarEntryException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidCalendarEntryException.ThrowIfContainsErrors();
+        }
+
+        private static dynamic IsInvalidX(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static dynamic IsInvalidX(string text) => new
+        {
+            Condition = String.IsNullOrWhiteSpace(text),
+            Message = "Text is required"
+        };
+
+        private static dynamic IsInvalidX(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required"
+        };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not the same as {secondIdName}"
+            };
+
+        private static dynamic IsNotSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not the same as {secondDateName}"
+            };
+
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
+        {
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent"
+        };
 
         private void ValidateCalendarEntryOnModify(CalendarEntry calendarEntry)
         {
