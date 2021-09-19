@@ -17,6 +17,6 @@ namespace OtripleS.Web.Api.Models.CalendarEntries.Exceptions
         { }
 
         public InvalidCalendarEntryException()
-            : base("Invalid calendar enty. Please fix the errors and try again.") { }
+            : base("Invalid calendar entry. Please fix the errors and try again.") { }
     }
 }
