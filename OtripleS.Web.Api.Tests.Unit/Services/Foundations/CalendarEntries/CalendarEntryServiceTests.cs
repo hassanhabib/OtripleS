@@ -16,6 +16,7 @@ using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.CalendarEntries;
 using OtripleS.Web.Api.Services.Foundations.CalendarEntries;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
 {
@@ -57,6 +58,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             return filler;
         }
 
+        private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
+        }
+
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
@@ -76,7 +85,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             };
         }
 
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
 
