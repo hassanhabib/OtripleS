@@ -150,94 +150,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
             }
         }
 
-        private static void ValidateAssignmentFields(Assignment assignment)
-        {
-            switch (assignment)
-            {
-                case { } when IsInvalid(assignment.Label):
-                    throw new InvalidAssignmentException(
-                        parameterName: nameof(Assignment.Label),
-                        parameterValue: assignment.Label);
-
-                case { } when IsInvalid(assignment.Content):
-                    throw new InvalidAssignmentException(
-                        parameterName: nameof(Assignment.Content),
-                        parameterValue: assignment.Content);
-            }
-        }
-
-        private static void ValidateInvalidAuditFields(Assignment assignment)
-        {
-            switch (assignment)
-            {
-                case { } when IsInvalid(assignment.CreatedBy):
-                    throw new InvalidAssignmentException(
-                        parameterName: nameof(assignment.CreatedBy),
-                        parameterValue: assignment.CreatedBy);
-
-                case { } when IsInvalid(assignment.CreatedDate):
-                    throw new InvalidAssignmentException(
-                        parameterName: nameof(Assignment.CreatedDate),
-                        parameterValue: assignment.CreatedDate);
-
-                case { } when IsInvalid(assignment.UpdatedBy):
-                    throw new InvalidAssignmentException(
-                        parameterName: nameof(Assignment.UpdatedBy),
-                        parameterValue: assignment.UpdatedBy);
-
-                case { } when IsInvalid(assignment.UpdatedDate):
-                    throw new InvalidAssignmentException(
-                        parameterName: nameof(Assignment.UpdatedDate),
-                        parameterValue: assignment.UpdatedDate);
-
-                case { } when IsInvalid(assignment.Deadline):
-                    throw new InvalidAssignmentException(
-                        parameterName: nameof(Assignment.Deadline),
-                        parameterValue: assignment.Deadline);
-            }
-        }
-
-        private void ValidateAuditFieldsDataOnCreate(Assignment assignment)
-        {
-            switch (assignment)
-            {
-                case { } when assignment.UpdatedBy != assignment.CreatedBy:
-                    throw new InvalidAssignmentException(
-                        parameterName: nameof(Assignment.UpdatedBy),
-                        parameterValue: assignment.UpdatedBy);
-
-                case { } when assignment.UpdatedDate != assignment.CreatedDate:
-                    throw new InvalidAssignmentException(
-                        parameterName: nameof(Assignment.UpdatedDate),
-                        parameterValue: assignment.UpdatedDate);
-
-                case { } when IsDateNotRecent(assignment.CreatedDate):
-                    throw new InvalidAssignmentException(
-                        parameterName: nameof(Assignment.CreatedDate),
-                        parameterValue: assignment.CreatedDate);
-            }
-        }
-
-        private static void ValidateDatesAreNotSame(Assignment assignment)
-        {
-            if (assignment.CreatedDate == assignment.UpdatedDate)
-            {
-                throw new InvalidAssignmentException(
-                    parameterName: nameof(Assignment.UpdatedDate),
-                    parameterValue: assignment.UpdatedDate);
-            }
-        }
-
-        private void ValidateUpdatedDateIsRecent(Assignment assignment)
-        {
-            if (IsDateNotRecent(assignment.UpdatedDate))
-            {
-                throw new InvalidAssignmentException(
-                    parameterName: nameof(assignment.UpdatedDate),
-                    parameterValue: assignment.UpdatedDate);
-            }
-        }
-
         private static void ValidateStorageAssignment(Assignment storageAssignment, Guid assignmentId)
         {
             if (storageAssignment == null)
@@ -277,9 +189,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
             }
         }
 
-        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(Guid input) => input == default;
-        private static bool IsInvalid(DateTimeOffset input) => input == default;
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
