@@ -31,18 +31,9 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
 
         private static void ValidateCourseAttachmentIds(Guid courseId, Guid attachmentId)
         {
-            switch (courseId, attachmentId)
-            {
-                case { } when courseId == default:
-                    throw new InvalidCourseAttachmentException(
-                        parameterName: nameof(CourseAttachment.CourseId),
-                        parameterValue: courseId);
-
-                case { } when attachmentId == default:
-                    throw new InvalidCourseAttachmentException(
-                        parameterName: nameof(CourseAttachment.AttachmentId),
-                        parameterValue: attachmentId);
-            }
+            Validate(
+               (Rule: IsInvalid(courseId), Parameter: nameof(CourseAttachment.CourseId)),
+               (Rule: IsInvalid(attachmentId), Parameter: nameof(CourseAttachment.AttachmentId)));
         }
 
         private static void ValidateStorageCourseAttachment(
