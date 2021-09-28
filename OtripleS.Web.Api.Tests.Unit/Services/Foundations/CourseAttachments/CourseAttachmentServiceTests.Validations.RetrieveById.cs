@@ -15,17 +15,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
     public partial class CourseAttachmentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenCourseIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenIdsAreInvalidAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomCourseId = default;
-            Guid inputAttachmentId = randomAttachmentId;
-            Guid invalidCourseId = randomCourseId;
+            Guid invalidCourseId = Guid.Empty;
+            Guid invalidAttachmentId = Guid.Empty;
 
-            var invalidCourseAttachmentInputException = new InvalidCourseAttachmentException(
-                parameterName: nameof(CourseAttachment.CourseId),
-                parameterValue: invalidCourseId);
+            var invalidCourseAttachmentInputException =
+                new InvalidCourseAttachmentException();
+
+            invalidCourseAttachmentInputException.AddData(
+                key: nameof(CourseAttachment.CourseId),
+                values: "Id is required");
+
+            invalidCourseAttachmentInputException.AddData(
+                key: nameof(CourseAttachment.AttachmentId),
+                values: "Id is required");
 
             var expectedCourseAttachmentValidationException =
                 new CourseAttachmentValidationException(invalidCourseAttachmentInputException);
@@ -34,45 +39,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
             ValueTask<CourseAttachment> retrieveCourseAttachmentTask =
                 this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync(
                     invalidCourseId,
-                    inputAttachmentId);
-
-            // then
-            await Assert.ThrowsAsync<CourseAttachmentValidationException>(() =>
-                retrieveCourseAttachmentTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenAttachmentIdIsInvalidAndLogItAsync()
-        {
-            // given
-            Guid randomAttachmentId = default;
-            Guid randomCourseId = Guid.NewGuid();
-            Guid invalidAttachmentId = randomAttachmentId;
-            Guid inputCourseId = randomCourseId;
-
-            var invalidCourseAttachmentInputException = new InvalidCourseAttachmentException(
-                parameterName: nameof(CourseAttachment.AttachmentId),
-                parameterValue: invalidAttachmentId);
-
-            var expectedCourseAttachmentValidationException =
-                new CourseAttachmentValidationException(invalidCourseAttachmentInputException);
-
-            // when
-            ValueTask<CourseAttachment> retrieveCourseAttachmentTask =
-                this.courseAttachmentService.RetrieveCourseAttachmentByIdAsync(
-                    inputCourseId,
                     invalidAttachmentId);
 
             // then
@@ -80,8 +46,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                 retrieveCourseAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedCourseAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCourseAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
