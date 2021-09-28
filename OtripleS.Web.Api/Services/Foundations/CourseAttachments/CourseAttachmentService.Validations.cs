@@ -12,10 +12,13 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
 {
     public partial class CourseAttachmentService
     {
-        private static void ValidateCourseAttachmentOnCreate(CourseAttachment courseAttachment)
+        private static void ValidateCourseAttachmentOnAdd(CourseAttachment courseAttachment)
         {
             ValidateCourseAttachmentIsNull(courseAttachment);
-            ValidateCourseAttachmentIds(courseAttachment.CourseId, courseAttachment.AttachmentId);
+
+            Validate(
+                (Rule: IsInvalid(courseAttachment.CourseId), Parameter: nameof(CourseAttachment.CourseId)),
+                (Rule: IsInvalid(courseAttachment.AttachmentId), Parameter: nameof(CourseAttachment.AttachmentId)));
         }
 
         private static void ValidateCourseAttachmentIsNull(CourseAttachment courseAttachment)
@@ -58,6 +61,29 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
             {
                 this.loggingBroker.LogWarning("No course attachments found in storage.");
             }
+        }
+
+        private static dynamic IsInvalid(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidCourseAttachmentException = new InvalidCourseAttachmentException();
+
+            foreach((dynamic rule, string parameter) in validations)
+            {
+                if(rule.Condition)
+                {
+                    invalidCourseAttachmentException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidCourseAttachmentException.ThrowIfContainsErrors();
         }
     }
 }

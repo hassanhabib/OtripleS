@@ -47,7 +47,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
         public ValueTask<CourseAttachment> AddCourseAttachmentAsync(CourseAttachment courseAttachment) =>
         TryCatch(async () =>
         {
-            ValidateCourseAttachmentOnCreate(courseAttachment);
+            ValidateCourseAttachmentOnAdd(courseAttachment);
 
             return await storageBroker.InsertCourseAttachmentAsync(courseAttachment);
         });
