@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
     public partial class CourseAttachmentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRemoveWhenCourseIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRemoveWhenIdsAreInvalidAndLogItAsync()
         {
             // given
             Guid invalidCourseId = Guid.Empty;
