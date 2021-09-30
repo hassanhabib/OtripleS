@@ -12,7 +12,7 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
 {
     public partial class ExamAttachmentService
     {
-        public void ValidateExamAttachmentOnCreate(ExamAttachment examAttachment)
+        public void ValidateExamAttachmentOnAdd(ExamAttachment examAttachment)
         {
             ValidateExamAttachmentIsNull(examAttachment);
             ValidateExamAttachmentIds(examAttachment.ExamId, examAttachment.AttachmentId);
@@ -28,18 +28,32 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
 
         private static void ValidateExamAttachmentIds(Guid examId, Guid attachmentId)
         {
-            if (examId == default)
+            Validate(
+                (Rule: IsInvalid(examId), Parameter: nameof(ExamAttachment.ExamId)),
+                (Rule: IsInvalid(attachmentId), Parameter: nameof(ExamAttachment.AttachmentId)));
+        }
+
+        private static dynamic IsInvalid(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidExamAttachmentException = new InvalidExamAttachmentException();
+
+            foreach ((dynamic rule, string parameter) in validations)
             {
-                throw new InvalidExamAttachmentException(
-                    parameterName: nameof(ExamAttachment.ExamId),
-                    parameterValue: examId);
+                if (rule.Condition)
+                {
+                    invalidExamAttachmentException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
             }
-            else if (attachmentId == default)
-            {
-                throw new InvalidExamAttachmentException(
-                    parameterName: nameof(ExamAttachment.AttachmentId),
-                    parameterValue: attachmentId);
-            }
+
+            invalidExamAttachmentException.ThrowIfContainsErrors();
         }
 
         private static void ValidateStorageExamAttachment(

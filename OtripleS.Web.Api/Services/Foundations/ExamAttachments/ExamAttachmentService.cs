@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
         public ValueTask<ExamAttachment> AddExamAttachmentAsync(ExamAttachment examAttachment) =>
         TryCatch(async () =>
         {
-            ValidateExamAttachmentOnCreate(examAttachment);
+            ValidateExamAttachmentOnAdd(examAttachment);
 
             return await this.storageBroker.InsertExamAttachmentAsync(examAttachment);
         });

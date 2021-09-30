@@ -58,11 +58,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
 
             invalidExamAttachmentInputException.AddData(
                 key: nameof(ExamAttachment.ExamId),
-                values: "Id is required.");
+                values: "Id is required");
 
             invalidExamAttachmentInputException.AddData(
                 key: nameof(ExamAttachment.AttachmentId),
-                values: "Id is required.");
+                values: "Id is required");
 
             var expectedExamAttachmentValidationException =
                 new ExamAttachmentValidationException(invalidExamAttachmentInputException);
