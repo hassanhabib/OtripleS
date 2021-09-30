@@ -12,13 +12,125 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
 {
     public partial class AttendanceService
     {
+        private void ValidateAttendanceOnCreate(Attendance attendance)
+        {
+            ValidateAttendanceIsNull(attendance);
+
+            Validate(
+                (Rule: IsInvalidX(attendance.Id), Parameter: nameof(Attendance.Id)),
+                (Rule: IsInvalidX(attendance.StudentSemesterCourseId), Parameter: nameof(Attendance.StudentSemesterCourseId)),
+                (Rule: IsInvalidX(attendance.AttendanceDate), Parameter: nameof(Attendance.AttendanceDate)),
+                (Rule: IsNotRecent(attendance.AttendanceDate), Parameter: nameof(Attendance.AttendanceDate)),
+                (Rule: IsInvalidX(attendance.Notes), Parameter: nameof(Attendance.Notes)),
+                (Rule: IsInvalidX(attendance.CreatedBy), Parameter: nameof(Attendance.CreatedBy)),
+                (Rule: IsInvalidX(attendance.UpdatedBy), Parameter: nameof(Attendance.UpdatedBy)),
+                (Rule: IsInvalidX(attendance.CreatedDate), Parameter: nameof(Attendance.CreatedDate)),
+                (Rule: IsInvalidX(attendance.UpdatedDate), Parameter: nameof(Attendance.UpdatedDate)),
+                (Rule: IsNotRecent(attendance.CreatedDate), Parameter: nameof(Attendance.CreatedDate)),
+
+                (Rule: IsNotSame(
+                    firstDate: attendance.UpdatedDate,
+                    secondDate: attendance.CreatedDate,
+                    secondDateName: nameof(Attendance.CreatedDate)),
+                Parameter: nameof(Attendance.UpdatedDate)),
+
+                (Rule: IsNotSame(
+                    firstId: attendance.UpdatedBy,
+                    secondId: attendance.CreatedBy,
+                    secondIdName: nameof(Attendance.CreatedBy)),
+                Parameter: nameof(Attendance.UpdatedBy))
+            );
+        }
+
         private void ValidateAttendanceOnModify(Attendance attendance)
         {
             ValidateAttendanceIsNull(attendance);
-            ValidateAttendanceId(attendance.Id);
-            ValidateInvalidAuditFields(attendance);
-            ValidateDatesAreNotSame(attendance);
-            ValidateUpdatedDateIsRecent(attendance);
+
+            Validate(
+                (Rule: IsInvalidX(attendance.Id), Parameter: nameof(Attendance.Id)),
+                (Rule: IsInvalidX(attendance.StudentSemesterCourseId), Parameter: nameof(Attendance.StudentSemesterCourseId)),
+                (Rule: IsInvalidX(attendance.AttendanceDate), Parameter: nameof(Attendance.AttendanceDate)),
+                (Rule: IsInvalidX(attendance.Notes), Parameter: nameof(Attendance.Notes)),
+                (Rule: IsInvalidX(attendance.CreatedBy), Parameter: nameof(Attendance.CreatedBy)),
+                (Rule: IsInvalidX(attendance.UpdatedBy), Parameter: nameof(Attendance.UpdatedBy)),
+                (Rule: IsInvalidX(attendance.CreatedDate), Parameter: nameof(Attendance.CreatedDate)),
+                (Rule: IsInvalidX(attendance.UpdatedDate), Parameter: nameof(Attendance.UpdatedDate)),
+                (Rule: IsNotRecent(attendance.UpdatedDate), Parameter: nameof(Attendance.UpdatedDate)),
+
+                (Rule: IsSame(
+                    firstDate: attendance.UpdatedDate,
+                    secondDate: attendance.CreatedDate,
+                    secondDateName: nameof(Attendance.CreatedDate)),
+                Parameter: nameof(Attendance.UpdatedDate))
+            );
+        }
+
+        private static dynamic IsInvalidX(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static dynamic IsInvalidX(string text) => new
+        {
+            Condition = String.IsNullOrWhiteSpace(text),
+            Message = "Text is required"
+        };
+
+        private static dynamic IsInvalidX(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required"
+        };
+
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
+        {
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent"
+        };
+
+        private static dynamic IsNotSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not the same as {secondDateName}"
+            };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not the same as {secondIdName}"
+            };
+
+        private static dynamic IsSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate == secondDate,
+                Message = $"Date is the same as {secondDateName}"
+            };
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidAttendanceException = new InvalidAttendanceException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidAttendanceException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidAttendanceException.ThrowIfContainsErrors();
         }
 
         private void ValidateStorageAttendances(IQueryable<Attendance> storageAttendances)
@@ -47,92 +159,11 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             }
         }
 
-        private void ValidateUpdatedDateIsRecent(Attendance attendance)
-        {
-            if (IsDateNotRecent(attendance.UpdatedDate))
-            {
-                throw new InvalidAttendanceException(
-                    parameterName: nameof(attendance.UpdatedDate),
-                    parameterValue: attendance.UpdatedDate);
-            }
-        }
-
         private static void ValidateStorageAttendance(Attendance storageAttendance, Guid attendanceId)
         {
             if (storageAttendance is null)
             {
                 throw new NotFoundAttendanceException(attendanceId);
-            }
-        }
-
-        private void ValidateAttendanceOnCreate(Attendance attendance)
-        {
-            ValidateAttendanceIsNull(attendance);
-            ValidateMandatoryFields(attendance);
-            ValidateAttendanceDatesOnAdd(attendance);
-            ValidateAttendanceAuditFields(attendance);
-        }
-
-        private void ValidateAttendanceAuditFields(Attendance attendance)
-        {
-            switch (attendance)
-            {
-                case { } when IsInvalid(attendance.CreatedBy):
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.CreatedBy),
-                        parameterValue: attendance.CreatedBy);
-
-                case { } when IsInvalid(attendance.UpdatedBy):
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.UpdatedBy),
-                        parameterValue: attendance.UpdatedBy);
-
-                case { } when IsInvalid(attendance.CreatedDate):
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.CreatedDate),
-                        parameterValue: attendance.CreatedDate);
-
-                case { } when IsInvalid(attendance.UpdatedDate):
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.UpdatedDate),
-                        parameterValue: attendance.UpdatedDate);
-
-                case { } when attendance.CreatedDate != attendance.UpdatedDate:
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.UpdatedDate),
-                        parameterValue: attendance.UpdatedDate);
-
-                case { } when IsDateNotRecent(attendance.CreatedDate):
-                    throw new InvalidAttendanceException(
-                    parameterName: nameof(Attendance.CreatedDate),
-                    parameterValue: attendance.CreatedDate);
-            }
-        }
-
-        private void ValidateAttendanceDatesOnAdd(Attendance attendance)
-        {
-            switch (attendance)
-            {
-                case { } when IsDateNotRecent(attendance.AttendanceDate):
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.AttendanceDate),
-                        parameterValue: attendance.AttendanceDate);
-            }
-        }
-
-        private static void ValidateMandatoryFields(Attendance attendance)
-        {
-            switch (attendance)
-            {
-                case { } when IsInvalid(attendance.Id):
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.Id),
-                        parameterValue: attendance.Id);
-
-                case { } when IsInvalid(attendance.StudentSemesterCourseId):
-                    throw new InvalidAttendanceException(
-                        parameterName: nameof(attendance.StudentSemesterCourseId),
-                        parameterValue: attendance.StudentSemesterCourseId);
             }
         }
 
@@ -157,41 +188,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             }
         }
 
-        private static void ValidateDatesAreNotSame(Attendance attendance)
-        {
-            if (attendance.CreatedDate == attendance.UpdatedDate)
-            {
-                throw new InvalidAttendanceException(
-                    parameterName: nameof(Attendance.UpdatedDate),
-                    parameterValue: attendance.UpdatedDate);
-            }
-        }
-
-        private static void ValidateInvalidAuditFields(Attendance attendance)
-        {
-            switch (attendance)
-            {
-                case { } when IsInvalid(attendance.CreatedBy):
-                    throw new InvalidAttendanceException(
-                    parameterName: nameof(attendance.CreatedBy),
-                    parameterValue: attendance.CreatedBy);
-
-                case { } when IsInvalid(attendance.CreatedDate):
-                    throw new InvalidAttendanceException(
-                    parameterName: nameof(Attendance.CreatedDate),
-                    parameterValue: attendance.CreatedDate);
-
-                case { } when IsInvalid(attendance.UpdatedBy):
-                    throw new InvalidAttendanceException(
-                    parameterName: nameof(Attendance.UpdatedBy),
-                    parameterValue: attendance.UpdatedBy);
-
-                case { } when IsInvalid(attendance.UpdatedDate):
-                    throw new InvalidAttendanceException(
-                    parameterName: nameof(Attendance.UpdatedDate),
-                    parameterValue: attendance.UpdatedDate);
-            }
-        }
         private static bool IsInvalid(Guid inputId) => inputId == default;
         private static bool IsInvalid(DateTimeOffset inputDateTimeOffset) => inputDateTimeOffset == default;
 

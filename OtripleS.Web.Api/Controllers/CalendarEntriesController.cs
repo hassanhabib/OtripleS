@@ -42,9 +42,7 @@ namespace OtripleS.Web.Api.Controllers
             }
             catch (CalendarEntryValidationException calendarEntryValidationException)
             {
-                string innerMessage = GetInnerMessage(calendarEntryValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(calendarEntryValidationException.InnerException);
             }
             catch (CalendarEntryDependencyException calendarEntryDependencyException)
             {

@@ -4,15 +4,19 @@
 // ---------------------------------------------------------------
 
 using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.CourseAttachments.Exceptions
 {
-    public class InvalidCourseAttachmentException : Exception
+    public class InvalidCourseAttachmentException : Xeption
     {
         public InvalidCourseAttachmentException(string parameterName, object parameterValue)
             : base($"Invalid Course Attachment, " +
                   $"ParameterName: {parameterName}, " +
                   $"ParameterValue: {parameterValue}.")
         { }
+
+        public InvalidCourseAttachmentException()
+            : base("Invalid course attachment. Please fix the errors and try again.") { }
     }
 }

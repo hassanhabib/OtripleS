@@ -53,45 +53,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
             CourseAttachment inputCourseAttachment = randomCourseAttachment;
             inputCourseAttachment.CourseId = default;
 
-            var invalidCourseAttachmentInputException = new InvalidCourseAttachmentException(
-                parameterName: nameof(CourseAttachment.CourseId),
-                parameterValue: inputCourseAttachment.CourseId);
+            var invalidCourseAttachmentInputException = new InvalidCourseAttachmentException();
 
-            var expectedCourseAttachmentValidationException =
-                new CourseAttachmentValidationException(invalidCourseAttachmentInputException);
+            invalidCourseAttachmentInputException.AddData(
+                key: nameof(CourseAttachment.CourseId),
+                values: "Id is required");
 
-            // when
-            ValueTask<CourseAttachment> addCourseAttachmentTask =
-                this.courseAttachmentService.AddCourseAttachmentAsync(inputCourseAttachment);
-
-            // then
-            await Assert.ThrowsAsync<CourseAttachmentValidationException>(() =>
-                addCourseAttachmentTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertCourseAttachmentAsync(It.IsAny<CourseAttachment>()),
-                    Times.Never);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenAttachmentIdIsInvalidAndLogItAsync()
-        {
-            // given
-            CourseAttachment randomCourseAttachment = CreateRandomCourseAttachment();
-            CourseAttachment inputCourseAttachment = randomCourseAttachment;
-            inputCourseAttachment.AttachmentId = default;
-
-            var invalidCourseAttachmentInputException = new InvalidCourseAttachmentException(
-                parameterName: nameof(CourseAttachment.AttachmentId),
-                parameterValue: inputCourseAttachment.AttachmentId);
+            invalidCourseAttachmentInputException.AddData(
+                key: nameof(CourseAttachment.AttachmentId),
+                values: "Id is required");
 
             var expectedCourseAttachmentValidationException =
                 new CourseAttachmentValidationException(invalidCourseAttachmentInputException);

@@ -12,10 +12,13 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
 {
     public partial class CourseAttachmentService
     {
-        private static void ValidateCourseAttachmentOnCreate(CourseAttachment courseAttachment)
+        private static void ValidateCourseAttachmentOnAdd(CourseAttachment courseAttachment)
         {
             ValidateCourseAttachmentIsNull(courseAttachment);
-            ValidateCourseAttachmentIds(courseAttachment.CourseId, courseAttachment.AttachmentId);
+
+            Validate(
+                (Rule: IsInvalid(courseAttachment.CourseId), Parameter: nameof(CourseAttachment.CourseId)),
+                (Rule: IsInvalid(courseAttachment.AttachmentId), Parameter: nameof(CourseAttachment.AttachmentId)));
         }
 
         private static void ValidateCourseAttachmentIsNull(CourseAttachment courseAttachment)
@@ -28,18 +31,9 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
 
         private static void ValidateCourseAttachmentIds(Guid courseId, Guid attachmentId)
         {
-            switch (courseId, attachmentId)
-            {
-                case { } when courseId == default:
-                    throw new InvalidCourseAttachmentException(
-                        parameterName: nameof(CourseAttachment.CourseId),
-                        parameterValue: courseId);
-
-                case { } when attachmentId == default:
-                    throw new InvalidCourseAttachmentException(
-                        parameterName: nameof(CourseAttachment.AttachmentId),
-                        parameterValue: attachmentId);
-            }
+            Validate(
+               (Rule: IsInvalid(courseId), Parameter: nameof(CourseAttachment.CourseId)),
+               (Rule: IsInvalid(attachmentId), Parameter: nameof(CourseAttachment.AttachmentId)));
         }
 
         private static void ValidateStorageCourseAttachment(
@@ -58,6 +52,29 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
             {
                 this.loggingBroker.LogWarning("No course attachments found in storage.");
             }
+        }
+
+        private static dynamic IsInvalid(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidCourseAttachmentException = new InvalidCourseAttachmentException();
+
+            foreach((dynamic rule, string parameter) in validations)
+            {
+                if(rule.Condition)
+                {
+                    invalidCourseAttachmentException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidCourseAttachmentException.ThrowIfContainsErrors();
         }
     }
 }
