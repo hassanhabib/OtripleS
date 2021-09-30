@@ -15,6 +15,7 @@ using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.ExamAttachments;
 using OtripleS.Web.Api.Services.Foundations.ExamAttachments;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
 {
@@ -35,6 +36,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
                 storageBroker: this.storageBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
+        }
+
+        private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)

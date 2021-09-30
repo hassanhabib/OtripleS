@@ -46,51 +46,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenExamIdIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddWhenIdsAreInvalidAndLogItAsync()
         {
             // given
             ExamAttachment randomExamAttachment = CreateRandomExamAttachment();
             ExamAttachment inputExamAttachment = randomExamAttachment;
             inputExamAttachment.ExamId = default;
-
-            var invalidExamAttachmentInputException = new InvalidExamAttachmentException(
-                parameterName: nameof(ExamAttachment.ExamId),
-                parameterValue: inputExamAttachment.ExamId);
-
-            var expectedExamAttachmentValidationException =
-                new ExamAttachmentValidationException(invalidExamAttachmentInputException);
-
-            // when
-            ValueTask<ExamAttachment> addExamAttachmentTask =
-                this.examAttachmentService.AddExamAttachmentAsync(inputExamAttachment);
-
-            // then
-            await Assert.ThrowsAsync<ExamAttachmentValidationException>(() =>
-                addExamAttachmentTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamAttachmentValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertExamAttachmentAsync(It.IsAny<ExamAttachment>()),
-                    Times.Never);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenAttachmentIdIsInvalidAndLogItAsync()
-        {
-            // given
-            ExamAttachment randomExamAttachment = CreateRandomExamAttachment();
-            ExamAttachment inputExamAttachment = randomExamAttachment;
             inputExamAttachment.AttachmentId = default;
 
-            var invalidExamAttachmentInputException = new InvalidExamAttachmentException(
-                parameterName: nameof(ExamAttachment.AttachmentId),
-                parameterValue: inputExamAttachment.AttachmentId);
+            var invalidExamAttachmentInputException = new InvalidExamAttachmentException();
+
+            invalidExamAttachmentInputException.AddData(
+                key: nameof(ExamAttachment.ExamId),
+                values: "Id is required.");
+
+            invalidExamAttachmentInputException.AddData(
+                key: nameof(ExamAttachment.AttachmentId),
+                values: "Id is required.");
 
             var expectedExamAttachmentValidationException =
                 new ExamAttachmentValidationException(invalidExamAttachmentInputException);
@@ -104,7 +76,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
                 addExamAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamAttachmentValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedExamAttachmentValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
