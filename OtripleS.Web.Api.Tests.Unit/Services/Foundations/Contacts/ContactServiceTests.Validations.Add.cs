@@ -252,6 +252,56 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Theory]
+        [MemberData(nameof(InvalidMinuteCases))]
+        public async void ShouldThrowValidationExceptionOnCreateWhenCreatedDateIsNotRecentAndLogItAsync(
+            int minutes)
+        {
+            // given
+            DateTimeOffset randomDate = GetRandomDateTime();
+            Contact randomContact = CreateRandomContact(randomDate);
+            Contact invalidContact = randomContact;
+            invalidContact.CreatedDate = randomDate.AddMinutes(minutes);
+            invalidContact.UpdatedDate = invalidContact.CreatedDate;
+            var invalidContactException = new InvalidContactException();
+
+            invalidContactException.AddData(
+                key: nameof(Contact.CreatedDate),
+                values: $"Date is not recent");
+
+            var expectedContactValidationException =
+                new ContactValidationException(invalidContactException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
+            // when
+            ValueTask<Contact> createContactTask =
+                this.contactService.AddContactAsync(invalidContact);
+
+            // then
+            await Assert.ThrowsAsync<ContactValidationException>(() =>
+                createContactTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedContactValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertContactAsync(It.IsAny<Contact>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Fact]
         public async void ShouldThrowValidationExceptionOnAddWhenCreatedByIsInvalidAndLogItAsync()
         {
