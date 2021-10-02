@@ -169,6 +169,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
         }
 
         [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedDateIsNotSameToCreatedDateAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Contact randomContact = CreateRandomContact(dateTime);
+            Contact invalidContact = randomContact;
+            invalidContact.UpdatedDate = GetRandomDateTime();
+            var invalidContactException = new InvalidContactException();
+
+            invalidContactException.AddData(
+                key: nameof(Contact.UpdatedDate),
+                values: $"Date is not the same as {nameof(Contact.CreatedDate)}");
+
+            var expectedContactValidationException =
+                new ContactValidationException(invalidContactException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            // when
+            ValueTask<Contact> createContactTask =
+                this.contactService.AddContactAsync(invalidContact);
+
+            // then
+            await Assert.ThrowsAsync<ContactValidationException>(() =>
+                createContactTask.AsTask());
+
+            //this.dateTimeBrokerMock.Verify(broker =>
+            //    broker.GetCurrentDateTime(),
+            //        Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedContactValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertContactAsync(It.IsAny<Contact>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public async void ShouldThrowValidationExceptionOnAddWhenIdIsInvalidAndLogItAsync()
         {
             // given
