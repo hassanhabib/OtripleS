@@ -41,9 +41,7 @@ namespace OtripleS.Web.Api.Controllers
             }
             catch (ContactValidationException contactValidationException)
             {
-                string innerMessage = GetInnerMessage(contactValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(contactValidationException.InnerException);
             }
             catch (ContactDependencyException contactDependencyException)
             {
