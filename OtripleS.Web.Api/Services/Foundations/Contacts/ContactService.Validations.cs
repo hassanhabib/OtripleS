@@ -43,6 +43,31 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
 
         }
 
+        private void ValidateContactOnModify(Contact contact)
+        {
+            ValidateContactIsNotNull(contact);
+
+            Validate
+            (
+                (Rule: IsInvalidX(contact.Id), Parameter: nameof(Contact.Id)),
+                (Rule: IsInvalidX(contact.Information), Parameter: nameof(Contact.Information)),
+                (Rule: IsInvalidX(contact.Notes), Parameter: nameof(Contact.Notes)),
+                (Rule: IsInvalidX(contact.CreatedBy), Parameter: nameof(Contact.CreatedBy)),
+                (Rule: IsInvalidX(contact.UpdatedBy), Parameter: nameof(Contact.UpdatedBy)),
+                (Rule: IsInvalidX(contact.CreatedDate), Parameter: nameof(Contact.CreatedDate)),
+                (Rule: IsInvalidX(contact.UpdatedDate), Parameter: nameof(Contact.UpdatedDate)),
+                (Rule: IsNotRecent(contact.UpdatedDate), Parameter: nameof(Contact.UpdatedDate)),
+
+                (Rule: IsSame(
+                    firstDate: contact.UpdatedDate,
+                    secondDate: contact.CreatedDate,
+                    secondDateName: nameof(Contact.CreatedDate)),
+                Parameter: nameof(Contact.UpdatedDate))
+
+            );
+
+        }
+
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidContactException = new InvalidContactException();
@@ -100,6 +125,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
         {
             Condition = firstDate != secondDate,
             Message = $"Date is not the same as {secondDateName}"
+        };
+
+        private static dynamic IsSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+        {
+            Condition = firstDate == secondDate,
+            Message = $"Date is the same as {secondDateName}"
         };
 
         private static void ValidateContactAuditFields(Contact contact)
@@ -193,15 +227,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
             {
                 throw new NotFoundContactException(contactId);
             }
-        }
-
-        private void ValidateContactOnModify(Contact contact)
-        {
-            ValidateContactIsNotNull(contact);
-            ValidateContactId(contact.Id);
-            ValidateContactAuditFields(contact);
-            ValidateDatesAreNotSame(contact);
-            ValidateUpdatedDateIsRecent(contact);
         }
 
         private static void ValidateAgainstStorageContactOnModify(Contact inputContact, Contact storageContact)
