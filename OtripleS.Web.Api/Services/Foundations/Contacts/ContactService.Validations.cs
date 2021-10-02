@@ -30,7 +30,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
                     firstId: contact.UpdatedBy,
                     secondId: contact.CreatedBy,
                     secondIdName: nameof(Contact.CreatedBy)),
-                Parameter: nameof(Contact.UpdatedBy))
+                Parameter: nameof(Contact.UpdatedBy)),
+
+                (Rule: IsNotSame(
+                    firstDate: contact.UpdatedDate,
+                    secondDate: contact.CreatedDate,
+                    secondDateName: nameof(Contact.CreatedDate)),
+                Parameter: nameof(Contact.UpdatedDate))
 
             );
 
@@ -78,6 +84,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
         {
             Condition = firstId != secondId,
             Message = $"Id is not the same as {secondIdName}"
+        };
+
+        private static dynamic IsNotSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+        {
+            Condition = firstDate != secondDate,
+            Message = $"Date is not the same as {secondDateName}"
         };
 
         private static void ValidateContactAuditFields(Contact contact)
