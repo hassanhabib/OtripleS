@@ -18,14 +18,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
         public async Task ShouldThrowValidatonExceptionOnRetrieveWhenExamIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
+            Guid randomAttachmentId = default;
             Guid randomExamId = default;
             Guid inputAttachmentId = randomAttachmentId;
             Guid invalidExamId = randomExamId;
 
-            var invalidExamAttachmentInputException = new InvalidExamAttachmentException(
-                parameterName: nameof(ExamAttachment.ExamId),
-                parameterValue: invalidExamId);
+            var invalidExamAttachmentInputException = new InvalidExamAttachmentException();
+
+            invalidExamAttachmentInputException.AddData(
+                key: nameof(ExamAttachment.ExamId),
+                values: "Id is required");
+
+            invalidExamAttachmentInputException.AddData(
+                key: nameof(ExamAttachment.AttachmentId),
+                values: "Id is required");
 
             var expectedExamAttachmentValidationException =
                 new ExamAttachmentValidationException(invalidExamAttachmentInputException);
@@ -41,46 +47,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
                 retrieveExamAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamAttachmentValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenAttachmentIdIsInvalidAndLogItAsync()
-        {
-            // given
-            Guid randomAttachmentId = default;
-            Guid randomExamId = Guid.NewGuid();
-            Guid invalidAttachmentId = randomAttachmentId;
-            Guid inputExamId = randomExamId;
-
-            var invalidExamAttachmentInputException = new InvalidExamAttachmentException(
-                parameterName: nameof(ExamAttachment.AttachmentId),
-                parameterValue: invalidAttachmentId);
-
-            var expectedExamAttachmentValidationException =
-                new ExamAttachmentValidationException(invalidExamAttachmentInputException);
-
-            // when
-            ValueTask<ExamAttachment> retrieveExamAttachmentTask =
-                this.examAttachmentService.RetrieveExamAttachmentByIdAsync(
-                    inputExamId,
-                    invalidAttachmentId);
-
-            // then
-            await Assert.ThrowsAsync<ExamAttachmentValidationException>(() =>
-                retrieveExamAttachmentTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamAttachmentValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedExamAttachmentValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>

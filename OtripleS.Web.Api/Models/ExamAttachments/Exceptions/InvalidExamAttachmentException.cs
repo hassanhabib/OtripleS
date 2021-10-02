@@ -4,15 +4,19 @@
 // ---------------------------------------------------------------
 
 using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.ExamAttachments.Exceptions
 {
-    public class InvalidExamAttachmentException : Exception
+    public class InvalidExamAttachmentException : Xeption
     {
         public InvalidExamAttachmentException(string parameterName, object parameterValue)
            : base($"Invalid Exam Attachment, " +
                  $"ParameterName: {parameterName}, " +
                  $"ParameterValue: {parameterValue}.")
         { }
+
+        public InvalidExamAttachmentException()
+            : base("Invalid exam attachment. Please fix the errors and try again.") { }
     }
 }
