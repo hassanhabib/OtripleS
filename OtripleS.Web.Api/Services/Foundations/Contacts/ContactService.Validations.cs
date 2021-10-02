@@ -15,10 +15,54 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
         private void ValidateContactOnCreate(Contact contact)
         {
             ValidateContactIsNotNull(contact);
-            ValidateContactId(contact.Id);
-            ValidateContactAuditFields(contact);
-            ValidateContactAuditFieldsOnCreate(contact);
+
+            Validate
+            (
+                (Rule: IsInvalidX(contact.Id), Parameter: nameof(Contact.Id)),
+                (Rule: IsInvalidX(contact.Information), Parameter: nameof(Contact.Information)),
+                (Rule: IsInvalidX(contact.Notes), Parameter: nameof(Contact.Notes)),
+                (Rule: IsInvalidX(contact.CreatedBy), Parameter: nameof(Contact.CreatedBy)),
+                (Rule: IsInvalidX(contact.UpdatedBy), Parameter: nameof(Contact.UpdatedBy)),
+                (Rule: IsInvalidX(contact.CreatedDate), Parameter: nameof(Contact.CreatedDate)),
+                (Rule: IsInvalidX(contact.UpdatedDate), Parameter: nameof(Contact.UpdatedDate))
+            );
+
         }
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidContactException = new InvalidContactException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidContactException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidContactException.ThrowIfContainsErrors();
+        }
+
+        private static dynamic IsInvalidX(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static dynamic IsInvalidX(string text) => new
+        {
+            Condition = String.IsNullOrWhiteSpace(text),
+            Message = "Text is required"
+        };
+
+        private static dynamic IsInvalidX(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required"
+        };
 
         private static void ValidateContactAuditFields(Contact contact)
         {
