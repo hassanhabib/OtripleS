@@ -24,7 +24,14 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
                 (Rule: IsInvalidX(contact.CreatedBy), Parameter: nameof(Contact.CreatedBy)),
                 (Rule: IsInvalidX(contact.UpdatedBy), Parameter: nameof(Contact.UpdatedBy)),
                 (Rule: IsInvalidX(contact.CreatedDate), Parameter: nameof(Contact.CreatedDate)),
-                (Rule: IsInvalidX(contact.UpdatedDate), Parameter: nameof(Contact.UpdatedDate))
+                (Rule: IsInvalidX(contact.UpdatedDate), Parameter: nameof(Contact.UpdatedDate)),
+
+                (Rule: IsNotSame(
+                    firstId: contact.UpdatedBy,
+                    secondId: contact.CreatedBy,
+                    secondIdName: nameof(Contact.CreatedBy)),
+                Parameter: nameof(Contact.UpdatedBy))
+
             );
 
         }
@@ -62,6 +69,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
         {
             Condition = date == default,
             Message = "Date is required"
+        };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+        {
+            Condition = firstId != secondId,
+            Message = $"Id is not the same as {secondIdName}"
         };
 
         private static void ValidateContactAuditFields(Contact contact)
