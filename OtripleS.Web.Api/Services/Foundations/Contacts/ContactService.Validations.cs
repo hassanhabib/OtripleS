@@ -25,6 +25,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
                 (Rule: IsInvalidX(contact.UpdatedBy), Parameter: nameof(Contact.UpdatedBy)),
                 (Rule: IsInvalidX(contact.CreatedDate), Parameter: nameof(Contact.CreatedDate)),
                 (Rule: IsInvalidX(contact.UpdatedDate), Parameter: nameof(Contact.UpdatedDate)),
+                (Rule: IsNotRecent(contact.CreatedDate), Parameter: nameof(Contact.CreatedDate)),
 
                 (Rule: IsNotSame(
                     firstId: contact.UpdatedBy,
@@ -75,6 +76,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
         {
             Condition = date == default,
             Message = "Date is required"
+        };
+
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
+        {
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent"
         };
 
         private static dynamic IsNotSame(
