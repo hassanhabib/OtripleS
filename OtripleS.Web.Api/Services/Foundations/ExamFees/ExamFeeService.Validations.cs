@@ -15,9 +15,26 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
         public void ValidateExamFeeOnCreate(ExamFee examFee)
         {
             ValidateExamFeeIsNull(examFee);
-            ValidateExamFeeIds(examFee.ExamId, examFee.FeeId);
-            ValidateInvalidAuditFields(examFee);
-            ValidateInvalidAuditFieldsOnCreate(examFee);
+
+            Validate(
+                (Rule: IsInvalid(examFee.ExamId), Parameter: nameof(ExamFee.ExamId)),
+                (Rule: IsInvalid(examFee.FeeId), Parameter: nameof(ExamFee.FeeId)),
+                (Rule: IsInvalid(examFee.CreatedBy), Parameter: nameof(ExamFee.CreatedBy)),
+                (Rule: IsInvalid(examFee.CreatedDate), Parameter: nameof(ExamFee.CreatedDate)),
+                (Rule: IsInvalid(examFee.UpdatedBy), Parameter: nameof(ExamFee.UpdatedBy)),
+                (Rule: IsInvalid(examFee.UpdatedDate), Parameter: nameof(ExamFee.UpdatedDate)),
+                (Rule: IsNotRecent(examFee.CreatedDate), Parameter: nameof(ExamFee.CreatedDate)),
+
+                (Rule: IsNotSame(
+                    firstId: examFee.UpdatedBy,
+                    secondId: examFee.CreatedBy,
+                    secondIdName: nameof(ExamFee.CreatedBy)),
+                Parameter: nameof(ExamFee.UpdatedBy)),
+                (Rule: IsNotSame(
+                    firstId: examFee.UpdatedDate,
+                    secondId: examFee.CreatedDate,
+                    secondIdName: nameof(ExamFee.CreatedDate)),
+                Parameter: nameof(ExamFee.UpdatedDate)));
         }
 
         private void ValidateExamFeeOnModify(ExamFee examFee)
@@ -140,24 +157,8 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
                 (Rule: IsInvalid(examFee.CreatedBy), Parameter: nameof(ExamFee.CreatedBy)),
                 (Rule: IsInvalid(examFee.CreatedDate), Parameter: nameof(ExamFee.CreatedDate)),
                 (Rule: IsInvalid(examFee.UpdatedBy), Parameter: nameof(ExamFee.UpdatedBy)),
-                (Rule: IsInvalid(examFee.UpdatedDate), Parameter: nameof(ExamFee.UpdatedDate)));
-        }
-
-        private void ValidateInvalidAuditFieldsOnCreate(ExamFee examFee)
-        {
-            Validate(
-                (Rule: IsNotSame(
-                    firstId: examFee.UpdatedBy,
-                    secondId: examFee.CreatedBy,
-                    secondIdName: nameof(ExamFee.CreatedBy)),
-                Parameter: nameof(ExamFee.UpdatedBy)),
-                (Rule: IsNotSame(
-                    firstId: examFee.UpdatedDate,
-                    secondId: examFee.CreatedDate,
-                    secondIdName: nameof(ExamFee.CreatedDate)),
-                Parameter: nameof(ExamFee.UpdatedDate)),
-                (Rule: IsNotRecent(examFee.CreatedDate), Parameter: nameof(ExamFee.CreatedDate))
-                );
+                (Rule: IsInvalid(examFee.UpdatedDate), Parameter: nameof(ExamFee.UpdatedDate)),
+                (Rule: IsNotRecent(examFee.CreatedDate), Parameter: nameof(ExamFee.CreatedDate)));
         }
 
         private void ValidateStorageExamFees(IQueryable<ExamFee> storageExamFees)
