@@ -93,6 +93,15 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
             Message = "Date is required"
         };
 
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not the same as {secondIdName}"
+            };
+
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidExamFeeException = new InvalidExamFeeException();
@@ -121,13 +130,16 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
 
         private void ValidateInvalidAuditFieldsOnCreate(ExamFee examFee)
         {
+            Validate(
+                (Rule: IsNotSame(
+                    firstId: examFee.UpdatedBy,
+                    secondId: examFee.CreatedBy,
+                    secondIdName: nameof(ExamFee.CreatedBy)),
+                Parameter: nameof(ExamFee.UpdatedBy))
+                );
+
             switch (examFee)
             {
-                case { } when examFee.UpdatedBy != examFee.CreatedBy:
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.UpdatedBy),
-                        parameterValue: examFee.UpdatedBy);
-
                 case { } when examFee.UpdatedDate != examFee.CreatedDate:
                     throw new InvalidExamFeeException(
                         parameterName: nameof(ExamFee.UpdatedDate),
