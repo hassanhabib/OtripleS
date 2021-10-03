@@ -191,9 +191,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             inputExamFee.UpdatedBy = randomExamFee.CreatedBy;
             inputExamFee.UpdatedDate = GetRandomDateTime();
 
-            var invalidExamFeeInputException = new InvalidExamFeeException(
-                parameterName: nameof(ExamFee.UpdatedDate),
-                parameterValue: inputExamFee.UpdatedDate);
+            var invalidExamFeeInputException = new InvalidExamFeeException();
+
+            invalidExamFeeInputException.AddData(
+                key: nameof(ExamFee.UpdatedDate),
+                values: $"Date is not the same as {nameof(ExamFee.CreatedDate)}");
 
             var expectedExamFeeValidationException =
                 new ExamFeeValidationException(invalidExamFeeInputException);
@@ -207,7 +209,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                 createExamFeeTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedExamFeeValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
