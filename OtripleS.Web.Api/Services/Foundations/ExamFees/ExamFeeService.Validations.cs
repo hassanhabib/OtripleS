@@ -87,13 +87,6 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
             }
         }
 
-        private static void ValidateExamFeeIds(Guid examId, Guid feeId)
-        {
-            Validate(
-                (Rule: IsInvalid(examId), Parameter: nameof(ExamFee.ExamId)),
-                (Rule: IsInvalid(feeId), Parameter: nameof(ExamFee.FeeId)));
-        }
-
         private static dynamic IsInvalid(Guid id) => new
         {
             Condition = id == Guid.Empty,
