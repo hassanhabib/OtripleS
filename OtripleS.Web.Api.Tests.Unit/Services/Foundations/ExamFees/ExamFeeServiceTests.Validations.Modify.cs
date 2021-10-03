@@ -250,7 +250,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                 broker.UpdateExamFeeAsync(It.IsAny<ExamFee>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }

@@ -49,7 +49,13 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
                 (Rule: IsInvalid(examFee.UpdatedBy), Parameter: nameof(ExamFee.UpdatedBy)), 
                 (Rule: IsInvalid(examFee.CreatedDate), Parameter: nameof(ExamFee.CreatedDate)),
                 (Rule: IsInvalid(examFee.UpdatedDate), Parameter: nameof(ExamFee.UpdatedDate)),
-                (Rule: IsNotRecent(examFee.CreatedDate), Parameter: nameof(ExamFee.CreatedDate)));
+                (Rule: IsNotRecent(examFee.CreatedDate), Parameter: nameof(ExamFee.CreatedDate)),
+
+                (Rule: IsSame(
+                    firstId: examFee.UpdatedDate,
+                    secondId: examFee.CreatedDate,
+                    secondIdName: nameof(ExamFee.CreatedDate)),
+                Parameter: nameof(ExamFee.UpdatedDate)));
 
             ValidateInvalidAuditFieldsOnModify(examFee);
         }
@@ -58,11 +64,6 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
         {
             switch (examFee)
             {
-                case { } when examFee.UpdatedDate == examFee.CreatedDate:
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.UpdatedDate),
-                        parameterValue: examFee.UpdatedDate);
-
                 case { } when IsDateNotRecent(examFee.UpdatedDate):
                     throw new InvalidExamFeeException(
                         parameterName: nameof(ExamFee.UpdatedDate),
@@ -134,6 +135,15 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
             {
                 Condition = firstId != secondId,
                 Message = $"Date is not the same as {secondIdName}"
+            };
+
+        private static dynamic IsSame(
+            DateTimeOffset firstId,
+            DateTimeOffset secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId == secondId,
+                Message = $"Date is the same as {secondIdName}"
             };
 
         private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
