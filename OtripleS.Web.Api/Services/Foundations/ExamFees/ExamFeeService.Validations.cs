@@ -102,6 +102,15 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
                 Message = $"Id is not the same as {secondIdName}"
             };
 
+        private static dynamic IsNotSame(
+            DateTimeOffset firstId,
+            DateTimeOffset secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Date is not the same as {secondIdName}"
+            };
+
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidExamFeeException = new InvalidExamFeeException();
@@ -135,16 +144,16 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
                     firstId: examFee.UpdatedBy,
                     secondId: examFee.CreatedBy,
                     secondIdName: nameof(ExamFee.CreatedBy)),
-                Parameter: nameof(ExamFee.UpdatedBy))
+                Parameter: nameof(ExamFee.UpdatedBy)),
+                (Rule: IsNotSame(
+                    firstId: examFee.UpdatedDate,
+                    secondId: examFee.CreatedDate,
+                    secondIdName: nameof(ExamFee.CreatedDate)),
+                Parameter: nameof(ExamFee.UpdatedDate))
                 );
 
             switch (examFee)
             {
-                case { } when examFee.UpdatedDate != examFee.CreatedDate:
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.UpdatedDate),
-                        parameterValue: examFee.UpdatedDate);
-
                 case { } when IsDateNotRecent(examFee.CreatedDate):
                     throw new InvalidExamFeeException(
                         parameterName: nameof(ExamFee.CreatedDate),
