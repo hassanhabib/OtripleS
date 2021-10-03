@@ -76,18 +76,32 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
 
         private static void ValidateExamFeeIds(Guid examId, Guid feeId)
         {
-            if (examId == default)
+            Validate(
+                (Rule: IsInvalid(examId), Parameter: nameof(ExamFee.ExamId)),
+                (Rule: IsInvalid(feeId), Parameter: nameof(ExamFee.FeeId)));
+        }
+
+        private static dynamic IsInvalid(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidExamFeeException = new InvalidExamFeeException();
+
+            foreach ((dynamic rule, string parameter) in validations)
             {
-                throw new InvalidExamFeeException(
-                    parameterName: nameof(ExamFee.ExamId),
-                    parameterValue: examId);
+                if (rule.Condition)
+                {
+                    invalidExamFeeException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
             }
-            else if (feeId == default)
-            {
-                throw new InvalidExamFeeException(
-                    parameterName: nameof(ExamFee.FeeId),
-                    parameterValue: feeId);
-            }
+
+            invalidExamFeeException.ThrowIfContainsErrors();
         }
 
         private static void ValidateInvalidAuditFields(ExamFee examFee)
@@ -144,8 +158,6 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
                 this.loggingBroker.LogWarning("No exam fees found in storage.");
             }
         }
-
-        private static bool IsInvalid(Guid input) => input == default;
         private static bool IsInvalid(DateTimeOffset input) => input == default;
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
