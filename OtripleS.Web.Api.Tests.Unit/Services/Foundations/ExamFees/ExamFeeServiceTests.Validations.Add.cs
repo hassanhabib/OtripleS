@@ -47,51 +47,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenExamIdIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddWhenIdsAreInvalidAndLogItAsync()
         {
             // given
             ExamFee randomExamFee = CreateRandomExamFee();
             ExamFee inputExamFee = randomExamFee;
             inputExamFee.ExamId = default;
-
-            var invalidExamFeeInputException = new InvalidExamFeeException(
-                parameterName: nameof(ExamFee.ExamId),
-                parameterValue: inputExamFee.ExamId);
-
-            var expectedExamFeeValidationException =
-                new ExamFeeValidationException(invalidExamFeeInputException);
-
-            // when
-            ValueTask<ExamFee> addExamFeeTask =
-                this.examFeeService.AddExamFeeAsync(inputExamFee);
-
-            // then
-            await Assert.ThrowsAsync<ExamFeeValidationException>(() =>
-                addExamFeeTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertExamFeeAsync(It.IsAny<ExamFee>()),
-                    Times.Never);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenFeeIdIsInvalidAndLogItAsync()
-        {
-            // given
-            ExamFee randomExamFee = CreateRandomExamFee();
-            ExamFee inputExamFee = randomExamFee;
             inputExamFee.FeeId = default;
 
-            var invalidExamFeeInputException = new InvalidExamFeeException(
-                parameterName: nameof(ExamFee.FeeId),
-                parameterValue: inputExamFee.FeeId);
+            var invalidExamFeeInputException = new InvalidExamFeeException();
+
+            invalidExamFeeInputException.AddData(
+                key: nameof(ExamFee.ExamId),
+                values: "Id is required");
+
+            invalidExamFeeInputException.AddData(
+                key: nameof(ExamFee.FeeId),
+                values: "Id is required");
 
             var expectedExamFeeValidationException =
                 new ExamFeeValidationException(invalidExamFeeInputException);
@@ -105,7 +77,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                 addExamFeeTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedExamFeeValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>

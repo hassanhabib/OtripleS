@@ -16,6 +16,7 @@ using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.ExamFees;
 using OtripleS.Web.Api.Services.Foundations.ExamFees;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
 {
@@ -58,6 +59,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                 .OnProperty(examFee => examFee.StudentExamFees).IgnoreIt();
 
             return filler;
+        }
+
+        private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
