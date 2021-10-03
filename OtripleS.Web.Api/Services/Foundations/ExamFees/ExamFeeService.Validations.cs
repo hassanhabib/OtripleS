@@ -87,6 +87,12 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
             Message = "Id is required"
         };
 
+        private static dynamic IsInvalid(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required"
+        };
+
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidExamFeeException = new InvalidExamFeeException();
@@ -106,28 +112,11 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
 
         private static void ValidateInvalidAuditFields(ExamFee examFee)
         {
-            switch (examFee)
-            {
-                case { } when IsInvalid(examFee.CreatedBy):
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.CreatedBy),
-                        parameterValue: examFee.CreatedBy);
-
-                case { } when IsInvalid(examFee.CreatedDate):
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.CreatedDate),
-                        parameterValue: examFee.CreatedDate);
-
-                case { } when IsInvalid(examFee.UpdatedBy):
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.UpdatedBy),
-                        parameterValue: examFee.UpdatedBy);
-
-                case { } when IsInvalid(examFee.UpdatedDate):
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.UpdatedDate),
-                        parameterValue: examFee.UpdatedDate);
-            }
+            Validate(
+                (Rule: IsInvalid(examFee.CreatedBy), Parameter: nameof(ExamFee.CreatedBy)),
+                (Rule: IsInvalid(examFee.CreatedDate), Parameter: nameof(ExamFee.CreatedDate)),
+                (Rule: IsInvalid(examFee.UpdatedBy), Parameter: nameof(ExamFee.UpdatedBy)),
+                (Rule: IsInvalid(examFee.UpdatedDate), Parameter: nameof(ExamFee.UpdatedDate)));
         }
 
         private void ValidateInvalidAuditFieldsOnCreate(ExamFee examFee)
@@ -158,7 +147,6 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
                 this.loggingBroker.LogWarning("No exam fees found in storage.");
             }
         }
-        private static bool IsInvalid(DateTimeOffset input) => input == default;
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
