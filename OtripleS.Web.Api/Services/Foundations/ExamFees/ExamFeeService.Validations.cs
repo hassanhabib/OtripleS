@@ -111,6 +111,12 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
                 Message = $"Date is not the same as {secondIdName}"
             };
 
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
+        {
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent"
+        };
+
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidExamFeeException = new InvalidExamFeeException();
@@ -128,7 +134,7 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
             invalidExamFeeException.ThrowIfContainsErrors();
         }
 
-        private static void ValidateInvalidAuditFields(ExamFee examFee)
+        private void ValidateInvalidAuditFields(ExamFee examFee)
         {
             Validate(
                 (Rule: IsInvalid(examFee.CreatedBy), Parameter: nameof(ExamFee.CreatedBy)),
@@ -149,16 +155,9 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
                     firstId: examFee.UpdatedDate,
                     secondId: examFee.CreatedDate,
                     secondIdName: nameof(ExamFee.CreatedDate)),
-                Parameter: nameof(ExamFee.UpdatedDate))
+                Parameter: nameof(ExamFee.UpdatedDate)),
+                (Rule: IsNotRecent(examFee.CreatedDate), Parameter: nameof(ExamFee.CreatedDate))
                 );
-
-            switch (examFee)
-            {
-                case { } when IsDateNotRecent(examFee.CreatedDate):
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.CreatedDate),
-                        parameterValue: examFee.CreatedDate);
-            }
         }
 
         private void ValidateStorageExamFees(IQueryable<ExamFee> storageExamFees)
