@@ -176,7 +176,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             var invalidExamFeeInputException = new InvalidExamFeeException();
 
             invalidExamFeeInputException.AddData(
-                key: nameof(ExamFee.CreatedDate),
+                key: nameof(ExamFee.UpdatedDate),
                 values: $"Date is not recent");
 
             var expectedExamFeeValidationException =
