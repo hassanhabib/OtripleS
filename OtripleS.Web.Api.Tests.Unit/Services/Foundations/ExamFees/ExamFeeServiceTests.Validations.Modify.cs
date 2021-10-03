@@ -111,7 +111,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -132,7 +131,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
 
             invalidExamFeeInputException.AddData(
                 key: nameof(ExamFee.UpdatedDate),
-                values: "Date is required");
+                "Date is required",
+                $"Date is the same as {nameof(ExamFee.CreatedDate)}");
 
             var expectedExamFeeValidationException =
                 new ExamFeeValidationException(invalidExamFeeInputException);
@@ -221,11 +221,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             DateTimeOffset dateTime = GetRandomDateTime();
             ExamFee randomExamFee = CreateRandomExamFee(dateTime);
             ExamFee inputExamFee = randomExamFee;
+
             var invalidExamFeeInputException = new InvalidExamFeeException();
 
             invalidExamFeeInputException.AddData(
                 key: nameof(ExamFee.UpdatedDate),
-                values: $"Date is the same as {nameof(ExamFee.CreatedDate)}");
+                $"Date is not recent",
+                $"Date is the same as {nameof(ExamFee.CreatedDate)}");
 
             var expectedExamFeeValidationException =
                 new ExamFeeValidationException(invalidExamFeeInputException);

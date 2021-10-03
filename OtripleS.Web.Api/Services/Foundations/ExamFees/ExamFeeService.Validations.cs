@@ -56,19 +56,6 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
                     secondId: examFee.CreatedDate,
                     secondIdName: nameof(ExamFee.CreatedDate)),
                 Parameter: nameof(ExamFee.UpdatedDate)));
-
-            ValidateInvalidAuditFieldsOnModify(examFee);
-        }
-
-        private void ValidateInvalidAuditFieldsOnModify(ExamFee examFee)
-        {
-            switch (examFee)
-            {
-                case { } when IsDateNotRecent(examFee.UpdatedDate):
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.UpdatedDate),
-                        parameterValue: examFee.UpdatedDate);
-            }
         }
 
         private static void ValidateAgainstStorageExamFeeOnModify(ExamFee inputExamFee, ExamFee storageExamFee)
