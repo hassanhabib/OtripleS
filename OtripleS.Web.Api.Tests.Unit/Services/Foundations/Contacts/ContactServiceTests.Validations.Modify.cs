@@ -42,218 +42,72 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-        [Fact]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenContactIdIsInvalidAndLogItAsync()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async void ShouldThrowValidationExceptionOnModifyIfContactIsInvalidAndLogItAsync(
+            string invalidText)
         {
-            //given
-            Guid invalidContactId = Guid.Empty;
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Contact randomContact = CreateRandomContact(dateTime);
-            Contact invalidContact = randomContact;
-            invalidContact.Id = invalidContactId;
+            // given
+            var invalidContact = new Contact
+            {
+                Information = invalidText,
+                Notes = invalidText
+            };
 
-            var invalidContactException = new InvalidContactException(
-                parameterName: nameof(Contact.Id),
-                parameterValue: invalidContact.Id);
+            var invalidContactException = new InvalidContactException();
+
+            invalidContactException.AddData(
+                key: nameof(Contact.Id),
+                values: "Id is required");
+
+            invalidContactException.AddData(
+                key: nameof(Contact.Information),
+                values: "Text is required");
+
+            invalidContactException.AddData(
+                key: nameof(Contact.Notes),
+                values: "Text is required");
+
+            invalidContactException.AddData(
+                key: nameof(Contact.CreatedDate),
+                values: "Date is required");
+
+            invalidContactException.AddData(
+                key: nameof(Contact.UpdatedDate),
+                values: new string[] {
+                    "Date is required",
+                    $"Date is the same as {nameof(Contact.CreatedDate)}"
+                });
+
+            invalidContactException.AddData(
+                key: nameof(Contact.CreatedBy),
+                values: "Id is required");
+
+            invalidContactException.AddData(
+                key: nameof(Contact.UpdatedBy),
+                values: "Id is required");
 
             var expectedContactValidationException =
                 new ContactValidationException(invalidContactException);
 
-            //when
-            ValueTask<Contact> modifyContactTask =
+            // when
+            ValueTask<Contact> createContactTask =
                 this.contactService.ModifyContactAsync(invalidContact);
 
-            //then
-            await Assert.ThrowsAsync<ContactValidationException>(() =>
-                modifyContactTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
-                Times.Once);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenCreatedByIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Contact randomContact = CreateRandomContact(dateTime);
-            Contact inputContact = randomContact;
-            inputContact.CreatedBy = default;
-
-            var invalidContactInputException = new InvalidContactException(
-                parameterName: nameof(Contact.CreatedBy),
-                parameterValue: inputContact.CreatedBy);
-
-            var expectedContactValidationException =
-                new ContactValidationException(invalidContactInputException);
-
-            // when
-            ValueTask<Contact> modifyContactTask =
-                this.contactService.ModifyContactAsync(inputContact);
-
             // then
             await Assert.ThrowsAsync<ContactValidationException>(() =>
-                modifyContactTask.AsTask());
+                createContactTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectContactByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedByIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Contact randomContact = CreateRandomContact(dateTime);
-            Contact inputContact = randomContact;
-            inputContact.UpdatedBy = default;
-
-            var invalidContactInputException = new InvalidContactException(
-                parameterName: nameof(Contact.UpdatedBy),
-                parameterValue: inputContact.UpdatedBy);
-
-            var expectedContactValidationException =
-                new ContactValidationException(invalidContactInputException);
-
-            // when
-            ValueTask<Contact> modifyContactTask =
-                this.contactService.ModifyContactAsync(inputContact);
-
-            // then
-            await Assert.ThrowsAsync<ContactValidationException>(() =>
-                modifyContactTask.AsTask());
-
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectContactByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenCreatedDateIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Contact randomContact = CreateRandomContact(dateTime);
-            Contact inputContact = randomContact;
-            inputContact.CreatedDate = default;
-
-            var invalidContactInputException = new InvalidContactException(
-                parameterName: nameof(Contact.CreatedDate),
-                parameterValue: inputContact.CreatedDate);
-
-            var expectedContactValidationException =
-                new ContactValidationException(invalidContactInputException);
-
-            // when
-            ValueTask<Contact> modifyContactTask =
-                this.contactService.ModifyContactAsync(inputContact);
-
-            // then
-            await Assert.ThrowsAsync<ContactValidationException>(() =>
-                modifyContactTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectContactByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Contact randomContact = CreateRandomContact(dateTime);
-            Contact inputContact = randomContact;
-            inputContact.UpdatedDate = default;
-
-            var invalidContactInputException = new InvalidContactException(
-                parameterName: nameof(Contact.UpdatedDate),
-                parameterValue: inputContact.UpdatedDate);
-
-            var expectedContactValidationException =
-                new ContactValidationException(invalidContactInputException);
-
-            // when
-            ValueTask<Contact> modifyContactTask =
-                this.contactService.ModifyContactAsync(inputContact);
-
-            // then
-            await Assert.ThrowsAsync<ContactValidationException>(() =>
-                modifyContactTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectContactByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsSameAsCreatedDateAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Contact randomContact = CreateRandomContact(dateTime);
-            Contact inputContact = randomContact;
-
-            var invalidContactInputException = new InvalidContactException(
-                parameterName: nameof(Contact.UpdatedDate),
-                parameterValue: inputContact.UpdatedDate);
-
-            var expectedContactValidationException =
-                new ContactValidationException(invalidContactInputException);
-
-            // when
-            ValueTask<Contact> modifyContactTask =
-                this.contactService.ModifyContactAsync(inputContact);
-
-            // then
-            await Assert.ThrowsAsync<ContactValidationException>(() =>
-                modifyContactTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectContactByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedContactValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -271,13 +125,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             Contact inputContact = randomContact;
             inputContact.UpdatedBy = inputContact.CreatedBy;
             inputContact.UpdatedDate = dateTime.AddMinutes(minutes);
+            var invalidContactException = new InvalidContactException();
 
-            var invalidContactInputException = new InvalidContactException(
-                parameterName: nameof(Contact.UpdatedDate),
-                parameterValue: inputContact.UpdatedDate);
+            invalidContactException.AddData(
+                key: nameof(Contact.UpdatedDate),
+                values: $"Date is not recent");
 
             var expectedContactValidationException =
-                new ContactValidationException(invalidContactInputException);
+                new ContactValidationException(invalidContactException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -296,7 +151,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedContactValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
@@ -306,6 +161,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+
         }
 
         [Fact]

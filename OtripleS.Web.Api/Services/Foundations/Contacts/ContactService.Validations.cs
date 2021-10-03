@@ -15,10 +15,126 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
         private void ValidateContactOnCreate(Contact contact)
         {
             ValidateContactIsNotNull(contact);
-            ValidateContactId(contact.Id);
-            ValidateContactAuditFields(contact);
-            ValidateContactAuditFieldsOnCreate(contact);
+
+            Validate
+            (
+                (Rule: IsInvalidX(contact.Id), Parameter: nameof(Contact.Id)),
+                (Rule: IsInvalidX(contact.Information), Parameter: nameof(Contact.Information)),
+                (Rule: IsInvalidX(contact.Notes), Parameter: nameof(Contact.Notes)),
+                (Rule: IsInvalidX(contact.CreatedBy), Parameter: nameof(Contact.CreatedBy)),
+                (Rule: IsInvalidX(contact.UpdatedBy), Parameter: nameof(Contact.UpdatedBy)),
+                (Rule: IsInvalidX(contact.CreatedDate), Parameter: nameof(Contact.CreatedDate)),
+                (Rule: IsInvalidX(contact.UpdatedDate), Parameter: nameof(Contact.UpdatedDate)),
+                (Rule: IsNotRecent(contact.CreatedDate), Parameter: nameof(Contact.CreatedDate)),
+
+                (Rule: IsNotSame(
+                    firstId: contact.UpdatedBy,
+                    secondId: contact.CreatedBy,
+                    secondIdName: nameof(Contact.CreatedBy)),
+                Parameter: nameof(Contact.UpdatedBy)),
+
+                (Rule: IsNotSame(
+                    firstDate: contact.UpdatedDate,
+                    secondDate: contact.CreatedDate,
+                    secondDateName: nameof(Contact.CreatedDate)),
+                Parameter: nameof(Contact.UpdatedDate))
+
+            );
+
         }
+
+        private void ValidateContactOnModify(Contact contact)
+        {
+            ValidateContactIsNotNull(contact);
+
+            Validate
+            (
+                (Rule: IsInvalidX(contact.Id), Parameter: nameof(Contact.Id)),
+                (Rule: IsInvalidX(contact.Information), Parameter: nameof(Contact.Information)),
+                (Rule: IsInvalidX(contact.Notes), Parameter: nameof(Contact.Notes)),
+                (Rule: IsInvalidX(contact.CreatedBy), Parameter: nameof(Contact.CreatedBy)),
+                (Rule: IsInvalidX(contact.UpdatedBy), Parameter: nameof(Contact.UpdatedBy)),
+                (Rule: IsInvalidX(contact.CreatedDate), Parameter: nameof(Contact.CreatedDate)),
+                (Rule: IsInvalidX(contact.UpdatedDate), Parameter: nameof(Contact.UpdatedDate)),
+                (Rule: IsNotRecent(contact.UpdatedDate), Parameter: nameof(Contact.UpdatedDate)),
+
+                (Rule: IsSame(
+                    firstDate: contact.UpdatedDate,
+                    secondDate: contact.CreatedDate,
+                    secondDateName: nameof(Contact.CreatedDate)),
+                Parameter: nameof(Contact.UpdatedDate))
+
+            );
+
+        }
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidContactException = new InvalidContactException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidContactException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidContactException.ThrowIfContainsErrors();
+        }
+
+        private static dynamic IsInvalidX(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static dynamic IsInvalidX(string text) => new
+        {
+            Condition = String.IsNullOrWhiteSpace(text),
+            Message = "Text is required"
+        };
+
+        private static dynamic IsInvalidX(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required"
+        };
+
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
+        {
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent"
+        };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+        {
+            Condition = firstId != secondId,
+            Message = $"Id is not the same as {secondIdName}"
+        };
+
+        private static dynamic IsNotSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+        {
+            Condition = firstDate != secondDate,
+            Message = $"Date is not the same as {secondDateName}"
+        };
+
+        private static dynamic IsSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+        {
+            Condition = firstDate == secondDate,
+            Message = $"Date is the same as {secondDateName}"
+        };
 
         private static void ValidateContactAuditFields(Contact contact)
         {
@@ -111,15 +227,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
             {
                 throw new NotFoundContactException(contactId);
             }
-        }
-
-        private void ValidateContactOnModify(Contact contact)
-        {
-            ValidateContactIsNotNull(contact);
-            ValidateContactId(contact.Id);
-            ValidateContactAuditFields(contact);
-            ValidateDatesAreNotSame(contact);
-            ValidateUpdatedDateIsRecent(contact);
         }
 
         private static void ValidateAgainstStorageContactOnModify(Contact inputContact, Contact storageContact)

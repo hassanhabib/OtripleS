@@ -16,6 +16,7 @@ using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.Contacts;
 using OtripleS.Web.Api.Services.Foundations.Contacts;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
 {
@@ -65,6 +66,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
+        }
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
