@@ -151,9 +151,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             ExamFee inputExamFee = randomExamFee;
             inputExamFee.UpdatedBy = Guid.NewGuid();
 
-            var invalidExamFeeInputException = new InvalidExamFeeException(
-                parameterName: nameof(ExamFee.UpdatedBy),
-                parameterValue: inputExamFee.UpdatedBy);
+            var invalidExamFeeInputException = new InvalidExamFeeException();
+
+            invalidExamFeeInputException.AddData(
+                key: nameof(ExamFee.UpdatedBy),
+                values: $"Id is not the same as {nameof(ExamFee.CreatedBy)}");
 
             var expectedExamFeeValidationException =
                 new ExamFeeValidationException(invalidExamFeeInputException);
@@ -167,7 +169,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                 createExamFeeTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedExamFeeValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
