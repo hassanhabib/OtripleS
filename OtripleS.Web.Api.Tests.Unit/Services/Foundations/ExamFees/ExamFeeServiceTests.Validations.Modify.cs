@@ -115,58 +115,24 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenCreatedDateIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnModifyWhenDatesAreInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             ExamFee randomExamFee = CreateRandomExamFee(dateTime);
             ExamFee inputExamFee = randomExamFee;
             inputExamFee.CreatedDate = default;
-
-            var invalidExamFeeInputException = new InvalidExamFeeException(
-                parameterName: nameof(ExamFee.CreatedDate),
-                parameterValue: inputExamFee.CreatedDate);
-
-            var expectedExamFeeValidationException =
-                new ExamFeeValidationException(invalidExamFeeInputException);
-
-            // when
-            ValueTask<ExamFee> modifyExamFeeTask =
-                this.examFeeService.ModifyExamFeeAsync(inputExamFee);
-
-            // then
-            await Assert.ThrowsAsync<ExamFeeValidationException>(() =>
-                modifyExamFeeTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamFeeByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.UpdateExamFeeAsync(It.IsAny<ExamFee>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            ExamFee randomExamFee = CreateRandomExamFee(dateTime);
-            ExamFee inputExamFee = randomExamFee;
             inputExamFee.UpdatedDate = default;
 
-            var invalidExamFeeInputException = new InvalidExamFeeException(
-                parameterName: nameof(ExamFee.UpdatedDate),
-                parameterValue: inputExamFee.UpdatedDate);
+            var invalidExamFeeInputException = new InvalidExamFeeException();
+
+            invalidExamFeeInputException.AddData(
+                key: nameof(ExamFee.CreatedDate),
+                values: "Date is required");
+
+            invalidExamFeeInputException.AddData(
+                key: nameof(ExamFee.UpdatedDate),
+                values: "Date is required");
 
             var expectedExamFeeValidationException =
                 new ExamFeeValidationException(invalidExamFeeInputException);
@@ -180,7 +146,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                 modifyExamFeeTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedExamFeeValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
