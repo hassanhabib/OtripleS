@@ -42,9 +42,12 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
             ValidateExamFeeIsNull(examFee);
 
             Validate(
-                (Rule: IsInvalid(examFee.Id), Parameter: nameof(ExamFee.Id)));
+                (Rule: IsInvalid(examFee.Id), Parameter: nameof(ExamFee.Id)),
+                (Rule: IsInvalid(examFee.ExamId), Parameter: nameof(ExamFee.ExamId)),
+                (Rule: IsInvalid(examFee.FeeId), Parameter: nameof(ExamFee.FeeId)),
+                (Rule: IsInvalid(examFee.CreatedBy), Parameter: nameof(ExamFee.CreatedBy)),
+                (Rule: IsInvalid(examFee.UpdatedBy), Parameter: nameof(ExamFee.UpdatedBy)));
 
-            ValidateExamFeeIds(examFee.ExamId, examFee.FeeId);
             ValidateInvalidAuditFields(examFee);
             ValidateInvalidAuditFieldsOnModify(examFee);
         }
