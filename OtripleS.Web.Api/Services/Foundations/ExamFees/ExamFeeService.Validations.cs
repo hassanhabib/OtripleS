@@ -40,7 +40,10 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
         private void ValidateExamFeeOnModify(ExamFee examFee)
         {
             ValidateExamFeeIsNull(examFee);
-            ValidateExamFeeId(examFee.Id);
+
+            Validate(
+                (Rule: IsInvalid(examFee.Id), Parameter: nameof(ExamFee.Id)));
+
             ValidateExamFeeIds(examFee.ExamId, examFee.FeeId);
             ValidateInvalidAuditFields(examFee);
             ValidateInvalidAuditFieldsOnModify(examFee);
