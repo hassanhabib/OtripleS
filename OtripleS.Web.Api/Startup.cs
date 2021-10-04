@@ -65,10 +65,40 @@ namespace OtripleS.Web.Api
             AddNewtonSoftJson(services);
             services.AddLogging();
             services.AddDbContext<StorageBroker>();
+            AddBrokers(services);
+            AddFoundationServices(services);
+
+            services.AddIdentityCore<User>()
+                    .AddRoles<Role>()
+                    .AddEntityFrameworkStores<StorageBroker>()
+                    .AddDefaultTokenProviders();
+        }
+
+        public void Configure(
+            IApplicationBuilder applicationBuilder,
+            IWebHostEnvironment webHostEnvironment)
+        {
+            if (webHostEnvironment.IsDevelopment())
+            {
+                applicationBuilder.UseDeveloperExceptionPage();
+            }
+
+            applicationBuilder.UseHttpsRedirection();
+            applicationBuilder.UseRouting();
+            applicationBuilder.UseAuthorization();
+            applicationBuilder.UseEndpoints(endpoints => endpoints.MapControllers());
+        }
+
+        private void AddBrokers(IServiceCollection services)
+        {
             services.AddScoped<IUserManagementBroker, UserManagementBroker>();
             services.AddScoped<IStorageBroker, StorageBroker>();
             services.AddTransient<ILoggingBroker, LoggingBroker>();
             services.AddTransient<IDateTimeBroker, DateTimeBroker>();
+        }
+
+        private void AddFoundationServices(IServiceCollection services)
+        {
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<ITeacherService, TeacherService>();
             services.AddTransient<ICourseService, CourseService>();
@@ -102,26 +132,6 @@ namespace OtripleS.Web.Api
             services.AddTransient<IStudentExamFeeService, StudentExamFeeService>();
             services.AddTransient<IRegistrationService, RegistrationService>();
             services.AddTransient<IStudentRegistrationService, StudentRegistrationService>();
-
-            services.AddIdentityCore<User>()
-                    .AddRoles<Role>()
-                    .AddEntityFrameworkStores<StorageBroker>()
-                    .AddDefaultTokenProviders();
-        }
-
-        public void Configure(
-            IApplicationBuilder applicationBuilder,
-            IWebHostEnvironment webHostEnvironment)
-        {
-            if (webHostEnvironment.IsDevelopment())
-            {
-                applicationBuilder.UseDeveloperExceptionPage();
-            }
-
-            applicationBuilder.UseHttpsRedirection();
-            applicationBuilder.UseRouting();
-            applicationBuilder.UseAuthorization();
-            applicationBuilder.UseEndpoints(endpoints => endpoints.MapControllers());
         }
 
         private static void AddNewtonSoftJson(IServiceCollection services)
