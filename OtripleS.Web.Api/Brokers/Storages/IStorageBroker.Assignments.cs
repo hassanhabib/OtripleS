@@ -12,10 +12,10 @@ namespace OtripleS.Web.Api.Brokers.Storages
 {
     public partial interface IStorageBroker
     {
-        ValueTask<Assignment> InsertAssignmentAsync(Assignment Classroom);
+        ValueTask<Assignment> InsertAssignmentAsync(Assignment assignment);
         IQueryable<Assignment> SelectAllAssignments();
-        ValueTask<Assignment> SelectAssignmentByIdAsync(Guid ClassroomId);
-        ValueTask<Assignment> UpdateAssignmentAsync(Assignment Classroom);
-        ValueTask<Assignment> DeleteAssignmentAsync(Assignment Classroom);
+        ValueTask<Assignment> SelectAssignmentByIdAsync(Guid assignmentId);
+        ValueTask<Assignment> UpdateAssignmentAsync(Assignment assignment);
+        ValueTask<Assignment> DeleteAssignmentAsync(Assignment assignment);
     }
 }

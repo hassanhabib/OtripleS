@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         ValueTask<StudentGuardian> SelectStudentGuardianByIdAsync(
            Guid studentId,
-           Guid GuardianId);
+           Guid guardianId);
 
         ValueTask<StudentGuardian> UpdateStudentGuardianAsync(
            StudentGuardian studentGuardian);
