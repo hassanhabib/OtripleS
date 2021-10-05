@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Classrooms.Exceptions
     public class ClassroomServiceException : Exception
     {
         public ClassroomServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+            : base(message: "Service error occurred, contact support.", innerException) { }
     }
 }

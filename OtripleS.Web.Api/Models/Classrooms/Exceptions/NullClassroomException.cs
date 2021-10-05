@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Models.Classrooms.Exceptions
 {
     public class NullClassroomException : Exception
     {
-        public NullClassroomException() : base("The classroom is null.") { }
+        public NullClassroomException() : base(message: "The classroom is null.") { }
     }
 }
