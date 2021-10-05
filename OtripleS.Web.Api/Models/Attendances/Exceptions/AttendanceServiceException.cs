@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Attendances.Exceptions
     public class AttendanceServiceException : Exception
     {
         public AttendanceServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+            : base(message: "Service error occurred, contact support.", innerException) { }
     }
 }

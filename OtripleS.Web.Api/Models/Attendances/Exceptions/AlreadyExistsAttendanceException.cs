@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Attendances.Exceptions
     public class AlreadyExistsAttendanceException : Exception
     {
         public AlreadyExistsAttendanceException(Exception innerException)
-            : base("Attendance with the same id already exists.", innerException) { }
+            : base(message: "Attendance with the same id already exists.", innerException) { }
     }
 }

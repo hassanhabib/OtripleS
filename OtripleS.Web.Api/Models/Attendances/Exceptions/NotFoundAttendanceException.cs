@@ -4,11 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.Attendances.Exceptions
 {
     public class NotFoundAttendanceException : Exception
     {
         public NotFoundAttendanceException(Guid attendanceId)
-            : base($"Couldn't find attendance with Id: {attendanceId}.") { }
+            : base(message: $"Couldn't find attendance with id: {attendanceId}.") { }
     }
 }
