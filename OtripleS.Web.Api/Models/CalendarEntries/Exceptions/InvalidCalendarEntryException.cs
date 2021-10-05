@@ -11,12 +11,12 @@ namespace OtripleS.Web.Api.Models.CalendarEntries.Exceptions
     public class InvalidCalendarEntryException : Xeption
     {
         public InvalidCalendarEntryException(string parameterName, object parameterValue)
-            : base($"Invalid calendar entry, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid calendar entry, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
 
         public InvalidCalendarEntryException()
-            : base("Invalid calendar entry. Please fix the errors and try again.") { }
+            : base(message: "Invalid calendar entry. Please fix the errors and try again.") { }
     }
 }

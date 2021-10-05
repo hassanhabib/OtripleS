@@ -4,11 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.CalendarEntries.Exceptions
 {
     public class AlreadyExistsCalendarEntryException : Exception
     {
         public AlreadyExistsCalendarEntryException(Exception innerException)
-            : base("Calendarentry with the same id already exists.", innerException) { }
+            : base(message: "Calendar entry with the same id already exists.", innerException) { }
     }
 }
