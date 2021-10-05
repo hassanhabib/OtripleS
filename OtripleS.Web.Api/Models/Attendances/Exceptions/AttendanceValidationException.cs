@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Attendances.Exceptions
     public class AttendanceValidationException : Exception
     {
         public AttendanceValidationException(Exception innerException)
-            : base("Invalid input, contact support.", innerException) { }
+            : base(message: "Invalid input, contact support.", innerException) { }
     }
 }
