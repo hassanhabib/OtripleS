@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.CourseAttachments.Exceptions
     public class NotFoundCourseAttachmentException : Exception
     {
         public NotFoundCourseAttachmentException(Guid courseId, Guid attachmentId)
-          : base($"Couldn't find Course Attachment with courseId: " +
+            : base(message: $"Couldn't find course attachment with course id: " +
                     $"{courseId} " +
-                    $"and attachmentId: {attachmentId}.")
+                    $"and attachment id: {attachmentId}.")
         { }
     }
 }
