@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions
     public class CalendarEntryAttachmentValidationException : Exception
     {
         public CalendarEntryAttachmentValidationException(Exception innerException)
-            : base("Invalid input, contact support.", innerException) { }
+            : base(message:  "Invalid input, contact support.", innerException) { }
     }
 }

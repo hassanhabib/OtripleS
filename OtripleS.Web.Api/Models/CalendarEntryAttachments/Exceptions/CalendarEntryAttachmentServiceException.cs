@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions
     public class CalendarEntryAttachmentServiceException : Exception
     {
         public CalendarEntryAttachmentServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+            : base(message: "Service error occurred, contact support.", innerException) { }
     }
 }
