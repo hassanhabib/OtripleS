@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Assignments.Exceptions
     public class AlreadyExistsAssignmentException : Exception
     {
         public AlreadyExistsAssignmentException(Exception innerException)
-            : base("Assignment with the same id already exists.", innerException) { }
+            : base(message: "Assignment with the same id already exists.", innerException) { }
     }
 }
