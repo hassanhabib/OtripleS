@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Attachments.Exceptions
     public class NotFoundAttachmentException : Exception
     {
         public NotFoundAttachmentException(Guid attachmentId)
-            : base($"Couldn't find attachment with Id: {attachmentId}.") { }
+            : base(message: $"Couldn't find attachment with id: {attachmentId}.") { }
     }
 }

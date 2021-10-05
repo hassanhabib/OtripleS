@@ -4,11 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.Attachments.Exceptions
 {
     public class AlreadyExistsAttachmentException : Exception
     {
         public AlreadyExistsAttachmentException(Exception innerException)
-            : base("Attachment with the same id already exists.", innerException) { }
+            : base(message:  "Attachment with the same id already exists.", innerException) { }
     }
 }
