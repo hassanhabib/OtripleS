@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions
     public class AlreadyExistsAssignmentAttachmentException : Exception
     {
         public AlreadyExistsAssignmentAttachmentException(Exception innerException)
-            : base("AssignmentAttachment with the same id already exists.", innerException) { }
+            : base(message: "Assignment attachment with the same id already exists.", innerException) { }
     }
 }
