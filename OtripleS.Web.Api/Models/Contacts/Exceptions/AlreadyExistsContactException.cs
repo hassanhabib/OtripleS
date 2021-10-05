@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Contacts.Exceptions
     public class AlreadyExistsContactException : Exception
     {
         public AlreadyExistsContactException(Exception innerException)
-            : base("Contact with the same id already exists.", innerException) { }
+            : base(message: "Contact with the same id already exists.", innerException) { }
     }
 }
