@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Models.CalendarEntries.Exceptions
 {
     public class NullCalendarEntryException : Exception
     {
-        public NullCalendarEntryException() : base("The CalendarEntry is null.") { }
+        public NullCalendarEntryException() : base(message: "The calendar entry is null.") { }
     }
 }
