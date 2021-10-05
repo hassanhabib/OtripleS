@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Calendars.Exceptions
     public class AlreadyExistsCalendarException : Exception
     {
         public AlreadyExistsCalendarException(Exception innerException)
-            : base("Calendar with the same id already exists.", innerException) { }
+            : base(message: "Calendar with the same id already exists.", innerException) { }
     }
 }
