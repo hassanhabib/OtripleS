@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Teachers.Exceptions
     public class LockedTeacherException : Exception
     {
         public LockedTeacherException(Exception innerException)
-            : base("Locked teacher record exception, please try again later.", innerException) { }
+            : base(message: "Locked teacher record exception, please try again later.", innerException) { }
     }
 }
