@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.ExamFees.Exceptions
     public class ExamFeeValidationException : Exception
     {
         public ExamFeeValidationException(Exception innerException)
-           : base("Invalid input, contact support.", innerException) { }
+           : base(message: "Invalid input, contact support.", innerException) { }
     }
 }
