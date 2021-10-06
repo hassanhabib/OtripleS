@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Models.GuardianAttachments.Exceptions
 {
     public class NullGuardianAttachmentException : Exception
     {
-        public NullGuardianAttachmentException() : base("The GuardianAttachment is null.") { }
+        public NullGuardianAttachmentException() : base(message: "The guardian attachment is null.") { }
     }
 }

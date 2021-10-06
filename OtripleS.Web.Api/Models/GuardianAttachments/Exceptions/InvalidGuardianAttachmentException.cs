@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.GuardianAttachments.Exceptions
     public class InvalidGuardianAttachmentException : Exception
     {
         public InvalidGuardianAttachmentException(string parameterName, object parameterValue)
-            : base($"Invalid guardianAttachment, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid guardian attachment, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
     }
 }

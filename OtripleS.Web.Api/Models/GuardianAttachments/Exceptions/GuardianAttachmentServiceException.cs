@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.GuardianAttachments.Exceptions
     public class GuardianAttachmentServiceException : Exception
     {
         public GuardianAttachmentServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+            : base(message: "Service error occurred, contact support.", innerException) { }
     }
 }
