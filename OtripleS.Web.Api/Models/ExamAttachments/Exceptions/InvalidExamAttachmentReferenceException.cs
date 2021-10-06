@@ -4,11 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.ExamAttachments.Exceptions
 {
     public class InvalidExamAttachmentReferenceException : Exception
     {
         public InvalidExamAttachmentReferenceException(Exception innerException)
-            : base("Invalid ExamAttachment reference error occurred.", innerException) { }
+            : base(message: "Invalid exam attachment reference error occurred.", innerException) { }
     }
 }

@@ -4,10 +4,11 @@
 //----------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.ExamAttachments.Exceptions
 {
     public class NullExamAttachmentException : Exception
     {
-        public NullExamAttachmentException() : base("The ExamAttachment is null.") { }
+        public NullExamAttachmentException() : base(message: "The exam attachment is null.") { }
     }
 }
