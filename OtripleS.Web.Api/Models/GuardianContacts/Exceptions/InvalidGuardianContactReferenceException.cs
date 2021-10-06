@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.GuardianContacts.Exceptions
     public class InvalidGuardianContactReferenceException : Exception
     {
         public InvalidGuardianContactReferenceException(Exception innerException)
-            : base("Invalid student contact reference error occurred.", innerException) { }
+            : base(message: "Invalid student contact reference error occurred.", innerException) { }
     }
 }

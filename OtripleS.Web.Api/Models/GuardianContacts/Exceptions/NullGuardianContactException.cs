@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Models.GuardianContacts.Exceptions
 {
     public class NullGuardianContactException : Exception
     {
-        public NullGuardianContactException() : base("The GuardianContact is null.") { }
+        public NullGuardianContactException() : base(message: "The guardian contact is null.") { }
     }
 }

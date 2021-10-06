@@ -9,8 +9,8 @@ namespace OtripleS.Web.Api.Models.GuardianContacts.Exceptions
     public class NotFoundGuardianContactException : Exception
     {
         public NotFoundGuardianContactException(Guid guardianId, Guid contactId)
-           : base($"Couldn't find GuardianContact with GuardianId: {guardianId} " +
-                  $"and ContactId: {contactId}.")
+            : base(message: $"Couldn't find guardian contact with guardian id: {guardianId} " +
+                  $"and contact id: {contactId}.")
         { }
     }
 }

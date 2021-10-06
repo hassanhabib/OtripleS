@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.GuardianContacts.Exceptions
     public class AlreadyExistsGuardianContactException : Exception
     {
         public AlreadyExistsGuardianContactException(Exception innerException)
-            : base("Guardian Contact with the same id already exists.", innerException) { }
+            : base(message: "Guardian contact with the same id already exists.", innerException) { }
     }
 }
