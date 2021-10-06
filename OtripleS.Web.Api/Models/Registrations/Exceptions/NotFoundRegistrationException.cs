@@ -4,11 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.Registrations.Exceptions
 {
     public class NotFoundRegistrationException : Exception
     {
         public NotFoundRegistrationException(Guid registrationId)
-            : base($"Couldn't find fee with Id: {registrationId}.") { }
+            : base(message: $"Couldn't find fee with id: {registrationId}.") { }
     }
 }
