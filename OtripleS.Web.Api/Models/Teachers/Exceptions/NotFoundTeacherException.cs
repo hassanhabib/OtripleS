@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Teachers.Exceptions
     public class NotFoundTeacherException : Exception
     {
         public NotFoundTeacherException(Guid teacherId)
-            : base($"Couldn't find teacher with Id: {teacherId}.") { }
+            : base(message: $"Couldn't find teacher with id: {teacherId}.") { }
     }
 }

@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Teachers.Exceptions
     public class AlreadyExistsTeacherException : Exception
     {
         public AlreadyExistsTeacherException(Exception innerException)
-            : base("Teacher with the same id already exists.", innerException) { }
+            : base(message: "Teacher with the same id already exists.", innerException) { }
     }
 }
