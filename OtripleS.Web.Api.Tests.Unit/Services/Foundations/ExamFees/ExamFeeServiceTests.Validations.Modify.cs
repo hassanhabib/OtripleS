@@ -226,11 +226,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
 
             invalidExamFeeInputException.AddData(
                 key: nameof(ExamFee.UpdatedDate),
-                $"Date is not recent",
-                $"Date is the same as {nameof(ExamFee.CreatedDate)}");
+                values: $"Date is the same as {nameof(ExamFee.CreatedDate)}");
 
             var expectedExamFeeValidationException =
                 new ExamFeeValidationException(invalidExamFeeInputException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
 
             // when
             ValueTask<ExamFee> modifyExamFeeTask =
@@ -244,6 +247,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                 broker.LogError(It.Is(SameValidationExceptionAs(expectedExamFeeValidationException))),
                     Times.Once);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectExamFeeByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
@@ -253,6 +260,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                     Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
