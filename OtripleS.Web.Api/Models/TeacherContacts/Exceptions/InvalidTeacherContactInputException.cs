@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.TeacherContacts.Exceptions
     public class InvalidTeacherContactInputException : Exception
     {
         public InvalidTeacherContactInputException(string parameterName, object parameterValue)
-            : base($"Invalid TeacherContact, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid teacher contact, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
     }
 }
