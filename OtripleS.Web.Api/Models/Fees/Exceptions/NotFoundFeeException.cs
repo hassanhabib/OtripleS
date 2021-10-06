@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Fees.Exceptions
     public class NotFoundFeeException : Exception
     {
         public NotFoundFeeException(Guid feeId)
-            : base($"Couldn't find fee with Id: {feeId}.") { }
+            : base(message: $"Couldn't find fee with id: {feeId}.") { }
     }
 }

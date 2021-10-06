@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Fees.Exceptions
     public class AlreadyExistsFeeException : Exception
     {
         public AlreadyExistsFeeException(Exception innerException)
-            : base("Fee with the same id already exists.", innerException) { }
+            : base(message: "Fee with the same id already exists.", innerException) { }
     }
 }
