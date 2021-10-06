@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.GuardianAttachments.Exceptions
     public class LockedGuardianAttachmentException : Exception
     {
         public LockedGuardianAttachmentException(Exception innerException)
-            : base("Locked guardianAttachment record exception, please try again later.", innerException) { }
+            : base(message: "Locked guardian attachment record exception, please try again later.", innerException) { }
     }
 }

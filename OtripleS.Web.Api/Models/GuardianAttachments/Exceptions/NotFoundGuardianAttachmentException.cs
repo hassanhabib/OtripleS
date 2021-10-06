@@ -10,8 +10,8 @@ namespace OtripleS.Web.Api.Models.GuardianAttachments.Exceptions
     public class NotFoundGuardianAttachmentException : Exception
     {
         public NotFoundGuardianAttachmentException(Guid guardianId, Guid attachmentId)
-           : base($"Couldn't find guardianAttachment with studentId: {guardianId} " +
-                  $"and attachmentId: {attachmentId}.")
+           : base(message: $"Couldn't find guardian attachment with student id: {guardianId} " +
+                  $"and attachment id: {attachmentId}.")
         { }
     }
 }
