@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Registrations.Exceptions
     public class InvalidRegistrationReferenceException : Exception
     {
         public InvalidRegistrationReferenceException(Exception innerException)
-            : base("Invalid registration reference error occurred.", innerException) { }
+            : base(message: "Invalid registration reference error occurred.", innerException) { }
     }
 }
