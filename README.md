@@ -3,7 +3,7 @@ Open Source Schooling System
 
 [![BCH compliance](https://bettercodehub.com/edge/badge/hassanhabib/OtripleS?branch=master)](https://bettercodehub.com/)
 
-[![Build Status](https://dev.azure.com/OtripleS/OtripleS/_apis/build/status/OtripleS%20BUILD?branchName=master)](https://dev.azure.com/OtripleS/OtripleS/_build/latest?definitionId=1&branchName=master)
+[![.NET](https://github.com/hassanhabib/OtripleS/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hassanhabib/OtripleS/actions/workflows/dotnet.yml)
 
 [<img src="https://img.shields.io/badge/chat-Teams-blueviolet" alt="Chat on Teams!">](https://teams.microsoft.com/join/nh8zj7qeaf3q)
 
