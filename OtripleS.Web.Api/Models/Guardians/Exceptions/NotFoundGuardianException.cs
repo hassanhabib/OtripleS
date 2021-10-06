@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Guardians.Exceptions
     public class NotFoundGuardianException : Exception
     {
         public NotFoundGuardianException(Guid guardianId)
-            : base($"Couldn't find guardian with Id: {guardianId}.") { }
+            : base(message: $"Couldn't find guardian with id: {guardianId}.") { }
     }
 }
