@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.ExamFees.Exceptions
     public class InvalidExamFeeReferenceException : Exception
     {
         public InvalidExamFeeReferenceException(Exception innerException)
-            : base("Invalid ExamFee reference error occurred.", innerException) { }
+            : base(message: "Invalid exam fee reference error occurred.", innerException) { }
     }
 }
