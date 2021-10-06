@@ -54,13 +54,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
         public async Task ShouldThrowValidationExceptionOnModifyWhenIdsAreInvalidAndLogItAsync()
         {
             //given
-            Guid invalidExamFeeId = Guid.Empty;
             DateTimeOffset dateTime = GetRandomDateTime();
             ExamFee randomExamFee = CreateRandomExamFee(dateTime);
             ExamFee invalidExamFee = randomExamFee;
-            invalidExamFee.Id = invalidExamFeeId;
-            invalidExamFee.ExamId = invalidExamFeeId;
-            invalidExamFee.FeeId = invalidExamFeeId;
+            invalidExamFee.Id = Guid.Empty;
+            invalidExamFee.ExamId = Guid.Empty;
+            invalidExamFee.FeeId = Guid.Empty;
             invalidExamFee.CreatedBy = default;
             invalidExamFee.UpdatedBy = default;
 
@@ -212,6 +211,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -261,7 +261,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
