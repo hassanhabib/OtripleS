@@ -37,30 +37,24 @@ namespace OtripleS.Web.Api.Controllers
             catch (ExamAttachmentValidationException examAttachmentValidationException)
                 when (examAttachmentValidationException.InnerException is AlreadyExistsExamAttachmentException)
             {
-                string innerMessage = GetInnerMessage(examAttachmentValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(examAttachmentValidationException.InnerException);
             }
             catch (ExamAttachmentValidationException examAttachmentValidationException)
                 when (examAttachmentValidationException.InnerException is InvalidExamAttachmentReferenceException)
             {
-                string innerMessage = GetInnerMessage(examAttachmentValidationException);
-
-                return FailedDependency(innerMessage);
+                return FailedDependency(examAttachmentValidationException.InnerException);
             }
             catch (ExamAttachmentValidationException examAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(examAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(examAttachmentValidationException.InnerException);
             }
             catch (ExamAttachmentDependencyException examAttachmentDependencyException)
             {
-                return Problem(examAttachmentDependencyException.Message);
+                return InternalServerError(examAttachmentDependencyException);
             }
             catch (ExamAttachmentServiceException examAttachmentServiceException)
             {
-                return Problem(examAttachmentServiceException.Message);
+                return InternalServerError(examAttachmentServiceException);
             }
         }
 
@@ -76,11 +70,11 @@ namespace OtripleS.Web.Api.Controllers
             }
             catch (ExamAttachmentDependencyException examAttachmentDependencyException)
             {
-                return Problem(examAttachmentDependencyException.Message);
+                return InternalServerError(examAttachmentDependencyException);
             }
             catch (ExamAttachmentServiceException examAttachmentServiceException)
             {
-                return Problem(examAttachmentServiceException.Message);
+                return InternalServerError(examAttachmentServiceException);
             }
         }
 
@@ -99,23 +93,19 @@ namespace OtripleS.Web.Api.Controllers
             catch (ExamAttachmentValidationException semesterExamAttachmentValidationException)
                 when (semesterExamAttachmentValidationException.InnerException is NotFoundExamAttachmentException)
             {
-                string innerMessage = GetInnerMessage(semesterExamAttachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(semesterExamAttachmentValidationException.InnerException);
             }
             catch (ExamAttachmentValidationException semesterExamAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(semesterExamAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(semesterExamAttachmentValidationException.InnerException);
             }
             catch (ExamAttachmentDependencyException semesterExamAttachmentDependencyException)
             {
-                return Problem(semesterExamAttachmentDependencyException.Message);
+                return InternalServerError(semesterExamAttachmentDependencyException);
             }
             catch (ExamAttachmentServiceException semesterExamAttachmentServiceException)
             {
-                return Problem(semesterExamAttachmentServiceException.Message);
+                return InternalServerError(semesterExamAttachmentServiceException);
             }
         }
 
@@ -132,34 +122,25 @@ namespace OtripleS.Web.Api.Controllers
             catch (ExamAttachmentValidationException examAttachmentValidationException)
                 when (examAttachmentValidationException.InnerException is NotFoundExamAttachmentException)
             {
-                string innerMessage = GetInnerMessage(examAttachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(examAttachmentValidationException.InnerException);
             }
             catch (ExamAttachmentValidationException examAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(examAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(examAttachmentValidationException.InnerException);
             }
             catch (ExamAttachmentDependencyException examAttachmentValidationException)
                when (examAttachmentValidationException.InnerException is LockedExamAttachmentException)
             {
-                string innerMessage = GetInnerMessage(examAttachmentValidationException);
-
-                return Locked(innerMessage);
+                return Locked(examAttachmentValidationException.InnerException);
             }
             catch (ExamAttachmentDependencyException examAttachmentDependencyException)
             {
-                return Problem(examAttachmentDependencyException.Message);
+                return InternalServerError(examAttachmentDependencyException);
             }
             catch (ExamAttachmentServiceException examAttachmentServiceException)
             {
-                return Problem(examAttachmentServiceException.Message);
+                return InternalServerError(examAttachmentServiceException);
             }
         }
-
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }
