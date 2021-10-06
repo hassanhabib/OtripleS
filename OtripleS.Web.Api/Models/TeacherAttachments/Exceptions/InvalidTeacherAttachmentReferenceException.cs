@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.TeacherAttachments.Exceptions
     public class InvalidTeacherAttachmentReferenceException : Exception
     {
         public InvalidTeacherAttachmentReferenceException(Exception innerException)
-            : base("Invalid teacher attachment reference error occurred.", innerException) { }
+            : base(message: "Invalid teacher attachment reference error occurred.", innerException) { }
     }
 }
