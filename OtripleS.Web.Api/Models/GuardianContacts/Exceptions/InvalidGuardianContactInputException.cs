@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.GuardianContacts.Exceptions
     public class InvalidGuardianContactInputException : Exception
     {
         public InvalidGuardianContactInputException(string parameterName, object parameterValue)
-            : base($"Invalid GuardianContact, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid guardian contact, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
     }
 }
