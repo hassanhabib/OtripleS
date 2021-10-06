@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Guardians.Exceptions
     public class GuardianDependencyException : Exception
     {
         public GuardianDependencyException(Exception innerException)
-            : base("Service dependency error occurred, contact support.", innerException) { }
+            : base(message: "Service dependency error occurred, contact support.", innerException) { }
     }
 }

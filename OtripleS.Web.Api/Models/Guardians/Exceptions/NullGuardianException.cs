@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Models.Guardians.Exceptions
 {
     public class NullGuardianException : Exception
     {
-        public NullGuardianException() : base("The guardian is null.") { }
+        public NullGuardianException() : base(message: "The guardian is null.") { }
     }
 }
