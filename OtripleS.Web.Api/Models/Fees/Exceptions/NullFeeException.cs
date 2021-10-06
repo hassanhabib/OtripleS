@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Models.Fees.Exceptions
 {
     public class NullFeeException : Exception
     {
-        public NullFeeException() : base("The fee is null.") { }
+        public NullFeeException() : base(message: "The fee is null.") { }
     }
 }

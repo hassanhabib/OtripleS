@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Fees.Exceptions
     public class FeeServiceException : Exception
     {
         public FeeServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+            : base(message: "Service error occurred, contact support.", innerException) { }
     }
 }
