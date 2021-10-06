@@ -36,23 +36,19 @@ namespace OtripleS.Web.Api.Controllers
             catch (ExamFeeValidationException examFeeValidationException)
                 when (examFeeValidationException.InnerException is AlreadyExistsExamFeeException)
             {
-                string innerMessage = GetInnerMessage(examFeeValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(examFeeValidationException.InnerException);
             }
             catch (ExamFeeValidationException examFeeValidationException)
             {
-                string innerMessage = GetInnerMessage(examFeeValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(examFeeValidationException.InnerException);
             }
             catch (ExamFeeDependencyException examFeeDependencyException)
             {
-                return Problem(examFeeDependencyException.Message);
+                return InternalServerError(examFeeDependencyException);
             }
             catch (ExamFeeServiceException examFeeServiceException)
             {
-                return Problem(examFeeServiceException.Message);
+                return InternalServerError(examFeeServiceException);
             }
         }
 
