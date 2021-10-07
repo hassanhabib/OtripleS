@@ -4,11 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.Users.Exceptions
 {
     public class NotFoundUserException : Exception
     {
         public NotFoundUserException(Guid userId)
-            : base($"Couldn't find user with Id: {userId}.") { }
+            : base(message: $"Couldn't find user with id: {userId}.") { }
     }
 }
