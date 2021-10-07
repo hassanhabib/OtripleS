@@ -4,12 +4,13 @@
 //----------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.StudentAttachments.Exceptions
 {
     public class StudentAttachmentServiceException : Exception
     {
         public StudentAttachmentServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException)
+            : base(message: "Service error occurred, contact support.", innerException)
         { }
     }
 }

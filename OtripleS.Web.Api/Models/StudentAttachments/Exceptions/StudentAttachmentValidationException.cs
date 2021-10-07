@@ -10,7 +10,7 @@ namespace OtripleS.Web.Api.Models.StudentAttachments.Exceptions
     public class StudentAttachmentValidationException : Exception
     {
         public StudentAttachmentValidationException(Exception innerException)
-            : base("Invalid input, contact support.", innerException)
+            : base(message: "Invalid input, contact support.", innerException)
         { }
     }
 }

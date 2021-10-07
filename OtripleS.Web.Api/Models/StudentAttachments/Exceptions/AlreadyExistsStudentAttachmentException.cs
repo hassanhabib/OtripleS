@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.StudentAttachments.Exceptions
     public class AlreadyExistsStudentAttachmentException : Exception
     {
         public AlreadyExistsStudentAttachmentException(Exception innerException)
-            : base("Student Attchment with the same id already exists.", innerException) { }
+            : base(message: "Student attachment with the same id already exists.", innerException) { }
     }
 }
