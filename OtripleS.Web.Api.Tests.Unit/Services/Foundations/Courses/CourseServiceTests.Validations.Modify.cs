@@ -173,12 +173,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             Course inputCourse = randomCourse;
             inputCourse.CreatedBy = default;
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseException = new InvalidCourseException(
                 parameterName: nameof(Course.CreatedBy),
                 parameterValue: inputCourse.CreatedBy);
 
             var expectedCourseValidationException =
-                new CourseValidationException(invalidCourseInputException);
+                new CourseValidationException(invalidCourseException);
 
             // when
             ValueTask<Course> modifyCourseTask =
@@ -210,12 +210,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             Course inputCourse = randomCourse;
             inputCourse.UpdatedBy = default;
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseException = new InvalidCourseException(
                 parameterName: nameof(Course.UpdatedBy),
                 parameterValue: inputCourse.UpdatedBy);
 
             var expectedCourseValidationException =
-                new CourseValidationException(invalidCourseInputException);
+                new CourseValidationException(invalidCourseException);
 
             // when
             ValueTask<Course> modifyCourseTask =
@@ -247,12 +247,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             Course inputCourse = randomCourse;
             inputCourse.CreatedDate = default;
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseException = new InvalidCourseException(
                 parameterName: nameof(Course.CreatedDate),
                 parameterValue: inputCourse.CreatedDate);
 
             var expectedCourseValidationException =
-                new CourseValidationException(invalidCourseInputException);
+                new CourseValidationException(invalidCourseException);
 
             // when
             ValueTask<Course> modifyCourseTask =
@@ -284,12 +284,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             Course inputCourse = randomCourse;
             inputCourse.UpdatedDate = default;
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseException = new InvalidCourseException(
                 parameterName: nameof(Course.UpdatedDate),
                 parameterValue: inputCourse.UpdatedDate);
 
             var expectedCourseValidationException =
-                new CourseValidationException(invalidCourseInputException);
+                new CourseValidationException(invalidCourseException);
 
             // when
             ValueTask<Course> modifyCourseTask =
@@ -320,12 +320,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             Course randomCourse = CreateRandomCourse(dateTime);
             Course inputCourse = randomCourse;
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseException = new InvalidCourseException(
                 parameterName: nameof(Course.UpdatedDate),
                 parameterValue: inputCourse.UpdatedDate);
 
             var expectedCourseValidationException =
-                new CourseValidationException(invalidCourseInputException);
+                new CourseValidationException(invalidCourseException);
 
             // when
             ValueTask<Course> modifyCourseTask =
@@ -360,12 +360,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             inputCourse.UpdatedBy = inputCourse.CreatedBy;
             inputCourse.UpdatedDate = dateTime.AddMinutes(minutes);
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseException = new InvalidCourseException(
                 parameterName: nameof(Course.UpdatedDate),
                 parameterValue: inputCourse.UpdatedDate);
 
             var expectedCourseValidationException =
-                new CourseValidationException(invalidCourseInputException);
+                new CourseValidationException(invalidCourseException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -522,12 +522,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             Guid courseId = invalidCourse.Id;
             invalidCourse.CreatedBy = invalidCreatedBy;
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseException = new InvalidCourseException(
                 parameterName: nameof(Course.CreatedBy),
                 parameterValue: invalidCourse.CreatedBy);
 
             var expectedCourseValidationException =
-              new CourseValidationException(invalidCourseInputException);
+              new CourseValidationException(invalidCourseException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -580,12 +580,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             Course storageCourse = randomCourse.DeepClone();
             Guid courseId = invalidCourse.Id;
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseException = new InvalidCourseException(
                 parameterName: nameof(Course.UpdatedDate),
                 parameterValue: invalidCourse.UpdatedDate);
 
             var expectedCourseValidationException =
-              new CourseValidationException(invalidCourseInputException);
+              new CourseValidationException(invalidCourseException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())

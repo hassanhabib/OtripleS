@@ -21,12 +21,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             Guid randomCourseId = default;
             Guid inputCourseId = randomCourseId;
 
-            var invalidCourseInputException = new InvalidCourseException(
+            var invalidCourseException = new InvalidCourseException(
                 parameterName: nameof(Course.Id),
                 parameterValue: inputCourseId);
 
             var expectedCourseValidationException =
-                new CourseValidationException(invalidCourseInputException);
+                new CourseValidationException(invalidCourseException);
 
             //when
             ValueTask<Course> retrieveCourseByIdTask =

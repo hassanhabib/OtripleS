@@ -29,9 +29,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
             {
                 throw CreateAndLogValidationException(nullCourseException);
             }
-            catch (InvalidCourseException invalidCourseInputException)
+            catch (InvalidCourseException invalidCourseException)
             {
-                throw CreateAndLogValidationException(invalidCourseInputException);
+                throw CreateAndLogValidationException(invalidCourseException);
             }
             catch (NotFoundCourseException nullCourseException)
             {
