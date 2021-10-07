@@ -379,13 +379,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom inputClassroom = randomClassroom;
             inputClassroom.UpdatedBy = inputClassroom.CreatedBy;
             inputClassroom.UpdatedDate = dateTime.AddMinutes(minutes);
+            var invalidClassroomException = new InvalidClassroomException();
 
-            var invalidClassroomInputException = new InvalidClassroomException(
-                parameterName: nameof(Classroom.UpdatedDate),
-                parameterValue: inputClassroom.UpdatedDate);
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.UpdatedDate),
+                values: $"Date is not recent");
 
             var expectedClassroomValidationException =
-                new ClassroomValidationException(invalidClassroomInputException);
+                new ClassroomValidationException(invalidClassroomException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -404,7 +405,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedClassroomValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
@@ -414,6 +415,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+
         }
 
         [Fact]
