@@ -37,6 +37,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
                 Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateCourseAsync(It.IsAny<Course>()),
+                    Times.Never);
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -70,6 +74,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
                 Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateCourseAsync(It.IsAny<Course>()),
+                    Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -107,6 +115,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
                     Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateCourseAsync(It.IsAny<Course>()),
+                    Times.Never);
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -143,6 +155,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
                     Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateCourseAsync(It.IsAny<Course>()),
+                    Times.Never);
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -177,12 +193,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
+                broker.UpdateCourseAsync(It.IsAny<Course>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -214,12 +230,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
+                broker.UpdateCourseAsync(It.IsAny<Course>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -254,9 +270,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                 broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -288,12 +304,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
+                broker.UpdateCourseAsync(It.IsAny<Course>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -324,12 +340,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
+                broker.UpdateCourseAsync(It.IsAny<Course>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Theory]
@@ -372,7 +388,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
+                broker.UpdateCourseAsync(It.IsAny<Course>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -395,13 +411,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             var expectedCourseValidationException =
                 new CourseValidationException(notFoundCourseException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseByIdAsync(nonExistentCourse.Id))
-                    .ReturnsAsync(noCourse);
-
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
                     .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCourseByIdAsync(nonExistentCourse.Id))
+                    .ReturnsAsync(noCourse);
 
             // when
             ValueTask<Course> modifyCourseTask =
@@ -423,9 +439,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
                     Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateCourseAsync(It.IsAny<Course>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
 
@@ -450,13 +470,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             var expectedCourseValidationException =
               new CourseValidationException(invalidCourseException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseByIdAsync(courseId))
-                    .ReturnsAsync(storageCourse);
-
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
                     .Returns(randomDate);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCourseByIdAsync(courseId))
+                    .ReturnsAsync(storageCourse);
 
             // when
             ValueTask<Course> modifyCourseTask =
@@ -477,6 +497,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
                     Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateCourseAsync(It.IsAny<Course>()),
+                    Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -505,13 +529,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             var expectedCourseValidationException =
               new CourseValidationException(invalidCourseInputException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseByIdAsync(courseId))
-                    .ReturnsAsync(storageCourse);
-
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
                     .Returns(randomDate);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCourseByIdAsync(courseId))
+                    .ReturnsAsync(storageCourse);
 
             // when
             ValueTask<Course> modifyCourseTask =
@@ -533,9 +557,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateCourseAsync(It.IsAny<Course>()),
+                    Times.Never);
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -559,13 +587,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             var expectedCourseValidationException =
               new CourseValidationException(invalidCourseInputException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectCourseByIdAsync(courseId))
-                    .ReturnsAsync(storageCourse);
-
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
                     .Returns(randomDate);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCourseByIdAsync(courseId))
+                    .ReturnsAsync(storageCourse);
 
             // when
             ValueTask<Course> modifyCourseTask =
@@ -587,10 +615,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateCourseAsync(It.IsAny<Course>()),
+                    Times.Never);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }

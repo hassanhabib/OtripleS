@@ -30,21 +30,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             Assert.Throws<CourseDependencyException>(() =>
                 this.courseService.RetrieveAllCourses());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedCourseDependencyException))),
-                    Times.Once);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCourses(),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(expectedCourseDependencyException))),
+                    Times.Once);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -76,9 +72,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                 broker.GetCurrentDateTime(),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

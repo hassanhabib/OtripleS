@@ -38,16 +38,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             await Assert.ThrowsAsync<CourseDependencyException>(() =>
                 retrieveCourseTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedCourseDependencyException))),
-                    Times.Once);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(expectedCourseDependencyException))),
+                    Times.Once);
+
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -73,16 +73,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             await Assert.ThrowsAsync<CourseDependencyException>(() =>
                 retrieveByIdCourseTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseDependencyException))),
-                    Times.Once);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseDependencyException))),
+                    Times.Once);
+
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -110,16 +110,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             await Assert.ThrowsAsync<CourseDependencyException>(() =>
                 retrieveByIdCourseTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseDependencyException))),
-                    Times.Once);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseDependencyException))),
+                    Times.Once);
+
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -145,16 +145,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             await Assert.ThrowsAsync<CourseServiceException>(() =>
                 retrieveByIdCourseTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseServiceException))),
-                    Times.Once);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseServiceException))),
+                    Times.Once);
+
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
