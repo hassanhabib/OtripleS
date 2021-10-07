@@ -134,68 +134,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
                 Message = $"Date is the same as {secondDateName}"
             };
 
-        private void ValidateAuditFieldsDataOnCreate(Classroom classroom)
-        {
-            switch (classroom)
-            {
-                case { } when classroom.UpdatedBy != classroom.CreatedBy:
-                    throw new InvalidClassroomException(
-                    parameterName: nameof(Classroom.UpdatedBy),
-                    parameterValue: classroom.UpdatedBy);
-
-                case { } when classroom.UpdatedDate != classroom.CreatedDate:
-                    throw new InvalidClassroomException(
-                    parameterName: nameof(Classroom.UpdatedDate),
-                    parameterValue: classroom.UpdatedDate);
-
-                case { } when IsDateNotRecent(classroom.CreatedDate):
-                    throw new InvalidClassroomException(
-                    parameterName: nameof(Classroom.CreatedDate),
-                    parameterValue: classroom.CreatedDate);
-
-                case { } when classroom.CreatedDate != classroom.UpdatedDate:
-                    throw new InvalidClassroomException(
-                        parameterName: nameof(Classroom.UpdatedDate),
-                        parameterValue: classroom.UpdatedDate);
-            }
-        }
-
-        private static void ValidateInvalidAuditFields(Classroom classroom)
-        {
-            switch (classroom)
-            {
-                case { } when IsInvalid(classroom.CreatedBy):
-                    throw new InvalidClassroomException(
-                    parameterName: nameof(Classroom.CreatedBy),
-                    parameterValue: classroom.CreatedBy);
-
-                case { } when IsInvalid(classroom.CreatedDate):
-                    throw new InvalidClassroomException(
-                    parameterName: nameof(Classroom.CreatedDate),
-                    parameterValue: classroom.CreatedDate);
-
-                case { } when IsInvalid(classroom.UpdatedBy):
-                    throw new InvalidClassroomException(
-                    parameterName: nameof(Classroom.UpdatedBy),
-                    parameterValue: classroom.UpdatedBy);
-
-                case { } when IsInvalid(classroom.UpdatedDate):
-                    throw new InvalidClassroomException(
-                    parameterName: nameof(Classroom.UpdatedDate),
-                    parameterValue: classroom.UpdatedDate);
-            }
-        }
-
-        private static void ValidateClassroomFields(Classroom classroom)
-        {
-            if (IsInvalid(classroom.Name))
-            {
-                throw new InvalidClassroomException(
-                    parameterName: nameof(Classroom.Name),
-                    parameterValue: classroom.Name);
-            }
-        }
-
         private static void ValidateClassroomIsNull(Classroom classroom)
         {
             if (classroom is null)
@@ -211,26 +149,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
                 throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.Id),
                     parameterValue: classroomId);
-            }
-        }
-
-        private static void ValidateDatesAreNotSame(Classroom classroom)
-        {
-            if (classroom.CreatedDate == classroom.UpdatedDate)
-            {
-                throw new InvalidClassroomException(
-                    parameterName: nameof(Classroom.UpdatedDate),
-                    parameterValue: classroom.UpdatedDate);
-            }
-        }
-
-        private void ValidateUpdatedDateIsRecent(Classroom classroom)
-        {
-            if (IsDateNotRecent(classroom.UpdatedDate))
-            {
-                throw new InvalidClassroomException(
-                    parameterName: nameof(classroom.UpdatedDate),
-                    parameterValue: classroom.UpdatedDate);
             }
         }
 
@@ -280,7 +198,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             }
         }
 
-        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(Guid input) => input == default;
         private static bool IsInvalid(DateTimeOffset input) => input == default;
     }
