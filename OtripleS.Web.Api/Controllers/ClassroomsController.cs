@@ -95,9 +95,7 @@ namespace OtripleS.Web.Api.Controllers
             }
             catch (ClassroomValidationException classroomValidationException)
             {
-                string innerMessage = GetInnerMessage(classroomValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(classroomValidationException.InnerException);
             }
             catch (ClassroomDependencyException classroomDependencyException)
             {
@@ -166,9 +164,7 @@ namespace OtripleS.Web.Api.Controllers
             }
             catch (ClassroomValidationException classroomValidationException)
             {
-                string innerMessage = GetInnerMessage(classroomValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(classroomValidationException.InnerException);
             }
             catch (ClassroomDependencyException classroomDependencyException)
                 when (classroomDependencyException.InnerException is LockedClassroomException)
