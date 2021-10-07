@@ -42,6 +42,78 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async void ShouldThrowValidationExceptionOnModifyIfClassroomIsInvalidAndLogItAsync(
+            string invalidText)
+        {
+            // given
+            var invalidClassroom = new Classroom
+            {
+                Name = invalidText,
+                Location = invalidText
+            };
+
+            var invalidClassroomException = new InvalidClassroomException();
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.Id),
+                values: "Id is required");
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.Name),
+                values: "Text is required");
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.Location),
+                values: "Text is required");
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.CreatedDate),
+                values: "Date is required");
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.UpdatedDate),
+                values: new string[] {
+                    "Date is required",
+                    $"Date is the same as {nameof(Classroom.CreatedDate)}"
+                });
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.CreatedBy),
+                values: "Id is required");
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.UpdatedBy),
+                values: "Id is required");
+
+            var expectedClassroomValidationException =
+                new ClassroomValidationException(invalidClassroomException);
+
+            // when
+            ValueTask<Classroom> createClassroomTask =
+                this.classroomService.ModifyClassroomAsync(invalidClassroom);
+
+            // then
+            await Assert.ThrowsAsync<ClassroomValidationException>(() =>
+                createClassroomTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedClassroomValidationException))),
+                        Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Fact]
         public async Task ShouldThrowValidationExceptionOnModifyWhenClassroomIdIsInvalidAndLogItAsync()
         {
