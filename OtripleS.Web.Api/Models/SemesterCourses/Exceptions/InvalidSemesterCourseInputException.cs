@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.SemesterCourses.Exceptions
     public class InvalidSemesterCourseInputException : Exception
     {
         public InvalidSemesterCourseInputException(string parameterName, object parameterValue)
-            : base($"Invalid SemesterCourse, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid semester course, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
     }
 }
