@@ -75,7 +75,7 @@ namespace OtripleS.Web.Api.Infrastructure.Build
                 }
             };
 
-            adotNetClient.SerializeAndWriteToFile(githubPipeline, "../../../../azure-pipelines.yml");
+            adotNetClient.SerializeAndWriteToFile(githubPipeline, "../../../../.github/workflows/dotnet.yml");
         }
     }
 }
