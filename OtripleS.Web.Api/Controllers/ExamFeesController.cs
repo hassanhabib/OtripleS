@@ -36,23 +36,19 @@ namespace OtripleS.Web.Api.Controllers
             catch (ExamFeeValidationException examFeeValidationException)
                 when (examFeeValidationException.InnerException is AlreadyExistsExamFeeException)
             {
-                string innerMessage = GetInnerMessage(examFeeValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(examFeeValidationException.InnerException);
             }
             catch (ExamFeeValidationException examFeeValidationException)
             {
-                string innerMessage = GetInnerMessage(examFeeValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(examFeeValidationException.InnerException);
             }
             catch (ExamFeeDependencyException examFeeDependencyException)
             {
-                return Problem(examFeeDependencyException.Message);
+                return InternalServerError(examFeeDependencyException);
             }
             catch (ExamFeeServiceException examFeeServiceException)
             {
-                return Problem(examFeeServiceException.Message);
+                return InternalServerError(examFeeServiceException);
             }
         }
 
@@ -68,11 +64,11 @@ namespace OtripleS.Web.Api.Controllers
             }
             catch (ExamFeeDependencyException examFeeDependencyException)
             {
-                return Problem(examFeeDependencyException.Message);
+                return InternalServerError(examFeeDependencyException);
             }
             catch (ExamFeeServiceException examFeeServiceException)
             {
-                return Problem(examFeeServiceException.Message);
+                return InternalServerError(examFeeServiceException);
             }
         }
 
@@ -89,23 +85,19 @@ namespace OtripleS.Web.Api.Controllers
             catch (ExamFeeValidationException examFeeValidationException)
                 when (examFeeValidationException.InnerException is NotFoundExamFeeException)
             {
-                string innerMessage = GetInnerMessage(examFeeValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(examFeeValidationException.InnerException);
             }
             catch (ExamFeeValidationException examFeeValidationException)
             {
-                string innerMessage = GetInnerMessage(examFeeValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(examFeeValidationException.InnerException);
             }
             catch (ExamFeeDependencyException examFeeDependencyException)
             {
-                return Problem(examFeeDependencyException.Message);
+                return InternalServerError(examFeeDependencyException);
             }
             catch (ExamFeeServiceException examFeeServiceException)
             {
-                return Problem(examFeeServiceException.Message);
+                return InternalServerError(examFeeServiceException);
             }
         }
 
@@ -122,30 +114,24 @@ namespace OtripleS.Web.Api.Controllers
             catch (ExamFeeValidationException examFeeValidationException)
                 when (examFeeValidationException.InnerException is NotFoundExamFeeException)
             {
-                string innerMessage = GetInnerMessage(examFeeValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(examFeeValidationException.InnerException);
             }
             catch (ExamFeeValidationException examFeeValidationException)
             {
-                string innerMessage = GetInnerMessage(examFeeValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(examFeeValidationException.InnerException);
             }
             catch (ExamFeeDependencyException examFeeDependencyException)
                 when (examFeeDependencyException.InnerException is LockedExamFeeException)
             {
-                string innerMessage = GetInnerMessage(examFeeDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(examFeeDependencyException.InnerException);
             }
             catch (ExamFeeDependencyException examFeeDependencyException)
             {
-                return Problem(examFeeDependencyException.Message);
+                return InternalServerError(examFeeDependencyException);
             }
             catch (ExamFeeServiceException examFeeServiceException)
             {
-                return Problem(examFeeServiceException.Message);
+                return InternalServerError(examFeeServiceException);
             }
         }
 
@@ -162,34 +148,25 @@ namespace OtripleS.Web.Api.Controllers
             catch (ExamFeeValidationException examFeeValidationException)
                 when (examFeeValidationException.InnerException is NotFoundExamFeeException)
             {
-                string innerMessage = GetInnerMessage(examFeeValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(examFeeValidationException.InnerException);
             }
             catch (ExamFeeValidationException examFeeValidationException)
             {
-                string innerMessage = GetInnerMessage(examFeeValidationException);
-
-                return BadRequest(examFeeValidationException);
+                return BadRequest(examFeeValidationException.InnerException);
             }
             catch (ExamFeeDependencyException examFeeDependencyException)
                when (examFeeDependencyException.InnerException is LockedExamFeeException)
             {
-                string innerMessage = GetInnerMessage(examFeeDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(examFeeDependencyException.InnerException);
             }
             catch (ExamFeeDependencyException examFeeDependencyException)
             {
-                return Problem(examFeeDependencyException.Message);
+                return InternalServerError(examFeeDependencyException);
             }
             catch (ExamFeeServiceException examFeeServiceException)
             {
-                return Problem(examFeeServiceException.Message);
+                return InternalServerError(examFeeServiceException);
             }
         }
-
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

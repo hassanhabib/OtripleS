@@ -51,18 +51,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenExamFeeIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnModifyWhenIdsAreInvalidAndLogItAsync()
         {
             //given
-            Guid invalidExamFeeId = Guid.Empty;
             DateTimeOffset dateTime = GetRandomDateTime();
             ExamFee randomExamFee = CreateRandomExamFee(dateTime);
             ExamFee invalidExamFee = randomExamFee;
-            invalidExamFee.Id = invalidExamFeeId;
+            invalidExamFee.Id = Guid.Empty;
+            invalidExamFee.ExamId = Guid.Empty;
+            invalidExamFee.FeeId = Guid.Empty;
+            invalidExamFee.CreatedBy = default;
+            invalidExamFee.UpdatedBy = default;
 
-            var invalidExamFeeException = new InvalidExamFeeException(
-                parameterName: nameof(ExamFee.Id),
-                parameterValue: invalidExamFee.Id);
+            var invalidExamFeeException = new InvalidExamFeeException();
+
+            invalidExamFeeException.AddData(
+                key: nameof(ExamFee.Id),
+                values: "Id is required");
+
+            invalidExamFeeException.AddData(
+                key: nameof(ExamFee.ExamId),
+                values: "Id is required");
+
+            invalidExamFeeException.AddData(
+                key: nameof(ExamFee.FeeId),
+                values: "Id is required");
+
+            invalidExamFeeException.AddData(
+                key: nameof(ExamFee.CreatedBy),
+                values: "Id is required");
+
+            invalidExamFeeException.AddData(
+                key: nameof(ExamFee.UpdatedBy),
+                values: "Id is required");
 
             var expectedExamFeeValidationException =
                 new ExamFeeValidationException(invalidExamFeeException);
@@ -76,7 +97,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                 modifyExamFeeTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedExamFeeValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
@@ -89,228 +110,28 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenExamIdIsInvalidAndLogItAsync()
-        {
-            //given
-            Guid invalidExamFeeId = Guid.Empty;
-            DateTimeOffset dateTime = GetRandomDateTime();
-            ExamFee randomExamFee = CreateRandomExamFee(dateTime);
-            ExamFee invalidExamFee = randomExamFee;
-            invalidExamFee.ExamId = invalidExamFeeId;
-
-            var invalidExamFeeException = new InvalidExamFeeException(
-                parameterName: nameof(ExamFee.ExamId),
-                parameterValue: invalidExamFee.ExamId);
-
-            var expectedExamFeeValidationException =
-                new ExamFeeValidationException(invalidExamFeeException);
-
-            //when
-            ValueTask<ExamFee> modifyExamFeeTask =
-                this.examFeeService.ModifyExamFeeAsync(invalidExamFee);
-
-            //then
-            await Assert.ThrowsAsync<ExamFeeValidationException>(() =>
-                modifyExamFeeTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamFeeByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.UpdateExamFeeAsync(It.IsAny<ExamFee>()),
-                    Times.Never);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenFeeIdIsInvalidAndLogItAsync()
-        {
-            //given
-            Guid invalidExamFeeId = Guid.Empty;
-            DateTimeOffset dateTime = GetRandomDateTime();
-            ExamFee randomExamFee = CreateRandomExamFee(dateTime);
-            ExamFee invalidExamFee = randomExamFee;
-            invalidExamFee.FeeId = invalidExamFeeId;
-
-            var invalidExamFeeException = new InvalidExamFeeException(
-                parameterName: nameof(ExamFee.FeeId),
-                parameterValue: invalidExamFee.FeeId);
-
-            var expectedExamFeeValidationException =
-                new ExamFeeValidationException(invalidExamFeeException);
-
-            //when
-            ValueTask<ExamFee> modifyExamFeeTask =
-                this.examFeeService.ModifyExamFeeAsync(invalidExamFee);
-
-            //then
-            await Assert.ThrowsAsync<ExamFeeValidationException>(() =>
-                modifyExamFeeTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamFeeByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.UpdateExamFeeAsync(It.IsAny<ExamFee>()),
-                    Times.Never);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenCreatedByIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            ExamFee randomExamFee = CreateRandomExamFee(dateTime);
-            ExamFee inputExamFee = randomExamFee;
-            inputExamFee.CreatedBy = default;
-
-            var invalidExamFeeInputException = new InvalidExamFeeException(
-                parameterName: nameof(ExamFee.CreatedBy),
-                parameterValue: inputExamFee.CreatedBy);
-
-            var expectedExamFeeValidationException =
-                new ExamFeeValidationException(invalidExamFeeInputException);
-
-            // when
-            ValueTask<ExamFee> modifyExamFeeTask =
-                this.examFeeService.ModifyExamFeeAsync(inputExamFee);
-
-            // then
-            await Assert.ThrowsAsync<ExamFeeValidationException>(() =>
-                modifyExamFeeTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamFeeByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.UpdateExamFeeAsync(It.IsAny<ExamFee>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedByIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            ExamFee randomExamFee = CreateRandomExamFee(dateTime);
-            ExamFee inputExamFee = randomExamFee;
-            inputExamFee.UpdatedBy = default;
-
-            var invalidExamFeeInputException = new InvalidExamFeeException(
-                parameterName: nameof(ExamFee.UpdatedBy),
-                parameterValue: inputExamFee.UpdatedBy);
-
-            var expectedExamFeeValidationException =
-                new ExamFeeValidationException(invalidExamFeeInputException);
-
-            // when
-            ValueTask<ExamFee> modifyExamFeeTask =
-                this.examFeeService.ModifyExamFeeAsync(inputExamFee);
-
-            // then
-            await Assert.ThrowsAsync<ExamFeeValidationException>(() =>
-                modifyExamFeeTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamFeeByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.UpdateExamFeeAsync(It.IsAny<ExamFee>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenCreatedDateIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnModifyWhenDatesAreInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             ExamFee randomExamFee = CreateRandomExamFee(dateTime);
             ExamFee inputExamFee = randomExamFee;
             inputExamFee.CreatedDate = default;
-
-            var invalidExamFeeInputException = new InvalidExamFeeException(
-                parameterName: nameof(ExamFee.CreatedDate),
-                parameterValue: inputExamFee.CreatedDate);
-
-            var expectedExamFeeValidationException =
-                new ExamFeeValidationException(invalidExamFeeInputException);
-
-            // when
-            ValueTask<ExamFee> modifyExamFeeTask =
-                this.examFeeService.ModifyExamFeeAsync(inputExamFee);
-
-            // then
-            await Assert.ThrowsAsync<ExamFeeValidationException>(() =>
-                modifyExamFeeTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamFeeByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.UpdateExamFeeAsync(It.IsAny<ExamFee>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsInvalidAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            ExamFee randomExamFee = CreateRandomExamFee(dateTime);
-            ExamFee inputExamFee = randomExamFee;
             inputExamFee.UpdatedDate = default;
 
-            var invalidExamFeeInputException = new InvalidExamFeeException(
-                parameterName: nameof(ExamFee.UpdatedDate),
-                parameterValue: inputExamFee.UpdatedDate);
+            var invalidExamFeeInputException = new InvalidExamFeeException();
+
+            invalidExamFeeInputException.AddData(
+                key: nameof(ExamFee.CreatedDate),
+                values: "Date is required");
+
+            invalidExamFeeInputException.AddData(
+                key: nameof(ExamFee.UpdatedDate),
+                "Date is required",
+                $"Date is the same as {nameof(ExamFee.CreatedDate)}");
 
             var expectedExamFeeValidationException =
                 new ExamFeeValidationException(invalidExamFeeInputException);
@@ -324,7 +145,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                 modifyExamFeeTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedExamFeeValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
@@ -335,47 +156,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                 broker.UpdateExamFeeAsync(It.IsAny<ExamFee>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsSameAsCreatedDateAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            ExamFee randomExamFee = CreateRandomExamFee(dateTime);
-            ExamFee inputExamFee = randomExamFee;
-
-            var invalidExamFeeInputException = new InvalidExamFeeException(
-                parameterName: nameof(ExamFee.UpdatedDate),
-                parameterValue: inputExamFee.UpdatedDate);
-
-            var expectedExamFeeValidationException =
-                new ExamFeeValidationException(invalidExamFeeInputException);
-
-            // when
-            ValueTask<ExamFee> modifyExamFeeTask =
-                this.examFeeService.ModifyExamFeeAsync(inputExamFee);
-
-            // then
-            await Assert.ThrowsAsync<ExamFeeValidationException>(() =>
-                modifyExamFeeTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamFeeByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.UpdateExamFeeAsync(It.IsAny<ExamFee>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
@@ -392,9 +172,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             inputExamFee.UpdatedBy = inputExamFee.CreatedBy;
             inputExamFee.UpdatedDate = dateTime.AddMinutes(minutes);
 
-            var invalidExamFeeInputException = new InvalidExamFeeException(
-                parameterName: nameof(ExamFee.UpdatedDate),
-                parameterValue: inputExamFee.UpdatedDate);
+            var invalidExamFeeInputException = new InvalidExamFeeException();
+
+            invalidExamFeeInputException.AddData(
+                key: nameof(ExamFee.UpdatedDate),
+                values: $"Date is not recent");
 
             var expectedExamFeeValidationException =
                 new ExamFeeValidationException(invalidExamFeeInputException);
@@ -416,7 +198,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedExamFeeValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
@@ -427,9 +209,59 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                 broker.UpdateExamFeeAsync(It.IsAny<ExamFee>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsSameAsCreatedDateAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            ExamFee randomExamFee = CreateRandomExamFee(dateTime);
+            ExamFee inputExamFee = randomExamFee;
+
+            var invalidExamFeeInputException = new InvalidExamFeeException();
+
+            invalidExamFeeInputException.AddData(
+                key: nameof(ExamFee.UpdatedDate),
+                values: $"Date is the same as {nameof(ExamFee.CreatedDate)}");
+
+            var expectedExamFeeValidationException =
+                new ExamFeeValidationException(invalidExamFeeInputException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            // when
+            ValueTask<ExamFee> modifyExamFeeTask =
+                this.examFeeService.ModifyExamFeeAsync(inputExamFee);
+
+            // then
+            await Assert.ThrowsAsync<ExamFeeValidationException>(() =>
+                modifyExamFeeTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedExamFeeValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamFeeByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateExamFeeAsync(It.IsAny<ExamFee>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]

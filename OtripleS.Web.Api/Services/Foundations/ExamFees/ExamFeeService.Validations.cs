@@ -15,34 +15,47 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
         public void ValidateExamFeeOnCreate(ExamFee examFee)
         {
             ValidateExamFeeIsNull(examFee);
-            ValidateExamFeeIds(examFee.ExamId, examFee.FeeId);
-            ValidateInvalidAuditFields(examFee);
-            ValidateInvalidAuditFieldsOnCreate(examFee);
+
+            Validate(
+                (Rule: IsInvalid(examFee.ExamId), Parameter: nameof(ExamFee.ExamId)),
+                (Rule: IsInvalid(examFee.FeeId), Parameter: nameof(ExamFee.FeeId)),
+                (Rule: IsInvalid(examFee.CreatedBy), Parameter: nameof(ExamFee.CreatedBy)),
+                (Rule: IsInvalid(examFee.CreatedDate), Parameter: nameof(ExamFee.CreatedDate)),
+                (Rule: IsInvalid(examFee.UpdatedBy), Parameter: nameof(ExamFee.UpdatedBy)),
+                (Rule: IsInvalid(examFee.UpdatedDate), Parameter: nameof(ExamFee.UpdatedDate)),
+                (Rule: IsNotRecent(examFee.CreatedDate), Parameter: nameof(ExamFee.CreatedDate)),
+
+                (Rule: IsNotSame(
+                    firstId: examFee.UpdatedBy,
+                    secondId: examFee.CreatedBy,
+                    secondIdName: nameof(ExamFee.CreatedBy)),
+                Parameter: nameof(ExamFee.UpdatedBy)),
+                (Rule: IsNotSame(
+                    firstId: examFee.UpdatedDate,
+                    secondId: examFee.CreatedDate,
+                    secondIdName: nameof(ExamFee.CreatedDate)),
+                Parameter: nameof(ExamFee.UpdatedDate)));
         }
 
         private void ValidateExamFeeOnModify(ExamFee examFee)
         {
             ValidateExamFeeIsNull(examFee);
-            ValidateExamFeeId(examFee.Id);
-            ValidateExamFeeIds(examFee.ExamId, examFee.FeeId);
-            ValidateInvalidAuditFields(examFee);
-            ValidateInvalidAuditFieldsOnModify(examFee);
-        }
 
-        private void ValidateInvalidAuditFieldsOnModify(ExamFee examFee)
-        {
-            switch (examFee)
-            {
-                case { } when examFee.UpdatedDate == examFee.CreatedDate:
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.UpdatedDate),
-                        parameterValue: examFee.UpdatedDate);
+            Validate(
+                (Rule: IsInvalid(examFee.Id), Parameter: nameof(ExamFee.Id)),
+                (Rule: IsInvalid(examFee.ExamId), Parameter: nameof(ExamFee.ExamId)),
+                (Rule: IsInvalid(examFee.FeeId), Parameter: nameof(ExamFee.FeeId)),
+                (Rule: IsInvalid(examFee.CreatedBy), Parameter: nameof(ExamFee.CreatedBy)),
+                (Rule: IsInvalid(examFee.UpdatedBy), Parameter: nameof(ExamFee.UpdatedBy)), 
+                (Rule: IsInvalid(examFee.CreatedDate), Parameter: nameof(ExamFee.CreatedDate)),
+                (Rule: IsInvalid(examFee.UpdatedDate), Parameter: nameof(ExamFee.UpdatedDate)),
+                (Rule: IsNotRecent(examFee.UpdatedDate), Parameter: nameof(ExamFee.UpdatedDate)),
 
-                case { } when IsDateNotRecent(examFee.UpdatedDate):
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.UpdatedDate),
-                        parameterValue: examFee.UpdatedDate);
-            }
+                (Rule: IsSame(
+                    firstId: examFee.UpdatedDate,
+                    secondId: examFee.CreatedDate,
+                    secondIdName: nameof(ExamFee.CreatedDate)),
+                Parameter: nameof(ExamFee.UpdatedDate)));
         }
 
         private static void ValidateAgainstStorageExamFeeOnModify(ExamFee inputExamFee, ExamFee storageExamFee)
@@ -74,67 +87,66 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
             }
         }
 
-        private static void ValidateExamFeeIds(Guid examId, Guid feeId)
+        private static dynamic IsInvalid(Guid id) => new
         {
-            if (examId == default)
-            {
-                throw new InvalidExamFeeException(
-                    parameterName: nameof(ExamFee.ExamId),
-                    parameterValue: examId);
-            }
-            else if (feeId == default)
-            {
-                throw new InvalidExamFeeException(
-                    parameterName: nameof(ExamFee.FeeId),
-                    parameterValue: feeId);
-            }
-        }
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
 
-        private static void ValidateInvalidAuditFields(ExamFee examFee)
+        private static dynamic IsInvalid(DateTimeOffset date) => new
         {
-            switch (examFee)
+            Condition = date == default,
+            Message = "Date is required"
+        };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
             {
-                case { } when IsInvalid(examFee.CreatedBy):
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.CreatedBy),
-                        parameterValue: examFee.CreatedBy);
+                Condition = firstId != secondId,
+                Message = $"Id is not the same as {secondIdName}"
+            };
 
-                case { } when IsInvalid(examFee.CreatedDate):
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.CreatedDate),
-                        parameterValue: examFee.CreatedDate);
+        private static dynamic IsNotSame(
+            DateTimeOffset firstId,
+            DateTimeOffset secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Date is not the same as {secondIdName}"
+            };
 
-                case { } when IsInvalid(examFee.UpdatedBy):
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.UpdatedBy),
-                        parameterValue: examFee.UpdatedBy);
+        private static dynamic IsSame(
+            DateTimeOffset firstId,
+            DateTimeOffset secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId == secondId,
+                Message = $"Date is the same as {secondIdName}"
+            };
 
-                case { } when IsInvalid(examFee.UpdatedDate):
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.UpdatedDate),
-                        parameterValue: examFee.UpdatedDate);
-            }
-        }
-
-        private void ValidateInvalidAuditFieldsOnCreate(ExamFee examFee)
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
         {
-            switch (examFee)
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent"
+        };
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidExamFeeException = new InvalidExamFeeException();
+
+            foreach ((dynamic rule, string parameter) in validations)
             {
-                case { } when examFee.UpdatedBy != examFee.CreatedBy:
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.UpdatedBy),
-                        parameterValue: examFee.UpdatedBy);
-
-                case { } when examFee.UpdatedDate != examFee.CreatedDate:
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.UpdatedDate),
-                        parameterValue: examFee.UpdatedDate);
-
-                case { } when IsDateNotRecent(examFee.CreatedDate):
-                    throw new InvalidExamFeeException(
-                        parameterName: nameof(ExamFee.CreatedDate),
-                        parameterValue: examFee.CreatedDate);
+                if (rule.Condition)
+                {
+                    invalidExamFeeException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
             }
+
+            invalidExamFeeException.ThrowIfContainsErrors();
         }
 
         private void ValidateStorageExamFees(IQueryable<ExamFee> storageExamFees)
@@ -144,9 +156,6 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
                 this.loggingBroker.LogWarning("No exam fees found in storage.");
             }
         }
-
-        private static bool IsInvalid(Guid input) => input == default;
-        private static bool IsInvalid(DateTimeOffset input) => input == default;
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
