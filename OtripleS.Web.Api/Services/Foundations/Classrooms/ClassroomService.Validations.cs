@@ -31,13 +31,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
                     firstId: classroom.UpdatedBy,
                     secondId: classroom.CreatedBy,
                     secondIdName: nameof(Classroom.CreatedBy)),
-                Parameter: nameof(Classroom.UpdatedBy))
+                Parameter: nameof(Classroom.UpdatedBy)),
 
-                //(Rule: IsNotSame(
-                //    firstDate: classroom.UpdatedDate,
-                //    secondDate: classroom.CreatedDate,
-                //    secondDateName: nameof(Classroom.CreatedDate)),
-                //Parameter: nameof(Classroom.UpdatedDate))
+                (Rule: IsNotSame(
+                    firstDate: classroom.UpdatedDate,
+                    secondDate: classroom.CreatedDate,
+                    secondDateName: nameof(Classroom.CreatedDate)),
+                Parameter: nameof(Classroom.UpdatedDate))
 
             );
 
