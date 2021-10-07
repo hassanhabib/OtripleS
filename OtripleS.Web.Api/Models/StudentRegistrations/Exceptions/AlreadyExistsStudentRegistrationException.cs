@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.StudentRegistrations.Exceptions
     public class AlreadyExistsStudentRegistrationException : Exception
     {
         public AlreadyExistsStudentRegistrationException(Exception innerException)
-            : base("StudentRegistration with the same id already exists.", innerException) { }
+            : base(message: "Student registration with the same id already exists.", innerException) { }
     }
 }
