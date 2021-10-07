@@ -1,5 +1,4 @@
-name: .NET
-
+name: Github
 on:
   push:
     branches:
@@ -7,20 +6,18 @@ on:
   pull_request:
     branches:
     - master
-
 jobs:
   build:
     runs-on: windows-2019
-
     steps:
-    - name: Checking out
+    - name: Check Out
       uses: actions/checkout@v2
-    - name: Setup .NET
+    - name: Setup Dot Net Version
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.100-rc.1.21463.6
         include-prerelease: true
-    - name: Restore dependencies
+    - name: Restore
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
