@@ -5,9 +5,10 @@
 
 using System.Collections.Generic;
 using ADotNet.Clients;
-using ADotNet.Models.Pipelines.AspNets;
-using ADotNet.Models.Pipelines.AspNets.Tasks.DotNetExecutionTasks;
-using ADotNet.Models.Pipelines.AspNets.Tasks.UseDotNetTasks;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
+using GitHubBuild = ADotNet.Models.Pipelines.GithubPipelines.DotNets.Build;
 
 namespace OtripleS.Web.Api.Infrastructure.Build
 {
@@ -17,82 +18,64 @@ namespace OtripleS.Web.Api.Infrastructure.Build
         {
             var adotNetClient = new ADotNetClient();
 
-            var buildPipeline = new AspNetPipeline
+            var githubPipeline = new GithubPipeline
             {
-                TriggeringBranches = new List<string>
+                Name = "Github",
+                OnEvents = new Events
                 {
-                    "master"
+                    Push = new PushEvent
+                    {
+                        Branches = new string[] { "master" }
+                    },
+                    PullRequest = new PullRequestEvent
+                    {
+                        Branches = new string[] { "master" }
+                    }
                 },
 
-                VirtualMachinesPool = new VirtualMachinesPool
+                Jobs = new Jobs
                 {
-                    VirutalMachineImage = VirtualMachineImages.UbuntuLatest
-                },
-
-                ConfigurationVariables = new ConfigurationVariables
-                {
-                    BuildConfiguration = BuildConfiguration.Release
-                },
-
-                Tasks = new List<BuildTask>
-                {
-                    new UseDotNetTask
+                    Build = new GitHubBuild
                     {
-                        DisplayName = "Use .NET 6.0 Preview",
+                        RunsOn = BuildMachines.Windows2019,
 
-                        Inputs = new UseDotNetTasksInputs
+                        Steps = new List<GithubTask>
                         {
-                            Version = "6.0.100-preview.7.21379.14",
-                            IncludePreviewVersions = true
-                        }
-                    },
+                            new CheckoutTaskV2
+                            {
+                                Name = "Check Out"
+                            },
 
-                    new DotNetExecutionTask
-                    {
-                        DisplayName = "Restore",
+                            new SetupDotNetTaskV1
+                            {
+                                Name = "Setup Dot Net Version",
+                                TargetDotNetVersion = new TargetDotNetVersion
+                                {
+                                    DotNetVersion = "6.0.100-rc.1.21463.6",
+                                    IncludePrerelease = true
+                                }
+                            },
 
-                        Inputs = new DotNetExecutionTasksInputs
-                        {
-                            Command = Command.restore,
-                            FeedsToUse = Feeds.select
-                        }
-                    },
+                            new RestoreTask
+                            {
+                                Name = "Restore"
+                            },
 
-                    new DotNetExecutionTask
-                    {
-                        DisplayName = "Build",
+                            new DotNetBuildTask
+                            {
+                                Name = "Build"
+                            },
 
-                        Inputs = new DotNetExecutionTasksInputs
-                        {
-                            Command = Command.build
-                        }
-                    },
-
-                    new DotNetExecutionTask
-                    {
-                        DisplayName = "Test",
-
-                        Inputs = new DotNetExecutionTasksInputs
-                        {
-                            Command = Command.test,
-                            Projects = "**/*Unit*.csproj"
-                        }
-                    },
-
-                    new DotNetExecutionTask
-                    {
-                        DisplayName = "Publish",
-
-                        Inputs = new DotNetExecutionTasksInputs
-                        {
-                            Command = Command.publish,
-                            PublishWebProjects = true
+                            new TestTask
+                            {
+                                Name = "Test"
+                            }
                         }
                     }
                 }
             };
 
-            adotNetClient.SerializeAndWriteToFile(buildPipeline, "../../../../azure-pipelines.yml");
+            adotNetClient.SerializeAndWriteToFile(githubPipeline, "../../../../azure-pipelines.yml");
         }
     }
 }
