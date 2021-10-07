@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.UserContacts.Exceptions
     public class InvalidUserContactInputException : Exception
     {
         public InvalidUserContactInputException(string parameterName, object parameterValue)
-            : base($"Invalid UserContact, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid user contact, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
     }
 }
