@@ -121,6 +121,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         }
 
         [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedByIsNotSameToCreatedByAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Classroom randomClassroom = CreateRandomClassroom(dateTime);
+            Classroom invalidClassroom = randomClassroom;
+            invalidClassroom.UpdatedBy = Guid.NewGuid();
+            var invalidClassroomException = new InvalidClassroomException();
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.UpdatedBy),
+                values: $"Id is not the same as {nameof(Classroom.CreatedBy)}");
+
+            var expectedClassroomValidationException =
+                new ClassroomValidationException(invalidClassroomException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            // when
+            ValueTask<Classroom> createClassroomTask =
+                this.classroomService.CreateClassroomAsync(invalidClassroom);
+
+            // then
+            await Assert.ThrowsAsync<ClassroomValidationException>(() =>
+                createClassroomTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedClassroomValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertClassroomAsync(It.IsAny<Classroom>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public async void ShouldThrowValidationExceptionOnCreateWhenIdIsInvalidAndLogItAsync()
         {
             // given
@@ -317,43 +364,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.UpdatedDate),
                 parameterValue: inputClassroom.UpdatedDate);
-
-            var expectedClassroomValidationException =
-                new ClassroomValidationException(invalidClassroomInputException);
-
-            // when
-            ValueTask<Classroom> createClassroomTask =
-                this.classroomService.CreateClassroomAsync(inputClassroom);
-
-            // then
-            await Assert.ThrowsAsync<ClassroomValidationException>(() =>
-                createClassroomTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectClassroomByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedByIsNotSameToCreatedByAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Classroom randomClassroom = CreateRandomClassroom(dateTime);
-            Classroom inputClassroom = randomClassroom;
-            inputClassroom.UpdatedBy = Guid.NewGuid();
-
-            var invalidClassroomInputException = new InvalidClassroomException(
-                parameterName: nameof(Classroom.UpdatedBy),
-                parameterValue: inputClassroom.UpdatedBy);
 
             var expectedClassroomValidationException =
                 new ClassroomValidationException(invalidClassroomInputException);
