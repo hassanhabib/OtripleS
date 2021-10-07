@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Models.StudentGuardians.Exceptions
 {
     public class NullStudentGuardianException : Exception
     {
-        public NullStudentGuardianException() : base("The StudentGuardian is null.") { }
+        public NullStudentGuardianException() : base(message: "The student guardian is null.") { }
     }
 }

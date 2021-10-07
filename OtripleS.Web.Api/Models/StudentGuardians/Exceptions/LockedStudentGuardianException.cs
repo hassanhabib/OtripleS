@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.StudentGuardians.Exceptions
     public class LockedStudentGuardianException : Exception
     {
         public LockedStudentGuardianException(Exception innerException)
-            : base("Locked StudentGuardian record exception, please try again later.", innerException) { }
+            : base(message: "Locked student guardian record exception, please try again later.", innerException) { }
     }
 }
