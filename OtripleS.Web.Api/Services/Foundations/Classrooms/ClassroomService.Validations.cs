@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
                 (Rule: IsInvalidX(classroom.UpdatedBy), Parameter: nameof(Classroom.UpdatedBy)),
                 (Rule: IsInvalidX(classroom.CreatedDate), Parameter: nameof(Classroom.CreatedDate)),
                 (Rule: IsInvalidX(classroom.UpdatedDate), Parameter: nameof(Classroom.UpdatedDate)),
-                //(Rule: IsNotRecent(classroom.CreatedDate), Parameter: nameof(Classroom.CreatedDate))
+                (Rule: IsNotRecent(classroom.CreatedDate), Parameter: nameof(Classroom.CreatedDate)),
 
                 (Rule: IsNotSame(
                     firstId: classroom.UpdatedBy,
