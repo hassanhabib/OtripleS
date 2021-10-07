@@ -16,6 +16,7 @@ using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Services.Foundations.Courses;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
 {
@@ -61,6 +62,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             return actualException =>
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
+
+        private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message
+                && (expectedException.InnerException as Xeption).DataEquals(actualException.InnerException.Data);
         }
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();

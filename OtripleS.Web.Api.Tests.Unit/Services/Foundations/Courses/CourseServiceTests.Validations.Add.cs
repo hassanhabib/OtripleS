@@ -57,9 +57,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             Course inputCourse = randomCourse;
             inputCourse.Id = default;
 
-            var invalidCourseException = new InvalidCourseException(
-                parameterName: nameof(Course.Id),
-                parameterValue: inputCourse.Id);
+            var invalidCourseException = new InvalidCourseException();
+
+            invalidCourseException.AddData(
+                key: nameof(Course.Id),
+                values: "Id is required");
 
             var expectedCourseValidationException =
                 new CourseValidationException(invalidCourseException);
@@ -73,7 +75,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                 createCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedCourseValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
