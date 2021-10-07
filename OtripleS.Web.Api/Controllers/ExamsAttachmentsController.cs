@@ -90,22 +90,22 @@ namespace OtripleS.Web.Api.Controllers
 
                 return Ok(storageExamAttachment);
             }
-            catch (ExamAttachmentValidationException semesterExamAttachmentValidationException)
-                when (semesterExamAttachmentValidationException.InnerException is NotFoundExamAttachmentException)
+            catch (ExamAttachmentValidationException examAttachmentValidationException)
+                when (examAttachmentValidationException.InnerException is NotFoundExamAttachmentException)
             {
-                return NotFound(semesterExamAttachmentValidationException.InnerException);
+                return NotFound(examAttachmentValidationException.InnerException);
             }
-            catch (ExamAttachmentValidationException semesterExamAttachmentValidationException)
+            catch (ExamAttachmentValidationException examAttachmentValidationException)
             {
-                return BadRequest(semesterExamAttachmentValidationException.InnerException);
+                return BadRequest(examAttachmentValidationException.InnerException);
             }
-            catch (ExamAttachmentDependencyException semesterExamAttachmentDependencyException)
+            catch (ExamAttachmentDependencyException examAttachmentDependencyException)
             {
-                return InternalServerError(semesterExamAttachmentDependencyException);
+                return InternalServerError(examAttachmentDependencyException);
             }
-            catch (ExamAttachmentServiceException semesterExamAttachmentServiceException)
+            catch (ExamAttachmentServiceException examAttachmentServiceException)
             {
-                return InternalServerError(semesterExamAttachmentServiceException);
+                return InternalServerError(examAttachmentServiceException);
             }
         }
 
@@ -128,10 +128,10 @@ namespace OtripleS.Web.Api.Controllers
             {
                 return BadRequest(examAttachmentValidationException.InnerException);
             }
-            catch (ExamAttachmentDependencyException examAttachmentValidationException)
-               when (examAttachmentValidationException.InnerException is LockedExamAttachmentException)
+            catch (ExamAttachmentDependencyException examAttachmentDependencyException)
+               when (examAttachmentDependencyException.InnerException is LockedExamAttachmentException)
             {
-                return Locked(examAttachmentValidationException.InnerException);
+                return Locked(examAttachmentDependencyException.InnerException);
             }
             catch (ExamAttachmentDependencyException examAttachmentDependencyException)
             {
