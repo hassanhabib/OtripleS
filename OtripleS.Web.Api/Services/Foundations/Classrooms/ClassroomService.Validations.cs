@@ -15,10 +15,32 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         private void ValidateClassroomOnCreate(Classroom classroom)
         {
             ValidateClassroomIsNull(classroom);
-            ValidateClassroomIdIsNull(classroom.Id);
-            ValidateClassroomFields(classroom);
-            ValidateInvalidAuditFields(classroom);
-            ValidateAuditFieldsDataOnCreate(classroom);
+
+            Validate
+            (
+                (Rule: IsInvalidX(classroom.Id), Parameter: nameof(Classroom.Id)),
+                (Rule: IsInvalidX(classroom.Name), Parameter: nameof(Classroom.Name)),
+                (Rule: IsInvalidX(classroom.Location), Parameter: nameof(Classroom.Location)),
+                (Rule: IsInvalidX(classroom.CreatedBy), Parameter: nameof(Classroom.CreatedBy)),
+                (Rule: IsInvalidX(classroom.UpdatedBy), Parameter: nameof(Classroom.UpdatedBy)),
+                (Rule: IsInvalidX(classroom.CreatedDate), Parameter: nameof(Classroom.CreatedDate)),
+                (Rule: IsInvalidX(classroom.UpdatedDate), Parameter: nameof(Classroom.UpdatedDate)),
+                (Rule: IsNotRecent(classroom.CreatedDate), Parameter: nameof(Classroom.CreatedDate))
+
+                //(Rule: IsNotSame(
+                //    firstId: classroom.UpdatedBy,
+                //    secondId: classroom.CreatedBy,
+                //    secondIdName: nameof(Classroom.CreatedBy)),
+                //Parameter: nameof(Classroom.UpdatedBy)),
+
+                //(Rule: IsNotSame(
+                //    firstDate: classroom.UpdatedDate,
+                //    secondDate: classroom.CreatedDate,
+                //    secondDateName: nameof(Classroom.CreatedDate)),
+                //Parameter: nameof(Classroom.UpdatedDate))
+
+            );
+
         }
 
         private void ValidateClassroomOnModify(Classroom classroom)
@@ -30,6 +52,74 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             ValidateDatesAreNotSame(classroom);
             ValidateUpdatedDateIsRecent(classroom);
         }
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidClassroomException = new InvalidClassroomException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidClassroomException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidClassroomException.ThrowIfContainsErrors();
+        }
+
+        private static dynamic IsInvalidX(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static dynamic IsInvalidX(string text) => new
+        {
+            Condition = String.IsNullOrWhiteSpace(text),
+            Message = "Text is required"
+        };
+
+        private static dynamic IsInvalidX(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required"
+        };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not the same as {secondIdName}"
+            };
+
+        private static dynamic IsNotSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not the same as {secondDateName}"
+            };
+
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
+        {
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent"
+        };
+
+        private static dynamic IsSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate == secondDate,
+                Message = $"Date is the same as {secondDateName}"
+            };
 
         private void ValidateAuditFieldsDataOnCreate(Classroom classroom)
         {
