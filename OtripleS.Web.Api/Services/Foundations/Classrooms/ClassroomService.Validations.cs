@@ -36,22 +36,22 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             switch (classroom)
             {
                 case { } when classroom.UpdatedBy != classroom.CreatedBy:
-                    throw new InvalidClassroomInputException(
+                    throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.UpdatedBy),
                     parameterValue: classroom.UpdatedBy);
 
                 case { } when classroom.UpdatedDate != classroom.CreatedDate:
-                    throw new InvalidClassroomInputException(
+                    throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.UpdatedDate),
                     parameterValue: classroom.UpdatedDate);
 
                 case { } when IsDateNotRecent(classroom.CreatedDate):
-                    throw new InvalidClassroomInputException(
+                    throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.CreatedDate),
                     parameterValue: classroom.CreatedDate);
 
                 case { } when classroom.CreatedDate != classroom.UpdatedDate:
-                    throw new InvalidClassroomInputException(
+                    throw new InvalidClassroomException(
                         parameterName: nameof(Classroom.UpdatedDate),
                         parameterValue: classroom.UpdatedDate);
             }
@@ -62,22 +62,22 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             switch (classroom)
             {
                 case { } when IsInvalid(classroom.CreatedBy):
-                    throw new InvalidClassroomInputException(
+                    throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.CreatedBy),
                     parameterValue: classroom.CreatedBy);
 
                 case { } when IsInvalid(classroom.CreatedDate):
-                    throw new InvalidClassroomInputException(
+                    throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.CreatedDate),
                     parameterValue: classroom.CreatedDate);
 
                 case { } when IsInvalid(classroom.UpdatedBy):
-                    throw new InvalidClassroomInputException(
+                    throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.UpdatedBy),
                     parameterValue: classroom.UpdatedBy);
 
                 case { } when IsInvalid(classroom.UpdatedDate):
-                    throw new InvalidClassroomInputException(
+                    throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.UpdatedDate),
                     parameterValue: classroom.UpdatedDate);
             }
@@ -87,7 +87,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         {
             if (IsInvalid(classroom.Name))
             {
-                throw new InvalidClassroomInputException(
+                throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.Name),
                     parameterValue: classroom.Name);
             }
@@ -105,7 +105,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         {
             if (classroomId == default)
             {
-                throw new InvalidClassroomInputException(
+                throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.Id),
                     parameterValue: classroomId);
             }
@@ -115,7 +115,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         {
             if (classroom.CreatedDate == classroom.UpdatedDate)
             {
-                throw new InvalidClassroomInputException(
+                throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.UpdatedDate),
                     parameterValue: classroom.UpdatedDate);
             }
@@ -125,7 +125,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         {
             if (IsDateNotRecent(classroom.UpdatedDate))
             {
-                throw new InvalidClassroomInputException(
+                throw new InvalidClassroomException(
                     parameterName: nameof(classroom.UpdatedDate),
                     parameterValue: classroom.UpdatedDate);
             }
@@ -153,17 +153,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             switch (inputClassroom)
             {
                 case { } when inputClassroom.CreatedDate != storageClassroom.CreatedDate:
-                    throw new InvalidClassroomInputException(
+                    throw new InvalidClassroomException(
                         parameterName: nameof(Classroom.CreatedDate),
                         parameterValue: inputClassroom.CreatedDate);
 
                 case { } when inputClassroom.CreatedBy != storageClassroom.CreatedBy:
-                    throw new InvalidClassroomInputException(
+                    throw new InvalidClassroomException(
                         parameterName: nameof(Classroom.CreatedBy),
                         parameterValue: inputClassroom.CreatedBy);
 
                 case { } when inputClassroom.UpdatedDate == storageClassroom.UpdatedDate:
-                    throw new InvalidClassroomInputException(
+                    throw new InvalidClassroomException(
                         parameterName: nameof(Classroom.UpdatedDate),
                         parameterValue: inputClassroom.UpdatedDate);
             }

@@ -21,7 +21,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Guid randomClassroomId = default;
             Guid inputClassroomId = randomClassroomId;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.Id),
                 parameterValue: inputClassroomId);
 

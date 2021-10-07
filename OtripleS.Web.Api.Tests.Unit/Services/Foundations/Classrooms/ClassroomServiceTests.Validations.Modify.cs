@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom invalidClassroom = randomClassroom;
             invalidClassroom.Id = invalidClassroomId;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.Id),
                 parameterValue: invalidClassroom.Id);
 
@@ -88,7 +88,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom invalidClassroom = randomClassroom;
             invalidClassroom.Name = invalidClassroomName;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                parameterName: nameof(Classroom.Name),
                parameterValue: invalidClassroom.Name);
 
@@ -121,7 +121,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom inputClassroom = randomClassroom;
             inputClassroom.CreatedBy = default;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.CreatedBy),
                 parameterValue: inputClassroom.CreatedBy);
 
@@ -158,7 +158,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom inputClassroom = randomClassroom;
             inputClassroom.UpdatedBy = default;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.UpdatedBy),
                 parameterValue: inputClassroom.UpdatedBy);
 
@@ -195,7 +195,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom inputClassroom = randomClassroom;
             inputClassroom.CreatedDate = default;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.CreatedDate),
                 parameterValue: inputClassroom.CreatedDate);
 
@@ -232,7 +232,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom inputClassroom = randomClassroom;
             inputClassroom.UpdatedDate = default;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.UpdatedDate),
                 parameterValue: inputClassroom.UpdatedDate);
 
@@ -268,7 +268,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom randomClassroom = CreateRandomClassroom(dateTime);
             Classroom inputClassroom = randomClassroom;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.UpdatedDate),
                 parameterValue: inputClassroom.UpdatedDate);
 
@@ -308,7 +308,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             inputClassroom.UpdatedBy = inputClassroom.CreatedBy;
             inputClassroom.UpdatedDate = dateTime.AddMinutes(minutes);
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.UpdatedDate),
                 parameterValue: inputClassroom.UpdatedDate);
 
@@ -406,7 +406,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Guid classroomId = invalidClassroom.Id;
             invalidClassroom.CreatedDate = storageClassroom.CreatedDate.AddMinutes(randomNumber);
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.CreatedDate),
                 parameterValue: invalidClassroom.CreatedDate);
 
@@ -460,7 +460,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom storageClassroom = randomClassroom.DeepClone();
             Guid classroomId = invalidClassroom.Id;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.UpdatedDate),
                 parameterValue: invalidClassroom.UpdatedDate);
 
@@ -515,7 +515,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Guid classroomId = invalidClassroom.Id;
             invalidClassroom.CreatedBy = invalidCreatedBy;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.CreatedBy),
                 parameterValue: invalidClassroom.CreatedBy);
 

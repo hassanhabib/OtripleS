@@ -4,15 +4,20 @@
 // ---------------------------------------------------------------
 
 using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Classrooms.Exceptions
 {
-    public class InvalidClassroomInputException : Exception
+    public class InvalidClassroomException : Xeption
     {
-        public InvalidClassroomInputException(string parameterName, object parameterValue)
+        public InvalidClassroomException(string parameterName, object parameterValue)
             : base(message: $"Invalid classroom, " +
                   $"parameter name: {parameterName}, " +
                   $"parameter value: {parameterValue}.")
         { }
+
+        public InvalidClassroomException()
+            : base(message: "Invalid classroom. Please fix the errors and try again.") { }
+        
     }
 }

@@ -47,6 +47,79 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async void ShouldThrowValidationExceptionOnCreateIfClassroomIsInvalidAndLogItAsync(
+            string invalidText)
+        {
+            // given
+            var invalidClassroom = new Classroom
+            {
+                Name = invalidText,
+                Location = invalidText
+            };
+
+            var invalidClassroomException = new InvalidClassroomException();
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.Id),
+                values: "Id is required");
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.Name),
+                values: "Text is required");
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.Location),
+                values: "Text is required");
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.CreatedDate),
+                values: "Date is required");
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.UpdatedDate),
+                values: "Date is required");
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.CreatedBy),
+                values: "Id is required");
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.UpdatedBy),
+                values: "Id is required");
+
+            var expectedClassroomValidationException =
+                new ClassroomValidationException(invalidClassroomException);
+
+            // when
+            ValueTask<Classroom> createClassroomTask =
+                this.classroomService.CreateClassroomAsync(invalidClassroom);
+
+            // then
+            await Assert.ThrowsAsync<ClassroomValidationException>(() =>
+                createClassroomTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedClassroomValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertClassroomAsync(It.IsAny<Classroom>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Fact]
         public async void ShouldThrowValidationExceptionOnCreateWhenIdIsInvalidAndLogItAsync()
         {
@@ -56,7 +129,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom inputClassroom = randomClassroom;
             inputClassroom.Id = default;
 
-            var InvalidClassroomException = new InvalidClassroomInputException(
+            var InvalidClassroomException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.Id),
                 parameterValue: inputClassroom.Id);
 
@@ -96,7 +169,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom invalidClassroom = randomClassroom;
             invalidClassroom.Name = invalidClassroomName;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                parameterName: nameof(Classroom.Name),
                parameterValue: invalidClassroom.Name);
 
@@ -130,7 +203,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom inputClassroom = randomClassroom;
             inputClassroom.CreatedBy = default;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.CreatedBy),
                 parameterValue: inputClassroom.CreatedBy);
 
@@ -167,7 +240,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom inputClassroom = randomClassroom;
             inputClassroom.CreatedDate = default;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.CreatedDate),
                 parameterValue: inputClassroom.CreatedDate);
 
@@ -204,7 +277,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom inputClassroom = randomClassroom;
             inputClassroom.UpdatedBy = default;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.UpdatedBy),
                 parameterValue: inputClassroom.UpdatedBy);
 
@@ -241,7 +314,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom inputClassroom = randomClassroom;
             inputClassroom.UpdatedDate = default;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.UpdatedDate),
                 parameterValue: inputClassroom.UpdatedDate);
 
@@ -278,7 +351,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom inputClassroom = randomClassroom;
             inputClassroom.UpdatedBy = Guid.NewGuid();
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.UpdatedBy),
                 parameterValue: inputClassroom.UpdatedBy);
 
@@ -316,7 +389,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             inputClassroom.UpdatedBy = randomClassroom.CreatedBy;
             inputClassroom.UpdatedDate = GetRandomDateTime();
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.UpdatedDate),
                 parameterValue: inputClassroom.UpdatedDate);
 
@@ -357,7 +430,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             inputClassroom.CreatedDate = dateTime.AddMinutes(minutes);
             inputClassroom.UpdatedDate = inputClassroom.CreatedDate;
 
-            var invalidClassroomInputException = new InvalidClassroomInputException(
+            var invalidClassroomInputException = new InvalidClassroomException(
                 parameterName: nameof(Classroom.CreatedDate),
                 parameterValue: inputClassroom.CreatedDate);
 
