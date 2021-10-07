@@ -442,27 +442,27 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             int minutes)
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Classroom randomClassroom = CreateRandomClassroom(dateTime);
-            Classroom inputClassroom = randomClassroom;
-            inputClassroom.UpdatedBy = inputClassroom.CreatedBy;
-            inputClassroom.CreatedDate = dateTime.AddMinutes(minutes);
-            inputClassroom.UpdatedDate = inputClassroom.CreatedDate;
+            DateTimeOffset randomDate = GetRandomDateTime();
+            Classroom randomClassroom = CreateRandomClassroom(randomDate);
+            Classroom invalidClassroom = randomClassroom;
+            invalidClassroom.CreatedDate = randomDate.AddMinutes(minutes);
+            invalidClassroom.UpdatedDate = invalidClassroom.CreatedDate;
+            var invalidClassroomException = new InvalidClassroomException();
 
-            var invalidClassroomInputException = new InvalidClassroomException(
-                parameterName: nameof(Classroom.CreatedDate),
-                parameterValue: inputClassroom.CreatedDate);
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.CreatedDate),
+                values: $"Date is not recent");
 
             var expectedClassroomValidationException =
-                new ClassroomValidationException(invalidClassroomInputException);
+                new ClassroomValidationException(invalidClassroomException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
+                    .Returns(randomDate);
 
             // when
             ValueTask<Classroom> createClassroomTask =
-                this.classroomService.CreateClassroomAsync(inputClassroom);
+                this.classroomService.CreateClassroomAsync(invalidClassroom);
 
             // then
             await Assert.ThrowsAsync<ClassroomValidationException>(() =>
@@ -473,11 +473,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedClassroomValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectClassroomByIdAsync(It.IsAny<Guid>()),
+                broker.InsertClassroomAsync(It.IsAny<Classroom>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
