@@ -10,12 +10,12 @@ namespace OtripleS.Web.Api.Models.Assignments.Exceptions
     public class InvalidAssignmentException : Xeption
     {
         public InvalidAssignmentException(string parameterName, object parameterValue)
-            : base($"Invalid Assignment, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid assignment, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
 
         public InvalidAssignmentException()
-            : base("Invalid assignment. Please fix the errors and try again.") { }
+            : base(message: "Invalid assignment. Please fix the errors and try again.") { }
     }
 }

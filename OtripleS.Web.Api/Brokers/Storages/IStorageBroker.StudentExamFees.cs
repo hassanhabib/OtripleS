@@ -17,7 +17,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         ValueTask<StudentExamFee> SelectStudentExamFeeByIdsAsync(
             Guid studentId,
-            Guid ExamFeeId);
+            Guid examFeeId);
 
         ValueTask<StudentExamFee> UpdateStudentExamFeeAsync(StudentExamFee examFee);
         ValueTask<StudentExamFee> DeleteStudentExamFeeAsync(StudentExamFee examFee);

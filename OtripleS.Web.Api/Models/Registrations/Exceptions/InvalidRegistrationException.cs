@@ -4,14 +4,15 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.Registrations.Exceptions
 {
     public class InvalidRegistrationException : Exception
     {
         public InvalidRegistrationException(string parameterName, object parameterValue)
-            : base($"Invalid registration, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid registration, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
     }
 }

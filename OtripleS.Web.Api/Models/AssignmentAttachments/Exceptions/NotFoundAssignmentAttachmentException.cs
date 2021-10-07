@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions
     public class NotFoundAssignmentAttachmentException : Exception
     {
         public NotFoundAssignmentAttachmentException(Guid assignmentId, Guid attachmentId)
-            : base($"Couldn't find Assignment Attachment with assignmentId: " +
+            : base(message: $"Couldn't find assignment attachment with assignment id: " +
                     $"{assignmentId} " +
-                    $"and attachmentId: {attachmentId}.")
+                    $"and attachment id: {attachmentId}.")
         { }
     }
 }

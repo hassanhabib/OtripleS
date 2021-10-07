@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Models.Attendances.Exceptions
 {
     public class NullAttendanceException : Exception
     {
-        public NullAttendanceException() : base("The attendance is null.") { }
+        public NullAttendanceException() : base(message: "The attendance is null.") { }
     }
 }

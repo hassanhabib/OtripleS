@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Guardians.Exceptions
     public class GuardianValidationException : Exception
     {
         public GuardianValidationException(Exception innerException)
-            : base("Invalid input, contact support.", innerException) { }
+            : base(message: "Invalid input, contact support.", innerException) { }
     }
 }

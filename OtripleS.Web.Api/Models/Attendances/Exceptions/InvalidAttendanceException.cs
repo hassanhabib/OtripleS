@@ -10,12 +10,12 @@ namespace OtripleS.Web.Api.Models.Attendances.Exceptions
     public class InvalidAttendanceException : Xeption
     {
         public InvalidAttendanceException(string parameterName, object parameterValue)
-            : base($"Invalid Attendace, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid attendace, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
 
         public InvalidAttendanceException()
-            : base("Invalid attendance. Please fix the errors and try again.") { }
+            : base(message: "Invalid attendance. Please fix the errors and try again.") { }
     }
 }

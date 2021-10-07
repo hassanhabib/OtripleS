@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.ExamAttachments.Exceptions
     public class NotFoundExamAttachmentException : Exception
     {
         public NotFoundExamAttachmentException(Guid examId, Guid attachmentId)
-          : base($"Couldn't find Exam Attachment with examId: " +
+          : base(message: $"Couldn't find exam attachment with exam id: " +
                     $"{examId} " +
-                    $"and attachmentId: {attachmentId}.")
+                    $"and attachment id: {attachmentId}.")
         { }
     }
 }

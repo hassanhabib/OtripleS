@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions
     public class InvalidAssignmentAttachmentException : Exception
     {
         public InvalidAssignmentAttachmentException(string parameterName, object parameterValue)
-           : base($"Invalid Assignment Attachment, " +
-                 $"ParameterName: {parameterName}, " +
-                 $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid assignment attachment, " +
+                 $"parameter name: {parameterName}, " +
+                 $"parameter value: {parameterValue}.")
         { }
     }
 }

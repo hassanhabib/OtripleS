@@ -4,11 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.Attachments.Exceptions
 {
     public class LockedAttachmentException : Exception
     {
         public LockedAttachmentException(Exception innerException)
-            : base("Locked attachment record exception, please try again later.", innerException) { }
+            : base(message: "Locked attachment record exception, please try again later.", innerException) { }
     }
 }

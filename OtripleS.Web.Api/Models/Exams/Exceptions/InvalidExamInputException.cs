@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.Exams.Exceptions
     public class InvalidExamInputException : Exception
     {
         public InvalidExamInputException(string parameterName, object parameterValue)
-            : base($"Invalid Exam, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid exam, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
     }
 }

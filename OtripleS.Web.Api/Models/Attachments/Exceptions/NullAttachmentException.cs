@@ -4,10 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.Attachments.Exceptions
 {
     public class NullAttachmentException : Exception
     {
-        public NullAttachmentException() : base("The attachment is null.") { }
+        public NullAttachmentException() : base(message: "The attachment is null.") { }
     }
 }

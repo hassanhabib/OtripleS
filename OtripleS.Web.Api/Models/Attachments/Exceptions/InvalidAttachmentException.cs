@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.Attachments.Exceptions
     public class InvalidAttachmentException : Exception
     {
         public InvalidAttachmentException(string parameterName, object parameterValue)
-            : base($"Invalid Attachment, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid attachment, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
     }
 }

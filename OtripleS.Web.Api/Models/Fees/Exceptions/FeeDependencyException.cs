@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Fees.Exceptions
     public class FeeDependencyException : Exception
     {
         public FeeDependencyException(Exception innerException)
-            : base("Service dependency error occurred, contact support.", innerException) { }
+            : base(message: "Service dependency error occurred, contact support.", innerException) { }
     }
 }

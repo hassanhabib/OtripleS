@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.CourseAttachments.Exceptions
     public class CourseAttachmentServiceException : Exception
     {
         public CourseAttachmentServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException) { }
+            : base(message: "Service error occurred, contact support.", innerException) { }
     }
 }

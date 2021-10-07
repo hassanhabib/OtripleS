@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Models.Assignments.Exceptions
 {
     public class NullAssignmentException : Exception
     {
-        public NullAssignmentException() : base("The assignment is null.") { }
+        public NullAssignmentException() : base(message: "The assignment is null.") { }
     }
 }

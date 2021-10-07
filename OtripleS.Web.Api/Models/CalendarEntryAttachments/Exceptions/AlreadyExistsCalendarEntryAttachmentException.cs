@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions
     public class AlreadyExistsCalendarEntryAttachmentException : Exception
     {
         public AlreadyExistsCalendarEntryAttachmentException(Exception innerException)
-            : base("CalendarEntry Attachment with the same id already exists.", innerException) { }
+            : base(message: "Calendar entry attachment with the same id already exists.", innerException) { }
     }
 }

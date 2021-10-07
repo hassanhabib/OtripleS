@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.TeacherAttachments.Exceptions
     public class InvalidTeacherAttachmentException : Exception
     {
         public InvalidTeacherAttachmentException(string parameterName, object parameterValue)
-            : base($"Invalid TeacherAttachment, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid teacher attachment, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
     }
 }

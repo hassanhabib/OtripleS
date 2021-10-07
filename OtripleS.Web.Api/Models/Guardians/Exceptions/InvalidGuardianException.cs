@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.Guardians.Exceptions
     public class InvalidGuardianException : Exception
     {
         public InvalidGuardianException(string parameterName, object parameterValue)
-            : base($"Invalid Guardian, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid guardian, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
     }
 }

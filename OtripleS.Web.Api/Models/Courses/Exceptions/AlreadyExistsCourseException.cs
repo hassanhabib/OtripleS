@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Courses.Exceptions
     public class AlreadyExistsCourseException : Exception
     {
         public AlreadyExistsCourseException(Exception innerException)
-            : base("Course with the same id already exists.", innerException) { }
+            : base(message: "Course with the same id already exists.", innerException) { }
     }
 }

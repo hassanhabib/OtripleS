@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.GuardianAttachments.Exceptions
     public class GuardianAttachmentValidationException : Exception
     {
         public GuardianAttachmentValidationException(Exception innerException)
-            : base("Invalid input, contact support.", innerException) { }
+            : base(message: "Invalid input, contact support.", innerException) { }
     }
 }

@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Fees.Exceptions
     public class LockedFeeException : Exception
     {
         public LockedFeeException(Exception innerException)
-            : base("Locked fee record exception, please try again later.", innerException) { }
+            : base(message: "Locked fee record exception, please try again later.", innerException) { }
     }
 }

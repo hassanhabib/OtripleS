@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions
     public class AssignmentAttachmentDependencyValidationException : Exception
     {
         public AssignmentAttachmentDependencyValidationException(Exception innerException)
-        : base("System dependency validation failure, contact support.", innerException) { }
+            : base(message: "System dependency validation failure, contact support.", innerException) { }
     }
 }

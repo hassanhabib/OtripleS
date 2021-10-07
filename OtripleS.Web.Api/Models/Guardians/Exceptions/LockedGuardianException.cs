@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Guardians.Exceptions
     public class LockedGuardianException : Exception
     {
         public LockedGuardianException(Exception innerException)
-            : base("Locked guardian record exception, please try again later.", innerException) { }
+            : base(message: "Locked guardian record exception, please try again later.", innerException) { }
     }
 }

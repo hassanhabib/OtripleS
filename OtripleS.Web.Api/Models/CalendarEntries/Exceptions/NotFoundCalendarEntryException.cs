@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.CalendarEntries.Exceptions
     public class NotFoundCalendarEntryException : Exception
     {
         public NotFoundCalendarEntryException(Guid calendarEntryId)
-            : base($"Couldn't find calendar entry with Id: {calendarEntryId}.") { }
+            : base(message: $"Couldn't find calendar entry with id: {calendarEntryId}.") { }
     }
 }

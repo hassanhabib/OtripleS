@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions
     public class InvalidAssignmentAttachmentReferenceException : Exception
     {
         public InvalidAssignmentAttachmentReferenceException(Exception innerException)
-            : base("Invalid AssignmentAttachment reference error occurred.", innerException) { }
+            : base(message: "Invalid assignment attachment reference error occurred.", innerException) { }
     }
 }

@@ -9,6 +9,7 @@ namespace OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions
 {
     public class NullAssignmentAttachmentException : Exception
     {
-        public NullAssignmentAttachmentException() : base("The AssignmentAttachment is null.") { }
+        public NullAssignmentAttachmentException()
+            : base(message: "The assignment attachment is null.") { }
     }
 }

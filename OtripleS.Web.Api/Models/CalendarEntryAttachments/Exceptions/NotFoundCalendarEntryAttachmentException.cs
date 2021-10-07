@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions
     public class NotFoundCalendarEntryAttachmentException : Exception
     {
         public NotFoundCalendarEntryAttachmentException(Guid calendarEntryId, Guid attachmentId)
-          : base($"Couldn't find CalendarEntryAttachment with calendarEntryId: " +
+          : base(message: $"Couldn't find calendar entry attachment with calendar entry id: " +
                     $"{calendarEntryId} " +
-                    $"and attachmentId: {attachmentId}.")
+                    $"and attachment id: {attachmentId}.")
         { }
     }
 }

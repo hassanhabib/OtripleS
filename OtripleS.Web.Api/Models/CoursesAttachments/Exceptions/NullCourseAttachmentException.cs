@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Models.CourseAttachments.Exceptions
 {
     public class NullCourseAttachmentException : Exception
     {
-        public NullCourseAttachmentException() : base("The course attachment is null.") { }
+        public NullCourseAttachmentException() : base(message: "The course attachment is null.") { }
     }
 }
