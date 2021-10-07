@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Models.StudentExams.Exceptions
 {
     public class NullStudentExamException : Exception
     {
-        public NullStudentExamException() : base("The StudentExam is null.") { }
+        public NullStudentExamException() : base(message: "The student exam is null.") { }
     }
 }
