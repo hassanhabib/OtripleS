@@ -46,11 +46,24 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         private void ValidateClassroomOnModify(Classroom classroom)
         {
             ValidateClassroomIsNull(classroom);
-            ValidateClassroomIdIsNull(classroom.Id);
-            ValidateClassroomFields(classroom);
-            ValidateInvalidAuditFields(classroom);
-            ValidateDatesAreNotSame(classroom);
-            ValidateUpdatedDateIsRecent(classroom);
+            Validate
+            (
+                (Rule: IsInvalidX(classroom.Id), Parameter: nameof(Classroom.Id)),
+                (Rule: IsInvalidX(classroom.Name), Parameter: nameof(Classroom.Name)),
+                (Rule: IsInvalidX(classroom.Location), Parameter: nameof(Classroom.Location)),
+                (Rule: IsInvalidX(classroom.CreatedBy), Parameter: nameof(Classroom.CreatedBy)),
+                (Rule: IsInvalidX(classroom.UpdatedBy), Parameter: nameof(Classroom.UpdatedBy)),
+                (Rule: IsInvalidX(classroom.CreatedDate), Parameter: nameof(Classroom.CreatedDate)),
+                (Rule: IsInvalidX(classroom.UpdatedDate), Parameter: nameof(Classroom.UpdatedDate)),
+                (Rule: IsNotRecent(classroom.UpdatedDate), Parameter: nameof(Classroom.UpdatedDate)),
+
+                (Rule: IsSame(
+                    firstDate: classroom.UpdatedDate,
+                    secondDate: classroom.CreatedDate,
+                    secondDateName: nameof(Classroom.CreatedDate)),
+                Parameter: nameof(Classroom.UpdatedDate))
+
+            );
         }
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
