@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.StudentExamFees.Exceptions
     public class AlreadyExistsStudentExamFeeException : Exception
     {
         public AlreadyExistsStudentExamFeeException(Exception innerException)
-            : base("StudentExamFee with the same id already exists.", innerException) { }
+            : base(message: "Student exam fee with the same id already exists.", innerException) { }
     }
 }
