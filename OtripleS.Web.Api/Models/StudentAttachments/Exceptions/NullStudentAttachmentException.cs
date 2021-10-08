@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Models.StudentAttachments.Exceptions
 {
     public class NullStudentAttachmentException : Exception
     {
-        public NullStudentAttachmentException() : base("The StudentAttachment is null.") { }
+        public NullStudentAttachmentException() : base(message: "The student attachment is null.") { }
     }
 }

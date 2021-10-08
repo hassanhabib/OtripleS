@@ -10,8 +10,8 @@ namespace OtripleS.Web.Api.Models.StudentAttachments.Exceptions
     public class NotFoundStudentAttachmentException : Exception
     {
         public NotFoundStudentAttachmentException(Guid studentId, Guid attachmentId)
-           : base($"Couldn't find studentAttachment with studentId: {studentId} " +
-                  $"and attachmentId: {attachmentId}.")
+           : base(message: $"Couldn't find student attachment with student id: {studentId} " +
+                  $"and attachment id: {attachmentId}.")
         { }
     }
 }

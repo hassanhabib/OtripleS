@@ -10,7 +10,7 @@ namespace OtripleS.Web.Api.Models.StudentAttachments.Exceptions
     public class LockedStudentAttachmentException : Exception
     {
         public LockedStudentAttachmentException(Exception innerException)
-            : base("Locked studentAttachment record exception, please try again later.", innerException)
+            : base(message: "Locked student attachment record exception, please try again later.", innerException)
         { }
     }
 }

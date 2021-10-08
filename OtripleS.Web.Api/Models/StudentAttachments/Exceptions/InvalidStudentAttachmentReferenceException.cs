@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.StudentAttachments.Exceptions
     public class InvalidStudentAttachmentReferenceException : Exception
     {
         public InvalidStudentAttachmentReferenceException(Exception innerException)
-            : base("Invalid student attachment reference error occurred.", innerException) { }
+            : base(message: "Invalid student attachment reference error occurred.", innerException) { }
     }
 }
