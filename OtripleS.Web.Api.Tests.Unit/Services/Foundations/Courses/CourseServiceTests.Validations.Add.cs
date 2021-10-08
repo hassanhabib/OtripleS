@@ -124,9 +124,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             Course inputCourse = randomCourse;
             inputCourse.UpdatedBy = Guid.NewGuid();
 
-            var invalidCourseException = new InvalidCourseException(
-                parameterName: nameof(Course.UpdatedBy),
-                parameterValue: inputCourse.UpdatedBy);
+            var invalidCourseException = new InvalidCourseException();
+
+            invalidCourseException.AddData(
+                key: nameof(Course.UpdatedBy),
+                values: $"Id is not the same as {nameof(Course.CreatedBy)}");
 
             var expectedCourseValidationException =
                 new CourseValidationException(invalidCourseException);
