@@ -24,6 +24,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
                 (Rule: IsInvalidX(course.UpdatedDate), Parameter: nameof(Course.UpdatedDate)),
                 (Rule: IsInvalidX(id: course.CreatedBy), Parameter: nameof(Course.CreatedBy)),
                 (Rule: IsInvalidX(id: course.UpdatedBy), Parameter: nameof(Course.UpdatedBy)),
+                (Rule: IsNotRecent(course.CreatedDate), Parameter: nameof(Course.CreatedDate)),
 
                 (Rule: IsNotSame(
                     firstId: course.UpdatedBy,
@@ -95,6 +96,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
                 Condition = firstDate != secondDate,
                 Message = $"Date is not the same as {secondDateName}"
             };
+
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
+        {
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent"
+        };
 
         private static void ValidateCourseId(Guid courseId)
         {
