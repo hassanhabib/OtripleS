@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Models.UserContacts.Exceptions
 {
     public class NullUserContactException : Exception
     {
-        public NullUserContactException() : base("The UserContact is null.") { }
+        public NullUserContactException() : base(message: "The user contact is null.") { }
     }
 }

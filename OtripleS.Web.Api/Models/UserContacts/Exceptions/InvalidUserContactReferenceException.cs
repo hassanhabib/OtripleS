@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.UserContacts.Exceptions
     public class InvalidUserContactReferenceException : Exception
     {
         public InvalidUserContactReferenceException(Exception innerException)
-            : base("Invalid student contact reference error occurred.", innerException) { }
+            : base(message: "Invalid student contact reference error occurred.", innerException) { }
     }
 }

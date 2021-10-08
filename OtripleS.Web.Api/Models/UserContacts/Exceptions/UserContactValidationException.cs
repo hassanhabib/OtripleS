@@ -10,7 +10,7 @@ namespace OtripleS.Web.Api.Models.UserContacts.Exceptions
     public class UserContactValidationException : Exception
     {
         public UserContactValidationException(Exception innerException)
-            : base("Invalid input, contact support.", innerException)
+            : base(message: "Invalid input, contact support.", innerException)
         { }
     }
 }

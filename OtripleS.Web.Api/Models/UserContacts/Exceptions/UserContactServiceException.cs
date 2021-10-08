@@ -10,7 +10,7 @@ namespace OtripleS.Web.Api.Models.UserContacts.Exceptions
     public class UserContactServiceException : Exception
     {
         public UserContactServiceException(Exception innerException)
-            : base("Service error occurred, contact support.", innerException)
+            : base(message: "Service error occurred, contact support.", innerException)
         { }
     }
 }

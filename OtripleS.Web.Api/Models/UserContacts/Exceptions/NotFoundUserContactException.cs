@@ -10,8 +10,8 @@ namespace OtripleS.Web.Api.Models.UserContacts.Exceptions
     public class NotFoundUserContactException : Exception
     {
         public NotFoundUserContactException(Guid userId, Guid contactId)
-           : base($"Couldn't find UserContact with UserId: {userId} " +
-                  $"and ContactId: {contactId}.")
+           : base(message: $"Couldn't find user contact with user id: {userId} " +
+                  $"and contact id: {contactId}.")
         { }
     }
 }
