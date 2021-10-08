@@ -4,11 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.Users.Exceptions
 {
     public class AlreadyExistsUserException : Exception
     {
         public AlreadyExistsUserException(Exception innerException)
-            : base("User with the same id already exists.", innerException) { }
+            : base(message: "User with the same id already exists.", innerException) { }
     }
 }

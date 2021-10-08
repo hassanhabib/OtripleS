@@ -4,10 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.Users.Exceptions
 {
     public class NullUserException : Exception
     {
-        public NullUserException() : base("The user is null.") { }
+        public NullUserException() : base(message: "The user is null.") { }
     }
 }

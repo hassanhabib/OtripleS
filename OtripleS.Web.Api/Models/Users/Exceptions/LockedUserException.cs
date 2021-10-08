@@ -4,11 +4,12 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.Users.Exceptions
 {
     public class LockedUserException : Exception
     {
         public LockedUserException(Exception innerException)
-            : base("Locked user record exception, please try again later.", innerException) { }
+            : base(message: "Locked user record exception, please try again later.", innerException) { }
     }
 }
