@@ -15,7 +15,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
         private void ValidateCourseOnCreate(Course course)
         {
             ValidateCourse(course);
-            ValidateCourseId(course.Id);
+
+            Validate(
+                (Rule: IsInvalidX(course.Id), Parameter: nameof(Course.Id)));
+
             ValidateCourseIds(course);
             ValidateCourseStrings(course);
             ValidateCourseDates(course);
@@ -41,6 +44,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
                 throw new NullCourseException();
             }
         }
+
+        private static dynamic IsInvalidX(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
 
         private static void ValidateCourseId(Guid courseId)
         {
@@ -193,5 +203,22 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(Guid input) => input == default;
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidCourseException = new InvalidCourseException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidCourseException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidCourseException.ThrowIfContainsErrors();
+        }
     }
 }
