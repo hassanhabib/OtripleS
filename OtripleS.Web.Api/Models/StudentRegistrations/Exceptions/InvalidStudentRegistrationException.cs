@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.StudentRegistrations.Exceptions
     public class InvalidStudentRegistrationException : Exception
     {
         public InvalidStudentRegistrationException(string parameterName, object parameterValue)
-            : base($"Invalid StudentRegistration, " +
-                  $"ParameterNmae: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid student registration, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
     }
 }
