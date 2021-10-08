@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.StudentExamFees.Exceptions
     public class InvalidStudentExamFeeException : Exception
     {
         public InvalidStudentExamFeeException(string parameterName, object parameterValue)
-            : base($"Invalid StudentExamFee, " +
-                  $"ParameterNmae: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid student exam fee, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
     }
 }
