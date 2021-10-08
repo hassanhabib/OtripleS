@@ -164,9 +164,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             inputCourse.UpdatedBy = randomCourse.CreatedBy;
             inputCourse.UpdatedDate = GetRandomDateTime();
 
-            var invalidCourseException = new InvalidCourseException(
-                parameterName: nameof(Course.UpdatedDate),
-                parameterValue: inputCourse.UpdatedDate);
+            var invalidCourseException = new InvalidCourseException();
+
+            invalidCourseException.AddData(
+                key: nameof(Course.UpdatedDate),
+                values: $"Id is not the same as {nameof(Course.CreatedDate)}");
 
             var expectedCourseValidationException =
                 new CourseValidationException(invalidCourseException);
