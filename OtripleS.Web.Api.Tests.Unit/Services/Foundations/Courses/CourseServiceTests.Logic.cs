@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
-                    Times.Once);
+                    Times.Exactly(2));
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCourseAsync(inputCourse),
