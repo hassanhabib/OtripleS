@@ -8,7 +8,6 @@ using ADotNet.Clients;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
-using GitHubBuild = ADotNet.Models.Pipelines.GithubPipelines.DotNets.Build;
 
 namespace OtripleS.Web.Api.Infrastructure.Build
 {
@@ -35,7 +34,7 @@ namespace OtripleS.Web.Api.Infrastructure.Build
 
                 Jobs = new Jobs
                 {
-                    Build = new GitHubBuild
+                    Build = new BuildJob
                     {
                         RunsOn = BuildMachines.Windows2019,
 
