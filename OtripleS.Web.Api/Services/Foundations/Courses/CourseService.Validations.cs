@@ -29,7 +29,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
                     firstId: course.UpdatedBy,
                     secondId: course.CreatedBy,
                     secondIdName: nameof(Course.CreatedBy)),
-                Parameter: nameof(Course.UpdatedBy)));
+                Parameter: nameof(Course.UpdatedBy)),
+
+                (Rule: IsNotSame(
+                    firstDate: course.UpdatedDate,
+                    secondDate: course.CreatedDate,
+                    secondDateName: nameof(Course.CreatedDate)),
+                Parameter: nameof(Course.UpdatedDate)));
 
             ValidateCreatedSignature(course);
             ValidateCreatedDateIsRecent(course);
@@ -79,6 +85,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
             {
                 Condition = firstId != secondId,
                 Message = $"Id is not the same as {secondIdName}"
+            };
+
+        private static dynamic IsNotSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not the same as {secondDateName}"
             };
 
         private static void ValidateCourseId(Guid courseId)
