@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.StudentExams.Exceptions
     public class NotFoundStudentExamException : Exception
     {
         public NotFoundStudentExamException(Guid studentId)
-            : base($"Couldn't find student exam with Id: {studentId}.") { }
+            : base(message: $"Couldn't find student exam with id: {studentId}.") { }
     }
 }

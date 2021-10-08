@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.StudentExams.Exceptions
     public class LockedStudentExamException : Exception
     {
         public LockedStudentExamException(Exception innerException)
-            : base("Locked studentExam record exception, please try again later.", innerException) { }
+            : base(message: "Locked student exam record exception, please try again later.", innerException) { }
     }
 }
