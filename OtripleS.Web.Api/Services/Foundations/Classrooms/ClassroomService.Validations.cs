@@ -15,83 +15,124 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         private void ValidateClassroomOnCreate(Classroom classroom)
         {
             ValidateClassroomIsNull(classroom);
-            ValidateClassroomIdIsNull(classroom.Id);
-            ValidateClassroomFields(classroom);
-            ValidateInvalidAuditFields(classroom);
-            ValidateAuditFieldsDataOnCreate(classroom);
+
+            Validate
+            (
+                (Rule: IsInvalidX(classroom.Id), Parameter: nameof(Classroom.Id)),
+                (Rule: IsInvalidX(classroom.Name), Parameter: nameof(Classroom.Name)),
+                (Rule: IsInvalidX(classroom.Location), Parameter: nameof(Classroom.Location)),
+                (Rule: IsInvalidX(classroom.CreatedBy), Parameter: nameof(Classroom.CreatedBy)),
+                (Rule: IsInvalidX(classroom.UpdatedBy), Parameter: nameof(Classroom.UpdatedBy)),
+                (Rule: IsInvalidX(classroom.CreatedDate), Parameter: nameof(Classroom.CreatedDate)),
+                (Rule: IsInvalidX(classroom.UpdatedDate), Parameter: nameof(Classroom.UpdatedDate)),
+                (Rule: IsNotRecent(classroom.CreatedDate), Parameter: nameof(Classroom.CreatedDate)),
+
+                (Rule: IsNotSame(
+                    firstId: classroom.UpdatedBy,
+                    secondId: classroom.CreatedBy,
+                    secondIdName: nameof(Classroom.CreatedBy)),
+                Parameter: nameof(Classroom.UpdatedBy)),
+
+                (Rule: IsNotSame(
+                    firstDate: classroom.UpdatedDate,
+                    secondDate: classroom.CreatedDate,
+                    secondDateName: nameof(Classroom.CreatedDate)),
+                Parameter: nameof(Classroom.UpdatedDate))
+
+            );
+
         }
 
         private void ValidateClassroomOnModify(Classroom classroom)
         {
             ValidateClassroomIsNull(classroom);
-            ValidateClassroomIdIsNull(classroom.Id);
-            ValidateClassroomFields(classroom);
-            ValidateInvalidAuditFields(classroom);
-            ValidateDatesAreNotSame(classroom);
-            ValidateUpdatedDateIsRecent(classroom);
+            Validate
+            (
+                (Rule: IsInvalidX(classroom.Id), Parameter: nameof(Classroom.Id)),
+                (Rule: IsInvalidX(classroom.Name), Parameter: nameof(Classroom.Name)),
+                (Rule: IsInvalidX(classroom.Location), Parameter: nameof(Classroom.Location)),
+                (Rule: IsInvalidX(classroom.CreatedBy), Parameter: nameof(Classroom.CreatedBy)),
+                (Rule: IsInvalidX(classroom.UpdatedBy), Parameter: nameof(Classroom.UpdatedBy)),
+                (Rule: IsInvalidX(classroom.CreatedDate), Parameter: nameof(Classroom.CreatedDate)),
+                (Rule: IsInvalidX(classroom.UpdatedDate), Parameter: nameof(Classroom.UpdatedDate)),
+               (Rule: IsNotRecent(classroom.UpdatedDate), Parameter: nameof(Classroom.UpdatedDate)),
+
+                (Rule: IsSame(
+                    firstDate: classroom.UpdatedDate,
+                    secondDate: classroom.CreatedDate,
+                    secondDateName: nameof(Classroom.CreatedDate)),
+                Parameter: nameof(Classroom.UpdatedDate))
+
+            );
         }
 
-        private void ValidateAuditFieldsDataOnCreate(Classroom classroom)
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
-            switch (classroom)
+            var invalidClassroomException = new InvalidClassroomException();
+
+            foreach ((dynamic rule, string parameter) in validations)
             {
-                case { } when classroom.UpdatedBy != classroom.CreatedBy:
-                    throw new InvalidClassroomInputException(
-                    parameterName: nameof(Classroom.UpdatedBy),
-                    parameterValue: classroom.UpdatedBy);
-
-                case { } when classroom.UpdatedDate != classroom.CreatedDate:
-                    throw new InvalidClassroomInputException(
-                    parameterName: nameof(Classroom.UpdatedDate),
-                    parameterValue: classroom.UpdatedDate);
-
-                case { } when IsDateNotRecent(classroom.CreatedDate):
-                    throw new InvalidClassroomInputException(
-                    parameterName: nameof(Classroom.CreatedDate),
-                    parameterValue: classroom.CreatedDate);
-
-                case { } when classroom.CreatedDate != classroom.UpdatedDate:
-                    throw new InvalidClassroomInputException(
-                        parameterName: nameof(Classroom.UpdatedDate),
-                        parameterValue: classroom.UpdatedDate);
+                if (rule.Condition)
+                {
+                    invalidClassroomException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
             }
+
+            invalidClassroomException.ThrowIfContainsErrors();
         }
 
-        private static void ValidateInvalidAuditFields(Classroom classroom)
+        private static dynamic IsInvalidX(Guid id) => new
         {
-            switch (classroom)
-            {
-                case { } when IsInvalid(classroom.CreatedBy):
-                    throw new InvalidClassroomInputException(
-                    parameterName: nameof(Classroom.CreatedBy),
-                    parameterValue: classroom.CreatedBy);
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
 
-                case { } when IsInvalid(classroom.CreatedDate):
-                    throw new InvalidClassroomInputException(
-                    parameterName: nameof(Classroom.CreatedDate),
-                    parameterValue: classroom.CreatedDate);
-
-                case { } when IsInvalid(classroom.UpdatedBy):
-                    throw new InvalidClassroomInputException(
-                    parameterName: nameof(Classroom.UpdatedBy),
-                    parameterValue: classroom.UpdatedBy);
-
-                case { } when IsInvalid(classroom.UpdatedDate):
-                    throw new InvalidClassroomInputException(
-                    parameterName: nameof(Classroom.UpdatedDate),
-                    parameterValue: classroom.UpdatedDate);
-            }
-        }
-
-        private static void ValidateClassroomFields(Classroom classroom)
+        private static dynamic IsInvalidX(string text) => new
         {
-            if (IsInvalid(classroom.Name))
+            Condition = String.IsNullOrWhiteSpace(text),
+            Message = "Text is required"
+        };
+
+        private static dynamic IsInvalidX(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required"
+        };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
             {
-                throw new InvalidClassroomInputException(
-                    parameterName: nameof(Classroom.Name),
-                    parameterValue: classroom.Name);
-            }
-        }
+                Condition = firstId != secondId,
+                Message = $"Id is not the same as {secondIdName}"
+            };
+
+        private static dynamic IsNotSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not the same as {secondDateName}"
+            };
+
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
+        {
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent"
+        };
+
+        private static dynamic IsSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate == secondDate,
+                Message = $"Date is the same as {secondDateName}"
+            };
 
         private static void ValidateClassroomIsNull(Classroom classroom)
         {
@@ -105,29 +146,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         {
             if (classroomId == default)
             {
-                throw new InvalidClassroomInputException(
+                throw new InvalidClassroomException(
                     parameterName: nameof(Classroom.Id),
                     parameterValue: classroomId);
-            }
-        }
-
-        private static void ValidateDatesAreNotSame(Classroom classroom)
-        {
-            if (classroom.CreatedDate == classroom.UpdatedDate)
-            {
-                throw new InvalidClassroomInputException(
-                    parameterName: nameof(Classroom.UpdatedDate),
-                    parameterValue: classroom.UpdatedDate);
-            }
-        }
-
-        private void ValidateUpdatedDateIsRecent(Classroom classroom)
-        {
-            if (IsDateNotRecent(classroom.UpdatedDate))
-            {
-                throw new InvalidClassroomInputException(
-                    parameterName: nameof(classroom.UpdatedDate),
-                    parameterValue: classroom.UpdatedDate);
             }
         }
 
@@ -153,17 +174,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             switch (inputClassroom)
             {
                 case { } when inputClassroom.CreatedDate != storageClassroom.CreatedDate:
-                    throw new InvalidClassroomInputException(
+                    throw new InvalidClassroomException(
                         parameterName: nameof(Classroom.CreatedDate),
                         parameterValue: inputClassroom.CreatedDate);
 
                 case { } when inputClassroom.CreatedBy != storageClassroom.CreatedBy:
-                    throw new InvalidClassroomInputException(
+                    throw new InvalidClassroomException(
                         parameterName: nameof(Classroom.CreatedBy),
                         parameterValue: inputClassroom.CreatedBy);
 
                 case { } when inputClassroom.UpdatedDate == storageClassroom.UpdatedDate:
-                    throw new InvalidClassroomInputException(
+                    throw new InvalidClassroomException(
                         parameterName: nameof(Classroom.UpdatedDate),
                         parameterValue: inputClassroom.UpdatedDate);
             }
@@ -177,7 +198,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             }
         }
 
-        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(Guid input) => input == default;
         private static bool IsInvalid(DateTimeOffset input) => input == default;
     }
