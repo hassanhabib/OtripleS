@@ -17,11 +17,14 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
             ValidateCourse(course);
 
             Validate(
-                (Rule: IsInvalidX(course.Id), Parameter: nameof(Course.Id)));
+                (Rule: IsInvalidX(course.Id), Parameter: nameof(Course.Id)),
+                (Rule: IsInvalidX(text: course.Name), Parameter: nameof(Course.Name)),
+                (Rule: IsInvalidX(text: course.Description), Parameter: nameof(Course.Description)),
+                (Rule: IsInvalidX(course.CreatedDate), Parameter: nameof(Course.CreatedDate)),
+                (Rule: IsInvalidX(course.UpdatedDate), Parameter: nameof(Course.UpdatedDate)),
+                (Rule: IsInvalidX(id: course.CreatedBy), Parameter: nameof(Course.CreatedBy)),
+                (Rule: IsInvalidX(id: course.UpdatedBy), Parameter: nameof(Course.UpdatedBy)));
 
-            ValidateCourseIds(course);
-            ValidateCourseStrings(course);
-            ValidateCourseDates(course);
             ValidateCreatedSignature(course);
             ValidateCreatedDateIsRecent(course);
         }
@@ -51,6 +54,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
             Message = "Id is required"
         };
 
+        private static dynamic IsInvalidX(string text) => new
+        {
+            Condition = string.IsNullOrWhiteSpace(text),
+            Message = "Text is required"
+        };
+
+        private static dynamic IsInvalidX(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required"
+        };
 
         private static void ValidateCourseId(Guid courseId)
         {
