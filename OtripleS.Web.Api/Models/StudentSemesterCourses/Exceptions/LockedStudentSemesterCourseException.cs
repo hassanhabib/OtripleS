@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions
     public class LockedStudentSemesterCourseException : Exception
     {
         public LockedStudentSemesterCourseException(Exception innerException)
-            : base("Locked Student Semester Course record exception, please try again later.", innerException) { }
+            : base(message: "Locked student semester course record exception, please try again later.", innerException) { }
     }
 }

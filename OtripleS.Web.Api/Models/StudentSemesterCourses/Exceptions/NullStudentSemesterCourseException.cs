@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions
 {
     public class NullStudentSemesterCourseException : Exception
     {
-        public NullStudentSemesterCourseException() : base("The studentsemestercourse is null.") { }
+        public NullStudentSemesterCourseException() : base(message: "The student semester course is null.") { }
     }
 }

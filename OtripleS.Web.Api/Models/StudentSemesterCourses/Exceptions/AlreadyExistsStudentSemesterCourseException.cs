@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.StudentSemesterCourses.Exceptions
     public class AlreadyExistsStudentSemesterCourseException : Exception
     {
         public AlreadyExistsStudentSemesterCourseException(Exception innerException)
-            : base("StudentSemesterCourse with the same id already exists.", innerException) { }
+            : base(message: "Student semester course with the same id already exists.", innerException) { }
     }
 }
