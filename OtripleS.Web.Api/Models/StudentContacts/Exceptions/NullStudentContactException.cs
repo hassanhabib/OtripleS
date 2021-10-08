@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Models.StudentContacts.Exceptions
 {
     public class NullStudentContactException : Exception
     {
-        public NullStudentContactException() : base("The StudentContact is null.") { }
+        public NullStudentContactException() : base(message: "The student contact is null.") { }
     }
 }

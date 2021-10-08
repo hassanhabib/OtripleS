@@ -10,9 +10,9 @@ namespace OtripleS.Web.Api.Models.StudentContacts.Exceptions
     public class InvalidStudentContactInputException : Exception
     {
         public InvalidStudentContactInputException(string parameterName, object parameterValue)
-            : base($"Invalid StudentContact, " +
-                  $"ParameterName: {parameterName}, " +
-                  $"ParameterValue: {parameterValue}.")
+            : base(message: $"Invalid student contact, " +
+                  $"parameter name: {parameterName}, " +
+                  $"parameter value: {parameterValue}.")
         { }
     }
 }
