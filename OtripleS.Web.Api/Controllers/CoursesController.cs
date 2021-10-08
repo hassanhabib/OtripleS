@@ -36,23 +36,19 @@ namespace OtripleS.Web.Api.Controllers
             catch (CourseValidationException courseValidationException)
                 when (courseValidationException.InnerException is AlreadyExistsCourseException)
             {
-                string innerMessage = GetInnerMessage(courseValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(courseValidationException.InnerException);
             }
             catch (CourseValidationException courseValidationException)
             {
-                string innerMessage = GetInnerMessage(courseValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(courseValidationException.InnerException);
             }
             catch (CourseDependencyException courseDependencyException)
             {
-                return Problem(courseDependencyException.Message);
+                return InternalServerError(courseDependencyException);
             }
             catch (CourseServiceException courseServiceException)
             {
-                return Problem(courseServiceException.Message);
+                return InternalServerError(courseServiceException);
             }
         }
 

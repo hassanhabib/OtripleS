@@ -21,12 +21,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             Guid randomCourseId = default;
             Guid inputCourseId = randomCourseId;
 
-            var invalidCourseInputException = new InvalidCourseInputException(
+            var invalidCourseException = new InvalidCourseException(
                 parameterName: nameof(Course.Id),
                 parameterValue: inputCourseId);
 
             var expectedCourseValidationException =
-                new CourseValidationException(invalidCourseInputException);
+                new CourseValidationException(invalidCourseException);
 
             //when
             ValueTask<Course> retrieveCourseByIdTask =
@@ -38,10 +38,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
                     Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
@@ -76,16 +72,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             await Assert.ThrowsAsync<CourseValidationException>(() =>
                 retrieveCourseByIdTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCourseByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();

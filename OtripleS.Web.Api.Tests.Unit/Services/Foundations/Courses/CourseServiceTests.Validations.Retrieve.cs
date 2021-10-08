@@ -32,21 +32,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             // then
             actualCourses.Should().BeEquivalentTo(emptyStorageCourses);
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogWarning("No courses found in storage."),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCourses(),
                     Times.Once);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogWarning("No courses found in storage."),
+                    Times.Once);
+
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
