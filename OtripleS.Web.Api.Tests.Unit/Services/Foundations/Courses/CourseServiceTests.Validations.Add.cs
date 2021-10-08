@@ -207,9 +207,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             inputCourse.CreatedDate = dateTime.AddMinutes(minutes);
             inputCourse.UpdatedDate = inputCourse.CreatedDate;
 
-            var invalidCourseException = new InvalidCourseException(
-                parameterName: nameof(Course.CreatedDate),
-                parameterValue: inputCourse.CreatedDate);
+            var invalidCourseException = new InvalidCourseException();
+
+            invalidCourseException.AddData(
+                key: nameof(Course.CreatedDate),
+                values: $"Date is not recent");
 
             var expectedCourseValidationException =
                 new CourseValidationException(invalidCourseException);
