@@ -1,12 +1,9 @@
 # OtripleS
 Open Source Schooling System
 
-[![BCH compliance](https://bettercodehub.com/edge/badge/hassanhabib/OtripleS?branch=master)](https://bettercodehub.com/)
-
 [![.NET](https://github.com/hassanhabib/OtripleS/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hassanhabib/OtripleS/actions/workflows/dotnet.yml)
-
+[![BCH compliance](https://bettercodehub.com/edge/badge/hassanhabib/OtripleS?branch=master)](https://bettercodehub.com/)
 [<img src="https://img.shields.io/badge/chat-Teams-blueviolet" alt="Chat on Teams!">](https://teams.microsoft.com/join/nh8zj7qeaf3q)
-
 [![The Standard - COMPLIANT](https://img.shields.io/badge/The_Standard-COMPLIANT-2ea44f)](https://github.com/hassanhabib/The-Standard)
 
 This is an open source schooling system, dedicated to provide a better experience for schools needing a management and communication and tutoring system all in one place.
