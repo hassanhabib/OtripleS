@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions
     public class InvalidCalendarEntryAttachmentReferenceException : Exception
     {
         public InvalidCalendarEntryAttachmentReferenceException(Exception innerException)
-            : base(message:  "Invalid calendar entry attachment reference error occurred.", innerException) { }
+            : base(message: "Invalid calendar entry attachment reference error occurred.", innerException) { }
     }
 }

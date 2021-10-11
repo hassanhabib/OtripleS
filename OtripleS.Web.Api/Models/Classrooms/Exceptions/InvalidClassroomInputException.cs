@@ -3,7 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
 using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Classrooms.Exceptions
@@ -18,6 +17,5 @@ namespace OtripleS.Web.Api.Models.Classrooms.Exceptions
 
         public InvalidClassroomException()
             : base(message: "Invalid classroom. Please fix the errors and try again.") { }
-        
     }
 }

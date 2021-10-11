@@ -46,7 +46,7 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
                 (Rule: IsInvalid(examFee.ExamId), Parameter: nameof(ExamFee.ExamId)),
                 (Rule: IsInvalid(examFee.FeeId), Parameter: nameof(ExamFee.FeeId)),
                 (Rule: IsInvalid(examFee.CreatedBy), Parameter: nameof(ExamFee.CreatedBy)),
-                (Rule: IsInvalid(examFee.UpdatedBy), Parameter: nameof(ExamFee.UpdatedBy)), 
+                (Rule: IsInvalid(examFee.UpdatedBy), Parameter: nameof(ExamFee.UpdatedBy)),
                 (Rule: IsInvalid(examFee.CreatedDate), Parameter: nameof(ExamFee.CreatedDate)),
                 (Rule: IsInvalid(examFee.UpdatedDate), Parameter: nameof(ExamFee.UpdatedDate)),
                 (Rule: IsNotRecent(examFee.UpdatedDate), Parameter: nameof(ExamFee.UpdatedDate)),

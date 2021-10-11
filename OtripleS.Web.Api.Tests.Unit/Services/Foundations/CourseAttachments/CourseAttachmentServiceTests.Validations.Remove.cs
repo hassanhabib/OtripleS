@@ -21,7 +21,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
             Guid invalidCourseId = Guid.Empty;
             Guid invalidAttachmentId = Guid.Empty;
 
-            var invalidCourseAttachmentInputException = 
+            var invalidCourseAttachmentInputException =
                 new InvalidCourseAttachmentException();
 
             invalidCourseAttachmentInputException.AddData(

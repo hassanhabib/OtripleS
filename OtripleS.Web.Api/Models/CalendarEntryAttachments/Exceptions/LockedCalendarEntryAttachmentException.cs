@@ -11,6 +11,7 @@ namespace OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions
     {
         public LockedCalendarEntryAttachmentException(Exception innerException)
             : base(message: "Locked calendar entry attachment record exception, please try again later.",
-                  innerException) { }
+                  innerException)
+        { }
     }
 }
