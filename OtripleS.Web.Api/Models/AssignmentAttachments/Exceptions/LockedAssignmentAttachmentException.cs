@@ -11,6 +11,7 @@ namespace OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions
     {
         public LockedAssignmentAttachmentException(Exception innerException)
             : base(message: "Locked assignment attachment record exception, please try again later.",
-                  innerException) { }
+                  innerException)
+        { }
     }
 }

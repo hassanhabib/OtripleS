@@ -113,28 +113,28 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
             Guid firstId,
             Guid secondId,
             string secondIdName) => new
-        {
-            Condition = firstId != secondId,
-            Message = $"Id is not the same as {secondIdName}"
-        };
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not the same as {secondIdName}"
+            };
 
         private static dynamic IsNotSame(
             DateTimeOffset firstDate,
             DateTimeOffset secondDate,
             string secondDateName) => new
-        {
-            Condition = firstDate != secondDate,
-            Message = $"Date is not the same as {secondDateName}"
-        };
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not the same as {secondDateName}"
+            };
 
         private static dynamic IsSame(
             DateTimeOffset firstDate,
             DateTimeOffset secondDate,
             string secondDateName) => new
-        {
-            Condition = firstDate == secondDate,
-            Message = $"Date is the same as {secondDateName}"
-        };
+            {
+                Condition = firstDate == secondDate,
+                Message = $"Date is the same as {secondDateName}"
+            };
 
         private static void ValidateContactAuditFields(Contact contact)
         {

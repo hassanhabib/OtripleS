@@ -9,7 +9,7 @@ namespace OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions
 {
     public class NullCalendarEntryAttachmentException : Exception
     {
-        public NullCalendarEntryAttachmentException() 
+        public NullCalendarEntryAttachmentException()
             : base(message: "The calendar entry attachment is null.") { }
     }
 }

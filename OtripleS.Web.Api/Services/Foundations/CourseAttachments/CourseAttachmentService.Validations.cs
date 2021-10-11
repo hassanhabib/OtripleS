@@ -64,9 +64,9 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
         {
             var invalidCourseAttachmentException = new InvalidCourseAttachmentException();
 
-            foreach((dynamic rule, string parameter) in validations)
+            foreach ((dynamic rule, string parameter) in validations)
             {
-                if(rule.Condition)
+                if (rule.Condition)
                 {
                     invalidCourseAttachmentException.UpsertDataList(
                         key: parameter,
