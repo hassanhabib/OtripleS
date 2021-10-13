@@ -3,6 +3,7 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Moq;
@@ -51,8 +52,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             // given
             UserContact randomUserContact = CreateRandomUserContact();
             UserContact inputUserContact = randomUserContact;
-            inputUserContact.UserId = default;
-            inputUserContact.ContactId = default;
+            inputUserContact.UserId = Guid.Empty;
+            inputUserContact.ContactId = Guid.Empty;
 
             var invalidUserContactInputException = new InvalidUserContactInputException();
 
