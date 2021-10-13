@@ -15,84 +15,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
     public partial class CalendarEntryAttachmentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRemoveWhenCalendarEntryIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRemoveWhenIdsAreInvalidAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomCalendarEntryId = default;
-            Guid inputAttachmentId = randomAttachmentId;
-            Guid inputCalendarEntryId = randomCalendarEntryId;
+            Guid invalidCalendarEntryId = Guid.Empty;
+            Guid invalidAttachmentId = Guid.Empty;
 
-            var invalidCalendarEntryAttachmentInputException = new InvalidCalendarEntryAttachmentException(
-                parameterName: nameof(CalendarEntryAttachment.CalendarEntryId),
-                parameterValue: inputCalendarEntryId);
+            var invalidCalendarEntryAttachmentInputException =
+                new InvalidCalendarEntryAttachmentException();
+
+            invalidCalendarEntryAttachmentInputException.AddData(
+                key: nameof(CalendarEntryAttachment.AttachmentId),
+                values: "Id is required");
+
+            invalidCalendarEntryAttachmentInputException.AddData(
+                key: nameof(CalendarEntryAttachment.CalendarEntryId),
+                values: "Id is required");
 
             var expectedCalendarEntryAttachmentValidationException =
-                new CalendarEntryAttachmentValidationException(invalidCalendarEntryAttachmentInputException);
+                new CalendarEntryAttachmentValidationException(
+                    invalidCalendarEntryAttachmentInputException);
 
             // when
             ValueTask<CalendarEntryAttachment> removeCalendarEntryAttachmentTask =
-                this.calendarEntryAttachmentService.RemoveCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId);
+                this.calendarEntryAttachmentService.RemoveCalendarEntryAttachmentByIdAsync(
+                    invalidCalendarEntryId,
+                    invalidAttachmentId);
 
             // then
             await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
                 removeCalendarEntryAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedCalendarEntryAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCalendarEntryAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteCalendarEntryAttachmentAsync(It.IsAny<CalendarEntryAttachment>()),
-                    Times.Never);
+                broker.DeleteCalendarEntryAttachmentAsync(
+                    It.IsAny<CalendarEntryAttachment>()),
+                        Times.Never);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRemoveWhenAttachmentIdIsInvalidAndLogItAsync()
-        {
-            // given
-            Guid randomAttachmentId = default;
-            Guid randomCalendarEntryId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
-            Guid inputCalendarEntryId = randomCalendarEntryId;
-
-            var invalidCalendarEntryAttachmentInputException = new InvalidCalendarEntryAttachmentException(
-                parameterName: nameof(CalendarEntryAttachment.AttachmentId),
-                parameterValue: inputAttachmentId);
-
-            var expectedCalendarEntryAttachmentValidationException =
-                new CalendarEntryAttachmentValidationException(invalidCalendarEntryAttachmentInputException);
-
-            // when
-            ValueTask<CalendarEntryAttachment> removeCalendarEntryAttachmentTask =
-                this.calendarEntryAttachmentService.RemoveCalendarEntryAttachmentByIdAsync(inputCalendarEntryId, inputAttachmentId);
-
-            // then
-            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
-                removeCalendarEntryAttachmentTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectCalendarEntryAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.DeleteCalendarEntryAttachmentAsync(It.IsAny<CalendarEntryAttachment>()),
-                    Times.Never);
-
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
