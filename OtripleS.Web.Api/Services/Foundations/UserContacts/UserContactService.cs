@@ -36,11 +36,7 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
         public ValueTask<UserContact> RemoveUserContactByIdAsync(Guid userId, Guid contactId) =>
         TryCatch(async () =>
         {
-            Validate(
-               (Rule: IsInvalidX(contactId),
-               Parameter: nameof(UserContact.ContactId)),
-               (Rule: IsInvalidX(userId),
-               Parameter: nameof(UserContact.UserId)));
+            ValidateUserContactIds(userId, contactId);
 
             UserContact mayBeUserContact =
                 await this.storageBroker.SelectUserContactByIdAsync(userId, contactId);
@@ -64,7 +60,7 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
         public ValueTask<UserContact> RetrieveUserContactByIdAsync(Guid userId, Guid contactId) =>
         TryCatch(async () =>
        {
-           ValidateUserContactIdIsNull(userId, contactId);
+           ValidateUserContactIds(userId, contactId);
 
            UserContact storageUserContact =
                await this.storageBroker.SelectUserContactByIdAsync(userId, contactId);
