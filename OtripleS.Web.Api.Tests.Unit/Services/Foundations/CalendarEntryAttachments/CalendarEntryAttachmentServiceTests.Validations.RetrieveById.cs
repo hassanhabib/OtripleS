@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
                     invalidAttachmentId);
 
             // then
-            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() => 
+            await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
                 retrieveCalendarEntryAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>

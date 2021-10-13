@@ -69,9 +69,9 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
         {
             var invalidCalendarEntryAttachmentException = new InvalidCalendarEntryAttachmentException();
 
-            foreach((dynamic rule, string parameter) in validations)
+            foreach ((dynamic rule, string parameter) in validations)
             {
-                if(rule.Condition)
+                if (rule.Condition)
                 {
                     invalidCalendarEntryAttachmentException.UpsertDataList(
                         key: parameter,
