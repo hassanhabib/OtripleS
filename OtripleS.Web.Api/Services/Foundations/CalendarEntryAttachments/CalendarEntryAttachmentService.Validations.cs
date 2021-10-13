@@ -12,13 +12,16 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
 {
     public partial class CalendarEntryAttachmentService
     {
-        private static void ValidateCalendarEntryAttachmentOnCreate(CalendarEntryAttachment calendarEntryAttachment)
+        private static void ValidateCalendarEntryAttachmentOnAdd(CalendarEntryAttachment calendarEntryAttachment)
         {
             ValidateCalendarEntryAttachmentIsNull(calendarEntryAttachment);
 
-            ValidateCalendarEntryAttachmentIds(
-                calendarEntryAttachment.CalendarEntryId,
-                calendarEntryAttachment.AttachmentId);
+            Validate(
+                (Rule: IsInvalid(calendarEntryAttachment.AttachmentId),
+                Parameter: nameof(CalendarEntryAttachment.AttachmentId)),
+
+                (Rule: IsInvalid(calendarEntryAttachment.CalendarEntryId),
+                Parameter: nameof(CalendarEntryAttachment.CalendarEntryId)));
         }
 
         private static void ValidateCalendarEntryAttachmentIsNull(CalendarEntryAttachment calendarEntryAttachment)
@@ -31,18 +34,12 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
 
         private static void ValidateCalendarEntryAttachmentIds(Guid calendarEntryId, Guid attachmentId)
         {
-            if (calendarEntryId == default)
-            {
-                throw new InvalidCalendarEntryAttachmentException(
-                    parameterName: nameof(CalendarEntryAttachment.CalendarEntryId),
-                    parameterValue: calendarEntryId);
-            }
-            else if (attachmentId == default)
-            {
-                throw new InvalidCalendarEntryAttachmentException(
-                    parameterName: nameof(CalendarEntryAttachment.AttachmentId),
-                    parameterValue: attachmentId);
-            }
+            Validate(
+               (Rule: IsInvalid(attachmentId),
+               Parameter: nameof(CalendarEntryAttachment.AttachmentId)),
+
+               (Rule: IsInvalid(calendarEntryId),
+               Parameter: nameof(CalendarEntryAttachment.CalendarEntryId)));
         }
 
         private static void ValidateStorageCalendarEntryAttachment(
@@ -60,6 +57,29 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
             {
                 this.loggingBroker.LogWarning("No calendarentry attachments found in storage.");
             }
+        }
+
+        private static dynamic IsInvalid(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidCalendarEntryAttachmentException = new InvalidCalendarEntryAttachmentException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidCalendarEntryAttachmentException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidCalendarEntryAttachmentException.ThrowIfContainsErrors();
         }
     }
 }

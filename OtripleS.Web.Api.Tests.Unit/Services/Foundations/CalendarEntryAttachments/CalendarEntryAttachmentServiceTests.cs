@@ -15,6 +15,7 @@ using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachments
 {
@@ -68,8 +69,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
-                expectedException.Message == actualException.Message
-                && expectedException.InnerException.Message == actualException.InnerException.Message;
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message;
+        }
+
+        private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
         private static SqlException GetSqlException() =>
