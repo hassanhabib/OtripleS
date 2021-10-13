@@ -34,18 +34,12 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
 
         private static void ValidateCalendarEntryAttachmentIds(Guid calendarEntryId, Guid attachmentId)
         {
-            if (calendarEntryId == default)
-            {
-                throw new InvalidCalendarEntryAttachmentException(
-                    parameterName: nameof(CalendarEntryAttachment.CalendarEntryId),
-                    parameterValue: calendarEntryId);
-            }
-            else if (attachmentId == default)
-            {
-                throw new InvalidCalendarEntryAttachmentException(
-                    parameterName: nameof(CalendarEntryAttachment.AttachmentId),
-                    parameterValue: attachmentId);
-            }
+            Validate(
+               (Rule: IsInvalid(attachmentId),
+               Parameter: nameof(CalendarEntryAttachment.AttachmentId)),
+
+               (Rule: IsInvalid(calendarEntryId),
+               Parameter: nameof(CalendarEntryAttachment.CalendarEntryId)));
         }
 
         private static void ValidateStorageCalendarEntryAttachment(
