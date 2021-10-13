@@ -49,28 +49,32 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
         public async void ShouldThrowValidationExceptionOnAddWhenCalendarEntryIdIsInvalidAndLogItAsync()
         {
             // given
-            CalendarEntryAttachment randomCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
-            CalendarEntryAttachment inputCalendarEntryAttachment = randomCalendarEntryAttachment;
-            inputCalendarEntryAttachment.CalendarEntryId = default;
+            var invalidCalendarEntryAttachment = new CalendarEntryAttachment();
+            var invalidCalendarEntryAttachmentInputException = new InvalidCalendarEntryAttachmentException();
 
-            var invalidCalendarEntryAttachmentInputException = new InvalidCalendarEntryAttachmentException(
-                parameterName: nameof(CalendarEntryAttachment.CalendarEntryId),
-                parameterValue: inputCalendarEntryAttachment.CalendarEntryId);
+            invalidCalendarEntryAttachmentInputException.AddData(
+                key: nameof(CalendarEntryAttachment.AttachmentId),
+                values: "Id is required");
+
+            invalidCalendarEntryAttachmentInputException.AddData(
+                key: nameof(CalendarEntryAttachment.CalendarEntryId),
+                values: "Id is required");
 
             var expectedCalendarEntryAttachmentValidationException =
                 new CalendarEntryAttachmentValidationException(invalidCalendarEntryAttachmentInputException);
 
             // when
             ValueTask<CalendarEntryAttachment> addCalendarEntryAttachmentTask =
-                this.calendarEntryAttachmentService.AddCalendarEntryAttachmentAsync(inputCalendarEntryAttachment);
+                this.calendarEntryAttachmentService.AddCalendarEntryAttachmentAsync(invalidCalendarEntryAttachment);
 
             // then
             await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
                 addCalendarEntryAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedCalendarEntryAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCalendarEntryAttachmentAsync(It.IsAny<CalendarEntryAttachment>()),

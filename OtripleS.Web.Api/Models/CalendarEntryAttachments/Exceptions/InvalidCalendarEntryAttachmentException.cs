@@ -3,16 +3,20 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
-using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions
 {
-    public class InvalidCalendarEntryAttachmentException : Exception
+    public class InvalidCalendarEntryAttachmentException : Xeption
     {
         public InvalidCalendarEntryAttachmentException(string parameterName, object parameterValue)
             : base(message: $"Invalid calendar entry attachment, " +
                   $"parameter name: {parameterName}, " +
                   $"parameter value: {parameterValue}.")
+        { }
+
+        public InvalidCalendarEntryAttachmentException()
+            : base("Invalid calendar entry attachment error occurred. Please fix the errors and try again.")
         { }
     }
 }
