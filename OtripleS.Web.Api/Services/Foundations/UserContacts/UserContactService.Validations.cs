@@ -40,22 +40,6 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
             }
         }
 
-        private static void ValidateUserContactRequiredFields(UserContact userContact)
-        {
-            switch (userContact)
-            {
-                case { } when IsInvalid(userContact.UserId):
-                    throw new InvalidUserContactInputException(
-                        parameterName: nameof(UserContact.UserId),
-                        parameterValue: userContact.UserId);
-
-                case { } when IsInvalid(userContact.ContactId):
-                    throw new InvalidUserContactInputException(
-                        parameterName: nameof(UserContact.ContactId),
-                        parameterValue: userContact.ContactId);
-            }
-        }
-
         private static void ValidateUserContactIdIsNull(Guid userId, Guid contactId)
         {
             if (userId == default)
