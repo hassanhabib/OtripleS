@@ -149,9 +149,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
                 (Rule: IsInvalidX(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate))
             );
 
-            //ValidateTeacherId(teacher.Id);
-            //ValidateTeacherStrings(teacher);
-            //ValidateTeacherIds(teacher);
             ValidateTeacherDates(teacher);
             ValidateUpdatedSignatureOnUpdate(teacher);
         }
