@@ -47,7 +47,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
                 var alreadyExistsStudentException =
                     new AlreadyExistsStudentException(duplicateKeyException);
 
-                throw CreateAndLogValidationException(alreadyExistsStudentException);
+                throw CreateAndLogDependencyValidationException(alreadyExistsStudentException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
