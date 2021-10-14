@@ -72,11 +72,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             invalidTeacherException.AddData(
                 key: nameof(Teacher.UserId),
-                values: "Id is required");
+                values: "Text is required");
 
             invalidTeacherException.AddData(
                 key: nameof(Teacher.EmployeeNumber),
-                values: "EmployeeNumber is required");
+                values: "Text is required");
 
             invalidTeacherException.AddData(
                 key: nameof(Teacher.FirstName),
@@ -116,10 +116,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() =>
                 createTeacherTask.AsTask());
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameValidationExceptionAs(

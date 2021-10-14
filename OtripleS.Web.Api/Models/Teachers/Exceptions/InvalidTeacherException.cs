@@ -17,6 +17,6 @@ namespace OtripleS.Web.Api.Models.Teachers.Exceptions
         { }
 
         public InvalidTeacherException()
-            : base(message: "Invalid techer. Please fix the errors and try again.") { }
+            : base(message: "Invalid teacher. Please fix the errors and try again.") { }
     }
 }

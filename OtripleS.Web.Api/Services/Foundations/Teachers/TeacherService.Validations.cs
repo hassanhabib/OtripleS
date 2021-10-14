@@ -41,13 +41,59 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
         private void ValidateTeacherOnCreate(Teacher teacher)
         {
             ValidateTeacher(teacher);
-            ValidateTeacherId(teacher.Id);
-            ValidateTeacherStrings(teacher);
-            ValidateTeacherDates(teacher);
-            ValidateTeacherIds(teacher);
+
+            Validate
+            (
+                (Rule: IsInvalidX(teacher.Id), Parameter: nameof(Teacher.Id)),
+                (Rule: IsInvalidX(teacher.UserId), Parameter: nameof(Teacher.UserId)),
+                (Rule: IsInvalidX(teacher.EmployeeNumber), Parameter: nameof(Teacher.EmployeeNumber)),
+                (Rule: IsInvalidX(teacher.FirstName), Parameter: nameof(Teacher.FirstName)),
+                (Rule: IsInvalidX(teacher.MiddleName), Parameter: nameof(Teacher.MiddleName)),
+                (Rule: IsInvalidX(teacher.LastName), Parameter: nameof(Teacher.LastName)),
+                (Rule: IsInvalidX(teacher.CreatedBy), Parameter: nameof(Teacher.CreatedBy)),
+                (Rule: IsInvalidX(teacher.UpdatedBy), Parameter: nameof(Teacher.UpdatedBy)),
+                (Rule: IsInvalidX(teacher.CreatedDate), Parameter: nameof(Teacher.CreatedDate)),
+                (Rule: IsInvalidX(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate))
+            );
+
             ValidateUpdatedSignatureOnCreate(teacher);
             ValidateCreatedDateIsNotRecent(teacher);
         }
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidTeacherException = new InvalidTeacherException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidTeacherException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidTeacherException.ThrowIfContainsErrors();
+        }
+
+        private static dynamic IsInvalidX(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static dynamic IsInvalidX(string text) => new
+        {
+            Condition = String.IsNullOrWhiteSpace(text),
+            Message = "Text is required"
+        };
+
+        private static dynamic IsInvalidX(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required"
+        };
 
         private void ValidateTeacherOnModify(Teacher teacher)
         {
