@@ -219,13 +219,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             inputTeacher.UpdatedBy = inputTeacher.CreatedBy;
             inputTeacher.CreatedDate = dateTime.AddMinutes(minutes);
             inputTeacher.UpdatedDate = inputTeacher.CreatedDate;
+            var invalidTeacherException = new InvalidTeacherException();
 
-            var InvalidTeacherException = new InvalidTeacherException(
-                parameterName: nameof(Teacher.CreatedDate),
-                parameterValue: inputTeacher.CreatedDate);
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.CreatedDate),
+                values: $"Date is not recent");
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(InvalidTeacherException);
+                new TeacherValidationException(invalidTeacherException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
