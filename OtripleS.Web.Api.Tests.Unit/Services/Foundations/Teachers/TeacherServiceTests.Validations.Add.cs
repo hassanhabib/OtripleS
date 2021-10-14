@@ -140,13 +140,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher inputTeacher = randomTeacher;
             inputTeacher.UpdatedBy = randomTeacher.CreatedBy;
             inputTeacher.UpdatedDate = GetRandomDateTime();
+            var invalidTeacherException = new InvalidTeacherException();
 
-            var InvalidTeacherException = new InvalidTeacherException(
-                parameterName: nameof(Teacher.UpdatedDate),
-                parameterValue: inputTeacher.UpdatedDate);
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.UpdatedDate),
+                values: $"Date is not the same as {nameof(Teacher.CreatedDate)}");
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(InvalidTeacherException);
+                new TeacherValidationException(invalidTeacherException);
 
             // when
             ValueTask<Teacher> createTeacherTask =
