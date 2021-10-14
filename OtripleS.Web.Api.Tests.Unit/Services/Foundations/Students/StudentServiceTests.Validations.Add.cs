@@ -276,7 +276,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRegisterWhenStudentAlreadyExistsAndLogItAsync()
+        public async Task ShouldThrowDependencyValidationExceptionOnRegisterWhenStudentAlreadyExistsAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -290,8 +290,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             var alreadyExistsStudentException =
                 new AlreadyExistsStudentException(duplicateKeyException);
 
-            var expectedStudentValidationException =
-                new StudentValidationException(alreadyExistsStudentException);
+            var expectedStudentDependencyValidationException =
+                new StudentDependencyValidationException(alreadyExistsStudentException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -318,7 +318,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
+               broker.LogError(It.Is(SameExceptionAs(expectedStudentDependencyValidationException))),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
