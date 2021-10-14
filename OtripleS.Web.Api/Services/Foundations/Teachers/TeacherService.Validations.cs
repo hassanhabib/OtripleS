@@ -160,11 +160,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
         {
             switch (teacher)
             {
-                case { } when teacher.CreatedDate != teacher.UpdatedDate:
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(Teacher.UpdatedDate),
-                        parameterValue: teacher.UpdatedDate);
-
                 case { } when teacher.CreatedBy != teacher.UpdatedBy:
                     throw new InvalidTeacherException(
                         parameterName: nameof(Teacher.UpdatedBy),
