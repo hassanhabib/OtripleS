@@ -68,8 +68,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
                     secondDateName: nameof(Teacher.CreatedDate)),
                 Parameter: nameof(Teacher.UpdatedDate))
             );
-
-            ValidateCreatedDateIsNotRecent(teacher);
         }
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
@@ -151,16 +149,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             );
         }
 
-        private void ValidateCreatedDateIsNotRecent(Teacher teacher)
-        {
-            if (IsDateNotRecent(teacher.CreatedDate))
-            {
-                throw new InvalidTeacherException(
-                    parameterName: nameof(teacher.CreatedDate),
-                    parameterValue: teacher.CreatedDate);
-            }
-        }
-
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
@@ -170,96 +158,11 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
-        private static void ValidateTeacherDates(Teacher teacher)
-        {
-            switch (teacher)
-            {
-                case { } when teacher.CreatedDate == default:
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(Teacher.CreatedDate),
-                        parameterValue: teacher.CreatedDate);
-
-                case { } when teacher.UpdatedDate == default:
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(Teacher.UpdatedDate),
-                        parameterValue: teacher.UpdatedDate);
-            }
-        }
-
-        private static void ValidateTeacherIds(Teacher teacher)
-        {
-            switch (teacher)
-            {
-                case { } when IsInvalid(teacher.CreatedBy):
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(Teacher.CreatedBy),
-                        parameterValue: teacher.CreatedBy);
-
-                case { } when IsInvalid(teacher.UpdatedBy):
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(Teacher.UpdatedBy),
-                        parameterValue: teacher.UpdatedBy);
-            }
-        }
-
-        private static void ValidateUpdatedSignatureOnCreate(Teacher teacher)
-        {
-            switch (teacher)
-            {
-                case { } when teacher.CreatedBy != teacher.UpdatedBy:
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(Teacher.UpdatedBy),
-                        parameterValue: teacher.UpdatedBy);
-            }
-        }
-
-        private void ValidateUpdatedSignatureOnUpdate(Teacher teacher)
-        {
-            switch (teacher)
-            {
-                case { } when teacher.CreatedDate == teacher.UpdatedDate:
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(Teacher.UpdatedDate),
-                        parameterValue: teacher.UpdatedDate);
-
-                case { } when IsDateNotRecent(teacher.UpdatedDate):
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(teacher.UpdatedDate),
-                        parameterValue: teacher.UpdatedDate);
-            }
-        }
-
         private static void ValidateTeacher(Teacher teacher)
         {
             if (teacher == default)
             {
                 throw new NullTeacherException();
-            }
-        }
-
-        private static void ValidateTeacherStrings(Teacher teacher)
-        {
-            switch (teacher)
-            {
-                case { } when IsInvalid(teacher.UserId):
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(teacher.UserId),
-                        parameterValue: teacher.UserId);
-
-                case { } when IsInvalid(teacher.EmployeeNumber):
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(teacher.EmployeeNumber),
-                        parameterValue: teacher.EmployeeNumber);
-
-                case { } when IsInvalid(teacher.FirstName):
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(teacher.FirstName),
-                        parameterValue: teacher.FirstName);
-
-                case { } when IsInvalid(teacher.LastName):
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(teacher.LastName),
-                        parameterValue: teacher.LastName);
             }
         }
 

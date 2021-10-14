@@ -117,6 +117,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             await Assert.ThrowsAsync<TeacherValidationException>(() =>
                 createTeacherTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameValidationExceptionAs(
                     expectedTeacherValidationException))),
@@ -157,6 +161,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             await Assert.ThrowsAsync<TeacherValidationException>(() =>
                 createTeacherTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
                     Times.Once);
@@ -193,6 +201,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() =>
                 createTeacherTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
