@@ -54,6 +54,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
                 (Rule: IsInvalidX(teacher.UpdatedBy), Parameter: nameof(Teacher.UpdatedBy)),
                 (Rule: IsInvalidX(teacher.CreatedDate), Parameter: nameof(Teacher.CreatedDate)),
                 (Rule: IsInvalidX(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate)),
+                (Rule: IsNotRecent(teacher.CreatedDate), Parameter: nameof(Teacher.CreatedDate)),
 
                 (Rule: IsNotSame(
                     firstId: teacher.UpdatedBy,
@@ -123,6 +124,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
                 Condition = firstId != secondId,
                 Message = $"Id is not the same as {secondIdName}"
             };
+
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
+        {
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent"
+        };
 
         private void ValidateTeacherOnModify(Teacher teacher)
         {
