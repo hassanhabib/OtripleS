@@ -42,6 +42,90 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async void ShouldThrowValidationExceptionOnModifyIfTeacherIsInvalidAndLogItAsync(
+            string invalidText)
+        {
+            // given
+            var invalidTeacher = new Teacher
+            {
+                UserId = invalidText,
+                EmployeeNumber = invalidText,
+                FirstName = invalidText,
+                MiddleName = invalidText,
+                LastName = invalidText
+            };
+
+            var invalidTeacherException = new InvalidTeacherException();
+
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.Id),
+                values: "Id is required");
+
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.UserId),
+                values: "Text is required");
+
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.EmployeeNumber),
+                values: "Text is required");
+
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.FirstName),
+                values: "Text is required");
+
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.MiddleName),
+                values: "Text is required");
+
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.LastName),
+                values: "Text is required");
+
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.CreatedDate),
+                values: "Date is required");
+
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.UpdatedDate),
+                values: "Date is required");
+
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.CreatedBy),
+                values: "Id is required");
+
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.UpdatedBy),
+                values: "Id is required");
+
+            var expectedTeacherValidationException =
+                new TeacherValidationException(invalidTeacherException);
+
+            // when
+            ValueTask<Teacher> createTeacherTask =
+                this.teacherService.ModifyTeacherAsync(invalidTeacher);
+
+            // then
+            await Assert.ThrowsAsync<TeacherValidationException>(() =>
+                createTeacherTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedTeacherValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTeacherAsync(It.IsAny<Teacher>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Fact]
         public async Task ShouldThrowValidationExceptionOnModifyWhenTeacherIdIsInvalidAndLogItAsync()
         {
