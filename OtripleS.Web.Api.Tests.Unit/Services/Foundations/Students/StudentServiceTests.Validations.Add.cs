@@ -306,7 +306,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 this.studentService.RegisterStudentAsync(alreadyExistsStudent);
 
             // then
-            await Assert.ThrowsAsync<StudentValidationException>(() =>
+            await Assert.ThrowsAsync<StudentDependencyValidationException>(() =>
                 registerStudentTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -318,7 +318,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedStudentDependencyValidationException))),
+               broker.LogError(It.Is(SameValidationExceptionAs(expectedStudentDependencyValidationException))),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

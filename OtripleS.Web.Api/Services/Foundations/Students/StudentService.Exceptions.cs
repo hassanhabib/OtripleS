@@ -11,6 +11,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Models.Students.Exceptions;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Students
 {
@@ -110,6 +111,16 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             this.loggingBroker.LogError(studentValidationException);
 
             return studentValidationException;
+        }
+
+        private StudentDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var studentDependencyValidationException =
+                new StudentDependencyValidationException(exception);
+
+            this.loggingBroker.LogError(studentDependencyValidationException);
+
+            return studentDependencyValidationException;
         }
     }
 }
