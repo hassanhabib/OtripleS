@@ -129,6 +129,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             Message = "Date is not recent"
         };
 
+        private static dynamic IsSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate == secondDate,
+                Message = $"Date is the same as {secondDateName}"
+            };
+
         private void ValidateTeacherOnModify(Teacher teacher)
         {
             ValidateTeacher(teacher);
@@ -145,7 +154,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
                 (Rule: IsInvalidX(teacher.UpdatedBy), Parameter: nameof(Teacher.UpdatedBy)),
                 (Rule: IsInvalidX(teacher.CreatedDate), Parameter: nameof(Teacher.CreatedDate)),
                 (Rule: IsInvalidX(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate)),
-                (Rule: IsNotRecent(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate))
+                (Rule: IsNotRecent(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate)),
+
+                (Rule: IsSame(
+                    firstDate: teacher.UpdatedDate,
+                    secondDate: teacher.CreatedDate,
+                    secondDateName: nameof(Teacher.CreatedDate)),
+                Parameter: nameof(Teacher.UpdatedDate))
             );
         }
 
