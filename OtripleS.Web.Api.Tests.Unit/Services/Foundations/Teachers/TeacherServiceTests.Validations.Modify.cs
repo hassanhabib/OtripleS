@@ -52,12 +52,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher invalidTeacher = randomTeacher;
             invalidTeacher.Id = invalidTeacherId;
 
-            var invalidTeacherInputException = new InvalidTeacherInputException(
+            var InvalidTeacherException = new InvalidTeacherException(
                 parameterName: nameof(Teacher.Id),
                 parameterValue: invalidTeacher.Id);
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(invalidTeacherInputException);
+                new TeacherValidationException(InvalidTeacherException);
 
             // when
             ValueTask<Teacher> modifyTeacherTask =
@@ -89,12 +89,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher invalidTeacher = randomTeacher;
             invalidTeacher.UserId = invalidTeacherUserId;
 
-            var invalidTeacherInputException = new InvalidTeacherInputException(
+            var InvalidTeacherException = new InvalidTeacherException(
                parameterName: nameof(Teacher.UserId),
                parameterValue: invalidTeacher.UserId);
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(invalidTeacherInputException);
+                new TeacherValidationException(InvalidTeacherException);
 
             // when
             ValueTask<Teacher> modifyTeacherTask =
@@ -127,12 +127,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher invalidTeacher = randomTeacher;
             invalidTeacher.FirstName = invalidTeacherFirstName;
 
-            var invalidTeacherInputException = new InvalidTeacherInputException(
+            var InvalidTeacherException = new InvalidTeacherException(
                parameterName: nameof(Teacher.FirstName),
                parameterValue: invalidTeacher.FirstName);
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(invalidTeacherInputException);
+                new TeacherValidationException(InvalidTeacherException);
 
             // when
             ValueTask<Teacher> modifyTeacherTask =
@@ -164,7 +164,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher invalidTeacher = randomTeacher;
             invalidTeacher.EmployeeNumber = invalidTeacherEmployeeNumber;
 
-            var invalidTeacherException = new InvalidTeacherInputException(
+            var invalidTeacherException = new InvalidTeacherException(
                parameterName: nameof(Teacher.EmployeeNumber),
                parameterValue: invalidTeacher.EmployeeNumber);
 
@@ -201,7 +201,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher invalidTeacher = randomTeacher;
             invalidTeacher.LastName = invalidTeacherLastName;
 
-            var invalidTeacherException = new InvalidTeacherInputException(
+            var invalidTeacherException = new InvalidTeacherException(
                parameterName: nameof(Teacher.LastName),
                parameterValue: invalidTeacher.LastName);
 
@@ -234,12 +234,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher inputTeacher = randomTeacher;
             inputTeacher.CreatedBy = default;
 
-            var invalidTeacherInputException = new InvalidTeacherInputException(
+            var InvalidTeacherException = new InvalidTeacherException(
                 parameterName: nameof(Teacher.CreatedBy),
                 parameterValue: inputTeacher.CreatedBy);
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(invalidTeacherInputException);
+                new TeacherValidationException(InvalidTeacherException);
 
             // when
             ValueTask<Teacher> modifyTeacherTask =
@@ -271,12 +271,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher inputTeacher = randomTeacher;
             inputTeacher.UpdatedBy = default;
 
-            var invalidTeacherInputException = new InvalidTeacherInputException(
+            var InvalidTeacherException = new InvalidTeacherException(
                 parameterName: nameof(Teacher.UpdatedBy),
                 parameterValue: inputTeacher.UpdatedBy);
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(invalidTeacherInputException);
+                new TeacherValidationException(InvalidTeacherException);
 
             // when
             ValueTask<Teacher> modifyTeacherTask =
@@ -308,12 +308,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher inputTeacher = randomTeacher;
             inputTeacher.CreatedDate = default;
 
-            var invalidTeacherInputException = new InvalidTeacherInputException(
+            var InvalidTeacherException = new InvalidTeacherException(
                 parameterName: nameof(Teacher.CreatedDate),
                 parameterValue: inputTeacher.CreatedDate);
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(invalidTeacherInputException);
+                new TeacherValidationException(InvalidTeacherException);
 
             // when
             ValueTask<Teacher> modifyTeacherTask =
@@ -345,12 +345,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher inputTeacher = randomTeacher;
             inputTeacher.UpdatedDate = default;
 
-            var invalidTeacherInputException = new InvalidTeacherInputException(
+            var InvalidTeacherException = new InvalidTeacherException(
                 parameterName: nameof(Teacher.UpdatedDate),
                 parameterValue: inputTeacher.UpdatedDate);
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(invalidTeacherInputException);
+                new TeacherValidationException(InvalidTeacherException);
 
             // when
             ValueTask<Teacher> modifyTeacherTask =
@@ -381,12 +381,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher randomTeacher = CreateRandomTeacher(dateTime);
             Teacher inputTeacher = randomTeacher;
 
-            var invalidTeacherInputException = new InvalidTeacherInputException(
+            var InvalidTeacherException = new InvalidTeacherException(
                 parameterName: nameof(Teacher.UpdatedDate),
                 parameterValue: inputTeacher.UpdatedDate);
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(invalidTeacherInputException);
+                new TeacherValidationException(InvalidTeacherException);
 
             // when
             ValueTask<Teacher> modifyTeacherTask =
@@ -421,12 +421,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             inputTeacher.UpdatedBy = inputTeacher.CreatedBy;
             inputTeacher.UpdatedDate = dateTime.AddMinutes(minutes);
 
-            var invalidTeacherInputException = new InvalidTeacherInputException(
+            var InvalidTeacherException = new InvalidTeacherException(
                 parameterName: nameof(Teacher.UpdatedDate),
                 parameterValue: inputTeacher.UpdatedDate);
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(invalidTeacherInputException);
+                new TeacherValidationException(InvalidTeacherException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -519,7 +519,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Guid studentId = invalidTeacher.Id;
             invalidTeacher.CreatedDate = storageTeacher.CreatedDate.AddMinutes(randomNumber);
 
-            var invalidTeacherException = new InvalidTeacherInputException(
+            var invalidTeacherException = new InvalidTeacherException(
                 parameterName: nameof(Teacher.CreatedDate),
                 parameterValue: invalidTeacher.CreatedDate);
 
@@ -574,12 +574,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Guid studentId = invalidTeacher.Id;
             invalidTeacher.CreatedBy = invalidCreatedBy;
 
-            var invalidTeacherInputException = new InvalidTeacherInputException(
+            var InvalidTeacherException = new InvalidTeacherException(
                 parameterName: nameof(Teacher.CreatedBy),
                 parameterValue: invalidTeacher.CreatedBy);
 
             var expectedTeacherValidationException =
-              new TeacherValidationException(invalidTeacherInputException);
+              new TeacherValidationException(InvalidTeacherException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherByIdAsync(studentId))
@@ -628,12 +628,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher storageTeacher = randomTeacher.DeepClone();
             Guid studentId = invalidTeacher.Id;
 
-            var invalidTeacherInputException = new InvalidTeacherInputException(
+            var InvalidTeacherException = new InvalidTeacherException(
                 parameterName: nameof(Teacher.UpdatedDate),
                 parameterValue: invalidTeacher.UpdatedDate);
 
             var expectedTeacherValidationException =
-              new TeacherValidationException(invalidTeacherInputException);
+              new TeacherValidationException(InvalidTeacherException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherByIdAsync(studentId))

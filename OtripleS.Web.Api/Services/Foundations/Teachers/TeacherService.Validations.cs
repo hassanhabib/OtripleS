@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
         {
             if (teacherId == default)
             {
-                throw new InvalidTeacherInputException(
+                throw new InvalidTeacherException(
                     parameterName: nameof(Teacher.Id),
                     parameterValue: teacherId);
             }
@@ -63,7 +63,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
         {
             if (IsDateNotRecent(teacher.CreatedDate))
             {
-                throw new InvalidTeacherInputException(
+                throw new InvalidTeacherException(
                     parameterName: nameof(teacher.CreatedDate),
                     parameterValue: teacher.CreatedDate);
             }
@@ -83,12 +83,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             switch (teacher)
             {
                 case { } when teacher.CreatedDate == default:
-                    throw new InvalidTeacherInputException(
+                    throw new InvalidTeacherException(
                         parameterName: nameof(Teacher.CreatedDate),
                         parameterValue: teacher.CreatedDate);
 
                 case { } when teacher.UpdatedDate == default:
-                    throw new InvalidTeacherInputException(
+                    throw new InvalidTeacherException(
                         parameterName: nameof(Teacher.UpdatedDate),
                         parameterValue: teacher.UpdatedDate);
             }
@@ -99,12 +99,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             switch (teacher)
             {
                 case { } when IsInvalid(teacher.CreatedBy):
-                    throw new InvalidTeacherInputException(
+                    throw new InvalidTeacherException(
                         parameterName: nameof(Teacher.CreatedBy),
                         parameterValue: teacher.CreatedBy);
 
                 case { } when IsInvalid(teacher.UpdatedBy):
-                    throw new InvalidTeacherInputException(
+                    throw new InvalidTeacherException(
                         parameterName: nameof(Teacher.UpdatedBy),
                         parameterValue: teacher.UpdatedBy);
             }
@@ -115,12 +115,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             switch (teacher)
             {
                 case { } when teacher.CreatedDate != teacher.UpdatedDate:
-                    throw new InvalidTeacherInputException(
+                    throw new InvalidTeacherException(
                         parameterName: nameof(Teacher.UpdatedDate),
                         parameterValue: teacher.UpdatedDate);
 
                 case { } when teacher.CreatedBy != teacher.UpdatedBy:
-                    throw new InvalidTeacherInputException(
+                    throw new InvalidTeacherException(
                         parameterName: nameof(Teacher.UpdatedBy),
                         parameterValue: teacher.UpdatedBy);
             }
@@ -131,12 +131,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             switch (teacher)
             {
                 case { } when teacher.CreatedDate == teacher.UpdatedDate:
-                    throw new InvalidTeacherInputException(
+                    throw new InvalidTeacherException(
                         parameterName: nameof(Teacher.UpdatedDate),
                         parameterValue: teacher.UpdatedDate);
 
                 case { } when IsDateNotRecent(teacher.UpdatedDate):
-                    throw new InvalidTeacherInputException(
+                    throw new InvalidTeacherException(
                         parameterName: nameof(teacher.UpdatedDate),
                         parameterValue: teacher.UpdatedDate);
             }
@@ -155,22 +155,22 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             switch (teacher)
             {
                 case { } when IsInvalid(teacher.UserId):
-                    throw new InvalidTeacherInputException(
+                    throw new InvalidTeacherException(
                         parameterName: nameof(teacher.UserId),
                         parameterValue: teacher.UserId);
 
                 case { } when IsInvalid(teacher.EmployeeNumber):
-                    throw new InvalidTeacherInputException(
+                    throw new InvalidTeacherException(
                         parameterName: nameof(teacher.EmployeeNumber),
                         parameterValue: teacher.EmployeeNumber);
 
                 case { } when IsInvalid(teacher.FirstName):
-                    throw new InvalidTeacherInputException(
+                    throw new InvalidTeacherException(
                         parameterName: nameof(teacher.FirstName),
                         parameterValue: teacher.FirstName);
 
                 case { } when IsInvalid(teacher.LastName):
-                    throw new InvalidTeacherInputException(
+                    throw new InvalidTeacherException(
                         parameterName: nameof(teacher.LastName),
                         parameterValue: teacher.LastName);
             }
@@ -181,17 +181,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             switch (inputTeacher)
             {
                 case { } when inputTeacher.CreatedDate != storageTeacher.CreatedDate:
-                    throw new InvalidTeacherInputException(
+                    throw new InvalidTeacherException(
                         parameterName: nameof(Teacher.CreatedDate),
                         parameterValue: inputTeacher.CreatedDate);
 
                 case { } when inputTeacher.CreatedBy != storageTeacher.CreatedBy:
-                    throw new InvalidTeacherInputException(
+                    throw new InvalidTeacherException(
                         parameterName: nameof(Teacher.CreatedBy),
                         parameterValue: inputTeacher.CreatedBy);
 
                 case { } when inputTeacher.UpdatedDate == storageTeacher.UpdatedDate:
-                    throw new InvalidTeacherInputException(
+                    throw new InvalidTeacherException(
                         parameterName: nameof(Teacher.UpdatedDate),
                         parameterValue: inputTeacher.UpdatedDate);
             }
