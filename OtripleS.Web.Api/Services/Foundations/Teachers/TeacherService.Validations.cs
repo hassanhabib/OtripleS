@@ -134,9 +134,24 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
         private void ValidateTeacherOnModify(Teacher teacher)
         {
             ValidateTeacher(teacher);
-            ValidateTeacherId(teacher.Id);
-            ValidateTeacherStrings(teacher);
-            ValidateTeacherIds(teacher);
+
+            Validate
+            (
+                (Rule: IsInvalidX(teacher.Id), Parameter: nameof(Teacher.Id)),
+                (Rule: IsInvalidX(teacher.UserId), Parameter: nameof(Teacher.UserId)),
+                (Rule: IsInvalidX(teacher.EmployeeNumber), Parameter: nameof(Teacher.EmployeeNumber)),
+                (Rule: IsInvalidX(teacher.FirstName), Parameter: nameof(Teacher.FirstName)),
+                (Rule: IsInvalidX(teacher.MiddleName), Parameter: nameof(Teacher.MiddleName)),
+                (Rule: IsInvalidX(teacher.LastName), Parameter: nameof(Teacher.LastName)),
+                (Rule: IsInvalidX(teacher.CreatedBy), Parameter: nameof(Teacher.CreatedBy)),
+                (Rule: IsInvalidX(teacher.UpdatedBy), Parameter: nameof(Teacher.UpdatedBy)),
+                (Rule: IsInvalidX(teacher.CreatedDate), Parameter: nameof(Teacher.CreatedDate)),
+                (Rule: IsInvalidX(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate))
+            );
+
+            //ValidateTeacherId(teacher.Id);
+            //ValidateTeacherStrings(teacher);
+            //ValidateTeacherIds(teacher);
             ValidateTeacherDates(teacher);
             ValidateUpdatedSignatureOnUpdate(teacher);
         }
