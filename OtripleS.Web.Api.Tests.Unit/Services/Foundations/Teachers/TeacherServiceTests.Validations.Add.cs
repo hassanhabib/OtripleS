@@ -177,14 +177,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             DateTimeOffset dateTime = GetRandomDateTime();
             Teacher randomTeacher = CreateRandomTeacher(dateTime);
             Teacher inputTeacher = randomTeacher;
-            inputTeacher.UpdatedBy = Guid.NewGuid();
+            var invalidTeacherException = new InvalidTeacherException();
 
-            var InvalidTeacherException = new InvalidTeacherException(
-                parameterName: nameof(Teacher.UpdatedBy),
-                parameterValue: inputTeacher.UpdatedBy);
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.UpdatedBy),
+                values: $"Id is not the same as {nameof(Teacher.CreatedBy)}");
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(InvalidTeacherException);
+                new TeacherValidationException(invalidTeacherException);
 
             // when
             ValueTask<Teacher> createTeacherTask =
