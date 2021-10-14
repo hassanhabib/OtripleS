@@ -56,13 +56,18 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
                 (Rule: IsInvalidX(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate)),
 
                 (Rule: IsNotSame(
+                    firstId: teacher.UpdatedBy,
+                    secondId: teacher.CreatedBy,
+                    secondIdName: nameof(Teacher.CreatedBy)),
+                Parameter: nameof(Teacher.UpdatedBy)),
+
+                (Rule: IsNotSame(
                     firstDate: teacher.UpdatedDate,
                     secondDate: teacher.CreatedDate,
                     secondDateName: nameof(Teacher.CreatedDate)),
                 Parameter: nameof(Teacher.UpdatedDate))
             );
 
-            ValidateUpdatedSignatureOnCreate(teacher);
             ValidateCreatedDateIsNotRecent(teacher);
         }
 
@@ -108,6 +113,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             {
                 Condition = firstDate != secondDate,
                 Message = $"Date is not the same as {secondDateName}"
+            };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not the same as {secondIdName}"
             };
 
         private void ValidateTeacherOnModify(Teacher teacher)
