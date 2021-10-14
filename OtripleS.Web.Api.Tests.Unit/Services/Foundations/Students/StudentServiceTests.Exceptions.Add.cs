@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Students;
@@ -151,6 +152,43 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyValidationExceptionOnRegisterIfStudentAlreadyExistsAndLogItAsync()
+        {
+            // given
+            var someStudent = CreateRandomStudent();
+            var message = GetRandomMessage();
+
+            var duplicateKeyException = new DuplicateKeyException(message);
+
+            var alreadyExistsStudentException = 
+                new AlreadyExistsStudentException(duplicateKeyException);
+
+            var expectedStudentDependencyValidationException = 
+                new StudentDependencyValidationException(alreadyExistsStudentException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertStudentAsync(It.IsAny<Student>()))
+                .ThrowsAsync(duplicateKeyException);
+
+            // when
+            ValueTask<Student> RegisterStudentTask =
+                this.studentService.RegisterStudentAsync(someStudent);
+
+            // then
+             await  Assert.ThrowsAsync<StudentDependencyValidationException>(()=>
+                RegisterStudentTask.AsTask());
+            this.storageBrokerMock.Verify(broker => 
+                broker.InsertStudentAsync(It.IsAny<Student>()), Times.Once);
+
+            this.loggingBrokerMock.Verify(broker => 
+                broker.LogError(It.Is(SameValidationExceptionAs
+                    (expectedStudentDependencyValidationException))),Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
