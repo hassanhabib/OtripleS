@@ -10,7 +10,7 @@ namespace OtripleS.Web.Api.Models.Students.Exceptions
     public class StudentDependencyValidationException : Xeption
     {
         public StudentDependencyValidationException(Xeption innerException)
-            : base(message:"Student dependency validation occured, please try again.",innerException)
-        {}
+            : base(message: "Student dependency validation error occurred, please try again.", innerException)
+        { }
     }
 }

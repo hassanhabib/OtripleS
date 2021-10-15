@@ -3,14 +3,14 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.TeacherContacts;
 using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.TeacherContacts;
 using RESTFulSense.Controllers;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Controllers
 {

@@ -3,8 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using OtripleS.Web.Api.Models.StudentAttachments;
 using OtripleS.Web.Api.Models.StudentContacts;
@@ -13,6 +11,8 @@ using OtripleS.Web.Api.Models.StudentExams;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Models.StudentRegistrations;
 using OtripleS.Web.Api.Models.StudentSemesterCourses;
+using System;
+using System.Collections.Generic;
 
 namespace OtripleS.Web.Api.Models.Students
 {
