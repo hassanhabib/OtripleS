@@ -66,98 +66,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRegisterWhenDbExceptionOccursAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent(dateTime);
-            Student inputStudent = randomStudent;
-            inputStudent.UpdatedBy = inputStudent.CreatedBy;
-            var databaseUpdateException = new DbUpdateException();
-
-            var expectedStudentDependencyException =
-                new StudentDependencyException(databaseUpdateException);
-
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentAsync(inputStudent))
-                    .ThrowsAsync(databaseUpdateException);
-
-            // when
-            ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(inputStudent);
-
-            // then
-            await Assert.ThrowsAsync<StudentDependencyException>(() =>
-                registerStudentTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentDependencyException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(inputStudent),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async Task ShouldThrowServiceExceptionOnRegisterWhenExceptionOccursAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent(dateTime);
-            Student inputStudent = randomStudent;
-            inputStudent.UpdatedBy = inputStudent.CreatedBy;
-            var exception = new Exception();
-
-            var expectedStudentServiceException =
-                new StudentServiceException(exception);
-
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentAsync(inputStudent))
-                    .ThrowsAsync(exception);
-
-            // when
-            ValueTask<Student> registerStudentTask =
-                 this.studentService.RegisterStudentAsync(inputStudent);
-
-            // then
-            await Assert.ThrowsAsync<StudentServiceException>(() =>
-                registerStudentTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentServiceException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(inputStudent),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
         public async Task ShouldThrowDependencyValidationExceptionOnRegisterWhenStudentAlreadyExistsAndLogItAsync()
         {
             // given
@@ -207,5 +115,100 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+        
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRegisterIfDatabaseUpdateErrorOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Student someStudent = CreateRandomStudent(dateTime);
+
+            var databaseUpdateException = new DbUpdateException();
+
+            var failedStudentStorageException = new FailedStudentStorageException(databaseUpdateException);
+
+            var expectedStudentDependencyException =
+                new StudentDependencyException(failedStudentStorageException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertStudentAsync(It.IsAny<Student>()))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<Student> registerStudentTask =
+                this.studentService.RegisterStudentAsync(someStudent);
+
+            // then
+            await Assert.ThrowsAsync<StudentDependencyException>(() =>
+                registerStudentTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentAsync(It.IsAny<Student>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentDependencyException))),
+                        Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRegisterWhenExceptionOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Student randomStudent = CreateRandomStudent(dateTime);
+            Student inputStudent = randomStudent;
+            inputStudent.UpdatedBy = inputStudent.CreatedBy;
+            var exception = new Exception();
+
+            var expectedStudentServiceException =
+                new StudentServiceException(exception);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertStudentAsync(inputStudent))
+                    .ThrowsAsync(exception);
+
+            // when
+            ValueTask<Student> registerStudentTask =
+                 this.studentService.RegisterStudentAsync(inputStudent);
+
+            // then
+            await Assert.ThrowsAsync<StudentServiceException>(() =>
+                registerStudentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentAsync(inputStudent),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
