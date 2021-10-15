@@ -159,22 +159,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         public async Task ShouldThrowServiceExceptionOnModifyIfServiceExceptionOccursAndLogItAsync()
         {
             // given
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent();
-            Student someStudent = randomStudent;
-            someStudent.UpdatedDate = randomDateTime;
+            Student someStudent = CreateRandomStudent();
+            someStudent.UpdatedDate = someStudent.CreatedDate.AddDays(1);
             var serviceException = new Exception();
 
-            var expectedStudentServiceException =
-                new StudentServiceException(serviceException);
+            var failedStudentServiceException =
+                new FailedStudentServiceException(serviceException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentByIdAsync(someStudent.Id))
-                    .ThrowsAsync(serviceException);
+            var expectedStudentServiceException =
+                new StudentServiceException(failedStudentServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(randomDateTime);
+                    .Throws(serviceException);
 
             // when
             ValueTask<Student> modifyStudentTask =
@@ -188,13 +185,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 broker.GetCurrentDateTime(),
                     Times.Once);
 
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentServiceException))),
+                        Times.Once);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentByIdAsync(someStudent.Id),
-                    Times.Once);
+                    Times.Never);
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentServiceException))),
-                    Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateStudentAsync(It.IsAny<Student>()),
+                    Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
