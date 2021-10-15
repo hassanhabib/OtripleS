@@ -132,30 +132,30 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
+
+            var failedStudentServiceException =
+                new FailedStudentServiceException(serviceException);
 
             var expectedStudentServiceException =
-                new StudentServiceException(exception);
+                new StudentServiceException(failedStudentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudents())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when . then
             Assert.Throws<StudentServiceException>(() =>
                 this.studentService.RetrieveAllStudents());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentServiceException))),
-                    Times.Once);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudents(),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentServiceException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
