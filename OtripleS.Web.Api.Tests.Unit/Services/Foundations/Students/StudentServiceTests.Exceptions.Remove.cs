@@ -130,31 +130,33 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputStudentId = randomStudentId;
-            var exception = new Exception();
+            Guid someStudentId = Guid.NewGuid();
+            var serviceException = new Exception();
+
+            var failedStudentServiceException =
+                new FailedStudentServiceException(serviceException);
 
             var expectedStudentServiceException =
-                new StudentServiceException(exception);
+                new StudentServiceException(failedStudentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentByIdAsync(inputStudentId))
-                    .ThrowsAsync(exception);
+                broker.SelectStudentByIdAsync(It.IsAny<Guid>()))
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Student> deleteStudentTask =
-                this.studentService.RemoveStudentByIdAsync(inputStudentId);
+                this.studentService.RemoveStudentByIdAsync(someStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentServiceException>(() =>
                 deleteStudentTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentServiceException))),
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentByIdAsync(inputStudentId),
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedStudentServiceException))),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
