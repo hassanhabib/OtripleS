@@ -111,42 +111,39 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         public async Task ShouldThrowServiceExceptionOnRegisterWhenExceptionOccursAndLogItAsync()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent(dateTime);
-            Student inputStudent = randomStudent;
-            inputStudent.UpdatedBy = inputStudent.CreatedBy;
+            Student someStudent = CreateRandomStudent();
             var exception = new Exception();
 
+            var failedStudentServiceException =
+                new FailedStudentServiceException(exception);
+
             var expectedStudentServiceException =
-                new StudentServiceException(exception);
+                new StudentServiceException(failedStudentServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentAsync(inputStudent))
-                    .ThrowsAsync(exception);
+                    .Throws(exception);
 
             // when
             ValueTask<Student> registerStudentTask =
-                 this.studentService.RegisterStudentAsync(inputStudent);
+                 this.studentService.RegisterStudentAsync(someStudent);
 
             // then
             await Assert.ThrowsAsync<StudentServiceException>(() =>
                 registerStudentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentServiceException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(inputStudent),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentServiceException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentAsync(It.IsAny<Student>()),
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
