@@ -1,4 +1,4 @@
-name: Github
+name: .Net
 on:
   push:
     branches:
@@ -15,7 +15,7 @@ jobs:
     - name: Setup Dot Net Version
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.100-rc.1.21463.6
+        dotnet-version: 6.0.100-rc.2.21505.57
         include-prerelease: true
     - name: Restore
       run: dotnet restore
