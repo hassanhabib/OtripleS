@@ -4,15 +4,19 @@
 // ---------------------------------------------------------------
 
 using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Teachers.Exceptions
 {
-    public class InvalidTeacherInputException : Exception
+    public class InvalidTeacherException : Xeption
     {
-        public InvalidTeacherInputException(string parameterName, object parameterValue)
+        public InvalidTeacherException(string parameterName, object parameterValue)
             : base(message: $"Invalid teacher, " +
                   $"parameter name: {parameterName}, " +
                   $"parameter value: {parameterValue}.")
         { }
+
+        public InvalidTeacherException()
+            : base(message: "Invalid teacher. Please fix the errors and try again.") { }
     }
 }
