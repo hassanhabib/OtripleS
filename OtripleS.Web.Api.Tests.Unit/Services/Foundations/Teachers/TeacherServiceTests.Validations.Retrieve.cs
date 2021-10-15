@@ -24,12 +24,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Guid randomTeacherId = default;
             Guid inputTeacherId = randomTeacherId;
 
-            var invalidTeacherInputException = new InvalidTeacherInputException(
+            var invalidTeacherException = new InvalidTeacherException(
                 parameterName: nameof(Teacher.Id),
                 parameterValue: inputTeacherId);
 
             var expectedTeacherValidationException =
-                new TeacherValidationException(invalidTeacherInputException);
+                new TeacherValidationException(invalidTeacherException);
 
             // when
             ValueTask<Teacher> actualTeacherTask =

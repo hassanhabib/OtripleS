@@ -28,17 +28,66 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Teacher persistedTeacher =
+                Teacher registeredTeacher =
                     await this.teacherService.CreateTeacherAsync(teacher);
 
-                return Created(persistedTeacher);
+                return Created(registeredTeacher);
             }
             catch (TeacherValidationException teacherValidationException)
                 when (teacherValidationException.InnerException is AlreadyExistsTeacherException)
             {
+                return Conflict(teacherValidationException.InnerException);
+            }
+            catch (TeacherValidationException teacherValidationException)
+            {
+                return BadRequest(teacherValidationException.InnerException);
+            }
+            catch (TeacherDependencyException teacherDependencyException)
+            {
+                return InternalServerError(teacherDependencyException);
+            }
+            catch (TeacherServiceException teacherServiceException)
+            {
+                return InternalServerError(teacherServiceException);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<IQueryable<Teacher>> GetAllTeachers()
+        {
+            try
+            {
+                IQueryable storageTeacher =
+                    this.teacherService.RetrieveAllTeachers();
+
+                return Ok(storageTeacher);
+            }
+            catch (TeacherDependencyException teacherDependencyException)
+            {
+                return Problem(teacherDependencyException.Message);
+            }
+            catch (TeacherServiceException teacherServiceException)
+            {
+                return Problem(teacherServiceException.Message);
+            }
+        }
+
+        [HttpGet("{teacherId}")]
+        public async ValueTask<ActionResult<Teacher>> GetTeacherByIdAsync(Guid TeacherId)
+        {
+            try
+            {
+                Teacher teacher =
+                    await this.teacherService.RetrieveTeacherByIdAsync(TeacherId);
+
+                return Ok(teacher);
+            }
+            catch (TeacherValidationException teacherValidationException)
+                when (teacherValidationException.InnerException is NotFoundTeacherException)
+            {
                 string innerMessage = GetInnerMessage(teacherValidationException);
 
-                return Conflict(innerMessage);
+                return NotFound(innerMessage);
             }
             catch (TeacherValidationException teacherValidationException)
             {
@@ -56,15 +105,33 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult<IQueryable<Teacher>> GetAllTeachers()
+        [HttpDelete("{teacherId}")]
+        public async ValueTask<ActionResult<Teacher>> DeleteTeacherAsync(Guid teacherId)
         {
             try
             {
-                IQueryable<Teacher> teachers =
-                    this.teacherService.RetrieveAllTeachers();
+                Teacher storageTeacher =
+                    await this.teacherService.RemoveTeacherByIdAsync(teacherId);
 
-                return Ok(teachers);
+                return Ok(storageTeacher);
+            }
+            catch (TeacherValidationException teacherValidationException)
+                when (teacherValidationException.InnerException is NotFoundTeacherException)
+            {
+                string innerMessage = GetInnerMessage(teacherValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (TeacherValidationException teacherValidationException)
+            {
+                return BadRequest(teacherValidationException.Message);
+            }
+            catch (TeacherDependencyException teacherDependencyException)
+                when (teacherDependencyException.InnerException is LockedTeacherException)
+            {
+                string innerMessage = GetInnerMessage(teacherDependencyException);
+
+                return Locked(innerMessage);
             }
             catch (TeacherDependencyException teacherDependencyException)
             {
@@ -76,47 +143,15 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpGet("{teacherId}")]
-        public async ValueTask<ActionResult<Teacher>> GetById(Guid teacherId)
-        {
-            try
-            {
-                Teacher teacher = await this.teacherService.RetrieveTeacherByIdAsync(teacherId);
-
-                return Ok(teacher);
-            }
-            catch (TeacherValidationException teacherValidationException)
-                when (teacherValidationException.InnerException is NotFoundTeacherException)
-            {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return NotFound(innerMessage);
-            }
-            catch (TeacherValidationException teacherValidationException)
-            {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return BadRequest(teacherValidationException);
-            }
-            catch (TeacherDependencyException teacherValidationException)
-            {
-                return Problem(teacherValidationException.Message);
-            }
-            catch (TeacherServiceException teacherServiceException)
-            {
-                return Problem(teacherServiceException.Message);
-            }
-        }
-
         [HttpPut]
-        public async ValueTask<ActionResult<Teacher>> PutTeacher(Teacher teacher)
+        public async ValueTask<ActionResult<Teacher>> PutTeacherAsync(Teacher teacher)
         {
             try
             {
-                Teacher updatedTeacher =
+                Teacher registeredTeacher =
                     await this.teacherService.ModifyTeacherAsync(teacher);
 
-                return Ok(updatedTeacher);
+                return Ok(registeredTeacher);
             }
             catch (TeacherValidationException teacherValidationException)
                 when (teacherValidationException.InnerException is NotFoundTeacherException)
@@ -148,47 +183,7 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpDelete("{teacherId}")]
-        public async ValueTask<ActionResult<Teacher>> DeleteTeacherAsync(Guid teacherId)
-        {
-            try
-            {
-                Teacher storageTeacher =
-                    await this.teacherService.RemoveTeacherByIdAsync(teacherId);
-
-                return Ok(storageTeacher);
-            }
-            catch (TeacherValidationException teacherValidationException)
-                when (teacherValidationException.InnerException is NotFoundTeacherException)
-            {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return NotFound(innerMessage);
-            }
-            catch (TeacherValidationException teacherValidationException)
-            {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return BadRequest(teacherValidationException);
-            }
-            catch (TeacherDependencyException teacherDependencyException)
-               when (teacherDependencyException.InnerException is LockedTeacherException)
-            {
-                string innerMessage = GetInnerMessage(teacherDependencyException);
-
-                return Locked(innerMessage);
-            }
-            catch (TeacherDependencyException teacherDependencyException)
-            {
-                return Problem(teacherDependencyException.Message);
-            }
-            catch (TeacherServiceException teacherServiceException)
-            {
-                return Problem(teacherServiceException.Message);
-            }
-        }
-
-        public static string GetInnerMessage(Exception exception) =>
+        private static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }
 }
