@@ -40,7 +40,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             }
             catch (SqlException sqlException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var failedStudentStorageException = 
+                    new FailedStudentStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedStudentStorageException);
             }
             catch (DuplicateKeyException duplicateKeyException)
             {
