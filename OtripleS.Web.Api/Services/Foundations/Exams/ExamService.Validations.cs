@@ -14,12 +14,44 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
     {
         private void ValidateExamOnAdd(Exam exam)
         {
-            ValidateExamIdIsNotNull(exam);
-            ValidateExamId(exam.Id);
-            ValidateExamType(exam);
+            ValidateExamIsNotNull(exam);
+
+            Validate(
+                (Rule: IsInvalid(exam.Id), Parameter: nameof(Exam.Id)),
+                (Rule: IsInvalid(exam.Type), Parameter: nameof(Exam.Type)),
+                (Rule: IsInvalid(exam.CreatedBy), Parameter: nameof(Exam.CreatedBy)),
+                (Rule: IsInvalid(exam.CreatedDate), Parameter: nameof(Exam.CreatedDate)),
+                (Rule: IsInvalid(exam.UpdatedBy), Parameter: nameof(Exam.UpdatedBy)),
+                (Rule: IsInvalid(exam.UpdatedDate), Parameter: nameof(Exam.UpdatedDate)));
+
             ValidateExamAuditFieldsOnCreate(exam);
         }
 
+        private static void ValidateExamIsNotNull(Exam exam)
+        {
+            if (exam is null)
+            {
+                throw new NullExamException();
+            }
+        }
+
+        private static dynamic IsInvalid(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static dynamic IsInvalid(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required"
+        };
+
+        private static dynamic IsInvalid(ExamType type) => new
+        {
+            Condition = Enum.IsDefined(type) == false,
+            Message = "Value is not recognized"
+        };
 
         private void ValidateStorageExams(IQueryable<Exam> storageExams)
         {
@@ -31,7 +63,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
 
         private static void ValidateExamId(Guid examId)
         {
-            if (IsInvalid(examId))
+            if (IsInvalidOld(examId))
             {
                 throw new InvalidExamException(
                     parameterName: nameof(Exam.Id),
@@ -47,48 +79,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             }
         }
 
-        private static void ValidateExamType(Exam exam)
-        {
-            if (IsInvalid(exam.Type))
-            {
-                throw new InvalidExamException(
-                   parameterName: nameof(Exam.Type),
-                   parameterValue: exam.Type);
-            }
-        }
-
-        private static void ValidateExamIdIsNotNull(Exam exam)
-        {
-            if (exam == default)
-            {
-                throw new NullExamException();
-            }
-        }
-
         private void ValidateExamAuditFieldsOnCreate(Exam exam)
         {
             switch (exam)
             {
-                case { } when IsInvalid(input: exam.CreatedBy):
-                    throw new InvalidExamException(
-                        parameterName: nameof(Exam.CreatedBy),
-                        parameterValue: exam.CreatedBy);
-
-                case { } when IsInvalid(input: exam.CreatedDate):
-                    throw new InvalidExamException(
-                        parameterName: nameof(Exam.CreatedDate),
-                        parameterValue: exam.CreatedDate);
-
-                case { } when IsInvalid(input: exam.UpdatedBy):
-                    throw new InvalidExamException(
-                        parameterName: nameof(Exam.UpdatedBy),
-                        parameterValue: exam.UpdatedBy);
-
-                case { } when IsInvalid(input: exam.UpdatedDate):
-                    throw new InvalidExamException(
-                        parameterName: nameof(Exam.UpdatedDate),
-                        parameterValue: exam.UpdatedDate);
-
                 case { } when exam.UpdatedBy != exam.CreatedBy:
                     throw new InvalidExamException(
                         parameterName: nameof(Exam.UpdatedBy),
@@ -106,9 +100,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             }
         }
 
-        private static bool IsInvalid(Guid input) => input == default;
-        private static bool IsInvalid(DateTimeOffset input) => input == default;
-        private static bool IsInvalid(ExamType type) => Enum.IsDefined(type) == false;
+        private static bool IsInvalidOld(Guid input) => input == default;
+        private static bool IsInvalidOld(DateTimeOffset input) => input == default;
+        private static bool IsInvalidOld(ExamType type) => Enum.IsDefined(type) == false;
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
@@ -152,33 +146,25 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
         {
             switch (exam)
             {
-                case { } when IsInvalid(exam.CreatedBy):
+                case { } when IsInvalidOld(exam.CreatedBy):
                     throw new InvalidExamException(
                         parameterName: nameof(Exam.CreatedBy),
                         parameterValue: exam.CreatedBy);
 
-                case { } when IsInvalid(exam.UpdatedBy):
+                case { } when IsInvalidOld(exam.UpdatedBy):
                     throw new InvalidExamException(
                         parameterName: nameof(Exam.UpdatedBy),
                         parameterValue: exam.UpdatedBy);
 
-                case { } when IsInvalid(exam.CreatedDate):
+                case { } when IsInvalidOld(exam.CreatedDate):
                     throw new InvalidExamException(
                         parameterName: nameof(Exam.CreatedDate),
                         parameterValue: exam.CreatedDate);
 
-                case { } when IsInvalid(exam.UpdatedDate):
+                case { } when IsInvalidOld(exam.UpdatedDate):
                     throw new InvalidExamException(
                         parameterName: nameof(Exam.UpdatedDate),
                         parameterValue: exam.UpdatedDate);
-            }
-        }
-
-        private static void ValidateExamIsNotNull(Exam exam)
-        {
-            if (exam is null)
-            {
-                throw new NullExamException();
             }
         }
 
@@ -201,6 +187,23 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
                         parameterName: nameof(Exam.UpdatedDate),
                         parameterValue: inputExam.UpdatedDate);
             }
+        }
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidExamException = new InvalidExamException();
+
+            foreach((dynamic rule, string paramter) in validations)
+            {
+                if(rule.Condition)
+                {
+                    invalidExamException.UpsertDataList(
+                        key: paramter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidExamException.ThrowIfContainsErrors();
         }
     }
 }
