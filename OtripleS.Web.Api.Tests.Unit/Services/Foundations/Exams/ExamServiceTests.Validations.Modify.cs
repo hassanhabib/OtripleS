@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Exam invalidExam = randomExam;
             invalidExam.Id = invalidExamId;
 
-            var invalidExamException = new InvalidExamInputException(
+            var invalidExamException = new InvalidExamException(
                 parameterName: nameof(Exam.Id),
                 parameterValue: invalidExam.Id);
 
@@ -85,7 +85,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Exam inputExam = randomExam;
             inputExam.CreatedBy = default;
 
-            var invalidExamInputException = new InvalidExamInputException(
+            var invalidExamInputException = new InvalidExamException(
                 parameterName: nameof(Exam.CreatedBy),
                 parameterValue: inputExam.CreatedBy);
 
@@ -122,7 +122,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Exam inputExam = randomExam;
             inputExam.UpdatedBy = default;
 
-            var invalidExamInputException = new InvalidExamInputException(
+            var invalidExamInputException = new InvalidExamException(
                 parameterName: nameof(Exam.UpdatedBy),
                 parameterValue: inputExam.UpdatedBy);
 
@@ -159,7 +159,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Exam inputExam = randomExam;
             inputExam.CreatedDate = default;
 
-            var invalidExamInputException = new InvalidExamInputException(
+            var invalidExamInputException = new InvalidExamException(
                 parameterName: nameof(Exam.CreatedDate),
                 parameterValue: inputExam.CreatedDate);
 
@@ -196,7 +196,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Exam inputExam = randomExam;
             inputExam.UpdatedDate = default;
 
-            var invalidExamInputException = new InvalidExamInputException(
+            var invalidExamInputException = new InvalidExamException(
                 parameterName: nameof(Exam.UpdatedDate),
                 parameterValue: inputExam.UpdatedDate);
 
@@ -232,7 +232,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Exam randomExam = CreateRandomExam(dateTime);
             Exam inputExam = randomExam;
 
-            var invalidExamInputException = new InvalidExamInputException(
+            var invalidExamInputException = new InvalidExamException(
                 parameterName: nameof(Exam.UpdatedDate),
                 parameterValue: inputExam.UpdatedDate);
 
@@ -272,7 +272,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             inputExam.UpdatedBy = inputExam.CreatedBy;
             inputExam.UpdatedDate = dateTime.AddMinutes(minutes);
 
-            var invalidExamInputException = new InvalidExamInputException(
+            var invalidExamInputException = new InvalidExamException(
                 parameterName: nameof(Exam.UpdatedDate),
                 parameterValue: inputExam.UpdatedDate);
 
@@ -370,7 +370,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Guid ExamId = invalidExam.Id;
             invalidExam.CreatedDate = storageExam.CreatedDate.AddMinutes(randomNumber);
 
-            var invalidExamException = new InvalidExamInputException(
+            var invalidExamException = new InvalidExamException(
                 parameterName: nameof(Exam.CreatedDate),
                 parameterValue: invalidExam.CreatedDate);
 
@@ -425,7 +425,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Guid ExamId = invalidExam.Id;
             invalidExam.CreatedBy = invalidCreatedBy;
 
-            var invalidExamInputException = new InvalidExamInputException(
+            var invalidExamInputException = new InvalidExamException(
                 parameterName: nameof(Exam.CreatedBy),
                 parameterValue: invalidExam.CreatedBy);
 
@@ -479,7 +479,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Exam storageExam = randomExam.DeepClone();
             Guid ExamId = invalidExam.Id;
 
-            var invalidExamInputException = new InvalidExamInputException(
+            var invalidExamInputException = new InvalidExamException(
                 parameterName: nameof(Exam.UpdatedDate),
                 parameterValue: invalidExam.UpdatedDate);
 
