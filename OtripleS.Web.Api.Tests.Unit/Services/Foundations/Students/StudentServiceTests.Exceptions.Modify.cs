@@ -21,6 +21,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         {
             // given
             Student someStudent = CreateRandomStudent();
+            int randomDays = GetRandomNumber();
+
+            someStudent.UpdatedDate =
+                someStudent.CreatedDate.AddDays(randomDays);
+
             SqlException sqlException = GetSqlException();
 
             var expectedStudentDependencyException =
@@ -61,6 +66,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         {
             // given
             Student someStudent = CreateRandomStudent();
+            int randomDays = GetRandomNumber();
+
+            someStudent.UpdatedDate =
+                someStudent.CreatedDate.AddDays(randomDays);
+
             var databaseUpdateException = new DbUpdateException();
 
             var expectedStudentDependencyException =
@@ -101,7 +111,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         {
             // given
             Student someStudent = CreateRandomStudent();
-            
+            int randomDays = GetRandomNumber();
+
+            someStudent.UpdatedDate =
+                someStudent.CreatedDate.AddDays(randomDays);
+
             var databaseUpdateConcurrencyException = 
                 new DbUpdateConcurrencyException();
             
@@ -134,7 +148,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             this.storageBrokerMock.Verify(broker =>
                 broker.UpdateStudentAsync(It.IsAny<Student>()),
-                    Times.Once);
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
