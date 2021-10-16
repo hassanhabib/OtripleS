@@ -102,6 +102,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.AssignmentsAttachments
             var filler = new Filler<Assignment>();
 
             filler.Setup()
+                .OnProperty(assignment => assignment.Status).Use(AssignmentStatus.Active)
                 .OnProperty(assignment => assignment.CreatedBy).Use(posterId)
                 .OnProperty(assignment => assignment.UpdatedBy).Use(posterId)
                 .OnProperty(assignment => assignment.CreatedDate).Use(now)
