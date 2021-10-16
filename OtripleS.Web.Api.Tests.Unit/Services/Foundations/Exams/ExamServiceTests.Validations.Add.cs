@@ -157,12 +157,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             inputExam.UpdatedBy = randomExam.CreatedBy;
             inputExam.UpdatedDate = GetRandomDateTime();
 
-            var invalidExamInputException = new InvalidExamException(
-                parameterName: nameof(Exam.UpdatedDate),
-                parameterValue: inputExam.UpdatedDate);
+            var invalidExamException = new InvalidExamException();
+
+            invalidExamException.AddData(
+                key: nameof(Exam.UpdatedDate),
+                values: $"Date is not same as {nameof(Exam.CreatedDate)}");
 
             var expectedExamValidationException =
-                new ExamValidationException(invalidExamInputException);
+                new ExamValidationException(invalidExamException);
 
             // when
             ValueTask<Exam> createExamTask =
@@ -173,16 +175,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 createExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedExamValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertExamAsync(It.IsAny<Exam>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Theory]
