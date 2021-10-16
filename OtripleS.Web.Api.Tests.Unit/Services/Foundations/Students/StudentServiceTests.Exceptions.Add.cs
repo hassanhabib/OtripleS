@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
     public partial class StudentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRegisterWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRegisterIfSqlExceptionOccursAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -62,7 +62,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRegisterWhenDbExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRegisterIfDbExceptionOccursAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -108,7 +108,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnRegisterWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnRegisterIfExceptionOccursAndLogItAsync()
         {
             // given
             Student someStudent = CreateRandomStudent();
@@ -132,14 +132,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentServiceException>(() =>
                 registerStudentTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedStudentServiceException))),
                         Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentAsync(It.IsAny<Student>()),

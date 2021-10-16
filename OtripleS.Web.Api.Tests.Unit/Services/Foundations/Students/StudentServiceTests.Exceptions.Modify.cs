@@ -191,16 +191,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentByIdAsync(someStudent.Id),
-                    Times.Never);
-
-            this.storageBrokerMock.Verify(broker =>
                 broker.UpdateStudentAsync(It.IsAny<Student>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
