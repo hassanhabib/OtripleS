@@ -116,12 +116,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Exam inputExam = randomExam;
             inputExam.UpdatedBy = Guid.NewGuid();
 
-            var invalidExamInputException = new InvalidExamException(
-                parameterName: nameof(Exam.UpdatedBy),
-                parameterValue: inputExam.UpdatedBy);
+            var invalidExamException = new InvalidExamException();
+
+            invalidExamException.AddData(
+                key: nameof(Exam.UpdatedBy),
+                values: $"Id is not the same as {nameof(Exam.CreatedBy)}");
 
             var expectedExamValidationException =
-                new ExamValidationException(invalidExamInputException);
+                new ExamValidationException(invalidExamException);
 
             // when
             ValueTask<Exam> createExamTask =
@@ -132,16 +134,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 createExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedExamValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertExamAsync(It.IsAny<Exam>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
