@@ -37,11 +37,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (UserContactValidationException userContactValidationException)
                 when (userContactValidationException.InnerException is AlreadyExistsUserContactException)
             {
-                return Conflict(userContactValidationException);
+                return Conflict(userContactValidationException.InnerException);
             }
             catch (UserContactValidationException userContactValidationException)
             {
-                return BadRequest(userContactValidationException);
+                return BadRequest(userContactValidationException.InnerException);
             }
             catch (UserContactDependencyException userContactDependencyException)
             {
@@ -86,11 +86,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (UserContactValidationException semesterUserContactValidationException)
                 when (semesterUserContactValidationException.InnerException is NotFoundUserContactException)
             {
-                return NotFound(semesterUserContactValidationException);
+                return NotFound(semesterUserContactValidationException.InnerException);
             }
             catch (UserContactValidationException semesterUserContactValidationException)
             {
-                return BadRequest(semesterUserContactValidationException);
+                return BadRequest(semesterUserContactValidationException.InnerException);
             }
             catch (UserContactDependencyException semesterUserContactDependencyException)
             {
@@ -115,16 +115,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (UserContactValidationException userContactValidationException)
                 when (userContactValidationException.InnerException is NotFoundUserContactException)
             {
-                return NotFound(userContactValidationException);
+                return NotFound(userContactValidationException.InnerException);
             }
             catch (UserContactValidationException userContactValidationException)
             {
-                return BadRequest(userContactValidationException);
+                return BadRequest(userContactValidationException.InnerException);
             }
             catch (UserContactDependencyException userContactValidationException)
                when (userContactValidationException.InnerException is LockedUserContactException)
             {
-                return Locked(userContactValidationException);
+                return Locked(userContactValidationException.InnerException);
             }
             catch (UserContactDependencyException userContactDependencyException)
             {
