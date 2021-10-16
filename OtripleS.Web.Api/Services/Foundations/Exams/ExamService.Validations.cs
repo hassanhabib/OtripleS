@@ -28,7 +28,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
                     firstId: exam.UpdatedBy,
                     secondId: exam.CreatedBy,
                     secondIdName: nameof(Exam.CreatedBy)),
-                Parameter: nameof(Exam.UpdatedBy)));
+                Parameter: nameof(Exam.UpdatedBy)),
+
+                (Rule: IsNotSame(
+                    firstDate: exam.UpdatedDate,
+                    secondDate: exam.CreatedDate,
+                    secondDateName: nameof(Exam.CreatedDate)),
+                Parameter: nameof(Exam.UpdatedDate)));
 
             ValidateExamAuditFieldsOnCreate(exam);
         }
@@ -66,6 +72,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             {
                 Condition = firstId != secondId,
                 Message = $"Id is not same as {secondIdName}"
+            };
+
+        private static dynamic IsNotSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not same as {secondDateName}"
             };
 
         private void ValidateStorageExams(IQueryable<Exam> storageExams)
