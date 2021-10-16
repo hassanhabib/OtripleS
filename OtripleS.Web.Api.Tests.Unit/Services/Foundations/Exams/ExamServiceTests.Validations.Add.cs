@@ -35,15 +35,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 createExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExamValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertExamAsync(It.IsAny<Exam>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -98,13 +99,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                     expectedExamValidationException))),
                         Times.Once);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertExamAsync(It.IsAny<Exam>()),
                     Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -133,6 +138,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             await Assert.ThrowsAsync<ExamValidationException>(() =>
                 createExamTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameValidationExceptionAs(
                     expectedExamValidationException))),
@@ -142,9 +151,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 broker.InsertExamAsync(It.IsAny<Exam>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -174,6 +183,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             await Assert.ThrowsAsync<ExamValidationException>(() =>
                 createExamTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameValidationExceptionAs(
                     expectedExamValidationException))),
@@ -183,9 +196,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 broker.InsertExamAsync(It.IsAny<Exam>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Theory]

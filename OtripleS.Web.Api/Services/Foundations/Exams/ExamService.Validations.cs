@@ -34,9 +34,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
                     firstDate: exam.UpdatedDate,
                     secondDate: exam.CreatedDate,
                     secondDateName: nameof(Exam.CreatedDate)),
-                Parameter: nameof(Exam.UpdatedDate)));
+                Parameter: nameof(Exam.UpdatedDate)),
 
-            ValidateExamAuditFieldsOnCreate(exam);
+                (Rule: IsNotRecent(exam.CreatedDate), Parameter: nameof(Exam.CreatedDate)));
         }
 
         private static void ValidateExamIsNotNull(Exam exam)
@@ -83,6 +83,21 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
                 Message = $"Date is not same as {secondDateName}"
             };
 
+        private dynamic IsNotRecent(DateTimeOffset date) => new
+        {
+            Condition = IsDateNotRecent(date),
+            Message = "Date is not recent"
+        };
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
+
         private void ValidateStorageExams(IQueryable<Exam> storageExams)
         {
             if (!storageExams.Any())
@@ -109,34 +124,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             }
         }
 
-        private void ValidateExamAuditFieldsOnCreate(Exam exam)
-        {
-            switch (exam)
-            {
-                case { } when exam.UpdatedDate != exam.CreatedDate:
-                    throw new InvalidExamException(
-                        parameterName: nameof(Exam.UpdatedDate),
-                        parameterValue: exam.UpdatedDate);
-
-                case { } when IsDateNotRecent(exam.CreatedDate):
-                    throw new InvalidExamException(
-                        parameterName: nameof(Exam.CreatedDate),
-                        parameterValue: exam.CreatedDate);
-            }
-        }
-
         private static bool IsInvalidOld(Guid input) => input == default;
         private static bool IsInvalidOld(DateTimeOffset input) => input == default;
         private static bool IsInvalidOld(ExamType type) => Enum.IsDefined(type) == false;
-
-        private bool IsDateNotRecent(DateTimeOffset dateTime)
-        {
-            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
-            int oneMinute = 1;
-            TimeSpan difference = now.Subtract(dateTime);
-
-            return Math.Abs(difference.TotalMinutes) > oneMinute;
-        }
 
         private void ValidateExamOnModify(Exam exam)
         {
