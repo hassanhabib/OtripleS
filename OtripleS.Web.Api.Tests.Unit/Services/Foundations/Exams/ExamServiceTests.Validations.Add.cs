@@ -120,7 +120,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
 
             invalidExamException.AddData(
                 key: nameof(Exam.UpdatedBy),
-                values: $"Id is not the same as {nameof(Exam.CreatedBy)}");
+                values: $"Id is not same as {nameof(Exam.CreatedBy)}");
 
             var expectedExamValidationException =
                 new ExamValidationException(invalidExamException);

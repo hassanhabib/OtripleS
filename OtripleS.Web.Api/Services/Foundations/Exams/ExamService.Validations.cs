@@ -22,7 +22,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
                 (Rule: IsInvalid(exam.CreatedBy), Parameter: nameof(Exam.CreatedBy)),
                 (Rule: IsInvalid(exam.CreatedDate), Parameter: nameof(Exam.CreatedDate)),
                 (Rule: IsInvalid(exam.UpdatedBy), Parameter: nameof(Exam.UpdatedBy)),
-                (Rule: IsInvalid(exam.UpdatedDate), Parameter: nameof(Exam.UpdatedDate)));
+                (Rule: IsInvalid(exam.UpdatedDate), Parameter: nameof(Exam.UpdatedDate)),
+
+                (Rule: IsNotSame(
+                    firstId: exam.UpdatedBy,
+                    secondId: exam.CreatedBy,
+                    secondIdName: nameof(Exam.CreatedBy)),
+                Parameter: nameof(Exam.UpdatedBy)));
 
             ValidateExamAuditFieldsOnCreate(exam);
         }
@@ -52,6 +58,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             Condition = Enum.IsDefined(type) == false,
             Message = "Value is not recognized"
         };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not same as {secondIdName}"
+            };
 
         private void ValidateStorageExams(IQueryable<Exam> storageExams)
         {
@@ -83,11 +98,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
         {
             switch (exam)
             {
-                case { } when exam.UpdatedBy != exam.CreatedBy:
-                    throw new InvalidExamException(
-                        parameterName: nameof(Exam.UpdatedBy),
-                        parameterValue: exam.UpdatedBy);
-
                 case { } when exam.UpdatedDate != exam.CreatedDate:
                     throw new InvalidExamException(
                         parameterName: nameof(Exam.UpdatedDate),
