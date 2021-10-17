@@ -64,19 +64,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             invalidStudentException.AddData(
                 key: nameof(Student.UserId),
-                values: "User Id is required");
+                values: "Text is required");
 
             invalidStudentException.AddData(
                 key: nameof(Student.IdentityNumber),
-                values: "Identity number required");
+                values: "Text is required");
 
             invalidStudentException.AddData(
                 key: nameof(Student.FirstName),
-                values: "First name is required");
+                values: "Text is required");
 
             invalidStudentException.AddData(
                 key: nameof(Student.BirthDate),
-                values: "Birth date is required");
+                values: "Date is required");
 
             invalidStudentException.AddData(
                 key: nameof(Student.CreatedBy),
@@ -88,15 +88,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             invalidStudentException.AddData(
                 key: nameof(Student.CreatedDate),
-                values: "Created date is required");
+                values: "Date is required");
 
             invalidStudentException.AddData(
                 key: nameof(Student.UpdatedDate),
-                values: new[]
-                {
-                    "Updated date is required",
-                    $"Date is the same as {nameof(Student.CreatedDate)}"
-                });
+                values: "Date is required");
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
@@ -109,13 +105,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 modifyStudentTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                    broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
+            this.dateTimeBrokerMock.Verify(broker =>
+                    broker.GetCurrentDateTime(),
                 Times.Once);
 
+            this.loggingBrokerMock.Verify(broker =>
+                    broker.LogError(It.Is(SameValidationExceptionAs(
+                        expectedStudentValidationException))),
+                Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                    broker.UpdateStudentAsync(It.IsAny<Student>()),
+                Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Theory]

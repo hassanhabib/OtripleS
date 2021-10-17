@@ -27,18 +27,16 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
                 (Rule: IsInvalidX(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
                 (Rule: IsInvalidX(student.UpdatedDate), Parameter: nameof(Student.UpdatedDate)),
                 (Rule: IsNotRecent(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
-
                 (Rule: IsNotSame(
-                    firstId: student.UpdatedBy,
-                    secondId: student.CreatedBy,
-                    secondIdName: nameof(Student.CreatedBy)),
-                Parameter: nameof(Student.UpdatedBy)),
-
+                        firstId: student.UpdatedBy,
+                        secondId: student.CreatedBy,
+                        secondIdName: nameof(Student.CreatedBy)),
+                    Parameter: nameof(Student.UpdatedBy)),
                 (Rule: IsNotSame(
-                    firstDate: student.UpdatedDate,
-                    secondDate: student.CreatedDate,
-                    secondDateName: nameof(Student.CreatedDate)),
-                Parameter: nameof(Student.UpdatedDate))
+                        firstDate: student.UpdatedDate,
+                        secondDate: student.CreatedDate,
+                        secondDateName: nameof(Student.CreatedDate)),
+                    Parameter: nameof(Student.UpdatedDate))
             );
         }
 
@@ -72,19 +70,19 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             Guid firstId,
             Guid secondId,
             string secondIdName) => new
-            {
-                Condition = firstId != secondId,
-                Message = $"Id is not the same as {secondIdName}"
-            };
+        {
+            Condition = firstId != secondId,
+            Message = $"Id is not the same as {secondIdName}"
+        };
 
         private static dynamic IsNotSame(
             DateTimeOffset firstDate,
             DateTimeOffset secondDate,
             string secondDateName) => new
-            {
-                Condition = firstDate != secondDate,
-                Message = $"Date is not the same as {secondDateName}"
-            };
+        {
+            Condition = firstDate != secondDate,
+            Message = $"Date is not the same as {secondDateName}"
+        };
 
         private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
         {
@@ -130,12 +128,23 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
         private void ValidateStudentOnModify(Student student)
         {
             ValidateStudent(student);
-            ValidateStudentId(student.Id);
-            ValidateStudentStrings(student);
-            ValidateStudentDates(student);
-            ValidateStudentIds(student);
-            ValidateDatesAreNotSame(student);
-            ValidateUpdatedDateIsRecent(student);
+            Validate(
+                (Rule: IsInvalidX(student.Id), Parameter: nameof(Student.Id)),
+                (Rule: IsInvalidX(student.UserId), Parameter: nameof(Student.UserId)),
+                (Rule: IsInvalidX(student.IdentityNumber), Parameter: nameof(Student.IdentityNumber)),
+                (Rule: IsInvalidX(student.FirstName), Parameter: nameof(Student.FirstName)),
+                (Rule: IsInvalidX(student.BirthDate), Parameter: nameof(Student.BirthDate)),
+                (Rule: IsInvalidX(student.CreatedBy), Parameter: nameof(Student.CreatedBy)),
+                (Rule: IsInvalidX(student.UpdatedBy), Parameter: nameof(Student.UpdatedBy)),
+                (Rule: IsInvalidX(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
+                (Rule: IsInvalidX(student.UpdatedDate), Parameter: nameof(Student.UpdatedDate)),
+                (Rule: IsNotRecent(student.UpdatedDate), Parameter: nameof(Student.UpdatedDate)),
+                (Rule: IsNotSame(
+                        firstDate: student.UpdatedDate,
+                        secondDate: student.CreatedDate,
+                        secondDateName: nameof(Student.CreatedDate)),
+                    Parameter: nameof(Student.UpdatedDate))
+            );
         }
 
         public void ValidateAgainstStorageStudentOnModify(Student inputStudent, Student storageStudent)
