@@ -63,6 +63,29 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
                 (Rule: IsNotRecent(exam.UpdatedDate), Parameter: nameof(Exam.UpdatedDate)));
         }
 
+        private static void ValidateAgainstStorageExamOnModify(Exam inputExam, Exam storageExam)
+        {
+            Validate(
+                (Rule: IsNotSame(
+                    firstDate: inputExam.CreatedDate,
+                    secondDate: storageExam.CreatedDate,
+                    secondDateName: nameof(Exam.CreatedDate)),
+                Parameter: nameof(Exam.CreatedDate)));
+
+            switch (inputExam)
+            {
+                case { } when inputExam.CreatedBy != storageExam.CreatedBy:
+                    throw new InvalidExamException(
+                        parameterName: nameof(Exam.CreatedBy),
+                        parameterValue: inputExam.CreatedBy);
+
+                case { } when inputExam.UpdatedDate == storageExam.UpdatedDate:
+                    throw new InvalidExamException(
+                        parameterName: nameof(Exam.UpdatedDate),
+                        parameterValue: inputExam.UpdatedDate);
+            }
+        }
+
         private static void ValidateExamIsNotNull(Exam exam)
         {
             if (exam is null)
@@ -144,27 +167,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             if (storageExam == null)
             {
                 throw new NotFoundExamException(examId);
-            }
-        }
-
-        private static void ValidateAgainstStorageExamOnModify(Exam inputExam, Exam storageExam)
-        {
-            switch (inputExam)
-            {
-                case { } when inputExam.CreatedDate != storageExam.CreatedDate:
-                    throw new InvalidExamException(
-                        parameterName: nameof(Exam.CreatedDate),
-                        parameterValue: inputExam.CreatedDate);
-
-                case { } when inputExam.CreatedBy != storageExam.CreatedBy:
-                    throw new InvalidExamException(
-                        parameterName: nameof(Exam.CreatedBy),
-                        parameterValue: inputExam.CreatedBy);
-
-                case { } when inputExam.UpdatedDate == storageExam.UpdatedDate:
-                    throw new InvalidExamException(
-                        parameterName: nameof(Exam.UpdatedDate),
-                        parameterValue: inputExam.UpdatedDate);
             }
         }
 
