@@ -322,10 +322,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Guid differentId = Guid.NewGuid();
             Guid invalidCreatedBy = differentId;
             DateTimeOffset randomDate = GetRandomDateTime();
+            DateTimeOffset differentRandomDate = GetRandomDateTime();
             Exam randomExam = CreateRandomExam(randomDate);
             Exam invalidExam = randomExam;
             invalidExam.CreatedDate = randomDate.AddMinutes(randomNegativeMinutes);
             Exam storageExam = randomExam.DeepClone();
+            storageExam.UpdatedDate = differentRandomDate;
             Guid ExamId = invalidExam.Id;
             invalidExam.CreatedBy = invalidCreatedBy;
 
@@ -333,7 +335,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
 
             invalidExamException.AddData(
                 key: nameof(Exam.CreatedBy),
-                values: $"Id not same as {nameof(Exam.CreatedBy)}");
+                values: $"Id is not same as {nameof(Exam.CreatedBy)}");
 
             var expectedExamValidationException =
               new ExamValidationException(invalidExamException);
@@ -390,7 +392,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
 
             invalidExamException.AddData(
                 key: nameof(Exam.UpdatedDate),
-                values: $"Date is not same as {nameof(Exam.UpdatedDate)}");
+                values: $"Date is same as {nameof(Exam.UpdatedDate)}");
 
             var expectedExamValidationException =
               new ExamValidationException(invalidExamException);
