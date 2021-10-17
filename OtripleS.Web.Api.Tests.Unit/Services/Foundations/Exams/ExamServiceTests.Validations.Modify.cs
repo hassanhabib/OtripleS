@@ -386,12 +386,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Exam storageExam = randomExam.DeepClone();
             Guid ExamId = invalidExam.Id;
 
-            var invalidExamInputException = new InvalidExamException(
-                parameterName: nameof(Exam.UpdatedDate),
-                parameterValue: invalidExam.UpdatedDate);
+            var invalidExamException = new InvalidExamException();
+
+            invalidExamException.AddData(
+                key: nameof(Exam.UpdatedDate),
+                values: $"Date is not same as {nameof(Exam.UpdatedDate)}");
 
             var expectedExamValidationException =
-              new ExamValidationException(invalidExamInputException);
+              new ExamValidationException(invalidExamException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectExamByIdAsync(ExamId))
@@ -418,12 +420,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedExamValidationException))),
+                        Times.Once);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
