@@ -93,6 +93,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             await Assert.ThrowsAsync<ExamValidationException>(() =>
                 modifyExamTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameValidationExceptionAs(
                     expectedExamValidationException))),
@@ -124,6 +128,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             var expectedExamValidationException =
                 new ExamValidationException(invalidExamException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(inputExam.CreatedDate);
+
             // when
             ValueTask<Exam> modifyExamTask =
                 this.examService.ModifyExamAsync(inputExam);
@@ -131,6 +139,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             // then
             await Assert.ThrowsAsync<ExamValidationException>(() =>
                 modifyExamTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameValidationExceptionAs(

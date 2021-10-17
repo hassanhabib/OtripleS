@@ -58,9 +58,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
                     firstDate: exam.UpdatedDate,
                     secondDate: exam.CreatedDate,
                     secondDateName: nameof(Exam.CreatedDate)),
-                Parameter: nameof(Exam.UpdatedDate)));
+                Parameter: nameof(Exam.UpdatedDate)),
 
-            ValidateUpdatedDateIsRecent(exam);
+                (Rule: IsNotRecent(exam.UpdatedDate), Parameter: nameof(Exam.UpdatedDate)));
         }
 
         private static void ValidateExamIsNotNull(Exam exam)
@@ -144,26 +144,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             if (storageExam == null)
             {
                 throw new NotFoundExamException(examId);
-            }
-        }
-
-        private void ValidateUpdatedDateIsRecent(Exam exam)
-        {
-            if (IsDateNotRecent(exam.UpdatedDate))
-            {
-                throw new InvalidExamException(
-                    parameterName: nameof(Exam.UpdatedDate),
-                    parameterValue: exam.UpdatedDate);
-            }
-        }
-
-        private static void ValidateDatesAreNotSame(Exam exam)
-        {
-            if (exam.CreatedDate == exam.UpdatedDate)
-            {
-                throw new InvalidExamException(
-                    parameterName: nameof(Exam.UpdatedDate),
-                    parameterValue: exam.UpdatedDate);
             }
         }
 
