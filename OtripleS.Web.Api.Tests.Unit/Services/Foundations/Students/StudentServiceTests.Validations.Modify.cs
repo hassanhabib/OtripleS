@@ -177,16 +177,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             invalidStudent.UpdatedDate =
                 invalidStudent.UpdatedDate.AddMinutes(randomMoreOrLessThanOneMinute);
 
-            var invalidStudentException = new InvalidStudentException(
-                parameterName: nameof(Student.UpdatedDate),
-                parameterValue: invalidStudent.UpdatedDate);
+            var invalidStudentException = new InvalidStudentException();
+            
+            invalidStudentException.AddData(
+                key: nameof(Student.UpdatedDate),
+                values: "Date is not recent");
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
-
-            this.dateTimeBrokerMock.Setup(broker =>
-                    broker.GetCurrentDateTime())
-                .Returns(randomDateTime);
 
             // when
             ValueTask<Student> modifyStudentTask =
@@ -196,12 +194,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 modifyStudentTask.AsTask());
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                    broker.GetCurrentDateTime(),
-                Times.Once);
-
+            // this.dateTimeBrokerMock.Verify(broker =>
+            //         broker.GetCurrentDateTime(),
+            //     Times.Once);
+            
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
+                    broker.LogError(It.Is(SameValidationExceptionAs(expectedStudentValidationException))),
                 Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
