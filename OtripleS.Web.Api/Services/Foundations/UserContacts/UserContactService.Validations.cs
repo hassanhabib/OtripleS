@@ -22,10 +22,8 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
         private static void ValidateUserContactIds(Guid userId, Guid contactId)
         {
             Validate(
-               (Rule: IsInvalidX(contactId),
-               Parameter: nameof(UserContact.ContactId)),
-               (Rule: IsInvalidX(userId),
-               Parameter: nameof(UserContact.UserId)));
+               (Rule: IsInvalidX(contactId), Parameter: nameof(UserContact.ContactId)),
+               (Rule: IsInvalidX(userId), Parameter: nameof(UserContact.UserId)));
         }
 
         private static void ValidateUserContactIsNull(UserContact userContact)
