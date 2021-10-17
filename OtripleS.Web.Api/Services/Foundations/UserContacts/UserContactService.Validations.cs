@@ -22,8 +22,8 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
         private static void ValidateUserContactIds(Guid userId, Guid contactId)
         {
             Validate(
-               (Rule: IsInvalidX(contactId), Parameter: nameof(UserContact.ContactId)),
-               (Rule: IsInvalidX(userId), Parameter: nameof(UserContact.UserId)));
+               (Rule: IsInvalid(contactId), Parameter: nameof(UserContact.ContactId)),
+               (Rule: IsInvalid(userId), Parameter: nameof(UserContact.UserId)));
         }
 
         private static void ValidateUserContactIsNull(UserContact userContact)
@@ -50,6 +50,12 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
             }
         }
 
+        private static dynamic IsInvalid(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidStudentException = new InvalidUserContactInputException();
@@ -66,13 +72,5 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
 
             invalidStudentException.ThrowIfContainsErrors();
         }
-
-        private static dynamic IsInvalidX(Guid id) => new
-        {
-            Condition = id == Guid.Empty,
-            Message = "Id is required"
-        };
-
-        private static bool IsInvalid(Guid input) => input == default;
     }
 }
