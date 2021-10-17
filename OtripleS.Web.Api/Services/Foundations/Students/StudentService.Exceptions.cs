@@ -60,7 +60,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedStudentServiceException =
+                    new FailedStudentServiceException(exception);
+
+                throw CreateAndLogServiceException(failedStudentServiceException);
             }
         }
 
@@ -76,7 +79,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedStudentServiceException =
+                    new FailedStudentServiceException(exception);
+
+                throw CreateAndLogServiceException(failedStudentServiceException);
             }
         }
 
