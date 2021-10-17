@@ -132,17 +132,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             Student invalidStudent = randomStudent;
             invalidStudent.CreatedDate = sameDate;
             invalidStudent.UpdatedDate = sameDate;
-            
+
 
             var invalidStudentException = new InvalidStudentException();
-            
+
             invalidStudentException.AddData(
                 key: nameof(Student.UpdatedDate),
-                values: $"Date is the same as { nameof(Student.CreatedDate)}");
+                values: $"Date is the same as {nameof(Student.CreatedDate)}");
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
-            
+
             this.dateTimeBrokerMock.Setup(broker =>
                     broker.GetCurrentDateTime())
                 .Returns(DateTimeOffset.UtcNow);
@@ -158,7 +158,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             this.dateTimeBrokerMock.Verify(broker =>
                     broker.GetCurrentDateTime(),
                 Times.Once);
-            
+
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogError(It.Is(SameValidationExceptionAs(expectedStudentValidationException))),
                 Times.Once);
@@ -182,7 +182,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 invalidStudent.UpdatedDate.AddMinutes(randomMoreOrLessThanOneMinute);
 
             var invalidStudentException = new InvalidStudentException();
-            
+
             invalidStudentException.AddData(
                 key: nameof(Student.UpdatedDate),
                 values: "Date is not recent");
@@ -201,7 +201,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             this.dateTimeBrokerMock.Verify(broker =>
                     broker.GetCurrentDateTime(),
                 Times.Once);
-            
+
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogError(It.Is(SameValidationExceptionAs(expectedStudentValidationException))),
                 Times.Once);
@@ -258,7 +258,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedDateNotSameAsCreateDateAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnModifyIfStorageStudentAuditInformationNotSameAsInputStudentAuditInformationAndLogItAsync()
         {
             // given
             int randomNumber = GetRandomNumber();
@@ -271,9 +271,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             Guid studentId = invalidStudent.Id;
             invalidStudent.CreatedDate = storageStudent.CreatedDate.AddMinutes(randomNumber);
 
-            var invalidStudentException = new InvalidStudentException(
-                parameterName: nameof(Student.CreatedDate),
-                parameterValue: invalidStudent.CreatedDate);
+            var invalidStudentException = new InvalidStudentException();
+
+            invalidStudentException.AddData(
+                key: nameof(Student.CreatedDate),
+                values: $"Date is not the same as {nameof(Student.CreatedDate)}");
+            invalidStudentException.AddData(
+                key: nameof(Student.UpdatedDate),
+                values: $"Date is not the same as {nameof(Student.UpdatedDate)}");
+            invalidStudentException.AddData(
+                key: nameof(Student.CreatedBy),
+                values: $"Id is not the same as {nameof(Student.CreatedBy)}");
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
