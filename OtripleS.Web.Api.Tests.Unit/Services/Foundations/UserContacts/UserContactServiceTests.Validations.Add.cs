@@ -77,7 +77,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 addUserContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameValidationExceptionAs(expectedUserContactValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedUserContactValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
