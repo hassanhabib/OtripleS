@@ -74,9 +74,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 key: nameof(Exam.UpdatedBy),
                 values: "Id is required");
 
-            invalidExamException.AddData(
+            invalidExamException.UpsertDataList(
                 key: nameof(Exam.UpdatedDate),
-                values: "Date is required");
+                value: "Date is required");
+
+            invalidExamException.UpsertDataList(
+                key: nameof(Exam.UpdatedDate),
+                value: $"Date is same as {nameof(Exam.CreatedDate)}");
 
             var expectedExamValidationException =
                 new ExamValidationException(invalidExamException);
@@ -98,9 +102,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 broker.SelectExamByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -111,14 +115,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Exam randomExam = CreateRandomExam(dateTime);
             Exam inputExam = randomExam;
 
-            var invalidExamInputException = new InvalidExamException();
+            var invalidExamException = new InvalidExamException();
 
-            invalidExamInputException.AddData(
+            invalidExamException.AddData(
                 key: nameof(Exam.UpdatedDate),
                 values: $"Date is same as {nameof(Exam.CreatedDate)}");
 
             var expectedExamValidationException =
-                new ExamValidationException(invalidExamInputException);
+                new ExamValidationException(invalidExamException);
 
             // when
             ValueTask<Exam> modifyExamTask =
@@ -154,12 +158,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             inputExam.UpdatedBy = inputExam.CreatedBy;
             inputExam.UpdatedDate = dateTime.AddMinutes(minutes);
 
-            var invalidExamInputException = new InvalidExamException(
-                parameterName: nameof(Exam.UpdatedDate),
-                parameterValue: inputExam.UpdatedDate);
+            var invalidExamException = new InvalidExamException();
+
+            invalidExamException.AddData(
+                key: nameof(Exam.UpdatedDate),
+                values: "Date is not recent");
 
             var expectedExamValidationException =
-                new ExamValidationException(invalidExamInputException);
+                new ExamValidationException(invalidExamException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -178,8 +184,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedExamValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectExamByIdAsync(It.IsAny<Guid>()),
