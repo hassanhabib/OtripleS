@@ -34,8 +34,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 modifyExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamValidationException))),
-                Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExamValidationException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -110,9 +111,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Exam randomExam = CreateRandomExam(dateTime);
             Exam inputExam = randomExam;
 
-            var invalidExamInputException = new InvalidExamException(
-                parameterName: nameof(Exam.UpdatedDate),
-                parameterValue: inputExam.UpdatedDate);
+            var invalidExamInputException = new InvalidExamException();
+
+            invalidExamInputException.AddData(
+                key: nameof(Exam.UpdatedDate),
+                values: $"Date is same as {nameof(Exam.CreatedDate)}");
 
             var expectedExamValidationException =
                 new ExamValidationException(invalidExamInputException);
@@ -126,16 +129,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 modifyExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedExamValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectExamByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Theory]
