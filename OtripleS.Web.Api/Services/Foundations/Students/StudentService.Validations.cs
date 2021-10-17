@@ -40,14 +40,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             );
         }
 
-        private static void ValidateStudentIsNotNull(Student student)
-        {
-            if (student is null)
-            {
-                throw new NullStudentException();
-            }
-        }
-
         private static dynamic IsInvalidX(Guid id) => new
         {
             Condition = id == Guid.Empty,
@@ -177,47 +169,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             }
         }
 
-        private static void ValidateStudentStrings(Student student)
-        {
-            switch (student)
-            {
-                case { } when IsInvalid(student.UserId):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(student.UserId),
-                        parameterValue: student.UserId);
-
-                case { } when IsInvalid(student.IdentityNumber):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(student.IdentityNumber),
-                        parameterValue: student.IdentityNumber);
-
-                case { } when IsInvalid(student.FirstName):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(student.FirstName),
-                        parameterValue: student.FirstName);
-            }
-        }
-
-        private static void ValidateDatesAreNotSame(Student student)
-        {
-            if (student.CreatedDate == student.UpdatedDate)
-            {
-                throw new InvalidStudentException(
-                    parameterName: nameof(Student.CreatedDate),
-                    parameterValue: student.CreatedDate);
-            }
-        }
-
-        private void ValidateUpdatedDateIsRecent(Student student)
-        {
-            if (IsDateNotRecent(student.UpdatedDate))
-            {
-                throw new InvalidStudentException(
-                    parameterName: nameof(student.UpdatedDate),
-                    parameterValue: student.UpdatedDate);
-            }
-        }
-
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
@@ -226,44 +177,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
-
-        private static void ValidateStudentDates(Student student)
-        {
-            switch (student)
-            {
-                case { } when student.BirthDate == default:
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.BirthDate),
-                        parameterValue: student.BirthDate);
-
-                case { } when student.CreatedDate == default:
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.CreatedDate),
-                        parameterValue: student.CreatedDate);
-
-                case { } when student.UpdatedDate == default:
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.UpdatedDate),
-                        parameterValue: student.UpdatedDate);
-            }
-        }
-
-        private static void ValidateStudentIds(Student student)
-        {
-            switch (student)
-            {
-                case { } when IsInvalid(student.CreatedBy):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.CreatedBy),
-                        parameterValue: student.CreatedBy);
-
-                case { } when IsInvalid(student.UpdatedBy):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.UpdatedBy),
-                        parameterValue: student.UpdatedBy);
-            }
-        }
-
         private static void ValidateStudent(Student student)
         {
             if (student is null)
