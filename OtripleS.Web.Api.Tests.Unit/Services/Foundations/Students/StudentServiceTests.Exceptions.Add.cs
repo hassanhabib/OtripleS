@@ -35,10 +35,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 broker.GetCurrentDateTime())
                     .Throws(sqlException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentAsync(someStudent))
-                    .ThrowsAsync(sqlException);
-
             // when
             ValueTask<Student> registerStudentTask =
                 this.studentService.RegisterStudentAsync(someStudent);
@@ -49,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentAsync(someStudent),
-                    Times.Once);
+                    Times.Never);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
