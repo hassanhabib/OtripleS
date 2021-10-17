@@ -17,17 +17,32 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
     public partial class StudentServiceTests
     {
         [Fact]
+<<<<<<< HEAD
         public async Task ShouldThrowDependencyExceptionOnDeleteIfSqlExceptionOccursAndLogItAsync()
         {
             // given
             Guid someStudentId = Guid.NewGuid();
+=======
+        public async Task ShouldThrowCriticalDependencyExceptionOnDeleteIfSqlErrorOccursAndLogItAsync()
+        {
+            // given
+            Guid someStudentId = Guid.NewGuid();
+
+>>>>>>> 1af66889a8f318023e6ca47c2d8df00c93ffd9e2
             SqlException sqlException = GetSqlException();
 
+            var failedStudentStorageException =
+                new FailedStudentStorageException(sqlException);
+
             var expectedStudentDependencyException =
-                new StudentDependencyException(sqlException);
+                new StudentDependencyException(failedStudentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
+<<<<<<< HEAD
                 broker.SelectStudentByIdAsync(It.IsAny<Guid>()))
+=======
+                broker.SelectStudentByIdAsync(someStudentId))
+>>>>>>> 1af66889a8f318023e6ca47c2d8df00c93ffd9e2
                     .ThrowsAsync(sqlException);
 
             // when
@@ -38,8 +53,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentDependencyException>(() =>
                 deleteStudentTask.AsTask());
 
+<<<<<<< HEAD
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentByIdAsync(It.IsAny<Guid>()),
+=======
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedStudentDependencyException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentByIdAsync(someStudentId),
+>>>>>>> 1af66889a8f318023e6ca47c2d8df00c93ffd9e2
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -53,17 +78,28 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         }
 
         [Fact]
+<<<<<<< HEAD
         public async Task ShouldThrowDependencyExceptionOnDeleteIfDatabaseUpdateExceptionOccursAndLogItAsync()
+=======
+        public async Task ShouldThrowDependencyExceptionOnDeleteIfDatabaseUpdateErrorOccursAndLogItAsync()
+>>>>>>> 1af66889a8f318023e6ca47c2d8df00c93ffd9e2
         {
             // given
             Guid someStudentId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
+            var failedStudentStorageException =
+                new FailedStudentStorageException(databaseUpdateException);
+
             var expectedStudentDependencyException =
-                new StudentDependencyException(databaseUpdateException);
+                new StudentDependencyException(failedStudentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
+<<<<<<< HEAD
                 broker.SelectStudentByIdAsync(It.IsAny<Guid>()))
+=======
+                broker.SelectStudentByIdAsync(someStudentId))
+>>>>>>> 1af66889a8f318023e6ca47c2d8df00c93ffd9e2
                     .ThrowsAsync(databaseUpdateException);
 
             // when
@@ -74,8 +110,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentDependencyException>(() =>
                 deleteStudentTask.AsTask());
 
+<<<<<<< HEAD
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentByIdAsync(It.IsAny<Guid>()),
+=======
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentDependencyException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentByIdAsync(someStudentId),
+>>>>>>> 1af66889a8f318023e6ca47c2d8df00c93ffd9e2
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>

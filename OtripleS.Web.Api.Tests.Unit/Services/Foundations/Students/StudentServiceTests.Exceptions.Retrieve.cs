@@ -15,17 +15,28 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
     public partial class StudentServiceTests
     {
         [Fact]
+<<<<<<< HEAD
         public async Task ShouldThrowDependencyExceptionOnRetrieveIfSqlExceptionOccursAndLogItAsync()
+=======
+        public async Task ShouldThrowCriticalDependencyExceptionOnRetrieveIfSqlErrorOccursAndLogItAsync()
+>>>>>>> 1af66889a8f318023e6ca47c2d8df00c93ffd9e2
         {
             // given
             Guid someStudentId = Guid.NewGuid();
             var sqlException = GetSqlException();
 
+            var failedStudentStorageException =
+                new FailedStudentStorageException(sqlException);
+
             var expectedStudentDependencyException =
-                new StudentDependencyException(sqlException);
+                new StudentDependencyException(failedStudentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
+<<<<<<< HEAD
                 broker.SelectStudentByIdAsync(It.IsAny<Guid>()))
+=======
+                broker.SelectStudentByIdAsync(someStudentId))
+>>>>>>> 1af66889a8f318023e6ca47c2d8df00c93ffd9e2
                     .ThrowsAsync(sqlException);
 
             // when
@@ -36,8 +47,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentDependencyException>(() =>
                 retrieveStudentByIdTask.AsTask());
 
+<<<<<<< HEAD
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentByIdAsync(It.IsAny<Guid>()),
+=======
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Never);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentByIdAsync(someStudentId),
+>>>>>>> 1af66889a8f318023e6ca47c2d8df00c93ffd9e2
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -45,9 +65,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                     expectedStudentDependencyException))),
                         Times.Once);
 
+<<<<<<< HEAD
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+=======
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+>>>>>>> 1af66889a8f318023e6ca47c2d8df00c93ffd9e2
         }
 
         [Fact]

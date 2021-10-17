@@ -3,14 +3,15 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Models.Students.Exceptions;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Students
 {
@@ -39,14 +40,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             }
             catch (SqlException sqlException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var failedStudentStorageException = 
+                    new FailedStudentStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedStudentStorageException);
             }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsStudentException =
                     new AlreadyExistsStudentException(duplicateKeyException);
 
-                throw CreateAndLogValidationException(alreadyExistsStudentException);
+                throw CreateAndLogDependencyValidationException(alreadyExistsStudentException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
@@ -56,7 +60,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             }
             catch (DbUpdateException dbUpdateException)
             {
-                throw CreateAndLogDependencyException(dbUpdateException);
+                var failedStudentStorageException =
+                    new FailedStudentStorageException(dbUpdateException);
+
+                throw CreateAndLogDependencyException(failedStudentStorageException);
             }
             catch (Exception exception)
             {
@@ -116,6 +123,16 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             this.loggingBroker.LogError(studentValidationException);
 
             return studentValidationException;
+        }
+
+        private StudentDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var studentDependencyValidationException =
+                new StudentDependencyValidationException(exception);
+
+            this.loggingBroker.LogError(studentDependencyValidationException);
+
+            return studentDependencyValidationException;
         }
     }
 }

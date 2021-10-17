@@ -17,19 +17,28 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
     public partial class StudentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnModifyIfSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowCriticalDependencyExceptionOnModifyIfSqlErrorOccursAndLogItAsync()
         {
             // given
+<<<<<<< HEAD
             Student someStudent = CreateRandomStudent();
             int randomDays = GetRandomNumber();
 
             someStudent.UpdatedDate =
                 someStudent.CreatedDate.AddDays(randomDays);
 
+=======
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Student someStudent = CreateRandomStudent();
+            someStudent.UpdatedDate = randomDateTime;
+>>>>>>> 1af66889a8f318023e6ca47c2d8df00c93ffd9e2
             SqlException sqlException = GetSqlException();
 
+            var failedStudentStorageException =
+                new FailedStudentStorageException(sqlException);
+
             var expectedStudentDependencyException =
-                new StudentDependencyException(sqlException);
+                new StudentDependencyException(failedStudentStorageException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -65,17 +74,31 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateExceptionOccursAndLogItAsync()
         {
             // given
+<<<<<<< HEAD
             Student someStudent = CreateRandomStudent();
             int randomDays = GetRandomNumber();
 
             someStudent.UpdatedDate =
                 someStudent.CreatedDate.AddDays(randomDays);
 
+=======
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Student someStudent = CreateRandomStudent();
+>>>>>>> 1af66889a8f318023e6ca47c2d8df00c93ffd9e2
             var databaseUpdateException = new DbUpdateException();
 
-            var expectedStudentDependencyException =
-                new StudentDependencyException(databaseUpdateException);
+            var failedStudentStorageException = 
+                new FailedStudentStorageException(databaseUpdateException);
 
+            var expectedStudentDependencyException =
+                new StudentDependencyException(failedStudentStorageException);
+
+<<<<<<< HEAD
+=======
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectStudentByIdAsync(someStudent.Id));
+
+>>>>>>> 1af66889a8f318023e6ca47c2d8df00c93ffd9e2
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
                     .Throws(databaseUpdateException);
@@ -92,14 +115,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 broker.GetCurrentDateTime(),
                     Times.Once);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1af66889a8f318023e6ca47c2d8df00c93ffd9e2
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedStudentDependencyException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
+<<<<<<< HEAD
                 broker.UpdateStudentAsync(It.IsAny<Student>()),
                     Times.Never);
+=======
+                broker.SelectStudentByIdAsync(someStudent.Id),
+                    Times.Once);
+>>>>>>> 1af66889a8f318023e6ca47c2d8df00c93ffd9e2
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
