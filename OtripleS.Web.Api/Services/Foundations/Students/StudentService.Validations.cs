@@ -138,7 +138,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             ValidateUpdatedDateIsRecent(student);
         }
 
-        public void ValidateAginstStorageStudentOnModify(Student inputStudent, Student storageStudent)
+        public void ValidateAgainstStorageStudentOnModify(Student inputStudent, Student storageStudent)
         {
             switch (inputStudent)
             {
