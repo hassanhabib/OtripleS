@@ -127,65 +127,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             }
         }
 
-        private void ValidateStudentOnCreate(Student student)
-        {
-            switch (student)
-            {
-                case null:
-                    throw new NullStudentException();
-
-                case { } when IsInvalid(student.Id):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.Id),
-                        parameterValue: student.Id);
-
-                case { } when IsInvalid(student.CreatedBy):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.CreatedBy),
-                        parameterValue: student.CreatedBy);
-
-                case { } when IsInvalid(student.UpdatedBy):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.UpdatedBy),
-                        parameterValue: student.UpdatedBy);
-
-                case { } when IsInvalid(student.UserId):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(student.UserId),
-                        parameterValue: student.UserId);
-
-                case { } when IsInvalid(student.IdentityNumber):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(student.IdentityNumber),
-                        parameterValue: student.IdentityNumber);
-
-                case { } when IsInvalid(student.FirstName):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(student.FirstName),
-                        parameterValue: student.FirstName);
-
-                case { } when IsInvalid(student.BirthDate):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.BirthDate),
-                        parameterValue: student.BirthDate);
-
-                case { } when IsNotSame(student.CreatedBy, student.UpdatedBy):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.UpdatedBy),
-                        parameterValue: student.UpdatedBy);
-
-                case { } when IsNotSame(student.CreatedDate, student.UpdatedDate):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.UpdatedDate),
-                        parameterValue: student.UpdatedDate);
-
-                case { } when IsDateNotRecent(student.CreatedDate):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.CreatedDate),
-                        parameterValue: student.CreatedDate);
-            }
-        }
-
         private void ValidateStudentOnModify(Student student)
         {
             ValidateStudent(student);
@@ -321,13 +262,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             }
         }
 
-        private static bool IsNotSame(Guid firstId, Guid secondId) => firstId != secondId;
-
-        private static bool IsNotSame(DateTimeOffset firstDate, DateTimeOffset secondDate) =>
-            firstDate != secondDate;
-
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(Guid input) => input == default;
-        private static bool IsInvalid(DateTimeOffset date) => date == default;
     }
 }
