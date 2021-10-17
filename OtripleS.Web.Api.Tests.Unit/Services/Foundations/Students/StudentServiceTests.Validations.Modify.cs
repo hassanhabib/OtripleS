@@ -133,12 +133,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             invalidStudent.CreatedDate = sameDate;
             invalidStudent.UpdatedDate = sameDate;
 
-            var invalidStudentException = new InvalidStudentException(
-                parameterName: nameof(Student.CreatedDate),
-                parameterValue: invalidStudent.CreatedDate);
+            var invalidStudentException = new InvalidStudentException();
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
+
+            invalidStudentException.AddData(
+                key: nameof(Student.UpdatedDate),
+                values: $"Date is the same as { nameof(Student.CreatedDate)}");
 
             // when
             ValueTask<Student> modifyStudentTask =
