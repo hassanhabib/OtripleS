@@ -17,34 +17,38 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
     public partial class StudentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnDeleteWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowCriticalDependencyExceptionOnDeleteIfSqlErrorOccursAndLogItAsync()
         {
             // given
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputStudentId = randomStudentId;
+            Guid someStudentId = Guid.NewGuid();
+
             SqlException sqlException = GetSqlException();
 
+            var failedStudentStorageException =
+                new FailedStudentStorageException(sqlException);
+
             var expectedStudentDependencyException =
-                new StudentDependencyException(sqlException);
+                new StudentDependencyException(failedStudentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentByIdAsync(inputStudentId))
+                broker.SelectStudentByIdAsync(someStudentId))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<Student> deleteStudentTask =
-                this.studentService.RemoveStudentByIdAsync(inputStudentId);
+                this.studentService.RemoveStudentByIdAsync(someStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentDependencyException>(() =>
                 deleteStudentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedStudentDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentByIdAsync(inputStudentId),
+                broker.SelectStudentByIdAsync(someStudentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
