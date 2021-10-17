@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
     public partial class UserContactServiceTests
     {
         [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenUserContactIsNullAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddIfUserContactIsNullAndLogItAsync()
         {
             // given
             UserContact randomUserContact = default;
@@ -47,7 +47,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenUserIdOrContactIdInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddIfUserIdOrContactIdInvalidAndLogItAsync()
         {
             // given
             UserContact randomUserContact = CreateRandomUserContact();
@@ -89,7 +89,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenUserContactAlreadyExistsAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddIfUserContactAlreadyExistsAndLogItAsync()
         {
             // given
             UserContact randomUserContact = CreateRandomUserContact();
@@ -129,7 +129,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenReferneceExceptionAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddIfReferneceExceptionAndLogItAsync()
         {
             // given
             UserContact randomUserContact = CreateRandomUserContact();
