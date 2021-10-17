@@ -48,12 +48,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         [InlineData("   ")]
         public async Task ShouldThrowValidationExceptionOnModifyWhenStudentIsInvalidAndLogItAsync(string invalidText)
         {
+            DateTimeOffset randomDate = GetRandomDateTime();
+            int randomNumber = GetRandomNumber();
+
             // given
             var invalidStudent = new Student
             {
                 UserId = invalidText,
                 IdentityNumber = invalidText,
-                FirstName = invalidText
+                FirstName = invalidText,
             };
 
             var invalidStudentException = new InvalidStudentException();

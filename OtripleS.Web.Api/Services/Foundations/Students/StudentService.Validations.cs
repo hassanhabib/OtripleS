@@ -75,7 +75,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             Condition = firstDate != secondDate,
             Message = $"Date is not the same as {secondDateName}"
         };
-        
+
         private static dynamic IsSame(
             DateTimeOffset firstDate,
             DateTimeOffset secondDate,
@@ -150,23 +150,23 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 
         public void ValidateAgainstStorageStudentOnModify(Student inputStudent, Student storageStudent)
         {
-            switch (inputStudent)
-            {
-                case { } when inputStudent.CreatedDate != storageStudent.CreatedDate:
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.CreatedDate),
-                        parameterValue: inputStudent.CreatedDate);
-
-                case { } when inputStudent.CreatedBy != storageStudent.CreatedBy:
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.CreatedBy),
-                        parameterValue: inputStudent.CreatedBy);
-
-                case { } when inputStudent.UpdatedDate == storageStudent.UpdatedDate:
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.UpdatedDate),
-                        parameterValue: inputStudent.UpdatedDate);
-            }
+            Validate(
+                (Rule: IsNotSame(
+                        firstDate: inputStudent.CreatedDate,
+                        secondDate: storageStudent.CreatedDate,
+                        secondDateName: nameof(Student.CreatedDate)),
+                    Parameter: nameof(Student.CreatedDate)),
+                (Rule: IsNotSame(
+                        firstDate: inputStudent.UpdatedDate,
+                        secondDate: storageStudent.UpdatedDate,
+                        secondDateName: nameof(Student.UpdatedDate)),
+                    Parameter: nameof(Student.UpdatedDate)),
+                (Rule: IsNotSame(
+                        firstId: inputStudent.CreatedBy,
+                        secondId: storageStudent.CreatedBy,
+                        secondIdName: nameof(Student.CreatedBy)),
+                    Parameter: nameof(Student.CreatedBy))
+            );
         }
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
@@ -177,6 +177,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
+
         private static void ValidateStudent(Student student)
         {
             if (student is null)
