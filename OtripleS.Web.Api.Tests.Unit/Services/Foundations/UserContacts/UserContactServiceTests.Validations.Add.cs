@@ -125,8 +125,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 broker.InsertUserContactAsync(alreadyExistsUserContact),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -166,8 +166,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 broker.InsertUserContactAsync(invalidUserContact),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
