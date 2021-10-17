@@ -220,7 +220,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
-            DateTimeOffset now = DateTimeOffset.UtcNow;
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
             int oneMinute = 1;
             TimeSpan difference = now.Subtract(dateTime);
 
