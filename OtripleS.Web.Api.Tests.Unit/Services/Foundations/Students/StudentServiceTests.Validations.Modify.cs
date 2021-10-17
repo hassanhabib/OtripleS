@@ -95,7 +95,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             invalidStudentException.AddData(
                 key: nameof(Student.UpdatedDate),
-                values: "Date is required");
+                values: new []
+                {
+                    "Date is required",
+                    $"Date is the same as {nameof(Student.CreatedDate)}"
+                });
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
