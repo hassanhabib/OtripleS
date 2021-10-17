@@ -217,6 +217,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             DateTimeOffset randomDateTime = GetRandomDateTime();
             Student randomStudent = CreateRandomStudent();
             Student nonExistentStudent = randomStudent;
+            nonExistentStudent.UpdatedDate = randomDateTime;
             Student noStudent = null;
             var notFoundStudentException = new NotFoundStudentException(nonExistentStudent.Id);
 
@@ -239,9 +240,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 modifyStudentTask.AsTask());
 
-            // this.dateTimeBrokerMock.Verify(broker =>
-            //         broker.GetCurrentDateTime(),
-            //     Times.Once);
+            this.dateTimeBrokerMock.Verify(broker =>
+                    broker.GetCurrentDateTime(),
+                Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                     broker.SelectStudentByIdAsync(nonExistentStudent.Id),
