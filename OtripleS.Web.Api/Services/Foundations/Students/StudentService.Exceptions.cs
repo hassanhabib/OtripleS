@@ -60,7 +60,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             }
             catch (DbUpdateException dbUpdateException)
             {
-                throw CreateAndLogDependencyException(dbUpdateException);
+                var failedStudentStorageException =
+                    new FailedStudentStorageException(dbUpdateException);
+
+                throw CreateAndLogDependencyException(failedStudentStorageException);
             }
             catch (Exception exception)
             {

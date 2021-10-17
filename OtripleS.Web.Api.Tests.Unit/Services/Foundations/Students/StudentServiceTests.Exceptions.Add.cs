@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             Student someStudent = CreateRandomStudent(dateTime);
             SqlException sqlException = GetSqlException();
 
-            var failedStudentStorageException = 
+            var failedStudentStorageException =
                 new FailedStudentStorageException(sqlException);
 
             var expectedStudentDependencyException =
@@ -70,10 +70,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Student someStudent = CreateRandomStudent(dateTime);       
+            Student someStudent = CreateRandomStudent(dateTime);
             string someMessage = GetRandomMessage();
 
-            var duplicateKeyException = 
+            var duplicateKeyException =
                 new DuplicateKeyException(someMessage);
 
             var alreadyExistsStudentException =
@@ -115,13 +115,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-        
+
         [Fact]
         public async Task ShouldThrowDependencyExceptionOnRegisterIfDatabaseUpdateErrorOccursAndLogItAsync()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student someStudent = CreateRandomStudent(dateTime);
+            Student someStudent = CreateRandomStudent();
 
             var databaseUpdateException = new DbUpdateException();
 
@@ -132,11 +131,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentAsync(It.IsAny<Student>()))
-                    .ThrowsAsync(databaseUpdateException);
+                    .Throws(databaseUpdateException);
 
             // when
             ValueTask<Student> registerStudentTask =
@@ -146,8 +141,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentDependencyException>(() =>
                 registerStudentTask.AsTask());
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(It.IsAny<Student>()),
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -155,13 +150,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                     expectedStudentDependencyException))),
                         Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentAsync(It.IsAny<Student>()),
+                    Times.Never);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
