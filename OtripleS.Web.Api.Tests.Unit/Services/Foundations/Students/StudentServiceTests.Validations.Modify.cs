@@ -46,7 +46,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenStudentIdIsInvalidAndLogItAsync(string invalidText)
+        public async Task ShouldThrowValidationExceptionOnModifyWhenStudentIsInvalidAndLogItAsync(string invalidText)
         {
             // given
             var invalidStudent = new Student
