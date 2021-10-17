@@ -42,18 +42,61 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-        [Fact]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenStudentIdIsInvalidAndLogItAsync()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task ShouldThrowValidationExceptionOnModifyWhenStudentIdIsInvalidAndLogItAsync(string invalidText)
         {
             // given
-            Guid invalidStudentId = Guid.Empty;
-            Student randomStudent = CreateRandomStudent();
-            Student invalidStudent = randomStudent;
-            invalidStudent.Id = invalidStudentId;
+            var invalidStudent = new Student
+            {
+                UserId = invalidText,
+                IdentityNumber = invalidText,
+                FirstName = invalidText
+            };
 
-            var invalidStudentException = new InvalidStudentException(
-                parameterName: nameof(Student.Id),
-                parameterValue: invalidStudent.Id);
+            var invalidStudentException = new InvalidStudentException();
+
+            invalidStudentException.AddData(
+                key: nameof(Student.Id),
+                values: "Id is required");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.UserId),
+                values: "User Id is required");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.IdentityNumber),
+                values: "Identity number required");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.FirstName),
+                values: "First name is required");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.BirthDate),
+                values: "Birth date is required");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.CreatedBy),
+                values: "Id is required");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.UpdatedBy),
+                values: "Id is required");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.CreatedDate),
+                values: "Created date is required");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.UpdatedDate),
+                values: new[]
+                {
+                    "Updated date is required",
+                    $"Date is the same as {nameof(Student.CreatedDate)}"
+                });
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
