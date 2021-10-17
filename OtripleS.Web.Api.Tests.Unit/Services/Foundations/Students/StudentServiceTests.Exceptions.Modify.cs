@@ -70,6 +70,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
             Student someStudent = CreateRandomStudent();
+            someStudent.UpdatedDate = randomDateTime;
             var databaseUpdateException = new DbUpdateException();
 
             var failedStudentStorageException = 
@@ -79,11 +80,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 new StudentDependencyException(failedStudentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentByIdAsync(someStudent.Id));
+                broker.SelectStudentByIdAsync(someStudent.Id))
+                    .ThrowsAsync(databaseUpdateException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Throws(databaseUpdateException);
+                    .Returns(randomDateTime);
 
             // when
             ValueTask<Student> modifyStudentTask =
@@ -93,23 +95,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentDependencyException>(() =>
                 modifyStudentTask.AsTask());
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentByIdAsync(someStudent.Id),
+                    Times.Once);
+
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Once);
-
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedStudentDependencyException))),
                         Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentByIdAsync(someStudent.Id),
-                    Times.Once);
-
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
