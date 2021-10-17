@@ -43,6 +43,66 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         }
 
         [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyWhenExamIsInvalidAndLogItAsyn()
+        {
+            // given
+            var invalidExam = new Exam
+            {
+                Type = GetInValidExamType()
+            };
+
+            var invalidExamException = new InvalidExamException();
+
+            invalidExamException.AddData(
+                key: nameof(Exam.Id),
+                values: "Id is required");
+
+            invalidExamException.AddData(
+                key: nameof(Exam.CreatedBy),
+                values: "Id is required");
+
+            invalidExamException.AddData(
+                key: nameof(Exam.Type),
+                values: "Value is not recognized");
+
+            invalidExamException.AddData(
+                key: nameof(Exam.CreatedDate),
+                values: "Date is required");
+
+            invalidExamException.AddData(
+                key: nameof(Exam.UpdatedBy),
+                values: "Id is required");
+
+            invalidExamException.AddData(
+                key: nameof(Exam.UpdatedDate),
+                values: "Date is required");
+
+            var expectedExamValidationException =
+                new ExamValidationException(invalidExamException);
+
+            // when
+            ValueTask<Exam> modifyExamTask =
+                this.examService.ModifyExamAsync(invalidExam);
+
+            // then
+            await Assert.ThrowsAsync<ExamValidationException>(() =>
+                modifyExamTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedExamValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public async Task ShouldThrowValidationExceptionOnModifyWhenExamIdIsInvalidAndLogItAsync()
         {
             //given
