@@ -44,23 +44,6 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
             }
         }
 
-        private static void ValidateUserContactIdIsNull(Guid userId, Guid contactId)
-        {
-            if (userId == default)
-            {
-                throw new InvalidUserContactInputException(
-                    parameterName: nameof(UserContact.UserId),
-                    parameterValue: userId);
-            }
-
-            if (contactId == default)
-            {
-                throw new InvalidUserContactInputException(
-                    parameterName: nameof(UserContact.ContactId),
-                    parameterValue: contactId);
-            }
-        }
-
         private static void ValidateStorageUserContact(UserContact storageUserContact, Guid userId, Guid contactId)
         {
             if (storageUserContact == null)
