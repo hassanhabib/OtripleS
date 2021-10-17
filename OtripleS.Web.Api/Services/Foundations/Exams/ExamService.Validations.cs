@@ -52,9 +52,14 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
                 (Rule: IsInvalid(exam.CreatedBy), Parameter: nameof(Exam.CreatedBy)),
                 (Rule: IsInvalid(exam.CreatedDate), Parameter: nameof(Exam.CreatedDate)),
                 (Rule: IsInvalid(exam.UpdatedBy), Parameter: nameof(Exam.UpdatedBy)),
-                (Rule: IsInvalid(exam.UpdatedDate), Parameter: nameof(Exam.UpdatedDate)));
+                (Rule: IsInvalid(exam.UpdatedDate), Parameter: nameof(Exam.UpdatedDate)),
 
-            ValidateDatesAreNotSame(exam);
+                (Rule: IsSame(
+                    firstDate: exam.UpdatedDate,
+                    secondDate: exam.CreatedDate,
+                    secondDateName: nameof(Exam.CreatedDate)),
+                Parameter: nameof(Exam.UpdatedDate)));
+
             ValidateUpdatedDateIsRecent(exam);
         }
 
@@ -100,6 +105,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
         {
             Condition = firstDate != secondDate,
             Message = $"Date is not same as {secondDateName}"
+        };
+
+        private static dynamic IsSame(
+        DateTimeOffset firstDate,
+        DateTimeOffset secondDate,
+        string secondDateName) => new
+        {
+            Condition = firstDate == secondDate,
+            Message = $"Date is same as {secondDateName}"
         };
 
         private dynamic IsNotRecent(DateTimeOffset date) => new
