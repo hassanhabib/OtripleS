@@ -132,15 +132,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             Student invalidStudent = randomStudent;
             invalidStudent.CreatedDate = sameDate;
             invalidStudent.UpdatedDate = sameDate;
+            
 
             var invalidStudentException = new InvalidStudentException();
-
-            var expectedStudentValidationException =
-                new StudentValidationException(invalidStudentException);
-
+            
             invalidStudentException.AddData(
                 key: nameof(Student.UpdatedDate),
                 values: $"Date is the same as { nameof(Student.CreatedDate)}");
+
+            var expectedStudentValidationException =
+                new StudentValidationException(invalidStudentException);
 
             // when
             ValueTask<Student> modifyStudentTask =
@@ -150,8 +151,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 modifyStudentTask.AsTask());
 
+            // this.dateTimeBrokerMock.Verify(broker =>
+            //         broker.GetCurrentDateTime(),
+            //     Times.Once);
+            
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
+                    broker.LogError(It.Is(SameValidationExceptionAs(expectedStudentValidationException))),
                 Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();

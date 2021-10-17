@@ -83,6 +83,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             Condition = firstDate != secondDate,
             Message = $"Date is not the same as {secondDateName}"
         };
+        
+        private static dynamic IsSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+        {
+            Condition = firstDate == secondDate,
+            Message = $"Date is the same as {secondDateName}"
+        };
 
         private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
         {
@@ -139,7 +148,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
                 (Rule: IsInvalidX(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
                 (Rule: IsInvalidX(student.UpdatedDate), Parameter: nameof(Student.UpdatedDate)),
                 (Rule: IsNotRecent(student.UpdatedDate), Parameter: nameof(Student.UpdatedDate)),
-                (Rule: IsNotSame(
+                (Rule: IsSame(
                         firstDate: student.UpdatedDate,
                         secondDate: student.CreatedDate,
                         secondDateName: nameof(Student.CreatedDate)),
@@ -211,7 +220,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
-            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            DateTimeOffset now = DateTimeOffset.UtcNow;
             int oneMinute = 1;
             TimeSpan difference = now.Subtract(dateTime);
 
