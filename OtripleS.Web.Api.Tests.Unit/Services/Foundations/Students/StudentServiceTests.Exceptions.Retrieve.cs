@@ -15,43 +15,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
     public partial class StudentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowCriticalDependencyExceptionOnRetrieveIfSqlErrorOccursAndLogItAsync()
         {
             // given
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputStudentId = randomStudentId;
+            Guid someStudentId = Guid.NewGuid();
             var sqlException = GetSqlException();
 
+            var failedStudentStorageException =
+                new FailedStudentStorageException(sqlException);
+
             var expectedStudentDependencyException =
-                new StudentDependencyException(sqlException);
+                new StudentDependencyException(failedStudentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentByIdAsync(inputStudentId))
+                broker.SelectStudentByIdAsync(someStudentId))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<Student> retrieveStudentByIdTask =
-                this.studentService.RetrieveStudentByIdAsync(inputStudentId);
+                this.studentService.RetrieveStudentByIdAsync(someStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentDependencyException>(() =>
                 retrieveStudentByIdTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentDependencyException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentByIdAsync(inputStudentId),
-                    Times.Once);
-
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Never);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectStudentByIdAsync(someStudentId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedStudentDependencyException))),
+                        Times.Once);
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
