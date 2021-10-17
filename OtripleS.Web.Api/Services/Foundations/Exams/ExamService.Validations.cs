@@ -70,15 +70,16 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
                     firstDate: inputExam.CreatedDate,
                     secondDate: storageExam.CreatedDate,
                     secondDateName: nameof(Exam.CreatedDate)),
-                Parameter: nameof(Exam.CreatedDate)));
+                Parameter: nameof(Exam.CreatedDate)),
+
+                (Rule: IsNotSame(
+                    firstId: inputExam.CreatedBy,
+                    secondId: storageExam.CreatedBy,
+                    secondIdName: nameof(Exam.CreatedBy)),
+                Parameter: nameof(Exam.CreatedBy)));
 
             switch (inputExam)
             {
-                case { } when inputExam.CreatedBy != storageExam.CreatedBy:
-                    throw new InvalidExamException(
-                        parameterName: nameof(Exam.CreatedBy),
-                        parameterValue: inputExam.CreatedBy);
-
                 case { } when inputExam.UpdatedDate == storageExam.UpdatedDate:
                     throw new InvalidExamException(
                         parameterName: nameof(Exam.UpdatedDate),

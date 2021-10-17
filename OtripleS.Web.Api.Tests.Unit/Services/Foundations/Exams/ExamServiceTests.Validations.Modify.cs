@@ -333,7 +333,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
 
             invalidExamException.AddData(
                 key: nameof(Exam.CreatedBy),
-                values: $"Date not same as {nameof(Exam.CreatedDate)}");
+                values: $"Id not same as {nameof(Exam.CreatedBy)}");
 
             var expectedExamValidationException =
               new ExamValidationException(invalidExamException);
