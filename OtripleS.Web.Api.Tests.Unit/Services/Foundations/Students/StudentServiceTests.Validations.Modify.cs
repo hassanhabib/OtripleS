@@ -269,14 +269,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         {
             // given
             int randomNumber = GetRandomNumber();
-            int randomMinutes = randomNumber;
             DateTimeOffset randomDate = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent();
+            Guid differentId = Guid.NewGuid();
+            Guid invalidCreatedBy = differentId;
+            Student randomStudent = CreateRandomStudent(dates: randomDate);
             Student invalidStudent = randomStudent;
-            invalidStudent.UpdatedDate = randomDate;
             Student storageStudent = randomStudent.DeepClone();
+            invalidStudent.CreatedDate = storageStudent.CreatedDate.AddDays(randomNumber);
+            invalidStudent.UpdatedDate = storageStudent.UpdatedDate;
+            invalidStudent.CreatedBy = invalidCreatedBy;
             Guid studentId = invalidStudent.Id;
-            invalidStudent.CreatedDate = storageStudent.CreatedDate.AddMinutes(randomNumber);
+
 
             var invalidStudentException = new InvalidStudentException();
 
@@ -285,7 +288,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 values: $"Date is not the same as {nameof(Student.CreatedDate)}");
             invalidStudentException.AddData(
                 key: nameof(Student.UpdatedDate),
-                values: $"Date is not the same as {nameof(Student.UpdatedDate)}");
+                values: $"Date is same as {nameof(Student.UpdatedDate)}");
             invalidStudentException.AddData(
                 key: nameof(Student.CreatedBy),
                 values: $"Id is not the same as {nameof(Student.CreatedBy)}");

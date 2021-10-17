@@ -75,7 +75,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             Condition = firstDate != secondDate,
             Message = $"Date is not the same as {secondDateName}"
         };
-
+        
         private static dynamic IsSame(
             DateTimeOffset firstDate,
             DateTimeOffset secondDate,
@@ -156,7 +156,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
                         secondDate: storageStudent.CreatedDate,
                         secondDateName: nameof(Student.CreatedDate)),
                     Parameter: nameof(Student.CreatedDate)),
-                (Rule: IsNotSame(
+                (Rule: IsSame(
                         firstDate: inputStudent.UpdatedDate,
                         secondDate: storageStudent.UpdatedDate,
                         secondDateName: nameof(Student.UpdatedDate)),
@@ -177,7 +177,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
-
         private static void ValidateStudent(Student student)
         {
             if (student is null)
