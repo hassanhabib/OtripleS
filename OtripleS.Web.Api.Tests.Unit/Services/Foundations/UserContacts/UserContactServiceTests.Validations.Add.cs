@@ -51,9 +51,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         {
             // given
             UserContact randomUserContact = CreateRandomUserContact();
-            UserContact inputUserContact = randomUserContact;
-            inputUserContact.UserId = Guid.Empty;
-            inputUserContact.ContactId = Guid.Empty;
+            UserContact inputUserContact = new UserContact();
 
             var invalidUserContactInputException = new InvalidUserContactInputException();
 
