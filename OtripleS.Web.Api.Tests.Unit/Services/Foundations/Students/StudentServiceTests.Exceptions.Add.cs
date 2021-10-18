@@ -21,8 +21,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         public async Task ShouldThrowCriticalDependencyExceptionOnRegisterIfSqlErrorOccursAndLogItAsync()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student someStudent = CreateRandomStudent(dateTime);
+            Student someStudent = CreateRandomStudent();
             SqlException sqlException = GetSqlException();
 
             var failedStudentStorageException =
@@ -43,30 +42,29 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentDependencyException>(() =>
                 registerStudentTask.AsTask());
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(someStudent),
-                    Times.Never);
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
                     expectedStudentDependencyException))),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentAsync(someStudent),
+                    Times.Never);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public async Task ShouldThrowDependencyValidationExceptionOnRegisterWhenStudentAlreadyExistsAndLogItAsync()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student someStudent = CreateRandomStudent(dateTime);
+            Student someStudent = CreateRandomStudent();
             string someMessage = GetRandomMessage();
 
             var duplicateKeyException =
@@ -80,11 +78,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentAsync(someStudent))
-                    .ThrowsAsync(duplicateKeyException);
+                    .Throws(duplicateKeyException);
 
             // when
             ValueTask<Student> registerStudentTask =
@@ -98,18 +92,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 broker.GetCurrentDateTime(),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(someStudent),
-                    Times.Once);
-
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameValidationExceptionAs(
                     expectedStudentDependencyValidationException))),
                         Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentAsync(someStudent),
+                    Times.Never);
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -117,10 +111,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         {
             // given
             Student someStudent = CreateRandomStudent();
-
             var databaseUpdateException = new DbUpdateException();
 
-            var failedStudentStorageException = new FailedStudentStorageException(databaseUpdateException);
+            var failedStudentStorageException = 
+                new FailedStudentStorageException(databaseUpdateException);
 
             var expectedStudentDependencyException =
                 new StudentDependencyException(failedStudentStorageException);
