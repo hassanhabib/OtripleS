@@ -35,7 +35,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                Times.Once);
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -94,12 +94,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 values: "Date is required");
 
             invalidStudentException.AddData(
-                key: nameof(Student.UpdatedDate),
-                values: new []
-                {
-                    "Date is required",
-                    $"Date is the same as {nameof(Student.CreatedDate)}"
-                });
+                key: nameof(Student.UpdatedDate), 
+                "Date is required",
+                $"Date is the same as {nameof(Student.CreatedDate)}");
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
@@ -114,16 +111,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             this.dateTimeBrokerMock.Verify(broker =>
                     broker.GetCurrentDateTime(),
-                Times.Once);
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogError(It.Is(SameValidationExceptionAs(
-                        expectedStudentValidationException))),
-                Times.Once);
+                    broker.LogError(It.Is(SameValidationExceptionAs(expectedStudentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                     broker.UpdateStudentAsync(It.IsAny<Student>()),
-                Times.Never);
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -164,11 +160,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             this.dateTimeBrokerMock.Verify(broker =>
                     broker.GetCurrentDateTime(),
-                Times.Once);
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogError(It.Is(SameValidationExceptionAs(expectedStudentValidationException))),
-                Times.Once);
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -265,7 +261,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnModifyIfStorageStudentAuditInformationNotSameAsInputStudentAuditInformationAndLogItAsync()
+        public async Task
+            ShouldThrowValidationExceptionOnModifyIfStorageStudentAuditInformationNotSameAsInputStudentAuditInformationAndLogItAsync()
         {
             // given
             int randomNumber = GetRandomNumber();
@@ -314,15 +311,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             this.dateTimeBrokerMock.Verify(broker =>
                     broker.GetCurrentDateTime(),
-                Times.Once);
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                     broker.SelectStudentByIdAsync(invalidStudent.Id),
-                Times.Once);
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                Times.Once);
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
