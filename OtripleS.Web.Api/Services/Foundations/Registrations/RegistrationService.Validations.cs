@@ -3,11 +3,11 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using OtripleS.Web.Api.Models.Registrations;
-using OtripleS.Web.Api.Models.Registrations.Exceptions;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using OtripleS.Web.Api.Models.Registrations;
+using OtripleS.Web.Api.Models.Registrations.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Registrations
 {

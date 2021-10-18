@@ -3,10 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using OtripleS.Web.Api.Models.Calendars;
-using OtripleS.Web.Api.Models.Calendars.Exceptions;
 using System;
 using System.Linq;
+using OtripleS.Web.Api.Models.Calendars;
+using OtripleS.Web.Api.Models.Calendars.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Calendars
 {

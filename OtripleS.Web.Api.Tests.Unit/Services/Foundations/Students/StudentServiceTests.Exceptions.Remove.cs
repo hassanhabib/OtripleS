@@ -100,10 +100,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             // given
             Guid someStudentId = Guid.NewGuid();
 
-            var databaseUpdateConcurrencyException = 
+            var databaseUpdateConcurrencyException =
                 new DbUpdateConcurrencyException();
 
-            var lockedStudentException = 
+            var lockedStudentException =
                 new LockedStudentException(databaseUpdateConcurrencyException);
 
             var expectedStudentDependencyException =

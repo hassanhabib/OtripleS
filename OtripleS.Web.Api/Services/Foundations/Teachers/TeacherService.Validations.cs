@@ -3,10 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using OtripleS.Web.Api.Models.Teachers;
-using OtripleS.Web.Api.Models.Teachers.Exceptions;
 using System;
 using System.Linq;
+using OtripleS.Web.Api.Models.Teachers;
+using OtripleS.Web.Api.Models.Teachers.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Teachers
 {
@@ -156,11 +156,11 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
                 (Rule: IsInvalidX(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate)),
                 (Rule: IsNotRecent(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate))
 
-                //(Rule: IsSame(
-                //    firstDate: teacher.UpdatedDate,
-                //    secondDate: teacher.CreatedDate,
-                //    secondDateName: nameof(Teacher.CreatedDate)),
-                //Parameter: nameof(Teacher.UpdatedDate))
+            //(Rule: IsSame(
+            //    firstDate: teacher.UpdatedDate,
+            //    secondDate: teacher.CreatedDate,
+            //    secondDateName: nameof(Teacher.CreatedDate)),
+            //Parameter: nameof(Teacher.UpdatedDate))
             );
         }
 

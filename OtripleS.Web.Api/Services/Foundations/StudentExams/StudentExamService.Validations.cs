@@ -3,10 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using OtripleS.Web.Api.Models.StudentExams;
-using OtripleS.Web.Api.Models.StudentExams.Exceptions;
 using System;
 using System.Linq;
+using OtripleS.Web.Api.Models.StudentExams;
+using OtripleS.Web.Api.Models.StudentExams.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.StudentExams
 {

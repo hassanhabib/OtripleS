@@ -3,13 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Models.StudentExams;
 using OtripleS.Web.Api.Models.TeacherAttachments;
 using OtripleS.Web.Api.Models.TeacherContacts;
-using System;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace OtripleS.Web.Api.Models.Teachers
 {

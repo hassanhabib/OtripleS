@@ -3,10 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 //----------------------------------------------------------------
 
-using OtripleS.Web.Api.Models.TeacherContacts;
-using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
 using System;
 using System.Linq;
+using OtripleS.Web.Api.Models.TeacherContacts;
+using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.TeacherContacts
 {

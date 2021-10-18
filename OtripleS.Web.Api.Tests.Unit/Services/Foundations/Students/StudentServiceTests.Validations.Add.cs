@@ -5,7 +5,6 @@
 
 using System;
 using System.Threading.Tasks;
-using EFxceptions.Models.Exceptions;
 using Moq;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Models.Students.Exceptions;
@@ -275,6 +274,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
-       
+
     }
 }

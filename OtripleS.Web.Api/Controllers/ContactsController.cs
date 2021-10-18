@@ -4,14 +4,14 @@
 // ---------------------------------------------------------------
 
 
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.Contacts;
 using OtripleS.Web.Api.Models.Contacts.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Contacts;
 using RESTFulSense.Controllers;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Controllers
 {

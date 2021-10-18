@@ -76,7 +76,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             var databaseUpdateException = new DbUpdateException();
 
-            var failedStudentStorageException = 
+            var failedStudentStorageException =
                 new FailedStudentStorageException(databaseUpdateException);
 
             var expectedStudentDependencyException =
@@ -122,10 +122,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             someStudent.UpdatedDate =
                 someStudent.CreatedDate.AddDays(randomDays);
 
-            var databaseUpdateConcurrencyException = 
+            var databaseUpdateConcurrencyException =
                 new DbUpdateConcurrencyException();
-            
-            var lockedStudentException = 
+
+            var lockedStudentException =
                 new LockedStudentException(databaseUpdateConcurrencyException);
 
             var expectedStudentDependencyException =
@@ -167,10 +167,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             // given
             Student someStudent = CreateRandomStudent();
             int randomDays = GetRandomNumber();
-            
-            someStudent.UpdatedDate = 
+
+            someStudent.UpdatedDate =
                 someStudent.CreatedDate.AddDays(randomDays);
-            
+
             var serviceException = new Exception();
 
             var failedStudentServiceException =
