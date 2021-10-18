@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
         private static dynamic IsInvalidX(AssignmentStatus status) => new
         {
             Condition = status != AssignmentStatus.Active,
-            Message = "Status is invalid"
+            Message = "Value is invalid"
         };
 
         private static dynamic IsInvalidX(DateTimeOffset date) => new

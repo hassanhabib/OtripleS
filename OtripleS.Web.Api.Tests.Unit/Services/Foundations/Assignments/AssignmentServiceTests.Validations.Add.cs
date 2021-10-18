@@ -78,7 +78,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
 
             invalidAssignmentException.AddData(
                 key: nameof(Assignment.Status),
-                values: "Status is invalid");
+                values: "Value is invalid");
 
             invalidAssignmentException.AddData(
                 key: nameof(Assignment.Deadline),
