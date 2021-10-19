@@ -58,7 +58,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             var invalidAssignment = new Assignment
             {
                 Label = invalidText,
-                Content = invalidText
+                Content = invalidText,
+                Status = AssignmentStatus.Closed
             };
 
             var invalidAssignmentException = new InvalidAssignmentException();
@@ -74,6 +75,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             invalidAssignmentException.AddData(
                 key: nameof(Assignment.Content),
                 values: "Text is required");
+
+            invalidAssignmentException.AddData(
+                key: nameof(Assignment.Status),
+                values: "Value is invalid");
 
             invalidAssignmentException.AddData(
                 key: nameof(Assignment.Deadline),

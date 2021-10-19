@@ -41,6 +41,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
 
             filler.Setup()
                 .OnProperty(assignment => assignment.Id).Use(inputAssignment.Id)
+                .OnProperty(assignment => assignment.Status).Use(AssignmentStatus.Active)
                 .OnProperty(assignment => assignment.CreatedBy).Use(inputAssignment.CreatedBy)
                 .OnProperty(assignment => assignment.UpdatedBy).Use(inputAssignment.UpdatedBy)
                 .OnProperty(assignment => assignment.CreatedDate).Use(inputAssignment.CreatedDate)
@@ -61,6 +62,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Assignments
             var filler = new Filler<Assignment>();
 
             filler.Setup()
+                .OnProperty(assignment => assignment.Status).Use(AssignmentStatus.Active)
                 .OnProperty(assignment => assignment.CreatedBy).Use(posterId)
                 .OnProperty(assignment => assignment.UpdatedBy).Use(posterId)
                 .OnProperty(assignment => assignment.CreatedDate).Use(now)
