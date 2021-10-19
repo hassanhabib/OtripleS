@@ -6,7 +6,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.StudentRegistrations;
@@ -17,28 +16,26 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentRegistrations
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
-        private readonly IDateTimeBroker dateTimeBroker;
 
         public StudentRegistrationService(
             IStorageBroker storageBroker,
-            ILoggingBroker loggingBroker,
-            IDateTimeBroker dateTimeBroker)
+            ILoggingBroker loggingBroker)
         {
             this.storageBroker = storageBroker;
             this.loggingBroker = loggingBroker;
-            this.dateTimeBroker = dateTimeBroker;
         }
 
-        public IQueryable<StudentRegistration> RetrieveAllStudentRegistrations()
-         => TryCatch(() =>
-         {
-             IQueryable<StudentRegistration> storageStudentRegistrations
-                = this.storageBroker.SelectAllStudentRegistrations();
+        public IQueryable<StudentRegistration> RetrieveAllStudentRegistrations() =>
+        TryCatch(() =>
+        {
+             IQueryable<StudentRegistration> storageStudentRegistrations =
+                this.storageBroker.SelectAllStudentRegistrations();
 
              ValidateStorageStudentRegistrations(storageStudentRegistrations);
 
              return storageStudentRegistrations;
-         });
+        });
+
         public ValueTask<StudentRegistration> AddStudentRegistrationAsync(StudentRegistration studentRegistration) =>
         TryCatch(async () =>
         {
@@ -49,8 +46,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentRegistrations
 
         public ValueTask<StudentRegistration> RetrieveStudentRegistrationByIdAsync(
             Guid studentId,
-            Guid registrationId) =>
-        TryCatch(async () =>
+            Guid registrationId) => TryCatch(async () =>
         {
             ValidateStudentRegistrationIds(studentId, registrationId);
 
@@ -64,8 +60,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentRegistrations
 
         public ValueTask<StudentRegistration> RemoveStudentRegistrationByIdsAsync(
             Guid studentId,
-            Guid registrationId) =>
-        TryCatch(async () =>
+            Guid registrationId) => TryCatch(async () =>
         {
             ValidateStudentRegistrationIds(studentId, registrationId);
 
