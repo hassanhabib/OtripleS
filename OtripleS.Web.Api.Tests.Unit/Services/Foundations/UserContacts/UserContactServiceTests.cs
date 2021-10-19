@@ -14,6 +14,7 @@ using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.UserContacts;
 using OtripleS.Web.Api.Services.Foundations.UserContacts;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
 {
@@ -39,17 +40,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         private static IQueryable<UserContact> CreateRandomUserContacts() =>
             CreateUserContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
-        private static Filler<UserContact> CreateUserContactFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<UserContact>();
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(usercontact => usercontact.User).IgnoreIt()
-                .OnProperty(usercontact => usercontact.Contact).IgnoreIt();
-
-            return filler;
-        }
-
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
 
@@ -61,6 +51,26 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             return actualException =>
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
+
+        private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
+        }
+
+        private static Filler<UserContact> CreateUserContactFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<UserContact>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(usercontact => usercontact.User).IgnoreIt()
+                .OnProperty(usercontact => usercontact.Contact).IgnoreIt();
+
+            return filler;
         }
     }
 }
