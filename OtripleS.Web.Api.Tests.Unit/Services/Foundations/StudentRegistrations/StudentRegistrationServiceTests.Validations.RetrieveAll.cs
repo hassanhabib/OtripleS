@@ -18,8 +18,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
         public void ShouldLogWarningOnRetrieveAllWhenStudentRegistrationsWasEmptyAndLogIt()
         {
             // given
-            IQueryable<StudentRegistration> emptyStorageStudentRegistrations = new List<StudentRegistration>().AsQueryable();
-            IQueryable<StudentRegistration> expectedStudentRegistrations = emptyStorageStudentRegistrations;
+            IQueryable<StudentRegistration> emptyStorageStudentRegistrations =
+                new List<StudentRegistration>().AsQueryable();
+
+            IQueryable<StudentRegistration> expectedStudentRegistrations =
+                emptyStorageStudentRegistrations;
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudentRegistrations())
@@ -36,15 +39,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 broker.LogWarning("No studentRegistrations found in storage."),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentRegistrations(),
                     Times.Once);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }

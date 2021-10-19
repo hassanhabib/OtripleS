@@ -46,7 +46,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -75,7 +74,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -86,8 +84,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
             Guid inputStudentId = randomStudentId;
             Guid randomRegistrationId = Guid.NewGuid();
             Guid inputRegistrationId = randomRegistrationId;
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            StudentRegistration randomStudentRegistration = CreateRandomStudentRegistration(randomDateTime);
+            StudentRegistration randomStudentRegistration = CreateRandomStudentRegistration();
             StudentRegistration storageStudentRegistration = randomStudentRegistration;
             StudentRegistration expectedStudentRegistration = storageStudentRegistration;
 
@@ -97,22 +94,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
 
             // when
             StudentRegistration actualStudentExam =
-                await this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId);
+                await this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(
+                    inputStudentId,
+                    inputRegistrationId);
 
             // then
             actualStudentExam.Should().BeEquivalentTo(expectedStudentRegistration);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId),
                     Times.Once);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -123,8 +117,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
             var randomRegistrationId = Guid.NewGuid();
             Guid inputStudentId = randomStudentId;
             Guid inputRegistrationId = randomRegistrationId;
-            DateTimeOffset inputDateTime = GetRandomDateTime();
-            StudentRegistration randomStudentRegistration = CreateRandomStudentRegistration(inputDateTime);
+            StudentRegistration randomStudentRegistration = CreateRandomStudentRegistration();
             randomStudentRegistration.StudentId = inputStudentId;
             randomStudentRegistration.RegistrationId = inputRegistrationId;
             StudentRegistration storageStudentRegistration = randomStudentRegistration;
@@ -154,7 +147,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }

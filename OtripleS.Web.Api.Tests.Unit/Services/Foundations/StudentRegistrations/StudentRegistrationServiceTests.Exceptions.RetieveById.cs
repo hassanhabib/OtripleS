@@ -34,25 +34,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
 
             // when
             ValueTask<StudentRegistration> retrieveStudentRegistrationByIdTask =
-                this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId);
+                this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(
+                    inputStudentId,
+                    inputRegistrationId);
 
             // then
             await Assert.ThrowsAsync<StudentRegistrationDependencyException>(() =>
                 retrieveStudentRegistrationByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentRegistrationDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedStudentRegistrationDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
@@ -90,14 +88,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
         [Fact]
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
@@ -117,7 +111,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
 
             // when
             ValueTask<StudentRegistration> retrieveStudentRegistrationByIdTask =
-                this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId);
+                this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(
+                    inputStudentId,
+                    inputRegistrationId);
 
             // then
             await Assert.ThrowsAsync<StudentRegistrationServiceException>(() =>
@@ -131,11 +127,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }

@@ -113,7 +113,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             Student someStudent = CreateRandomStudent();
             var databaseUpdateException = new DbUpdateException();
 
-            var failedStudentStorageException = 
+            var failedStudentStorageException =
                 new FailedStudentStorageException(databaseUpdateException);
 
             var expectedStudentDependencyException =

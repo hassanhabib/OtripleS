@@ -41,18 +41,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationValidationException))),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentRegistrationByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
         [Fact]
         public async void ShouldThrowValidationExceptionOnRetrieveWhenStorageStudentRegistrationIsNullAndLogItAsync()
         {
@@ -62,7 +58,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
             Guid randomRegistrationId = Guid.NewGuid();
             Guid inputRegistrationId = randomRegistrationId;
             StudentRegistration invalidStorageStudentRegistration = null;
-            var notFoundStudentRegistrationException = new NotFoundStudentRegistrationException(inputStudentId, inputRegistrationId);
+
+            var notFoundStudentRegistrationException =
+                new NotFoundStudentRegistrationException(inputStudentId, inputRegistrationId);
 
             var expectedStudentRegistrationValidationException =
                 new StudentRegistrationValidationException(notFoundStudentRegistrationException);
@@ -73,7 +71,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
 
             // when
             ValueTask<StudentRegistration> retrieveStudentRegistrationByIdTask =
-                this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId);
+                this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(
+                    inputStudentId,
+                    inputRegistrationId);
 
             // then
             await Assert.ThrowsAsync<StudentRegistrationValidationException>(() =>
@@ -83,15 +83,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationValidationException))),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId),
                     Times.Once);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
