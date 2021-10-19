@@ -29,20 +29,6 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<CourseAttachment> RemoveCourseAttachmentByIdAsync(
-            Guid courseId,
-            Guid attachmentId) => TryCatch(async () =>
-        {
-            ValidateCourseAttachmentIds(courseId, attachmentId);
-
-            CourseAttachment maybeCourseAttachment =
-                await this.storageBroker.SelectCourseAttachmentByIdAsync(courseId, attachmentId);
-
-            ValidateStorageCourseAttachment(maybeCourseAttachment, courseId, attachmentId);
-
-            return await this.storageBroker.DeleteCourseAttachmentAsync(maybeCourseAttachment);
-        });
-
         public ValueTask<CourseAttachment> AddCourseAttachmentAsync(CourseAttachment courseAttachment) =>
         TryCatch(async () =>
         {
@@ -76,5 +62,20 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
 
             return storageCourseAttachment;
         });
+
+        public ValueTask<CourseAttachment> RemoveCourseAttachmentByIdAsync(
+            Guid courseId,
+            Guid attachmentId) => TryCatch(async () =>
+        {
+            ValidateCourseAttachmentIds(courseId, attachmentId);
+
+            CourseAttachment maybeCourseAttachment =
+                await this.storageBroker.SelectCourseAttachmentByIdAsync(courseId, attachmentId);
+
+            ValidateStorageCourseAttachment(maybeCourseAttachment, courseId, attachmentId);
+
+            return await this.storageBroker.DeleteCourseAttachmentAsync(maybeCourseAttachment);
+        });
+
     }
 }

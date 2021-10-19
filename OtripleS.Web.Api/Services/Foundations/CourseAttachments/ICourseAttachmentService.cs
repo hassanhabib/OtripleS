@@ -14,11 +14,11 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
     {
         ValueTask<CourseAttachment> AddCourseAttachmentAsync(CourseAttachment courseAttachment);
 
+        IQueryable<CourseAttachment> RetrieveAllCourseAttachments();
+
         ValueTask<CourseAttachment> RetrieveCourseAttachmentByIdAsync(
                 Guid courseId,
                 Guid attachmentId);
-
-        IQueryable<CourseAttachment> RetrieveAllCourseAttachments();
 
         ValueTask<CourseAttachment> RemoveCourseAttachmentByIdAsync(
             Guid courseId,
