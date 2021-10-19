@@ -15,17 +15,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
     public partial class UserContactServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRemoveWhenUserIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRemoveWhenUserIdOrContactIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomContactId = Guid.NewGuid();
-            Guid randomUserId = default;
-            Guid inputContactId = randomContactId;
-            Guid inputUserId = randomUserId;
+            Guid inputContactId = Guid.Empty;
+            Guid inputUserId = Guid.Empty;
 
-            var invalidUserContactInputException = new InvalidUserContactInputException(
-                parameterName: nameof(UserContact.UserId),
-                parameterValue: inputUserId);
+            var invalidUserContactInputException = new InvalidUserContactInputException();
+
+            invalidUserContactInputException.AddData(
+                key: nameof(UserContact.ContactId),
+                values: "Id is required");
+
+            invalidUserContactInputException.AddData(
+                key: nameof(UserContact.UserId),
+                values: "Id is required");
 
             var expectedUserContactValidationException =
                 new UserContactValidationException(invalidUserContactInputException);
@@ -38,46 +42,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             await Assert.ThrowsAsync<UserContactValidationException>(() => removeUserContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserContactValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectUserContactByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
-                    Times.Never);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.DeleteUserContactAsync(It.IsAny<UserContact>()),
-                    Times.Never);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRemoveWhenContactIdIsInvalidAndLogItAsync()
-        {
-            // given
-            Guid randomContactId = default;
-            Guid randomUserId = Guid.NewGuid();
-            Guid inputContactId = randomContactId;
-            Guid inputUserId = randomUserId;
-
-            var invalidUserContactInputException = new InvalidUserContactInputException(
-                parameterName: nameof(UserContact.ContactId),
-                parameterValue: inputContactId);
-
-            var expectedUserContactValidationException =
-                new UserContactValidationException(invalidUserContactInputException);
-
-            // when
-            ValueTask<UserContact> removeUserContactTask =
-                this.userContactService.RemoveUserContactByIdAsync(inputUserId, inputContactId);
-
-            // then
-            await Assert.ThrowsAsync<UserContactValidationException>(() => removeUserContactTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserContactValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedUserContactValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>

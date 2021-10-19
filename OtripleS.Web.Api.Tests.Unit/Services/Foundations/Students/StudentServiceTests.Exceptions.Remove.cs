@@ -23,8 +23,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             Guid someStudentId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
+            var failedStudentStorageException =
+                new FailedStudentStorageException(sqlException);
+
             var expectedStudentDependencyException =
-                new StudentDependencyException(sqlException);
+                new StudentDependencyException(failedStudentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentByIdAsync(It.IsAny<Guid>()))
@@ -59,8 +62,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             Guid someStudentId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
+            var failedStudentStorageException =
+                new FailedStudentStorageException(databaseUpdateException);
+
             var expectedStudentDependencyException =
-                new StudentDependencyException(databaseUpdateException);
+                new StudentDependencyException(failedStudentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentByIdAsync(It.IsAny<Guid>()))
@@ -94,10 +100,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             // given
             Guid someStudentId = Guid.NewGuid();
 
-            var databaseUpdateConcurrencyException = 
+            var databaseUpdateConcurrencyException =
                 new DbUpdateConcurrencyException();
 
-            var lockedStudentException = 
+            var lockedStudentException =
                 new LockedStudentException(databaseUpdateConcurrencyException);
 
             var expectedStudentDependencyException =

@@ -41,8 +41,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 actualStudentRegistrationDeleteTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationCourseValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentRegistrationCourseValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentRegistrationByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
@@ -54,7 +55,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -97,7 +97,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -105,10 +104,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
         {
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
-            StudentRegistration randomStudentRegistration = CreateRandomStudentRegistration(randomDateTime);
+            StudentRegistration randomStudentRegistration = CreateRandomStudentRegistration();
             Guid inputStudentRegistrationId = randomStudentRegistration.RegistrationId;
             Guid inputStudentId = randomStudentRegistration.StudentId;
-            StudentRegistration nullStorageStudentRegistration = null;
+            StudentRegistration noStudentRegistration = null;
 
             var notFoundStudentRegistrationException =
                 new NotFoundStudentRegistrationException(inputStudentRegistrationId, inputStudentId);
@@ -118,7 +117,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
 
             this.storageBrokerMock.Setup(broker =>
                  broker.SelectStudentRegistrationByIdAsync(inputStudentRegistrationId, inputStudentId))
-                    .ReturnsAsync(nullStorageStudentRegistration);
+                    .ReturnsAsync(noStudentRegistration);
             // when
             ValueTask<StudentRegistration> actualStudentRegistrationDeleteTask =
                 this.studentRegistrationService.RemoveStudentRegistrationByIdsAsync(
@@ -143,7 +142,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

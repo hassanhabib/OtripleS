@@ -5,7 +5,6 @@
 
 using System;
 using System.Threading.Tasks;
-using EFxceptions.Models.Exceptions;
 using Moq;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Models.Students.Exceptions;
@@ -273,57 +272,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnRegisterWhenStudentAlreadyExistsAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent(dateTime);
-            Student alreadyExistsStudent = randomStudent;
-            alreadyExistsStudent.UpdatedBy = alreadyExistsStudent.CreatedBy;
-            string randomMessage = GetRandomMessage();
-            string exceptionMessage = randomMessage;
-            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
-
-            var alreadyExistsStudentException =
-                new AlreadyExistsStudentException(duplicateKeyException);
-
-            var expectedStudentValidationException =
-                new StudentValidationException(alreadyExistsStudentException);
-
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentAsync(alreadyExistsStudent))
-                    .ThrowsAsync(duplicateKeyException);
-
-            // when
-            ValueTask<Student> registerStudentTask =
-                this.studentService.RegisterStudentAsync(alreadyExistsStudent);
-
-            // then
-            await Assert.ThrowsAsync<StudentValidationException>(() =>
-                registerStudentTask.AsTask());
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(alreadyExistsStudent),
-                    Times.Once);
-
-            this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedStudentValidationException))),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

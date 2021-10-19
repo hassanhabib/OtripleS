@@ -17,7 +17,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
     public partial class StudentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnModifyIfSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowCriticalDependencyExceptionOnModifyIfSqlErrorOccursAndLogItAsync()
         {
             // given
             Student someStudent = CreateRandomStudent();
@@ -28,8 +28,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             SqlException sqlException = GetSqlException();
 
+            var failedStudentStorageException =
+                new FailedStudentStorageException(sqlException);
+
             var expectedStudentDependencyException =
-                new StudentDependencyException(sqlException);
+                new StudentDependencyException(failedStudentStorageException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -73,8 +76,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             var databaseUpdateException = new DbUpdateException();
 
+            var failedStudentStorageException =
+                new FailedStudentStorageException(databaseUpdateException);
+
             var expectedStudentDependencyException =
-                new StudentDependencyException(databaseUpdateException);
+                new StudentDependencyException(failedStudentStorageException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -116,10 +122,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             someStudent.UpdatedDate =
                 someStudent.CreatedDate.AddDays(randomDays);
 
-            var databaseUpdateConcurrencyException = 
+            var databaseUpdateConcurrencyException =
                 new DbUpdateConcurrencyException();
-            
-            var lockedStudentException = 
+
+            var lockedStudentException =
                 new LockedStudentException(databaseUpdateConcurrencyException);
 
             var expectedStudentDependencyException =
@@ -161,10 +167,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             // given
             Student someStudent = CreateRandomStudent();
             int randomDays = GetRandomNumber();
-            
-            someStudent.UpdatedDate = 
+
+            someStudent.UpdatedDate =
                 someStudent.CreatedDate.AddDays(randomDays);
-            
+
             var serviceException = new Exception();
 
             var failedStudentServiceException =

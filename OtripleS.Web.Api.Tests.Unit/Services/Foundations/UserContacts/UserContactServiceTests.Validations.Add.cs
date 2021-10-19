@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
     public partial class UserContactServiceTests
     {
         [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenUserContactIsNullAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddIfUserContactIsNullAndLogItAsync()
         {
             // given
             UserContact randomUserContact = default;
@@ -46,16 +46,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenUserIdIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddIfUserIdOrContactIdInvalidAndLogItAsync()
         {
             // given
             UserContact randomUserContact = CreateRandomUserContact();
-            UserContact inputUserContact = randomUserContact;
-            inputUserContact.UserId = default;
+            UserContact inputUserContact = new UserContact();
 
-            var invalidUserContactInputException = new InvalidUserContactInputException(
-                parameterName: nameof(UserContact.UserId),
-                parameterValue: inputUserContact.UserId);
+            var invalidUserContactInputException = new InvalidUserContactInputException();
+
+            invalidUserContactInputException.AddData(
+                key: nameof(UserContact.UserId),
+                values: "Id is required");
+
+            invalidUserContactInputException.AddData(
+                key: nameof(UserContact.ContactId),
+                values: "Id is required");
 
             var expectedUserContactValidationException =
                 new UserContactValidationException(invalidUserContactInputException);
@@ -69,7 +74,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 addUserContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserContactValidationException))),
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedUserContactValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
@@ -81,42 +87,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenContactIdIsInvalidAndLogItAsync()
-        {
-            // given
-            UserContact randomUserContact = CreateRandomUserContact();
-            UserContact inputUserContact = randomUserContact;
-            inputUserContact.ContactId = default;
-
-            var invalidUserContactInputException = new InvalidUserContactInputException(
-                parameterName: nameof(UserContact.ContactId),
-                parameterValue: inputUserContact.ContactId);
-
-            var expectedUserContactValidationException =
-                new UserContactValidationException(invalidUserContactInputException);
-
-            // when
-            ValueTask<UserContact> addUserContactTask =
-                this.userContactService.AddUserContactAsync(inputUserContact);
-
-            // then
-            await Assert.ThrowsAsync<UserContactValidationException>(() =>
-                addUserContactTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserContactValidationException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertUserContactAsync(It.IsAny<UserContact>()),
-                    Times.Never);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenUserContactAlreadyExistsAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddIfUserContactAlreadyExistsAndLogItAsync()
         {
             // given
             UserContact randomUserContact = CreateRandomUserContact();
@@ -151,12 +122,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 broker.InsertUserContactAsync(alreadyExistsUserContact),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenReferneceExceptionAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddIfReferneceExceptionAndLogItAsync()
         {
             // given
             UserContact randomUserContact = CreateRandomUserContact();
@@ -192,8 +163,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 broker.InsertUserContactAsync(invalidUserContact),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

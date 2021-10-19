@@ -14,8 +14,8 @@ using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class UserContactsController : RESTFulController
     {
         private readonly IUserContactService userContactService;
@@ -37,23 +37,19 @@ namespace OtripleS.Web.Api.Controllers
             catch (UserContactValidationException userContactValidationException)
                 when (userContactValidationException.InnerException is AlreadyExistsUserContactException)
             {
-                string innerMessage = GetInnerMessage(userContactValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(userContactValidationException.InnerException);
             }
             catch (UserContactValidationException userContactValidationException)
             {
-                string innerMessage = GetInnerMessage(userContactValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(userContactValidationException.InnerException);
             }
             catch (UserContactDependencyException userContactDependencyException)
             {
-                return Problem(userContactDependencyException.Message);
+                return InternalServerError(userContactDependencyException);
             }
             catch (UserContactServiceException userContactServiceException)
             {
-                return Problem(userContactServiceException.Message);
+                return InternalServerError(userContactServiceException);
             }
         }
 
@@ -69,11 +65,11 @@ namespace OtripleS.Web.Api.Controllers
             }
             catch (UserContactDependencyException userContactDependencyException)
             {
-                return Problem(userContactDependencyException.Message);
+                return InternalServerError(userContactDependencyException);
             }
             catch (UserContactServiceException userContactServiceException)
             {
-                return Problem(userContactServiceException.Message);
+                return InternalServerError(userContactServiceException);
             }
         }
 
@@ -90,23 +86,19 @@ namespace OtripleS.Web.Api.Controllers
             catch (UserContactValidationException semesterUserContactValidationException)
                 when (semesterUserContactValidationException.InnerException is NotFoundUserContactException)
             {
-                string innerMessage = GetInnerMessage(semesterUserContactValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(semesterUserContactValidationException.InnerException);
             }
             catch (UserContactValidationException semesterUserContactValidationException)
             {
-                string innerMessage = GetInnerMessage(semesterUserContactValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(semesterUserContactValidationException.InnerException);
             }
             catch (UserContactDependencyException semesterUserContactDependencyException)
             {
-                return Problem(semesterUserContactDependencyException.Message);
+                return InternalServerError(semesterUserContactDependencyException);
             }
             catch (UserContactServiceException semesterUserContactServiceException)
             {
-                return Problem(semesterUserContactServiceException.Message);
+                return InternalServerError(semesterUserContactServiceException);
             }
         }
 
@@ -123,34 +115,25 @@ namespace OtripleS.Web.Api.Controllers
             catch (UserContactValidationException userContactValidationException)
                 when (userContactValidationException.InnerException is NotFoundUserContactException)
             {
-                string innerMessage = GetInnerMessage(userContactValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(userContactValidationException.InnerException);
             }
             catch (UserContactValidationException userContactValidationException)
             {
-                string innerMessage = GetInnerMessage(userContactValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(userContactValidationException.InnerException);
             }
             catch (UserContactDependencyException userContactValidationException)
                when (userContactValidationException.InnerException is LockedUserContactException)
             {
-                string innerMessage = GetInnerMessage(userContactValidationException);
-
-                return Locked(innerMessage);
+                return Locked(userContactValidationException.InnerException);
             }
             catch (UserContactDependencyException userContactDependencyException)
             {
-                return Problem(userContactDependencyException.Message);
+                return InternalServerError(userContactDependencyException);
             }
             catch (UserContactServiceException userContactServiceException)
             {
-                return Problem(userContactServiceException.Message);
+                return InternalServerError(userContactServiceException);
             }
         }
-
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

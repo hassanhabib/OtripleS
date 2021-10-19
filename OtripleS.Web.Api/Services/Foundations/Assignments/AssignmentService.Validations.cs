@@ -20,6 +20,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
                 (Rule: IsInvalidX(assignment.Id), Parameter: nameof(Assignment.Id)),
                 (Rule: IsInvalidX(assignment.Label), Parameter: nameof(Assignment.Label)),
                 (Rule: IsInvalidX(assignment.Content), Parameter: nameof(Assignment.Content)),
+                (Rule: IsInvalidX(assignment.Status), Parameter: nameof(Assignment.Status)),
                 (Rule: IsInvalidX(assignment.Deadline), Parameter: nameof(Assignment.Deadline)),
                 (Rule: IsInvalidX(assignment.CreatedBy), Parameter: nameof(Assignment.CreatedBy)),
                 (Rule: IsInvalidX(assignment.UpdatedBy), Parameter: nameof(Assignment.UpdatedBy)),
@@ -51,6 +52,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
         {
             Condition = String.IsNullOrWhiteSpace(text),
             Message = "Text is required"
+        };
+
+        private static dynamic IsInvalidX(AssignmentStatus status) => new
+        {
+            Condition = status != AssignmentStatus.Active,
+            Message = "Value is invalid"
         };
 
         private static dynamic IsInvalidX(DateTimeOffset date) => new

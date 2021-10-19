@@ -16,7 +16,14 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
         private static void ValidateUserContactOnAdd(UserContact userContact)
         {
             ValidateUserContactIsNull(userContact);
-            ValidateUserContactRequiredFields(userContact);
+            ValidateUserContactIds(userContact.UserId, userContact.ContactId);
+        }
+
+        private static void ValidateUserContactIds(Guid userId, Guid contactId)
+        {
+            Validate(
+               (Rule: IsInvalid(contactId), Parameter: nameof(UserContact.ContactId)),
+               (Rule: IsInvalid(userId), Parameter: nameof(UserContact.UserId)));
         }
 
         private static void ValidateUserContactIsNull(UserContact userContact)
@@ -35,39 +42,6 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
             }
         }
 
-        private static void ValidateUserContactRequiredFields(UserContact userContact)
-        {
-            switch (userContact)
-            {
-                case { } when IsInvalid(userContact.UserId):
-                    throw new InvalidUserContactInputException(
-                        parameterName: nameof(UserContact.UserId),
-                        parameterValue: userContact.UserId);
-
-                case { } when IsInvalid(userContact.ContactId):
-                    throw new InvalidUserContactInputException(
-                        parameterName: nameof(UserContact.ContactId),
-                        parameterValue: userContact.ContactId);
-            }
-        }
-
-        private static void ValidateUserContactIdIsNull(Guid userId, Guid contactId)
-        {
-            if (userId == default)
-            {
-                throw new InvalidUserContactInputException(
-                    parameterName: nameof(UserContact.UserId),
-                    parameterValue: userId);
-            }
-
-            if (contactId == default)
-            {
-                throw new InvalidUserContactInputException(
-                    parameterName: nameof(UserContact.ContactId),
-                    parameterValue: contactId);
-            }
-        }
-
         private static void ValidateStorageUserContact(UserContact storageUserContact, Guid userId, Guid contactId)
         {
             if (storageUserContact == null)
@@ -76,6 +50,27 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
             }
         }
 
-        private static bool IsInvalid(Guid input) => input == default;
+        private static dynamic IsInvalid(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidStudentException = new InvalidUserContactInputException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidStudentException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidStudentException.ThrowIfContainsErrors();
+        }
     }
 }
