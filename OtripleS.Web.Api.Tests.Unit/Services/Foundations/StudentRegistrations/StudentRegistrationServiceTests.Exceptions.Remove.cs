@@ -105,8 +105,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
             Guid randomRegistrationId = Guid.NewGuid();
             Guid inputRegistrationId = randomRegistrationId;
             StudentRegistration someStudentRegistration = CreateRandomStudentRegistration();
-            
-            var databaseUpdateConcurrencyException = 
+
+            var databaseUpdateConcurrencyException =
                 new DbUpdateConcurrencyException();
 
             var lockedStudentRegistrationException =

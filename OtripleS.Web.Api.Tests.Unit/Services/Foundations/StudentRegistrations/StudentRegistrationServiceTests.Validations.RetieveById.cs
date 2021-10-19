@@ -58,8 +58,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
             Guid randomRegistrationId = Guid.NewGuid();
             Guid inputRegistrationId = randomRegistrationId;
             StudentRegistration invalidStorageStudentRegistration = null;
-            
-            var notFoundStudentRegistrationException = 
+
+            var notFoundStudentRegistrationException =
                 new NotFoundStudentRegistrationException(inputStudentId, inputRegistrationId);
 
             var expectedStudentRegistrationValidationException =

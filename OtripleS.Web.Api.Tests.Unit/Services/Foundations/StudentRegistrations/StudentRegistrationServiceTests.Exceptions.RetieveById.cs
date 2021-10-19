@@ -35,7 +35,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
             // when
             ValueTask<StudentRegistration> retrieveStudentRegistrationByIdTask =
                 this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(
-                    inputStudentId, 
+                    inputStudentId,
                     inputRegistrationId);
 
             // then

@@ -18,9 +18,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
         public void ShouldLogWarningOnRetrieveAllWhenStudentRegistrationsWasEmptyAndLogIt()
         {
             // given
-            IQueryable<StudentRegistration> emptyStorageStudentRegistrations = 
+            IQueryable<StudentRegistration> emptyStorageStudentRegistrations =
                 new List<StudentRegistration>().AsQueryable();
-            
+
             IQueryable<StudentRegistration> expectedStudentRegistrations =
                 emptyStorageStudentRegistrations;
 

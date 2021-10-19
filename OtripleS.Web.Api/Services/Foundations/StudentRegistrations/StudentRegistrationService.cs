@@ -28,12 +28,12 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentRegistrations
         public IQueryable<StudentRegistration> RetrieveAllStudentRegistrations() =>
         TryCatch(() =>
         {
-             IQueryable<StudentRegistration> storageStudentRegistrations =
-                this.storageBroker.SelectAllStudentRegistrations();
+            IQueryable<StudentRegistration> storageStudentRegistrations =
+               this.storageBroker.SelectAllStudentRegistrations();
 
-             ValidateStorageStudentRegistrations(storageStudentRegistrations);
+            ValidateStorageStudentRegistrations(storageStudentRegistrations);
 
-             return storageStudentRegistrations;
+            return storageStudentRegistrations;
         });
 
         public ValueTask<StudentRegistration> AddStudentRegistrationAsync(StudentRegistration studentRegistration) =>
