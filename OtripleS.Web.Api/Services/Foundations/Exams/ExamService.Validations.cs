@@ -108,7 +108,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
         private static dynamic IsInvalid(ExamType type) => new
         {
             Condition = Enum.IsDefined(type) == false,
-            Message = "Value is not recognized"
+            Message = "Value is invalid"
         };
 
         private static dynamic IsNotSame(

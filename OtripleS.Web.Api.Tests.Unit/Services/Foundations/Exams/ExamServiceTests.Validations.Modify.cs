@@ -63,10 +63,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 values: "Id is required");
 
             invalidExamException.AddData(
-                key: nameof(Exam.Type),
-                values: "Value is not recognized");
-
-            invalidExamException.AddData(
                 key: nameof(Exam.CreatedDate),
                 values: "Date is required");
 
