@@ -12,30 +12,152 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
 {
     public partial class ExamService
     {
+        private static void ValidateExamId(Guid id) =>
+            Validate((Rule: IsInvalid(id), Parameter: nameof(Exam.Id)));
+
         private void ValidateExamOnAdd(Exam exam)
         {
-            ValidateExamIdIsNotNull(exam);
-            ValidateExamId(exam.Id);
-            ValidateExamType(exam);
-            ValidateExamAuditFieldsOnCreate(exam);
+            ValidateExamIsNotNull(exam);
+
+            Validate(
+                (Rule: IsInvalid(exam.Id), Parameter: nameof(Exam.Id)),
+                (Rule: IsInvalid(exam.Type), Parameter: nameof(Exam.Type)),
+                (Rule: IsInvalid(exam.CreatedBy), Parameter: nameof(Exam.CreatedBy)),
+                (Rule: IsInvalid(exam.CreatedDate), Parameter: nameof(Exam.CreatedDate)),
+                (Rule: IsInvalid(exam.UpdatedBy), Parameter: nameof(Exam.UpdatedBy)),
+                (Rule: IsInvalid(exam.UpdatedDate), Parameter: nameof(Exam.UpdatedDate)),
+
+                (Rule: IsNotSame(
+                    firstId: exam.UpdatedBy,
+                    secondId: exam.CreatedBy,
+                    secondIdName: nameof(Exam.CreatedBy)),
+                Parameter: nameof(Exam.UpdatedBy)),
+
+                (Rule: IsNotSame(
+                    firstDate: exam.UpdatedDate,
+                    secondDate: exam.CreatedDate,
+                    secondDateName: nameof(Exam.CreatedDate)),
+                Parameter: nameof(Exam.UpdatedDate)),
+
+                (Rule: IsNotRecent(exam.CreatedDate), Parameter: nameof(Exam.CreatedDate)));
         }
 
+        private void ValidateExamOnModify(Exam exam)
+        {
+            ValidateExamIsNotNull(exam);
+
+            Validate(
+                (Rule: IsInvalid(exam.Id), Parameter: nameof(Exam.Id)),
+                (Rule: IsInvalid(exam.Type), Parameter: nameof(Exam.Type)),
+                (Rule: IsInvalid(exam.CreatedBy), Parameter: nameof(Exam.CreatedBy)),
+                (Rule: IsInvalid(exam.CreatedDate), Parameter: nameof(Exam.CreatedDate)),
+                (Rule: IsInvalid(exam.UpdatedBy), Parameter: nameof(Exam.UpdatedBy)),
+                (Rule: IsInvalid(exam.UpdatedDate), Parameter: nameof(Exam.UpdatedDate)),
+
+                (Rule: IsSame(
+                    firstDate: exam.UpdatedDate,
+                    secondDate: exam.CreatedDate,
+                    secondDateName: nameof(Exam.CreatedDate)),
+                Parameter: nameof(Exam.UpdatedDate)),
+
+                (Rule: IsNotRecent(exam.UpdatedDate), Parameter: nameof(Exam.UpdatedDate)));
+        }
+
+        private static void ValidateAgainstStorageExamOnModify(Exam inputExam, Exam storageExam)
+        {
+            Validate(
+                (Rule: IsNotSame(
+                    firstDate: inputExam.CreatedDate,
+                    secondDate: storageExam.CreatedDate,
+                    secondDateName: nameof(Exam.CreatedDate)),
+                Parameter: nameof(Exam.CreatedDate)),
+
+                (Rule: IsNotSame(
+                    firstId: inputExam.CreatedBy,
+                    secondId: storageExam.CreatedBy,
+                    secondIdName: nameof(Exam.CreatedBy)),
+                Parameter: nameof(Exam.CreatedBy)),
+
+                (Rule: IsSame(
+                    firstDate: inputExam.UpdatedDate,
+                    secondDate: storageExam.UpdatedDate,
+                    secondDateName: nameof(Exam.UpdatedDate)),
+                Parameter: nameof(Exam.UpdatedDate)));
+        }
+
+        private static void ValidateExamIsNotNull(Exam exam)
+        {
+            if (exam is null)
+            {
+                throw new NullExamException();
+            }
+        }
+
+        private static dynamic IsInvalid(Guid id) => new
+        {
+            Condition = id == Guid.Empty,
+            Message = "Id is required"
+        };
+
+        private static dynamic IsInvalid(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required"
+        };
+
+        private static dynamic IsInvalid(ExamType type) => new
+        {
+            Condition = Enum.IsDefined(type) == false,
+            Message = "Value is invalid"
+        };
+
+        private static dynamic IsNotSame(
+        Guid firstId,
+        Guid secondId,
+        string secondIdName) => new
+        {
+            Condition = firstId != secondId,
+            Message = $"Id is not same as {secondIdName}"
+        };
+
+        private static dynamic IsNotSame(
+        DateTimeOffset firstDate,
+        DateTimeOffset secondDate,
+        string secondDateName) => new
+        {
+            Condition = firstDate != secondDate,
+            Message = $"Date is not same as {secondDateName}"
+        };
+
+        private static dynamic IsSame(
+        DateTimeOffset firstDate,
+        DateTimeOffset secondDate,
+        string secondDateName) => new
+        {
+            Condition = firstDate == secondDate,
+            Message = $"Date is same as {secondDateName}"
+        };
+
+        private dynamic IsNotRecent(DateTimeOffset date) => new
+        {
+            Condition = IsDateNotRecent(date),
+            Message = "Date is not recent"
+        };
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
 
         private void ValidateStorageExams(IQueryable<Exam> storageExams)
         {
             if (!storageExams.Any())
             {
                 this.loggingBroker.LogWarning("No exams found in storage.");
-            }
-        }
-
-        private static void ValidateExamId(Guid examId)
-        {
-            if (IsInvalid(examId))
-            {
-                throw new InvalidExamInputException(
-                    parameterName: nameof(Exam.Id),
-                    parameterValue: examId);
             }
         }
 
@@ -47,160 +169,21 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             }
         }
 
-        private static void ValidateExamType(Exam exam)
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
-            if (IsInvalid(exam.Type))
+            var invalidExamException = new InvalidExamException();
+
+            foreach((dynamic rule, string paramter) in validations)
             {
-                throw new InvalidExamInputException(
-                   parameterName: nameof(Exam.Type),
-                   parameterValue: exam.Type);
+                if(rule.Condition)
+                {
+                    invalidExamException.UpsertDataList(
+                        key: paramter,
+                        value: rule.Message);
+                }
             }
-        }
 
-        private static void ValidateExamIdIsNotNull(Exam exam)
-        {
-            if (exam == default)
-            {
-                throw new NullExamException();
-            }
-        }
-
-        private void ValidateExamAuditFieldsOnCreate(Exam exam)
-        {
-            switch (exam)
-            {
-                case { } when IsInvalid(input: exam.CreatedBy):
-                    throw new InvalidExamInputException(
-                        parameterName: nameof(Exam.CreatedBy),
-                        parameterValue: exam.CreatedBy);
-
-                case { } when IsInvalid(input: exam.CreatedDate):
-                    throw new InvalidExamInputException(
-                        parameterName: nameof(Exam.CreatedDate),
-                        parameterValue: exam.CreatedDate);
-
-                case { } when IsInvalid(input: exam.UpdatedBy):
-                    throw new InvalidExamInputException(
-                        parameterName: nameof(Exam.UpdatedBy),
-                        parameterValue: exam.UpdatedBy);
-
-                case { } when IsInvalid(input: exam.UpdatedDate):
-                    throw new InvalidExamInputException(
-                        parameterName: nameof(Exam.UpdatedDate),
-                        parameterValue: exam.UpdatedDate);
-
-                case { } when exam.UpdatedBy != exam.CreatedBy:
-                    throw new InvalidExamInputException(
-                        parameterName: nameof(Exam.UpdatedBy),
-                        parameterValue: exam.UpdatedBy);
-
-                case { } when exam.UpdatedDate != exam.CreatedDate:
-                    throw new InvalidExamInputException(
-                        parameterName: nameof(Exam.UpdatedDate),
-                        parameterValue: exam.UpdatedDate);
-
-                case { } when IsDateNotRecent(exam.CreatedDate):
-                    throw new InvalidExamInputException(
-                        parameterName: nameof(Exam.CreatedDate),
-                        parameterValue: exam.CreatedDate);
-            }
-        }
-
-        private static bool IsInvalid(Guid input) => input == default;
-        private static bool IsInvalid(DateTimeOffset input) => input == default;
-        private static bool IsInvalid(ExamType type) => Enum.IsDefined(type) == false;
-
-        private bool IsDateNotRecent(DateTimeOffset dateTime)
-        {
-            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
-            int oneMinute = 1;
-            TimeSpan difference = now.Subtract(dateTime);
-
-            return Math.Abs(difference.TotalMinutes) > oneMinute;
-        }
-
-        private void ValidateExamOnModify(Exam exam)
-        {
-            ValidateExamIsNotNull(exam);
-            ValidateExamId(exam.Id);
-            ValidateExamtAuditFields(exam);
-            ValidateDatesAreNotSame(exam);
-            ValidateUpdatedDateIsRecent(exam);
-        }
-
-        private void ValidateUpdatedDateIsRecent(Exam exam)
-        {
-            if (IsDateNotRecent(exam.UpdatedDate))
-            {
-                throw new InvalidExamInputException(
-                    parameterName: nameof(Exam.UpdatedDate),
-                    parameterValue: exam.UpdatedDate);
-            }
-        }
-
-        private static void ValidateDatesAreNotSame(Exam exam)
-        {
-            if (exam.CreatedDate == exam.UpdatedDate)
-            {
-                throw new InvalidExamInputException(
-                    parameterName: nameof(Exam.UpdatedDate),
-                    parameterValue: exam.UpdatedDate);
-            }
-        }
-
-        private static void ValidateExamtAuditFields(Exam exam)
-        {
-            switch (exam)
-            {
-                case { } when IsInvalid(exam.CreatedBy):
-                    throw new InvalidExamInputException(
-                        parameterName: nameof(Exam.CreatedBy),
-                        parameterValue: exam.CreatedBy);
-
-                case { } when IsInvalid(exam.UpdatedBy):
-                    throw new InvalidExamInputException(
-                        parameterName: nameof(Exam.UpdatedBy),
-                        parameterValue: exam.UpdatedBy);
-
-                case { } when IsInvalid(exam.CreatedDate):
-                    throw new InvalidExamInputException(
-                        parameterName: nameof(Exam.CreatedDate),
-                        parameterValue: exam.CreatedDate);
-
-                case { } when IsInvalid(exam.UpdatedDate):
-                    throw new InvalidExamInputException(
-                        parameterName: nameof(Exam.UpdatedDate),
-                        parameterValue: exam.UpdatedDate);
-            }
-        }
-
-        private static void ValidateExamIsNotNull(Exam exam)
-        {
-            if (exam is null)
-            {
-                throw new NullExamException();
-            }
-        }
-
-        private static void ValidateAgainstStorageExamOnModify(Exam inputExam, Exam storageExam)
-        {
-            switch (inputExam)
-            {
-                case { } when inputExam.CreatedDate != storageExam.CreatedDate:
-                    throw new InvalidExamInputException(
-                        parameterName: nameof(Exam.CreatedDate),
-                        parameterValue: inputExam.CreatedDate);
-
-                case { } when inputExam.CreatedBy != storageExam.CreatedBy:
-                    throw new InvalidExamInputException(
-                        parameterName: nameof(Exam.CreatedBy),
-                        parameterValue: inputExam.CreatedBy);
-
-                case { } when inputExam.UpdatedDate == storageExam.UpdatedDate:
-                    throw new InvalidExamInputException(
-                        parameterName: nameof(Exam.UpdatedDate),
-                        parameterValue: inputExam.UpdatedDate);
-            }
+            invalidExamException.ThrowIfContainsErrors();
         }
     }
 }

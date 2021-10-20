@@ -21,9 +21,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Guid randomExamId = default;
             Guid inputExamId = randomExamId;
 
-            var invalidExamInputException = new InvalidExamInputException(
-                parameterName: nameof(Exam.Id),
-                parameterValue: inputExamId);
+            var invalidExamInputException = new InvalidExamException();
+
+            invalidExamInputException.AddData(
+                key: nameof(Exam.Id),
+                values: "Id is required");
 
             var expectedExamValidationException =
                 new ExamValidationException(invalidExamInputException);
@@ -36,8 +38,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             await Assert.ThrowsAsync<ExamValidationException>(() => actualExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedExamValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectExamByIdAsync(It.IsAny<Guid>()),
@@ -47,8 +50,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 broker.DeleteExamAsync(It.IsAny<Exam>()),
                     Times.Never);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 

@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             {
                 throw CreateAndLogValidationException(nullExamException);
             }
-            catch (InvalidExamInputException invalidExamInputException)
+            catch (InvalidExamException invalidExamInputException)
             {
                 throw CreateAndLogValidationException(invalidExamInputException);
             }
