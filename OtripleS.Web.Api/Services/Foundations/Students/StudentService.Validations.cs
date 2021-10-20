@@ -27,27 +27,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
                 (Rule: IsInvalidX(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
                 (Rule: IsInvalidX(student.UpdatedDate), Parameter: nameof(Student.UpdatedDate)),
                 (Rule: IsNotRecent(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
-
                 (Rule: IsNotSame(
-                    firstId: student.UpdatedBy,
-                    secondId: student.CreatedBy,
-                    secondIdName: nameof(Student.CreatedBy)),
-                Parameter: nameof(Student.UpdatedBy)),
-
+                        firstId: student.UpdatedBy,
+                        secondId: student.CreatedBy,
+                        secondIdName: nameof(Student.CreatedBy)),
+                    Parameter: nameof(Student.UpdatedBy)),
                 (Rule: IsNotSame(
-                    firstDate: student.UpdatedDate,
-                    secondDate: student.CreatedDate,
-                    secondDateName: nameof(Student.CreatedDate)),
-                Parameter: nameof(Student.UpdatedDate))
+                        firstDate: student.UpdatedDate,
+                        secondDate: student.CreatedDate,
+                        secondDateName: nameof(Student.CreatedDate)),
+                    Parameter: nameof(Student.UpdatedDate))
             );
-        }
-
-        private static void ValidateStudentIsNotNull(Student student)
-        {
-            if (student is null)
-            {
-                throw new NullStudentException();
-            }
         }
 
         private static dynamic IsInvalidX(Guid id) => new
@@ -72,19 +62,28 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             Guid firstId,
             Guid secondId,
             string secondIdName) => new
-            {
-                Condition = firstId != secondId,
-                Message = $"Id is not the same as {secondIdName}"
-            };
+        {
+            Condition = firstId != secondId,
+            Message = $"Id is not the same as {secondIdName}"
+        };
 
         private static dynamic IsNotSame(
             DateTimeOffset firstDate,
             DateTimeOffset secondDate,
             string secondDateName) => new
-            {
-                Condition = firstDate != secondDate,
-                Message = $"Date is not the same as {secondDateName}"
-            };
+        {
+            Condition = firstDate != secondDate,
+            Message = $"Date is not the same as {secondDateName}"
+        };
+        
+        private static dynamic IsSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+        {
+            Condition = firstDate == secondDate,
+            Message = $"Date is the same as {secondDateName}"
+        };
 
         private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
         {
@@ -127,136 +126,47 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             }
         }
 
-        private void ValidateStudentOnCreate(Student student)
-        {
-            switch (student)
-            {
-                case null:
-                    throw new NullStudentException();
-
-                case { } when IsInvalid(student.Id):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.Id),
-                        parameterValue: student.Id);
-
-                case { } when IsInvalid(student.CreatedBy):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.CreatedBy),
-                        parameterValue: student.CreatedBy);
-
-                case { } when IsInvalid(student.UpdatedBy):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.UpdatedBy),
-                        parameterValue: student.UpdatedBy);
-
-                case { } when IsInvalid(student.UserId):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(student.UserId),
-                        parameterValue: student.UserId);
-
-                case { } when IsInvalid(student.IdentityNumber):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(student.IdentityNumber),
-                        parameterValue: student.IdentityNumber);
-
-                case { } when IsInvalid(student.FirstName):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(student.FirstName),
-                        parameterValue: student.FirstName);
-
-                case { } when IsInvalid(student.BirthDate):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.BirthDate),
-                        parameterValue: student.BirthDate);
-
-                case { } when IsNotSame(student.CreatedBy, student.UpdatedBy):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.UpdatedBy),
-                        parameterValue: student.UpdatedBy);
-
-                case { } when IsNotSame(student.CreatedDate, student.UpdatedDate):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.UpdatedDate),
-                        parameterValue: student.UpdatedDate);
-
-                case { } when IsDateNotRecent(student.CreatedDate):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.CreatedDate),
-                        parameterValue: student.CreatedDate);
-            }
-        }
-
         private void ValidateStudentOnModify(Student student)
         {
             ValidateStudent(student);
-            ValidateStudentId(student.Id);
-            ValidateStudentStrings(student);
-            ValidateStudentDates(student);
-            ValidateStudentIds(student);
-            ValidateDatesAreNotSame(student);
-            ValidateUpdatedDateIsRecent(student);
+            Validate(
+                (Rule: IsInvalidX(student.Id), Parameter: nameof(Student.Id)),
+                (Rule: IsInvalidX(student.UserId), Parameter: nameof(Student.UserId)),
+                (Rule: IsInvalidX(student.IdentityNumber), Parameter: nameof(Student.IdentityNumber)),
+                (Rule: IsInvalidX(student.FirstName), Parameter: nameof(Student.FirstName)),
+                (Rule: IsInvalidX(student.BirthDate), Parameter: nameof(Student.BirthDate)),
+                (Rule: IsInvalidX(student.CreatedBy), Parameter: nameof(Student.CreatedBy)),
+                (Rule: IsInvalidX(student.UpdatedBy), Parameter: nameof(Student.UpdatedBy)),
+                (Rule: IsInvalidX(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
+                (Rule: IsInvalidX(student.UpdatedDate), Parameter: nameof(Student.UpdatedDate)),
+                (Rule: IsNotRecent(student.UpdatedDate), Parameter: nameof(Student.UpdatedDate)),
+                (Rule: IsSame(
+                        firstDate: student.UpdatedDate,
+                        secondDate: student.CreatedDate,
+                        secondDateName: nameof(Student.CreatedDate)),
+                    Parameter: nameof(Student.UpdatedDate))
+            );
         }
 
-        public void ValidateAginstStorageStudentOnModify(Student inputStudent, Student storageStudent)
+        public void ValidateAgainstStorageStudentOnModify(Student inputStudent, Student storageStudent)
         {
-            switch (inputStudent)
-            {
-                case { } when inputStudent.CreatedDate != storageStudent.CreatedDate:
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.CreatedDate),
-                        parameterValue: inputStudent.CreatedDate);
-
-                case { } when inputStudent.CreatedBy != storageStudent.CreatedBy:
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.CreatedBy),
-                        parameterValue: inputStudent.CreatedBy);
-
-                case { } when inputStudent.UpdatedDate == storageStudent.UpdatedDate:
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.UpdatedDate),
-                        parameterValue: inputStudent.UpdatedDate);
-            }
-        }
-
-        private static void ValidateStudentStrings(Student student)
-        {
-            switch (student)
-            {
-                case { } when IsInvalid(student.UserId):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(student.UserId),
-                        parameterValue: student.UserId);
-
-                case { } when IsInvalid(student.IdentityNumber):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(student.IdentityNumber),
-                        parameterValue: student.IdentityNumber);
-
-                case { } when IsInvalid(student.FirstName):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(student.FirstName),
-                        parameterValue: student.FirstName);
-            }
-        }
-
-        private static void ValidateDatesAreNotSame(Student student)
-        {
-            if (student.CreatedDate == student.UpdatedDate)
-            {
-                throw new InvalidStudentException(
-                    parameterName: nameof(Student.CreatedDate),
-                    parameterValue: student.CreatedDate);
-            }
-        }
-
-        private void ValidateUpdatedDateIsRecent(Student student)
-        {
-            if (IsDateNotRecent(student.UpdatedDate))
-            {
-                throw new InvalidStudentException(
-                    parameterName: nameof(student.UpdatedDate),
-                    parameterValue: student.UpdatedDate);
-            }
+            Validate(
+                (Rule: IsNotSame(
+                        firstDate: inputStudent.CreatedDate,
+                        secondDate: storageStudent.CreatedDate,
+                        secondDateName: nameof(Student.CreatedDate)),
+                    Parameter: nameof(Student.CreatedDate)),
+                (Rule: IsSame(
+                        firstDate: inputStudent.UpdatedDate,
+                        secondDate: storageStudent.UpdatedDate,
+                        secondDateName: nameof(Student.UpdatedDate)),
+                    Parameter: nameof(Student.UpdatedDate)),
+                (Rule: IsNotSame(
+                        firstId: inputStudent.CreatedBy,
+                        secondId: storageStudent.CreatedBy,
+                        secondIdName: nameof(Student.CreatedBy)),
+                    Parameter: nameof(Student.CreatedBy))
+            );
         }
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
@@ -267,44 +177,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
-
-        private static void ValidateStudentDates(Student student)
-        {
-            switch (student)
-            {
-                case { } when student.BirthDate == default:
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.BirthDate),
-                        parameterValue: student.BirthDate);
-
-                case { } when student.CreatedDate == default:
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.CreatedDate),
-                        parameterValue: student.CreatedDate);
-
-                case { } when student.UpdatedDate == default:
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.UpdatedDate),
-                        parameterValue: student.UpdatedDate);
-            }
-        }
-
-        private static void ValidateStudentIds(Student student)
-        {
-            switch (student)
-            {
-                case { } when IsInvalid(student.CreatedBy):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.CreatedBy),
-                        parameterValue: student.CreatedBy);
-
-                case { } when IsInvalid(student.UpdatedBy):
-                    throw new InvalidStudentException(
-                        parameterName: nameof(Student.UpdatedBy),
-                        parameterValue: student.UpdatedBy);
-            }
-        }
-
         private static void ValidateStudent(Student student)
         {
             if (student is null)
@@ -321,13 +193,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             }
         }
 
-        private static bool IsNotSame(Guid firstId, Guid secondId) => firstId != secondId;
-
-        private static bool IsNotSame(DateTimeOffset firstDate, DateTimeOffset secondDate) =>
-            firstDate != secondDate;
-
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(Guid input) => input == default;
-        private static bool IsInvalid(DateTimeOffset date) => date == default;
     }
 }
