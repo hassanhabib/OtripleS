@@ -108,10 +108,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         public async void ShouldThrowValidationExceptionOnAddWhenExamTypeIsInvalidAndLogItAsync()
         {
             // given
-            var invalidExam = new Exam
-            {
-                Type = GetInValidExamType()
-            };
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Exam randomExam = CreateRandomExam(dateTime);
+            var invalidExam = randomExam;
+            invalidExam.Type = GetInValidExamType();
 
             var invalidExamException = new InvalidExamException();
 
