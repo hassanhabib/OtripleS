@@ -144,8 +144,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 new StudentValidationException(invalidStudentException);
 
             this.dateTimeBrokerMock.Setup(broker =>
-                    broker.GetCurrentDateTime())
-                .Returns(DateTimeOffset.UtcNow);
+                broker.GetCurrentDateTime())
+                    .Returns(DateTimeOffset.UtcNow);
 
             // when
             ValueTask<Student> modifyStudentTask =
@@ -225,12 +225,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 new StudentValidationException(notFoundStudentException);
 
             this.storageBrokerMock.Setup(broker =>
-                    broker.SelectStudentByIdAsync(nonExistentStudent.Id))
-                .ReturnsAsync(noStudent);
+                broker.SelectStudentByIdAsync(nonExistentStudent.Id))
+                    .ReturnsAsync(noStudent);
 
             this.dateTimeBrokerMock.Setup(broker =>
-                    broker.GetCurrentDateTime())
-                .Returns(randomDateTime);
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
 
             // when
             ValueTask<Student> modifyStudentTask =
