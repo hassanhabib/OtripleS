@@ -91,7 +91,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 values: "Date is required");
 
             invalidStudentException.AddData(
-                key: nameof(Student.UpdatedDate), 
+                key: nameof(Student.UpdatedDate),
                 "Date is required",
                 $"Date is the same as {nameof(Student.CreatedDate)}");
 
@@ -310,7 +310,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 broker.GetCurrentDateTime(),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker => 
+            this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentByIdAsync(invalidStudent.Id),
                     Times.Once);
 
