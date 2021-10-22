@@ -18,10 +18,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<SemesterCourse> InsertSemesterCourseAsync(SemesterCourse semesterCourse)
         {
-            EntityEntry<SemesterCourse> semesterCourseEntityEntry =
-                await this.SemesterCourses.AddAsync(semesterCourse);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<SemesterCourse> semesterCourseEntityEntry =
+                await broker.SemesterCourses.AddAsync(semesterCourse);
+
+            await broker.SaveChangesAsync();
 
             return semesterCourseEntityEntry.Entity;
         }
@@ -31,25 +33,29 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<SemesterCourse> SelectSemesterCourseByIdAsync(Guid semesterCourseId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await SemesterCourses.FindAsync(semesterCourseId);
+            return await broker.SemesterCourses.FindAsync(semesterCourseId);
         }
 
         public async ValueTask<SemesterCourse> UpdateSemesterCourseAsync(SemesterCourse semesterCourse)
         {
-            EntityEntry<SemesterCourse> semesterCourseEntityEntry =
-                this.SemesterCourses.Update(semesterCourse);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<SemesterCourse> semesterCourseEntityEntry =
+                broker.SemesterCourses.Update(semesterCourse);
+
+            await broker.SaveChangesAsync();
 
             return semesterCourseEntityEntry.Entity;
         }
 
         public async ValueTask<SemesterCourse> DeleteSemesterCourseAsync(SemesterCourse semesterCourse)
         {
-            EntityEntry<SemesterCourse> semesterCourseEntityEntry = this.SemesterCourses.Remove(semesterCourse);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<SemesterCourse> semesterCourseEntityEntry = broker.SemesterCourses.Remove(semesterCourse);
+            await broker.SaveChangesAsync();
 
             return semesterCourseEntityEntry.Entity;
         }
