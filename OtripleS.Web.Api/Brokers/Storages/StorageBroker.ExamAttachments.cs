@@ -19,10 +19,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<ExamAttachment> InsertExamAttachmentAsync(
             ExamAttachment examAttachment)
         {
-            EntityEntry<ExamAttachment> examAttachmentEntityEntry =
-                await this.ExamAttachments.AddAsync(examAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<ExamAttachment> examAttachmentEntityEntry =
+                await broker.ExamAttachments.AddAsync(examAttachment);
+
+            await broker.SaveChangesAsync();
 
             return examAttachmentEntityEntry.Entity;
         }
@@ -34,18 +36,21 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid examId,
             Guid attachmentId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await this.ExamAttachments.FindAsync(examId, attachmentId);
+            return await broker.ExamAttachments.FindAsync(examId, attachmentId);
         }
 
         public async ValueTask<ExamAttachment> UpdateExamAttachmentAsync(
             ExamAttachment examAttachment)
         {
-            EntityEntry<ExamAttachment> examAttachmentEntityEntry =
-                this.ExamAttachments.Update(examAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<ExamAttachment> examAttachmentEntityEntry =
+                broker.ExamAttachments.Update(examAttachment);
+
+            await broker.SaveChangesAsync();
 
             return examAttachmentEntityEntry.Entity;
         }
@@ -53,10 +58,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<ExamAttachment> DeleteExamAttachmentAsync(
             ExamAttachment examAttachment)
         {
-            EntityEntry<ExamAttachment> examAttachmentEntityEntry =
-                this.ExamAttachments.Remove(examAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<ExamAttachment> examAttachmentEntityEntry =
+                broker.ExamAttachments.Remove(examAttachment);
+
+            await broker.SaveChangesAsync();
 
             return examAttachmentEntityEntry.Entity;
         }
