@@ -14,8 +14,8 @@ using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class GuardiansController : RESTFulController
     {
         private readonly IGuardianService guardianService;
