@@ -19,10 +19,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<UserContact> InsertUserContactAsync(
             UserContact UserContact)
         {
-            EntityEntry<UserContact> UserContactEntityEntry =
-                await this.UserContacts.AddAsync(UserContact);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<UserContact> UserContactEntityEntry =
+                await broker.UserContacts.AddAsync(UserContact);
+
+            await broker.SaveChangesAsync();
 
             return UserContactEntityEntry.Entity;
         }
@@ -34,18 +36,21 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid userId,
             Guid contactId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await this.UserContacts.FindAsync(userId, contactId);
+            return await broker.UserContacts.FindAsync(userId, contactId);
         }
 
         public async ValueTask<UserContact> UpdateUserContactAsync(
             UserContact UserContact)
         {
-            EntityEntry<UserContact> UserContactEntityEntry =
-                this.UserContacts.Update(UserContact);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<UserContact> UserContactEntityEntry =
+                broker.UserContacts.Update(UserContact);
+
+            await broker.SaveChangesAsync();
 
             return UserContactEntityEntry.Entity;
         }
@@ -53,10 +58,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<UserContact> DeleteUserContactAsync(
             UserContact UserContact)
         {
-            EntityEntry<UserContact> UserContactEntityEntry =
-                this.UserContacts.Remove(UserContact);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<UserContact> UserContactEntityEntry =
+                broker.UserContacts.Remove(UserContact);
+
+            await broker.SaveChangesAsync();
 
             return UserContactEntityEntry.Entity;
         }
