@@ -146,10 +146,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
         public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            var randomAttachmentId = Guid.NewGuid();
-            var randomTeacherId = Guid.NewGuid();
-            Guid someAttachmentId = randomAttachmentId;
-            Guid someTeacherId = randomTeacherId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someTeacherId = Guid.NewGuid();
             var exception = new Exception();
             var expectedTeacherAttachmentException = new TeacherAttachmentServiceException(exception);
 

@@ -71,10 +71,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         public async Task ShouldRemoveTeacherContactAsync()
         {
             // given
-            var randomTeacherId = Guid.NewGuid();
-            var randomContactId = Guid.NewGuid();
-            Guid inputTeacherId = randomTeacherId;
-            Guid inputContactId = randomContactId;
+            Guid inputTeacherId = Guid.NewGuid();
+            Guid inputContactId = Guid.NewGuid();
             DateTimeOffset inputDateTime = GetRandomDateTime();
             TeacherContact randomTeacherContact = CreateRandomTeacherContact(inputDateTime);
             randomTeacherContact.TeacherId = inputTeacherId;

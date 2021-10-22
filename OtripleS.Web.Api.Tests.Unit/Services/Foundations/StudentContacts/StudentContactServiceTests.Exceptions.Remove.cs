@@ -20,10 +20,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomStudentId = Guid.NewGuid();
-            Guid someContactId = randomContactId;
-            Guid someStudentId = randomStudentId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
             var expectedStudentContactDependencyException
@@ -63,10 +61,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomStudentId = Guid.NewGuid();
-            Guid someContactId = randomContactId;
-            Guid someStudentId = randomStudentId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedStudentContactDependencyException =
@@ -105,10 +101,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomStudentId = Guid.NewGuid();
-            Guid someContactId = randomContactId;
-            Guid someStudentId = randomStudentId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
             var lockedContactException =
@@ -149,10 +143,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
         public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomStudentId = Guid.NewGuid();
-            Guid someContactId = randomContactId;
-            Guid someStudentId = randomStudentId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             var exception = new Exception();
 
             var expectedStudentContactException =

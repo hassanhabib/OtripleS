@@ -97,10 +97,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomUserId = Guid.NewGuid();
-            Guid inputContactId = randomContactId;
-            Guid inputUserId = randomUserId;
+            Guid inputContactId = Guid.NewGuid();
+            Guid inputUserId = Guid.NewGuid();
             var exception = new Exception();
 
             var expectedUserContactException =

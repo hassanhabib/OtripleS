@@ -20,10 +20,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomGuardianId = Guid.NewGuid();
-            Guid someContactId = randomContactId;
-            Guid someGuardianId = randomGuardianId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someGuardianId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
             var expectedGuardianContactDependencyException
@@ -63,10 +61,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomGuardianId = Guid.NewGuid();
-            Guid someContactId = randomContactId;
-            Guid someGuardianId = randomGuardianId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someGuardianId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedGuardianContactDependencyException =
@@ -105,10 +101,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomGuardianId = Guid.NewGuid();
-            Guid someContactId = randomContactId;
-            Guid someGuardianId = randomGuardianId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someGuardianId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
             var lockedContactException =
@@ -149,10 +143,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomGuardianId = Guid.NewGuid();
-            Guid someContactId = randomContactId;
-            Guid someGuardianId = randomGuardianId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someGuardianId = Guid.NewGuid();
             var exception = new Exception();
 
             var expectedGuardianContactException =

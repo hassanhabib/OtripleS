@@ -20,10 +20,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            var randomAttachmentId = Guid.NewGuid();
-            var randomStudentId = Guid.NewGuid();
-            Guid someAttachmentId = randomAttachmentId;
-            Guid someStudentId = randomStudentId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
             var expectedStudentAttachmentDependencyException
@@ -63,10 +61,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            var randomAttachmentId = Guid.NewGuid();
-            var randomStudentId = Guid.NewGuid();
-            Guid someAttachmentId = randomAttachmentId;
-            Guid someStudentId = randomStudentId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedStudentAttachmentDependencyException =
@@ -105,10 +101,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            var randomAttachmentId = Guid.NewGuid();
-            var randomStudentId = Guid.NewGuid();
-            Guid someAttachmentId = randomAttachmentId;
-            Guid someStudentId = randomStudentId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
             var lockedAttachmentException =
@@ -149,10 +143,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
         public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            var randomAttachmentId = Guid.NewGuid();
-            var randomStudentId = Guid.NewGuid();
-            Guid someAttachmentId = randomAttachmentId;
-            Guid someStudentId = randomStudentId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             var exception = new Exception();
 
             var expectedStudentAttachmentException =
