@@ -53,7 +53,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             TeacherContact inputTeacherContact = randomTeacherContact;
             inputTeacherContact.TeacherId = default;
 
-            var invalidTeacherContactInputException = new InvalidTeacherContactInputException(
+            var invalidTeacherContactInputException = new InvalidTeacherContactException(
                 parameterName: nameof(TeacherContact.TeacherId),
                 parameterValue: inputTeacherContact.TeacherId);
 
@@ -88,7 +88,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             TeacherContact inputTeacherContact = randomTeacherContact;
             inputTeacherContact.ContactId = default;
 
-            var invalidTeacherContactInputException = new InvalidTeacherContactInputException(
+            var invalidTeacherContactInputException = new InvalidTeacherContactException(
                 parameterName: nameof(TeacherContact.ContactId),
                 parameterValue: inputTeacherContact.ContactId);
 
