@@ -18,8 +18,9 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Exam> InsertExamAsync(Exam exam)
         {
-            EntityEntry<Exam> examEntityEntry = await this.Exams.AddAsync(exam);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Exam> examEntityEntry = await broker.Exams.AddAsync(exam);
+            await broker.SaveChangesAsync();
 
             return examEntityEntry.Entity;
         }
@@ -28,23 +29,26 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Exam> SelectExamByIdAsync(Guid examId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await Exams.FindAsync(examId);
+            return await broker.Exams.FindAsync(examId);
         }
 
         public async ValueTask<Exam> UpdateExamAsync(Exam exam)
         {
-            EntityEntry<Exam> examEntityEntry = this.Exams.Update(exam);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Exam> examEntityEntry = broker.Exams.Update(exam);
+            await broker.SaveChangesAsync();
 
             return examEntityEntry.Entity;
         }
 
         public async ValueTask<Exam> DeleteExamAsync(Exam exam)
         {
-            EntityEntry<Exam> examEntityEntry = this.Exams.Remove(exam);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Exam> examEntityEntry = broker.Exams.Remove(exam);
+            await broker.SaveChangesAsync();
 
             return examEntityEntry.Entity;
         }
