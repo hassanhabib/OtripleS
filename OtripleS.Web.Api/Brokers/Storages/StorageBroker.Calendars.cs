@@ -18,10 +18,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Calendar> InsertCalendarAsync(Calendar calendar)
         {
-            EntityEntry<Calendar> calendarEntityEntry =
-                await this.Calendars.AddAsync(calendar);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<Calendar> calendarEntityEntry =
+                await broker.Calendars.AddAsync(calendar);
+
+            await broker.SaveChangesAsync();
 
             return calendarEntityEntry.Entity;
         }
@@ -30,7 +32,9 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Calendar> SelectCalendarByIdAsync(Guid calendarId)
         {
-            this.ChangeTracker.QueryTrackingBehavior =
+            using var broker = new StorageBroker(this.configuration);
+
+            broker.ChangeTracker.QueryTrackingBehavior =
                 QueryTrackingBehavior.NoTracking;
 
             return await Calendars.FindAsync(calendarId);
@@ -38,20 +42,24 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Calendar> UpdateCalendarAsync(Calendar calendar)
         {
-            EntityEntry<Calendar> calendarEntityEntry =
-                this.Calendars.Update(calendar);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<Calendar> calendarEntityEntry =
+                broker.Calendars.Update(calendar);
+
+            await broker.SaveChangesAsync();
 
             return calendarEntityEntry.Entity;
         }
 
         public async ValueTask<Calendar> DeleteCalendarAsync(Calendar calendar)
         {
-            EntityEntry<Calendar> calendarEntityEntry =
-                this.Calendars.Remove(calendar);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<Calendar> calendarEntityEntry =
+                broker.Calendars.Remove(calendar);
+
+            await broker.SaveChangesAsync();
 
             return calendarEntityEntry.Entity;
         }
