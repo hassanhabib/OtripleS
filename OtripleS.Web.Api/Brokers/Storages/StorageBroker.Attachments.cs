@@ -17,8 +17,9 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public DbSet<Attachment> Attachments { get; set; }
         public async ValueTask<Attachment> InsertAttachmentAsync(Attachment attachment)
         {
-            EntityEntry<Attachment> attachmentEntityEntry = await this.Attachments.AddAsync(attachment);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Attachment> attachmentEntityEntry = await broker.Attachments.AddAsync(attachment);
+            await broker.SaveChangesAsync();
 
             return attachmentEntityEntry.Entity;
         }
@@ -27,23 +28,26 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Attachment> SelectAttachmentByIdAsync(Guid attachmentId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await Attachments.FindAsync(attachmentId);
         }
 
         public async ValueTask<Attachment> UpdateAttachmentAsync(Attachment attachment)
         {
-            EntityEntry<Attachment> attachmentEntityEntry = this.Attachments.Update(attachment);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Attachment> attachmentEntityEntry = broker.Attachments.Update(attachment);
+            await broker.SaveChangesAsync();
 
             return attachmentEntityEntry.Entity;
         }
 
         public async ValueTask<Attachment> DeleteAttachmentAsync(Attachment attachment)
         {
-            EntityEntry<Attachment> attachmentEntityEntry = this.Attachments.Remove(attachment);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Attachment> attachmentEntityEntry = broker.Attachments.Remove(attachment);
+            await broker.SaveChangesAsync();
 
             return attachmentEntityEntry.Entity;
         }
