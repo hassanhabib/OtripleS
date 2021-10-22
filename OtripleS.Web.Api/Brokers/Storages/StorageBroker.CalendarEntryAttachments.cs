@@ -19,10 +19,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<CalendarEntryAttachment> InsertCalendarEntryAttachmentAsync(
             CalendarEntryAttachment calendarEntryAttachment)
         {
-            EntityEntry<CalendarEntryAttachment> calendarEntryAttachmentEntityEntry =
-                await this.CalendarEntriesAttachments.AddAsync(calendarEntryAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<CalendarEntryAttachment> calendarEntryAttachmentEntityEntry =
+                await broker.CalendarEntriesAttachments.AddAsync(calendarEntryAttachment);
+
+            await broker.SaveChangesAsync();
 
             return calendarEntryAttachmentEntityEntry.Entity;
         }
@@ -34,18 +36,22 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid calendarEntryId,
             Guid attachmentId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
 
-            return await this.CalendarEntriesAttachments.FindAsync(calendarEntryId, attachmentId);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
+            return await broker.CalendarEntriesAttachments.FindAsync(calendarEntryId, attachmentId);
         }
 
         public async ValueTask<CalendarEntryAttachment> UpdateCalendarEntryAttachmentAsync(
             CalendarEntryAttachment calendarEntryAttachment)
         {
-            EntityEntry<CalendarEntryAttachment> calendarEntryAttachmentEntityEntry =
-                this.CalendarEntriesAttachments.Update(calendarEntryAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<CalendarEntryAttachment> calendarEntryAttachmentEntityEntry =
+                broker.CalendarEntriesAttachments.Update(calendarEntryAttachment);
+
+            await broker.SaveChangesAsync();
 
             return calendarEntryAttachmentEntityEntry.Entity;
         }
@@ -53,10 +59,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<CalendarEntryAttachment> DeleteCalendarEntryAttachmentAsync(
             CalendarEntryAttachment calendarEntryAttachment)
         {
-            EntityEntry<CalendarEntryAttachment> calendarEntryAttachmentEntityEntry =
-                this.CalendarEntriesAttachments.Remove(calendarEntryAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<CalendarEntryAttachment> calendarEntryAttachmentEntityEntry =
+                broker.CalendarEntriesAttachments.Remove(calendarEntryAttachment);
+
+            await broker.SaveChangesAsync();
 
             return calendarEntryAttachmentEntityEntry.Entity;
         }
