@@ -19,10 +19,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<CourseAttachment> InsertCourseAttachmentAsync(
             CourseAttachment courseAttachment)
         {
-            EntityEntry<CourseAttachment> courseAttachmentEntityEntry =
-                await this.CourseAttachments.AddAsync(courseAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<CourseAttachment> courseAttachmentEntityEntry =
+                await broker.CourseAttachments.AddAsync(courseAttachment);
+
+            await broker.SaveChangesAsync();
 
             return courseAttachmentEntityEntry.Entity;
         }
@@ -34,18 +36,21 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid courseId,
             Guid attachmentId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await this.CourseAttachments.FindAsync(courseId, attachmentId);
+            return await broker.CourseAttachments.FindAsync(courseId, attachmentId);
         }
 
         public async ValueTask<CourseAttachment> UpdateCourseAttachmentAsync(
             CourseAttachment courseAttachment)
         {
-            EntityEntry<CourseAttachment> courseAttachmentEntityEntry =
-                this.CourseAttachments.Update(courseAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<CourseAttachment> courseAttachmentEntityEntry =
+                broker.CourseAttachments.Update(courseAttachment);
+
+            await broker.SaveChangesAsync();
 
             return courseAttachmentEntityEntry.Entity;
         }
@@ -53,10 +58,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<CourseAttachment> DeleteCourseAttachmentAsync(
             CourseAttachment courseAttachment)
         {
-            EntityEntry<CourseAttachment> courseAttachmentEntityEntry =
-                this.CourseAttachments.Remove(courseAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<CourseAttachment> courseAttachmentEntityEntry =
+                broker.CourseAttachments.Remove(courseAttachment);
+
+            await broker.SaveChangesAsync();
 
             return courseAttachmentEntityEntry.Entity;
         }
