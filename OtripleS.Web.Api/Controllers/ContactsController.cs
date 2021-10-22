@@ -14,9 +14,9 @@ using OtripleS.Web.Api.Services.Foundations.Contacts;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers
-{
-    [Route("api/[controller]")]
+{    
     [ApiController]
+    [Route("api/[controller]")]
     public class ContactsController : RESTFulController
     {
         private readonly IContactService contactService;
