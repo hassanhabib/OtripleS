@@ -17,14 +17,16 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public DbSet<GuardianAttachment> GuardianAttachments { get; set; }
 
         public async ValueTask<GuardianAttachment> InsertGuardianAttachmentAsync(
-            GuardianAttachment guradianAttachment)
+            GuardianAttachment guardianAttachment)
         {
-            EntityEntry<GuardianAttachment> guradianAttachmentEntityEntry =
-                await this.GuardianAttachments.AddAsync(guradianAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<GuardianAttachment> guardianAttachmentEntityEntry =
+                await broker.GuardianAttachments.AddAsync(guardianAttachment);
 
-            return guradianAttachmentEntityEntry.Entity;
+            await broker.SaveChangesAsync();
+
+            return guardianAttachmentEntityEntry.Entity;
         }
 
         public IQueryable<GuardianAttachment> SelectAllGuardianAttachments() =>
@@ -34,31 +36,36 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid guradianId,
             Guid attachmentId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await this.GuardianAttachments.FindAsync(guradianId, attachmentId);
+            return await broker.GuardianAttachments.FindAsync(guradianId, attachmentId);
         }
 
         public async ValueTask<GuardianAttachment> UpdateGuardianAttachmentAsync(
-            GuardianAttachment guradianAttachment)
+            GuardianAttachment guardianAttachment)
         {
-            EntityEntry<GuardianAttachment> guradianAttachmentEntityEntry =
-                this.GuardianAttachments.Update(guradianAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<GuardianAttachment> guardianAttachmentEntityEntry =
+                broker.GuardianAttachments.Update(guardianAttachment);
 
-            return guradianAttachmentEntityEntry.Entity;
+            await broker.SaveChangesAsync();
+
+            return guardianAttachmentEntityEntry.Entity;
         }
 
         public async ValueTask<GuardianAttachment> DeleteGuardianAttachmentAsync(
-            GuardianAttachment guradianAttachment)
+            GuardianAttachment guardianAttachment)
         {
-            EntityEntry<GuardianAttachment> guradianAttachmentEntityEntry =
-                this.GuardianAttachments.Remove(guradianAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<GuardianAttachment> guardianAttachmentEntityEntry =
+                broker.GuardianAttachments.Remove(guardianAttachment);
 
-            return guradianAttachmentEntityEntry.Entity;
+            await broker.SaveChangesAsync();
+
+            return guardianAttachmentEntityEntry.Entity;
         }
     }
 }
