@@ -19,10 +19,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<StudentContact> InsertStudentContactAsync(
             StudentContact StudentContact)
         {
-            EntityEntry<StudentContact> StudentContactEntityEntry =
-                await this.StudentContacts.AddAsync(StudentContact);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<StudentContact> StudentContactEntityEntry =
+                await broker.StudentContacts.AddAsync(StudentContact);
+
+            await broker.SaveChangesAsync();
 
             return StudentContactEntityEntry.Entity;
         }
@@ -34,18 +36,21 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid studentId,
             Guid contactId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await this.StudentContacts.FindAsync(studentId, contactId);
+            return await broker.StudentContacts.FindAsync(studentId, contactId);
         }
 
         public async ValueTask<StudentContact> UpdateStudentContactAsync(
             StudentContact StudentContact)
         {
-            EntityEntry<StudentContact> StudentContactEntityEntry =
-                this.StudentContacts.Update(StudentContact);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<StudentContact> StudentContactEntityEntry =
+                broker.StudentContacts.Update(StudentContact);
+
+            await broker.SaveChangesAsync();
 
             return StudentContactEntityEntry.Entity;
         }
@@ -53,10 +58,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<StudentContact> DeleteStudentContactAsync(
             StudentContact StudentContact)
         {
-            EntityEntry<StudentContact> StudentContactEntityEntry =
-                this.StudentContacts.Remove(StudentContact);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<StudentContact> StudentContactEntityEntry =
+                broker.StudentContacts.Remove(StudentContact);
+
+            await broker.SaveChangesAsync();
 
             return StudentContactEntityEntry.Entity;
         }
