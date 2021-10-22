@@ -18,8 +18,9 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Teacher> InsertTeacherAsync(Teacher teacher)
         {
-            EntityEntry<Teacher> teacherEntityEntry = await this.Teachers.AddAsync(teacher);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Teacher> teacherEntityEntry = await broker.Teachers.AddAsync(teacher);
+            await broker.SaveChangesAsync();
 
             return teacherEntityEntry.Entity;
         }
@@ -28,23 +29,26 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Teacher> SelectTeacherByIdAsync(Guid teacherId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await Teachers.FindAsync(teacherId);
+            return await broker.Teachers.FindAsync(teacherId);
         }
 
         public async ValueTask<Teacher> UpdateTeacherAsync(Teacher teacher)
         {
-            EntityEntry<Teacher> teacherEntityEntry = this.Teachers.Update(teacher);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Teacher> teacherEntityEntry = broker.Teachers.Update(teacher);
+            await broker.SaveChangesAsync();
 
             return teacherEntityEntry.Entity;
         }
 
         public async ValueTask<Teacher> DeleteTeacherAsync(Teacher teacher)
         {
-            EntityEntry<Teacher> teacherEntityEntry = this.Teachers.Remove(teacher);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Teacher> teacherEntityEntry = broker.Teachers.Remove(teacher);
+            await broker.SaveChangesAsync();
 
             return teacherEntityEntry.Entity;
         }
