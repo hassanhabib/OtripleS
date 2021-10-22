@@ -18,10 +18,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<StudentGuardian> InsertStudentGuardianAsync(StudentGuardian studentGuardian)
         {
-            EntityEntry<StudentGuardian> studentGuardianEntityEntry =
-                await this.StudentGuardians.AddAsync(studentGuardian);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<StudentGuardian> studentGuardianEntityEntry =
+                await broker.StudentGuardians.AddAsync(studentGuardian);
+
+            await broker.SaveChangesAsync();
 
             return studentGuardianEntityEntry.Entity;
         }
@@ -31,27 +33,32 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<StudentGuardian> SelectStudentGuardianByIdAsync(Guid studentId, Guid guardianId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await this.StudentGuardians.FindAsync(studentId, guardianId);
+            return await broker.StudentGuardians.FindAsync(studentId, guardianId);
         }
 
         public async ValueTask<StudentGuardian> UpdateStudentGuardianAsync(StudentGuardian studentGuardian)
         {
-            EntityEntry<StudentGuardian> studentGuardianEntityEntry =
-                this.StudentGuardians.Update(studentGuardian);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<StudentGuardian> studentGuardianEntityEntry =
+                broker.StudentGuardians.Update(studentGuardian);
+
+            await broker.SaveChangesAsync();
 
             return studentGuardianEntityEntry.Entity;
         }
 
         public async ValueTask<StudentGuardian> DeleteStudentGuardianAsync(StudentGuardian studentGuardian)
         {
-            EntityEntry<StudentGuardian> studentGuardianEntityEntry =
-                this.StudentGuardians.Remove(studentGuardian);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<StudentGuardian> studentGuardianEntityEntry =
+                broker.StudentGuardians.Remove(studentGuardian);
+
+            await broker.SaveChangesAsync();
 
             return studentGuardianEntityEntry.Entity;
         }
