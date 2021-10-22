@@ -19,10 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
         public async Task ShouldRemoveExamAttachmentAsync()
         {
             // given
-            var randomExamId = Guid.NewGuid();
-            var randomAttachmentId = Guid.NewGuid();
-            Guid inputExamId = randomExamId;
-            Guid inputAttachmentId = randomAttachmentId;
+            Guid inputExamId = Guid.NewGuid();
+            Guid inputAttachmentId = Guid.NewGuid();
             ExamAttachment randomExamAttachment = CreateRandomExamAttachment();
             randomExamAttachment.ExamId = inputExamId;
             randomExamAttachment.AttachmentId = inputAttachmentId;
