@@ -63,10 +63,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            var randomAttachmentId = Guid.NewGuid();
-            var randomGuardianId = Guid.NewGuid();
-            Guid someAttachmentId = randomAttachmentId;
-            Guid someGuardianId = randomGuardianId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someGuardianId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedGuardianAttachmentDependencyException =
@@ -105,10 +103,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            var randomAttachmentId = Guid.NewGuid();
-            var randomGuardianId = Guid.NewGuid();
-            Guid someAttachmentId = randomAttachmentId;
-            Guid someGuardianId = randomGuardianId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someGuardianId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
             var lockedAttachmentException =
@@ -149,10 +145,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            var randomAttachmentId = Guid.NewGuid();
-            var randomGuardianId = Guid.NewGuid();
-            Guid someAttachmentId = randomAttachmentId;
-            Guid someGuardianId = randomGuardianId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someGuardianId = Guid.NewGuid();
             var exception = new Exception();
 
             var expectedGuardianAttachmentException =

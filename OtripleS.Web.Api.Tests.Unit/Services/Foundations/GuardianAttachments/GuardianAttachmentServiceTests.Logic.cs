@@ -106,10 +106,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         public async Task ShouldRemoveGuardianAttachmentAsync()
         {
             // given
-            var randomGuardianId = Guid.NewGuid();
-            var randomAttachmentId = Guid.NewGuid();
-            Guid inputGuardianId = randomGuardianId;
-            Guid inputAttachmentId = randomAttachmentId;
+            Guid inputGuardianId = Guid.NewGuid();
+            Guid inputAttachmentId = Guid.NewGuid();
             DateTimeOffset inputDateTime = GetRandomDateTime();
             GuardianAttachment randomGuardianAttachment = CreateRandomGuardianAttachment(inputDateTime);
             randomGuardianAttachment.GuardianId = inputGuardianId;
