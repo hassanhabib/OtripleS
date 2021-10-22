@@ -18,8 +18,9 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Guardian> InsertGuardianAsync(Guardian guardian)
         {
-            EntityEntry<Guardian> guardianEntityEntry = await this.Guardians.AddAsync(guardian);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Guardian> guardianEntityEntry = await broker.Guardians.AddAsync(guardian);
+            await broker.SaveChangesAsync();
 
             return guardianEntityEntry.Entity;
         }
@@ -28,23 +29,26 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Guardian> SelectGuardianByIdAsync(Guid guardianId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await Guardians.FindAsync(guardianId);
+            return await broker.Guardians.FindAsync(guardianId);
         }
 
         public async ValueTask<Guardian> UpdateGuardianAsync(Guardian guardian)
         {
-            EntityEntry<Guardian> courseEntityEntry = this.Guardians.Update(guardian);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Guardian> courseEntityEntry = broker.Guardians.Update(guardian);
+            await broker.SaveChangesAsync();
 
             return courseEntityEntry.Entity;
         }
 
         public async ValueTask<Guardian> DeleteGuardianAsync(Guardian guardian)
         {
-            EntityEntry<Guardian> courseEntityEntry = this.Guardians.Remove(guardian);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Guardian> courseEntityEntry = broker.Guardians.Remove(guardian);
+            await broker.SaveChangesAsync();
 
             return courseEntityEntry.Entity;
         }
