@@ -17,8 +17,9 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public DbSet<Attendance> Attendances { get; set; }
         public async ValueTask<Attendance> InsertAttendanceAsync(Attendance attendance)
         {
-            EntityEntry<Attendance> attendanceEntityEntry = await this.Attendances.AddAsync(attendance);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Attendance> attendanceEntityEntry = await broker.Attendances.AddAsync(attendance);
+            await broker.SaveChangesAsync();
 
             return attendanceEntityEntry.Entity;
         }
@@ -27,23 +28,26 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Attendance> SelectAttendanceByIdAsync(Guid attendanceId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await Attendances.FindAsync(attendanceId);
         }
 
         public async ValueTask<Attendance> UpdateAttendanceAsync(Attendance attendance)
         {
-            EntityEntry<Attendance> attendanceEntityEntry = this.Attendances.Update(attendance);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Attendance> attendanceEntityEntry = broker.Attendances.Update(attendance);
+            await broker.SaveChangesAsync();
 
             return attendanceEntityEntry.Entity;
         }
 
         public async ValueTask<Attendance> DeleteAttendanceAsync(Attendance attendance)
         {
-            EntityEntry<Attendance> attendanceEntityEntry = this.Attendances.Remove(attendance);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Attendance> attendanceEntityEntry = broker.Attendances.Remove(attendance);
+            await broker.SaveChangesAsync();
 
             return attendanceEntityEntry.Entity;
         }
