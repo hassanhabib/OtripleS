@@ -19,10 +19,11 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<AssignmentAttachment> InsertAssignmentAttachmentAsync(
             AssignmentAttachment assignmentAttachment)
         {
+            using var broker = new StorageBroker(this.configuration);
             EntityEntry<AssignmentAttachment> assignmentAttachmentEntityEntry =
-                await this.AssignmentAttachments.AddAsync(assignmentAttachment);
+                await broker.AssignmentAttachments.AddAsync(assignmentAttachment);
 
-            await this.SaveChangesAsync();
+            await broker.SaveChangesAsync();
 
             return assignmentAttachmentEntityEntry.Entity;
         }
@@ -34,18 +35,21 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid assignmentId,
             Guid attachmentId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await this.AssignmentAttachments.FindAsync(assignmentId, attachmentId);
+            return await broker.AssignmentAttachments.FindAsync(assignmentId, attachmentId);
         }
 
         public async ValueTask<AssignmentAttachment> UpdateAssignmentAttachmentAsync(
             AssignmentAttachment assignmentAttachment)
         {
-            EntityEntry<AssignmentAttachment> assignmentAttachmentEntityEntry =
-                this.AssignmentAttachments.Update(assignmentAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<AssignmentAttachment> assignmentAttachmentEntityEntry =
+                broker.AssignmentAttachments.Update(assignmentAttachment);
+
+            await broker.SaveChangesAsync();
 
             return assignmentAttachmentEntityEntry.Entity;
         }
@@ -53,10 +57,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<AssignmentAttachment> DeleteAssignmentAttachmentAsync(
             AssignmentAttachment assignmentAttachment)
         {
-            EntityEntry<AssignmentAttachment> assignmentAttachmentEntityEntry =
-                this.AssignmentAttachments.Remove(assignmentAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<AssignmentAttachment> assignmentAttachmentEntityEntry =
+                broker.AssignmentAttachments.Remove(assignmentAttachment);
+
+            await broker.SaveChangesAsync();
 
             return assignmentAttachmentEntityEntry.Entity;
         }
