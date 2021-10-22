@@ -14,7 +14,7 @@ using OtripleS.Web.Api.Services.Foundations.Contacts;
 using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers
-{    
+{
     [ApiController]
     [Route("api/[controller]")]
     public class ContactsController : RESTFulController
