@@ -20,14 +20,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomUserId = Guid.NewGuid();
-            Guid someContactId = randomContactId;
-            Guid someUserId = randomUserId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someUserId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
-            var expectedUserContactDependencyException
-                = new UserContactDependencyException(sqlException);
+            var expectedUserContactDependencyException =
+                new UserContactDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
                  broker.SelectUserContactByIdAsync(someUserId, someContactId))
@@ -63,10 +61,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomUserId = Guid.NewGuid();
-            Guid someContactId = randomContactId;
-            Guid someUserId = randomUserId;
+
+            Guid someContactId = Guid.NewGuid();
+            Guid someUserId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedUserContactDependencyException =
@@ -82,8 +79,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 (someUserId, someContactId);
 
             // then
-            await Assert.ThrowsAsync<UserContactDependencyException>(
-                () => removeUserContactTask.AsTask());
+            await Assert.ThrowsAsync<UserContactDependencyException>(() =>
+                removeUserContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedUserContactDependencyException))),
@@ -105,10 +102,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         public async Task ShouldThrowDependencyExceptionOnRemoveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomUserId = Guid.NewGuid();
-            Guid someContactId = randomContactId;
-            Guid someUserId = randomUserId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someUserId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
             var lockedContactException =
@@ -149,10 +144,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         public async Task ShouldThrowServiceExceptionOnRemoveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomUserId = Guid.NewGuid();
-            Guid someContactId = randomContactId;
-            Guid someUserId = randomUserId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someUserId = Guid.NewGuid();
             var exception = new Exception();
 
             var expectedUserContactException =
