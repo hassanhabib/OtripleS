@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.SemesterCourses.Exceptions
 {
-    public class InvalidSemesterCourseInputException : Exception
+    public class InvalidSemesterCourseException : Exception
     {
-        public InvalidSemesterCourseInputException(string parameterName, object parameterValue)
+        public InvalidSemesterCourseException(string parameterName, object parameterValue)
             : base(message: $"Invalid semester course, " +
                   $"parameter name: {parameterName}, " +
                   $"parameter value: {parameterValue}.")
