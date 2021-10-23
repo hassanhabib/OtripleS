@@ -20,8 +20,9 @@ namespace OtripleS.Web.Api.Brokers.Storages
             AssignmentAttachment assignmentAttachment)
         {
             using var broker = new StorageBroker(this.configuration);
+
             EntityEntry<AssignmentAttachment> assignmentAttachmentEntityEntry =
-                await broker.AssignmentAttachments.AddAsync(assignmentAttachment);
+                await broker.AssignmentAttachments.AddAsync(entity: assignmentAttachment);
 
             await broker.SaveChangesAsync();
 
@@ -47,7 +48,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             using var broker = new StorageBroker(this.configuration);
 
             EntityEntry<AssignmentAttachment> assignmentAttachmentEntityEntry =
-                broker.AssignmentAttachments.Update(assignmentAttachment);
+                broker.AssignmentAttachments.Update(entity: assignmentAttachment);
 
             await broker.SaveChangesAsync();
 
@@ -60,7 +61,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             using var broker = new StorageBroker(this.configuration);
 
             EntityEntry<AssignmentAttachment> assignmentAttachmentEntityEntry =
-                broker.AssignmentAttachments.Remove(assignmentAttachment);
+                broker.AssignmentAttachments.Remove(entity: assignmentAttachment);
 
             await broker.SaveChangesAsync();
 
