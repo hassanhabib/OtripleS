@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<Guardian> InsertGuardianAsync(Guardian guardian)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<Guardian> guardianEntityEntry = await broker.Guardians.AddAsync(guardian);
+            EntityEntry<Guardian> guardianEntityEntry = await broker.Guardians.AddAsync(entity: guardian);
             await broker.SaveChangesAsync();
 
             return guardianEntityEntry.Entity;
@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<Guardian> UpdateGuardianAsync(Guardian guardian)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<Guardian> courseEntityEntry = broker.Guardians.Update(guardian);
+            EntityEntry<Guardian> courseEntityEntry = broker.Guardians.Update(entity: guardian);
             await broker.SaveChangesAsync();
 
             return courseEntityEntry.Entity;
@@ -47,7 +47,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<Guardian> DeleteGuardianAsync(Guardian guardian)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<Guardian> courseEntityEntry = broker.Guardians.Remove(guardian);
+            EntityEntry<Guardian> courseEntityEntry = broker.Guardians.Remove(entity: guardian);
             await broker.SaveChangesAsync();
 
             return courseEntityEntry.Entity;
