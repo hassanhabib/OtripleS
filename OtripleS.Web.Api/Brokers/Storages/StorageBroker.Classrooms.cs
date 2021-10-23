@@ -19,8 +19,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<Classroom> InsertClassroomAsync(Classroom classroom)
         {
             using var broker = new StorageBroker(this.configuration);
-
-            EntityEntry<Classroom> classroomEntityEntry = await broker.Classrooms.AddAsync(classroom);
+            EntityEntry<Classroom> classroomEntityEntry = await broker.Classrooms.AddAsync(entity: classroom);
             await broker.SaveChangesAsync();
 
             return classroomEntityEntry.Entity;
@@ -31,7 +30,6 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<Classroom> SelectClassroomByIdAsync(Guid classroomId)
         {
             using var broker = new StorageBroker(this.configuration);
-
             broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await broker.Classrooms.FindAsync(classroomId);
@@ -40,7 +38,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<Classroom> UpdateClassroomAsync(Classroom classroom)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<Classroom> classroomEntityEntry = broker.Classrooms.Update(classroom);
+            EntityEntry<Classroom> classroomEntityEntry = broker.Classrooms.Update(entity: classroom);
             await broker.SaveChangesAsync();
 
             return classroomEntityEntry.Entity;
@@ -49,7 +47,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<Classroom> DeleteClassroomAsync(Classroom classroom)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<Classroom> classroomEntityEntry = broker.Classrooms.Remove(classroom);
+            EntityEntry<Classroom> classroomEntityEntry = broker.Classrooms.Remove(entity: classroom);
             await broker.SaveChangesAsync();
 
             return classroomEntityEntry.Entity;
