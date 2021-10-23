@@ -16,41 +16,41 @@ namespace OtripleS.Web.Api.Brokers.Storages
     {
         public DbSet<Registration> Registrations { get; set; }
 
-        public async ValueTask<Registration> InsertRegistrationAsync(Registration Registration)
+        public async ValueTask<Registration> InsertRegistrationAsync(Registration registration)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<Registration> RegistrationEntityEntry = await broker.Registrations.AddAsync(Registration);
+            EntityEntry<Registration> registrationEntityEntry = await broker.Registrations.AddAsync(entity: registration);
             await broker.SaveChangesAsync();
 
-            return RegistrationEntityEntry.Entity;
+            return registrationEntityEntry.Entity;
         }
 
         public IQueryable<Registration> SelectAllRegistrations() => Registrations.AsQueryable();
 
-        public async ValueTask<Registration> SelectRegistrationByIdAsync(Guid RegistrationId)
+        public async ValueTask<Registration> SelectRegistrationByIdAsync(Guid registrationId)
         {
             using var broker = new StorageBroker(this.configuration);
             this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await broker.Registrations.FindAsync(RegistrationId);
+            return await broker.Registrations.FindAsync(registrationId);
         }
 
-        public async ValueTask<Registration> UpdateRegistrationAsync(Registration Registration)
+        public async ValueTask<Registration> UpdateRegistrationAsync(Registration registration)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<Registration> RegistrationEntityEntry = broker.Registrations.Update(Registration);
+            EntityEntry<Registration> registrationEntityEntry = broker.Registrations.Update(entity: registration);
             await broker.SaveChangesAsync();
 
-            return RegistrationEntityEntry.Entity;
+            return registrationEntityEntry.Entity;
         }
 
-        public async ValueTask<Registration> DeleteRegistrationAsync(Registration Registration)
+        public async ValueTask<Registration> DeleteRegistrationAsync(Registration registration)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<Registration> RegistrationEntityEntry = broker.Registrations.Remove(Registration);
+            EntityEntry<Registration> registrationEntityEntry = broker.Registrations.Remove(entity: registration);
             await broker.SaveChangesAsync();
 
-            return RegistrationEntityEntry.Entity;
+            return registrationEntityEntry.Entity;
         }
     }
 }
