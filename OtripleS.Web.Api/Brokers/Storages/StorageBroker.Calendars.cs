@@ -21,7 +21,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             using var broker = new StorageBroker(this.configuration);
 
             EntityEntry<Calendar> calendarEntityEntry =
-                await broker.Calendars.AddAsync(calendar);
+                await broker.Calendars.AddAsync(entity: calendar);
 
             await broker.SaveChangesAsync();
 
@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             using var broker = new StorageBroker(this.configuration);
 
             EntityEntry<Calendar> calendarEntityEntry =
-                broker.Calendars.Update(calendar);
+                broker.Calendars.Update(entity: calendar);
 
             await broker.SaveChangesAsync();
 
@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             using var broker = new StorageBroker(this.configuration);
 
             EntityEntry<Calendar> calendarEntityEntry =
-                broker.Calendars.Remove(calendar);
+                broker.Calendars.Remove(entity: calendar);
 
             await broker.SaveChangesAsync();
 
