@@ -22,7 +22,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             using var broker = new StorageBroker(this.configuration);
 
             EntityEntry<StudentRegistration> studentRegistrationEntityEntry =
-                await broker.StudentRegistrations.AddAsync(studentRegistration);
+                await broker.StudentRegistrations.AddAsync(entity: studentRegistration);
 
             await broker.SaveChangesAsync();
 
@@ -48,7 +48,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             using var broker = new StorageBroker(this.configuration);
 
             EntityEntry<StudentRegistration> studentRegistrationEntityEntry =
-                broker.StudentRegistrations.Update(studentRegistration);
+                broker.StudentRegistrations.Update(entity: studentRegistration);
 
             await broker.SaveChangesAsync();
 
@@ -61,7 +61,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             using var broker = new StorageBroker(this.configuration);
 
             EntityEntry<StudentRegistration> studentRegistrationEntityEntry =
-                broker.StudentRegistrations.Remove(studentRegistration);
+                broker.StudentRegistrations.Remove(entity: studentRegistration);
 
             await broker.SaveChangesAsync();
 
