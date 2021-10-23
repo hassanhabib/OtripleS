@@ -159,17 +159,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             Fee randomFee = CreateRandomFee(dateTime);
-            Fee inputFee = randomFee;
-            inputFee.UpdatedBy = inputFee.CreatedBy;
-            inputFee.CreatedDate = dateTime.AddMinutes(minutes);
-            inputFee.UpdatedDate = inputFee.CreatedDate;
+            Fee invalidFee = randomFee;
+            invalidFee.UpdatedBy = invalidFee.CreatedBy;
+            invalidFee.CreatedDate = dateTime.AddMinutes(minutes);
+            invalidFee.UpdatedDate = invalidFee.CreatedDate;
 
-            var invalidFeeInputException = new InvalidFeeException(
-                parameterName: nameof(Fee.CreatedDate),
-                parameterValue: inputFee.CreatedDate);
+            var invalidFeeException = new InvalidFeeException();
+
+            invalidFeeException.AddData(
+                key: nameof(Fee.CreatedDate),
+                values: "Date is not recent");
 
             var expectedFeeValidationException =
-                new FeeValidationException(invalidFeeInputException);
+                new FeeValidationException(invalidFeeException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -177,7 +179,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
 
             // when
             ValueTask<Fee> createFeeTask =
-                this.feeService.AddFeeAsync(inputFee);
+                this.feeService.AddFeeAsync(invalidFee);
 
             // then
             await Assert.ThrowsAsync<FeeValidationException>(() =>
@@ -188,8 +190,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedFeeValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertFeeAsync(It.IsAny<Fee>()),
