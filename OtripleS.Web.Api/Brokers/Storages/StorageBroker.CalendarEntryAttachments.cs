@@ -22,7 +22,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             using var broker = new StorageBroker(this.configuration);
 
             EntityEntry<CalendarEntryAttachment> calendarEntryAttachmentEntityEntry =
-                await broker.CalendarEntriesAttachments.AddAsync(calendarEntryAttachment);
+                await broker.CalendarEntriesAttachments.AddAsync(entity: calendarEntryAttachment);
 
             await broker.SaveChangesAsync();
 
@@ -37,7 +37,6 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid attachmentId)
         {
             using var broker = new StorageBroker(this.configuration);
-
             broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await broker.CalendarEntriesAttachments.FindAsync(calendarEntryId, attachmentId);
@@ -49,7 +48,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             using var broker = new StorageBroker(this.configuration);
 
             EntityEntry<CalendarEntryAttachment> calendarEntryAttachmentEntityEntry =
-                broker.CalendarEntriesAttachments.Update(calendarEntryAttachment);
+                broker.CalendarEntriesAttachments.Update(entity: calendarEntryAttachment);
 
             await broker.SaveChangesAsync();
 
@@ -62,7 +61,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             using var broker = new StorageBroker(this.configuration);
 
             EntityEntry<CalendarEntryAttachment> calendarEntryAttachmentEntityEntry =
-                broker.CalendarEntriesAttachments.Remove(calendarEntryAttachment);
+                broker.CalendarEntriesAttachments.Remove(entity: calendarEntryAttachment);
 
             await broker.SaveChangesAsync();
 
