@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<Attachment> InsertAttachmentAsync(Attachment attachment)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<Attachment> attachmentEntityEntry = await broker.Attachments.AddAsync(attachment);
+            EntityEntry<Attachment> attachmentEntityEntry = await broker.Attachments.AddAsync(entity: attachment);
             await broker.SaveChangesAsync();
 
             return attachmentEntityEntry.Entity;
@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<Attachment> UpdateAttachmentAsync(Attachment attachment)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<Attachment> attachmentEntityEntry = broker.Attachments.Update(attachment);
+            EntityEntry<Attachment> attachmentEntityEntry = broker.Attachments.Update(entity: attachment);
             await broker.SaveChangesAsync();
 
             return attachmentEntityEntry.Entity;
@@ -47,7 +47,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<Attachment> DeleteAttachmentAsync(Attachment attachment)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<Attachment> attachmentEntityEntry = broker.Attachments.Remove(attachment);
+            EntityEntry<Attachment> attachmentEntityEntry = broker.Attachments.Remove(entity: attachment);
             await broker.SaveChangesAsync();
 
             return attachmentEntityEntry.Entity;
