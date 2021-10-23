@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<Attendance> InsertAttendanceAsync(Attendance attendance)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<Attendance> attendanceEntityEntry = await broker.Attendances.AddAsync(attendance);
+            EntityEntry<Attendance> attendanceEntityEntry = await broker.Attendances.AddAsync(entity: attendance);
             await broker.SaveChangesAsync();
 
             return attendanceEntityEntry.Entity;
@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<Attendance> UpdateAttendanceAsync(Attendance attendance)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<Attendance> attendanceEntityEntry = broker.Attendances.Update(attendance);
+            EntityEntry<Attendance> attendanceEntityEntry = broker.Attendances.Update(entity: attendance);
             await broker.SaveChangesAsync();
 
             return attendanceEntityEntry.Entity;
@@ -47,7 +47,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<Attendance> DeleteAttendanceAsync(Attendance attendance)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<Attendance> attendanceEntityEntry = broker.Attendances.Remove(attendance);
+            EntityEntry<Attendance> attendanceEntityEntry = broker.Attendances.Remove(entity: attendance);
             await broker.SaveChangesAsync();
 
             return attendanceEntityEntry.Entity;
