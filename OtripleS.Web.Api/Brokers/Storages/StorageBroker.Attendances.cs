@@ -15,6 +15,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
     public partial class StorageBroker
     {
         public DbSet<Attendance> Attendances { get; set; }
+
         public async ValueTask<Attendance> InsertAttendanceAsync(Attendance attendance)
         {
             using var broker = new StorageBroker(this.configuration);
