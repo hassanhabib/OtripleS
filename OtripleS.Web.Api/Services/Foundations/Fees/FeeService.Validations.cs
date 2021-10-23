@@ -13,7 +13,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
     public partial class FeeService
     {
 
-        private void ValidateFeeOnAdd(Fee fee)
+        private static void ValidateFeeOnAdd(Fee fee)
         {
             ValidateFeeIsNotNull(fee);
 
@@ -23,7 +23,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
                 (Rule: IsInvalid(fee.CreatedBy), Parameter: nameof(Fee.CreatedBy)),
                 (Rule: IsInvalid(fee.UpdatedBy), Parameter: nameof(Fee.UpdatedBy)),
                 (Rule: IsInvalid(fee.CreatedDate), Parameter: nameof(Fee.CreatedDate)),
-                (Rule: IsInvalid(fee.UpdatedDate), Parameter: nameof(Fee.UpdatedDate))
+                (Rule: IsInvalid(fee.UpdatedDate), Parameter: nameof(Fee.UpdatedDate)),
+
+                (Rule: IsNotSame(
+                    firstDate: fee.UpdatedDate,
+                    secondDate: fee.CreatedDate,
+                    secondDateName: nameof(Fee.CreatedDate)),
+                Parameter: nameof(Fee.UpdatedDate))
             );
         }
 
@@ -60,6 +66,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
         {
             Condition = string.IsNullOrWhiteSpace(text),
             Message = "Text is required"
+        };
+
+        private static dynamic IsNotSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+        {
+            Condition = firstDate != secondDate,
+            Message = $"Date is not the same as {secondDateName}"
         };
 
         private static void ValidateFeeId(Guid feeId)
