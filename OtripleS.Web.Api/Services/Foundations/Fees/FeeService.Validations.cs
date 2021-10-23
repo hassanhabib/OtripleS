@@ -38,10 +38,14 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
         private void ValidateFeeOnModify(Fee fee)
         {
             ValidateFeeIsNotNull(fee);
-            ValidateFeeId(fee.Id);
-            ValidateFeeProperties(fee);
-            ValidateFeeAuditFields(fee);
-            ValidateFeeAuditFieldsOnModify(fee);
+
+            Validate(
+                (Rule: IsInvalid(fee.Id), Parameter: nameof(Fee.Id)),
+                (Rule: IsInvalid(fee.Label), Parameter: nameof(Fee.Label)),
+                (Rule: IsInvalid(fee.CreatedBy), Parameter: nameof(Fee.CreatedBy)),
+                (Rule: IsInvalid(fee.UpdatedBy), Parameter: nameof(Fee.UpdatedBy)),
+                (Rule: IsInvalid(fee.CreatedDate), Parameter: nameof(Fee.CreatedDate)),
+                (Rule: IsInvalid(fee.UpdatedDate), Parameter: nameof(Fee.UpdatedDate)));
         }
 
         private static void ValidateFeeIsNotNull(Fee fee)
@@ -107,22 +111,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
         private static bool IsInvalidOld(Guid input) => input == default;
         private static bool IsInvalidOld(DateTimeOffset input) => input == default;
         private static bool IsInvalidOld(string input) => string.IsNullOrWhiteSpace(input);
-
-        private void ValidateFeeAuditFieldsOnCreate(Fee fee)
-        {
-            switch (fee)
-            {
-                case { } when fee.UpdatedDate != fee.CreatedDate:
-                    throw new InvalidFeeException(
-                        parameterName: nameof(Fee.UpdatedDate),
-                        parameterValue: fee.UpdatedDate);
-
-                case { } when IsDateNotRecent(fee.CreatedDate):
-                    throw new InvalidFeeException(
-                        parameterName: nameof(Fee.CreatedDate),
-                        parameterValue: fee.CreatedDate);
-            }
-        }
 
         private static void ValidateFeeAuditFields(Fee fee)
         {
