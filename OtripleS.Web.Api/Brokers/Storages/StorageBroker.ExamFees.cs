@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<ExamFee> InsertExamFeeAsync(ExamFee examFee)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<ExamFee> examFeeEntityEntry = await broker.ExamFees.AddAsync(examFee);
+            EntityEntry<ExamFee> examFeeEntityEntry = await broker.ExamFees.AddAsync(entity: examFee);
             await broker.SaveChangesAsync();
 
             return examFeeEntityEntry.Entity;
@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<ExamFee> UpdateExamFeeAsync(ExamFee examFee)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<ExamFee> examFeeEntityEntry = broker.ExamFees.Update(examFee);
+            EntityEntry<ExamFee> examFeeEntityEntry = broker.ExamFees.Update(entity: examFee);
             await broker.SaveChangesAsync();
 
             return examFeeEntityEntry.Entity;
@@ -47,7 +47,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<ExamFee> DeleteExamFeeAsync(ExamFee examFee)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<ExamFee> examFeeEntityEntry = broker.ExamFees.Remove(examFee);
+            EntityEntry<ExamFee> examFeeEntityEntry = broker.ExamFees.Remove(entity: examFee);
             await broker.SaveChangesAsync();
 
             return examFeeEntityEntry.Entity;
