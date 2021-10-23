@@ -16,12 +16,16 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
         private void ValidateFeeOnAdd(Fee fee)
         {
             ValidateFeeIsNotNull(fee);
-            ValidateFeeId(fee.Id);
-            ValidateFeeProperties(fee);
-            ValidateFeeAuditFields(fee);
-            ValidateFeeAuditFieldsOnCreate(fee);
-        }
 
+            Validate(
+                (Rule: IsInvalid(fee.Id), Parameter: nameof(Fee.Id)),
+                (Rule: IsInvalid(fee.Label), Parameter: nameof(Fee.Label)),
+                (Rule: IsInvalid(fee.CreatedBy), Parameter: nameof(Fee.CreatedBy)),
+                (Rule: IsInvalid(fee.UpdatedBy), Parameter: nameof(Fee.UpdatedBy)),
+                (Rule: IsInvalid(fee.CreatedDate), Parameter: nameof(Fee.CreatedDate)),
+                (Rule: IsInvalid(fee.UpdatedDate), Parameter: nameof(Fee.UpdatedDate))
+            );
+        }
 
         private void ValidateFeeOnModify(Fee fee)
         {
@@ -40,9 +44,27 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
             }
         }
 
+        private static dynamic IsInvalid(Guid id) => new
+        {
+            Condition = id == default,
+            Message = "Id is required"
+        };
+
+        private static dynamic IsInvalid(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required"
+        };
+
+        private static dynamic IsInvalid(string text) => new
+        {
+            Condition = string.IsNullOrWhiteSpace(text),
+            Message = "Text is required"
+        };
+
         private static void ValidateFeeId(Guid feeId)
         {
-            if (IsInvalid(feeId))
+            if (IsInvalidOld(feeId))
             {
                 throw new InvalidFeeException(
                     parameterName: nameof(Fee.Id),
@@ -50,9 +72,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
             }
         }
 
-        private static bool IsInvalid(Guid input) => input == default;
-        private static bool IsInvalid(DateTimeOffset input) => input == default;
-        private static bool IsInvalid(string input) => string.IsNullOrWhiteSpace(input);
+        private static bool IsInvalidOld(Guid input) => input == default;
+        private static bool IsInvalidOld(DateTimeOffset input) => input == default;
+        private static bool IsInvalidOld(string input) => string.IsNullOrWhiteSpace(input);
 
         private void ValidateFeeAuditFieldsOnCreate(Fee fee)
         {
@@ -74,22 +96,22 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
         {
             switch (fee)
             {
-                case { } when IsInvalid(input: fee.CreatedBy):
+                case { } when IsInvalidOld(input: fee.CreatedBy):
                     throw new InvalidFeeException(
                         parameterName: nameof(Fee.CreatedBy),
                         parameterValue: fee.CreatedBy);
 
-                case { } when IsInvalid(input: fee.UpdatedBy):
+                case { } when IsInvalidOld(input: fee.UpdatedBy):
                     throw new InvalidFeeException(
                         parameterName: nameof(Fee.UpdatedBy),
                         parameterValue: fee.UpdatedBy);
 
-                case { } when IsInvalid(input: fee.CreatedDate):
+                case { } when IsInvalidOld(input: fee.CreatedDate):
                     throw new InvalidFeeException(
                         parameterName: nameof(Fee.CreatedDate),
                         parameterValue: fee.CreatedDate);
 
-                case { } when IsInvalid(input: fee.UpdatedDate):
+                case { } when IsInvalidOld(input: fee.UpdatedDate):
                     throw new InvalidFeeException(
                         parameterName: nameof(Fee.UpdatedDate),
                         parameterValue: fee.UpdatedDate);
@@ -116,7 +138,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
         {
             switch (fee)
             {
-                case { } when IsInvalid(fee.Label):
+                case { } when IsInvalidOld(fee.Label):
                     throw new InvalidFeeException(
                         parameterName: nameof(Fee.Label),
                         parameterValue: fee.Label);
@@ -167,6 +189,23 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
             {
                 throw new NotFoundFeeException(feeId);
             }
+        }
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidFeeException = new InvalidFeeException();
+
+            foreach((dynamic rule, string parameter) in validations)
+            {
+                if(rule.Condition)
+                {
+                    invalidFeeException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidFeeException.ThrowIfContainsErrors();
         }
     }
 }
