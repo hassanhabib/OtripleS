@@ -15,6 +15,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
     public partial class StorageBroker
     {
         public DbSet<Attachment> Attachments { get; set; }
+
         public async ValueTask<Attachment> InsertAttachmentAsync(Attachment attachment)
         {
             using var broker = new StorageBroker(this.configuration);
