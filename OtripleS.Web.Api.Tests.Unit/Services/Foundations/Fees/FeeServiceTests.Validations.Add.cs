@@ -105,6 +105,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
                 broker.InsertFeeAsync(It.IsAny<Fee>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -145,6 +149,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertFeeAsync(It.IsAny<Fee>()),
                     Times.Never);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

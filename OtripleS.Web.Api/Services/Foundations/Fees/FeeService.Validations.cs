@@ -13,7 +13,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
     public partial class FeeService
     {
 
-        private static void ValidateFeeOnAdd(Fee fee)
+        private void ValidateFeeOnAdd(Fee fee)
         {
             ValidateFeeIsNotNull(fee);
 
@@ -29,7 +29,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
                     firstDate: fee.UpdatedDate,
                     secondDate: fee.CreatedDate,
                     secondDateName: nameof(Fee.CreatedDate)),
-                Parameter: nameof(Fee.UpdatedDate))
+                Parameter: nameof(Fee.UpdatedDate)),
+
+                (Rule: IsNotRecent(fee.CreatedDate), Parameter: nameof(Fee.CreatedDate))
             );
         }
 
@@ -76,6 +78,21 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
             Condition = firstDate != secondDate,
             Message = $"Date is not the same as {secondDateName}"
         };
+
+        private dynamic IsNotRecent(DateTimeOffset date) => new
+        {
+            Condition = IsDateNotRecent(date),
+            Message = "Date is not recent"
+        };
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
 
         private static void ValidateFeeId(Guid feeId)
         {
@@ -179,15 +196,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
                         parameterName: nameof(Fee.UpdatedDate),
                         parameterValue: inputFee.UpdatedDate);
             }
-        }
-
-        private bool IsDateNotRecent(DateTimeOffset dateTime)
-        {
-            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
-            int oneMinute = 1;
-            TimeSpan difference = now.Subtract(dateTime);
-
-            return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
         private void ValidateStorageFees(IQueryable<Fee> storageFees)
