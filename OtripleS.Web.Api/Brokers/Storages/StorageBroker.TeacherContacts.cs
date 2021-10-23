@@ -17,16 +17,16 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public DbSet<TeacherContact> TeacherContacts { get; set; }
 
         public async ValueTask<TeacherContact> InsertTeacherContactAsync(
-            TeacherContact TeacherContact)
+            TeacherContact teacherContact)
         {
             using var broker = new StorageBroker(this.configuration);
 
-            EntityEntry<TeacherContact> TeacherContactEntityEntry =
-                await broker.TeacherContacts.AddAsync(TeacherContact);
+            EntityEntry<TeacherContact> teacherContactEntityEntry =
+                await broker.TeacherContacts.AddAsync(entity: teacherContact);
 
             await broker.SaveChangesAsync();
 
-            return TeacherContactEntityEntry.Entity;
+            return teacherContactEntityEntry.Entity;
         }
 
         public IQueryable<TeacherContact> SelectAllTeacherContacts() =>
@@ -43,29 +43,29 @@ namespace OtripleS.Web.Api.Brokers.Storages
         }
 
         public async ValueTask<TeacherContact> UpdateTeacherContactAsync(
-            TeacherContact TeacherContact)
+            TeacherContact teacherContact)
         {
             using var broker = new StorageBroker(this.configuration);
 
-            EntityEntry<TeacherContact> TeacherContactEntityEntry =
-                broker.TeacherContacts.Update(TeacherContact);
+            EntityEntry<TeacherContact> teacherContactEntityEntry =
+                broker.TeacherContacts.Update(entity: teacherContact);
 
             await broker.SaveChangesAsync();
 
-            return TeacherContactEntityEntry.Entity;
+            return teacherContactEntityEntry.Entity;
         }
 
         public async ValueTask<TeacherContact> DeleteTeacherContactAsync(
-            TeacherContact TeacherContact)
+            TeacherContact teacherContact)
         {
             using var broker = new StorageBroker(this.configuration);
 
-            EntityEntry<TeacherContact> TeacherContactEntityEntry =
-                broker.TeacherContacts.Remove(TeacherContact);
+            EntityEntry<TeacherContact> teacherContactEntityEntry =
+                broker.TeacherContacts.Remove(entity: teacherContact);
 
             await broker.SaveChangesAsync();
 
-            return TeacherContactEntityEntry.Entity;
+            return teacherContactEntityEntry.Entity;
         }
     }
 }

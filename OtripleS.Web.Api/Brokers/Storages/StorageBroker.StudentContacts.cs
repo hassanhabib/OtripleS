@@ -17,16 +17,16 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public DbSet<StudentContact> StudentContacts { get; set; }
 
         public async ValueTask<StudentContact> InsertStudentContactAsync(
-            StudentContact StudentContact)
+            StudentContact studentContact)
         {
             using var broker = new StorageBroker(this.configuration);
 
-            EntityEntry<StudentContact> StudentContactEntityEntry =
-                await broker.StudentContacts.AddAsync(StudentContact);
+            EntityEntry<StudentContact> studentContactEntityEntry =
+                await broker.StudentContacts.AddAsync(entity: studentContact);
 
             await broker.SaveChangesAsync();
 
-            return StudentContactEntityEntry.Entity;
+            return studentContactEntityEntry.Entity;
         }
 
         public IQueryable<StudentContact> SelectAllStudentContacts() =>
@@ -43,29 +43,29 @@ namespace OtripleS.Web.Api.Brokers.Storages
         }
 
         public async ValueTask<StudentContact> UpdateStudentContactAsync(
-            StudentContact StudentContact)
+            StudentContact studentContact)
         {
             using var broker = new StorageBroker(this.configuration);
 
-            EntityEntry<StudentContact> StudentContactEntityEntry =
-                broker.StudentContacts.Update(StudentContact);
+            EntityEntry<StudentContact> studentContactEntityEntry =
+                broker.StudentContacts.Update(entity: studentContact);
 
             await broker.SaveChangesAsync();
 
-            return StudentContactEntityEntry.Entity;
+            return studentContactEntityEntry.Entity;
         }
 
         public async ValueTask<StudentContact> DeleteStudentContactAsync(
-            StudentContact StudentContact)
+            StudentContact studentContact)
         {
             using var broker = new StorageBroker(this.configuration);
 
-            EntityEntry<StudentContact> StudentContactEntityEntry =
-                broker.StudentContacts.Remove(StudentContact);
+            EntityEntry<StudentContact> studentContactEntityEntry =
+                broker.StudentContacts.Remove(entity: studentContact);
 
             await broker.SaveChangesAsync();
 
-            return StudentContactEntityEntry.Entity;
+            return studentContactEntityEntry.Entity;
         }
     }
 }

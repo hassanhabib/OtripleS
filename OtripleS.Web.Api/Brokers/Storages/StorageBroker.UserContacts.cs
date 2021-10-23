@@ -17,16 +17,16 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public DbSet<UserContact> UserContacts { get; set; }
 
         public async ValueTask<UserContact> InsertUserContactAsync(
-            UserContact UserContact)
+            UserContact userContact)
         {
             using var broker = new StorageBroker(this.configuration);
 
-            EntityEntry<UserContact> UserContactEntityEntry =
-                await broker.UserContacts.AddAsync(UserContact);
+            EntityEntry<UserContact> userContactEntityEntry =
+                await broker.UserContacts.AddAsync(entity: userContact);
 
             await broker.SaveChangesAsync();
 
-            return UserContactEntityEntry.Entity;
+            return userContactEntityEntry.Entity;
         }
 
         public IQueryable<UserContact> SelectAllUserContacts() =>
@@ -43,29 +43,29 @@ namespace OtripleS.Web.Api.Brokers.Storages
         }
 
         public async ValueTask<UserContact> UpdateUserContactAsync(
-            UserContact UserContact)
+            UserContact userContact)
         {
             using var broker = new StorageBroker(this.configuration);
 
-            EntityEntry<UserContact> UserContactEntityEntry =
-                broker.UserContacts.Update(UserContact);
+            EntityEntry<UserContact> userContactEntityEntry =
+                broker.UserContacts.Update(entity: userContact);
 
             await broker.SaveChangesAsync();
 
-            return UserContactEntityEntry.Entity;
+            return userContactEntityEntry.Entity;
         }
 
         public async ValueTask<UserContact> DeleteUserContactAsync(
-            UserContact UserContact)
+            UserContact userContact)
         {
             using var broker = new StorageBroker(this.configuration);
 
-            EntityEntry<UserContact> UserContactEntityEntry =
-                broker.UserContacts.Remove(UserContact);
+            EntityEntry<UserContact> userContactEntityEntry =
+                broker.UserContacts.Remove(entity: userContact);
 
             await broker.SaveChangesAsync();
 
-            return UserContactEntityEntry.Entity;
+            return userContactEntityEntry.Entity;
         }
     }
 }
