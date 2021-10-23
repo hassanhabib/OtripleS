@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.TeacherContacts.Exceptions
 {
-    public class InvalidTeacherContactInputException : Exception
+    public class InvalidTeacherContactException : Exception
     {
-        public InvalidTeacherContactInputException(string parameterName, object parameterValue)
+        public InvalidTeacherContactException(string parameterName, object parameterValue)
             : base(message: $"Invalid teacher contact, " +
                   $"parameter name: {parameterName}, " +
                   $"parameter value: {parameterValue}.")

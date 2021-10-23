@@ -53,12 +53,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             TeacherContact inputTeacherContact = randomTeacherContact;
             inputTeacherContact.TeacherId = default;
 
-            var invalidTeacherContactInputException = new InvalidTeacherContactInputException(
+            var invalidTeacherContactException = new InvalidTeacherContactException(
                 parameterName: nameof(TeacherContact.TeacherId),
                 parameterValue: inputTeacherContact.TeacherId);
 
             var expectedTeacherContactValidationException =
-                new TeacherContactValidationException(invalidTeacherContactInputException);
+                new TeacherContactValidationException(invalidTeacherContactException);
 
             // when
             ValueTask<TeacherContact> addTeacherContactTask =
@@ -88,12 +88,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             TeacherContact inputTeacherContact = randomTeacherContact;
             inputTeacherContact.ContactId = default;
 
-            var invalidTeacherContactInputException = new InvalidTeacherContactInputException(
+            var invalidTeacherContactException = new InvalidTeacherContactException(
                 parameterName: nameof(TeacherContact.ContactId),
                 parameterValue: inputTeacherContact.ContactId);
 
             var expectedTeacherContactValidationException =
-                new TeacherContactValidationException(invalidTeacherContactInputException);
+                new TeacherContactValidationException(invalidTeacherContactException);
 
             // when
             ValueTask<TeacherContact> addTeacherContactTask =

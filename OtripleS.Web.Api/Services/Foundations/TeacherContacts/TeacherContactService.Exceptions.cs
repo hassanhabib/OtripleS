@@ -30,9 +30,9 @@ namespace OtripleS.Web.Api.Services.Foundations.TeacherContacts
             {
                 throw CreateAndLogValidationException(nullTeacherContactException);
             }
-            catch (InvalidTeacherContactInputException invalidTeacherContactInputException)
+            catch (InvalidTeacherContactException invalidTeacherContactException)
             {
-                throw CreateAndLogValidationException(invalidTeacherContactInputException);
+                throw CreateAndLogValidationException(invalidTeacherContactException);
             }
             catch (NotFoundTeacherContactException notFoundTeacherContactException)
             {

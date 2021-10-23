@@ -31,12 +31,12 @@ namespace OtripleS.Web.Api.Services.Foundations.TeacherContacts
             switch (teacherContact)
             {
                 case { } when IsInvalid(teacherContact.TeacherId):
-                    throw new InvalidTeacherContactInputException(
+                    throw new InvalidTeacherContactException(
                         parameterName: nameof(TeacherContact.TeacherId),
                         parameterValue: teacherContact.TeacherId);
 
                 case { } when IsInvalid(teacherContact.ContactId):
-                    throw new InvalidTeacherContactInputException(
+                    throw new InvalidTeacherContactException(
                         parameterName: nameof(TeacherContact.ContactId),
                         parameterValue: teacherContact.ContactId);
             }
@@ -46,14 +46,14 @@ namespace OtripleS.Web.Api.Services.Foundations.TeacherContacts
         {
             if (teacherId == default)
             {
-                throw new InvalidTeacherContactInputException(
+                throw new InvalidTeacherContactException(
                     parameterName: nameof(TeacherContact.TeacherId),
                     parameterValue: teacherId);
             }
 
             if (contactId == default)
             {
-                throw new InvalidTeacherContactInputException(
+                throw new InvalidTeacherContactException(
                     parameterName: nameof(TeacherContact.ContactId),
                     parameterValue: contactId);
             }

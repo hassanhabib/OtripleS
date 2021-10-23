@@ -23,12 +23,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             Guid inputContactId = randomContactId;
             Guid inputTeacherId = randomTeacherId;
 
-            var invalidTeacherContactInputException = new InvalidTeacherContactInputException(
+            var invalidTeacherContactException = new InvalidTeacherContactException(
                 parameterName: nameof(TeacherContact.TeacherId),
                 parameterValue: inputTeacherId);
 
             var expectedTeacherContactValidationException =
-                new TeacherContactValidationException(invalidTeacherContactInputException);
+                new TeacherContactValidationException(invalidTeacherContactException);
 
             // when
             ValueTask<TeacherContact> retrieveTeacherContactTask =
@@ -58,12 +58,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             Guid inputContactId = randomContactId;
             Guid inputTeacherId = randomTeacherId;
 
-            var invalidTeacherContactInputException = new InvalidTeacherContactInputException(
+            var invalidTeacherContactException = new InvalidTeacherContactException(
                 parameterName: nameof(TeacherContact.ContactId),
                 parameterValue: inputContactId);
 
             var expectedTeacherContactValidationException =
-                new TeacherContactValidationException(invalidTeacherContactInputException);
+                new TeacherContactValidationException(invalidTeacherContactException);
 
             // when
             ValueTask<TeacherContact> retrieveTeacherContactTask =
