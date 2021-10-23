@@ -68,6 +68,26 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
                 key: nameof(Fee.Id),
                 values: "Id is required");
 
+            invalidFeeException.AddData(
+                key: nameof(Fee.Label),
+                values: "Text is required");
+
+            invalidFeeException.AddData(
+                key: nameof(Fee.CreatedBy),
+                values: "Id is required");
+
+            invalidFeeException.AddData(
+                key: nameof(Fee.UpdatedBy),
+                values: "Id is required");
+
+            invalidFeeException.AddData(
+                key: nameof(Fee.CreatedDate),
+                values: "Date is required");
+
+            invalidFeeException.AddData(
+                key: nameof(Fee.UpdatedDate),
+                values: "Date is required");
+
             var expectedFeeValidationException =
                 new FeeValidationException(invalidFeeException);
 
