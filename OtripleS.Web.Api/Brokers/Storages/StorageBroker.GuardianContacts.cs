@@ -17,14 +17,16 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public DbSet<GuardianContact> GuardianContacts { get; set; }
 
         public async ValueTask<GuardianContact> InsertGuardianContactAsync(
-            GuardianContact GuardianContact)
+            GuardianContact guardianContact)
         {
-            EntityEntry<GuardianContact> GuardianContactEntityEntry =
-                await this.GuardianContacts.AddAsync(GuardianContact);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<GuardianContact> guardianContactEntityEntry =
+                await broker.GuardianContacts.AddAsync(entity: guardianContact);
 
-            return GuardianContactEntityEntry.Entity;
+            await broker.SaveChangesAsync();
+
+            return guardianContactEntityEntry.Entity;
         }
 
         public IQueryable<GuardianContact> SelectAllGuardianContacts() =>
@@ -34,31 +36,36 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid guardianId,
             Guid contactId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await this.GuardianContacts.FindAsync(guardianId, contactId);
+            return await broker.GuardianContacts.FindAsync(guardianId, contactId);
         }
 
         public async ValueTask<GuardianContact> UpdateGuardianContactAsync(
-            GuardianContact GuardianContact)
+            GuardianContact guardianContact)
         {
-            EntityEntry<GuardianContact> GuardianContactEntityEntry =
-                this.GuardianContacts.Update(GuardianContact);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<GuardianContact> guardianContactEntityEntry =
+                broker.GuardianContacts.Update(entity: guardianContact);
 
-            return GuardianContactEntityEntry.Entity;
+            await broker.SaveChangesAsync();
+
+            return guardianContactEntityEntry.Entity;
         }
 
         public async ValueTask<GuardianContact> DeleteGuardianContactAsync(
-            GuardianContact GuardianContact)
+            GuardianContact guardianContact)
         {
-            EntityEntry<GuardianContact> GuardianContactEntityEntry =
-                this.GuardianContacts.Remove(GuardianContact);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<GuardianContact> guardianContactEntityEntry =
+                broker.GuardianContacts.Remove(entity: guardianContact);
 
-            return GuardianContactEntityEntry.Entity;
+            await broker.SaveChangesAsync();
+
+            return guardianContactEntityEntry.Entity;
         }
     }
 }

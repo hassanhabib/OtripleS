@@ -19,10 +19,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<StudentAttachment> InsertStudentAttachmentAsync(
             StudentAttachment studentAttachment)
         {
-            EntityEntry<StudentAttachment> studentAttachmentEntityEntry =
-                await this.StudentAttachments.AddAsync(studentAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<StudentAttachment> studentAttachmentEntityEntry =
+                await broker.StudentAttachments.AddAsync(entity: studentAttachment);
+
+            await broker.SaveChangesAsync();
 
             return studentAttachmentEntityEntry.Entity;
         }
@@ -34,18 +36,21 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid studentId,
             Guid attachmentId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await this.StudentAttachments.FindAsync(studentId, attachmentId);
+            return await broker.StudentAttachments.FindAsync(studentId, attachmentId);
         }
 
         public async ValueTask<StudentAttachment> UpdateStudentAttachmentAsync(
             StudentAttachment studentAttachment)
         {
-            EntityEntry<StudentAttachment> studentAttachmentEntityEntry =
-                this.StudentAttachments.Update(studentAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<StudentAttachment> studentAttachmentEntityEntry =
+                broker.StudentAttachments.Update(entity: studentAttachment);
+
+            await broker.SaveChangesAsync();
 
             return studentAttachmentEntityEntry.Entity;
         }
@@ -53,10 +58,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<StudentAttachment> DeleteStudentAttachmentAsync(
             StudentAttachment studentAttachment)
         {
-            EntityEntry<StudentAttachment> studentAttachmentEntityEntry =
-                this.StudentAttachments.Remove(studentAttachment);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<StudentAttachment> studentAttachmentEntityEntry =
+                broker.StudentAttachments.Remove(entity: studentAttachment);
+
+            await broker.SaveChangesAsync();
 
             return studentAttachmentEntityEntry.Entity;
         }

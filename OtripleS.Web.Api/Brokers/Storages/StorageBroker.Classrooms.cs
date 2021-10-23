@@ -18,8 +18,9 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Classroom> InsertClassroomAsync(Classroom classroom)
         {
-            EntityEntry<Classroom> classroomEntityEntry = await this.Classrooms.AddAsync(classroom);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Classroom> classroomEntityEntry = await broker.Classrooms.AddAsync(entity: classroom);
+            await broker.SaveChangesAsync();
 
             return classroomEntityEntry.Entity;
         }
@@ -28,23 +29,26 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Classroom> SelectClassroomByIdAsync(Guid classroomId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await Classrooms.FindAsync(classroomId);
+            return await broker.Classrooms.FindAsync(classroomId);
         }
 
         public async ValueTask<Classroom> UpdateClassroomAsync(Classroom classroom)
         {
-            EntityEntry<Classroom> classroomEntityEntry = this.Classrooms.Update(classroom);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Classroom> classroomEntityEntry = broker.Classrooms.Update(entity: classroom);
+            await broker.SaveChangesAsync();
 
             return classroomEntityEntry.Entity;
         }
 
         public async ValueTask<Classroom> DeleteClassroomAsync(Classroom classroom)
         {
-            EntityEntry<Classroom> classroomEntityEntry = this.Classrooms.Remove(classroom);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Classroom> classroomEntityEntry = broker.Classrooms.Remove(entity: classroom);
+            await broker.SaveChangesAsync();
 
             return classroomEntityEntry.Entity;
         }

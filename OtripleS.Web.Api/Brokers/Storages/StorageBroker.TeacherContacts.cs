@@ -17,14 +17,16 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public DbSet<TeacherContact> TeacherContacts { get; set; }
 
         public async ValueTask<TeacherContact> InsertTeacherContactAsync(
-            TeacherContact TeacherContact)
+            TeacherContact teacherContact)
         {
-            EntityEntry<TeacherContact> TeacherContactEntityEntry =
-                await this.TeacherContacts.AddAsync(TeacherContact);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<TeacherContact> teacherContactEntityEntry =
+                await broker.TeacherContacts.AddAsync(entity: teacherContact);
 
-            return TeacherContactEntityEntry.Entity;
+            await broker.SaveChangesAsync();
+
+            return teacherContactEntityEntry.Entity;
         }
 
         public IQueryable<TeacherContact> SelectAllTeacherContacts() =>
@@ -34,31 +36,36 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid teacherId,
             Guid contactId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await this.TeacherContacts.FindAsync(teacherId, contactId);
+            return await broker.TeacherContacts.FindAsync(teacherId, contactId);
         }
 
         public async ValueTask<TeacherContact> UpdateTeacherContactAsync(
-            TeacherContact TeacherContact)
+            TeacherContact teacherContact)
         {
-            EntityEntry<TeacherContact> TeacherContactEntityEntry =
-                this.TeacherContacts.Update(TeacherContact);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<TeacherContact> teacherContactEntityEntry =
+                broker.TeacherContacts.Update(entity: teacherContact);
 
-            return TeacherContactEntityEntry.Entity;
+            await broker.SaveChangesAsync();
+
+            return teacherContactEntityEntry.Entity;
         }
 
         public async ValueTask<TeacherContact> DeleteTeacherContactAsync(
-            TeacherContact TeacherContact)
+            TeacherContact teacherContact)
         {
-            EntityEntry<TeacherContact> TeacherContactEntityEntry =
-                this.TeacherContacts.Remove(TeacherContact);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<TeacherContact> teacherContactEntityEntry =
+                broker.TeacherContacts.Remove(entity: teacherContact);
 
-            return TeacherContactEntityEntry.Entity;
+            await broker.SaveChangesAsync();
+
+            return teacherContactEntityEntry.Entity;
         }
     }
 }

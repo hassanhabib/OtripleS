@@ -18,8 +18,9 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Assignment> InsertAssignmentAsync(Assignment assignment)
         {
-            EntityEntry<Assignment> assignmentEntityEntry = await this.Assignments.AddAsync(assignment);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Assignment> assignmentEntityEntry = await broker.Assignments.AddAsync(entity: assignment);
+            await broker.SaveChangesAsync();
 
             return assignmentEntityEntry.Entity;
         }
@@ -28,23 +29,26 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Assignment> SelectAssignmentByIdAsync(Guid assignmentId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await Assignments.FindAsync(assignmentId);
         }
 
         public async ValueTask<Assignment> UpdateAssignmentAsync(Assignment assignment)
         {
-            EntityEntry<Assignment> assignmentEntityEntry = this.Assignments.Update(assignment);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Assignment> assignmentEntityEntry = broker.Assignments.Update(entity: assignment);
+            await broker.SaveChangesAsync();
 
             return assignmentEntityEntry.Entity;
         }
 
         public async ValueTask<Assignment> DeleteAssignmentAsync(Assignment assignment)
         {
-            EntityEntry<Assignment> assignmentEntityEntry = this.Assignments.Remove(assignment);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Assignment> assignmentEntityEntry = broker.Assignments.Remove(entity: assignment);
+            await broker.SaveChangesAsync();
 
             return assignmentEntityEntry.Entity;
         }

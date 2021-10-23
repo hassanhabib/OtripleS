@@ -18,8 +18,9 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Contact> InsertContactAsync(Contact contact)
         {
-            EntityEntry<Contact> contactEntityEntry = await this.Contacts.AddAsync(contact);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Contact> contactEntityEntry = await broker.Contacts.AddAsync(entity: contact);
+            await broker.SaveChangesAsync();
 
             return contactEntityEntry.Entity;
         }
@@ -28,23 +29,26 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Contact> SelectContactByIdAsync(Guid contactId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await Contacts.FindAsync(contactId);
+            return await broker.Contacts.FindAsync(contactId);
         }
 
         public async ValueTask<Contact> UpdateContactAsync(Contact contact)
         {
-            EntityEntry<Contact> contactEntityEntry = this.Contacts.Update(contact);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Contact> contactEntityEntry = broker.Contacts.Update(entity: contact);
+            await broker.SaveChangesAsync();
 
             return contactEntityEntry.Entity;
         }
 
         public async ValueTask<Contact> DeleteContactAsync(Contact contact)
         {
-            EntityEntry<Contact> contactEntityEntry = this.Contacts.Remove(contact);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Contact> contactEntityEntry = broker.Contacts.Remove(entity: contact);
+            await broker.SaveChangesAsync();
 
             return contactEntityEntry.Entity;
         }

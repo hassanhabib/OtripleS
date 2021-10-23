@@ -18,8 +18,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<StudentExam> InsertStudentExamAsync(StudentExam studentExam)
         {
-            EntityEntry<StudentExam> studentExamEntityEntry = await this.StudentExams.AddAsync(studentExam);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+
+            EntityEntry<StudentExam> studentExamEntityEntry = 
+                await broker.StudentExams.AddAsync(entity: studentExam);
+
+            await broker.SaveChangesAsync();
 
             return studentExamEntityEntry.Entity;
         }
@@ -28,23 +32,26 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<StudentExam> SelectStudentExamByIdAsync(Guid studentExamId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await StudentExams.FindAsync(studentExamId);
+            return await broker.StudentExams.FindAsync(studentExamId);
         }
 
         public async ValueTask<StudentExam> UpdateStudentExamAsync(StudentExam studentExam)
         {
-            EntityEntry<StudentExam> studentExamEntityEntry = this.StudentExams.Update(studentExam);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<StudentExam> studentExamEntityEntry = broker.StudentExams.Update(entity: studentExam);
+            await broker.SaveChangesAsync();
 
             return studentExamEntityEntry.Entity;
         }
 
         public async ValueTask<StudentExam> DeleteStudentExamAsync(StudentExam studentExam)
         {
-            EntityEntry<StudentExam> studentExamEntityEntry = this.StudentExams.Remove(studentExam);
-            await this.SaveChangesAsync();
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<StudentExam> studentExamEntityEntry = broker.StudentExams.Remove(entity: studentExam);
+            await broker.SaveChangesAsync();
 
             return studentExamEntityEntry.Entity;
         }

@@ -19,10 +19,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<StudentRegistration> InsertStudentRegistrationAsync(
             StudentRegistration studentRegistration)
         {
-            EntityEntry<StudentRegistration> studentRegistrationEntityEntry =
-                await this.StudentRegistrations.AddAsync(studentRegistration);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<StudentRegistration> studentRegistrationEntityEntry =
+                await broker.StudentRegistrations.AddAsync(entity: studentRegistration);
+
+            await broker.SaveChangesAsync();
 
             return studentRegistrationEntityEntry.Entity;
         }
@@ -34,18 +36,21 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid studentId,
             Guid registrationId)
         {
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await this.StudentRegistrations.FindAsync(studentId, registrationId);
+            return await broker.StudentRegistrations.FindAsync(studentId, registrationId);
         }
 
         public async ValueTask<StudentRegistration> UpdateStudentRegistrationAsync(
             StudentRegistration studentRegistration)
         {
-            EntityEntry<StudentRegistration> studentRegistrationEntityEntry =
-                this.StudentRegistrations.Update(studentRegistration);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<StudentRegistration> studentRegistrationEntityEntry =
+                broker.StudentRegistrations.Update(entity: studentRegistration);
+
+            await broker.SaveChangesAsync();
 
             return studentRegistrationEntityEntry.Entity;
         }
@@ -53,10 +58,12 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<StudentRegistration> DeleteStudentRegistrationAsync(
             StudentRegistration studentRegistration)
         {
-            EntityEntry<StudentRegistration> studentRegistrationEntityEntry =
-                this.StudentRegistrations.Remove(studentRegistration);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<StudentRegistration> studentRegistrationEntityEntry =
+                broker.StudentRegistrations.Remove(entity: studentRegistration);
+
+            await broker.SaveChangesAsync();
 
             return studentRegistrationEntityEntry.Entity;
         }
