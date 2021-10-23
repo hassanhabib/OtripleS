@@ -47,6 +47,69 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async void ShouldThrowValidationExceptionOnAddWhenFeeIsInvalidAndLogItAsync(string invalidText)
+        {
+            // given
+            var invalidFee = new Fee
+            {
+                Label = invalidText
+            };
+
+            var invalidFeeException = new InvalidFeeException();
+
+            invalidFeeException.AddData(
+                key: nameof(Fee.Id),
+                values: "Id is required");
+
+            invalidFeeException.AddData(
+                key: nameof(Fee.Label),
+                values: "Text is required");
+
+            invalidFeeException.AddData(
+                key: nameof(Fee.CreatedBy),
+                values: "Id is required");
+
+            invalidFeeException.AddData(
+                key: nameof(Fee.UpdatedBy),
+                values: "Id is required");
+
+            invalidFeeException.AddData(
+                key: nameof(Fee.CreatedDate),
+                values: "Date is required");
+
+            invalidFeeException.AddData(
+                key: nameof(Fee.UpdatedDate),
+                values: "Date is required");
+
+            var expectedFeeValidationException =
+                new FeeValidationException(invalidFeeException);
+
+            // when
+            ValueTask<Fee> createFeeTask =
+                this.feeService.AddFeeAsync(invalidFee);
+
+            // then
+            await Assert.ThrowsAsync<FeeValidationException>(() =>
+                createFeeTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedFeeValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertFeeAsync(It.IsAny<Fee>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Fact]
         public async void ShouldThrowValidationExceptionOnAddWhenFeeIdIsInvalidAndLogItAsync()
         {
