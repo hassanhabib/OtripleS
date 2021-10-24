@@ -51,7 +51,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
                     firstDate: fee.UpdatedDate,
                     secondDate: fee.CreatedDate,
                     secondDateName: nameof(Fee.CreatedDate)),
-                Parameter: nameof(Fee.UpdatedDate)));
+                Parameter: nameof(Fee.UpdatedDate)),
+
+                (Rule: IsNotRecent(fee.UpdatedDate), Parameter: nameof(Fee.UpdatedDate)));
         }
 
         private static void ValidateFeeIsNotNull(Fee fee)
