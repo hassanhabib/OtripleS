@@ -45,7 +45,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
                 (Rule: IsInvalid(fee.CreatedBy), Parameter: nameof(Fee.CreatedBy)),
                 (Rule: IsInvalid(fee.UpdatedBy), Parameter: nameof(Fee.UpdatedBy)),
                 (Rule: IsInvalid(fee.CreatedDate), Parameter: nameof(Fee.CreatedDate)),
-                (Rule: IsInvalid(fee.UpdatedDate), Parameter: nameof(Fee.UpdatedDate)));
+                (Rule: IsInvalid(fee.UpdatedDate), Parameter: nameof(Fee.UpdatedDate)),
+
+                (Rule: IsSame(
+                    firstDate: fee.UpdatedDate,
+                    secondDate: fee.CreatedDate,
+                    secondDateName: nameof(Fee.CreatedDate)),
+                Parameter: nameof(Fee.UpdatedDate)));
         }
 
         private static void ValidateFeeIsNotNull(Fee fee)
@@ -87,6 +93,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
         {
             Condition = IsDateNotRecent(date),
             Message = "Date is not recent"
+        };
+
+        private static dynamic IsSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+        {
+            Condition = firstDate == secondDate,
+            Message = $"Date is the same as {secondDateName}"
         };
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
