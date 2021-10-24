@@ -68,15 +68,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
                     firstId: inputFee.CreatedBy,
                     secondId: storageFee.CreatedBy,
                     secondIdName: nameof(Fee.CreatedBy)),
-                Parameter: nameof(Fee.CreatedBy)));
+                Parameter: nameof(Fee.CreatedBy)),
 
-            switch (inputFee)
-            {
-                case { } when inputFee.UpdatedDate == storageFee.UpdatedDate:
-                    throw new InvalidFeeException(
-                        parameterName: nameof(Fee.UpdatedDate),
-                        parameterValue: inputFee.UpdatedDate);
-            }
+                (Rule: IsSame(
+                    firstDate: inputFee.UpdatedDate,
+                    secondDate: storageFee.UpdatedDate,
+                    secondDateName: nameof(Fee.UpdatedDate)),
+                Parameter: nameof(Fee.UpdatedDate)));
         }
 
         private void ValidateStorageFees(IQueryable<Fee> storageFees)
