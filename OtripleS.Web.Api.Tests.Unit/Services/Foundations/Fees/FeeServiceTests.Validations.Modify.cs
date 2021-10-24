@@ -196,8 +196,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedFeeValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectFeeByIdAsync(It.IsAny<Guid>()),
@@ -278,9 +279,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             Guid feeId = invalidFee.Id;
             invalidFee.CreatedDate = storageFee.CreatedDate.AddMinutes(randomNumber);
 
-            var invalidFeeException = new InvalidFeeException(
-                parameterName: nameof(Fee.CreatedDate),
-                parameterValue: invalidFee.CreatedDate);
+            var invalidFeeException = new InvalidFeeException();
+
+            invalidFeeException.AddData(
+                key: nameof(Fee.CreatedDate),
+                values: $"Date is not the same as {nameof(Fee.CreatedDate)}");
 
             var expectedFeeValidationException =
               new FeeValidationException(invalidFeeException);
@@ -310,8 +313,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedFeeValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
