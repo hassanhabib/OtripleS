@@ -12,6 +12,8 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
 {
     public partial class FeeService
     {
+        private static void ValidateFeeId(Guid id) =>
+            Validate((Rule: IsInvalid(id), Parameter: nameof(Fee.Id)));
 
         private void ValidateFeeOnAdd(Fee fee)
         {
@@ -77,6 +79,14 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
                 Parameter: nameof(Fee.UpdatedDate)));
         }
 
+        private static void ValidateFeeIsNotNull(Fee fee)
+        {
+            if (fee == default)
+            {
+                throw new NullFeeException();
+            }
+        }
+
         private void ValidateStorageFees(IQueryable<Fee> storageFees)
         {
             if (!storageFees.Any())
@@ -85,11 +95,11 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
             }
         }
 
-        private static void ValidateFeeIsNotNull(Fee fee)
+        private static void ValidateStorageFee(Fee storageFee, Guid feeId)
         {
-            if (fee == default)
+            if (storageFee == null)
             {
-                throw new NullFeeException();
+                throw new NotFoundFeeException(feeId);
             }
         }
 
@@ -151,54 +161,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
             TimeSpan difference = now.Subtract(dateTime);
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
-        }
-
-        private static void ValidateFeeId(Guid feeId)
-        {
-            if (IsInvalidOld(feeId))
-            {
-                throw new InvalidFeeException(
-                    parameterName: nameof(Fee.Id),
-                    parameterValue: feeId);
-            }
-        }
-
-        private static bool IsInvalidOld(Guid input) => input == default;
-        private static bool IsInvalidOld(DateTimeOffset input) => input == default;
-        private static bool IsInvalidOld(string input) => string.IsNullOrWhiteSpace(input);
-
-        private static void ValidateFeeAuditFields(Fee fee)
-        {
-            switch (fee)
-            {
-                case { } when IsInvalidOld(input: fee.CreatedBy):
-                    throw new InvalidFeeException(
-                        parameterName: nameof(Fee.CreatedBy),
-                        parameterValue: fee.CreatedBy);
-
-                case { } when IsInvalidOld(input: fee.UpdatedBy):
-                    throw new InvalidFeeException(
-                        parameterName: nameof(Fee.UpdatedBy),
-                        parameterValue: fee.UpdatedBy);
-
-                case { } when IsInvalidOld(input: fee.CreatedDate):
-                    throw new InvalidFeeException(
-                        parameterName: nameof(Fee.CreatedDate),
-                        parameterValue: fee.CreatedDate);
-
-                case { } when IsInvalidOld(input: fee.UpdatedDate):
-                    throw new InvalidFeeException(
-                        parameterName: nameof(Fee.UpdatedDate),
-                        parameterValue: fee.UpdatedDate);
-            }
-        }
-
-        private static void ValidateStorageFee(Fee storageFee, Guid feeId)
-        {
-            if (storageFee == null)
-            {
-                throw new NotFoundFeeException(feeId);
-            }
         }
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
