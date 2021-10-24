@@ -170,10 +170,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             Fee inputFee = randomFee;
             inputFee.UpdatedBy = inputFee.CreatedBy;
             inputFee.UpdatedDate = dateTime.AddMinutes(minutes);
+            var invalidFeeInputException = new InvalidFeeException();
 
-            var invalidFeeInputException = new InvalidFeeException(
-                parameterName: nameof(Fee.UpdatedDate),
-                parameterValue: inputFee.UpdatedDate);
+            invalidFeeInputException.AddData(
+                key: nameof(Fee.UpdatedDate),
+                values: "Date is not recent");
 
             var expectedFeeValidationException =
                 new FeeValidationException(invalidFeeInputException);
