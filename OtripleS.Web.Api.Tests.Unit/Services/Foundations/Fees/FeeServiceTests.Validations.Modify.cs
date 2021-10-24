@@ -84,12 +84,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
                 key: nameof(Fee.CreatedDate),
                 values: "Date is required");
 
-            invalidFeeException.AddData(
+            invalidFeeException.UpsertDataList(
                 key: nameof(Fee.UpdatedDate),
-                values: "Date is required");
+                value: $"Date is the same as {nameof(Fee.CreatedDate)}");
+
+            invalidFeeException.UpsertDataList(
+                key: nameof(Fee.UpdatedDate),
+                value: "Date is required");
 
             var expectedFeeValidationException =
                 new FeeValidationException(invalidFeeException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(invalidFee.UpdatedDate);
 
             //when
             ValueTask<Fee> modifyFeeTask =
@@ -112,6 +120,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
                 broker.UpdateFeeAsync(It.IsAny<Fee>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -133,6 +145,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             var expectedFeeValidationException =
                 new FeeValidationException(invalidFeeException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(invalidFee.UpdatedDate);
+
             // when
             ValueTask<Fee> modifyFeeTask =
                 this.feeService.ModifyFeeAsync(invalidFee);
@@ -153,6 +169,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             this.storageBrokerMock.Verify(broker =>
                 broker.UpdateFeeAsync(It.IsAny<Fee>()),
                     Times.Never);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

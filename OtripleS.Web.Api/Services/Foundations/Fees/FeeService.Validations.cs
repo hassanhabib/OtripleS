@@ -31,8 +31,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
                     secondDateName: nameof(Fee.CreatedDate)),
                 Parameter: nameof(Fee.UpdatedDate)),
 
-                (Rule: IsNotRecent(fee.CreatedDate), Parameter: nameof(Fee.CreatedDate))
-            );
+                (Rule: IsNotRecent(fee.CreatedDate), Parameter: nameof(Fee.CreatedDate)));
         }
 
         private void ValidateFeeOnModify(Fee fee)
@@ -54,6 +53,38 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
                 Parameter: nameof(Fee.UpdatedDate)),
 
                 (Rule: IsNotRecent(fee.UpdatedDate), Parameter: nameof(Fee.UpdatedDate)));
+        }
+
+        private static void ValidateAgainstStorageFeeOnModify(Fee inputFee, Fee storageFee)
+        {
+            Validate(
+                (Rule: IsNotSame(
+                    firstDate: inputFee.CreatedDate,
+                    secondDate: storageFee.CreatedDate,
+                    nameof(Fee.CreatedDate)),
+                Parameter: nameof(Fee.CreatedDate)));
+
+            switch (inputFee)
+            {
+
+                case { } when inputFee.CreatedBy != storageFee.CreatedBy:
+                    throw new InvalidFeeException(
+                        parameterName: nameof(Fee.CreatedBy),
+                        parameterValue: inputFee.CreatedBy);
+
+                case { } when inputFee.UpdatedDate == storageFee.UpdatedDate:
+                    throw new InvalidFeeException(
+                        parameterName: nameof(Fee.UpdatedDate),
+                        parameterValue: inputFee.UpdatedDate);
+            }
+        }
+
+        private void ValidateStorageFees(IQueryable<Fee> storageFees)
+        {
+            if (!storageFees.Any())
+            {
+                this.loggingBroker.LogWarning("No fees found in storage.");
+            }
         }
 
         private static void ValidateFeeIsNotNull(Fee fee)
@@ -152,62 +183,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
                     throw new InvalidFeeException(
                         parameterName: nameof(Fee.UpdatedDate),
                         parameterValue: fee.UpdatedDate);
-            }
-        }
-
-        private void ValidateFeeAuditFieldsOnModify(Fee fee)
-        {
-            switch (fee)
-            {
-                case { } when fee.UpdatedDate == fee.CreatedDate:
-                    throw new InvalidFeeException(
-                        parameterName: nameof(Fee.UpdatedDate),
-                        parameterValue: fee.UpdatedDate);
-
-                case { } when IsDateNotRecent(fee.UpdatedDate):
-                    throw new InvalidFeeException(
-                        parameterName: nameof(Fee.UpdatedDate),
-                        parameterValue: fee.UpdatedDate);
-            }
-        }
-
-        private static void ValidateFeeProperties(Fee fee)
-        {
-            switch (fee)
-            {
-                case { } when IsInvalidOld(fee.Label):
-                    throw new InvalidFeeException(
-                        parameterName: nameof(Fee.Label),
-                        parameterValue: fee.Label);
-            }
-        }
-
-        private static void ValidateAgainstStorageFeeOnModify(Fee inputFee, Fee storageFee)
-        {
-            switch (inputFee)
-            {
-                case { } when inputFee.CreatedDate != storageFee.CreatedDate:
-                    throw new InvalidFeeException(
-                        parameterName: nameof(Fee.CreatedDate),
-                        parameterValue: inputFee.CreatedDate);
-
-                case { } when inputFee.CreatedBy != storageFee.CreatedBy:
-                    throw new InvalidFeeException(
-                        parameterName: nameof(Fee.CreatedBy),
-                        parameterValue: inputFee.CreatedBy);
-
-                case { } when inputFee.UpdatedDate == storageFee.UpdatedDate:
-                    throw new InvalidFeeException(
-                        parameterName: nameof(Fee.UpdatedDate),
-                        parameterValue: inputFee.UpdatedDate);
-            }
-        }
-
-        private void ValidateStorageFees(IQueryable<Fee> storageFees)
-        {
-            if (!storageFees.Any())
-            {
-                this.loggingBroker.LogWarning("No fees found in storage.");
             }
         }
 
