@@ -409,18 +409,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             int minutesInThePast = randomNegativeMinutes;
             DateTimeOffset randomDate = GetRandomDateTime();
             Fee randomFee = CreateRandomFee(randomDate);
+            randomFee.UpdatedDate = GetRandomDateTime();
             randomFee.CreatedDate = randomFee.CreatedDate.AddMinutes(minutesInThePast);
             Fee invalidFee = randomFee;
             invalidFee.UpdatedDate = randomDate;
             Fee storageFee = randomFee.DeepClone();
             Guid feeId = invalidFee.Id;
 
-            var invalidFeeInputException = new InvalidFeeException(
-                parameterName: nameof(Fee.UpdatedDate),
-                parameterValue: invalidFee.UpdatedDate);
+            var invalidFeeException = new InvalidFeeException();
+
+            invalidFeeException.AddData(
+                key: nameof(Fee.UpdatedDate),
+                values: $"Date is the same as {nameof(Fee.UpdatedDate)}");
 
             var expectedFeeValidationException =
-              new FeeValidationException(invalidFeeInputException);
+              new FeeValidationException(invalidFeeException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectFeeByIdAsync(feeId))
@@ -428,7 +431,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(randomDate);
+                    .Returns(randomFee.UpdatedDate);
 
             // when
             ValueTask<Fee> modifyFeeTask =
@@ -447,8 +450,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedFeeValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
