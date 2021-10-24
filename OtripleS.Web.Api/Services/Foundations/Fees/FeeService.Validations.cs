@@ -12,6 +12,22 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
 {
     public partial class FeeService
     {
+        private void ValidateStorageFees(IQueryable<Fee> storageFees)
+        {
+            if (!storageFees.Any())
+            {
+                this.loggingBroker.LogWarning("No fees found in storage.");
+            }
+        }
+
+        private static void ValidateStorageFee(Fee storageFee, Guid feeId)
+        {
+            if (storageFee == null)
+            {
+                throw new NotFoundFeeException(feeId);
+            }
+        }
+
         private static void ValidateFeeId(Guid id) =>
             Validate((Rule: IsInvalid(id), Parameter: nameof(Fee.Id)));
 
@@ -84,22 +100,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
             if (fee == default)
             {
                 throw new NullFeeException();
-            }
-        }
-
-        private void ValidateStorageFees(IQueryable<Fee> storageFees)
-        {
-            if (!storageFees.Any())
-            {
-                this.loggingBroker.LogWarning("No fees found in storage.");
-            }
-        }
-
-        private static void ValidateStorageFee(Fee storageFee, Guid feeId)
-        {
-            if (storageFee == null)
-            {
-                throw new NotFoundFeeException(feeId);
             }
         }
 
