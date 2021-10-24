@@ -61,17 +61,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
                 (Rule: IsNotSame(
                     firstDate: inputFee.CreatedDate,
                     secondDate: storageFee.CreatedDate,
-                    nameof(Fee.CreatedDate)),
-                Parameter: nameof(Fee.CreatedDate)));
+                    secondDateName: nameof(Fee.CreatedDate)),
+                Parameter: nameof(Fee.CreatedDate)),
+
+                (Rule: IsNotSame(
+                    firstId: inputFee.CreatedBy,
+                    secondId: storageFee.CreatedBy,
+                    secondIdName: nameof(Fee.CreatedBy)),
+                Parameter: nameof(Fee.CreatedBy)));
 
             switch (inputFee)
             {
-
-                case { } when inputFee.CreatedBy != storageFee.CreatedBy:
-                    throw new InvalidFeeException(
-                        parameterName: nameof(Fee.CreatedBy),
-                        parameterValue: inputFee.CreatedBy);
-
                 case { } when inputFee.UpdatedDate == storageFee.UpdatedDate:
                     throw new InvalidFeeException(
                         parameterName: nameof(Fee.UpdatedDate),
@@ -120,6 +120,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
         {
             Condition = firstDate != secondDate,
             Message = $"Date is not the same as {secondDateName}"
+        };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+        {
+            Condition = firstId != secondId,
+            Message = $"Id is not the same as {secondIdName}"
         };
 
         private dynamic IsNotRecent(DateTimeOffset date) => new

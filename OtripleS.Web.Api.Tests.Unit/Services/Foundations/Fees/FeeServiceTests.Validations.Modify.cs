@@ -373,7 +373,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(randomDate);
+                    .Returns(invalidFee.UpdatedDate);
 
             // when
             ValueTask<Fee> modifyFeeTask =
