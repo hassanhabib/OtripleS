@@ -76,6 +76,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
         private static void ValidateAgainstStorageFeeOnModify(Fee inputFee, Fee storageFee)
         {
             Validate(
+
                 (Rule: IsNotSame(
                     firstDate: inputFee.CreatedDate,
                     secondDate: storageFee.CreatedDate,

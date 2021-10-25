@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
     public partial class FeeServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenFeeIsNullAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnModifyIfFeeIsNullAndLogItAsync()
         {
             //given
             Fee invalidFee = null;
@@ -54,7 +54,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
         [InlineData(null)]
         [InlineData("")]
         [InlineData("  ")]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenFeeIsInvalidAndLogItAsync(string invalidText)
+        public async Task ShouldThrowValidationExceptionOnModifyIfFeeIsInvalidAndLogItAsync(string invalidText)
         {
             //given
             var invalidFee = new Fee
@@ -130,7 +130,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsSameAsCreatedDateAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnModifyIfUpdatedDateIsSameAsCreatedDateAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -181,7 +181,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
 
         [Theory]
         [MemberData(nameof(InvalidMinuteCases))]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsNotRecentAndLogItAsync(
+        public async void ShouldThrowValidationExceptionOnModifyIfUpdatedDateIsNotRecentAndLogItAsync(
             int minutes)
         {
             // given
@@ -298,7 +298,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             Fee storageFee = randomFee.DeepClone();
             Guid feeId = invalidFee.Id;
             invalidFee.CreatedDate = storageFee.CreatedDate.AddMinutes(randomNumber);
-
             var invalidFeeException = new InvalidFeeException();
 
             invalidFeeException.AddData(
@@ -357,7 +356,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             Fee storageFee = randomFee.DeepClone();
             Guid feeId = invalidFee.Id;
             invalidFee.CreatedBy = invalidCreatedBy;
-
             var invalidFeeException = new InvalidFeeException();
 
             invalidFeeException.AddData(
@@ -415,7 +413,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             invalidFee.UpdatedDate = randomDate;
             Fee storageFee = randomFee.DeepClone();
             Guid feeId = invalidFee.Id;
-
             var invalidFeeException = new InvalidFeeException();
 
             invalidFeeException.AddData(
