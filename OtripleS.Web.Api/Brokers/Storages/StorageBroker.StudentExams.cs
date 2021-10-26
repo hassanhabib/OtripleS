@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         {
             using var broker = new StorageBroker(this.configuration);
 
-            EntityEntry<StudentExam> studentExamEntityEntry = 
+            EntityEntry<StudentExam> studentExamEntityEntry =
                 await broker.StudentExams.AddAsync(entity: studentExam);
 
             await broker.SaveChangesAsync();
