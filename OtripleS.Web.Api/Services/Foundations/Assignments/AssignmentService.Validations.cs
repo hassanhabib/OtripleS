@@ -188,14 +188,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
             }
         }
 
-        private void ValidateStorageAssignments(IQueryable<Assignment> storageAssignments)
-        {
-            if (!storageAssignments.Any())
-            {
-                this.loggingBroker.LogWarning("No Assignments found in storage.");
-            }
-        }
-
         private static bool IsInvalid(Guid input) => input == default;
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
