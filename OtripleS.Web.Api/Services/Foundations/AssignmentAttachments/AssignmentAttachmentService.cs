@@ -41,13 +41,10 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
         public IQueryable<AssignmentAttachment> RetrieveAllAssignmentAttachments() =>
         TryCatch(() =>
         {
-            IQueryable<AssignmentAttachment> storageAssignmentAttachments
-                = this.storageBroker.SelectAllAssignmentAttachments();
-
-            ValidateStorageAssignmentAttachments(storageAssignmentAttachments);
+            IQueryable<AssignmentAttachment> storageAssignmentAttachments =
+                this.storageBroker.SelectAllAssignmentAttachments();
 
             return storageAssignmentAttachments;
-
         });
 
         public ValueTask<AssignmentAttachment> RetrieveAssignmentAttachmentByIdAsync(
