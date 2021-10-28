@@ -51,19 +51,10 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
 
            return await this.storageBroker.DeleteExamAttachmentAsync(maybeExamAttachment);
        });
+
         public IQueryable<ExamAttachment> RetrieveAllExamAttachments() =>
-        TryCatch(() =>
-        {
-            IQueryable<ExamAttachment> storageExamAttachments =
-                storageBroker.SelectAllExamAttachments();
-
-            ValidateStorageExamAttachments(storageExamAttachments);
-
-            return storageExamAttachments;
-
-        });
-
-
+        TryCatch(() => this.storageBroker.SelectAllExamAttachments()); 
+        
         public ValueTask<ExamAttachment> RetrieveExamAttachmentByIdAsync(
             Guid examId,
             Guid attachmentId) =>
