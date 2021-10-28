@@ -29,9 +29,8 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<AssignmentAttachment> AddAssignmentAttachmentAsync
-            (AssignmentAttachment assignmentAttachment) =>
-        TryCatch(async () =>
+        public ValueTask<AssignmentAttachment> AddAssignmentAttachmentAsync(
+            AssignmentAttachment assignmentAttachment) => TryCatch(async () =>
         {
             ValidateAssignmentAttachmentOnCreate(assignmentAttachment);
 
@@ -39,18 +38,11 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
         });
 
         public IQueryable<AssignmentAttachment> RetrieveAllAssignmentAttachments() =>
-        TryCatch(() =>
-        {
-            IQueryable<AssignmentAttachment> storageAssignmentAttachments =
-                this.storageBroker.SelectAllAssignmentAttachments();
-
-            return storageAssignmentAttachments;
-        });
+        TryCatch(() => this.storageBroker.SelectAllAssignmentAttachments());
 
         public ValueTask<AssignmentAttachment> RetrieveAssignmentAttachmentByIdAsync(
             Guid assignmentId,
-            Guid attachmentId) =>
-        TryCatch(async () =>
+            Guid attachmentId) => TryCatch(async () =>
         {
             ValidateAssignmentAttachmentIds(assignmentId, attachmentId);
 
@@ -64,8 +56,7 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
 
         public ValueTask<AssignmentAttachment> RemoveAssignmentAttachmentByIdAsync(
             Guid assignmentId,
-            Guid attachmentId) =>
-        TryCatch(async () =>
+            Guid attachmentId) => TryCatch(async () =>
         {
             ValidateAssignmentAttachmentIds(assignmentId, attachmentId);
 
