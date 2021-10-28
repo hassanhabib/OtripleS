@@ -37,8 +37,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
         });
 
         public IQueryable<Assignment> RetrieveAllAssignments() => 
-        TryCatch(() => 
-            this.storageBroker.SelectAllAssignments());
+        TryCatch(() => this.storageBroker.SelectAllAssignments());
 
         public ValueTask<Assignment> RetrieveAssignmentByIdAsync(Guid assignmentId) =>
         TryCatch(async () =>
