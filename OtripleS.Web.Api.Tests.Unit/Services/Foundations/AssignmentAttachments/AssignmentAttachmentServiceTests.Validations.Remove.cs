@@ -32,15 +32,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
             // when
             ValueTask<AssignmentAttachment> removeAssignmentAttachmentTask =
-                this.assignmentAttachmentService.RemoveAssignmentAttachmentByIdAsync(inputAssignmentId, inputAttachmentId);
+                this.assignmentAttachmentService.RemoveAssignmentAttachmentByIdAsync(
+                    inputAssignmentId,
+                    inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<AssignmentAttachmentValidationException>(() =>
                 removeAssignmentAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
@@ -52,7 +55,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -73,7 +75,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
             // when
             ValueTask<AssignmentAttachment> removeAssignmentAttachmentTask =
-                this.assignmentAttachmentService.RemoveAssignmentAttachmentByIdAsync(inputAssignmentId, inputAttachmentId);
+                this.assignmentAttachmentService.RemoveAssignmentAttachmentByIdAsync(
+                    inputAssignmentId,
+                    inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<AssignmentAttachmentValidationException>(() =>
@@ -93,7 +97,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -118,7 +121,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
             // when
             ValueTask<AssignmentAttachment> removeAssignmentAttachmentTask =
-                this.assignmentAttachmentService.RemoveAssignmentAttachmentByIdAsync(inputAssignmentId, inputAttachmentId);
+                this.assignmentAttachmentService.RemoveAssignmentAttachmentByIdAsync(
+                    inputAssignmentId,
+                    inputAttachmentId);
 
             // then
             await Assert.ThrowsAsync<AssignmentAttachmentValidationException>(() =>
@@ -138,7 +143,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
