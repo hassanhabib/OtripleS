@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam invalidStudentExam = randomStudentExam;
             invalidStudentExam.Id = invalidId;
 
-            var invalidStudentExamInputException = new InvalidStudentExamInputException(
+            var invalidStudentExamInputException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.Id),
                 parameterValue: invalidStudentExam.Id);
 
@@ -86,7 +86,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam invalidStudentExam = randomStudentExam;
             invalidStudentExam.StudentId = invalidStudentId;
 
-            var invalidStudentExamInputException = new InvalidStudentExamInputException(
+            var invalidStudentExamInputException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.StudentId),
                 parameterValue: invalidStudentExam.StudentId);
 
@@ -120,7 +120,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam invalidStudentExam = randomStudentExam;
             invalidStudentExam.ExamId = invalidExamId;
 
-            var invalidStudentExamInputException = new InvalidStudentExamInputException(
+            var invalidStudentExamInputException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.ExamId),
                 parameterValue: invalidStudentExam.ExamId);
 
@@ -153,7 +153,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam inputStudentExam = randomStudentExam;
             inputStudentExam.CreatedBy = default;
 
-            var invalidStudentExamInputException = new InvalidStudentExamInputException(
+            var invalidStudentExamInputException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.CreatedBy),
                 parameterValue: inputStudentExam.CreatedBy);
 
@@ -190,7 +190,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam inputStudentExam = randomStudentExam;
             inputStudentExam.UpdatedBy = default;
 
-            var invalidStudentExamInputException = new InvalidStudentExamInputException(
+            var invalidStudentExamInputException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.UpdatedBy),
                 parameterValue: inputStudentExam.UpdatedBy);
 
@@ -227,7 +227,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam inputStudentExam = randomStudentExam;
             inputStudentExam.CreatedDate = default;
 
-            var invalidStudentExamInputException = new InvalidStudentExamInputException(
+            var invalidStudentExamInputException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.CreatedDate),
                 parameterValue: inputStudentExam.CreatedDate);
 
@@ -264,7 +264,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam inputStudentExam = randomStudentExam;
             inputStudentExam.UpdatedDate = default;
 
-            var invalidStudentExamInputException = new InvalidStudentExamInputException(
+            var invalidStudentExamInputException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.UpdatedDate),
                 parameterValue: inputStudentExam.UpdatedDate);
 
@@ -300,7 +300,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam randomStudentExam = CreateRandomStudentExam(dateTime);
             StudentExam inputStudentExam = randomStudentExam;
 
-            var invalidStudentExamInputException = new InvalidStudentExamInputException(
+            var invalidStudentExamInputException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.UpdatedDate),
                 parameterValue: inputStudentExam.UpdatedDate);
 
@@ -340,7 +340,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             inputStudentExam.UpdatedBy = inputStudentExam.CreatedBy;
             inputStudentExam.UpdatedDate = dateTime.AddMinutes(minutes);
 
-            var invalidStudentExamInputException = new InvalidStudentExamInputException(
+            var invalidStudentExamInputException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.UpdatedDate),
                 parameterValue: inputStudentExam.UpdatedDate);
 
@@ -439,7 +439,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             Guid semesterCourseId = invalidStudentExam.ExamId;
             invalidStudentExam.CreatedDate = storageStudentExam.CreatedDate.AddMinutes(randomNumber);
 
-            var invalidStudentExamInputException = new InvalidStudentExamInputException(
+            var invalidStudentExamInputException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.CreatedDate),
                 parameterValue: invalidStudentExam.CreatedDate);
 

@@ -21,7 +21,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             Guid randomStudentExamId = default;
             Guid inputStudentExamId = randomStudentExamId;
 
-            var invalidStudentExamInputException = new InvalidStudentExamInputException(
+            var invalidStudentExamInputException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.Id),
                 parameterValue: inputStudentExamId);
 
