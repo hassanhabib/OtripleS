@@ -21,12 +21,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             Guid randomStudentId = default;
             Guid inputStudentId = randomStudentId;
 
-            var invalidStudentInputException = new InvalidStudentException(
+            var invalidStudentException = new InvalidStudentException(
                 parameterName: nameof(Student.Id),
                 parameterValue: inputStudentId);
 
             var expectedStudentValidationException =
-                new StudentValidationException(invalidStudentInputException);
+                new StudentValidationException(invalidStudentException);
 
             // when
             ValueTask<Student> deleteStudentTask =
