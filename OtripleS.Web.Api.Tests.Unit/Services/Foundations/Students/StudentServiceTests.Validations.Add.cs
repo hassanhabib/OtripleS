@@ -137,14 +137,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             Student invalidStudent = randomStudent;
             invalidStudent.UpdatedBy = Guid.NewGuid();
 
-            var invalidStudentInputException = new InvalidStudentException();
+            var invalidStudentException = new InvalidStudentException();
 
-            invalidStudentInputException.AddData(
+            invalidStudentException.AddData(
                 key: nameof(Student.UpdatedBy),
                 values: $"Id is not the same as {nameof(Student.CreatedBy)}");
 
             var expectedStudentValidationException =
-                new StudentValidationException(invalidStudentInputException);
+                new StudentValidationException(invalidStudentException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())

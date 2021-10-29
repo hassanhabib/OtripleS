@@ -30,9 +30,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             {
                 throw CreateAndLogValidationException(nullStudentException);
             }
-            catch (InvalidStudentException invalidStudentInputException)
+            catch (InvalidStudentException invalidStudentException)
             {
-                throw CreateAndLogValidationException(invalidStudentInputException);
+                throw CreateAndLogValidationException(invalidStudentException);
             }
             catch (NotFoundStudentException nullStudentException)
             {
