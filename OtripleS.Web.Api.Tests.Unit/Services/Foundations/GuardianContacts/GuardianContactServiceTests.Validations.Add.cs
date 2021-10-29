@@ -53,12 +53,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
             GuardianContact inputGuardianContact = randomGuardianContact;
             inputGuardianContact.GuardianId = default;
 
-            var invalidGuardianContactInputException = new InvalidGuardianContactInputException(
+            var invalidGuardianContactException = new InvalidGuardianContactException(
                 parameterName: nameof(GuardianContact.GuardianId),
                 parameterValue: inputGuardianContact.GuardianId);
 
             var expectedGuardianContactValidationException =
-                new GuardianContactValidationException(invalidGuardianContactInputException);
+                new GuardianContactValidationException(invalidGuardianContactException);
 
             // when
             ValueTask<GuardianContact> addGuardianContactTask =
@@ -88,12 +88,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
             GuardianContact inputGuardianContact = randomGuardianContact;
             inputGuardianContact.ContactId = default;
 
-            var invalidGuardianContactInputException = new InvalidGuardianContactInputException(
+            var invalidGuardianContactException = new InvalidGuardianContactException(
                 parameterName: nameof(GuardianContact.ContactId),
                 parameterValue: inputGuardianContact.ContactId);
 
             var expectedGuardianContactValidationException =
-                new GuardianContactValidationException(invalidGuardianContactInputException);
+                new GuardianContactValidationException(invalidGuardianContactException);
 
             // when
             ValueTask<GuardianContact> addGuardianContactTask =

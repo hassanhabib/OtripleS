@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.GuardianContacts.Exceptions
 {
-    public class InvalidGuardianContactInputException : Exception
+    public class InvalidGuardianContactException : Exception
     {
-        public InvalidGuardianContactInputException(string parameterName, object parameterValue)
+        public InvalidGuardianContactException(string parameterName, object parameterValue)
             : base(message: $"Invalid guardian contact, " +
                   $"parameter name: {parameterName}, " +
                   $"parameter value: {parameterValue}.")

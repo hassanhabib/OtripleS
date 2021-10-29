@@ -30,9 +30,9 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
             {
                 throw CreateAndLogValidationException(nullGuardianContactException);
             }
-            catch (InvalidGuardianContactInputException invalidGuardianContactInputException)
+            catch (InvalidGuardianContactException invalidGuardianContactException)
             {
-                throw CreateAndLogValidationException(invalidGuardianContactInputException);
+                throw CreateAndLogValidationException(invalidGuardianContactException);
             }
             catch (NotFoundGuardianContactException notFoundGuardianContactException)
             {
