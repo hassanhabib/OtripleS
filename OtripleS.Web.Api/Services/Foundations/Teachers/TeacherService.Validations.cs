@@ -30,14 +30,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             }
         }
 
-        private void ValidateStorageTeachers(IQueryable<Teacher> storageTeachers)
-        {
-            if (!storageTeachers.Any())
-            {
-                this.loggingBroker.LogWarning("No teachers found in storage.");
-            }
-        }
-
         private void ValidateTeacherOnCreate(Teacher teacher)
         {
             ValidateTeacher(teacher);
