@@ -20,10 +20,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             //given
             Guid randomFeeId = default;
             Guid inputFeeId = randomFeeId;
+            var invalidFeeException = new InvalidFeeException();
 
-            var invalidFeeException = new InvalidFeeException(
-                parameterName: nameof(Fee.Id),
-                parameterValue: inputFeeId);
+            invalidFeeException.AddData(
+                key: nameof(Fee.Id),
+                values: "Id is required");
 
             var expectedFeeValidationException =
                 new FeeValidationException(invalidFeeException);
@@ -36,8 +37,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             await Assert.ThrowsAsync<FeeValidationException>(() => retrieveFeeByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedFeeValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectFeeByIdAsync(It.IsAny<Guid>()),

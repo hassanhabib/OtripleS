@@ -3,16 +3,14 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Fees.Exceptions
 {
-    public class InvalidFeeException : Exception
+    public class InvalidFeeException : Xeption
     {
-        public InvalidFeeException(string parameterName, object parameterValue)
-            : base(message: $"Invalid fee, " +
-                  $"parameter name: {parameterName}, " +
-                  $"parameter value: {parameterValue}.")
+        public InvalidFeeException()
+            : base("Fee is invalid. Please fix the errors and try again.")
         { }
     }
 }
