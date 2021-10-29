@@ -38,13 +38,13 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
         {
             if (guardianId == default)
             {
-                throw new InvalidGuardianContactInputException(
+                throw new InvalidGuardianContactException(
                     parameterName: nameof(GuardianContact.GuardianId),
                     parameterValue: guardianId);
             }
             if (contactId == default)
             {
-                throw new InvalidGuardianContactInputException(
+                throw new InvalidGuardianContactException(
                     parameterName: nameof(GuardianContact.ContactId),
                     parameterValue: contactId);
             }
@@ -55,12 +55,12 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
             switch (guardianContact)
             {
                 case { } when IsInvalid(guardianContact.GuardianId):
-                    throw new InvalidGuardianContactInputException(
+                    throw new InvalidGuardianContactException(
                         parameterName: nameof(GuardianContact.GuardianId),
                         parameterValue: guardianContact.GuardianId);
 
                 case { } when IsInvalid(guardianContact.ContactId):
-                    throw new InvalidGuardianContactInputException(
+                    throw new InvalidGuardianContactException(
                         parameterName: nameof(GuardianContact.ContactId),
                         parameterValue: guardianContact.ContactId);
             }
