@@ -69,14 +69,6 @@ namespace OtripleS.Web.Api.Services.Foundations.TeacherContacts
             }
         }
 
-        private void ValidateStorageTeacherContacts(IQueryable<TeacherContact> storageTeacherContacts)
-        {
-            if (!storageTeacherContacts.Any())
-            {
-                this.loggingBroker.LogWarning("No teacherContacts found in storage.");
-            }
-        }
-
         private static bool IsInvalid(Guid input) => input == default;
     }
 }
