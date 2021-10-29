@@ -52,12 +52,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam invalidStudentExam = randomStudentExam;
             invalidStudentExam.Id = invalidId;
 
-            var invalidStudentExamInputException = new InvalidStudentExamException(
+            var invalidStudentExamException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.Id),
                 parameterValue: invalidStudentExam.Id);
 
             var expectedStudentExamValidationException =
-                new StudentExamValidationException(invalidStudentExamInputException);
+                new StudentExamValidationException(invalidStudentExamException);
 
             //when
             ValueTask<StudentExam> modifyStudentExamTask =
@@ -86,12 +86,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam invalidStudentExam = randomStudentExam;
             invalidStudentExam.StudentId = invalidStudentId;
 
-            var invalidStudentExamInputException = new InvalidStudentExamException(
+            var invalidStudentExamException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.StudentId),
                 parameterValue: invalidStudentExam.StudentId);
 
             var expectedStudentExamValidationException =
-                new StudentExamValidationException(invalidStudentExamInputException);
+                new StudentExamValidationException(invalidStudentExamException);
 
             //when
             ValueTask<StudentExam> modifyStudentExamTask =
@@ -120,12 +120,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam invalidStudentExam = randomStudentExam;
             invalidStudentExam.ExamId = invalidExamId;
 
-            var invalidStudentExamInputException = new InvalidStudentExamException(
+            var invalidStudentExamException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.ExamId),
                 parameterValue: invalidStudentExam.ExamId);
 
             var expectedStudentExamValidationException =
-                new StudentExamValidationException(invalidStudentExamInputException);
+                new StudentExamValidationException(invalidStudentExamException);
 
             //when
             ValueTask<StudentExam> modifyStudentExamTask =
@@ -153,12 +153,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam inputStudentExam = randomStudentExam;
             inputStudentExam.CreatedBy = default;
 
-            var invalidStudentExamInputException = new InvalidStudentExamException(
+            var invalidStudentExamException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.CreatedBy),
                 parameterValue: inputStudentExam.CreatedBy);
 
             var expectedStudentExamValidationException =
-                new StudentExamValidationException(invalidStudentExamInputException);
+                new StudentExamValidationException(invalidStudentExamException);
 
             // when
             ValueTask<StudentExam> modifyStudentExamTask =
@@ -190,12 +190,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam inputStudentExam = randomStudentExam;
             inputStudentExam.UpdatedBy = default;
 
-            var invalidStudentExamInputException = new InvalidStudentExamException(
+            var invalidStudentExamException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.UpdatedBy),
                 parameterValue: inputStudentExam.UpdatedBy);
 
             var expectedStudentExamValidationException =
-                new StudentExamValidationException(invalidStudentExamInputException);
+                new StudentExamValidationException(invalidStudentExamException);
 
             // when
             ValueTask<StudentExam> modifyStudentExamTask =
@@ -227,12 +227,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam inputStudentExam = randomStudentExam;
             inputStudentExam.CreatedDate = default;
 
-            var invalidStudentExamInputException = new InvalidStudentExamException(
+            var invalidStudentExamException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.CreatedDate),
                 parameterValue: inputStudentExam.CreatedDate);
 
             var expectedStudentExamValidationException =
-                new StudentExamValidationException(invalidStudentExamInputException);
+                new StudentExamValidationException(invalidStudentExamException);
 
             // when
             ValueTask<StudentExam> modifyStudentExamTask =
@@ -264,12 +264,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam inputStudentExam = randomStudentExam;
             inputStudentExam.UpdatedDate = default;
 
-            var invalidStudentExamInputException = new InvalidStudentExamException(
+            var invalidStudentExamException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.UpdatedDate),
                 parameterValue: inputStudentExam.UpdatedDate);
 
             var expectedStudentExamValidationException =
-                new StudentExamValidationException(invalidStudentExamInputException);
+                new StudentExamValidationException(invalidStudentExamException);
 
             // when
             ValueTask<StudentExam> modifyStudentExamTask =
@@ -300,12 +300,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam randomStudentExam = CreateRandomStudentExam(dateTime);
             StudentExam inputStudentExam = randomStudentExam;
 
-            var invalidStudentExamInputException = new InvalidStudentExamException(
+            var invalidStudentExamException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.UpdatedDate),
                 parameterValue: inputStudentExam.UpdatedDate);
 
             var expectedStudentExamValidationException =
-                new StudentExamValidationException(invalidStudentExamInputException);
+                new StudentExamValidationException(invalidStudentExamException);
 
             // when
             ValueTask<StudentExam> modifyStudentExamTask =
@@ -340,12 +340,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             inputStudentExam.UpdatedBy = inputStudentExam.CreatedBy;
             inputStudentExam.UpdatedDate = dateTime.AddMinutes(minutes);
 
-            var invalidStudentExamInputException = new InvalidStudentExamException(
+            var invalidStudentExamException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.UpdatedDate),
                 parameterValue: inputStudentExam.UpdatedDate);
 
             var expectedStudentExamValidationException =
-                new StudentExamValidationException(invalidStudentExamInputException);
+                new StudentExamValidationException(invalidStudentExamException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -439,12 +439,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             Guid semesterCourseId = invalidStudentExam.ExamId;
             invalidStudentExam.CreatedDate = storageStudentExam.CreatedDate.AddMinutes(randomNumber);
 
-            var invalidStudentExamInputException = new InvalidStudentExamException(
+            var invalidStudentExamException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.CreatedDate),
                 parameterValue: invalidStudentExam.CreatedDate);
 
             var expectedStudentExamValidationException =
-                new StudentExamValidationException(invalidStudentExamInputException);
+                new StudentExamValidationException(invalidStudentExamException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentExamByIdAsync(invalidStudentExam.Id))
