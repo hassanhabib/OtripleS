@@ -53,12 +53,12 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
         {
             ValidateExamFeeId(examFeeId);
 
-            ExamFee storageExamFee =
+            ExamFee maybeExamFee =
                 await this.storageBroker.SelectExamFeeByIdAsync(examFeeId);
 
-            ValidateStorageExamFee(storageExamFee, examFeeId);
+            ValidateStorageExamFee(maybeExamFee, examFeeId);
 
-            return storageExamFee;
+            return maybeExamFee;
         });
 
         public ValueTask<ExamFee> ModifyExamFeeAsync(ExamFee examFee) =>
