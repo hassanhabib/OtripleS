@@ -63,13 +63,5 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
             if (storageExamAttachment == null)
                 throw new NotFoundExamAttachmentException(examId, attachmentId);
         }
-
-        private void ValidateStorageExamAttachments(IQueryable<ExamAttachment> storageExamAttachments)
-        {
-            if (!storageExamAttachments.Any())
-            {
-                this.loggingBroker.LogWarning("No exam attachments found in storage.");
-            }
-        }
     }
 }
