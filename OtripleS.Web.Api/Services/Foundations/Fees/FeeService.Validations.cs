@@ -22,7 +22,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
 
         private static void ValidateStorageFee(Fee storageFee, Guid feeId)
         {
-            if (storageFee == null)
+            if (storageFee is null)
             {
                 throw new NotFoundFeeException(feeId);
             }
@@ -37,9 +37,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
 
             Validate(
                 (Rule: IsInvalid(fee.Id), Parameter: nameof(Fee.Id)),
-                (Rule: IsInvalid(fee.Label), Parameter: nameof(Fee.Label)),
-                (Rule: IsInvalid(fee.CreatedBy), Parameter: nameof(Fee.CreatedBy)),
-                (Rule: IsInvalid(fee.UpdatedBy), Parameter: nameof(Fee.UpdatedBy)),
+                (Rule: IsInvalid(text: fee.Label), Parameter: nameof(Fee.Label)),
+                (Rule: IsInvalid(id: fee.CreatedBy), Parameter: nameof(Fee.CreatedBy)),
+                (Rule: IsInvalid(id: fee.UpdatedBy), Parameter: nameof(Fee.UpdatedBy)),
                 (Rule: IsInvalid(fee.CreatedDate), Parameter: nameof(Fee.CreatedDate)),
                 (Rule: IsInvalid(fee.UpdatedDate), Parameter: nameof(Fee.UpdatedDate)),
 
@@ -58,9 +58,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
 
             Validate(
                 (Rule: IsInvalid(fee.Id), Parameter: nameof(Fee.Id)),
-                (Rule: IsInvalid(fee.Label), Parameter: nameof(Fee.Label)),
-                (Rule: IsInvalid(fee.CreatedBy), Parameter: nameof(Fee.CreatedBy)),
-                (Rule: IsInvalid(fee.UpdatedBy), Parameter: nameof(Fee.UpdatedBy)),
+                (Rule: IsInvalid(text: fee.Label), Parameter: nameof(Fee.Label)),
+                (Rule: IsInvalid(id: fee.CreatedBy), Parameter: nameof(Fee.CreatedBy)),
+                (Rule: IsInvalid(id: fee.UpdatedBy), Parameter: nameof(Fee.UpdatedBy)),
                 (Rule: IsInvalid(fee.CreatedDate), Parameter: nameof(Fee.CreatedDate)),
                 (Rule: IsInvalid(fee.UpdatedDate), Parameter: nameof(Fee.UpdatedDate)),
 
@@ -76,7 +76,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
         private static void ValidateAgainstStorageFeeOnModify(Fee inputFee, Fee storageFee)
         {
             Validate(
-
                 (Rule: IsNotSame(
                     firstDate: inputFee.CreatedDate,
                     secondDate: storageFee.CreatedDate,
