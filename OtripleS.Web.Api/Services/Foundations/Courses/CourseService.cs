@@ -74,12 +74,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
         {
             ValidateCourseId(courseId);
 
-            Course storageCourse =
+            Course maybeCourse =
                 await this.storageBroker.SelectCourseByIdAsync(courseId);
 
-            ValidateStorageCourse(storageCourse, courseId);
+            ValidateStorageCourse(maybeCourse, courseId);
 
-            return storageCourse;
+            return maybeCourse;
         });
     }
 }
