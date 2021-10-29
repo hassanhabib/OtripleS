@@ -25,16 +25,17 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<UserContact> AddUserContactAsync(UserContact userContact) =>
-        TryCatch(async () =>
+        public ValueTask<UserContact> AddUserContactAsync(
+            UserContact userContact) => TryCatch(async () =>
         {
             ValidateUserContactOnAdd(userContact);
 
             return await this.storageBroker.InsertUserContactAsync(userContact);
         });
 
-        public ValueTask<UserContact> RemoveUserContactByIdAsync(Guid userId, Guid contactId) =>
-        TryCatch(async () =>
+        public ValueTask<UserContact> RemoveUserContactByIdAsync(
+            Guid userId,
+            Guid contactId) => TryCatch(async () =>
         {
             ValidateUserContactIds(userId, contactId);
 
@@ -47,18 +48,11 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
         });
 
         public IQueryable<UserContact> RetrieveAllUserContacts() =>
-        TryCatch(() =>
-        {
-            IQueryable<UserContact> storageUserContacts =
-                this.storageBroker.SelectAllUserContacts();
+        TryCatch(() => this.storageBroker.SelectAllUserContacts());
 
-            ValidateStorageUserContacts(storageUserContacts);
-
-            return storageUserContacts;
-        });
-
-        public ValueTask<UserContact> RetrieveUserContactByIdAsync(Guid userId, Guid contactId) =>
-        TryCatch(async () =>
+        public ValueTask<UserContact> RetrieveUserContactByIdAsync(
+            Guid userId, 
+            Guid contactId) => TryCatch(async () =>
        {
            ValidateUserContactIds(userId, contactId);
 

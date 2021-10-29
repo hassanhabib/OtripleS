@@ -34,14 +34,6 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
             }
         }
 
-        private void ValidateStorageUserContacts(IQueryable<UserContact> storageUserContacts)
-        {
-            if (!storageUserContacts.Any())
-            {
-                this.loggingBroker.LogWarning("No UserContacts found in storage.");
-            }
-        }
-
         private static void ValidateStorageUserContact(UserContact storageUserContact, Guid userId, Guid contactId)
         {
             if (storageUserContact == null)
