@@ -33,10 +33,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
         TryCatch(async () =>
         {
             ValidateExamId(examId);
-            Exam storageExam = await this.storageBroker.SelectExamByIdAsync(examId);
-            ValidateStorageExam(storageExam, examId);
+            Exam maybeExam = await this.storageBroker.SelectExamByIdAsync(examId);
+            ValidateStorageExam(maybeExam, examId);
 
-            return storageExam;
+            return maybeExam;
         });
 
         public IQueryable<Exam> RetrieveAllExams() =>
