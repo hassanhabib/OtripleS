@@ -21,12 +21,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             Guid randomStudentExamId = default;
             Guid inputStudentExamId = randomStudentExamId;
 
-            var invalidStudentExamInputException = new InvalidStudentExamInputException(
+            var invalidStudentExamException = new InvalidStudentExamException(
                 parameterName: nameof(StudentExam.Id),
                 parameterValue: inputStudentExamId);
 
             var expectedStudentExamValidationException =
-                new StudentExamValidationException(invalidStudentExamInputException);
+                new StudentExamValidationException(invalidStudentExamException);
 
             // when
             ValueTask<StudentExam> retrieveStudentExamByIdTask =
