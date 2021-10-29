@@ -23,12 +23,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             Guid inputContactId = randomContactId;
             Guid inputStudentId = randomStudentId;
 
-            var invalidStudentContactInputException = new InvalidStudentContactInputException(
+            var invalidStudentContactException = new InvalidStudentContactException(
                 parameterName: nameof(StudentContact.StudentId),
                 parameterValue: inputStudentId);
 
             var expectedStudentContactValidationException =
-                new StudentContactValidationException(invalidStudentContactInputException);
+                new StudentContactValidationException(invalidStudentContactException);
 
             // when
             ValueTask<StudentContact> removeStudentContactTask =
@@ -63,12 +63,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             Guid inputContactId = randomContactId;
             Guid inputStudentId = randomStudentId;
 
-            var invalidStudentContactInputException = new InvalidStudentContactInputException(
+            var invalidStudentContactException = new InvalidStudentContactException(
                 parameterName: nameof(StudentContact.ContactId),
                 parameterValue: inputContactId);
 
             var expectedStudentContactValidationException =
-                new StudentContactValidationException(invalidStudentContactInputException);
+                new StudentContactValidationException(invalidStudentContactException);
 
             // when
             ValueTask<StudentContact> removeStudentContactTask =
