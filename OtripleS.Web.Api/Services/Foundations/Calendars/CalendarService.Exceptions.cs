@@ -29,9 +29,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Calendars
             {
                 throw CreateAndLogValidationException(nullCalendarException);
             }
-            catch (InvalidCalendarInputException invalidCalendarInputException)
+            catch (InvalidCalendarException invalidCalendarException)
             {
-                throw CreateAndLogValidationException(invalidCalendarInputException);
+                throw CreateAndLogValidationException(invalidCalendarException);
             }
             catch (NotFoundCalendarException nullCalendarException)
             {

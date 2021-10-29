@@ -52,12 +52,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             Calendar invalidCalendar = randomCalendar;
             invalidCalendar.Id = invalidCalendarId;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.Id),
                 parameterValue: invalidCalendar.Id);
 
             var expectedCalendarValidationException =
-                new CalendarValidationException(invalidCalendarInputException);
+                new CalendarValidationException(invalidCalendarException);
 
             //when
             ValueTask<Calendar> modifyCalendarTask =
@@ -88,12 +88,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             Calendar invalidCalendar = randomCalendar;
             invalidCalendar.Label = invalidCalendarLabel;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarException = new InvalidCalendarException(
                parameterName: nameof(Calendar.Label),
                parameterValue: invalidCalendar.Label);
 
             var expectedCalendarValidationException =
-                new CalendarValidationException(invalidCalendarInputException);
+                new CalendarValidationException(invalidCalendarException);
 
             // when
             ValueTask<Calendar> modifyCalendarTask =
@@ -121,12 +121,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             Calendar inputCalendar = randomCalendar;
             inputCalendar.CreatedBy = default;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.CreatedBy),
                 parameterValue: inputCalendar.CreatedBy);
 
             var expectedCalendarValidationException =
-                new CalendarValidationException(invalidCalendarInputException);
+                new CalendarValidationException(invalidCalendarException);
 
             // when
             ValueTask<Calendar> modifyCalendarTask =
@@ -158,12 +158,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             Calendar inputCalendar = randomCalendar;
             inputCalendar.UpdatedBy = default;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.UpdatedBy),
                 parameterValue: inputCalendar.UpdatedBy);
 
             var expectedCalendarValidationException =
-                new CalendarValidationException(invalidCalendarInputException);
+                new CalendarValidationException(invalidCalendarException);
 
             // when
             ValueTask<Calendar> modifyCalendarTask =
@@ -195,12 +195,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             Calendar inputCalendar = randomCalendar;
             inputCalendar.CreatedDate = default;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.CreatedDate),
                 parameterValue: inputCalendar.CreatedDate);
 
             var expectedCalendarValidationException =
-                new CalendarValidationException(invalidCalendarInputException);
+                new CalendarValidationException(invalidCalendarException);
 
             // when
             ValueTask<Calendar> modifyCalendarTask =
@@ -232,12 +232,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             Calendar inputCalendar = randomCalendar;
             inputCalendar.UpdatedDate = default;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.UpdatedDate),
                 parameterValue: inputCalendar.UpdatedDate);
 
             var expectedCalendarValidationException =
-                new CalendarValidationException(invalidCalendarInputException);
+                new CalendarValidationException(invalidCalendarException);
 
             // when
             ValueTask<Calendar> modifyCalendarTask =
@@ -268,12 +268,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             Calendar randomCalendar = CreateRandomCalendar(dateTime);
             Calendar inputCalendar = randomCalendar;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.UpdatedDate),
                 parameterValue: inputCalendar.UpdatedDate);
 
             var expectedCalendarValidationException =
-                new CalendarValidationException(invalidCalendarInputException);
+                new CalendarValidationException(invalidCalendarException);
 
             // when
             ValueTask<Calendar> modifyCalendarTask =
@@ -308,12 +308,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             inputCalendar.UpdatedBy = inputCalendar.CreatedBy;
             inputCalendar.UpdatedDate = dateTime.AddMinutes(minutes);
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.UpdatedDate),
                 parameterValue: inputCalendar.UpdatedDate);
 
             var expectedCalendarValidationException =
-                new CalendarValidationException(invalidCalendarInputException);
+                new CalendarValidationException(invalidCalendarException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -406,12 +406,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             Guid calendarId = invalidCalendar.Id;
             invalidCalendar.CreatedDate = storageCalendar.CreatedDate.AddMinutes(randomNumber);
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.CreatedDate),
                 parameterValue: invalidCalendar.CreatedDate);
 
             var expectedCalendarValidationException =
-              new CalendarValidationException(invalidCalendarInputException);
+              new CalendarValidationException(invalidCalendarException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectCalendarByIdAsync(calendarId))
@@ -460,12 +460,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             Calendar storageCalendar = randomCalendar.DeepClone();
             Guid calendarId = invalidCalendar.Id;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.UpdatedDate),
                 parameterValue: invalidCalendar.UpdatedDate);
 
             var expectedCalendarValidationException =
-              new CalendarValidationException(invalidCalendarInputException);
+              new CalendarValidationException(invalidCalendarException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectCalendarByIdAsync(calendarId))
@@ -515,12 +515,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             Guid calendarId = invalidCalendar.Id;
             invalidCalendar.CreatedBy = invalidCreatedBy;
 
-            var invalidCalendarInputException = new InvalidCalendarInputException(
+            var invalidCalendarException = new InvalidCalendarException(
                 parameterName: nameof(Calendar.CreatedBy),
                 parameterValue: invalidCalendar.CreatedBy);
 
             var expectedCalendarValidationException =
-              new CalendarValidationException(invalidCalendarInputException);
+              new CalendarValidationException(invalidCalendarException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectCalendarByIdAsync(calendarId))
