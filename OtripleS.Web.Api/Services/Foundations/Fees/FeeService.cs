@@ -52,12 +52,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
         {
             ValidateFeeId(feeId);
 
-            Fee storageFee =
+            Fee maybeFee =
                 await this.storageBroker.SelectFeeByIdAsync(feeId);
 
-            ValidateStorageFee(storageFee, feeId);
+            ValidateStorageFee(maybeFee, feeId);
 
-            return storageFee;
+            return maybeFee;
         });
 
         public ValueTask<Fee> ModifyFeeAsync(Fee fee) =>
