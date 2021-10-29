@@ -158,13 +158,5 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
 
             return Math.Abs(difference.TotalMinutes) >= oneMinute;
         }
-
-        private void ValidateStorageUsers(IQueryable<User> storageUsers)
-        {
-            if (!storageUsers.Any())
-            {
-                this.loggingBroker.LogWarning("No users found in storage.");
-            }
-        }
     }
 }

@@ -63,13 +63,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
         });
 
         public IQueryable<User> RetrieveAllUsers() =>
-        TryCatch(() =>
-        {
-            IQueryable<User> storageUsers = this.userManagementBroker.SelectAllUsers();
-            ValidateStorageUsers(storageUsers);
-
-            return storageUsers;
-        });
+        TryCatch(() => this.userManagementBroker.SelectAllUsers());
 
         public ValueTask<User> RetrieveUserByIdAsync(Guid userId) =>
         TryCatch(async () =>
