@@ -50,9 +50,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
         TryCatch(async () =>
         {
             ValidateContactId(contactId);
-            Contact contact = await this.storageBroker.SelectContactByIdAsync(contactId);
-            ValidateStorageContact(contact, contactId);
-            return contact;
+            Contact maybeContact = await this.storageBroker.SelectContactByIdAsync(contactId);
+            ValidateStorageContact(maybeContact, contactId);
+            return maybeContact;
         });
 
         public ValueTask<Contact> ModifyContactAsync(Contact contact) =>
