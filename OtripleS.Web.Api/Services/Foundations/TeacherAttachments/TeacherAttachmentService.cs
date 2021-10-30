@@ -38,13 +38,7 @@ namespace OtripleS.Web.Api.Services.Foundations.TeacherAttachments
         });
 
         public IQueryable<TeacherAttachment> RetrieveAllTeacherAttachments() =>
-        TryCatch(() =>
-        {
-            IQueryable<TeacherAttachment> storageTeacherAttachments = this.storageBroker.SelectAllTeacherAttachments();
-            ValidateStorageTeacherAttachments(storageTeacherAttachments);
-
-            return storageTeacherAttachments;
-        });
+        TryCatch(() => this.storageBroker.SelectAllTeacherAttachments());
 
         public ValueTask<TeacherAttachment> RetrieveTeacherAttachmentByIdAsync(
             Guid teacherId, Guid attachmentId) =>
