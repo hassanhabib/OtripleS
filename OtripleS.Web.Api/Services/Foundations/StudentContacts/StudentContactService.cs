@@ -47,15 +47,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentContacts
         });
 
         public IQueryable<StudentContact> RetrieveAllStudentContacts() =>
-        TryCatch(() =>
-        {
-            IQueryable<StudentContact> storageStudentContacts =
-                this.storageBroker.SelectAllStudentContacts();
-
-            ValidateStorageStudentContacts(storageStudentContacts);
-
-            return storageStudentContacts;
-        });
+        TryCatch(() => this.storageBroker.SelectAllStudentContacts());
 
         public ValueTask<StudentContact> RetrieveStudentContactByIdAsync(Guid studentId, Guid contactId) =>
         TryCatch(async () =>

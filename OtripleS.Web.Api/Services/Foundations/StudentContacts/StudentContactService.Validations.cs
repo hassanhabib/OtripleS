@@ -4,7 +4,6 @@
 //----------------------------------------------------------------
 
 using System;
-using System.Linq;
 using OtripleS.Web.Api.Models.StudentContacts;
 using OtripleS.Web.Api.Models.StudentContacts.Exceptions;
 
@@ -39,14 +38,6 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentContacts
                     throw new InvalidStudentContactException(
                         parameterName: nameof(StudentContact.ContactId),
                         parameterValue: studentContact.ContactId);
-            }
-        }
-
-        private void ValidateStorageStudentContacts(IQueryable<StudentContact> storageStudentContacts)
-        {
-            if (!storageStudentContacts.Any())
-            {
-                this.loggingBroker.LogWarning("No studentContacts found in storage.");
             }
         }
 
