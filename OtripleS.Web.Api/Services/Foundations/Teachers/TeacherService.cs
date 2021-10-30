@@ -28,16 +28,16 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<Teacher> CreateTeacherAsync(
-            Teacher teacher) => TryCatch(async () =>
+        public ValueTask<Teacher> CreateTeacherAsync(Teacher teacher) =>
+        TryCatch(async () =>
         {
             ValidateTeacherOnCreate(teacher);
 
             return await this.storageBroker.InsertTeacherAsync(teacher);
         });
 
-        public ValueTask<Teacher> RemoveTeacherByIdAsync(
-            Guid teacherId) => TryCatch(async () =>
+        public ValueTask<Teacher> RemoveTeacherByIdAsync(Guid teacherId) =>
+        TryCatch(async () =>
         {
             ValidateTeacherId(teacherId);
 
@@ -49,8 +49,8 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             return await this.storageBroker.DeleteTeacherAsync(maybeTeacher);
         });
 
-        public ValueTask<Teacher> ModifyTeacherAsync(
-            Teacher teacher) => TryCatch(async () =>
+        public ValueTask<Teacher> ModifyTeacherAsync(Teacher teacher) => 
+        TryCatch(async () =>
         {
             ValidateTeacherOnModify(teacher);
             Teacher maybeTeacher = await this.storageBroker.SelectTeacherByIdAsync(teacher.Id);
@@ -63,8 +63,8 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
         public IQueryable<Teacher> RetrieveAllTeachers() =>
         TryCatch(() => this.storageBroker.SelectAllTeachers());
 
-        public ValueTask<Teacher> RetrieveTeacherByIdAsync(
-            Guid teacherId) => TryCatch(async () =>
+        public ValueTask<Teacher> RetrieveTeacherByIdAsync(Guid teacherId) => 
+        TryCatch(async () =>
         {
             ValidateTeacherId(teacherId);
 
