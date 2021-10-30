@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Models.StudentGuardians.Exceptions;
 
@@ -79,14 +78,6 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
                 throw new InvalidStudentGuardianInputException(
                     parameterName: nameof(StudentGuardian.GuardianId),
                     parameterValue: guardianId);
-            }
-        }
-
-        private void ValidateStorageStudentGuardians(IQueryable<StudentGuardian> studentGuardians)
-        {
-            if (!studentGuardians.Any())
-            {
-                this.loggingBroker.LogWarning("No Student Guardians found in storage.");
             }
         }
 

@@ -60,15 +60,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
         });
 
         public IQueryable<StudentGuardian> RetrieveAllStudentGuardians() =>
-        TryCatch(() =>
-        {
-            IQueryable<StudentGuardian> storageStudentGuardians =
-                this.storageBroker.SelectAllStudentGuardians();
-
-            ValidateStorageStudentGuardians(storageStudentGuardians);
-
-            return storageStudentGuardians;
-        });
+        TryCatch(() => this.storageBroker.SelectAllStudentGuardians());
 
         public ValueTask<StudentGuardian> RetrieveStudentGuardianByIdAsync(Guid studentId, Guid guardianId) =>
         TryCatch(async () =>
