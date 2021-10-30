@@ -4,7 +4,6 @@
 //----------------------------------------------------------------
 
 using System;
-using System.Linq;
 using OtripleS.Web.Api.Models.StudentExamFees;
 using OtripleS.Web.Api.Models.StudentExamFees.Exceptions;
 
@@ -142,14 +141,6 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExamFees
                 throw new InvalidStudentExamFeeException(
                     parameterName: nameof(StudentExamFee.CreatedDate),
                     parameterValue: inputStudentExamFee.CreatedDate);
-        }
-
-        private void ValidateStorageStudentExamFees(IQueryable<StudentExamFee> storageStudentExamFees)
-        {
-            if (!storageStudentExamFees.Any())
-            {
-                this.loggingBroker.LogWarning("No student exam fees found in storage.");
-            }
         }
 
         private static bool IsInvalid(Guid input) => input == default;
