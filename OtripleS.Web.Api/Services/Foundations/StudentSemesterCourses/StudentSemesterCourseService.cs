@@ -77,7 +77,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentSemesterCourses
         });
 
         public ValueTask<StudentSemesterCourse> RemoveStudentSemesterCourseByIdsAsync(
-            Guid semesterCourseId, 
+            Guid semesterCourseId,
             Guid studentId) => TryCatch(async () =>
         {
             ValidateSemesterCourseId(semesterCourseId);
