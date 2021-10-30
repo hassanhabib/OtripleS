@@ -38,14 +38,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Registrations
         });
 
         public IQueryable<Registration> RetrieveAllRegistrations() =>
-        TryCatch(() =>
-        {
-            IQueryable<Registration> storageRegistrations = this.storageBroker.SelectAllRegistrations();
-
-            ValidateStorageRegistrations(storageRegistrations);
-
-            return storageRegistrations;
-        });
+        TryCatch(() => this.storageBroker.SelectAllRegistrations());
 
         public ValueTask<Registration> RetrieveRegistrationByIdAsync(Guid registrationId) =>
         TryCatch(async () =>
