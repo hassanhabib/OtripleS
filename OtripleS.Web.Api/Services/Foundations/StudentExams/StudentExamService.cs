@@ -51,15 +51,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExams
         });
 
         public IQueryable<StudentExam> RetrieveAllStudentExams() =>
-        TryCatch(() =>
-        {
-            IQueryable<StudentExam> storageStudentExams =
-                this.storageBroker.SelectAllStudentExams();
-
-            ValidateStorageStudentExams(storageStudentExams);
-
-            return storageStudentExams;
-        });
+        TryCatch(() => this.storageBroker.SelectAllStudentExams());
 
         public ValueTask<StudentExam> ModifyStudentExamAsync(StudentExam studentExam) =>
         TryCatch(async () =>
