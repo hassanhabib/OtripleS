@@ -47,19 +47,11 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
         });
 
         public IQueryable<UserContact> RetrieveAllUserContacts() =>
-        TryCatch(() =>
-        {
-            IQueryable<UserContact> storageUserContacts =
-                this.storageBroker.SelectAllUserContacts();
-
-            ValidateStorageUserContacts(storageUserContacts);
-
-            return storageUserContacts;
-        });
+        TryCatch(() => this.storageBroker.SelectAllUserContacts());
 
         public ValueTask<UserContact> RetrieveUserContactByIdAsync(Guid userId, Guid contactId) =>
         TryCatch(async () =>
-       {
+        {
            ValidateUserContactIds(userId, contactId);
 
            UserContact storageUserContact =
@@ -68,6 +60,6 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
            ValidateStorageUserContact(storageUserContact, userId, contactId);
 
            return storageUserContact;
-       });
+        });
     }
 }
