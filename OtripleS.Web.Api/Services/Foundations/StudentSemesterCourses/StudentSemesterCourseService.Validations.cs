@@ -153,14 +153,6 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentSemesterCourses
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
-        private void ValidateStorageStudentSemesterCourses(IQueryable<StudentSemesterCourse> storageStudentSemesterCourses)
-        {
-            if (!storageStudentSemesterCourses.Any())
-            {
-                this.loggingBroker.LogWarning("No studentSemesterSemesterCourses found in storage.");
-            }
-        }
-
         private static void ValidateAgainstStorageStudentSemesterCourseOnModify
             (StudentSemesterCourse inputStudentSemesterCourse, StudentSemesterCourse storageStudentSemesterCourse)
         {
