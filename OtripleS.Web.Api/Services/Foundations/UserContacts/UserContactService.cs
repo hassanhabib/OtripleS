@@ -52,14 +52,14 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
         public ValueTask<UserContact> RetrieveUserContactByIdAsync(Guid userId, Guid contactId) =>
         TryCatch(async () =>
         {
-           ValidateUserContactIds(userId, contactId);
+            ValidateUserContactIds(userId, contactId);
 
-           UserContact storageUserContact =
-               await this.storageBroker.SelectUserContactByIdAsync(userId, contactId);
+            UserContact storageUserContact =
+                await this.storageBroker.SelectUserContactByIdAsync(userId, contactId);
 
-           ValidateStorageUserContact(storageUserContact, userId, contactId);
+            ValidateStorageUserContact(storageUserContact, userId, contactId);
 
-           return storageUserContact;
+            return storageUserContact;
         });
     }
 }

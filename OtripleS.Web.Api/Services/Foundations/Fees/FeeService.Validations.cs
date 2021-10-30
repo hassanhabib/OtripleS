@@ -125,19 +125,19 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
             DateTimeOffset firstDate,
             DateTimeOffset secondDate,
             string secondDateName) => new
-        {
-            Condition = firstDate != secondDate,
-            Message = $"Date is not the same as {secondDateName}"
-        };
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not the same as {secondDateName}"
+            };
 
         private static dynamic IsNotSame(
             Guid firstId,
             Guid secondId,
             string secondIdName) => new
-        {
-            Condition = firstId != secondId,
-            Message = $"Id is not the same as {secondIdName}"
-        };
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not the same as {secondIdName}"
+            };
 
         private dynamic IsNotRecent(DateTimeOffset date) => new
         {
@@ -149,10 +149,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
             DateTimeOffset firstDate,
             DateTimeOffset secondDate,
             string secondDateName) => new
-        {
-            Condition = firstDate == secondDate,
-            Message = $"Date is the same as {secondDateName}"
-        };
+            {
+                Condition = firstDate == secondDate,
+                Message = $"Date is the same as {secondDateName}"
+            };
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
@@ -167,9 +167,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
         {
             var invalidFeeException = new InvalidFeeException();
 
-            foreach((dynamic rule, string parameter) in validations)
+            foreach ((dynamic rule, string parameter) in validations)
             {
-                if(rule.Condition)
+                if (rule.Condition)
                 {
                     invalidFeeException.UpsertDataList(
                         key: parameter,
