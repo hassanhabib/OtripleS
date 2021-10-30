@@ -26,15 +26,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentRegistrations
         }
 
         public IQueryable<StudentRegistration> RetrieveAllStudentRegistrations() =>
-        TryCatch(() =>
-        {
-            IQueryable<StudentRegistration> storageStudentRegistrations =
-               this.storageBroker.SelectAllStudentRegistrations();
-
-            ValidateStorageStudentRegistrations(storageStudentRegistrations);
-
-            return storageStudentRegistrations;
-        });
+        TryCatch(() => this.storageBroker.SelectAllStudentRegistrations());
 
         public ValueTask<StudentRegistration> AddStudentRegistrationAsync(StudentRegistration studentRegistration) =>
         TryCatch(async () =>

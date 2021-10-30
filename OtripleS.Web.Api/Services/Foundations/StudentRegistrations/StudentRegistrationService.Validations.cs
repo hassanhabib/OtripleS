@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using OtripleS.Web.Api.Models.StudentRegistrations;
 using OtripleS.Web.Api.Models.StudentRegistrations.Exceptions;
 
@@ -12,13 +11,6 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentRegistrations
 {
     public partial class StudentRegistrationService
     {
-        private void ValidateStorageStudentRegistrations(IQueryable<StudentRegistration> storageStudentRegistrations)
-        {
-            if (storageStudentRegistrations.Count() == 0)
-            {
-                this.loggingBroker.LogWarning("No studentRegistrations found in storage.");
-            }
-        }
         private static void ValidateStudentRegistrationOnCreate(StudentRegistration studentRegistration)
         {
             ValidateStudentRegistrationIsNull(studentRegistration);
