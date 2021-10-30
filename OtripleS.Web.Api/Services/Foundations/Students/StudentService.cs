@@ -75,12 +75,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
         });
 
         public IQueryable<Student> RetrieveAllStudents() =>
-        TryCatch(() =>
-        {
-            IQueryable<Student> storageStudents = this.storageBroker.SelectAllStudents();
-            ValidateStorageStudents(storageStudents);
-
-            return storageStudents;
-        });
+        TryCatch(() => this.storageBroker.SelectAllStudents());
     }
 }
