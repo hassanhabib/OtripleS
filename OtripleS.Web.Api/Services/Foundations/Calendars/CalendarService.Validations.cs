@@ -32,14 +32,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Calendars
             ValidateUpdatedDateIsRecent(calendar);
         }
 
-        private void ValidateStorageCalendars(IQueryable<Calendar> storageCalendar)
-        {
-            if (!storageCalendar.Any())
-            {
-                this.loggingBroker.LogWarning("No calendars found in storage.");
-            }
-        }
-
         private static void ValidateCalendarIsNull(Calendar calendar)
         {
             if (calendar is null)
