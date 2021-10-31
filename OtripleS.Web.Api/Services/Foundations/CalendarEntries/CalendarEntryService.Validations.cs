@@ -319,13 +319,5 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
                         parameterValue: calendarEntry.Description);
             }
         }
-
-        private void ValidateStorageCalendarEntries(IQueryable<CalendarEntry> storageCalendarEntries)
-        {
-            if (!storageCalendarEntries.Any())
-            {
-                this.loggingBroker.LogWarning("No calendar entries found in storage.");
-            }
-        }
     }
 }
