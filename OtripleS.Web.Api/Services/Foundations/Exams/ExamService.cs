@@ -40,13 +40,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
         });
 
         public IQueryable<Exam> RetrieveAllExams() =>
-        TryCatch(() =>
-        {
-            IQueryable<Exam> storageExams = this.storageBroker.SelectAllExams();
-            ValidateStorageExams(storageExams);
-
-            return storageExams;
-        });
+        TryCatch(() => this.storageBroker.SelectAllExams());
 
         public ValueTask<Exam> AddExamAsync(Exam exam) =>
         TryCatch(async () =>

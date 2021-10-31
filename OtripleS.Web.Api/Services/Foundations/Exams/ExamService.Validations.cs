@@ -153,14 +153,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
-        private void ValidateStorageExams(IQueryable<Exam> storageExams)
-        {
-            if (!storageExams.Any())
-            {
-                this.loggingBroker.LogWarning("No exams found in storage.");
-            }
-        }
-
         private static void ValidateStorageExam(Exam storageExam, Guid examId)
         {
             if (storageExam == null)
