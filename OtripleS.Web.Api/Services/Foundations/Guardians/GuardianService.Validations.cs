@@ -197,7 +197,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Guardians
                         parameterName: nameof(Guardian.UpdatedDate),
                         parameterValue: inputGuardian.UpdatedDate);
             }
-        }
-        
+        }        
     }
 }
