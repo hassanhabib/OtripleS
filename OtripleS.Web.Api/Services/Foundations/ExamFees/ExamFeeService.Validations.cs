@@ -149,14 +149,6 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
             invalidExamFeeException.ThrowIfContainsErrors();
         }
 
-        private void ValidateStorageExamFees(IQueryable<ExamFee> storageExamFees)
-        {
-            if (!storageExamFees.Any())
-            {
-                this.loggingBroker.LogWarning("No exam fees found in storage.");
-            }
-        }
-
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
