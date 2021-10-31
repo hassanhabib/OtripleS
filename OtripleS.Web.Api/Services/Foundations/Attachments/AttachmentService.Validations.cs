@@ -188,14 +188,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
             }
         }
 
-        private void ValidateStorageAttachments(IQueryable<Attachment> storageAttachments)
-        {
-            if (!storageAttachments.Any())
-            {
-                this.loggingBroker.LogWarning("No attachments found in storage.");
-            }
-        }
-
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
