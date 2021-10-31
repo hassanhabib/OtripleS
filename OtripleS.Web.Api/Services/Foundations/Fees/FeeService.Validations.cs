@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using OtripleS.Web.Api.Models.Fees;
 using OtripleS.Web.Api.Models.Fees.Exceptions;
 
@@ -12,14 +11,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
 {
     public partial class FeeService
     {
-        private void ValidateStorageFees(IQueryable<Fee> storageFees)
-        {
-            if (!storageFees.Any())
-            {
-                this.loggingBroker.LogWarning("No fees found in storage.");
-            }
-        }
-
         private static void ValidateStorageFee(Fee storageFee, Guid feeId)
         {
             if (storageFee is null)
