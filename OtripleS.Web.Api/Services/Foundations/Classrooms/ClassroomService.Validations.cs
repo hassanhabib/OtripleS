@@ -190,14 +190,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             }
         }
 
-        private void ValidateStorageClassrooms(IQueryable<Classroom> storageClassrooms)
-        {
-            if (!storageClassrooms.Any())
-            {
-                this.loggingBroker.LogWarning("No classrooms found in storage.");
-            }
-        }
-
         private static bool IsInvalid(Guid input) => input == default;
         private static bool IsInvalid(DateTimeOffset input) => input == default;
     }
