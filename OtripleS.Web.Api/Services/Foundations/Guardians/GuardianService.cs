@@ -29,14 +29,8 @@ namespace OtripleS.Web.Api.Services.Foundations.Guardians
         }
 
         public IQueryable<Guardian> RetrieveAllGuardians() =>
-        TryCatch(() =>
-        {
-            IQueryable<Guardian> storageGuardians = this.storageBroker.SelectAllGuardians();
-            ValidateStorageGuardians(storageGuardians);
-
-            return storageGuardians;
-        });
-
+        TryCatch(() => this.storageBroker.SelectAllGuardians());
+         
         public ValueTask<Guardian> CreateGuardianAsync(Guardian guardian) =>
         TryCatch(async () =>
         {
