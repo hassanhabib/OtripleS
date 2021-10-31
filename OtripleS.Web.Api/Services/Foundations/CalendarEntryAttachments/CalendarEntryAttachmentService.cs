@@ -38,15 +38,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
         });
 
         public IQueryable<CalendarEntryAttachment> RetrieveAllCalendarEntryAttachments() =>
-        TryCatch(() =>
-        {
-            IQueryable<CalendarEntryAttachment> storageCalendarEntryAttachments =
-                this.storageBroker.SelectAllCalendarEntryAttachments();
-
-            ValidateStorageCalendarEntryAttachments(storageCalendarEntryAttachments);
-
-            return storageCalendarEntryAttachments;
-        });
+        TryCatch(() =>this.storageBroker.SelectAllCalendarEntryAttachments());
 
         public ValueTask<CalendarEntryAttachment> RetrieveCalendarEntryAttachmentByIdAsync
             (Guid calendarEntryId, Guid attachmentId) => TryCatch(async () =>
