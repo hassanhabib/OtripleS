@@ -51,14 +51,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
         });
 
         public IQueryable<Attachment> RetrieveAllAttachments() =>
-        TryCatch(() =>
-        {
-            IQueryable<Attachment> storageAttachments = this.storageBroker.SelectAllAttachments();
-
-            ValidateStorageAttachments(storageAttachments);
-
-            return storageAttachments;
-        });
+        TryCatch(() => this.storageBroker.SelectAllAttachments());
 
         public ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId) =>
         TryCatch(async () =>
