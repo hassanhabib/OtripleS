@@ -47,15 +47,7 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
         });
 
         public IQueryable<GuardianContact> RetrieveAllGuardianContacts() =>
-        TryCatch(() =>
-        {
-            IQueryable<GuardianContact> storageGuardianContacts =
-                this.storageBroker.SelectAllGuardianContacts();
-
-            ValidateStorageGuardianContacts(storageGuardianContacts);
-
-            return storageGuardianContacts;
-        });
+        TryCatch(() => this.storageBroker.SelectAllGuardianContacts());
 
         public ValueTask<GuardianContact> RetrieveGuardianContactByIdAsync(Guid guardianId, Guid contactId) =>
         TryCatch(async () =>
