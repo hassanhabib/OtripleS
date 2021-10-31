@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using OtripleS.Web.Api.Models.Exams;
 using OtripleS.Web.Api.Models.Exams.Exceptions;
 
@@ -151,14 +150,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             TimeSpan difference = now.Subtract(dateTime);
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
-        }
-
-        private void ValidateStorageExams(IQueryable<Exam> storageExams)
-        {
-            if (!storageExams.Any())
-            {
-                this.loggingBroker.LogWarning("No exams found in storage.");
-            }
         }
 
         private static void ValidateStorageExam(Exam storageExam, Guid examId)
