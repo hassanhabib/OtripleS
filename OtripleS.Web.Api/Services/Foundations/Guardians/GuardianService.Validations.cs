@@ -197,14 +197,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Guardians
                         parameterName: nameof(Guardian.UpdatedDate),
                         parameterValue: inputGuardian.UpdatedDate);
             }
-        }
-
-        private void ValidateStorageGuardians(IQueryable<Guardian> storageGuardians)
-        {
-            if (!storageGuardians.Any())
-            {
-                this.loggingBroker.LogWarning("No guardians found in storage.");
-            }
-        }
+        }        
     }
 }
