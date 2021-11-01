@@ -61,6 +61,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
         private static Filler<StudentContact> CreateStudentContactFiller(DateTimeOffset dates)
         {
             var filler = new Filler<StudentContact>();
+
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates)
                 .OnProperty(studentcontact => studentcontact.Student).IgnoreIt()
