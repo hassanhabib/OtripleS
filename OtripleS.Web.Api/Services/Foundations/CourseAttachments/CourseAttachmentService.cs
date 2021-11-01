@@ -38,15 +38,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
         });
 
         public IQueryable<CourseAttachment> RetrieveAllCourseAttachments() =>
-        TryCatch(() =>
-        {
-            IQueryable<CourseAttachment> storageCourseAttachments =
-                this.storageBroker.SelectAllCourseAttachments();
-
-            ValidateStorageCourseAttachments(storageCourseAttachments);
-
-            return storageCourseAttachments;
-        });
+        TryCatch(() => this.storageBroker.SelectAllCourseAttachments());
 
         public ValueTask<CourseAttachment> RetrieveCourseAttachmentByIdAsync(
             Guid courseId,

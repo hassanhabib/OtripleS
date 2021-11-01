@@ -45,15 +45,6 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
                 throw new NotFoundCourseAttachmentException(courseId, attachmentId);
         }
 
-        private void ValidateStorageCourseAttachments(
-            IQueryable<CourseAttachment> storageCourseAttachments)
-        {
-            if (!storageCourseAttachments.Any())
-            {
-                this.loggingBroker.LogWarning("No course attachments found in storage.");
-            }
-        }
-
         private static dynamic IsInvalid(Guid id) => new
         {
             Condition = id == Guid.Empty,
