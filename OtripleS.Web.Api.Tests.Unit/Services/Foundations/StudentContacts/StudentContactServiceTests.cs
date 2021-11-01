@@ -41,18 +41,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
 
         private static StudentContact CreateRandomStudentContact(DateTimeOffset dates) =>
             CreateStudentContactFiller(dates).Create();
-
-        private static Filler<StudentContact> CreateStudentContactFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<StudentContact>();
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(studentcontact => studentcontact.Student).IgnoreIt()
-                .OnProperty(studentcontact => studentcontact.Contact).IgnoreIt();
-
-            return filler;
-        }
-
+        
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
 
@@ -67,6 +56,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             return actualException =>
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
+
+        private static Filler<StudentContact> CreateStudentContactFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<StudentContact>();
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(studentcontact => studentcontact.Student).IgnoreIt()
+                .OnProperty(studentcontact => studentcontact.Contact).IgnoreIt();
+
+            return filler;
         }
     }
 }
