@@ -132,8 +132,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             Student invalidStudent = randomStudent;
             invalidStudent.CreatedDate = sameDate;
             invalidStudent.UpdatedDate = sameDate;
-
-
             var invalidStudentException = new InvalidStudentException();
 
             invalidStudentException.AddData(
@@ -273,7 +271,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             invalidStudent.UpdatedDate = storageStudent.UpdatedDate;
             invalidStudent.CreatedBy = invalidCreatedBy;
             Guid studentId = invalidStudent.Id;
-
 
             var invalidStudentException = new InvalidStudentException();
 
