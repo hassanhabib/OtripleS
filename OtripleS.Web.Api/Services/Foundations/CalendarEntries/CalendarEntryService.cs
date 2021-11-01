@@ -68,15 +68,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
         });
 
         public IQueryable<CalendarEntry> RetrieveAllCalendarEntries() =>
-        TryCatch(() =>
-        {
-            IQueryable<CalendarEntry> storageCalendarEntries =
-                this.storageBroker.SelectAllCalendarEntries();
-
-            ValidateStorageCalendarEntries(storageCalendarEntries);
-
-            return storageCalendarEntries;
-        });
+        TryCatch(() => this.storageBroker.SelectAllCalendarEntries());
 
         public ValueTask<CalendarEntry> RetrieveCalendarEntryByIdAsync(
             Guid calendarEntryId) =>
