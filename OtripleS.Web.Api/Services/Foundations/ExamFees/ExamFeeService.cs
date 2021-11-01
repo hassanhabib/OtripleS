@@ -38,15 +38,7 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
         });
 
         public IQueryable<ExamFee> RetrieveAllExamFees() =>
-        TryCatch(() =>
-        {
-            IQueryable<ExamFee> storageExamFees = this.storageBroker.SelectAllExamFees();
-
-            ValidateStorageExamFees(storageExamFees);
-
-            return storageExamFees;
-
-        });
+        TryCatch(() => this.storageBroker.SelectAllExamFees());
 
         public ValueTask<ExamFee> RetrieveExamFeeByIdAsync(Guid examFeeId) =>
         TryCatch(async () =>
