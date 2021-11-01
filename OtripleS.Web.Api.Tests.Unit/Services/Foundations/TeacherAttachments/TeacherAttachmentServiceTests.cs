@@ -51,19 +51,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
 
         private static TeacherAttachment CreateRandomTeacherAttachment(DateTimeOffset dates) =>
             CreateTeacherAttachmentFiller(dates).Create();
-
-        private static Filler<TeacherAttachment> CreateTeacherAttachmentFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<TeacherAttachment>();
-
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(teacherAttachment => teacherAttachment.Teacher).IgnoreIt()
-                .OnProperty(teacherAttachment => teacherAttachment.Attachment).IgnoreIt();
-
-            return filler;
-        }
-
+                
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
@@ -75,5 +63,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
+        
+        private static Filler<TeacherAttachment> CreateTeacherAttachmentFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<TeacherAttachment>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(teacherAttachment => teacherAttachment.Teacher).IgnoreIt()
+                .OnProperty(teacherAttachment => teacherAttachment.Attachment).IgnoreIt();
+
+            return filler;
+        }
     }
 }
