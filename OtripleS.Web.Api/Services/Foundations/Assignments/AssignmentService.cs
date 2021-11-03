@@ -44,12 +44,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
         {
             ValidateAssignmentIdIsNull(assignmentId);
 
-            Assignment storageAssignment =
+            Assignment maybeAssignment =
                 await this.storageBroker.SelectAssignmentByIdAsync(assignmentId);
 
-            ValidateStorageAssignment(storageAssignment, assignmentId);
+            ValidateStorageAssignment(maybeAssignment, assignmentId);
 
-            return storageAssignment;
+            return maybeAssignment;
         });
 
         public ValueTask<Assignment> ModifyAssignmentAsync(Assignment assignment) =>
