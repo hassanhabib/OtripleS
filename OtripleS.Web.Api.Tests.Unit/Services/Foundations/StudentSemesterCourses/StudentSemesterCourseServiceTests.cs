@@ -47,6 +47,24 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
         private static IQueryable<StudentSemesterCourse> CreateRandomStudentSemesterCourses() =>
             CreateStudentSemesterCourseFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
+        private static Filler<StudentSemesterCourse> CreateStudentSemesterCourseFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<StudentSemesterCourse>();
+            filler.Setup()
+                .OnProperty(semesterCourse => semesterCourse.CreatedDate).Use(dates)
+                .OnProperty(semesterCourse => semesterCourse.UpdatedDate).Use(dates)
+                .OnProperty(semesterCourse => semesterCourse.Student).IgnoreIt()
+                .OnProperty(semesterCourse => semesterCourse.SemesterCourse).IgnoreIt();
+
+            return filler;
+        }
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
 
         public static IEnumerable<object[]> InvalidMinuteCases()
         {
@@ -60,35 +78,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             };
         }
 
-        private static int GetRandomNumber() =>
-            new IntRange(min: 2, max: 10).GetValue();
-
-        private static int GetNegativeRandomNumber() =>
-            -1 * GetRandomNumber();
-
-        private static string GetRandomMessage() =>
-            new MnemonicString().GetValue();
-
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
-        {
-            return actualException =>
-                expectedException.Message == actualException.Message
-                && expectedException.InnerException.Message == actualException.InnerException.Message;
-        }
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
-
-        private static Filler<StudentSemesterCourse> CreateStudentSemesterCourseFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<StudentSemesterCourse>();
-            filler.Setup()
-                .OnProperty(semesterCourse => semesterCourse.CreatedDate).Use(dates)
-                .OnProperty(semesterCourse => semesterCourse.UpdatedDate).Use(dates)
-                .OnProperty(semesterCourse => semesterCourse.Student).IgnoreIt()
-                .OnProperty(semesterCourse => semesterCourse.SemesterCourse).IgnoreIt();
-
-            return filler;
-        }
     }
 }
