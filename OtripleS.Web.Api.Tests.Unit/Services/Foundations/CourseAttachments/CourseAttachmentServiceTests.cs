@@ -41,9 +41,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
         private static IQueryable<CourseAttachment> CreateRandomCourseAttachments() =>
             CreateCourseAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
+        private static int GetRandomNumber() =>
+            new IntRange(min: 2, max: 150).GetValue();
 
-        private static string GetRandomMessage() => new MnemonicString().GetValue();
+        private static string GetRandomMessage() =>
+            new MnemonicString().GetValue();
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
@@ -54,17 +56,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
         private static CourseAttachment CreateRandomCourseAttachment(DateTimeOffset dates) =>
             CreateCourseAttachmentFiller(dates).Create();
 
-        private static Filler<CourseAttachment> CreateCourseAttachmentFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<CourseAttachment>();
-
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(courseAttachment => courseAttachment.Course).IgnoreIt()
-                .OnProperty(courseAttachment => courseAttachment.Attachment).IgnoreIt();
-
-            return filler;
-        }
+        private static SqlException GetSqlException() =>
+         (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
         {
@@ -81,7 +74,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
 
-        private static SqlException GetSqlException() =>
-         (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+        private static Filler<CourseAttachment> CreateCourseAttachmentFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<CourseAttachment>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(courseAttachment => courseAttachment.Course).IgnoreIt()
+                .OnProperty(courseAttachment => courseAttachment.Attachment).IgnoreIt();
+
+            return filler;
+        }
     }
 }
