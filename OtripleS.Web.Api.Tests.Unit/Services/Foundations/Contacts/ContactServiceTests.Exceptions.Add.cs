@@ -16,45 +16,43 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
     public partial class ContactServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnAddWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowCriticalDependencyExceptionOnAddWhenSqlErrorOccursAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             Contact randomContact = CreateRandomContact(dateTime);
-            Contact inputContact = randomContact;
-            inputContact.UpdatedBy = inputContact.CreatedBy;
             var sqlException = GetSqlException();
 
+            var failedContactStorageException =
+                new FailedContactStorageException(sqlException);
+
             var expectedContactDependencyException =
-                new ContactDependencyException(sqlException);
+                new ContactDependencyException(failedContactStorageException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertContactAsync(inputContact))
-                    .ThrowsAsync(sqlException);
+                    .Throws(sqlException);
 
             // when
             ValueTask<Contact> addContactTask =
-                this.contactService.AddContactAsync(inputContact);
+                this.contactService.AddContactAsync(randomContact);
 
             // then
             await Assert.ThrowsAsync<ContactDependencyException>(() =>
                 addContactTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedContactDependencyException))),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertContactAsync(inputContact),
-                    Times.Once);
-
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedContactDependencyException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertContactAsync(It.IsAny<Contact>()),
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

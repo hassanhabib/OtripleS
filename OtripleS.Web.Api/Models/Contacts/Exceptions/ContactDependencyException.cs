@@ -4,10 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Contacts.Exceptions
 {
-    public class ContactDependencyException : Exception
+    public class ContactDependencyException : Xeption
     {
         public ContactDependencyException(Exception innerException)
             : base(message: "Service dependency error occurred, contact support.", innerException) { }
