@@ -47,12 +47,12 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
         {
             ValidateCourseAttachmentIds(courseId, attachmentId);
 
-            CourseAttachment storageCourseAttachment =
+            CourseAttachment maybeCourseAttachment =
                 await this.storageBroker.SelectCourseAttachmentByIdAsync(courseId, attachmentId);
 
-            ValidateStorageCourseAttachment(storageCourseAttachment, courseId, attachmentId);
+            ValidateStorageCourseAttachment(maybeCourseAttachment, courseId, attachmentId);
 
-            return storageCourseAttachment;
+            return maybeCourseAttachment;
         });
 
         public ValueTask<CourseAttachment> RemoveCourseAttachmentByIdAsync(
