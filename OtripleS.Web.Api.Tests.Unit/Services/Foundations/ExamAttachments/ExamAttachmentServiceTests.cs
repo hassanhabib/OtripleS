@@ -69,7 +69,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
 
         private static IQueryable<ExamAttachment> CreateRandomExamAttachments() =>
             CreateExamAttachmentFiller(DateTimeOffset.UtcNow)
-                .Create(GetRandomNumber()).AsQueryable();
+                .Create(GetRandomNumber()).AsQueryable();               
+
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
 
         private static Filler<ExamAttachment> CreateExamAttachmentFiller(DateTimeOffset dates)
         {
@@ -82,7 +84,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
 
             return filler;
         }
-
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
     }
 }
