@@ -52,6 +52,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
         private static StudentAttachment CreateRandomStudentAttachment(DateTimeOffset dates) =>
             CreateStudentAttachmentFiller(dates).Create();
 
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static int GetRandomNumber() =>
+            new IntRange(min: 2, max: 150).GetValue();
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
+
         private static Filler<StudentAttachment> CreateStudentAttachmentFiller(DateTimeOffset dates)
         {
             var filler = new Filler<StudentAttachment>();
@@ -63,17 +76,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
 
             return filler;
         }
-
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
-        {
-            return actualException =>
-                expectedException.Message == actualException.Message
-                && expectedException.InnerException.Message == actualException.InnerException.Message;
-        }
-
-        private static SqlException GetSqlException() =>
-            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
-
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
     }
 }
