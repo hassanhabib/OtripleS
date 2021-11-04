@@ -37,9 +37,40 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
                 loggingBroker: this.loggingBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
+
         private static StudentExamFee CreateRandomStudentExamFee() =>
            CreateStudentExamFeeFiller(DateTimeOffset.UtcNow).Create();
 
+        private static IQueryable<StudentExamFee> CreateRandomStudentExamFees() =>
+            CreateStudentExamFeeFiller(DateTimeOffset.UtcNow)
+                .Create(GetRandomNumber()).AsQueryable();
+
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private static StudentExamFee CreateRandomStudentExamFee(DateTimeOffset dates) =>
+            CreateStudentExamFeeFiller(dates).Create();
+
+        public static TheoryData InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new TheoryData<int>
+            {
+                randomMoreThanMinuteFromNow,
+                randomMoreThanMinuteBeforeNow
+            };
+        }
+
+        private static int GetRandomNumber() =>
+            new IntRange(min: 2, max: 10).GetValue();
+
+        private static int GetNegativeRandomNumber() =>
+            -1 * GetRandomNumber();
+
+        private static string GetRandomMessage() =>
+            new MnemonicString().GetValue();
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
@@ -47,9 +78,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
 
-        private static IQueryable<StudentExamFee> CreateRandomStudentExamFees() =>
-            CreateStudentExamFeeFiller(DateTimeOffset.UtcNow)
-                .Create(GetRandomNumber()).AsQueryable();
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static Filler<StudentExamFee> CreateStudentExamFeeFiller(DateTimeOffset dates)
         {
@@ -65,30 +95,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
 
             return filler;
         }
-
-        private static DateTimeOffset GetRandomDateTime() =>
-            new DateTimeRange(earliestDate: new DateTime()).GetValue();
-
-        private static StudentExamFee CreateRandomStudentExamFee(DateTimeOffset dates) =>
-            CreateStudentExamFeeFiller(dates).Create();
-
-        private static SqlException GetSqlException() =>
-        (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
-
-        public static TheoryData InvalidMinuteCases()
-        {
-            int randomMoreThanMinuteFromNow = GetRandomNumber();
-            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
-
-            return new TheoryData<int>
-            {
-                randomMoreThanMinuteFromNow,
-                randomMoreThanMinuteBeforeNow
-            };
-        }
-
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
-        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
-        private static string GetRandomMessage() => new MnemonicString().GetValue();
     }
 }
