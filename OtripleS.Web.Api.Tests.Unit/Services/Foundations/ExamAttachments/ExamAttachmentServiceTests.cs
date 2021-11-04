@@ -65,11 +65,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
         private static string GetRandomMessage() => new MnemonicString().GetValue();
 
         private static SqlException GetSqlException() =>
-         (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
         private static IQueryable<ExamAttachment> CreateRandomExamAttachments() =>
             CreateExamAttachmentFiller(DateTimeOffset.UtcNow)
                 .Create(GetRandomNumber()).AsQueryable();
-
 
         private static Filler<ExamAttachment> CreateExamAttachmentFiller(DateTimeOffset dates)
         {
