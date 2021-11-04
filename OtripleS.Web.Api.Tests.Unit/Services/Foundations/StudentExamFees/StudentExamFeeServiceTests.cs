@@ -71,6 +71,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
 
         private static string GetRandomMessage() =>
             new MnemonicString().GetValue();
+
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
