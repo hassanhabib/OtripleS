@@ -53,12 +53,12 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
         {
             ValidateCalendarEntryAttachmentIds(calendarEntryId, attachmentId);
 
-            CalendarEntryAttachment storageCalendarEntryAttachment =
+            CalendarEntryAttachment maybeCalendarEntryAttachment =
                 await this.storageBroker.SelectCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
 
-            ValidateStorageCalendarEntryAttachment(storageCalendarEntryAttachment, calendarEntryId, attachmentId);
+            ValidateStorageCalendarEntryAttachment(maybeCalendarEntryAttachment, calendarEntryId, attachmentId);
 
-            return storageCalendarEntryAttachment;
+            return maybeCalendarEntryAttachment;
         });
 
         public ValueTask<CalendarEntryAttachment> RemoveCalendarEntryAttachmentByIdAsync(
