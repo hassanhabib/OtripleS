@@ -80,12 +80,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         {
             ValidateClassroomIdIsNull(classroomId);
 
-            Classroom storageClassroom =
+            Classroom maybeClassroom =
                 await this.storageBroker.SelectClassroomByIdAsync(classroomId);
 
-            ValidateStorageClassroom(storageClassroom, classroomId);
+            ValidateStorageClassroom(maybeClassroom, classroomId);
 
-            return storageClassroom;
+            return maybeClassroom;
         });
     }
 }
