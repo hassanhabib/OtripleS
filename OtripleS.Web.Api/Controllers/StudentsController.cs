@@ -34,9 +34,12 @@ namespace OtripleS.Web.Api.Controllers
                 return Created(registeredStudent);
             }
             catch (StudentValidationException studentValidationException)
-                when (studentValidationException.InnerException is AlreadyExistsStudentException)
+                when (studentValidationException.InnerException 
+                    is AlreadyExistsStudentException
+                    or LockedStudentException
+                    or NotFoundStudentException)
             {
-                return Conflict(studentValidationException.InnerException);
+                return BadRequest(studentValidationException.InnerException);
             }
             catch (StudentValidationException studentValidationException)
             {
