@@ -98,6 +98,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
 
             return filler;
         }
+
         private static Filler<Fee> CreateRandomFeeFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Fee>();
