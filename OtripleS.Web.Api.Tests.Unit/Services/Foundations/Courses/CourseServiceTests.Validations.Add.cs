@@ -58,7 +58,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             // given
             var invalidCourse = new Course
             {
-                Name = invalidText
+                Name = invalidText,
+                Status = CourseStatus.Unavailable
             };
 
             var invalidCourseException = new InvalidCourseException();
@@ -74,6 +75,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             invalidCourseException.AddData(
                 key: nameof(Course.Description),
                 values: "Text is required");
+
+            invalidCourseException.AddData(
+                key: nameof(Course.Status),
+                values: "Value is invalid");
 
             invalidCourseException.AddData(
                 key: nameof(Course.CreatedBy),
