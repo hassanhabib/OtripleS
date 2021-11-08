@@ -61,13 +61,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
         });
 
         public IQueryable<Course> RetrieveAllCourses() =>
-        TryCatch(() =>
-        {
-            IQueryable<Course> storageCourses = this.storageBroker.SelectAllCourses();
-            ValidateStorageCourses(storageCourses);
-
-            return storageCourses;
-        });
+        TryCatch(() => this.storageBroker.SelectAllCourses());
 
         public ValueTask<Course> RetrieveCourseByIdAsync(Guid courseId) =>
         TryCatch(async () =>
