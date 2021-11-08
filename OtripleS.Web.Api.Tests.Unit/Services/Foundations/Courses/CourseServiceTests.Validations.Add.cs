@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
         [InlineData(null)]
         [InlineData("")]
         [InlineData("  ")]
-        public async void ShouldThrowValidationExceptionOnCreateWhenStudentIsInvalidAndLogItAsync(
+        public async void ShouldThrowValidationExceptionOnCreateWhenCourseIsInvalidAndLogItAsync(
             string invalidText)
         {
             // given
