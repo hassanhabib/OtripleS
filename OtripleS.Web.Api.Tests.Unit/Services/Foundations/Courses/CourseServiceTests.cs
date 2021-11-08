@@ -79,6 +79,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             var filler = new Filler<Course>();
 
             filler.Setup()
+                .OnProperty(course => course.Status).Use(CourseStatus.Available)
                 .OnType<DateTimeOffset>().Use(dateTime)
                 .OnProperty(course => course.SemesterCourses).IgnoreIt()
                 .OnProperty(course => course.CourseAttachments).IgnoreIt();

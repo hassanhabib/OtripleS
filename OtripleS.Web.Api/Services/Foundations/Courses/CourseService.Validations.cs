@@ -20,6 +20,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
                 (Rule: IsInvalidX(course.Id), Parameter: nameof(Course.Id)),
                 (Rule: IsInvalidX(text: course.Name), Parameter: nameof(Course.Name)),
                 (Rule: IsInvalidX(text: course.Description), Parameter: nameof(Course.Description)),
+                (Rule: IsInvalidX(course.Status), Parameter: nameof(Course.Status)),
                 (Rule: IsInvalidX(course.CreatedDate), Parameter: nameof(Course.CreatedDate)),
                 (Rule: IsInvalidX(course.UpdatedDate), Parameter: nameof(Course.UpdatedDate)),
                 (Rule: IsInvalidX(id: course.CreatedBy), Parameter: nameof(Course.CreatedBy)),
@@ -71,6 +72,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
         {
             Condition = string.IsNullOrWhiteSpace(text),
             Message = "Text is required"
+        };
+
+        private static dynamic IsInvalidX(CourseStatus status) => new
+        {
+            Condition = status != CourseStatus.Available,
+            Message = "Value is invalid"
         };
 
         private static dynamic IsInvalidX(DateTimeOffset date) => new
