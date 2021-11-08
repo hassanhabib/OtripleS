@@ -43,20 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static Fee CreateRandomFee(DateTimeOffset dateTime) =>
-            CreateRandomFeeFiller(dateTime).Create();
-
-        private static Filler<Fee> CreateRandomFeeFiller(DateTimeOffset dateTime)
-        {
-            var filler = new Filler<Fee>();
-
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dateTime)
-                .OnProperty(fee => fee.CreatedByUser).IgnoreIt()
-                .OnProperty(fee => fee.UpdatedByUser).IgnoreIt()
-                .OnProperty(fee => fee.ExamFees).IgnoreIt();
-
-            return filler;
-        }
+            CreateRandomFeeFiller(dateTime).Create();        
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
@@ -105,6 +92,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(fee => fee.CreatedByUser).IgnoreIt()
+                .OnProperty(fee => fee.UpdatedByUser).IgnoreIt()
+                .OnProperty(fee => fee.ExamFees).IgnoreIt();
+
+            return filler;
+        }
+
+        private static Filler<Fee> CreateRandomFeeFiller(DateTimeOffset dateTime)
+        {
+            var filler = new Filler<Fee>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dateTime)
                 .OnProperty(fee => fee.CreatedByUser).IgnoreIt()
                 .OnProperty(fee => fee.UpdatedByUser).IgnoreIt()
                 .OnProperty(fee => fee.ExamFees).IgnoreIt();

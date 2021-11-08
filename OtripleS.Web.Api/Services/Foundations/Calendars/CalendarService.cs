@@ -51,10 +51,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Calendars
         TryCatch(async () =>
         {
             ValidateCalendarId(calendarId);
-            Calendar storageCalendar = await this.storageBroker.SelectCalendarByIdAsync(calendarId);
-            ValidateStorageCalendar(storageCalendar, calendarId);
+            Calendar maybeCalendar = await this.storageBroker.SelectCalendarByIdAsync(calendarId);
+            ValidateStorageCalendar(maybeCalendar, calendarId);
 
-            return storageCalendar;
+            return maybeCalendar;
         });
 
         public ValueTask<Calendar> ModifyCalendarAsync(Calendar calendar) =>
