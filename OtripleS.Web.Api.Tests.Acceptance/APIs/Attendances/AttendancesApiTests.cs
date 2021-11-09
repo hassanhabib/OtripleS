@@ -158,6 +158,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
             var filler = new Filler<Classroom>();
 
             filler.Setup()
+                .OnProperty(classroom => classroom.Status).Use(ClassroomStatus.Available)
                 .OnProperty(classroom => classroom.CreatedBy).Use(posterId)
                 .OnProperty(classroom => classroom.UpdatedBy).Use(posterId)
                 .OnProperty(classroom => classroom.CreatedDate).Use(now)
