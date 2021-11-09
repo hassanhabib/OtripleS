@@ -47,20 +47,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
         private static IQueryable<StudentExam> CreateRandomStudentExams() =>
            CreateStudentExamFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
-        private static Filler<StudentExam> CreateStudentExamFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<StudentExam>();
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(StudentExam => StudentExam.CreatedDate).Use(dates)
-                .OnProperty(StudentExam => StudentExam.UpdatedDate).Use(dates)
-                .OnProperty(StudentExam => StudentExam.Student).IgnoreIt()
-                .OnProperty(StudentExam => StudentExam.Exam).IgnoreIt()
-                .OnProperty(StudentExam => StudentExam.ReviewingTeacher).IgnoreIt();
-
-            return filler;
-        }
-
         public static IEnumerable<object[]> InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
@@ -85,5 +71,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
 
         private static SqlException GetSqlException() =>
            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static Filler<StudentExam> CreateStudentExamFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<StudentExam>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(StudentExam => StudentExam.CreatedDate).Use(dates)
+                .OnProperty(StudentExam => StudentExam.UpdatedDate).Use(dates)
+                .OnProperty(StudentExam => StudentExam.Student).IgnoreIt()
+                .OnProperty(StudentExam => StudentExam.Exam).IgnoreIt()
+                .OnProperty(StudentExam => StudentExam.ReviewingTeacher).IgnoreIt();
+
+            return filler;
+        }
     }
 }
