@@ -213,14 +213,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
         private static bool IsInvalid(DateTimeOffset inputDate) => inputDate == default;
         private static bool IsInvalid(Guid input) => input == Guid.Empty;
 
-        private void ValidateStorageContacts(IQueryable<Contact> storageContacts)
-        {
-            if (!storageContacts.Any())
-            {
-                this.loggingBroker.LogWarning("No contacts found in storage.");
-            }
-        }
-
         private static void ValidateStorageContact(Contact storageContact, Guid contactId)
         {
             if (storageContact is null)
