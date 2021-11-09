@@ -74,18 +74,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private static Filler<Course> CreateRandomCourseFiller(DateTimeOffset dateTime)
-        {
-            var filler = new Filler<Course>();
-
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dateTime)
-                .OnProperty(course => course.SemesterCourses).IgnoreIt()
-                .OnProperty(course => course.CourseAttachments).IgnoreIt();
-
-            return filler;
-        }
-
         public static IEnumerable<object[]> InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
@@ -96,6 +84,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                 new object[] { randomMoreThanMinuteFromNow },
                 new object[] { randomMoreThanMinuteBeforeNow }
             };
+        }
+
+        private static Filler<Course> CreateRandomCourseFiller(DateTimeOffset dateTime)
+        {
+            var filler = new Filler<Course>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dateTime)
+                .OnProperty(course => course.SemesterCourses).IgnoreIt()
+                .OnProperty(course => course.CourseAttachments).IgnoreIt();
+
+            return filler;
         }
     }
 }
