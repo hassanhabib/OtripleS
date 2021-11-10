@@ -168,6 +168,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Exams
             var filler = new Filler<Course>();
 
             filler.Setup()
+                .OnProperty(course => course.Status).Use(CourseStatus.Available)
                 .OnProperty(course => course.CreatedBy).Use(userId)
                 .OnProperty(course => course.UpdatedBy).Use(userId)
                 .OnProperty(course => course.CreatedDate).Use(now)

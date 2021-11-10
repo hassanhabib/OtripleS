@@ -40,6 +40,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
 
             filler.Setup()
                 .OnProperty(course => course.Id).Use(course.Id)
+                .OnProperty(course => course.Status).Use(CourseStatus.Available)
                 .OnProperty(course => course.CreatedBy).Use(course.CreatedBy)
                 .OnProperty(course => course.UpdatedBy).Use(course.UpdatedBy)
                 .OnProperty(course => course.CreatedDate).Use(course.CreatedDate)
@@ -59,6 +60,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
             var filler = new Filler<Course>();
 
             filler.Setup()
+                .OnProperty(course => course.Status).Use(CourseStatus.Available)
                 .OnProperty(course => course.CreatedBy).Use(posterId)
                 .OnProperty(course => course.UpdatedBy).Use(posterId)
                 .OnProperty(course => course.CreatedDate).Use(now)
