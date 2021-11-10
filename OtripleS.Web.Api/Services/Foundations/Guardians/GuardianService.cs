@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Guardians
 
         public IQueryable<Guardian> RetrieveAllGuardians() =>
         TryCatch(() => this.storageBroker.SelectAllGuardians());
-         
+
         public ValueTask<Guardian> CreateGuardianAsync(Guardian guardian) =>
         TryCatch(async () =>
         {
