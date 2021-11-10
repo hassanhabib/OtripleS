@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using OtripleS.Web.Api.Models.Guardians;
 using OtripleS.Web.Api.Models.Guardians.Exceptions;
 
@@ -197,6 +196,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Guardians
                         parameterName: nameof(Guardian.UpdatedDate),
                         parameterValue: inputGuardian.UpdatedDate);
             }
-        }        
+        }
     }
 }

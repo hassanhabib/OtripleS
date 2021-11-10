@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using OtripleS.Web.Api.Models.Contacts;
 using OtripleS.Web.Api.Models.Contacts.Exceptions;
 

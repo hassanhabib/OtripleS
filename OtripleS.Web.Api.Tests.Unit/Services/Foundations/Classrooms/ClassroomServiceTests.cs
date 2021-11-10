@@ -46,7 +46,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             CreateClassroomFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
         private static Classroom CreateRandomClassroom(DateTimeOffset dates) =>
-            CreateClassroomFiller(dates).Create();        
+            CreateClassroomFiller(dates).Create();
 
         private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
         {

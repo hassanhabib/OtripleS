@@ -62,13 +62,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
             };
         }
 
-        private static int GetRandomNumber() => 
+        private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
 
-        private static int GetNegativeRandomNumber() => 
+        private static int GetNegativeRandomNumber() =>
             -1 * GetRandomNumber();
 
-        private static string GetRandomMessage() => 
+        private static string GetRandomMessage() =>
             new MnemonicString().GetValue();
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)

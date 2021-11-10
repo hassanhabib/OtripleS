@@ -42,10 +42,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         private static GuardianContact CreateRandomGuardianContact(DateTimeOffset dates) =>
             CreateGuardianContactFiller(dates).Create();
 
-        private static int GetRandomNumber() => 
+        private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
 
-        private static string GetRandomMessage() => 
+        private static string GetRandomMessage() =>
             new MnemonicString().GetValue();
 
         private static DateTimeOffset GetRandomDateTime() =>

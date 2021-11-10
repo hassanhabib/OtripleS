@@ -44,7 +44,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
 
         private static IQueryable<ExamFee> CreateRandomExamFees() =>
             CreateExamFeeFiller(DateTimeOffset.UtcNow)
-                .Create(GetRandomNumber()).AsQueryable();        
+                .Create(GetRandomNumber()).AsQueryable();
 
         private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
         {

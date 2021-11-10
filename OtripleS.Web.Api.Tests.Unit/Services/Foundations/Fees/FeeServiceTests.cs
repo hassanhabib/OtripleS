@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static Fee CreateRandomFee(DateTimeOffset dateTime) =>
-            CreateRandomFeeFiller(dateTime).Create();        
+            CreateRandomFeeFiller(dateTime).Create();
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
