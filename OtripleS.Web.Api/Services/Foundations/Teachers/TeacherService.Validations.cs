@@ -41,6 +41,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
                 (Rule: IsInvalidX(teacher.FirstName), Parameter: nameof(Teacher.FirstName)),
                 (Rule: IsInvalidX(teacher.MiddleName), Parameter: nameof(Teacher.MiddleName)),
                 (Rule: IsInvalidX(teacher.LastName), Parameter: nameof(Teacher.LastName)),
+                (Rule: IsInvalidX(teacher.Status), Parameter: nameof(Teacher.Status)),
                 (Rule: IsInvalidX(teacher.CreatedBy), Parameter: nameof(Teacher.CreatedBy)),
                 (Rule: IsInvalidX(teacher.UpdatedBy), Parameter: nameof(Teacher.UpdatedBy)),
                 (Rule: IsInvalidX(teacher.CreatedDate), Parameter: nameof(Teacher.CreatedDate)),
@@ -88,6 +89,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
         {
             Condition = String.IsNullOrWhiteSpace(text),
             Message = "Text is required"
+        };
+
+        private static dynamic IsInvalidX(TeacherStatus status) => new
+        {
+            Condition = status != TeacherStatus.Active,
+            Message = "Value is invalid"
         };
 
         private static dynamic IsInvalidX(DateTimeOffset date) => new
