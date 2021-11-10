@@ -7,9 +7,9 @@ using Xeptions;
 
 namespace OtripleS.Web.Api.Models.UserContacts.Exceptions
 {
-    public class InvalidUserContactInputException : Xeption
+    public class InvalidUserContactException : Xeption
     {
-        public InvalidUserContactInputException()
+        public InvalidUserContactException()
             : base(message: $"Invalid user contact. Please fix the errors and try again.") { }
     }
 }

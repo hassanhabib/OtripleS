@@ -29,9 +29,9 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
             {
                 throw CreateAndLogValidationException(nullUserContactException);
             }
-            catch (InvalidUserContactInputException invalidUserContactInputException)
+            catch (InvalidUserContactException invalidUserContactException)
             {
-                throw CreateAndLogValidationException(invalidUserContactInputException);
+                throw CreateAndLogValidationException(invalidUserContactException);
             }
             catch (SqlException sqlException)
             {
