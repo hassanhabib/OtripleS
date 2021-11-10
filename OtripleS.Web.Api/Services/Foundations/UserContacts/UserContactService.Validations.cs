@@ -49,7 +49,7 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
-            var invalidStudentException = new InvalidUserContactInputException();
+            var invalidStudentException = new InvalidUserContactException();
 
             foreach ((dynamic rule, string parameter) in validations)
             {

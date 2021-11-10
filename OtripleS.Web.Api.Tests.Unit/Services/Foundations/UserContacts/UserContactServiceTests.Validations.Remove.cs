@@ -21,18 +21,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             Guid inputContactId = Guid.Empty;
             Guid inputUserId = Guid.Empty;
 
-            var invalidUserContactInputException = new InvalidUserContactInputException();
+            var invalidUserContactException = new InvalidUserContactException();
 
-            invalidUserContactInputException.AddData(
+            invalidUserContactException.AddData(
                 key: nameof(UserContact.ContactId),
                 values: "Id is required");
 
-            invalidUserContactInputException.AddData(
+            invalidUserContactException.AddData(
                 key: nameof(UserContact.UserId),
                 values: "Id is required");
 
             var expectedUserContactValidationException =
-                new UserContactValidationException(invalidUserContactInputException);
+                new UserContactValidationException(invalidUserContactException);
 
             // when
             ValueTask<UserContact> removeUserContactTask =
