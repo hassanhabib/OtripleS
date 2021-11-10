@@ -42,19 +42,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         private static GuardianContact CreateRandomGuardianContact(DateTimeOffset dates) =>
             CreateGuardianContactFiller(dates).Create();
 
-        private static Filler<GuardianContact> CreateGuardianContactFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<GuardianContact>();
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(guardiancontact => guardiancontact.Guardian).IgnoreIt()
-                .OnProperty(guardiancontact => guardiancontact.Contact).IgnoreIt();
+        private static int GetRandomNumber() => 
+            new IntRange(min: 2, max: 10).GetValue();
 
-            return filler;
-        }
+        private static string GetRandomMessage() => 
+            new MnemonicString().GetValue();
 
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
-        private static string GetRandomMessage() => new MnemonicString().GetValue();
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
@@ -66,6 +59,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
             return actualException =>
                 expectedException.Message == actualException.Message
                 && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
+
+        private static Filler<GuardianContact> CreateGuardianContactFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<GuardianContact>();
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(guardiancontact => guardiancontact.Guardian).IgnoreIt()
+                .OnProperty(guardiancontact => guardiancontact.Contact).IgnoreIt();
+
+            return filler;
         }
     }
 }
