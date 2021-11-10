@@ -50,6 +50,34 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
         private static IQueryable<SemesterCourse> CreateRandomSemesterCourses() =>
             CreateSemesterCourseFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
+
+        private static int GetRandomNumber() => 
+            new IntRange(min: 2, max: 10).GetValue();
+
+        private static int GetNegativeRandomNumber() => 
+            -1 * GetRandomNumber();
+
+        private static string GetRandomMessage() => 
+            new MnemonicString().GetValue();
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
+
         private static Filler<SemesterCourse> CreateSemesterCourseFiller(DateTimeOffset dates)
         {
             var filler = new Filler<SemesterCourse>();
@@ -64,29 +92,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 .OnProperty(semestercourse => semestercourse.Exams).IgnoreIt();
 
             return filler;
-        }
-
-        public static IEnumerable<object[]> InvalidMinuteCases()
-        {
-            int randomMoreThanMinuteFromNow = GetRandomNumber();
-            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
-
-            return new List<object[]>
-            {
-                new object[] { randomMoreThanMinuteFromNow },
-                new object[] { randomMoreThanMinuteBeforeNow }
-            };
-        }
-
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
-        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
-        private static string GetRandomMessage() => new MnemonicString().GetValue();
-
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
-        {
-            return actualException =>
-                expectedException.Message == actualException.Message
-                && expectedException.InnerException.Message == actualException.InnerException.Message;
         }
     }
 }
