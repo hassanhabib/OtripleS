@@ -148,6 +148,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.StudentExams
             var filler = new Filler<Teacher>();
 
             filler.Setup()
+                .OnProperty(teacher => teacher.Status).Use(TeacherStatus.Active)
                 .OnProperty(teacher => teacher.CreatedBy).Use(userId)
                 .OnProperty(teacher => teacher.UpdatedBy).Use(userId)
                 .OnProperty(teacher => teacher.CreatedDate).Use(now)
