@@ -111,27 +111,27 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
         };
 
         private static dynamic IsNotSame(
-        Guid firstId,
-        Guid secondId,
-        string secondIdName) => new
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
         {
             Condition = firstId != secondId,
             Message = $"Id is not same as {secondIdName}"
         };
 
         private static dynamic IsNotSame(
-        DateTimeOffset firstDate,
-        DateTimeOffset secondDate,
-        string secondDateName) => new
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
         {
             Condition = firstDate != secondDate,
             Message = $"Date is not same as {secondDateName}"
         };
 
         private static dynamic IsSame(
-        DateTimeOffset firstDate,
-        DateTimeOffset secondDate,
-        string secondDateName) => new
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
         {
             Condition = firstDate == secondDate,
             Message = $"Date is same as {secondDateName}"
