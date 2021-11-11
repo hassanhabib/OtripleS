@@ -60,9 +60,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             string invalidText)
         {
             // given
-            var invalidStuent = new Attendance
+            var invalidAttendance = new Attendance
             {
-                Notes = invalidText
+                Notes = invalidText,
+                Status = AttendanceStatus.Absent
             };
 
             var invalidAttendanceException = new InvalidAttendanceException();
@@ -70,6 +71,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             invalidAttendanceException.AddData(
                 key: nameof(Attendance.Id),
                 values: "Id is required");
+
+            invalidAttendanceException.AddData(
+               key: nameof(Attendance.Status),
+               values: "Value is invalid");
 
             invalidAttendanceException.AddData(
                 key: nameof(Attendance.StudentSemesterCourseId),
@@ -104,7 +109,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
 
             // when
             ValueTask<Attendance> createAttendanceTask =
-                this.attendanceService.CreateAttendanceAsync(invalidStuent);
+                this.attendanceService.CreateAttendanceAsync(invalidAttendance);
 
             // then
             await Assert.ThrowsAsync<AttendanceValidationException>(() =>
