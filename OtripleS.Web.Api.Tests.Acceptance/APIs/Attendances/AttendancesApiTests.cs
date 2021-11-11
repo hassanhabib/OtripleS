@@ -59,6 +59,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Attendances
             var filler = new Filler<Attendance>();
 
             filler.Setup()
+                .OnProperty(attendance => attendance.Status).Use(AttendanceStatus.Present)
                 .OnProperty(attendance => attendance.CreatedBy).Use(posterId)
                 .OnProperty(attendance => attendance.UpdatedBy).Use(posterId)
                 .OnProperty(attendance => attendance.CreatedDate).Use(now)
