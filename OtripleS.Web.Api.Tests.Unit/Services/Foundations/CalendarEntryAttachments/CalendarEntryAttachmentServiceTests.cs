@@ -41,9 +41,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
         private static IQueryable<CalendarEntryAttachment> CreateRandomCalendarEntryAttachments() =>
             CreateCalendarEntryAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
+        private static int GetRandomNumber() => 
+            new IntRange(min: 2, max: 150).GetValue();
 
-        private static string GetRandomMessage() => new MnemonicString().GetValue();
+        private static string GetRandomMessage() => 
+            new MnemonicString().GetValue();
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
@@ -54,17 +56,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
         private static CalendarEntryAttachment CreateRandomCalendarEntryAttachment(DateTimeOffset dates) =>
             CreateCalendarEntryAttachmentFiller(dates).Create();
 
-        private static Filler<CalendarEntryAttachment> CreateCalendarEntryAttachmentFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<CalendarEntryAttachment>();
-
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(calendarEntryAttachment => calendarEntryAttachment.CalendarEntry).IgnoreIt()
-                .OnProperty(calendarEntryAttachment => calendarEntryAttachment.Attachment).IgnoreIt();
-
-            return filler;
-        }
+        private static SqlException GetSqlException() =>
+          (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
@@ -81,7 +74,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
-        private static SqlException GetSqlException() =>
-          (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+        private static Filler<CalendarEntryAttachment> CreateCalendarEntryAttachmentFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<CalendarEntryAttachment>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(calendarEntryAttachment => calendarEntryAttachment.CalendarEntry).IgnoreIt()
+                .OnProperty(calendarEntryAttachment => calendarEntryAttachment.Attachment).IgnoreIt();
+
+            return filler;
+        }
     }
 }
