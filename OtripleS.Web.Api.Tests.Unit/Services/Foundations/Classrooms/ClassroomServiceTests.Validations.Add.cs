@@ -58,7 +58,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             var invalidClassroom = new Classroom
             {
                 Name = invalidText,
-                Location = invalidText
+                Location = invalidText,
+                Status = ClassroomStatus.Closed
             };
 
             var invalidClassroomException = new InvalidClassroomException();
@@ -74,6 +75,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             invalidClassroomException.AddData(
                 key: nameof(Classroom.Location),
                 values: "Text is required");
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.Status),
+                values: "Value is invalid");
 
             invalidClassroomException.AddData(
                 key: nameof(Classroom.CreatedDate),

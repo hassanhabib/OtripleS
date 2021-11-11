@@ -21,6 +21,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
                 (Rule: IsInvalidX(classroom.Id), Parameter: nameof(Classroom.Id)),
                 (Rule: IsInvalidX(classroom.Name), Parameter: nameof(Classroom.Name)),
                 (Rule: IsInvalidX(classroom.Location), Parameter: nameof(Classroom.Location)),
+                (Rule: IsInvalidX(classroom.Status), Parameter: nameof(Classroom.Status)),
                 (Rule: IsInvalidX(classroom.CreatedBy), Parameter: nameof(Classroom.CreatedBy)),
                 (Rule: IsInvalidX(classroom.UpdatedBy), Parameter: nameof(Classroom.UpdatedBy)),
                 (Rule: IsInvalidX(classroom.CreatedDate), Parameter: nameof(Classroom.CreatedDate)),
@@ -93,6 +94,11 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         {
             Condition = String.IsNullOrWhiteSpace(text),
             Message = "Text is required"
+        };
+        private static dynamic IsInvalidX(ClassroomStatus status) => new
+        {
+            Condition = status != ClassroomStatus.Available,
+            Message = "Value is invalid"
         };
 
         private static dynamic IsInvalidX(DateTimeOffset date) => new

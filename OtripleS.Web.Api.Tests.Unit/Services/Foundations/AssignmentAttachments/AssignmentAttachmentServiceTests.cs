@@ -41,18 +41,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
 
-        private static Filler<AssignmentAttachment> CreateAssignmentAttachmentFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<AssignmentAttachment>();
-
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(AssignmentAttachment => AssignmentAttachment.Assignment).IgnoreIt()
-                .OnProperty(AssignmentAttachment => AssignmentAttachment.Attachment).IgnoreIt();
-
-            return filler;
-        }
-
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
@@ -71,5 +59,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
         private static string GetRandomMessage() => new MnemonicString().GetValue();
 
+        private static Filler<AssignmentAttachment> CreateAssignmentAttachmentFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<AssignmentAttachment>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(AssignmentAttachment => AssignmentAttachment.Assignment).IgnoreIt()
+                .OnProperty(AssignmentAttachment => AssignmentAttachment.Attachment).IgnoreIt();
+
+            return filler;
+        }
     }
 }

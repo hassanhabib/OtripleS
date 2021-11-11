@@ -48,12 +48,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
         {
             ValidateAttendanceId(attendanceId);
 
-            Attendance storageAttendance =
+            Attendance maybeAttendance =
                 await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
 
-            ValidateStorageAttendance(storageAttendance, attendanceId);
+            ValidateStorageAttendance(maybeAttendance, attendanceId);
 
-            return storageAttendance;
+            return maybeAttendance;
         });
 
         public IQueryable<Attendance> RetrieveAllAttendances() =>

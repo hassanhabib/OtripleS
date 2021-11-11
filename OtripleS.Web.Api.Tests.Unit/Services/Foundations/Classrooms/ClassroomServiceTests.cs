@@ -48,17 +48,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         private static Classroom CreateRandomClassroom(DateTimeOffset dates) =>
             CreateClassroomFiller(dates).Create();
 
-        private static Filler<Classroom> CreateClassroomFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<Classroom>();
-
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt();
-
-            return filler;
-        }
-
         private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
         {
             return actualException =>
@@ -95,5 +84,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static Filler<Classroom> CreateClassroomFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<Classroom>();
+
+            filler.Setup()
+                .OnProperty(classroom => classroom.Status).Use(ClassroomStatus.Available)
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(classroom => classroom.SemesterCourses).IgnoreIt();
+
+            return filler;
+        }
     }
 }
