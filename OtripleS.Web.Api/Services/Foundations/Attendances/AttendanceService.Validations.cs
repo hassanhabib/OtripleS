@@ -18,6 +18,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
 
             Validate(
                 (Rule: IsInvalidX(attendance.Id), Parameter: nameof(Attendance.Id)),
+                (Rule: IsInvalidX(attendance.Status), Parameter: nameof(Attendance.Status)),
                 (Rule: IsInvalidX(attendance.StudentSemesterCourseId), Parameter: nameof(Attendance.StudentSemesterCourseId)),
                 (Rule: IsInvalidX(attendance.AttendanceDate), Parameter: nameof(Attendance.AttendanceDate)),
                 (Rule: IsNotRecent(attendance.AttendanceDate), Parameter: nameof(Attendance.AttendanceDate)),
@@ -75,6 +76,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
         {
             Condition = String.IsNullOrWhiteSpace(text),
             Message = "Text is required"
+        };
+
+        private static dynamic IsInvalidX(AttendanceStatus status) => new
+        {
+            Condition = status != AttendanceStatus.Present,
+            Message = "Value is invalid"
         };
 
         private static dynamic IsInvalidX(DateTimeOffset date) => new

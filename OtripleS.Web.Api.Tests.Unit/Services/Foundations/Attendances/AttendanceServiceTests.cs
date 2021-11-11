@@ -53,6 +53,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             var attendance = new Filler<Attendance>();
 
             attendance.Setup()
+                .OnProperty(attendance => attendance.Status).Use(AttendanceStatus.Present)
                 .OnType<DateTimeOffset>().Use(dateTime);
 
             return attendance;
