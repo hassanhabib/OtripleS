@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return registrationEntityEntry.Entity;
         }
 
-        public IQueryable<Registration> SelectAllRegistrations() => Registrations.AsQueryable();
+        public IQueryable<Registration> SelectAllRegistrations() => this.Registrations;
 
         public async ValueTask<Registration> SelectRegistrationByIdAsync(Guid registrationId)
         {

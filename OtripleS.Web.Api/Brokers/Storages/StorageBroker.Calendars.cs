@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return calendarEntityEntry.Entity;
         }
 
-        public IQueryable<Calendar> SelectAllCalendars() => this.Calendars.AsQueryable();
+        public IQueryable<Calendar> SelectAllCalendars() => this.Calendars;
 
         public async ValueTask<Calendar> SelectCalendarByIdAsync(Guid calendarId)
         {
