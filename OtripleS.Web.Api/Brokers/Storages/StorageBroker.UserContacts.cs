@@ -29,8 +29,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return userContactEntityEntry.Entity;
         }
 
-        public IQueryable<UserContact> SelectAllUserContacts() =>
-            this.UserContacts.AsQueryable();
+        public IQueryable<UserContact> SelectAllUserContacts() => this.UserContacts;
 
         public async ValueTask<UserContact> SelectUserContactByIdAsync(
             Guid userId,

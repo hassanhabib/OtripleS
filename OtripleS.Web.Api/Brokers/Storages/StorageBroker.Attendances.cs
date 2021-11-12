@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return attendanceEntityEntry.Entity;
         }
 
-        public IQueryable<Attendance> SelectAllAttendances() => this.Attendances.AsQueryable();
+        public IQueryable<Attendance> SelectAllAttendances() => this.Attendances;
 
         public async ValueTask<Attendance> SelectAttendanceByIdAsync(Guid attendanceId)
         {
