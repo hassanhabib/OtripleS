@@ -19,8 +19,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             // given
             SqlException sqlException = GetSqlException();
 
+            var failedUserStorageException = 
+                new FailedUserStorageException(sqlException);
+
             var expectedUserDependencyException =
-                new UserDependencyException(sqlException);
+                new UserDependencyException(failedUserStorageException);
 
             this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectAllUsers())
