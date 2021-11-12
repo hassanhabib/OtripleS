@@ -54,13 +54,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                var lockedUserException = new LockedUserException(dbUpdateConcurrencyException);
+                var lockedUserException = 
+                    new LockedUserException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedUserException);
             }
             catch (DbUpdateException dbUpdateException)
             {
-                throw CreateAndLogDependencyException(dbUpdateException);
+                var failedUserStorageException =
+                    new FailedUserStorageException(dbUpdateException);
+
+                throw CreateAndLogDependencyException(failedUserStorageException);
             }
             catch (Exception exception)
             {
