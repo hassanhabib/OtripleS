@@ -20,9 +20,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.0" />
     <PackageReference Include="EFxceptions.Identity" Version="0.4.5" />
-    <PackageReference Include="RESTFulSense" Version="2.3.0" />
+    <PackageReference Include="RESTFulSense" Version="2.4.0" />
     <PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
-    <PackageReference Include="Xeption" Version="1.6.0" />
+    <PackageReference Include="Xeption" Version="1.7.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Foundations\AssignmentAttachments\" />
