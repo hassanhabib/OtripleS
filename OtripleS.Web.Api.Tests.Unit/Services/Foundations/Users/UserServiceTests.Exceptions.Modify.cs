@@ -125,13 +125,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             User someUser = randomUser;
             someUser.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
-            var lockedUserException = new LockedUserException(databaseUpdateConcurrencyException);
 
-            var failedUserStorageException =
-                new FailedUserStorageException(lockedUserException);
+            var lockedUserException = 
+                new LockedUserException(databaseUpdateConcurrencyException);
 
             var expectedUserDependencyException =
-                new UserDependencyException(failedUserStorageException);
+                new UserDependencyException(lockedUserException);
 
             this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(someUser.Id))
