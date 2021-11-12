@@ -48,16 +48,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private static Filler<Attendance> GetAttendanceFiller(DateTimeOffset dateTime)
-        {
-            var attendance = new Filler<Attendance>();
-
-            attendance.Setup()
-                .OnType<DateTimeOffset>().Use(dateTime);
-
-            return attendance;
-        }
-
         private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
         {
             return actualException =>
@@ -92,5 +82,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         }
 
         private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+        private static Filler<Attendance> GetAttendanceFiller(DateTimeOffset dateTime)
+        {
+            var attendance = new Filler<Attendance>();
+
+            attendance.Setup()
+                .OnType<DateTimeOffset>().Use(dateTime);
+
+            return attendance;
+        }
     }
 }
