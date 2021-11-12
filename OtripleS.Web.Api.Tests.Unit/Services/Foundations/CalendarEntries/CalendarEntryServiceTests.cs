@@ -43,20 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static CalendarEntry CreateRandomCalendarEntry(DateTimeOffset dateTime) =>
-            CreateRandomCalendarEntryFiller(dateTime).Create();
-
-        private static Filler<CalendarEntry> CreateRandomCalendarEntryFiller(DateTimeOffset dateTime)
-        {
-            Filler<CalendarEntry> filler = new Filler<CalendarEntry>();
-
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dateTime)
-                .OnProperty(calendarEntry => calendarEntry.RepeatUntil).IgnoreIt()
-                .OnProperty(calendarEntry => calendarEntry.Calendar).IgnoreIt()
-                .OnProperty(calendarEntry => calendarEntry.CalendarEntryAttachments).IgnoreIt();
-
-            return filler;
-        }
+            CreateRandomCalendarEntryFiller(dateTime).Create();       
 
         private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
         {
@@ -95,5 +82,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
         private static IQueryable<CalendarEntry> CreateRandomCalendarEntries(DateTimeOffset dateTime) =>
             CreateRandomCalendarEntryFiller(dateTime)
                 .Create(GetRandomNumber()).AsQueryable();
+
+        private static Filler<CalendarEntry> CreateRandomCalendarEntryFiller(DateTimeOffset dateTime)
+        {
+            Filler<CalendarEntry> filler = new Filler<CalendarEntry>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dateTime)
+                .OnProperty(calendarEntry => calendarEntry.RepeatUntil).IgnoreIt()
+                .OnProperty(calendarEntry => calendarEntry.Calendar).IgnoreIt()
+                .OnProperty(calendarEntry => calendarEntry.CalendarEntryAttachments).IgnoreIt();
+
+            return filler;
+        }
     }
 }
