@@ -54,18 +54,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
         private static CalendarEntryAttachment CreateRandomCalendarEntryAttachment(DateTimeOffset dates) =>
             CreateCalendarEntryAttachmentFiller(dates).Create();
 
-        private static Filler<CalendarEntryAttachment> CreateCalendarEntryAttachmentFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<CalendarEntryAttachment>();
-
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(calendarEntryAttachment => calendarEntryAttachment.CalendarEntry).IgnoreIt()
-                .OnProperty(calendarEntryAttachment => calendarEntryAttachment.Attachment).IgnoreIt();
-
-            return filler;
-        }
-
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
@@ -83,5 +71,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
 
         private static SqlException GetSqlException() =>
           (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static Filler<CalendarEntryAttachment> CreateCalendarEntryAttachmentFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<CalendarEntryAttachment>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(calendarEntryAttachment => calendarEntryAttachment.CalendarEntry).IgnoreIt()
+                .OnProperty(calendarEntryAttachment => calendarEntryAttachment.Attachment).IgnoreIt();
+
+            return filler;
+        }
     }
 }
