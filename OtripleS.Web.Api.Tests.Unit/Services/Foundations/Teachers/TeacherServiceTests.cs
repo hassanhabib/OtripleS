@@ -90,6 +90,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             var filler = new Filler<Teacher>();
 
             filler.Setup()
+                .OnProperty(teacher => teacher.Status).Use(TeacherStatus.Active)
                 .OnType<DateTimeOffset>().Use(dates)
                 .OnProperty(teacher => teacher.SemesterCourses).IgnoreIt()
                 .OnProperty(teacher => teacher.TeacherContacts).IgnoreIt()
