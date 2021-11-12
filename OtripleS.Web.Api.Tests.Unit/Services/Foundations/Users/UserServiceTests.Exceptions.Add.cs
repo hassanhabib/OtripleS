@@ -25,8 +25,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             var sqlException = GetSqlException();
             string password = GetRandomPassword();
 
+            var failedUserStorageException =
+                new FailedUserStorageException(sqlException);
+
             var expectedUserDependencyException =
-                new UserDependencyException(sqlException);
+                new UserDependencyException(failedUserStorageException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -71,8 +74,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             var databaseUpdateException = new DbUpdateException();
             string password = GetRandomPassword();
 
+            var failedUserStorageException =
+                new FailedUserStorageException(databaseUpdateException);
+
             var expectedUserDependencyException =
-                new UserDependencyException(databaseUpdateException);
+                new UserDependencyException(failedUserStorageException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())

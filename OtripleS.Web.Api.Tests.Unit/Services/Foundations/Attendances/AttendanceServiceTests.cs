@@ -48,17 +48,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private static Filler<Attendance> GetAttendanceFiller(DateTimeOffset dateTime)
-        {
-            var attendance = new Filler<Attendance>();
-
-            attendance.Setup()
-                .OnProperty(attendance => attendance.Status).Use(AttendanceStatus.Present)
-                .OnType<DateTimeOffset>().Use(dateTime);
-
-            return attendance;
-        }
-
         private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
         {
             return actualException =>
@@ -70,8 +59,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
-                expectedException.Message == actualException.Message &&
-                expectedException.InnerException.Message == actualException.InnerException.Message;
+                actualException.Message == expectedException.Message &&
+                actualException.InnerException.Message == expectedException.InnerException.Message;
         }
 
         private static SqlException GetSqlException() =>
@@ -93,5 +82,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         }
 
         private static string GetRandomMessage() => new MnemonicString().GetValue();
+
+        private static Filler<Attendance> GetAttendanceFiller(DateTimeOffset dateTime)
+        {
+            var attendance = new Filler<Attendance>();
+
+            attendance.Setup()
+                .OnProperty(attendance => attendance.Status).Use(AttendanceStatus.Present)
+                .OnType<DateTimeOffset>().Use(dateTime);
+
+            return attendance;
+        }        
     }
 }

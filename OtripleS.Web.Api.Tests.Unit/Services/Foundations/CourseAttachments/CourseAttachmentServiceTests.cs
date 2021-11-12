@@ -53,18 +53,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
 
         private static CourseAttachment CreateRandomCourseAttachment(DateTimeOffset dates) =>
             CreateCourseAttachmentFiller(dates).Create();
-
-        private static Filler<CourseAttachment> CreateCourseAttachmentFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<CourseAttachment>();
-
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(courseAttachment => courseAttachment.Course).IgnoreIt()
-                .OnProperty(courseAttachment => courseAttachment.Attachment).IgnoreIt();
-
-            return filler;
-        }
+       
 
         private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
         {
@@ -83,5 +72,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
 
         private static SqlException GetSqlException() =>
          (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static Filler<CourseAttachment> CreateCourseAttachmentFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<CourseAttachment>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(courseAttachment => courseAttachment.Course).IgnoreIt()
+                .OnProperty(courseAttachment => courseAttachment.Attachment).IgnoreIt();
+
+            return filler;
+        }
     }
 }

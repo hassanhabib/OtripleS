@@ -24,8 +24,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             Guid inputUserId = randomUserId;
             SqlException sqlException = GetSqlException();
 
+            var failedUserStorageException =
+                new FailedUserStorageException(sqlException);
+
             var expectedUserDependencyException =
-                new UserDependencyException(sqlException);
+                new UserDependencyException(failedUserStorageException);
 
             this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(inputUserId))
@@ -60,8 +63,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             Guid inputUserId = randomUserId;
             var databaseUpdateException = new DbUpdateException();
 
+            var failedUserStorageException =
+                new FailedUserStorageException(databaseUpdateException);
+
             var expectedUserDependencyException =
-                new UserDependencyException(databaseUpdateException);
+                new UserDependencyException(failedUserStorageException);
 
             this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(inputUserId))
