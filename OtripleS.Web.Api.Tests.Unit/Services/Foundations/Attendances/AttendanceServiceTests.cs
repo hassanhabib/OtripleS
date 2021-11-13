@@ -92,6 +92,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 .OnType<DateTimeOffset>().Use(dateTime);
 
             return attendance;
-        }        
+        }
     }
 }
