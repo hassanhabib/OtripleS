@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return examFeeEntityEntry.Entity;
         }
 
-        public IQueryable<ExamFee> SelectAllExamFees() => ExamFees.AsQueryable();
+        public IQueryable<ExamFee> SelectAllExamFees() => this.ExamFees;
 
         public async ValueTask<ExamFee> SelectExamFeeByIdAsync(Guid id)
         {

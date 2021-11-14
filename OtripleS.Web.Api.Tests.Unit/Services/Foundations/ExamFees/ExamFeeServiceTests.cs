@@ -46,21 +46,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             CreateExamFeeFiller(DateTimeOffset.UtcNow)
                 .Create(GetRandomNumber()).AsQueryable();
 
-        private static Filler<ExamFee> CreateExamFeeFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<ExamFee>();
-
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(examFee => examFee.Exam).IgnoreIt()
-                .OnProperty(examFee => examFee.Fee).IgnoreIt()
-                .OnProperty(examFee => examFee.CreatedByUser).IgnoreIt()
-                .OnProperty(examFee => examFee.UpdatedByUser).IgnoreIt()
-                .OnProperty(examFee => examFee.StudentExamFees).IgnoreIt();
-
-            return filler;
-        }
-
         private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
         {
             return actualException =>
@@ -101,5 +86,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
 
         private static SqlException GetSqlException() =>
          (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static Filler<ExamFee> CreateExamFeeFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<ExamFee>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(examFee => examFee.Exam).IgnoreIt()
+                .OnProperty(examFee => examFee.Fee).IgnoreIt()
+                .OnProperty(examFee => examFee.CreatedByUser).IgnoreIt()
+                .OnProperty(examFee => examFee.UpdatedByUser).IgnoreIt()
+                .OnProperty(examFee => examFee.StudentExamFees).IgnoreIt();
+
+            return filler;
+        }
     }
 }

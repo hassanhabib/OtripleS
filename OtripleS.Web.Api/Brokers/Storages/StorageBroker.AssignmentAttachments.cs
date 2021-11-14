@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         }
 
         public IQueryable<AssignmentAttachment> SelectAllAssignmentAttachments() =>
-            this.AssignmentAttachments.AsQueryable();
+            this.AssignmentAttachments;
 
         public async ValueTask<AssignmentAttachment> SelectAssignmentAttachmentByIdAsync(
             Guid assignmentId,

@@ -150,6 +150,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             var filler = new Filler<Classroom>();
 
             filler.Setup()
+                .OnProperty(classroom => classroom.Status).Use(ClassroomStatus.Available)
                 .OnProperty(classroom => classroom.CreatedBy).Use(posterId)
                 .OnProperty(classroom => classroom.UpdatedBy).Use(posterId)
                 .OnProperty(classroom => classroom.CreatedDate).Use(now)
@@ -167,6 +168,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             var filler = new Filler<Teacher>();
 
             filler.Setup()
+                .OnProperty(teacher => teacher.Status).Use(TeacherStatus.Active)
                 .OnProperty(teacher => teacher.CreatedBy).Use(posterId)
                 .OnProperty(teacher => teacher.UpdatedBy).Use(posterId)
                 .OnProperty(teacher => teacher.CreatedDate).Use(now)
@@ -183,6 +185,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.SemesterCourses
             var filler = new Filler<Course>();
 
             filler.Setup()
+                .OnProperty(course => course.Status).Use(CourseStatus.Available)
                 .OnProperty(course => course.CreatedBy).Use(posterId)
                 .OnProperty(course => course.UpdatedBy).Use(posterId)
                 .OnProperty(course => course.CreatedDate).Use(now)

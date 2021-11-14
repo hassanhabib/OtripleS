@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return attachmentEntityEntry.Entity;
         }
 
-        public IQueryable<Attachment> SelectAllAttachments() => this.Attachments.AsQueryable();
+        public IQueryable<Attachment> SelectAllAttachments() => this.Attachments;
 
         public async ValueTask<Attachment> SelectAttachmentByIdAsync(Guid attachmentId)
         {

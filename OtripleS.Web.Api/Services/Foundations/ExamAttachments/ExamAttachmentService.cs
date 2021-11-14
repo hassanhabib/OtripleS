@@ -62,12 +62,12 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
         {
             ValidateExamAttachmentIds(examId, attachmentId);
 
-            ExamAttachment storageExamAttachment =
+            ExamAttachment maybeExamAttachment =
                 await this.storageBroker.SelectExamAttachmentByIdAsync(examId, attachmentId);
 
-            ValidateStorageExamAttachment(storageExamAttachment, examId, attachmentId);
+            ValidateStorageExamAttachment(maybeExamAttachment, examId, attachmentId);
 
-            return storageExamAttachment;
+            return maybeExamAttachment;
         });
     }
 }

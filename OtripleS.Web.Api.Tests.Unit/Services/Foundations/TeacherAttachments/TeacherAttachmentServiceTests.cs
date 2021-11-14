@@ -51,19 +51,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
 
         private static TeacherAttachment CreateRandomTeacherAttachment(DateTimeOffset dates) =>
             CreateTeacherAttachmentFiller(dates).Create();
-                
+
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
-                expectedException.Message == actualException.Message
-                && expectedException.InnerException.Message == actualException.InnerException.Message;
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message;
         }
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
-        
+
         private static Filler<TeacherAttachment> CreateTeacherAttachmentFiller(DateTimeOffset dates)
         {
             var filler = new Filler<TeacherAttachment>();

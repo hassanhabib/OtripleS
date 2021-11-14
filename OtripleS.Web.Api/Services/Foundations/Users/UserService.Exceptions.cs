@@ -11,6 +11,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Models.Users.Exceptions;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Users
 {
@@ -46,17 +47,24 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
             }
             catch (SqlException sqlException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var failedUserStorageException =
+                    new FailedUserStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedUserStorageException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                var lockedUserException = new LockedUserException(dbUpdateConcurrencyException);
+                var lockedUserException = 
+                    new LockedUserException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedUserException);
             }
             catch (DbUpdateException dbUpdateException)
             {
-                throw CreateAndLogDependencyException(dbUpdateException);
+                var failedUserStorageException =
+                    new FailedUserStorageException(dbUpdateException);
+
+                throw CreateAndLogDependencyException(failedUserStorageException);
             }
             catch (Exception exception)
             {
@@ -72,7 +80,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
             }
             catch (SqlException sqlException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var failedUserStorageException =
+                    new FailedUserStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedUserStorageException);
             }
             catch (Exception exception)
             {
@@ -96,7 +107,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
             return userDependencyException;
         }
 
-        private UserDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        private UserDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
             var userDependencyException = new UserDependencyException(exception);
             this.loggingBroker.LogCritical(userDependencyException);

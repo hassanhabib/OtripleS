@@ -46,24 +46,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
         private static IQueryable<StudentGuardian> CreateRandomStudentGuardians() =>
             CreateStudentGuardianFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
-        private static Filler<StudentGuardian> CreateStudentGuardianFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<StudentGuardian>();
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(studentguardian => studentguardian.Student).IgnoreIt()
-                .OnProperty(studentguardian => studentguardian.Guardian).IgnoreIt();
-
-            return filler;
-        }
-
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
-        {
-            return actualException =>
-                expectedException.Message == actualException.Message
-                && expectedException.InnerException.Message == actualException.InnerException.Message;
-        }
-
         public static IEnumerable<object[]> InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
@@ -76,11 +58,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             };
         }
 
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
-        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
-        private static string GetRandomMessage() => new MnemonicString().GetValue();
+        private static int GetRandomNumber() =>
+            new IntRange(min: 2, max: 10).GetValue();
+
+        private static int GetNegativeRandomNumber() =>
+            -1 * GetRandomNumber();
+
+        private static string GetRandomMessage() =>
+            new MnemonicString().GetValue();
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static Filler<StudentGuardian> CreateStudentGuardianFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<StudentGuardian>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(studentguardian => studentguardian.Student).IgnoreIt()
+                .OnProperty(studentguardian => studentguardian.Guardian).IgnoreIt();
+
+            return filler;
+        }
     }
 }

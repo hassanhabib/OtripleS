@@ -8,15 +8,15 @@ on:
     - master
 jobs:
   build:
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps:
     - name: Check Out
       uses: actions/checkout@v2
     - name: Setup Dot Net Version
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.100-rc.2.21505.57
-        include-prerelease: true
+        dotnet-version: 6.0.100
+        include-prerelease: false
     - name: Restore
       run: dotnet restore
     - name: Build

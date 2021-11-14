@@ -38,13 +38,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
         });
 
         public IQueryable<Contact> RetrieveAllContacts() =>
-        TryCatch(() =>
-        {
-            IQueryable<Contact> storageContacts = this.storageBroker.SelectAllContacts();
-            ValidateStorageContacts(storageContacts);
-
-            return storageContacts;
-        });
+        TryCatch(() => this.storageBroker.SelectAllContacts());
 
         public ValueTask<Contact> RetrieveContactByIdAsync(Guid contactId) =>
         TryCatch(async () =>

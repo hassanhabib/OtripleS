@@ -28,8 +28,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return semesterCourseEntityEntry.Entity;
         }
 
-        public IQueryable<SemesterCourse> SelectAllSemesterCourses() =>
-            this.SemesterCourses.AsQueryable();
+        public IQueryable<SemesterCourse> SelectAllSemesterCourses() => this.SemesterCourses;
 
         public async ValueTask<SemesterCourse> SelectSemesterCourseByIdAsync(Guid semesterCourseId)
         {

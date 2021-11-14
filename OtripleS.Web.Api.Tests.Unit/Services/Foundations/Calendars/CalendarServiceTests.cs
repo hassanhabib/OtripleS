@@ -46,17 +46,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             CreateCalendarFiller(dates: DateTimeOffset.UtcNow)
                 .Create(GetRandomNumber()).AsQueryable();
 
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
-        private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
+        private static int GetRandomNumber() => 
+            new IntRange(min: 2, max: 10).GetValue();
+
+        private static int GetNegativeRandomNumber() => 
+            -1 * GetRandomNumber();
+
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
-
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
-        {
-            return actualException =>
-                expectedException.Message == actualException.Message
-                && expectedException.InnerException.Message == actualException.InnerException.Message;
-        }
 
         public static IEnumerable<object[]> InvalidMinuteCases()
         {
@@ -70,10 +67,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             };
         }
 
-        private static string GetRandomMessage() => new MnemonicString().GetValue();
+        private static string GetRandomMessage() => 
+            new MnemonicString().GetValue();
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message;
+        }
 
         private static Filler<Calendar> CreateCalendarFiller(DateTimeOffset dates)
         {
