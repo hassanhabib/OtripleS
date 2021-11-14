@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return feeEntityEntry.Entity;
         }
 
-        public IQueryable<Fee> SelectAllFees() => Fees.AsQueryable();
+        public IQueryable<Fee> SelectAllFees() => this.Fees;
 
         public async ValueTask<Fee> SelectFeeByIdAsync(Guid feeId)
         {

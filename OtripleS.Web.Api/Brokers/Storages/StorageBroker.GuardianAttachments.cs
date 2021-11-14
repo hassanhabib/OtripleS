@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         }
 
         public IQueryable<GuardianAttachment> SelectAllGuardianAttachments() =>
-            this.GuardianAttachments.AsQueryable();
+            this.GuardianAttachments;
 
         public async ValueTask<GuardianAttachment> SelectGuardianAttachmentByIdAsync(
             Guid guradianId,

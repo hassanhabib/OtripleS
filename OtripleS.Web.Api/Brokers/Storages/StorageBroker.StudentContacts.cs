@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         }
 
         public IQueryable<StudentContact> SelectAllStudentContacts() =>
-            this.StudentContacts.AsQueryable();
+            this.StudentContacts;
 
         public async ValueTask<StudentContact> SelectStudentContactByIdAsync(
             Guid studentId,
