@@ -54,7 +54,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                var lockedUserException = 
+                var lockedUserException =
                     new LockedUserException(dbUpdateConcurrencyException);
 
                 throw CreateAndLogDependencyException(lockedUserException);

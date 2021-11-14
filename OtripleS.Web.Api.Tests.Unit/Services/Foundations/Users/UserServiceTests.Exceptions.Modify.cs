@@ -126,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             someUser.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
-            var lockedUserException = 
+            var lockedUserException =
                 new LockedUserException(databaseUpdateConcurrencyException);
 
             var expectedUserDependencyException =

@@ -53,7 +53,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
 
         private static CourseAttachment CreateRandomCourseAttachment(DateTimeOffset dates) =>
             CreateCourseAttachmentFiller(dates).Create();
-       
+
 
         private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
         {
