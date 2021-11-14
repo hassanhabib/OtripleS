@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static CalendarEntry CreateRandomCalendarEntry(DateTimeOffset dateTime) =>
-            CreateRandomCalendarEntryFiller(dateTime).Create();       
+            CreateRandomCalendarEntryFiller(dateTime).Create();
 
         private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
         {

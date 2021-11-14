@@ -63,7 +63,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             Guid inputUserId = randomUserId;
             var databaseUpdateException = new DbUpdateException();
 
-            var failedUserStorageException = 
+            var failedUserStorageException =
                 new FailedUserStorageException(databaseUpdateException);
 
             var expectedUserDependencyException =
@@ -102,7 +102,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             Guid inputUserId = randomUserId;
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
-            var lockedUserException = 
+            var lockedUserException =
                 new LockedUserException(databaseUpdateConcurrencyException);
 
             var expectedUserDependencyException =

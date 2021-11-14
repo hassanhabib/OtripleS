@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             // given
             SqlException sqlException = GetSqlException();
 
-            var failedUserStorageException = 
+            var failedUserStorageException =
                 new FailedUserStorageException(sqlException);
 
             var expectedUserDependencyException =

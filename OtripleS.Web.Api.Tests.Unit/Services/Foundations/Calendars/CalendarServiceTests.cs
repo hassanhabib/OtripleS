@@ -46,10 +46,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             CreateCalendarFiller(dates: DateTimeOffset.UtcNow)
                 .Create(GetRandomNumber()).AsQueryable();
 
-        private static int GetRandomNumber() => 
+        private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
 
-        private static int GetNegativeRandomNumber() => 
+        private static int GetNegativeRandomNumber() =>
             -1 * GetRandomNumber();
 
         private static DateTimeOffset GetRandomDateTime() =>
@@ -67,7 +67,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             };
         }
 
-        private static string GetRandomMessage() => 
+        private static string GetRandomMessage() =>
             new MnemonicString().GetValue();
 
         private static SqlException GetSqlException() =>

@@ -41,10 +41,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
         private static IQueryable<CalendarEntryAttachment> CreateRandomCalendarEntryAttachments() =>
             CreateCalendarEntryAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
-        private static int GetRandomNumber() => 
+        private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 150).GetValue();
 
-        private static string GetRandomMessage() => 
+        private static string GetRandomMessage() =>
             new MnemonicString().GetValue();
 
         private static DateTimeOffset GetRandomDateTime() =>
