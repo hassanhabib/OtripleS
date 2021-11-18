@@ -22,8 +22,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
             AssignmentAttachment randomAssignmentAttachment = CreateRandomAssignmentAttachment();
             AssignmentAttachment inputAssignmentAttachment = randomAssignmentAttachment;
             var sqlException = GetSqlException();
+
+            var failedAssigmentAttachmentStorageException =
+                new FailedAssignmentAttachmentStorageException(sqlException);
+
             var expectedAssignmentAttachmentDependencyException =
-                new AssignmentAttachmentDependencyException(sqlException);
+                new AssignmentAttachmentDependencyException(failedAssigmentAttachmentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertAssignmentAttachmentAsync(inputAssignmentAttachment))
@@ -57,8 +61,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
             AssignmentAttachment inputAssignmentAttachment = randomAssignmentAttachment;
             var databaseUpdateException = new DbUpdateException();
 
+            var failedAssigmentAttachmentStorageException =
+                new FailedAssignmentAttachmentStorageException(databaseUpdateException);
+
             var expectedAssignmentAttachmentDependencyException =
-                new AssignmentAttachmentDependencyException(databaseUpdateException);
+                new AssignmentAttachmentDependencyException(failedAssigmentAttachmentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertAssignmentAttachmentAsync(inputAssignmentAttachment))
