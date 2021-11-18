@@ -46,12 +46,12 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianAttachments
         {
             ValidateGuardianAttachmentIdIsNull(guardianId, attachmentId);
 
-            GuardianAttachment storageGuardianAttachment =
+            GuardianAttachment maybeGuardianAttachment =
                await this.storageBroker.SelectGuardianAttachmentByIdAsync(guardianId, attachmentId);
 
-            ValidateStorageGuardianAttachment(storageGuardianAttachment, guardianId, attachmentId);
+            ValidateStorageGuardianAttachment(maybeGuardianAttachment, guardianId, attachmentId);
 
-            return storageGuardianAttachment;
+            return maybeGuardianAttachment;
         });
 
         public ValueTask<GuardianAttachment> RemoveGuardianAttachmentByIdAsync(Guid guardianId, Guid attachmentId) =>
