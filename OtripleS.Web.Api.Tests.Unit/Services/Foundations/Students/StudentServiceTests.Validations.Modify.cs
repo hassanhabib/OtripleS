@@ -128,10 +128,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         {
             // given
             Student randomStudent = CreateRandomStudent();
-            DateTimeOffset sameDate = randomStudent.CreatedDate;
             Student invalidStudent = randomStudent;
-            invalidStudent.CreatedDate = sameDate;
-            invalidStudent.UpdatedDate = sameDate;
+
             var invalidStudentException = new InvalidStudentException();
 
             invalidStudentException.AddData(
