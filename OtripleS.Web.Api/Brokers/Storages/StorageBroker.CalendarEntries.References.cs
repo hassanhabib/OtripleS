@@ -10,7 +10,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        private static void AddCalendarEntryReferences(ModelBuilder modelBuilder)
+        private static void SetCalendarEntryReferences(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CalendarEntry>()
                 .HasOne(entry => entry.Calendar)
