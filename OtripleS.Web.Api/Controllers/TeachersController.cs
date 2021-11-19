@@ -105,44 +105,6 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpDelete("{teacherId}")]
-        public async ValueTask<ActionResult<Teacher>> DeleteTeacherAsync(Guid teacherId)
-        {
-            try
-            {
-                Teacher storageTeacher =
-                    await this.teacherService.RemoveTeacherByIdAsync(teacherId);
-
-                return Ok(storageTeacher);
-            }
-            catch (TeacherValidationException teacherValidationException)
-                when (teacherValidationException.InnerException is NotFoundTeacherException)
-            {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return NotFound(innerMessage);
-            }
-            catch (TeacherValidationException teacherValidationException)
-            {
-                return BadRequest(teacherValidationException.Message);
-            }
-            catch (TeacherDependencyException teacherDependencyException)
-                when (teacherDependencyException.InnerException is LockedTeacherException)
-            {
-                string innerMessage = GetInnerMessage(teacherDependencyException);
-
-                return Locked(innerMessage);
-            }
-            catch (TeacherDependencyException teacherDependencyException)
-            {
-                return Problem(teacherDependencyException.Message);
-            }
-            catch (TeacherServiceException teacherServiceException)
-            {
-                return Problem(teacherServiceException.Message);
-            }
-        }
-
         [HttpPut]
         public async ValueTask<ActionResult<Teacher>> PutTeacherAsync(Teacher teacher)
         {
@@ -165,6 +127,44 @@ namespace OtripleS.Web.Api.Controllers
                 string innerMessage = GetInnerMessage(teacherValidationException);
 
                 return BadRequest(innerMessage);
+            }
+            catch (TeacherDependencyException teacherDependencyException)
+                when (teacherDependencyException.InnerException is LockedTeacherException)
+            {
+                string innerMessage = GetInnerMessage(teacherDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (TeacherDependencyException teacherDependencyException)
+            {
+                return Problem(teacherDependencyException.Message);
+            }
+            catch (TeacherServiceException teacherServiceException)
+            {
+                return Problem(teacherServiceException.Message);
+            }
+        }
+
+        [HttpDelete("{teacherId}")]
+        public async ValueTask<ActionResult<Teacher>> DeleteTeacherAsync(Guid teacherId)
+        {
+            try
+            {
+                Teacher storageTeacher =
+                    await this.teacherService.RemoveTeacherByIdAsync(teacherId);
+
+                return Ok(storageTeacher);
+            }
+            catch (TeacherValidationException teacherValidationException)
+                when (teacherValidationException.InnerException is NotFoundTeacherException)
+            {
+                string innerMessage = GetInnerMessage(teacherValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (TeacherValidationException teacherValidationException)
+            {
+                return BadRequest(teacherValidationException.Message);
             }
             catch (TeacherDependencyException teacherDependencyException)
                 when (teacherDependencyException.InnerException is LockedTeacherException)

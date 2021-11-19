@@ -23,6 +23,39 @@ namespace OtripleS.Web.Api.Controllers
         public UsersController(IUserService userService) =>
             this.userService = userService;
 
+        [HttpPost]
+        public async ValueTask<ActionResult<User>> PostUserAsync(User user, string password = "Test123@eri")
+        {
+            try
+            {
+                User persistedUser =
+                    await this.userService.RegisterUserAsync(user, password);
+
+                return Created(persistedUser);
+            }
+            catch (UserValidationException userValidationException)
+                when (userValidationException.InnerException is AlreadyExistsUserException)
+            {
+                string innerMessage = GetInnerMessage(userValidationException);
+
+                return Conflict(innerMessage);
+            }
+            catch (UserValidationException userValidationException)
+            {
+                string innerMessage = GetInnerMessage(userValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (UserDependencyException userDependencyException)
+            {
+                return Problem(userDependencyException.Message);
+            }
+            catch (UserServiceException userServiceException)
+            {
+                return Problem(userServiceException.Message);
+            }
+        }
+
         [HttpGet]
         public ActionResult<IQueryable<User>> GetAllUsers()
         {
@@ -59,39 +92,6 @@ namespace OtripleS.Web.Api.Controllers
                 string innerMessage = GetInnerMessage(userValidationException);
 
                 return NotFound(innerMessage);
-            }
-            catch (UserValidationException userValidationException)
-            {
-                string innerMessage = GetInnerMessage(userValidationException);
-
-                return BadRequest(innerMessage);
-            }
-            catch (UserDependencyException userDependencyException)
-            {
-                return Problem(userDependencyException.Message);
-            }
-            catch (UserServiceException userServiceException)
-            {
-                return Problem(userServiceException.Message);
-            }
-        }
-
-        [HttpPost]
-        public async ValueTask<ActionResult<User>> PostUserAsync(User user, string password = "Test123@eri")
-        {
-            try
-            {
-                User persistedUser =
-                    await this.userService.RegisterUserAsync(user, password);
-
-                return Created(persistedUser);
-            }
-            catch (UserValidationException userValidationException)
-                when (userValidationException.InnerException is AlreadyExistsUserException)
-            {
-                string innerMessage = GetInnerMessage(userValidationException);
-
-                return Conflict(innerMessage);
             }
             catch (UserValidationException userValidationException)
             {
