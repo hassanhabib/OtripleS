@@ -28,7 +28,4 @@
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\Foundations\AssignmentAttachments\" />
-  </ItemGroup>
 </Project>
