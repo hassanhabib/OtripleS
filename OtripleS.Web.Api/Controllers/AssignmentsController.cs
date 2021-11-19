@@ -23,6 +23,35 @@ namespace OtripleS.Web.Api.Controllers
         public AssignmentsController(IAssignmentService assignmentService) =>
             this.assignmentService = assignmentService;
 
+        [HttpPost]
+        public async ValueTask<ActionResult<Assignment>> PostAssignmentAsync(Assignment assignment)
+        {
+            try
+            {
+                Assignment registeredAssignment =
+                    await this.assignmentService.CreateAssignmentAsync(assignment);
+
+                return Created(registeredAssignment);
+            }
+            catch (AssignmentValidationException assignmentValidationException)
+                when (assignmentValidationException.InnerException is AlreadyExistsAssignmentException)
+            {
+                return Conflict(assignmentValidationException.InnerException);
+            }
+            catch (AssignmentValidationException assignmentValidationException)
+            {
+                return BadRequest(assignmentValidationException.InnerException);
+            }
+            catch (AssignmentDependencyException assignmentDependencyException)
+            {
+                return InternalServerError(assignmentDependencyException);
+            }
+            catch (AssignmentServiceException assignmentServiceException)
+            {
+                return InternalServerError(assignmentServiceException);
+            }
+        }
+
         [HttpGet]
         public ActionResult<IQueryable<Assignment>> GetAllAssignments()
         {
@@ -76,32 +105,43 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpPost]
-        public async ValueTask<ActionResult<Assignment>> PostAssignmentAsync(Assignment assignment)
+        [HttpPut]
+        public async ValueTask<ActionResult<Assignment>> PutAssignmentAsync(Assignment assignment)
         {
             try
             {
                 Assignment registeredAssignment =
-                    await this.assignmentService.CreateAssignmentAsync(assignment);
+                    await this.assignmentService.ModifyAssignmentAsync(assignment);
 
-                return Created(registeredAssignment);
+                return Ok(registeredAssignment);
             }
             catch (AssignmentValidationException assignmentValidationException)
-                when (assignmentValidationException.InnerException is AlreadyExistsAssignmentException)
+                when (assignmentValidationException.InnerException is NotFoundAssignmentException)
             {
-                return Conflict(assignmentValidationException.InnerException);
+                string innerMessage = GetInnerMessage(assignmentValidationException);
+
+                return NotFound(innerMessage);
             }
             catch (AssignmentValidationException assignmentValidationException)
             {
-                return BadRequest(assignmentValidationException.InnerException);
+                string innerMessage = GetInnerMessage(assignmentValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (AssignmentDependencyException assignmentDependencyException)
+                when (assignmentDependencyException.InnerException is LockedAssignmentException)
+            {
+                string innerMessage = GetInnerMessage(assignmentDependencyException);
+
+                return Locked(innerMessage);
             }
             catch (AssignmentDependencyException assignmentDependencyException)
             {
-                return InternalServerError(assignmentDependencyException);
+                return Problem(assignmentDependencyException.Message);
             }
             catch (AssignmentServiceException assignmentServiceException)
             {
-                return InternalServerError(assignmentServiceException);
+                return Problem(assignmentServiceException.Message);
             }
         }
 
@@ -125,46 +165,6 @@ namespace OtripleS.Web.Api.Controllers
             catch (AssignmentValidationException assignmentValidationException)
             {
                 return BadRequest(assignmentValidationException.Message);
-            }
-            catch (AssignmentDependencyException assignmentDependencyException)
-                when (assignmentDependencyException.InnerException is LockedAssignmentException)
-            {
-                string innerMessage = GetInnerMessage(assignmentDependencyException);
-
-                return Locked(innerMessage);
-            }
-            catch (AssignmentDependencyException assignmentDependencyException)
-            {
-                return Problem(assignmentDependencyException.Message);
-            }
-            catch (AssignmentServiceException assignmentServiceException)
-            {
-                return Problem(assignmentServiceException.Message);
-            }
-        }
-
-        [HttpPut]
-        public async ValueTask<ActionResult<Assignment>> PutAssignmentAsync(Assignment assignment)
-        {
-            try
-            {
-                Assignment registeredAssignment =
-                    await this.assignmentService.ModifyAssignmentAsync(assignment);
-
-                return Ok(registeredAssignment);
-            }
-            catch (AssignmentValidationException assignmentValidationException)
-                when (assignmentValidationException.InnerException is NotFoundAssignmentException)
-            {
-                string innerMessage = GetInnerMessage(assignmentValidationException);
-
-                return NotFound(innerMessage);
-            }
-            catch (AssignmentValidationException assignmentValidationException)
-            {
-                string innerMessage = GetInnerMessage(assignmentValidationException);
-
-                return BadRequest(innerMessage);
             }
             catch (AssignmentDependencyException assignmentDependencyException)
                 when (assignmentDependencyException.InnerException is LockedAssignmentException)
