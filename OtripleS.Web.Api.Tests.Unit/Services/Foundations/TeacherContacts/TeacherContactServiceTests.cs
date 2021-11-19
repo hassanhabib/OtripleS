@@ -42,17 +42,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         private static TeacherContact CreateRandomTeacherContact(DateTimeOffset dates) =>
             CreateTeacherContactFiller(dates).Create();
 
-        private static Filler<TeacherContact> CreateTeacherContactFiller(DateTimeOffset dates)
-        {
-            var filler = new Filler<TeacherContact>();
-            filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(teacher => teacher.Teacher).IgnoreIt()
-                .OnProperty(teacher => teacher.Contact).IgnoreIt();
-
-            return filler;
-        }
-
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
         private static DateTimeOffset GetRandomDateTime() =>
@@ -66,6 +55,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             return actualException =>
                 actualException.Message == expectedException.Message
                 && actualException.InnerException.Message == expectedException.InnerException.Message;
+        }
+
+        private static Filler<TeacherContact> CreateTeacherContactFiller(DateTimeOffset dates)
+        {
+            var filler = new Filler<TeacherContact>();
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnProperty(teacher => teacher.Teacher).IgnoreIt()
+                .OnProperty(teacher => teacher.Contact).IgnoreIt();
+
+            return filler;
         }
     }
 }
