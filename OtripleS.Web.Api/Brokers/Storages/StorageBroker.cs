@@ -24,28 +24,28 @@ namespace OtripleS.Web.Api.Brokers.Storages
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            AddSemesterCourseReferences(modelBuilder);
-            AddStudentSemesterCourseReferences(modelBuilder);
-            AddStudentGuardianReferences(modelBuilder);
-            AddStudentContactReferences(modelBuilder);
-            AddTeacherContactReferences(modelBuilder);
-            AddGuardianContactReferences(modelBuilder);
-            AddUserContactReferences(modelBuilder);
-            AddExamReferences(modelBuilder);
-            AddStudentExamReferences(modelBuilder);
-            AddCalendarEntryReferences(modelBuilder);
-            AddStudentAttachmentReferences(modelBuilder);
-            AddGuardianAttachmentReferences(modelBuilder);
-            AddTeacherAttachmentReferences(modelBuilder);
-            AddCalendarEntryAttachmentReferences(modelBuilder);
-            AddCourseAttachmentReferences(modelBuilder);
-            AddExamAttachmentReferences(modelBuilder);
-            AddAssignmentAttachmentReferences(modelBuilder);
-            AddFeeReferences(modelBuilder);
-            AddExamFeeReferences(modelBuilder);
-            AddStudentExamFeeReferences(modelBuilder);
-            AddRegistrationReferences(modelBuilder);
-            AddStudentRegistrationReferences(modelBuilder);
+            SetSemesterCourseReferences(modelBuilder);
+            SetStudentSemesterCourseReferences(modelBuilder);
+            SetStudentGuardianReferences(modelBuilder);
+            SetStudentContactReferences(modelBuilder);
+            SetTeacherContactReferences(modelBuilder);
+            SetGuardianContactReferences(modelBuilder);
+            SetUserContactReferences(modelBuilder);
+            SetExamReferences(modelBuilder);
+            SetStudentExamReferences(modelBuilder);
+            SetCalendarEntryReferences(modelBuilder);
+            SetStudentAttachmentReferences(modelBuilder);
+            SetGuardianAttachmentReferences(modelBuilder);
+            SetTeacherAttachmentReferences(modelBuilder);
+            SetCalendarEntryAttachmentReferences(modelBuilder);
+            SetCourseAttachmentReferences(modelBuilder);
+            SetExamAttachmentReferences(modelBuilder);
+            SetAssignmentAttachmentReferences(modelBuilder);
+            SetFeeReferences(modelBuilder);
+            SetExamFeeReferences(modelBuilder);
+            SetStudentExamFeeReferences(modelBuilder);
+            SetRegistrationReferences(modelBuilder);
+            SetStudentRegistrationReferences(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

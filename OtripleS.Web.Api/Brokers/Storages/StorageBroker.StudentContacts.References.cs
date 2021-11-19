@@ -10,7 +10,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        private static void AddStudentContactReferences(ModelBuilder modelBuilder)
+        private static void SetStudentContactReferences(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StudentContact>()
                 .HasKey(studentContact =>

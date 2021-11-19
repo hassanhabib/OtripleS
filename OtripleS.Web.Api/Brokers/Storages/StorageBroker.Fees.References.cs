@@ -10,7 +10,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        private static void AddFeeReferences(ModelBuilder modelBuilder)
+        private static void SetFeeReferences(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Fee>()
                 .HasOne(fee => fee.CreatedByUser)
