@@ -17,14 +17,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
     public partial class ClassroomServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowCriticalDependencyExceptionOnRetrieveByIdWhenSqlErrorOccursAndLogItAsync()
         {
             // given
             Guid someClassroomId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
+            var failedClassroomStorageException = new FailedClassroomStorageException(sqlException);
 
             var expectedClassroomDependencyException =
-                new ClassroomDependencyException(sqlException);
+                new ClassroomDependencyException(failedClassroomStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                     broker.SelectClassroomByIdAsync(someClassroomId))
@@ -131,7 +132,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Guid randomClassroomId = Guid.NewGuid();
             Guid inputClassroomId = randomClassroomId;
             var exception = new Exception();
-
 
             var expectedClassroomServiceException =
                 new ClassroomServiceException(exception);
