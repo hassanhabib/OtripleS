@@ -8,9 +8,11 @@ using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Classrooms.Exceptions
 {
-    public class ClassroomDependencyException : Xeption
+    public class FailedClassroomStorageException : Xeption
     {
-        public ClassroomDependencyException(Exception innerException)
-            : base(message: "Service dependency error occurred, contact support.", innerException) { }
+        public FailedClassroomStorageException(Exception innerException)
+            : base(message: "Failed classroom storage error occurred, contact support.", innerException)
+
+        { }
     }
 }

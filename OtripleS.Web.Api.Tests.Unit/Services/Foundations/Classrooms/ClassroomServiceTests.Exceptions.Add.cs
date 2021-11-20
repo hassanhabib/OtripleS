@@ -16,42 +16,37 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
     public partial class ClassroomServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnCreateWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowCritacalDependencyExceptionOnCreateWhenSqlErrorOccursAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
             Classroom randomClassroom = CreateRandomClassroom(dateTime);
-            Classroom inputClassroom = randomClassroom;
-            inputClassroom.UpdatedBy = inputClassroom.CreatedBy;
-            inputClassroom.UpdatedDate = inputClassroom.CreatedDate;
             var sqlException = GetSqlException();
+            var failedClassroomStorageException = new FailedClassroomStorageException(sqlException);
 
             var expectedClassroomDependencyException =
-                new ClassroomDependencyException(sqlException);
+                new ClassroomDependencyException(failedClassroomStorageException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertClassroomAsync(inputClassroom))
-                    .ThrowsAsync(sqlException);
+                    .Throws(sqlException);
 
             // when
             ValueTask<Classroom> createClassroomTask =
-                this.classroomService.CreateClassroomAsync(inputClassroom);
+                this.classroomService.CreateClassroomAsync(randomClassroom);
 
             // then
             await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
                 createClassroomTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedClassroomDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedClassroomDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertClassroomAsync(inputClassroom),
-                    Times.Once);
+                broker.InsertClassroomAsync(It.IsAny<Classroom>()),
+                    Times.Never);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
