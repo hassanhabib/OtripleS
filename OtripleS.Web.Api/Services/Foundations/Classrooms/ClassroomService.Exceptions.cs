@@ -39,7 +39,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             }
             catch (SqlException sqlException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var failedClassroomStorageException =
+                    new FailedClassroomStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedClassroomStorageException);
             }
             catch (DuplicateKeyException duplicateKeyException)
             {

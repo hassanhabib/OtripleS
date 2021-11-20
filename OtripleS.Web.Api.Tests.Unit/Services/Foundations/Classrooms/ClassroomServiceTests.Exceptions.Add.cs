@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
     public partial class ClassroomServiceTests
     {
         [Fact]
-        public async Task ShouldThrowCritacalDependencyExceptionOnCreateWhenSqlErrorOccursAndLogItAsync()
+        public async Task ShouldThrowCriticalDependencyExceptionOnCreateWhenSqlErrorOccursAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
