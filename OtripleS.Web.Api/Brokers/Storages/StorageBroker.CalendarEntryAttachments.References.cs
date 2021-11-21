@@ -10,7 +10,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        private static void AddCalendarEntryAttachmentReferences(ModelBuilder modelBuilder)
+        private static void SetCalendarEntryAttachmentReferences(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CalendarEntryAttachment>()
                 .HasKey(calendarEntryAttachment =>

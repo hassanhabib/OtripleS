@@ -25,10 +25,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             Contact randomContact = CreateRandomContact(randomDateTime);
             Contact someContact = randomContact;
             someContact.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
-            SqlException sqlException = GetSqlException();
+            var sqlException = GetSqlException();
+
+            var failedContactStorageException =
+                new FailedContactStorageException(sqlException);
 
             var expectedContactDependencyException =
-                new ContactDependencyException(sqlException);
+                new ContactDependencyException(failedContactStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectContactByIdAsync(someContact.Id))

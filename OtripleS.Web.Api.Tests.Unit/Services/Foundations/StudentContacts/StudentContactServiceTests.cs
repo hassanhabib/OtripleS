@@ -54,8 +54,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
-                expectedException.Message == actualException.Message
-                && expectedException.InnerException.Message == actualException.InnerException.Message;
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message;
         }
 
         private static Filler<StudentContact> CreateStudentContactFiller(DateTimeOffset dates)

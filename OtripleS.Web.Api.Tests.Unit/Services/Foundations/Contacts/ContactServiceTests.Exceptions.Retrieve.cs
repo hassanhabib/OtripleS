@@ -21,8 +21,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             // given
             var sqlException = GetSqlException();
 
+            var failedContactStorageException =
+                new FailedContactStorageException(sqlException);
+
             var expectedContactDependencyException =
-                new ContactDependencyException(sqlException);
+                new ContactDependencyException(failedContactStorageException);
 
             var badGuid = Guid.NewGuid();
 

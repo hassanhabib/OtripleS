@@ -23,6 +23,37 @@ namespace OtripleS.Web.Api.Controllers
         public ClassroomsController(IClassroomService classroomService) =>
             this.classroomService = classroomService;
 
+        [HttpPost]
+        public async ValueTask<ActionResult<Classroom>> PostClassroomAsync(Classroom classroom)
+        {
+            try
+            {
+                Classroom persistedClassroom =
+                    await this.classroomService.CreateClassroomAsync(classroom);
+
+                return Created(persistedClassroom);
+            }
+            catch (ClassroomValidationException classroomValidationException)
+                when (classroomValidationException.InnerException is AlreadyExistsClassroomException)
+            {
+                string innerMessage = GetInnerMessage(classroomValidationException);
+
+                return Conflict(innerMessage);
+            }
+            catch (ClassroomValidationException classroomValidationException)
+            {
+                return BadRequest(classroomValidationException.InnerException);
+            }
+            catch (ClassroomDependencyException classroomDependencyException)
+            {
+                return Problem(classroomDependencyException.Message);
+            }
+            catch (ClassroomServiceException classroomServiceException)
+            {
+                return Problem(classroomServiceException.Message);
+            }
+        }
+
         [HttpGet]
         public ActionResult<IQueryable<Classroom>> GetAllClassrooms()
         {
@@ -76,26 +107,33 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpPost]
-        public async ValueTask<ActionResult<Classroom>> PostClassroomAsync(Classroom classroom)
+        [HttpPut]
+        public async ValueTask<ActionResult<Classroom>> PutClassroomAsync(Classroom classroom)
         {
             try
             {
-                Classroom persistedClassroom =
-                    await this.classroomService.CreateClassroomAsync(classroom);
+                Classroom registeredClassroom =
+                    await this.classroomService.ModifyClassroomAsync(classroom);
 
-                return Created(persistedClassroom);
+                return Ok(registeredClassroom);
             }
             catch (ClassroomValidationException classroomValidationException)
-                when (classroomValidationException.InnerException is AlreadyExistsClassroomException)
+                when (classroomValidationException.InnerException is NotFoundClassroomException)
             {
                 string innerMessage = GetInnerMessage(classroomValidationException);
 
-                return Conflict(innerMessage);
+                return NotFound(innerMessage);
             }
             catch (ClassroomValidationException classroomValidationException)
             {
                 return BadRequest(classroomValidationException.InnerException);
+            }
+            catch (ClassroomDependencyException classroomDependencyException)
+                when (classroomDependencyException.InnerException is LockedClassroomException)
+            {
+                string innerMessage = GetInnerMessage(classroomDependencyException);
+
+                return Locked(innerMessage);
             }
             catch (ClassroomDependencyException classroomDependencyException)
             {
@@ -127,44 +165,6 @@ namespace OtripleS.Web.Api.Controllers
             catch (ClassroomValidationException classroomValidationException)
             {
                 return BadRequest(classroomValidationException.Message);
-            }
-            catch (ClassroomDependencyException classroomDependencyException)
-                when (classroomDependencyException.InnerException is LockedClassroomException)
-            {
-                string innerMessage = GetInnerMessage(classroomDependencyException);
-
-                return Locked(innerMessage);
-            }
-            catch (ClassroomDependencyException classroomDependencyException)
-            {
-                return Problem(classroomDependencyException.Message);
-            }
-            catch (ClassroomServiceException classroomServiceException)
-            {
-                return Problem(classroomServiceException.Message);
-            }
-        }
-
-        [HttpPut]
-        public async ValueTask<ActionResult<Classroom>> PutClassroomAsync(Classroom classroom)
-        {
-            try
-            {
-                Classroom registeredClassroom =
-                    await this.classroomService.ModifyClassroomAsync(classroom);
-
-                return Ok(registeredClassroom);
-            }
-            catch (ClassroomValidationException classroomValidationException)
-                when (classroomValidationException.InnerException is NotFoundClassroomException)
-            {
-                string innerMessage = GetInnerMessage(classroomValidationException);
-
-                return NotFound(innerMessage);
-            }
-            catch (ClassroomValidationException classroomValidationException)
-            {
-                return BadRequest(classroomValidationException.InnerException);
             }
             catch (ClassroomDependencyException classroomDependencyException)
                 when (classroomDependencyException.InnerException is LockedClassroomException)

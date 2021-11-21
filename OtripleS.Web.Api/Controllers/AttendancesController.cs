@@ -105,44 +105,6 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpDelete("{attendanceId}")]
-        public async ValueTask<ActionResult<Attendance>> DeleteAttendanceAsync(Guid attendanceId)
-        {
-            try
-            {
-                Attendance storageAttendance =
-                    await this.attendanceService.RemoveAttendanceByIdAsync(attendanceId);
-
-                return Ok(storageAttendance);
-            }
-            catch (AttendanceValidationException attendanceValidationException)
-                when (attendanceValidationException.InnerException is NotFoundAttendanceException)
-            {
-                string innerMessage = GetInnerMessage(attendanceValidationException);
-
-                return NotFound(innerMessage);
-            }
-            catch (AttendanceValidationException attendanceValidationException)
-            {
-                return BadRequest(attendanceValidationException.Message);
-            }
-            catch (AttendanceDependencyException attendanceDependencyException)
-                when (attendanceDependencyException.InnerException is LockedAttendanceException)
-            {
-                string innerMessage = GetInnerMessage(attendanceDependencyException);
-
-                return Locked(innerMessage);
-            }
-            catch (AttendanceDependencyException attendanceDependencyException)
-            {
-                return Problem(attendanceDependencyException.Message);
-            }
-            catch (AttendanceServiceException attendanceServiceException)
-            {
-                return Problem(attendanceServiceException.Message);
-            }
-        }
-
         [HttpPut]
         public async ValueTask<ActionResult<Attendance>> PutAttendanceAsync(Attendance attendance)
         {
@@ -165,6 +127,44 @@ namespace OtripleS.Web.Api.Controllers
                 string innerMessage = GetInnerMessage(attendanceValidationException);
 
                 return BadRequest(innerMessage);
+            }
+            catch (AttendanceDependencyException attendanceDependencyException)
+                when (attendanceDependencyException.InnerException is LockedAttendanceException)
+            {
+                string innerMessage = GetInnerMessage(attendanceDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (AttendanceDependencyException attendanceDependencyException)
+            {
+                return Problem(attendanceDependencyException.Message);
+            }
+            catch (AttendanceServiceException attendanceServiceException)
+            {
+                return Problem(attendanceServiceException.Message);
+            }
+        }
+
+        [HttpDelete("{attendanceId}")]
+        public async ValueTask<ActionResult<Attendance>> DeleteAttendanceAsync(Guid attendanceId)
+        {
+            try
+            {
+                Attendance storageAttendance =
+                    await this.attendanceService.RemoveAttendanceByIdAsync(attendanceId);
+
+                return Ok(storageAttendance);
+            }
+            catch (AttendanceValidationException attendanceValidationException)
+                when (attendanceValidationException.InnerException is NotFoundAttendanceException)
+            {
+                string innerMessage = GetInnerMessage(attendanceValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (AttendanceValidationException attendanceValidationException)
+            {
+                return BadRequest(attendanceValidationException.Message);
             }
             catch (AttendanceDependencyException attendanceDependencyException)
                 when (attendanceDependencyException.InnerException is LockedAttendanceException)

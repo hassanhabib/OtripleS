@@ -39,7 +39,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
             }
             catch (SqlException sqlException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var failedContactStorageException =
+                    new FailedContactStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedContactStorageException);
             }
             catch (DuplicateKeyException duplicateKeyException)
             {

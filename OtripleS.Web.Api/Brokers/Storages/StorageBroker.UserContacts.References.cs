@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        private static void AddUserContactReferences(ModelBuilder modelBuilder)
+        private static void SetUserContactReferences(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserContact>()
                 .HasKey(userContact =>
