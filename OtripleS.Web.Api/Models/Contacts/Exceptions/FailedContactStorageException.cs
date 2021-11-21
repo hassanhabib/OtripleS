@@ -8,9 +8,10 @@ using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Contacts.Exceptions
 {
-    public class ContactDependencyException : Xeption
+    public class FailedContactStorageException : Xeption
     {
-        public ContactDependencyException(Exception innerException)
-            : base(message: "Service dependency error occurred, contact support.", innerException) { }
+        public FailedContactStorageException(Exception innerException)
+            :base(message:"Failed contact storage error occurred, contact support.", innerException)
+        { }
     }
 }

@@ -24,8 +24,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             Guid inputContactId = randomContactId;
             SqlException sqlException = GetSqlException();
 
+            var failedContactStorageException =
+                new FailedContactStorageException(sqlException);
+
             var expectedContactDependencyException =
-                new ContactDependencyException(sqlException);
+                new ContactDependencyException(failedContactStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectContactByIdAsync(inputContactId))
