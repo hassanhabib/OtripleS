@@ -66,7 +66,7 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
             catch (DbUpdateException databaseUpdateException)
             {
                 var failedAssigmentAttachmentStorageException =
-                    new FailedAssignmentAttachmentStorageException(dbUpdateException);
+                    new FailedAssignmentAttachmentStorageException(databaseUpdateException);
 
                 throw CreateAndLogDependencyException(failedAssigmentAttachmentStorageException);
 
