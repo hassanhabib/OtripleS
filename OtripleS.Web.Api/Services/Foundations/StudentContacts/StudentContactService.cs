@@ -54,12 +54,12 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentContacts
         {
             ValidateStudentContactIdIsNull(studentId, contactId);
 
-            StudentContact storageStudentContact =
+            StudentContact maybeStudentContact =
                 await this.storageBroker.SelectStudentContactByIdAsync(studentId, contactId);
 
-            ValidateStorageStudentContact(storageStudentContact, studentId, contactId);
+            ValidateStorageStudentContact(maybeStudentContact, studentId, contactId);
 
-            return storageStudentContact;
+            return maybeStudentContact;
         });
     }
 }
