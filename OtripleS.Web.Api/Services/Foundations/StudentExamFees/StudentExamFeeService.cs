@@ -47,14 +47,14 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExamFees
         {
             ValidateStudentExamFeeIdsAreNull(studentId, examFeeId);
 
-            StudentExamFee storageStudentExamFee =
+            StudentExamFee maybeStudentExamFee =
                 await this.storageBroker.SelectStudentExamFeeByIdsAsync(
                     studentId,
                     examFeeId);
 
-            ValidateStorageStudentExamFee(storageStudentExamFee, studentId, examFeeId);
+            ValidateStorageStudentExamFee(maybeStudentExamFee, studentId, examFeeId);
 
-            return storageStudentExamFee;
+            return maybeStudentExamFee;
         });
 
         public ValueTask<StudentExamFee> ModifyStudentExamFeeAsync(StudentExamFee studentExamFee) =>
