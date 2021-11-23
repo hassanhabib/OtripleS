@@ -12,7 +12,6 @@ namespace OtripleS.Web.Api.Models.Classrooms.Exceptions
     {
         public FailedClassroomStorageException(Exception innerException)
             : base(message: "Failed classroom storage error occurred, contact support.", innerException)
-
         { }
     }
 }
