@@ -41,10 +41,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
         TryCatch(async () =>
         {
             ValidateStudentId(studentId);
-            Student storageStudent = await this.storageBroker.SelectStudentByIdAsync(studentId);
-            ValidateStorageStudent(storageStudent, studentId);
+            Student maybeStudent = await this.storageBroker.SelectStudentByIdAsync(studentId);
+            ValidateStorageStudent(maybeStudent, studentId);
 
-            return storageStudent;
+            return maybeStudent;
         });
 
         public ValueTask<Student> ModifyStudentAsync(Student student) =>
