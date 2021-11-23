@@ -45,12 +45,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Registrations
         {
             ValidateRegistrationId(registrationId);
 
-            Registration storageRegistration =
+            Registration maybeRegistration =
                 await this.storageBroker.SelectRegistrationByIdAsync(registrationId);
 
-            ValidateStorageRegistration(storageRegistration, registrationId);
+            ValidateStorageRegistration(maybeRegistration, registrationId);
 
-            return storageRegistration;
+            return maybeRegistration;
         });
 
         public ValueTask<Registration> ModifyRegistrationAsync(Registration registration) =>
