@@ -54,12 +54,12 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
         {
             ValidateGuardianContactIdIsNull(guardianId, contactId);
 
-            GuardianContact storageGuardianContact =
+            GuardianContact maybeGuardianContact =
                 await this.storageBroker.SelectGuardianContactByIdAsync(guardianId, contactId);
 
-            ValidateStorageGuardianContact(storageGuardianContact, guardianId, contactId);
+            ValidateStorageGuardianContact(maybeGuardianContact, guardianId, contactId);
 
-            return storageGuardianContact;
+            return maybeGuardianContact;
         });
     }
 }
