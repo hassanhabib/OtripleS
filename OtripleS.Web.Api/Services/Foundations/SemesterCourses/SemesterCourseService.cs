@@ -36,12 +36,12 @@ namespace OtripleS.Web.Api.Services.Foundations.SemesterCourses
         {
             ValidateSemesterCourseId(semesterCourseId);
 
-            SemesterCourse storageSemesterCourse =
+            SemesterCourse maybeSemesterCourse =
                 await this.storageBroker.SelectSemesterCourseByIdAsync(semesterCourseId);
 
-            ValidateStorageSemesterCourse(storageSemesterCourse, semesterCourseId);
+            ValidateStorageSemesterCourse(maybeSemesterCourse, semesterCourseId);
 
-            return storageSemesterCourse;
+            return maybeSemesterCourse;
         });
 
         public ValueTask<SemesterCourse> CreateSemesterCourseAsync(SemesterCourse semesterCourse) =>
