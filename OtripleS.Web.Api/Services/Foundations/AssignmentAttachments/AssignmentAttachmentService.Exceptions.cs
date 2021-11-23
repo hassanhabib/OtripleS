@@ -11,6 +11,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.AssignmentAttachments;
 using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
 {
@@ -57,11 +58,18 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
             }
             catch (SqlException sqlException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var failedAssigmentAttachmentStorageException =
+                    new FailedAssignmentAttachmentStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedAssigmentAttachmentStorageException);
             }
             catch (DbUpdateException databaseUpdateException)
             {
-                throw CreateAndLogDependencyException(databaseUpdateException);
+                var failedAssigmentAttachmentStorageException =
+                    new FailedAssignmentAttachmentStorageException(databaseUpdateException);
+
+                throw CreateAndLogDependencyException(failedAssigmentAttachmentStorageException);
+
             }
             catch (NotFoundAssignmentAttachmentException notFoundAssignmentAttachmentException)
             {
@@ -82,7 +90,10 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
             }
             catch (SqlException sqlException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var failedAssigmentAttachmentStorageException =
+                    new FailedAssignmentAttachmentStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedAssigmentAttachmentStorageException);
             }
             catch (Exception exception)
             {
@@ -110,15 +121,17 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
             return assignmentAttachmentDependencyValidationException;
         }
 
-        private AssignmentAttachmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        private AssignmentAttachmentDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
-            var AssignmentAttachmentDependencyException = new AssignmentAttachmentDependencyException(exception);
-            this.loggingBroker.LogCritical(AssignmentAttachmentDependencyException);
+            var assignmentAttachmentDependencyException = 
+                new AssignmentAttachmentDependencyException(exception);
 
-            return AssignmentAttachmentDependencyException;
+            this.loggingBroker.LogCritical(assignmentAttachmentDependencyException);
+
+            return assignmentAttachmentDependencyException;
         }
 
-        private AssignmentAttachmentDependencyException CreateAndLogDependencyException(Exception exception)
+        private AssignmentAttachmentDependencyException CreateAndLogDependencyException(Xeption exception)
         {
             var AssignmentAttachmentDependencyException = new AssignmentAttachmentDependencyException(exception);
             this.loggingBroker.LogError(AssignmentAttachmentDependencyException);

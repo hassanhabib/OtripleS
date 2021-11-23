@@ -24,8 +24,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
             Guid someAssignmentId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
+            var failedAssigmentAttachmentStorageException =
+                new FailedAssignmentAttachmentStorageException(sqlException);
+
             var expectedAssignmentAttachmentDependencyException =
-                new AssignmentAttachmentDependencyException(sqlException);
+                new AssignmentAttachmentDependencyException(failedAssigmentAttachmentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                  broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
@@ -64,8 +67,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
             Guid someAssignmentId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
+            var failedAssigmentAttachmentStorageException =
+                new FailedAssignmentAttachmentStorageException(databaseUpdateException);
+
             var expectedAssignmentAttachmentDependencyException =
-                new AssignmentAttachmentDependencyException(databaseUpdateException);
+                new AssignmentAttachmentDependencyException(failedAssigmentAttachmentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))

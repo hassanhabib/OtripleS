@@ -18,8 +18,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
             // given
             var sqlException = GetSqlException();
 
+            var failedAssigmentAttachmentStorageException =
+                new FailedAssignmentAttachmentStorageException(sqlException);
+
             var expectedAssignmentAttachmentDependencyException =
-                new AssignmentAttachmentDependencyException(sqlException);
+                new AssignmentAttachmentDependencyException(failedAssigmentAttachmentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAssignmentAttachments())
