@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Classroom randomClassroom = CreateRandomClassroom(dateTime);
+            Classroom someClassroom = CreateRandomClassroom(dateTime);
             var sqlException = GetSqlException();
             var failedClassroomStorageException = new FailedClassroomStorageException(sqlException);
 
@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
 
             // when
             ValueTask<Classroom> createClassroomTask =
-                this.classroomService.CreateClassroomAsync(randomClassroom);
+                this.classroomService.CreateClassroomAsync(someClassroom);
 
             // then
             await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
@@ -44,13 +44,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                     expectedClassroomDependencyException))),
                         Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertClassroomAsync(It.IsAny<Classroom>()),
-                    Times.Never);
-
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertClassroomAsync(It.IsAny<Classroom>()),
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
