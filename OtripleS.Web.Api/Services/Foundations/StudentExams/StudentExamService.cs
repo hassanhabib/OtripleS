@@ -42,12 +42,12 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExams
         {
             ValidateStudentExamId(studentExamId);
 
-            StudentExam storageStudentExam =
+            StudentExam maybeStudentExam =
                 await this.storageBroker.SelectStudentExamByIdAsync(studentExamId);
 
-            ValidateStorageStudentExam(storageStudentExam, studentExamId);
+            ValidateStorageStudentExam(maybeStudentExam, studentExamId);
 
-            return storageStudentExam;
+            return maybeStudentExam;
         });
 
         public IQueryable<StudentExam> RetrieveAllStudentExams() =>
