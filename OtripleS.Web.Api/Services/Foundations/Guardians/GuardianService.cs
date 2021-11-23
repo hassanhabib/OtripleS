@@ -56,10 +56,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Guardians
         TryCatch(async () =>
         {
             ValidateGuardianId(guardianId);
-            Guardian storageGuardian = await this.storageBroker.SelectGuardianByIdAsync(guardianId);
-            ValidateStorageGuardian(storageGuardian, guardianId);
+            Guardian maybeGuardian = await this.storageBroker.SelectGuardianByIdAsync(guardianId);
+            ValidateStorageGuardian(maybeGuardian, guardianId);
 
-            return storageGuardian;
+            return maybeGuardian;
         });
 
         public ValueTask<Guardian> ModifyGuardianAsync(Guardian guardian) =>
