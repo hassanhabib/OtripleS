@@ -59,12 +59,12 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentAttachments
         {
             ValidateStudentAttachmentIdIsNull(studentId, attachmentId);
 
-            StudentAttachment storageStudentAttachment =
+            StudentAttachment maybeStudentAttachment =
                await this.storageBroker.SelectStudentAttachmentByIdAsync(studentId, attachmentId);
 
-            ValidateStorageStudentAttachment(storageStudentAttachment, studentId, attachmentId);
+            ValidateStorageStudentAttachment(maybeStudentAttachment, studentId, attachmentId);
 
-            return storageStudentAttachment;
+            return maybeStudentAttachment;
         });
 
     }
