@@ -50,15 +50,6 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
                 throw new NotFoundCalendarEntryAttachmentException(calendarEntryId, attachmentId);
         }
 
-        private void ValidateStorageCalendarEntryAttachments(
-            IQueryable<CalendarEntryAttachment> storageCalendarEntryAttachments)
-        {
-            if (!storageCalendarEntryAttachments.Any())
-            {
-                this.loggingBroker.LogWarning("No calendarentry attachments found in storage.");
-            }
-        }
-
         private static dynamic IsInvalid(Guid id) => new
         {
             Condition = id == Guid.Empty,
