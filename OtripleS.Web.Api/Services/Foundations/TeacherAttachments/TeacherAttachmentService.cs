@@ -46,12 +46,12 @@ namespace OtripleS.Web.Api.Services.Foundations.TeacherAttachments
         {
             ValidateTeacherAttachmentIds(teacherId, attachmentId);
 
-            TeacherAttachment storageTeacherAttachment =
+            TeacherAttachment maybeTeacherAttachment =
                await this.storageBroker.SelectTeacherAttachmentByIdAsync(teacherId, attachmentId);
 
-            ValidateStorageTeacherAttachment(storageTeacherAttachment, teacherId, attachmentId);
+            ValidateStorageTeacherAttachment(maybeTeacherAttachment, teacherId, attachmentId);
 
-            return storageTeacherAttachment;
+            return maybeTeacherAttachment;
         });
 
         public ValueTask<TeacherAttachment> RemoveTeacherAttachmentByIdAsync(Guid teacherId, Guid attachmentId) =>
