@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
@@ -72,6 +73,18 @@ namespace OtripleS.Web.Api
                     .AddRoles<Role>()
                     .AddEntityFrameworkStores<StorageBroker>()
                     .AddDefaultTokenProviders();
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc(
+                    name: "v1",
+                    info: new OpenApiInfo
+                    {
+                        Title = "OtripleS.Core.Api",
+                        Version = "v1"
+                    }
+                );
+            });
         }
 
         public void Configure(
@@ -81,6 +94,12 @@ namespace OtripleS.Web.Api
             if (webHostEnvironment.IsDevelopment())
             {
                 applicationBuilder.UseDeveloperExceptionPage();
+                applicationBuilder.UseSwagger();
+                applicationBuilder.UseSwaggerUI(options =>
+
+                options.SwaggerEndpoint(
+                    url: "/swagger/v1/swagger.json",
+                    name: "OtripleS.Core.Api v1"));
             }
 
             applicationBuilder.UseHttpsRedirection();
