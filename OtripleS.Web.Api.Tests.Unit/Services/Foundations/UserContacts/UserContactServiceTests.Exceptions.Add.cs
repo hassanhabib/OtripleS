@@ -61,8 +61,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             UserContact inputUserContact = randomUserContact;
             var databaseUpdateException = new DbUpdateException();
 
+            var failedUserContactStorageException =
+                new FailedUserContactStorageException(databaseUpdateException);
+
             var expectedUserContactDependencyException =
-                new UserContactDependencyException(databaseUpdateException);
+                new UserContactDependencyException(failedUserContactStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertUserContactAsync(inputUserContact))
