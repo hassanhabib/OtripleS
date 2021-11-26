@@ -3,6 +3,7 @@
 // FREE TO USE FOR THE WORLD
 // -------------------------------------------------------
 
+using OtripleS.Web.Api.Infrastructure.Provision.Services.Proccesings.CloudManagements;
 using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Infrastructure.Provision
@@ -11,7 +12,10 @@ namespace OtripleS.Web.Api.Infrastructure.Provision
     {
         static async Task Main(string[] args)
         {
+            ICloudManagementProcessingService cloudManagementProcessingService =
+               new CloudManagementProcessingService();
 
+            await cloudManagementProcessingService.ProcessAsync();
         }
     }
 }
