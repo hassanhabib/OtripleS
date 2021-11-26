@@ -5,7 +5,7 @@
 
 namespace OtripleS.Web.Api.Infrastructure.Provision.Models.Configurations
 {
-    public class CloudaManagementsConfiguration
+    public class CloudManagementConfiguration
     {
         public string ProjectName { get; set; }
         public CloudAction Up { get; set; }
