@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Infrastructure.Provision.Brokers.Configurations
 {
     public class ConfigurationBroker : IConfigurationBroker
     {
-        public CloudManagementConfiguration GetConfiguration()
+        public CloudManagementConfiguration GetConfigurations()
         {
             IConfigurationRoot configurationRoot = new ConfigurationBuilder()
                .SetBasePath(basePath: Directory.GetCurrentDirectory())

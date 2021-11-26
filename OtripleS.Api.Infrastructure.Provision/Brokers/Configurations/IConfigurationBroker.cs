@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Infrastructure.Provision.Brokers.Configurations
 {
     public interface IConfigurationBroker
     {
-        CloudManagementConfiguration GetConfiguration();
+        CloudManagementConfiguration GetConfigurations();
     }
 }
