@@ -19,8 +19,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             // given
             SqlException sqlException = GetSqlException();
 
+            var failedUserContactStorageException =
+                new FailedUserContactStorageException(sqlException);
+
             var expectedUserContactDependencyException =
-                new UserContactDependencyException(sqlException);
+                new UserContactDependencyException(failedUserContactStorageException);
 
             this.storageBrokerMock.Setup(broker => broker.SelectAllUserContacts())
                 .Throws(sqlException);
