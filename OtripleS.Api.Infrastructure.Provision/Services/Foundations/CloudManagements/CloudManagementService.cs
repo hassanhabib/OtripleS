@@ -1,14 +1,15 @@
-﻿using Microsoft.Azure.Management.AppService.Fluent;
+﻿// -------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE FOR THE WORLD
+// -------------------------------------------------------
+
+using System.Threading.Tasks;
+using Microsoft.Azure.Management.AppService.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.Sql.Fluent;
 using OtripleS.Web.Api.Infrastructure.Provision.Brokers.Clouds;
 using OtripleS.Web.Api.Infrastructure.Provision.Brokers.Loggings;
 using OtripleS.Web.Api.Infrastructure.Provision.Models.Storages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Infrastructure.Provision.Services.Foundations.CloudManagements
 {
