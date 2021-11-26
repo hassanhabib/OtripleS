@@ -3,11 +3,10 @@
 // FREE TO USE FOR THE WORLD
 // -------------------------------------------------------
 
-namespace OtripleS.Web.Api.Infrastructure.Provision.Models.Storages
+namespace OtripleS.Web.Api.Infrastructure.Provision.Brokers.Clouds
 {
-    public class SqlDatabaseAccess
+    public partial interface ICloudBroker
     {
-        public string AdminName { get; set; }
-        public string AdminAccess { get; set; }
+        
     }
 }

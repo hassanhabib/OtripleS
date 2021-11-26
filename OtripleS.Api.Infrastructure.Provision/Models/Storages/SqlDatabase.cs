@@ -3,11 +3,13 @@
 // FREE TO USE FOR THE WORLD
 // -------------------------------------------------------
 
+using Microsoft.Azure.Management.Sql.Fluent;
+
 namespace OtripleS.Web.Api.Infrastructure.Provision.Models.Storages
 {
     public class SqlDatabase
     {
-        public string AdminName { get; set; }
-        public string AdminAccess { get; set; }
+        public string ConnectionString { get; set; }
+        public ISqlDatabase Database { get; set; }
     }
 }
