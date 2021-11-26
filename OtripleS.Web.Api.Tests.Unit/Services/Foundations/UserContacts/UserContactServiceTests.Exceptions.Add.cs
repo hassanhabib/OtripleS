@@ -23,6 +23,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             UserContact inputUserContact = randomUserContact;
             var sqlException = GetSqlException();
 
+            var failedUserContactStorageException =
+                new FailedUserContactStorageException(sqlException);
+
             var expectedUserContactDependencyException =
                 new UserContactDependencyException(sqlException);
 
