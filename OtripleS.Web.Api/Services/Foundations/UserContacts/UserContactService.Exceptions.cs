@@ -87,7 +87,10 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
             }
             catch (SqlException sqlException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var failedUserContactStorageException =
+                    new FailedUserContactStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedUserContactStorageException);
             }
             catch (Exception exception)
             {
