@@ -3,12 +3,10 @@
 // FREE TO USE FOR THE WORLD
 // -------------------------------------------------------
 
-using System.Collections.Generic;
-
-namespace OtripleS.Web.Api.Infrastructure.Provision.Models.Configurations
+namespace OtripleS.Web.Api.Infrastructure.Provision.Brokers.Loggings
 {
-    public class CloudAction
+    public interface ILoggingBroker
     {
-      public List<string> Environments { get; set; }
+        void LogActivity(string message);
     }
 }
