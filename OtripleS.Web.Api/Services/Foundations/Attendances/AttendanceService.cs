@@ -57,13 +57,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
         });
 
         public IQueryable<Attendance> RetrieveAllAttendances() =>
-        TryCatch(() =>
-        {
-            IQueryable<Attendance> storageAttendances = this.storageBroker.SelectAllAttendances();
-            ValidateStorageAttendances(storageAttendances);
-
-            return storageAttendances;
-        });
+        TryCatch(() =>  this.storageBroker.SelectAllAttendances());
 
         public ValueTask<Attendance> RemoveAttendanceByIdAsync(Guid attendanceId) =>
         TryCatch(async () =>
