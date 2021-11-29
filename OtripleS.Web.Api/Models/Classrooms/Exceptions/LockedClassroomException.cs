@@ -4,10 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Classrooms.Exceptions
 {
-    public class LockedClassroomException : Exception
+    public class LockedClassroomException : Xeption
     {
         public LockedClassroomException(Exception innerException)
             : base(message: "Locked classroom record exception, please try again later.", innerException) { }

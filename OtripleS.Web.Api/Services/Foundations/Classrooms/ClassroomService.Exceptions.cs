@@ -11,6 +11,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Classrooms
 {
@@ -55,11 +56,19 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             {
                 var lockedClassroomException = new LockedClassroomException(dbUpdateConcurrencyException);
 
-                throw CreateAndLogDependencyException(lockedClassroomException);
+                throw CreateAndLogDependencyValidationException(lockedClassroomException);
+
+                //var lockedClassroomException = new LockedClassroomException(dbUpdateConcurrencyException);
+
+                //throw CreateAndLogDependencyException(lockedClassroomException);
             }
             catch (DbUpdateException dbUpdateException)
             {
-                throw CreateAndLogDependencyException(dbUpdateException);
+                var failedClassroomStorageException =
+                    new FailedClassroomStorageException(dbUpdateException);
+
+                throw CreateAndLogDependencyException(failedClassroomStorageException);
+                //throw CreateAndLogDependencyException(dbUpdateException);
             }
             catch (Exception exception)
             {
@@ -76,7 +85,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             }
             catch (SqlException sqlException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var failedClassroomStorageException =
+                    new FailedClassroomStorageException(sqlException);
+                throw CreateAndLogCriticalDependencyException(failedClassroomStorageException);                
             }
             catch (Exception exception)
             {
@@ -92,7 +103,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             return classroomValidationException;
         }
 
-        private ClassroomDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        private ClassroomDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
             var classroomDependencyException = new ClassroomDependencyException(exception);
             this.loggingBroker.LogCritical(classroomDependencyException);
@@ -100,12 +111,20 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             return classroomDependencyException;
         }
 
-        private ClassroomDependencyException CreateAndLogDependencyException(Exception exception)
+        private ClassroomDependencyException CreateAndLogDependencyException(Xeption exception)
         {
             var classroomDependencyException = new ClassroomDependencyException(exception);
             this.loggingBroker.LogError(classroomDependencyException);
 
             return classroomDependencyException;
+        }
+
+        
+        private ClassroomDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var classroomDependencyValidationException = new ClassroomDependencyValidationException(exception);
+            this.loggingBroker.LogError(classroomDependencyValidationException);
+            return classroomDependencyValidationException;
         }
 
         private ClassroomServiceException CreateAndLogServiceException(Exception exception)

@@ -8,9 +8,9 @@ using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Classrooms.Exceptions
 {
-    public class ClassroomDependencyException : Xeption
+    public class ClassroomDependencyValidationException : Xeption
     {
-        public ClassroomDependencyException(Xeption innerException)
-            : base(message: "Classroom dependency error occurred, contact support.", innerException) { }
+        public ClassroomDependencyValidationException(Xeption innerException)
+           : base(message: "Classroom dependency validation occurred, fix the errors and try again.", innerException) { }
     }
 }
