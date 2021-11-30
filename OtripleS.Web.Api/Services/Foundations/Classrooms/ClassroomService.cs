@@ -67,13 +67,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         });
 
         public IQueryable<Classroom> RetrieveAllClassrooms() =>
-        TryCatch(() =>
-        {
-            IQueryable<Classroom> storageClassrooms = this.storageBroker.SelectAllClassrooms();
-            ValidateStorageClassrooms(storageClassrooms);
-
-            return storageClassrooms;
-        });
+        TryCatch(() => this.storageBroker.SelectAllClassrooms());
 
         public ValueTask<Classroom> RetrieveClassroomById(Guid classroomId) =>
         TryCatch(async () =>
