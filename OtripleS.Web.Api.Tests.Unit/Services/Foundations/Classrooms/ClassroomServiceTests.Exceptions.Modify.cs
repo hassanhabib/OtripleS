@@ -64,7 +64,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-        [Fact]//need to fix
+        [Fact]
         public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateExceptionOccursAndLogItAsync()
         {
             // given
@@ -93,17 +93,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                 broker.GetCurrentDateTime(),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectClassroomByIdAsync(randomClassroom.Id),
-                    Times.Never);
-
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedClassroomDependencyException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.UpdateClassroomAsync(randomClassroom),
+                broker.UpdateClassroomAsync(It.IsAny<Classroom>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -115,7 +111,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            Classroom randomClassroom = CreateRandomClassroom();            
+            Classroom randomClassroom = CreateRandomClassroom();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
             var lockedClassroomException = new LockedClassroomException(databaseUpdateConcurrencyException);
@@ -145,11 +141,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectClassroomByIdAsync(randomClassroom.Id),
-                    Times.Never);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.UpdateClassroomAsync(randomClassroom),
+                broker.UpdateClassroomAsync(It.IsAny<Classroom>()),
                 Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
