@@ -58,9 +58,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
 
                 throw CreateAndLogDependencyValidationException(lockedClassroomException);
 
-                //var lockedClassroomException = new LockedClassroomException(dbUpdateConcurrencyException);
-
-                //throw CreateAndLogDependencyException(lockedClassroomException);
             }
             catch (DbUpdateException dbUpdateException)
             {
@@ -68,7 +65,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
                     new FailedClassroomStorageException(dbUpdateException);
 
                 throw CreateAndLogDependencyException(failedClassroomStorageException);
-                //throw CreateAndLogDependencyException(dbUpdateException);
             }
             catch (Exception exception)
             {
@@ -119,7 +115,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             return classroomDependencyException;
         }
 
-        
         private ClassroomDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
         {
             var classroomDependencyValidationException = new ClassroomDependencyValidationException(exception);
