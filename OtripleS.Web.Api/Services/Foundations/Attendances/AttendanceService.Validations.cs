@@ -133,14 +133,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             invalidAttendanceException.ThrowIfContainsErrors();
         }
 
-        private void ValidateStorageAttendances(IQueryable<Attendance> storageAttendances)
-        {
-            if (!storageAttendances.Any())
-            {
-                this.loggingBroker.LogWarning("No Attendances found in storage.");
-            }
-        }
-
         private static void ValidateAttendanceIsNull(Attendance attendance)
         {
             if (attendance is null)
