@@ -96,33 +96,33 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomClassroomId = Guid.NewGuid();
-            Guid inputClassroomId = randomClassroomId;
+            Guid someClassroomId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
             var lockedClassroomException = new LockedClassroomException(databaseUpdateConcurrencyException);
 
-            var expectedClassroomDependencyException =
-                new ClassroomDependencyException(lockedClassroomException);
+            var expectedClassroomDependencyValidationException =
+                new ClassroomDependencyValidationException(lockedClassroomException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectClassroomByIdAsync(inputClassroomId))
+                broker.SelectClassroomByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
             ValueTask<Classroom> deleteClassroomTask =
-                this.classroomService.RemoveClassroomAsync(inputClassroomId);
+                this.classroomService.RemoveClassroomAsync(someClassroomId);
 
             // then
-            await Assert.ThrowsAsync<ClassroomDependencyException>(() =>
+            await Assert.ThrowsAsync<ClassroomDependencyValidationException>(() =>
                 deleteClassroomTask.AsTask());
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomDependencyException))),
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectClassroomByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectClassroomByIdAsync(inputClassroomId),
-                    Times.Once);
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedClassroomDependencyValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
