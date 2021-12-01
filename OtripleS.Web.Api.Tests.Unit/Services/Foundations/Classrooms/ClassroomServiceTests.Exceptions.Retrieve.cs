@@ -94,7 +94,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            Guid someClassroomId = Guid.NewGuid();            
+            Guid someClassroomId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
             var lockedClassroomException = new LockedClassroomException(databaseUpdateConcurrencyException);
 

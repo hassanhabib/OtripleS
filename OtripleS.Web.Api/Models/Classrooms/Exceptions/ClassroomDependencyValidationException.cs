@@ -3,7 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
 using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Classrooms.Exceptions
@@ -11,6 +10,7 @@ namespace OtripleS.Web.Api.Models.Classrooms.Exceptions
     public class ClassroomDependencyValidationException : Xeption
     {
         public ClassroomDependencyValidationException(Xeption innerException)
-           : base(message: "Classroom dependency validation occurred, fix the errors and try again.", innerException) { }
+            : base(message: "Classroom dependency validation occurred, fix the errors and try again.", innerException)
+        { }
     }
 }

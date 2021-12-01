@@ -81,9 +81,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             }
             catch (SqlException sqlException)
             {
-                var failedClassroomStorageException =
-                    new FailedClassroomStorageException(sqlException);
-                throw CreateAndLogCriticalDependencyException(failedClassroomStorageException);                
+                var failedClassroomStorageException = new FailedClassroomStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedClassroomStorageException);
             }
             catch (Exception exception)
             {
@@ -119,6 +119,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         {
             var classroomDependencyValidationException = new ClassroomDependencyValidationException(exception);
             this.loggingBroker.LogError(classroomDependencyValidationException);
+
             return classroomDependencyValidationException;
         }
 
