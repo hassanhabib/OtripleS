@@ -60,7 +60,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
         TryCatch(() =>
         {
             IQueryable<Attendance> storageAttendances = this.storageBroker.SelectAllAttendances();
-            ValidateStorageAttendances(storageAttendances);
 
             return storageAttendances;
         });
