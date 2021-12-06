@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using Microsoft.Data.SqlClient;
 using Moq;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 using Xunit;
@@ -13,29 +14,35 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
     public partial class ClassroomServiceTests
     {
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogIt()
+        public void ShouldThrowCriticalDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogIt()
         {
             // given
-            var sqlException = GetSqlException();
+            SqlException sqlException = GetSqlException();
+
+            var failedClassroomStorageException =
+                new FailedClassroomStorageException(sqlException);
 
             var expectedClassroomDependencyException =
-                new ClassroomDependencyException(sqlException);
+                new ClassroomDependencyException(failedClassroomStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllClassrooms())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<ClassroomDependencyException>(() =>
-                this.classroomService.RetrieveAllClassrooms());
+            // when
+            Action retrieveAllCountriesAction = () => this.classroomService.RetrieveAllClassrooms();
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedClassroomDependencyException))),
-                    Times.Once);
+            // then
+            Assert.Throws<ClassroomDependencyException>(retrieveAllCountriesAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllClassrooms(),
                     Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedClassroomDependencyException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),

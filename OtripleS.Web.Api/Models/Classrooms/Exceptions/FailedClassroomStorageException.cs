@@ -8,9 +8,10 @@ using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Classrooms.Exceptions
 {
-    public class LockedClassroomException : Xeption
+    public class FailedClassroomStorageException : Xeption
     {
-        public LockedClassroomException(Exception innerException)
-            : base(message: "Locked classroom record exception, please try again later.", innerException) { }
+        public FailedClassroomStorageException(Exception innerException)
+            : base(message: "Failed classroom storage error occurred, contact support.", innerException)
+        { }
     }
 }
