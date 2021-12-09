@@ -14,10 +14,7 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianAttachments
     {
         ValueTask<GuardianAttachment> AddGuardianAttachmentAsync(GuardianAttachment guardianAttachment);
         IQueryable<GuardianAttachment> RetrieveAllGuardianAttachments();
-
-        ValueTask<GuardianAttachment> RetrieveGuardianAttachmentByIdAsync
-            (Guid guardianId, Guid attachmentId);
-
+        ValueTask<GuardianAttachment> RetrieveGuardianAttachmentByIdAsync(Guid guardianId, Guid attachmentId);
         ValueTask<GuardianAttachment> RemoveGuardianAttachmentByIdAsync(Guid guardianId, Guid attachmentId);
     }
 }
