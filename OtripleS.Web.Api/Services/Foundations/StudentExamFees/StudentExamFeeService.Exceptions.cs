@@ -85,34 +85,34 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExamFees
 
         private StudentExamFeeValidationException CreateAndLogValidationException(Exception exception)
         {
-            var StudentExamFeeValidationException = new StudentExamFeeValidationException(exception);
-            this.loggingBroker.LogError(StudentExamFeeValidationException);
+            var studentExamFeeValidationException = new StudentExamFeeValidationException(exception);
+            this.loggingBroker.LogError(studentExamFeeValidationException);
 
-            return StudentExamFeeValidationException;
+            return studentExamFeeValidationException;
         }
 
         private StudentExamFeeDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
-            var StudentExamFeeDependencyException = new StudentExamFeeDependencyException(exception);
-            this.loggingBroker.LogCritical(StudentExamFeeDependencyException);
+            var studentExamFeeDependencyException = new StudentExamFeeDependencyException(exception);
+            this.loggingBroker.LogCritical(studentExamFeeDependencyException);
 
-            return StudentExamFeeDependencyException;
+            return studentExamFeeDependencyException;
         }
 
         private StudentExamFeeDependencyException CreateAndLogDependencyException(Exception exception)
         {
-            var StudentExamFeeDependencyException = new StudentExamFeeDependencyException(exception);
-            this.loggingBroker.LogError(StudentExamFeeDependencyException);
+            var studentExamFeeDependencyException = new StudentExamFeeDependencyException(exception);
+            this.loggingBroker.LogError(studentExamFeeDependencyException);
 
-            return StudentExamFeeDependencyException;
+            return studentExamFeeDependencyException;
         }
 
         private StudentExamFeeServiceException CreateAndLogServiceException(Exception exception)
         {
-            var StudentExamFeeServiceException = new StudentExamFeeServiceException(exception);
-            this.loggingBroker.LogError(StudentExamFeeServiceException);
+            var studentExamFeeServiceException = new StudentExamFeeServiceException(exception);
+            this.loggingBroker.LogError(studentExamFeeServiceException);
 
-            return StudentExamFeeServiceException;
+            return studentExamFeeServiceException;
         }
     }
 }

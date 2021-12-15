@@ -16,6 +16,6 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
         ValueTask<StudentGuardian> ModifyStudentGuardianAsync(StudentGuardian studentGuardian);
         ValueTask<StudentGuardian> RetrieveStudentGuardianByIdAsync(Guid studentId, Guid guardianId);
         ValueTask<StudentGuardian> AddStudentGuardianAsync(StudentGuardian studentGuardian);
-        ValueTask<StudentGuardian> RemoveStudentGuardianByIdsAsync(Guid GuardianId, Guid studentId);
+        ValueTask<StudentGuardian> RemoveStudentGuardianByIdsAsync(Guid guardianId, Guid studentId);
     }
 }

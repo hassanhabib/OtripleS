@@ -16,6 +16,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
         IQueryable<Course> RetrieveAllCourses();
         ValueTask<Course> RetrieveCourseByIdAsync(Guid courseId);
         ValueTask<Course> ModifyCourseAsync(Course course);
-        ValueTask<Course> RemoveCourseAsync(Guid CourseId);
+        ValueTask<Course> RemoveCourseAsync(Guid courseId);
     }
 }

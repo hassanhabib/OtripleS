@@ -75,26 +75,26 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExams
 
         private StudentExamValidationException CreateAndLogValidationException(Exception exception)
         {
-            var StudentExamValidationException = new StudentExamValidationException(exception);
-            this.loggingBroker.LogError(StudentExamValidationException);
+            var studentExamValidationException = new StudentExamValidationException(exception);
+            this.loggingBroker.LogError(studentExamValidationException);
 
-            return StudentExamValidationException;
+            return studentExamValidationException;
         }
 
         private StudentExamDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
-            var StudentExamDependencyException = new StudentExamDependencyException(exception);
-            this.loggingBroker.LogCritical(StudentExamDependencyException);
+            var studentExamDependencyException = new StudentExamDependencyException(exception);
+            this.loggingBroker.LogCritical(studentExamDependencyException);
 
-            return StudentExamDependencyException;
+            return studentExamDependencyException;
         }
 
         private StudentExamDependencyException CreateAndLogDependencyException(Exception exception)
         {
-            var StudentExamDependencyException = new StudentExamDependencyException(exception);
-            this.loggingBroker.LogError(StudentExamDependencyException);
+            var studentExamDependencyException = new StudentExamDependencyException(exception);
+            this.loggingBroker.LogError(studentExamDependencyException);
 
-            return StudentExamDependencyException;
+            return studentExamDependencyException;
         }
 
         private StudentExamServiceException CreateAndLogServiceException(Exception exception)

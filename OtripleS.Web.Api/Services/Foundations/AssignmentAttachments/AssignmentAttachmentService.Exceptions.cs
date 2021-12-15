@@ -104,10 +104,10 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
 
         private AssignmentAttachmentValidationException CreateAndLogValidationException(Exception exception)
         {
-            var AssignmentAttachmentValidationException = new AssignmentAttachmentValidationException(exception);
-            this.loggingBroker.LogError(AssignmentAttachmentValidationException);
+            var assignmentAttachmentValidationException = new AssignmentAttachmentValidationException(exception);
+            this.loggingBroker.LogError(assignmentAttachmentValidationException);
 
-            return AssignmentAttachmentValidationException;
+            return assignmentAttachmentValidationException;
         }
 
         private AssignmentAttachmentDependencyValidationException CreateAndLogDependencyValidationException(
@@ -133,18 +133,18 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
 
         private AssignmentAttachmentDependencyException CreateAndLogDependencyException(Xeption exception)
         {
-            var AssignmentAttachmentDependencyException = new AssignmentAttachmentDependencyException(exception);
-            this.loggingBroker.LogError(AssignmentAttachmentDependencyException);
+            var assignmentAttachmentDependencyException = new AssignmentAttachmentDependencyException(exception);
+            this.loggingBroker.LogError(assignmentAttachmentDependencyException);
 
-            return AssignmentAttachmentDependencyException;
+            return assignmentAttachmentDependencyException;
         }
 
         private AssignmentAttachmentServiceException CreateAndLogServiceException(Exception exception)
         {
-            var AssignmentAttachmentServiceException = new AssignmentAttachmentServiceException(exception);
-            this.loggingBroker.LogError(AssignmentAttachmentServiceException);
+            var assignmentAttachmentServiceException = new AssignmentAttachmentServiceException(exception);
+            this.loggingBroker.LogError(assignmentAttachmentServiceException);
 
-            return AssignmentAttachmentServiceException;
+            return assignmentAttachmentServiceException;
         }
     }
 }

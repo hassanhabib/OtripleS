@@ -115,10 +115,10 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
 
         private CalendarEntryAttachmentServiceException CreateAndLogServiceException(Exception exception)
         {
-            var CalendarEntryAttachmentServiceException = new CalendarEntryAttachmentServiceException(exception);
-            this.loggingBroker.LogError(CalendarEntryAttachmentServiceException);
+            var calendarEntryAttachmentServiceException = new CalendarEntryAttachmentServiceException(exception);
+            this.loggingBroker.LogError(calendarEntryAttachmentServiceException);
 
-            return CalendarEntryAttachmentServiceException;
+            return calendarEntryAttachmentServiceException;
         }
     }
 }

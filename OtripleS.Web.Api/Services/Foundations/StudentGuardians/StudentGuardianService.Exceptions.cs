@@ -84,34 +84,34 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
 
         private StudentGuardianValidationException CreateAndLogValidationException(Exception exception)
         {
-            var StudentGuardianValidationException = new StudentGuardianValidationException(exception);
-            this.loggingBroker.LogError(StudentGuardianValidationException);
+            var studentGuardianValidationException = new StudentGuardianValidationException(exception);
+            this.loggingBroker.LogError(studentGuardianValidationException);
 
-            return StudentGuardianValidationException;
+            return studentGuardianValidationException;
         }
 
         private StudentGuardianDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
-            var StudentGuardianDependencyException = new StudentGuardianDependencyException(exception);
-            this.loggingBroker.LogCritical(StudentGuardianDependencyException);
+            var studentGuardianDependencyException = new StudentGuardianDependencyException(exception);
+            this.loggingBroker.LogCritical(studentGuardianDependencyException);
 
-            return StudentGuardianDependencyException;
+            return studentGuardianDependencyException;
         }
 
         private StudentGuardianDependencyException CreateAndLogDependencyException(Exception exception)
         {
-            var StudentGuardianDependencyException = new StudentGuardianDependencyException(exception);
-            this.loggingBroker.LogError(StudentGuardianDependencyException);
+            var studentGuardianDependencyException = new StudentGuardianDependencyException(exception);
+            this.loggingBroker.LogError(studentGuardianDependencyException);
 
-            return StudentGuardianDependencyException;
+            return studentGuardianDependencyException;
         }
 
         private StudentGuardianServiceException CreateAndLogServiceException(Exception exception)
         {
-            var StudentGuardianServiceException = new StudentGuardianServiceException(exception);
-            this.loggingBroker.LogError(StudentGuardianServiceException);
+            var studentGuardianServiceException = new StudentGuardianServiceException(exception);
+            this.loggingBroker.LogError(studentGuardianServiceException);
 
-            return StudentGuardianServiceException;
+            return studentGuardianServiceException;
         }
     }
 }

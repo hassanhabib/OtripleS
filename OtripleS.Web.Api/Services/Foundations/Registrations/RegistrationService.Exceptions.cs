@@ -90,10 +90,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Registrations
 
         private RegistrationValidationException CreateAndLogValidationException(Exception exception)
         {
-            var RegistrationValidationException = new RegistrationValidationException(exception);
-            this.loggingBroker.LogError(RegistrationValidationException);
+            var registrationValidationException = new RegistrationValidationException(exception);
+            this.loggingBroker.LogError(registrationValidationException);
 
-            return RegistrationValidationException;
+            return registrationValidationException;
         }
 
         private RegistrationDependencyException CreateAndLogCriticalDependencyException(Exception exception)

@@ -118,10 +118,10 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentRegistrations
 
         private StudentRegistrationServiceException CreateAndLogServiceException(Exception exception)
         {
-            var StudentRegistrationServiceException = new StudentRegistrationServiceException(exception);
-            this.loggingBroker.LogError(StudentRegistrationServiceException);
+            var studentRegistrationServiceException = new StudentRegistrationServiceException(exception);
+            this.loggingBroker.LogError(studentRegistrationServiceException);
 
-            return StudentRegistrationServiceException;
+            return studentRegistrationServiceException;
         }
     }
 }

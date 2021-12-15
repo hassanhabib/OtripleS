@@ -73,12 +73,12 @@ namespace OtripleS.Web.Api.Controllers
         }
 
         [HttpGet("{teacherId}")]
-        public async ValueTask<ActionResult<Teacher>> GetTeacherByIdAsync(Guid TeacherId)
+        public async ValueTask<ActionResult<Teacher>> GetTeacherByIdAsync(Guid teacherId)
         {
             try
             {
                 Teacher teacher =
-                    await this.teacherService.RetrieveTeacherByIdAsync(TeacherId);
+                    await this.teacherService.RetrieveTeacherByIdAsync(teacherId);
 
                 return Ok(teacher);
             }

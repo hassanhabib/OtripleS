@@ -100,34 +100,34 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
 
         private UserContactValidationException CreateAndLogValidationException(Exception exception)
         {
-            var UserContactValidationException = new UserContactValidationException(exception);
-            this.loggingBroker.LogError(UserContactValidationException);
+            var userContactValidationException = new UserContactValidationException(exception);
+            this.loggingBroker.LogError(userContactValidationException);
 
-            return UserContactValidationException;
+            return userContactValidationException;
         }
 
         private UserContactDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
-            var UserContactDependencyException = new UserContactDependencyException(exception);
-            this.loggingBroker.LogCritical(UserContactDependencyException);
+            var userContactDependencyException = new UserContactDependencyException(exception);
+            this.loggingBroker.LogCritical(userContactDependencyException);
 
-            return UserContactDependencyException;
+            return userContactDependencyException;
         }
 
         private UserContactDependencyException CreateAndLogDependencyException(Exception exception)
         {
-            var UserContactDependencyException = new UserContactDependencyException(exception);
-            this.loggingBroker.LogError(UserContactDependencyException);
+            var userContactDependencyException = new UserContactDependencyException(exception);
+            this.loggingBroker.LogError(userContactDependencyException);
 
-            return UserContactDependencyException;
+            return userContactDependencyException;
         }
 
         private UserContactServiceException CreateAndLogServiceException(Exception exception)
         {
-            var UserContactServiceException = new UserContactServiceException(exception);
-            this.loggingBroker.LogError(UserContactServiceException);
+            var userContactServiceException = new UserContactServiceException(exception);
+            this.loggingBroker.LogError(userContactServiceException);
 
-            return UserContactServiceException;
+            return userContactServiceException;
         }
     }
 }

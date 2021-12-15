@@ -66,13 +66,13 @@ namespace OtripleS.Web.Api.Controllers
 
                 return Ok(storageRegistration);
             }
-            catch (RegistrationDependencyException RegistrationDependencyException)
+            catch (RegistrationDependencyException registrationDependencyException)
             {
-                return Problem(RegistrationDependencyException.Message);
+                return Problem(registrationDependencyException.Message);
             }
-            catch (RegistrationServiceException RegistrationServiceException)
+            catch (RegistrationServiceException registrationServiceException)
             {
-                return Problem(RegistrationServiceException.Message);
+                return Problem(registrationServiceException.Message);
             }
         }
 
