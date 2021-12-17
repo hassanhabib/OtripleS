@@ -92,34 +92,34 @@ namespace OtripleS.Web.Api.Services.Foundations.TeacherAttachments
 
         private TeacherAttachmentValidationException CreateAndLogValidationException(Exception exception)
         {
-            var TeacherAttachmentValidationException = new TeacherAttachmentValidationException(exception);
-            this.loggingBroker.LogError(TeacherAttachmentValidationException);
+            var teacherAttachmentValidationException = new TeacherAttachmentValidationException(exception);
+            this.loggingBroker.LogError(teacherAttachmentValidationException);
 
-            return TeacherAttachmentValidationException;
+            return teacherAttachmentValidationException;
         }
 
         private TeacherAttachmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
-            var TeacherAttachmentDependencyException = new TeacherAttachmentDependencyException(exception);
-            this.loggingBroker.LogCritical(TeacherAttachmentDependencyException);
+            var teacherAttachmentDependencyException = new TeacherAttachmentDependencyException(exception);
+            this.loggingBroker.LogCritical(teacherAttachmentDependencyException);
 
-            return TeacherAttachmentDependencyException;
+            return teacherAttachmentDependencyException;
         }
 
         private TeacherAttachmentDependencyException CreateAndLogDependencyException(Exception exception)
         {
-            var TeacherAttachmentDependencyException = new TeacherAttachmentDependencyException(exception);
-            this.loggingBroker.LogError(TeacherAttachmentDependencyException);
+            var teacherAttachmentDependencyException = new TeacherAttachmentDependencyException(exception);
+            this.loggingBroker.LogError(teacherAttachmentDependencyException);
 
-            return TeacherAttachmentDependencyException;
+            return teacherAttachmentDependencyException;
         }
 
         private TeacherAttachmentServiceException CreateAndLogServiceException(Exception exception)
         {
-            var TeacherAttachmentServiceException = new TeacherAttachmentServiceException(exception);
-            this.loggingBroker.LogError(TeacherAttachmentServiceException);
+            var teacherAttachmentServiceException = new TeacherAttachmentServiceException(exception);
+            this.loggingBroker.LogError(teacherAttachmentServiceException);
 
-            return TeacherAttachmentServiceException;
+            return teacherAttachmentServiceException;
         }
     }
 }

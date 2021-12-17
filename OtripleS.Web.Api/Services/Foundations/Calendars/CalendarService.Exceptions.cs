@@ -82,10 +82,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Calendars
 
         private CalendarValidationException CreateAndLogValidationException(Exception exception)
         {
-            var CalendarValidationException = new CalendarValidationException(exception);
-            this.loggingBroker.LogError(CalendarValidationException);
+            var calendarValidationException = new CalendarValidationException(exception);
+            this.loggingBroker.LogError(calendarValidationException);
 
-            return CalendarValidationException;
+            return calendarValidationException;
         }
 
         private CalendarDependencyException CreateAndLogCriticalDependencyException(Exception exception)

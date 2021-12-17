@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
             modelBuilder.Entity<UserContact>()
                 .HasOne(userContact => userContact.User)
-                .WithMany(User => User.UserContacts)
+                .WithMany(user => user.UserContacts)
                 .HasForeignKey(userContact => userContact.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
         }

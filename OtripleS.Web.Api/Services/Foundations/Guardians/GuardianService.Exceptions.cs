@@ -82,10 +82,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Guardians
 
         private GuardianValidationException CreateAndLogValidationException(Exception exception)
         {
-            var GuardianValidationException = new GuardianValidationException(exception);
-            this.loggingBroker.LogError(GuardianValidationException);
+            var guardianValidationException = new GuardianValidationException(exception);
+            this.loggingBroker.LogError(guardianValidationException);
 
-            return GuardianValidationException;
+            return guardianValidationException;
         }
 
         private GuardianDependencyException CreateAndLogCriticalDependencyException(Exception exception)

@@ -92,34 +92,34 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentContacts
 
         private StudentContactValidationException CreateAndLogValidationException(Exception exception)
         {
-            var StudentContactValidationException = new StudentContactValidationException(exception);
-            this.loggingBroker.LogError(StudentContactValidationException);
+            var studentContactValidationException = new StudentContactValidationException(exception);
+            this.loggingBroker.LogError(studentContactValidationException);
 
-            return StudentContactValidationException;
+            return studentContactValidationException;
         }
 
         private StudentContactServiceException CreateAndLogServiceException(Exception exception)
         {
-            var StudentContactServiceException = new StudentContactServiceException(exception);
-            this.loggingBroker.LogError(StudentContactServiceException);
+            var studentContactServiceException = new StudentContactServiceException(exception);
+            this.loggingBroker.LogError(studentContactServiceException);
 
-            return StudentContactServiceException;
+            return studentContactServiceException;
         }
 
         private StudentContactDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
-            var StudentContactDependencyException = new StudentContactDependencyException(exception);
-            this.loggingBroker.LogCritical(StudentContactDependencyException);
+            var studentContactDependencyException = new StudentContactDependencyException(exception);
+            this.loggingBroker.LogCritical(studentContactDependencyException);
 
-            return StudentContactDependencyException;
+            return studentContactDependencyException;
         }
 
         private StudentContactDependencyException CreateAndLogDependencyException(Exception exception)
         {
-            var StudentContactDependencyException = new StudentContactDependencyException(exception);
-            this.loggingBroker.LogError(StudentContactDependencyException);
+            var studentContactDependencyException = new StudentContactDependencyException(exception);
+            this.loggingBroker.LogError(studentContactDependencyException);
 
-            return StudentContactDependencyException;
+            return studentContactDependencyException;
         }
     }
 }

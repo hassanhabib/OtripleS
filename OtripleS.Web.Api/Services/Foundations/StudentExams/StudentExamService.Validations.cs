@@ -193,30 +193,30 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExams
             }
         }
 
-        private void ValidateCreatedDateIsRecent(StudentExam StudentExam)
+        private void ValidateCreatedDateIsRecent(StudentExam studentExam)
         {
-            if (IsDateNotRecent(StudentExam.CreatedDate))
+            if (IsDateNotRecent(studentExam.CreatedDate))
             {
                 throw new InvalidStudentExamException(
-                    parameterName: nameof(StudentExam.CreatedDate),
-                    parameterValue: StudentExam.CreatedDate);
+                    parameterName: nameof(studentExam.CreatedDate),
+                    parameterValue: studentExam.CreatedDate);
             }
         }
 
 
-        private static void ValidateStudentExamDates(StudentExam StudentExam)
+        private static void ValidateStudentExamDates(StudentExam studentExam)
         {
-            switch (StudentExam)
+            switch (studentExam)
             {
-                case { } when StudentExam.CreatedDate == default:
+                case { } when studentExam.CreatedDate == default:
                     throw new InvalidStudentExamException(
-                        parameterName: nameof(StudentExam.CreatedDate),
-                        parameterValue: StudentExam.CreatedDate);
+                        parameterName: nameof(studentExam.CreatedDate),
+                        parameterValue: studentExam.CreatedDate);
 
-                case { } when StudentExam.UpdatedDate == default:
+                case { } when studentExam.UpdatedDate == default:
                     throw new InvalidStudentExamException(
-                        parameterName: nameof(StudentExam.UpdatedDate),
-                        parameterValue: StudentExam.UpdatedDate);
+                        parameterName: nameof(studentExam.UpdatedDate),
+                        parameterValue: studentExam.UpdatedDate);
             }
         }
 
@@ -256,9 +256,9 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExams
             }
         }
 
-        private static void ValidateStudentExam(StudentExam StudentExam)
+        private static void ValidateStudentExam(StudentExam studentExam)
         {
-            if (StudentExam is null)
+            if (studentExam is null)
             {
                 throw new NullStudentExamException();
             }

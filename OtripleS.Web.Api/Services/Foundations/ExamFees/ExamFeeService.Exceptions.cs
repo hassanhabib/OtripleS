@@ -93,10 +93,10 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
 
         private ExamFeeValidationException CreateAndLogValidationException(Exception exception)
         {
-            var ExamFeeValidationException = new ExamFeeValidationException(exception);
-            this.loggingBroker.LogError(ExamFeeValidationException);
+            var examFeeValidationException = new ExamFeeValidationException(exception);
+            this.loggingBroker.LogError(examFeeValidationException);
 
-            return ExamFeeValidationException;
+            return examFeeValidationException;
         }
 
         private ExamFeeDependencyException CreateAndLogCriticalDependencyException(Exception exception)

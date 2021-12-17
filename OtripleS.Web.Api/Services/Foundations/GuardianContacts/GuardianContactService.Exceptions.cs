@@ -92,10 +92,10 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
 
         private GuardianContactValidationException CreateAndLogValidationException(Exception exception)
         {
-            var GuardianContactValidationException = new GuardianContactValidationException(exception);
-            this.loggingBroker.LogError(GuardianContactValidationException);
+            var guardianContactValidationException = new GuardianContactValidationException(exception);
+            this.loggingBroker.LogError(guardianContactValidationException);
 
-            return GuardianContactValidationException;
+            return guardianContactValidationException;
         }
 
         private GuardianContactServiceException CreateAndLogServiceException(Exception exception)

@@ -107,10 +107,10 @@ namespace OtripleS.Web.Api.Services.Foundations.TeacherContacts
 
         private TeacherContactDependencyException CreateAndLogDependencyException(Exception exception)
         {
-            var TeacherContactDependencyException = new TeacherContactDependencyException(exception);
-            this.loggingBroker.LogError(TeacherContactDependencyException);
+            var teacherContactDependencyException = new TeacherContactDependencyException(exception);
+            this.loggingBroker.LogError(teacherContactDependencyException);
 
-            return TeacherContactDependencyException;
+            return teacherContactDependencyException;
         }
 
         private TeacherContactServiceException CreateAndLogServiceException(Exception exception)

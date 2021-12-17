@@ -94,10 +94,10 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
 
         private ExamAttachmentValidationException CreateAndLogValidationException(Exception exception)
         {
-            var ExamAttachmentValidationException = new ExamAttachmentValidationException(exception);
-            this.loggingBroker.LogError(ExamAttachmentValidationException);
+            var examAttachmentValidationException = new ExamAttachmentValidationException(exception);
+            this.loggingBroker.LogError(examAttachmentValidationException);
 
-            return ExamAttachmentValidationException;
+            return examAttachmentValidationException;
         }
 
         private ExamAttachmentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
@@ -118,10 +118,10 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
 
         private ExamAttachmentServiceException CreateAndLogServiceException(Exception exception)
         {
-            var ExamAttachmentServiceException = new ExamAttachmentServiceException(exception);
-            this.loggingBroker.LogError(ExamAttachmentServiceException);
+            var examAttachmentServiceException = new ExamAttachmentServiceException(exception);
+            this.loggingBroker.LogError(examAttachmentServiceException);
 
-            return ExamAttachmentServiceException;
+            return examAttachmentServiceException;
         }
     }
 }

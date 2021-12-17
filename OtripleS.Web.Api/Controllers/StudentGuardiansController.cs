@@ -61,9 +61,9 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                IQueryable<StudentGuardian> StoragestudentGuardians = studentGuardianService.RetrieveAllStudentGuardians();
+                IQueryable<StudentGuardian> storagestudentGuardians = studentGuardianService.RetrieveAllStudentGuardians();
 
-                return Ok(StoragestudentGuardians);
+                return Ok(storagestudentGuardians);
             }
             catch (StudentGuardianDependencyException studentGuardianDependencyException)
             {

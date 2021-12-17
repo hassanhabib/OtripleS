@@ -161,9 +161,9 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
                 Message = $"Date is before {secondDateName}"
             };
 
-        private static void ValidateCalendarEntryIsNotNull(CalendarEntry CalendarEntry)
+        private static void ValidateCalendarEntryIsNotNull(CalendarEntry calendarEntry)
         {
-            if (CalendarEntry is null)
+            if (calendarEntry is null)
             {
                 throw new NullCalendarEntryException();
             }

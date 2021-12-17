@@ -116,10 +116,10 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
 
         private CourseAttachmentServiceException CreateAndLogServiceException(Exception exception)
         {
-            var CourseAttachmentServiceException = new CourseAttachmentServiceException(exception);
-            this.loggingBroker.LogError(CourseAttachmentServiceException);
+            var courseAttachmentServiceException = new CourseAttachmentServiceException(exception);
+            this.loggingBroker.LogError(courseAttachmentServiceException);
 
-            return CourseAttachmentServiceException;
+            return courseAttachmentServiceException;
         }
     }
 }
