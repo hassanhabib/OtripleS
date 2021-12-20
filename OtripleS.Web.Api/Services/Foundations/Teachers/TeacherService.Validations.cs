@@ -173,7 +173,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             }
         }
 
-        private static void ValidateAginstStorageTeacherOnModify(Teacher inputTeacher, Teacher storageTeacher)
+        private static void ValidateAgainstStorageTeacherOnModify(Teacher inputTeacher, Teacher storageTeacher)
         {
             switch (inputTeacher)
             {

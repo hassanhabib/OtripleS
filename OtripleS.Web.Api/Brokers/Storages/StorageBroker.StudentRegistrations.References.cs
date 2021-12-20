@@ -17,15 +17,15 @@ namespace OtripleS.Web.Api.Brokers.Storages
                     new { studentRegistration.StudentId, studentRegistration.RegistrationId });
 
             modelBuilder.Entity<StudentRegistration>()
-                .HasOne(studentregistration => studentregistration.Student)
-                .WithMany(studentregistration => studentregistration.StudentRegistrations)
-                .HasForeignKey(studentregistration => studentregistration.StudentId)
+                .HasOne(studentRegistration => studentRegistration.Student)
+                .WithMany(studentRegistration => studentRegistration.StudentRegistrations)
+                .HasForeignKey(studentRegistration => studentRegistration.StudentId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<StudentRegistration>()
-                .HasOne(studentregistration => studentregistration.Registration)
-                .WithMany(studentregistration => studentregistration.StudentRegistrations)
-                .HasForeignKey(studentregistration => studentregistration.RegistrationId)
+                .HasOne(studentRegistration => studentRegistration.Registration)
+                .WithMany(studentRegistration => studentRegistration.StudentRegistrations)
+                .HasForeignKey(studentRegistration => studentRegistration.RegistrationId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

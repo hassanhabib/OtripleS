@@ -164,12 +164,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
         {
             var invalidExamException = new InvalidExamException();
 
-            foreach ((dynamic rule, string paramter) in validations)
+            foreach ((dynamic rule, string parameter) in validations)
             {
                 if (rule.Condition)
                 {
                     invalidExamException.UpsertDataList(
-                        key: paramter,
+                        key: parameter,
                         value: rule.Message);
                 }
             }

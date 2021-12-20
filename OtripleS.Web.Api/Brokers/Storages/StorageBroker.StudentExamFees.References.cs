@@ -15,13 +15,13 @@ namespace OtripleS.Web.Api.Brokers.Storages
             modelBuilder.Entity<StudentExamFee>()
                 .HasOne(studentExamFee => studentExamFee.CreatedByUser)
                 .WithMany(studentExamFeeCreatedByUser => studentExamFeeCreatedByUser.StudentExamFeesCreatedByUser)
-                .HasForeignKey(examfee => examfee.CreatedBy)
+                .HasForeignKey(examFee => examFee.CreatedBy)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<StudentExamFee>()
                 .HasOne(studentExamFee => studentExamFee.UpdatedByUser)
                 .WithMany(studentExamFeeUpdatedByUser => studentExamFeeUpdatedByUser.StudentExamFeesUpdatedByUser)
-                .HasForeignKey(examfee => examfee.UpdatedBy)
+                .HasForeignKey(examFee => examFee.UpdatedBy)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<StudentExamFee>()

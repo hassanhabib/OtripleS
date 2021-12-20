@@ -75,17 +75,8 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExams
             }
         }
 
-        private static void ValidateAgainstStorageStudentExamOnModify(
-            StudentExam inputStudentExam,
-            StudentExam storageStudentExam)
-        {
-            if (inputStudentExam.CreatedDate != storageStudentExam.CreatedDate)
-                throw new InvalidStudentExamException(
-                    parameterName: nameof(StudentExam.CreatedDate),
-                    parameterValue: inputStudentExam.CreatedDate);
-        }
-
         private static bool IsInvalid(DateTimeOffset input) => input == default;
+        
         private static bool IsInvalid(Guid input) => input == default;
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)
@@ -141,7 +132,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExams
             ValidateCreatedDateIsRecent(studentExam);
         }
 
-        public void ValidateAgianstStorageStudentExamOnModify(StudentExam inputStudentExam, StudentExam storageStudentExam)
+        private static void ValidateAgainstStorageStudentExamOnModify(StudentExam inputStudentExam, StudentExam storageStudentExam)
         {
             switch (inputStudentExam)
             {
