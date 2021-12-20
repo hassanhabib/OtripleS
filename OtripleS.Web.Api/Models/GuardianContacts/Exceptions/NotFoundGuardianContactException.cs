@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.GuardianContacts.Exceptions
 {
     public class NotFoundGuardianContactException : Exception

@@ -5,7 +5,6 @@
 
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.UserContacts;
-using OtripleS.Web.Api.Models.Users;
 
 namespace OtripleS.Web.Api.Brokers.Storages
 {

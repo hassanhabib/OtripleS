@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.StudentContacts.Exceptions
 {
     public class StudentContactDependencyException : Exception
