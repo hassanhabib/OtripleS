@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
 {
     public partial class ExamFeeService
     {
-        public void ValidateExamFeeOnCreate(ExamFee examFee)
+        private void ValidateExamFeeOnCreate(ExamFee examFee)
         {
             ValidateExamFeeIsNull(examFee);
 

@@ -12,7 +12,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
 {
     public interface IAssignmentService
     {
-        ValueTask<Assignment> CreateAssignmentAsync(Assignment assignemnt);
+        ValueTask<Assignment> CreateAssignmentAsync(Assignment assignment);
         IQueryable<Assignment> RetrieveAllAssignments();
         ValueTask<Assignment> RetrieveAssignmentByIdAsync(Guid guid);
         ValueTask<Assignment> ModifyAssignmentAsync(Assignment assignment);

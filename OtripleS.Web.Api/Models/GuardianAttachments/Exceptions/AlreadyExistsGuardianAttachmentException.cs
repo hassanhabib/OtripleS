@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.GuardianAttachments.Exceptions
     public class AlreadyExistsGuardianAttachmentException : Exception
     {
         public AlreadyExistsGuardianAttachmentException(Exception innerException)
-            : base(message: "Guardian attchment with the same id already exists.", innerException) { }
+            : base(message: "Guardian attachment with the same id already exists.", innerException) { }
     }
 }

@@ -15,25 +15,25 @@ namespace OtripleS.Web.Api.Brokers.Storages
             modelBuilder.Entity<ExamFee>()
                 .HasOne(examFee => examFee.CreatedByUser)
                 .WithMany(examFeeCreatedByUser => examFeeCreatedByUser.ExamFeesCreatedByUser)
-                .HasForeignKey(examfee => examfee.CreatedBy)
+                .HasForeignKey(examFee => examFee.CreatedBy)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<ExamFee>()
                 .HasOne(examFee => examFee.UpdatedByUser)
                 .WithMany(examFeeUpdatedByUser => examFeeUpdatedByUser.ExamFeesUpdatedByUser)
-                .HasForeignKey(examfee => examfee.UpdatedBy)
+                .HasForeignKey(examFee => examFee.UpdatedBy)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<ExamFee>()
                 .HasOne(examFee => examFee.Exam)
                 .WithMany(examFee => examFee.ExamFees)
-                .HasForeignKey(examfee => examfee.ExamId)
+                .HasForeignKey(examFee => examFee.ExamId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<ExamFee>()
                 .HasOne(examFee => examFee.Fee)
                 .WithMany(examFee => examFee.ExamFees)
-                .HasForeignKey(examfee => examfee.FeeId)
+                .HasForeignKey(examFee => examFee.FeeId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

@@ -55,7 +55,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             ValidateTeacherOnModify(teacher);
             Teacher maybeTeacher = await this.storageBroker.SelectTeacherByIdAsync(teacher.Id);
             ValidateStorageTeacher(maybeTeacher, teacher.Id);
-            ValidateAginstStorageTeacherOnModify(inputTeacher: teacher, storageTeacher: maybeTeacher);
+            ValidateAgainstStorageTeacherOnModify(inputTeacher: teacher, storageTeacher: maybeTeacher);
 
             return await this.storageBroker.UpdateTeacherAsync(teacher);
         });

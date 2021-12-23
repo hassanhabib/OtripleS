@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
 {
     public partial class ExamAttachmentService
     {
-        public void ValidateExamAttachmentOnAdd(ExamAttachment examAttachment)
+        private static void ValidateExamAttachmentOnAdd(ExamAttachment examAttachment)
         {
             ValidateExamAttachmentIsNull(examAttachment);
             ValidateExamAttachmentIds(examAttachment.ExamId, examAttachment.AttachmentId);

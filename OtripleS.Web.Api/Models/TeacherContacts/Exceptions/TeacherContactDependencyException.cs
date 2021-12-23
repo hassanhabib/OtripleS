@@ -4,6 +4,7 @@
 //----------------------------------------------------------------
 
 using System;
+
 namespace OtripleS.Web.Api.Models.TeacherContacts.Exceptions
 {
     public class TeacherContactDependencyException : Exception

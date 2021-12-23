@@ -33,13 +33,13 @@ namespace OtripleS.Web.Api.Brokers.Storages
             this.GuardianAttachments;
 
         public async ValueTask<GuardianAttachment> SelectGuardianAttachmentByIdAsync(
-            Guid guradianId,
+            Guid guardianId,
             Guid attachmentId)
         {
             using var broker = new StorageBroker(this.configuration);
             broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            return await broker.GuardianAttachments.FindAsync(guradianId, attachmentId);
+            return await broker.GuardianAttachments.FindAsync(guardianId, attachmentId);
         }
 
         public async ValueTask<GuardianAttachment> UpdateGuardianAttachmentAsync(
