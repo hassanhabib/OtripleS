@@ -9,6 +9,6 @@ namespace OtripleS.Web.Api.Infrastructure.Provision.Models.Configurations
 {
     public class CloudAction
     {
-      public List<string> Environments { get; set; }
+        public List<string> Environments { get; set; }
     }
 }

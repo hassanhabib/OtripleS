@@ -123,7 +123,7 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
 
         private AssignmentAttachmentDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
-            var assignmentAttachmentDependencyException = 
+            var assignmentAttachmentDependencyException =
                 new AssignmentAttachmentDependencyException(exception);
 
             this.loggingBroker.LogCritical(assignmentAttachmentDependencyException);

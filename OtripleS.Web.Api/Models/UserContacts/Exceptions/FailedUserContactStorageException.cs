@@ -12,6 +12,6 @@ namespace OtripleS.Web.Api.Models.UserContacts.Exceptions
     {
         public FailedUserContactStorageException(Exception innerException)
             : base(message: "Failed user contact storage error occurred, contact support.", innerException)
-        {}
+        { }
     }
 }

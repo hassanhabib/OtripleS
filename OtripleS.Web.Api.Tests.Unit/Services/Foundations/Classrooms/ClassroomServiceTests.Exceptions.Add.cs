@@ -62,7 +62,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         {
             // given
             Classroom someClassroom = CreateRandomClassroom();
-            var databseUpdateException =new DbUpdateException();
+            var databseUpdateException = new DbUpdateException();
 
             var failedClassroomStorageException =
                 new FailedClassroomStorageException(databseUpdateException);

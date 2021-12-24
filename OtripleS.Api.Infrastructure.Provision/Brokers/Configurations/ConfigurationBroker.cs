@@ -3,9 +3,9 @@
 // FREE TO USE FOR THE WORLD
 // -------------------------------------------------------
 
+using System.IO;
 using Microsoft.Extensions.Configuration;
 using OtripleS.Web.Api.Infrastructure.Provision.Models.Configurations;
-using System.IO;
 
 namespace OtripleS.Web.Api.Infrastructure.Provision.Brokers.Configurations
 {
