@@ -18,8 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         public async void ShouldThrowValidationExceptionOnAddIfUserContactIsNullAndLogItAsync()
         {
             // given
-            UserContact randomUserContact = null;
-            UserContact nullUserContact = randomUserContact;
+            UserContact nullUserContact = null;
             var nullUserContactException = new NullUserContactException();
 
             var expectedUserContactValidationException =
