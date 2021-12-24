@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            Guid someClassroomId = Guid.NewGuid();            
+            Guid someClassroomId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var failedClassroomException =

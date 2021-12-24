@@ -7,6 +7,6 @@ namespace OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions
     {
         public FailedAssignmentAttachmentStorageException(Exception innerException)
             : base(message: "Failed assignment attachment storage error occurred, contact support.", innerException)
-        {}
+        { }
     }
 }

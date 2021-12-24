@@ -76,7 +76,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExams
         }
 
         private static bool IsInvalid(DateTimeOffset input) => input == default;
-        
+
         private static bool IsInvalid(Guid input) => input == default;
 
         private bool IsDateNotRecent(DateTimeOffset dateTime)

@@ -3,11 +3,11 @@
 // FREE TO USE FOR THE WORLD
 // -------------------------------------------------------
 
+using System;
 using Microsoft.Azure.Management.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
-using System;
 
 namespace OtripleS.Web.Api.Infrastructure.Provision.Brokers.Clouds
 {
