@@ -34,7 +34,7 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
         });
 
         public IQueryable<AssignmentAttachment> RetrieveAllAssignmentAttachments() =>
-        TryCatch(() => this.storageBroker.SelectAllAssignmentAttachments());
+            TryCatch(() => this.storageBroker.SelectAllAssignmentAttachments());
 
         public ValueTask<AssignmentAttachment> RetrieveAssignmentAttachmentByIdAsync(
             Guid assignmentId,
