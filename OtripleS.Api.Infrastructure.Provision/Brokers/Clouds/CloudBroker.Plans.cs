@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Management.AppService.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
+using OS = Microsoft.Azure.Management.AppService.Fluent;
 
 namespace OtripleS.Web.Api.Infrastructure.Provision.Brokers.Clouds
 {
@@ -21,7 +22,7 @@ namespace OtripleS.Web.Api.Infrastructure.Provision.Brokers.Clouds
                 .WithRegion(Region.USWest2)
                 .WithExistingResourceGroup(resourceGroup)
                 .WithPricingTier(PricingTier.StandardS1)
-                .WithOperatingSystem(OperatingSystem.Windows)
+                .WithOperatingSystem(OS.OperatingSystem.Windows)
                 .CreateAsync();
         }
     }
