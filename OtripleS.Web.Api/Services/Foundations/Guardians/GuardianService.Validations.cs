@@ -91,7 +91,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Guardians
 
         private static void ValidateGuardianIdIsNotNull(Guardian guardian)
         {
-            if (guardian == default)
+            if (guardian is null)
             {
                 throw new NullGuardianException();
             }
