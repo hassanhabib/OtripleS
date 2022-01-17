@@ -88,7 +88,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
 
         private static void ValidateFeeIsNotNull(Fee fee)
         {
-            if (fee is not null)
+            if (fee is null)
             {
                 throw new NullFeeException();
             }
