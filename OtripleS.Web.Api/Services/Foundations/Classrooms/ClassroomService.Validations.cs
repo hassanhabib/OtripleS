@@ -46,6 +46,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         private void ValidateClassroomOnModify(Classroom classroom)
         {
             ValidateClassroomIsNull(classroom);
+
             Validate
             (
                 (Rule: IsInvalidX(classroom.Id), Parameter: nameof(Classroom.Id)),
