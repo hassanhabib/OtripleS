@@ -28,10 +28,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Attendance registeredAttendance =
+                Attendance createdAttendance =
                     await this.attendanceService.CreateAttendanceAsync(attendance);
 
-                return Created(registeredAttendance);
+                return Created(createdAttendance);
             }
             catch (AttendanceValidationException attendanceValidationException)
                 when (attendanceValidationException.InnerException is AlreadyExistsAttendanceException)
