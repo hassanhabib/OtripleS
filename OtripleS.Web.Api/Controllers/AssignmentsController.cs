@@ -28,10 +28,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Assignment registeredAssignment =
+                Assignment createdAssignment =
                     await this.assignmentService.CreateAssignmentAsync(assignment);
 
-                return Created(registeredAssignment);
+                return Created(createdAssignment);
             }
             catch (AssignmentValidationException assignmentValidationException)
                 when (assignmentValidationException.InnerException is AlreadyExistsAssignmentException)
