@@ -28,10 +28,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Classroom persistedClassroom =
+                Classroom createdClassroom =
                     await this.classroomService.CreateClassroomAsync(classroom);
 
-                return Created(persistedClassroom);
+                return Created(createdClassroom);
             }
             catch (ClassroomValidationException classroomValidationException)
                 when (classroomValidationException.InnerException is AlreadyExistsClassroomException)
