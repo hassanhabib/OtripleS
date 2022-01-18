@@ -86,7 +86,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
             Guid semesterCourseId,
             Guid studentId)
         {
-            if (storageStudentGuardian == null)
+            if (storageStudentGuardian is null)
             {
                 throw new NotFoundStudentGuardianException(semesterCourseId, studentId);
             }
