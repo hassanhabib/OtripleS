@@ -28,10 +28,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Teacher registeredTeacher =
+                Teacher createdTeacher =
                     await this.teacherService.CreateTeacherAsync(teacher);
 
-                return Created(registeredTeacher);
+                return Created(createdTeacher);
             }
             catch (TeacherValidationException teacherValidationException)
                 when (teacherValidationException.InnerException is AlreadyExistsTeacherException)
