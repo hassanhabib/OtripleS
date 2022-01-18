@@ -169,7 +169,7 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
 
         private static void ValidateStorageExamFee(ExamFee storageExamFee, Guid examFeeId)
         {
-            if (storageExamFee == null)
+            if (storageExamFee is null)
             {
                 throw new NotFoundExamFeeException(examFeeId);
             }
