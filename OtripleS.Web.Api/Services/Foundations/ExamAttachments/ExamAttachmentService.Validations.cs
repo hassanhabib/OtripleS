@@ -59,7 +59,7 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
           ExamAttachment storageExamAttachment,
           Guid examId, Guid attachmentId)
         {
-            if (storageExamAttachment == null)
+            if (storageExamAttachment is null)
                 throw new NotFoundExamAttachmentException(examId, attachmentId);
         }
     }
