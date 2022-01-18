@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using OtripleS.Web.Api.Models.SemesterCourses;
 
 namespace OtripleS.Web.Api.Models.Classrooms
@@ -20,6 +21,7 @@ namespace OtripleS.Web.Api.Models.Classrooms
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
 
+        [JsonIgnore]
         public IEnumerable<SemesterCourse> SemesterCourses { get; set; }
     }
 }
