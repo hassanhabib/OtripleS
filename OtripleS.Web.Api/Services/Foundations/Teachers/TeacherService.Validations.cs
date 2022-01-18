@@ -167,7 +167,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
 
         private static void ValidateTeacher(Teacher teacher)
         {
-            if (teacher == default)
+            if (teacher is null)
             {
                 throw new NullTeacherException();
             }
