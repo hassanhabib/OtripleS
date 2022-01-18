@@ -183,7 +183,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
             CalendarEntry storageCalendarEntry,
             Guid calendarEntryId)
         {
-            if (storageCalendarEntry == null)
+            if (storageCalendarEntry is null)
             {
                 throw new NotFoundCalendarEntryException(calendarEntryId);
             }
