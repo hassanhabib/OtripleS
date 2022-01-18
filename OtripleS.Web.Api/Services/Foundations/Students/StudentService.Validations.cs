@@ -119,7 +119,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 
         private static void ValidateStorageStudent(Student storageStudent, Guid studentId)
         {
-            if (storageStudent == null)
+            if (storageStudent is null)
             {
                 throw new NotFoundStudentException(studentId);
             }
