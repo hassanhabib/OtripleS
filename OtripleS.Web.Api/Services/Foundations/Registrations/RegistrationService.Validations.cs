@@ -87,7 +87,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Registrations
 
         private static void ValidateRegistrationNotNull(Registration registration)
         {
-            if (registration is null)
+            if (registration is not null)
             {
                 throw new NullRegistrationException();
             }
