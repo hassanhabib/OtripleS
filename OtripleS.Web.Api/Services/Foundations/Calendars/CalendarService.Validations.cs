@@ -164,7 +164,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Calendars
 
         private static void ValidateStorageCalendar(Calendar storageCalendar, Guid calendarId)
         {
-            if (storageCalendar == null)
+            if (storageCalendar is null)
             {
                 throw new NotFoundCalendarException(calendarId);
             }
