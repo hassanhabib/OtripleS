@@ -63,6 +63,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
 
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message;
+        }
+
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
         private static Filler<Guardian> CreateRandomGuardianFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Guardian>();
@@ -75,15 +85,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
 
             return filler;
         }
-
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
-        {
-            return actualException =>
-                actualException.Message == expectedException.Message
-                && actualException.InnerException.Message == expectedException.InnerException.Message;
-        }
-
-        private static SqlException GetSqlException() =>
-            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
     }
 }
