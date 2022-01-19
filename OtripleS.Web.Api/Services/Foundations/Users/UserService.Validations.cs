@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
 
         private static void ValidateStorageUser(User storageUser, Guid userId)
         {
-            if (storageUser == null)
+            if (storageUser is not null)
             {
                 throw new NotFoundUserException(userId);
             }
