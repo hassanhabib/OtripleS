@@ -131,23 +131,6 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
             Message = "Date is not recent"
         };
 
-        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
-        {
-            var invalidExamFeeException = new InvalidExamFeeException();
-
-            foreach ((dynamic rule, string parameter) in validations)
-            {
-                if (rule.Condition)
-                {
-                    invalidExamFeeException.UpsertDataList(
-                        key: parameter,
-                        value: rule.Message);
-                }
-            }
-
-            invalidExamFeeException.ThrowIfContainsErrors();
-        }
-
         private bool IsDateNotRecent(DateTimeOffset dateTime)
         {
             DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
@@ -173,6 +156,23 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamFees
             {
                 throw new NotFoundExamFeeException(examFeeId);
             }
+        }
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidExamFeeException = new InvalidExamFeeException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidExamFeeException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidExamFeeException.ThrowIfContainsErrors();
         }
     }
 }
