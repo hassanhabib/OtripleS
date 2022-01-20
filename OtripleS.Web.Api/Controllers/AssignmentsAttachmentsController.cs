@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Controllers
                 AssignmentAttachment persistedAssignmentAttachment =
                     await this.assignmentAttachmentService.AddAssignmentAttachmentAsync(assignmentAttachment);
 
-                return Created(persistedAssignmentAttachment);
+                return Ok(persistedAssignmentAttachment);
             }
             catch (AssignmentAttachmentValidationException assignmentAttachmentValidationException)
                 when (assignmentAttachmentValidationException.InnerException is AlreadyExistsAssignmentAttachmentException)
