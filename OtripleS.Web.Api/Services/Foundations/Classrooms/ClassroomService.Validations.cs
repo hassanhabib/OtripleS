@@ -178,6 +178,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
                         parameterValue: inputClassroom.UpdatedDate);
             }
         }
+
+        private static bool IsInvalid(Guid input) => input == default;
+        private static bool IsInvalid(DateTimeOffset input) => input == default;
+
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidClassroomException = new InvalidClassroomException();
@@ -194,8 +198,5 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
 
             invalidClassroomException.ThrowIfContainsErrors();
         }
-
-        private static bool IsInvalid(Guid input) => input == default;
-        private static bool IsInvalid(DateTimeOffset input) => input == default;
     }
 }
