@@ -35,8 +35,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             await Assert.ThrowsAsync<AssignmentValidationException>(() => retrieveAssignmentByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
-                Times.Once
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentValidationException))),
+                        Times.Once
             );
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -44,8 +45,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                     Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -77,15 +79,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                 retrieveAssignmentByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
-                Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker => broker.GetCurrentDateTime(),
                 Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                    broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
-                Times.Once);
+                    broker.SelectAssignmentByIdAsync(
+                        It.IsAny<Guid>()),
+                            Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
