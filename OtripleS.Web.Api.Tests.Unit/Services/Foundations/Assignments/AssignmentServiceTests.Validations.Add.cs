@@ -35,12 +35,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                 createAssignmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -121,8 +123,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAssignmentAsync(It.IsAny<Assignment>()),
-                    Times.Never);
+                broker.InsertAssignmentAsync(
+                    It.IsAny<Assignment>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -168,8 +171,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAssignmentAsync(It.IsAny<Assignment>()),
-                    Times.Never);
+                broker.InsertAssignmentAsync(
+                    It.IsAny<Assignment>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -215,8 +219,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAssignmentAsync(It.IsAny<Assignment>()),
-                    Times.Never);
+                broker.InsertAssignmentAsync(
+                    It.IsAny<Assignment>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -265,8 +270,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAssignmentAsync(It.IsAny<Assignment>()),
-                    Times.Never);
+                broker.InsertAssignmentAsync(
+                    It.IsAny<Assignment>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -316,7 +322,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedAssignmentValidationException))),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
