@@ -36,16 +36,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
             await Assert.ThrowsAsync<AttachmentValidationException>(() => actualAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAttachmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteAttachmentAsync(It.IsAny<Attachment>()),
-                    Times.Never);
+                broker.DeleteAttachmentAsync(
+                    It.IsAny<Attachment>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -79,16 +82,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
             await Assert.ThrowsAsync<AttachmentValidationException>(() => actualAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAttachmentByIdAsync(inputAttachmentId),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteAttachmentAsync(It.IsAny<Attachment>()),
-                    Times.Never);
+                broker.DeleteAttachmentAsync(
+                    It.IsAny<Attachment>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
