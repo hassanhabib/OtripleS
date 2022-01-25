@@ -26,8 +26,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                 new AssignmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()))
-                    .Throws(sqlException);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()))
+                        .Throws(sqlException);
 
             // when 
             ValueTask<Assignment> retrieveTask =
@@ -37,12 +38,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             await Assert.ThrowsAsync<AssignmentDependencyException>(() => retrieveTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedAssignmentDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Once);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
@@ -64,8 +67,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                 new AssignmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()))
-                    .Throws(databaseUpdateException);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()))
+                        .Throws(databaseUpdateException);
 
             // when
             ValueTask<Assignment> retrieveTask = this.assignmentService.RetrieveAssignmentByIdAsync(someAssignmentId);
@@ -74,12 +78,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             await Assert.ThrowsAsync<AssignmentDependencyException>(() => retrieveTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Once);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
@@ -101,8 +107,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                 new AssignmentServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()))
-                    .Throws(exception);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()))
+                        .Throws(exception);
 
             // when 
             ValueTask<Assignment> retrieveTask =
@@ -112,12 +119,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             await Assert.ThrowsAsync<AssignmentServiceException>(() => retrieveTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Once);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
