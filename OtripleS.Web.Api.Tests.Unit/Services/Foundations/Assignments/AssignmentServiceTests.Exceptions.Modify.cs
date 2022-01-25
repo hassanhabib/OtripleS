@@ -30,8 +30,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                 new AssignmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()))
-                    .ThrowsAsync(sqlException);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()))
+                        .ThrowsAsync(sqlException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -50,12 +51,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Once);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedAssignmentDependencyException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -76,8 +79,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                 new AssignmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()))
-                    .ThrowsAsync(databaseUpdateException);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()))
+                        .ThrowsAsync(databaseUpdateException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -96,12 +100,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Once);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentDependencyException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -122,8 +128,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                 new AssignmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()))
-                    .ThrowsAsync(serviceException);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()))
+                        .ThrowsAsync(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -142,12 +149,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Once);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentServiceException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -169,8 +178,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                 new AssignmentDependencyException(lockedAssignmentException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()))
-                    .ThrowsAsync(databaseUpdateConcurrencyException);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()))
+                        .ThrowsAsync(databaseUpdateConcurrencyException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -189,12 +199,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Once);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentDependencyException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
