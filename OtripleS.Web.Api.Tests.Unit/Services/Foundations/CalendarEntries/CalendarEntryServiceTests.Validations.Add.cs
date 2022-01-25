@@ -36,12 +36,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                 registerCalendarEntryTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCalendarEntryValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
+                broker.InsertCalendarEntryAsync(
+                    It.IsAny<CalendarEntry>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -125,8 +127,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
+                broker.InsertCalendarEntryAsync(
+                    It.IsAny<CalendarEntry>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -172,8 +175,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
+                broker.InsertCalendarEntryAsync(
+                    It.IsAny<CalendarEntry>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -219,8 +223,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
+                broker.InsertCalendarEntryAsync(
+                    It.IsAny<CalendarEntry>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -269,8 +274,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
+                broker.InsertCalendarEntryAsync(
+                    It.IsAny<CalendarEntry>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -313,12 +319,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameValidationExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedCalendarEntryValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
+                broker.InsertCalendarEntryAsync(
+                    It.IsAny<CalendarEntry>()),
+                        Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -361,8 +369,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                 createCalendarEntryTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedCalendarEntryValidationException))),
+                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
