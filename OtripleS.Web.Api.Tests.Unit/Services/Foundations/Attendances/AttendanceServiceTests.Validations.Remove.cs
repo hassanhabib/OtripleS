@@ -36,16 +36,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             await Assert.ThrowsAsync<AttendanceValidationException>(() => actualAttendanceTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttendanceValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttendanceByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAttendanceByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteAttendanceAsync(It.IsAny<Attendance>()),
-                    Times.Never);
+                broker.DeleteAttendanceAsync(
+                    It.IsAny<Attendance>()),
+                        Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -79,16 +82,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             await Assert.ThrowsAsync<AttendanceValidationException>(() => actualAttendanceTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttendanceValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAttendanceByIdAsync(inputAttendanceId),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteAttendanceAsync(It.IsAny<Attendance>()),
-                    Times.Never);
+                broker.DeleteAttendanceAsync(
+                    It.IsAny<Attendance>()),
+                        Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
