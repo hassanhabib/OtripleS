@@ -62,23 +62,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             );
         }
 
-        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
-        {
-            var invalidTeacherException = new InvalidTeacherException();
-
-            foreach ((dynamic rule, string parameter) in validations)
-            {
-                if (rule.Condition)
-                {
-                    invalidTeacherException.UpsertDataList(
-                        key: parameter,
-                        value: rule.Message);
-                }
-            }
-
-            invalidTeacherException.ThrowIfContainsErrors();
-        }
-
         private static dynamic IsInvalidX(Guid id) => new
         {
             Condition = id == Guid.Empty,
@@ -196,5 +179,22 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(Guid input) => input == default;
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidTeacherException = new InvalidTeacherException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidTeacherException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidTeacherException.ThrowIfContainsErrors();
+        }
     }
 }

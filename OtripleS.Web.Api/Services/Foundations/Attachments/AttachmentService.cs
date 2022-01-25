@@ -58,7 +58,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
         {
             ValidateAttachmentId(attachmentId);
 
-            Attachment storageAttachment = await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
+            Attachment storageAttachment =
+                await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
+
             ValidateStorageAttachment(storageAttachment, attachmentId);
 
             return storageAttachment;

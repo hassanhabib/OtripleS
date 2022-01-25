@@ -38,6 +38,14 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
             Message = "Id is required"
         };
 
+        private static void ValidateStorageExamAttachment(
+          ExamAttachment storageExamAttachment,
+          Guid examId, Guid attachmentId)
+        {
+            if (storageExamAttachment is null)
+                throw new NotFoundExamAttachmentException(examId, attachmentId);
+        }
+
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidExamAttachmentException = new InvalidExamAttachmentException();
@@ -53,14 +61,6 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
             }
 
             invalidExamAttachmentException.ThrowIfContainsErrors();
-        }
-
-        private static void ValidateStorageExamAttachment(
-          ExamAttachment storageExamAttachment,
-          Guid examId, Guid attachmentId)
-        {
-            if (storageExamAttachment is null)
-                throw new NotFoundExamAttachmentException(examId, attachmentId);
         }
     }
 }
