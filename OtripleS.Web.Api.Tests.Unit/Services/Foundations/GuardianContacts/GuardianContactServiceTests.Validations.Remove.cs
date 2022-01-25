@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         public async Task ShouldThrowValidatonExceptionOnRemoveWhenContactIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomContactId = default;
+            Guid randomContactId = Guid.Empty;
             Guid randomGuardianId = Guid.NewGuid();
             Guid inputContactId = randomContactId;
             Guid inputGuardianId = randomGuardianId;
