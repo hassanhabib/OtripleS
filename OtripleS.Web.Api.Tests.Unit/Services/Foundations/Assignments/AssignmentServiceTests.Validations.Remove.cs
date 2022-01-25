@@ -36,16 +36,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             await Assert.ThrowsAsync<AssignmentValidationException>(() => actualAssignmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAssignmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteAssignmentAsync(It.IsAny<Assignment>()),
-                    Times.Never);
+                broker.DeleteAssignmentAsync(
+                    It.IsAny<Assignment>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -79,16 +82,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             await Assert.ThrowsAsync<AssignmentValidationException>(() => actualAssignmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAssignmentByIdAsync(inputAssignmentId),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteAssignmentAsync(It.IsAny<Assignment>()),
-                    Times.Never);
+                broker.DeleteAssignmentAsync(
+                    It.IsAny<Assignment>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
