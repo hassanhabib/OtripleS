@@ -39,8 +39,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAssignmentAttachmentAsync(It.IsAny<AssignmentAttachment>()),
-                    Times.Never);
+                broker.InsertAssignmentAttachmentAsync(
+                    It.IsAny<AssignmentAttachment>()),
+                        Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -75,8 +76,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAssignmentAttachmentAsync(It.IsAny<AssignmentAttachment>()),
-                    Times.Never);
+                broker.InsertAssignmentAttachmentAsync(
+                    It.IsAny<AssignmentAttachment>()),
+                        Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -111,8 +113,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAssignmentAttachmentAsync(It.IsAny<AssignmentAttachment>()),
-                    Times.Never);
+                broker.InsertAssignmentAttachmentAsync(
+                    It.IsAny<AssignmentAttachment>()),
+                        Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -188,7 +191,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 addAssignmentAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedAssignmentAttachmentValidationException))),
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedAssignmentAttachmentValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
