@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         {
             // given
             Guid randomContactId = Guid.NewGuid();
-            Guid randomGuardianId = default;
+            Guid randomGuardianId = Guid.Empty;
             Guid inputContactId = randomContactId;
             Guid inputGuardianId = randomGuardianId;
 
