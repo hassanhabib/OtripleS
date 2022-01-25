@@ -35,12 +35,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 createAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAttachmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -72,12 +74,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 registerAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAttachmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -112,8 +116,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 createAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -148,8 +153,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 createAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -184,8 +190,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 createAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -220,8 +227,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 createAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -253,12 +261,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 createAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAttachmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -290,12 +300,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 createAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAttachmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -327,12 +339,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 createAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAttachmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -364,12 +378,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 createAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAttachmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -401,12 +417,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 createAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAttachmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -439,12 +457,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 createAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAttachmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -488,12 +508,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAttachmentByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -523,8 +545,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertAttachmentAsync(It.IsAny<Attachment>()))
-                    .ThrowsAsync(duplicateKeyException);
+                broker.InsertAttachmentAsync(
+                    It.IsAny<Attachment>()))
+                        .ThrowsAsync(duplicateKeyException);
 
             // when
             ValueTask<Attachment> createAttachmentTask =
@@ -539,11 +562,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAttachmentAsync(It.IsAny<Attachment>()),
-                    Times.Once);
+                broker.InsertAttachmentAsync(
+                    It.IsAny<Attachment>()),
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedAttachmentValidationException))),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
