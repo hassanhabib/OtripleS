@@ -24,10 +24,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllFees())
                     .Throws(sqlException);
+                     
+            // when
+            ValueTask<Fee> retrieveAllFeeTask =
+                this.feeService.RetrieveAllFeeAsync(someFee);
 
-            // when . then
-            Assert.Throws<FeeDependencyException>(() =>
-                this.feeService.RetrieveAllFees());
+            // then
+            await Assert.ThrowsAsync<FeeDependencyException>(() =>
+               retrieveAllFeeTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllFees(),
