@@ -35,20 +35,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             await Assert.ThrowsAsync<CalendarEntryValidationException>(() => deleteCalendarEntryTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCalendarEntryValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCalendarEntryByIdAsync(It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectCalendarEntryByIdAsync(
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
+                broker.DeleteCalendarEntryAsync(
+                    It.IsAny<CalendarEntry>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -82,8 +85,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                 deleteCalendarEntryByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCalendarEntryValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
@@ -94,8 +98,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteCalendarEntryAsync(It.IsAny<CalendarEntry>()),
-                    Times.Never);
+                broker.DeleteCalendarEntryAsync(
+                    It.IsAny<CalendarEntry>()),
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
