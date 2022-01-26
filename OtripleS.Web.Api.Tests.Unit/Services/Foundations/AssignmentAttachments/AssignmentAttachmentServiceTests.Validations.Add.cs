@@ -188,7 +188,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 addAssignmentAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedAssignmentAttachmentValidationException))),
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedAssignmentAttachmentValidationException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
