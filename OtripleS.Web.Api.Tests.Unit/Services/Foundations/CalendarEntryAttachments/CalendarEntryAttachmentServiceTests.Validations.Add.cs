@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
         public async void ShouldThrowValidationExceptionOnAddWhenCalendarEntryAttachmentIsNullAndLogItAsync()
         {
             // given
-            CalendarEntryAttachment nullCalendarEntryAttachment = default;
+            CalendarEntryAttachment invalidCalendarEntryAttachment = default;
             var nullCalendarEntryAttachmentException = new NullCalendarEntryAttachmentException();
 
             var expectedCalendarEntryAttachmentValidationException =
@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
 
             // when
             ValueTask<CalendarEntryAttachment> addCalendarEntryAttachmentTask =
-                this.calendarEntryAttachmentService.AddCalendarEntryAttachmentAsync(nullCalendarEntryAttachment);
+                this.calendarEntryAttachmentService.AddCalendarEntryAttachmentAsync(invalidCalendarEntryAttachment);
 
             // then
             await Assert.ThrowsAsync<CalendarEntryAttachmentValidationException>(() =>
