@@ -26,9 +26,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
                 broker.SelectAllStudentGuardians())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<StudentGuardianDependencyException>(() =>
-                this.studentGuardianService.RetrieveAllStudentGuardians());
+            
+            // when
+            Action retrieveAllStudentGuardianAction = () =>
+                this.studentGuardianService.RetrieveAllStudentGuardians();
+
+            // then
+            Assert.Throws<StudentGuardianDependencyException>(
+                retrieveAllStudentGuardianAction);
+
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentGuardianDependencyException))),
