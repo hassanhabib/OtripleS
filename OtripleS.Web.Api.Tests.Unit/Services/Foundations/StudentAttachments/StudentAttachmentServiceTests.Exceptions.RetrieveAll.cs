@@ -25,9 +25,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
                 broker.SelectAllStudentAttachments())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<StudentAttachmentDependencyException>(() =>
-                this.studentAttachmentService.RetrieveAllStudentAttachments());
+           
+
+             // when
+            ValueTask<studentAttachment> retrieveallstudentAttendanceTask =
+                this.studentattendanceService.RetrieveAllstudentAttendance();
+
+            // then
+            await Assert.Throws<StudentAttendanceDependencyException>(() =>
+                retrieveallstudentAttendanceTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentAttachmentDependencyException))),
