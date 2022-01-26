@@ -24,10 +24,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAssignments())
                     .Throws(sqlException);
+            // when 
+             ValueTask<Assignment> retrieveAllTask =
+                this.assignmentService.RetrieveAllAssignmentByIdAsync();
 
-            // when . then
-            Assert.Throws<AssignmentDependencyException>(() =>
-                this.assignmentService.RetrieveAllAssignments());
+            // then
+            await Assert.Throws<AssignmentDependencyException>(() => 
+            retrieveallTask.AsTask());
+
+
+            
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAssignments(),
