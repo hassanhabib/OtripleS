@@ -19,8 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
         public async void ShouldThrowValidationExceptionOnAddIfFeeIsNullAndLogItAsync()
         {
             // given
-            Fee randomFee = default;
-            Fee nullFee = randomFee;
+            Fee invalidFee = default;
+            
             var nullFeeException = new NullFeeException();
 
             var expectedFeeValidationException =
@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
 
             // when
             ValueTask<Fee> addFeeTask =
-                this.feeService.AddFeeAsync(nullFee);
+                this.feeService.AddFeeAsync(invalidFee);
 
             // then
             await Assert.ThrowsAsync<FeeValidationException>(() =>
