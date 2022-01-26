@@ -93,8 +93,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
 
         private static dynamic IsInvalidX(TeacherStatus status) => new
         {
-            Condition = status != TeacherStatus.Active,
-            Message = "Value is invalid"
+           /* Condition = status != TeacherStatus.Active,
+            Message = "Value is invalid"**/
+           
+          //Add New Code
+            Condition = Enum.IsDefined(status) is false,
+            Message = "Value is not recognized"
         };
 
         private static dynamic IsInvalidX(DateTimeOffset date) => new
