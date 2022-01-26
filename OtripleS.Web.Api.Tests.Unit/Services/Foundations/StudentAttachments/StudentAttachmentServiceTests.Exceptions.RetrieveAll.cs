@@ -28,12 +28,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
            
 
              // when
-            ValueTask<studentAttachment> retrieveallstudentAttendanceTask =
-                this.studentattendanceService.RetrieveAllstudentAttendance();
+            ValueTask<studentAttachment> retrieveallstudentAttachmentTask =
+                this.studentattachmentService.RetrieveAllstudentAttendance();
 
             // then
-            await Assert.Throws<StudentAttendanceDependencyException>(() =>
-                retrieveallstudentAttendanceTask.AsTask());
+            await Assert.Throws<StudentAttachmentDependencyException>(() =>
+                retrieveallstudentAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentAttachmentDependencyException))),
