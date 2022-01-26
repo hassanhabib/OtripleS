@@ -25,9 +25,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 broker.SelectAllAttachments())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<AttachmentDependencyException>(() =>
-                this.attachmentService.RetrieveAllAttachments());
+            // when
+            
+            ValueTask<Attachment> retrieveAllAttachmentTask =
+                this.attachmentService.RetrieveAllAttachmentByIdAsync();
+
+            // then
+            await Assert.Throws<AttachmentDependencyException>(() =>
+               retrieveAllAttachmentTask.AsTask());
+
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAttachments(),
