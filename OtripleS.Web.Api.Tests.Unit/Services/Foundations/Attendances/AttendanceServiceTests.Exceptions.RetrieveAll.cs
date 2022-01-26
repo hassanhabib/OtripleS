@@ -25,9 +25,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 broker.SelectAllAttendances())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<AttendanceDependencyException>(() =>
-                this.attendanceService.RetrieveAllAttendances());
+            // when
+            ValueTask<Attendance> retrieveallAttendanceTask =
+                this.attendanceService.RetrieveAllAttendance();
+
+            // then
+            await Assert.Throws<AttendanceDependencyException>(() =>
+                retrieveallAttendanceTask.AsTask());
+
+            
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedAttendanceDependencyException))),
