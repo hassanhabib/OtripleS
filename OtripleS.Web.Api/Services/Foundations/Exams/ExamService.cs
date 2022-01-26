@@ -33,6 +33,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
         TryCatch(async () =>
         {
             ValidateExamId(examId);
+
             Exam maybeExam =
                 await this.storageBroker.SelectExamByIdAsync(examId);
             ValidateStorageExam(maybeExam, examId);
