@@ -25,9 +25,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 broker.SelectAllExams())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<ExamDependencyException>(() =>
-                this.examService.RetrieveAllExams());
+            // when
+            ValueTask<ExamTask> retrieveAllExamTask =
+              this.examService.RetrieveAllExams();
+            
+            // then
+            await  Assert.Throws<ExamDependencyException>(() =>
+              retrieveAllExams.AsTask());
+            
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedExamDependencyException))),
