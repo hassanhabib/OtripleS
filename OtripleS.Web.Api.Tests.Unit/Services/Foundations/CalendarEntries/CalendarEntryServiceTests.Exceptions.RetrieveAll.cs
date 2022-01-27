@@ -25,9 +25,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                 broker.SelectAllCalendarEntries())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<CalendarEntryDependencyException>(() =>
-                this.calendarEntryService.RetrieveAllCalendarEntries());
+           
+            // when
+            Action retrieveAllCalenderEntryAction = () =>
+                this.calendarEntryService.RetrieveAllCalendarEntries();
+
+            // then
+            Assert.Throws<CalendarEntryDependencyException>(
+                retrieveAllCalenderEntryAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedCalendarEntryDependencyException))),
@@ -55,9 +60,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                 broker.SelectAllCalendarEntries())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<CalendarEntryServiceException>(() =>
-                this.calendarEntryService.RetrieveAllCalendarEntries());
+            // when
+            Action retrieveAllCalenderEntryAction = () =>
+                this.calendarEntryService.RetrieveAllCalendarEntries();
+
+            // then
+            Assert.Throws<CalendarEntryDependencyException>(
+                retrieveAllCalenderEntryAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryServiceException))),
