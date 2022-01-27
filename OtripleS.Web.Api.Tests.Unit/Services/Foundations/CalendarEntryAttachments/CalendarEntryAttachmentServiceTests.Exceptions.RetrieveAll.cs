@@ -25,9 +25,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
                 broker.SelectAllCalendarEntryAttachments())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<CalendarEntryAttachmentDependencyException>(() =>
-                this.calendarEntryAttachmentService.RetrieveAllCalendarEntryAttachments());
+           
+
+            // when
+            Action retrieveAllCalenderEntryAttachmentAction = () =>
+                this.calendarEntryAttachmentService.RetrieveAllCalendarEntryAttachments();
+
+            // then
+            Assert.Throws<CalendarEntryAttachmentDependencyException>(
+                retrieveAllCalenderEntryAttachmentAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCalendarEntryAttachments(),
@@ -55,9 +61,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
                 broker.SelectAllCalendarEntryAttachments())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<CalendarEntryAttachmentServiceException>(() =>
-                this.calendarEntryAttachmentService.RetrieveAllCalendarEntryAttachments());
+            
+            // when
+            Action retrieveAllCalenderEntryAttachmentAction = () =>
+                this.calendarEntryAttachmentService.RetrieveAllCalendarEntryAttachments();
+
+            // then
+            Assert.Throws<CalendarEntryAttachmentDependencyException>(
+                retrieveAllCalenderEntryAttachmentAction);
+
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCalendarEntryAttachments(),
