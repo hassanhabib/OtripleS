@@ -29,9 +29,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 broker.SelectAllUsers())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<UserDependencyException>(() =>
-                this.userService.RetrieveAllUsers());
+         
+            // when
+            Action retrieveAllUsersAction = () =>
+                this.userService.RetrieveAllUsers();
+
+            // then
+            Assert.Throws<UserServiceException>(
+                retrieveAllUsersAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedUserDependencyException))),
@@ -63,9 +68,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 broker.SelectAllUsers())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<UserServiceException>(() =>
-                this.userService.RetrieveAllUsers());
+            
+
+            // when
+            Action retrieveAllUsersAction = () =>
+                this.userService.RetrieveAllUsers();
+
+            // then
+            Assert.Throws<UserServiceException>(
+                retrieveAllUsersAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedUserServiceException))),
