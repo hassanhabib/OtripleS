@@ -50,9 +50,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 broker.SelectAllStudentRegistrations())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<StudentRegistrationServiceException>(() =>
-                this.studentRegistrationService.RetrieveAllStudentRegistrations());
+
+            // when
+            Action retrieveAllStudentRegistrationAction = () =>
+                this.studentRegistrationService.RetrieveAllStudentRegistrations();
+
+            // then
+            Assert.Throws<StudentRegistrationDependencyException>(
+                retrieveAllStudentRegistrationAction);
+
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentRegistrations(),
