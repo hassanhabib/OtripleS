@@ -141,6 +141,46 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         }
 
         [Fact]
+        public async void ShouldThrowValidationExceptionOnAddwhenTeacherStatusIsInvalidAndLogItAsync()
+        {
+            //given
+            DateTimeOffset date = GetRandomDateTime();
+            Teacher randomTeacher =  CreateRandomTeacher(date);
+            var invalidTeacher = randomTeacher;
+            invalidTeacher.Status = GetInValidTeacherStatus();
+            var invalidTeacherException = new InvalidTeacherException();
+                
+                invalidTeacherException.AddData(
+                    key:nameof(Teacher.Status),
+                    values: "Value is invalid");
+
+            var expectedTeacherValidationException = new TeacherValidationException(invalidTeacherException);
+
+            //when
+            ValueTask<Teacher> createTeacherTask = this.teacherService.CreateTeacherAsync(invalidTeacher);
+
+            //then
+            await Assert.ThrowsAsync<TeacherValidationException>(() => createTeacherTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker => 
+                broker.GetCurrentDateTime(),
+                       Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedTeacherValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTeacherAsync(It.IsAny<Teacher>()),
+                        Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedDateIsNotSameToCreatedDateAndLogItAsync()
         {
             // given
