@@ -143,7 +143,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         public async void ShouldThrowValidationExceptionOnAddwhenTeacherStatusIsInvalidAndLogItAsync()
         {
             //given
-            Teacher randomTeacher = (Teacher) CreateRandomTeachers();
+            DateTimeOffset date = GetRandomDateTime();
+            Teacher randomTeacher =  CreateRandomTeacher(date);
             var invalidTeacher = randomTeacher;
             invalidTeacher.Status = GetInValidTeacherStatus();
             var invalidTeacherException = new InvalidTeacherException();
