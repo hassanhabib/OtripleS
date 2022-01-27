@@ -25,15 +25,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 broker.SelectAllAttendances())
                     .Throws(sqlException);
 
+            
             // when
-            ValueTask<Attendance> retrieveallAttendanceTask =
-                this.attendanceService.RetrieveAllAttendance();
+            Action retrieveAllAttendanceAction = () =>
+                this.attendanceService.RetrieveAllAttendances();
 
             // then
-            await Assert.Throws<AttendanceDependencyException>(() =>
-                retrieveallAttendanceTask.AsTask());
+            Assert.Throws<AttendanceDependencyException>(
+                retrieveAllAttendanceAction);
 
-            
+
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedAttendanceDependencyException))),
@@ -65,9 +66,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 broker.SelectAllAttendances())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<AttendanceServiceException>(() =>
-                this.attendanceService.RetrieveAllAttendances());
+           
+            // when
+            Action retrieveAllAttendanceAction = () =>
+                this.attendanceService.RetrieveAllAttendances();
+
+            // then
+            Assert.Throws<AttendanceDependencyException>(
+                retrieveAllAttendanceAction);
+
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedAttendanceServiceException))),
