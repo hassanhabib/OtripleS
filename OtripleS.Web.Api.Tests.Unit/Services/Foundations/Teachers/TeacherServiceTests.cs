@@ -94,8 +94,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                  min : maxTeacherStatus,
                  max : maxTeacherStatus + GetRandomNumber()).GetValue();
                
-            return (TeacherStatus)randomOutOfRangeEnumValue;
-              
+            return (TeacherStatus)randomOutOfRangeEnumValue;              
         }
 
         private static Filler<Teacher> CreateRandomTeacherFiller(DateTimeOffset dates)

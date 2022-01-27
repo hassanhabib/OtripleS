@@ -143,16 +143,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         public async void ShouldThrowValidationExceptionOnAddwhenTeacherStatusIsInvalidAndLogItAsync()
         {
             //given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(dateTime);
+            Teacher randomTeacher = (Teacher) CreateRandomTeachers();
             var invalidTeacher = randomTeacher;
             invalidTeacher.Status = GetInValidTeacherStatus();
-
             var invalidTeacherException = new InvalidTeacherException();
                 
                 invalidTeacherException.AddData(
                     key:nameof(Teacher.Status),
                     values: "Value is invalid");
+
             var expectedTeacherValidationException = new TeacherValidationException(invalidTeacherException);
 
             //when
@@ -177,8 +176,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-                
-                
         }
 
         [Fact]
