@@ -85,6 +85,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             };
         }
 
+        private static TeacherStatus GetInValidTeacherStatus()
+        {
+            int maxTeacherStatus = (int)Enum.GetValues(typeof(TeacherStatus))
+                                .Cast<TeacherStatus>().Count();
+
+            int randomOutOfRangeEnumValue = new IntRange(
+                min: maxTeacherStatus,
+                max: maxTeacherStatus + GetRandomNumber())
+                    .GetValue();
+
+            return (TeacherStatus)randomOutOfRangeEnumValue;
+        }
+
         private static Filler<Teacher> CreateRandomTeacherFiller(DateTimeOffset dates)
         {
             var filler = new Filler<Teacher>();
