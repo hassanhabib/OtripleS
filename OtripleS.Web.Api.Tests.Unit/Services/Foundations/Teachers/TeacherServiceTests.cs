@@ -64,6 +64,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         private static Teacher CreateRandomTeacher(DateTimeOffset dateTime) =>
             CreateRandomTeacherFiller(dateTime).Create();
 
+        private static Teacher CreateRandomTeacher() =>
+            CreateRandomTeacherFiller(dates: DateTimeOffset.UtcNow).Create();
+
         private static IQueryable<Teacher> CreateRandomTeachers() =>
             CreateRandomTeacherFiller(dates: DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
