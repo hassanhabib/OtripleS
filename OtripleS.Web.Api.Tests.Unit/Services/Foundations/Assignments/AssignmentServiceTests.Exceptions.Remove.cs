@@ -160,8 +160,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentByIdAsync(
-                    It.IsAny<Guid>()),
+                broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()),
                         Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
