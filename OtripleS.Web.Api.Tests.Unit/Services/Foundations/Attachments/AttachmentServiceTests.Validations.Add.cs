@@ -19,8 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
         public async void ShouldThrowValidationExceptionOnCreateWhenAttachmentIsNullAndLogItAsync()
         {
             // given
-            Attachment randomAttachment = null;
-            Attachment nullAttachment = randomAttachment;
+            Attachment invalidAttachment = null;
+            
             var nullAttachmentException = new NullAttachmentException();
 
             var expectedAttachmentValidationException =
@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
 
             // when
             ValueTask<Attachment> createAttachmentTask =
-                this.attachmentService.AddAttachmentAsync(nullAttachment);
+                this.attachmentService.AddAttachmentAsync(invalidAttachment);
 
             // then
             await Assert.ThrowsAsync<AttachmentValidationException>(() =>

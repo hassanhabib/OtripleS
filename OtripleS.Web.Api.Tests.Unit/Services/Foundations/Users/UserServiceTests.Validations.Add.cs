@@ -19,8 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         public async void ShouldThrowValidationExceptionOnCreateWhenUserIsNullAndLogItAsync()
         {
             // given
-            User randomUser = null;
-            User nullUser = randomUser;
+            User invalidUser = null;
+           
             var nullUserException = new NullUserException();
             string password = GetRandomPassword();
 
@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
 
             // when
             ValueTask<User> createUserTask =
-                this.userService.RegisterUserAsync(nullUser, password);
+                this.userService.RegisterUserAsync(invalidUser, password);
 
             // then
             await Assert.ThrowsAsync<UserValidationException>(() =>
