@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
         public async void ShouldThrowValidationExceptionOnAddIfFeeIsNullAndLogItAsync()
         {
             // given
-            Fee invalidFee = default;
+            Fee invalidFee = null;
             
             var nullFeeException = new NullFeeException();
 
