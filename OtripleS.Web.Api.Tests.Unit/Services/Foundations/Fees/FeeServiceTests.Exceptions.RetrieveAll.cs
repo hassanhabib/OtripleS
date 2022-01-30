@@ -25,9 +25,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
                 broker.SelectAllFees())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<FeeDependencyException>(() =>
-                this.feeService.RetrieveAllFees());
+            
+            // when
+            Action retrieveAllfeeAction = () =>
+                this.feeService.RetrieveAllFees();
+
+            // then
+            Assert.Throws<FeeDependencyException>(
+                retrieveAllfeeAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllFees(),
