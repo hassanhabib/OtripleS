@@ -49,8 +49,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAttachmentAsync(
-                    It.IsAny<Attachment>()),
+                broker.InsertAttachmentAsync(It.IsAny<Attachment>()),
                         Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -81,9 +80,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertAttachmentAsync(
-                    It.IsAny<Attachment>()))
-                        .ThrowsAsync(databaseUpdateException);
+                broker.InsertAttachmentAsync(It.IsAny<Attachment>()))
+                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<Attachment> createAttachmentTask =
@@ -98,9 +96,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAttachmentAsync(
-                    It.IsAny<Attachment>()),
-                        Times.Once);
+                broker.InsertAttachmentAsync(It.IsAny<Attachment>()),
+                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -130,9 +127,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertAttachmentAsync(
-                    It.IsAny<Attachment>()))
-                        .ThrowsAsync(exception);
+                broker.InsertAttachmentAsync(It.IsAny<Attachment>()))
+                     .ThrowsAsync(exception);
 
             // when
             ValueTask<Attachment> createAttachmentTask =
@@ -147,14 +143,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAttachmentAsync(
-                    It.IsAny<Attachment>()),
-                        Times.Once);
+                broker.InsertAttachmentAsync(It.IsAny<Attachment>()),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(
-                    expectedAttachmentServiceException))),
-                        Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentServiceException))),
+                    Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
