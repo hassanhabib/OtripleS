@@ -20,8 +20,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         public async void ShouldThrowValidationExceptionOnCreateWhenAttendanceIsNullAndLogItAsync()
         {
             // given
-            Attendance randomAttendance = null;
-            Attendance nullAttendance = randomAttendance;
+            Attendance invalidAttendance = null;
+            
             var nullAttendanceException = new NullAttendanceException();
 
             var expectedAttendanceValidationException =
@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
 
             // when
             ValueTask<Attendance> createAttendanceTask =
-                this.attendanceService.CreateAttendanceAsync(nullAttendance);
+                this.attendanceService.CreateAttendanceAsync(invalidAttendance);
 
             // then
             await Assert.ThrowsAsync<AttendanceValidationException>(() =>
