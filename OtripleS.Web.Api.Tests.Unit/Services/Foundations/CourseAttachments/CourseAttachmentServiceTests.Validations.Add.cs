@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
         public async void ShouldThrowValidationExceptionOnAddWhenCourseAttachmentIsNullAndLogItAsync()
         {
             // given
-            CourseAttachment invalidCourseAttachment = default;
+            CourseAttachment invalidCourseAttachment = null;
             var nullCourseAttachmentException = new NullCourseAttachmentException();
 
             var expectedCourseAttachmentValidationException =
