@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
 
             this.storageBrokerMock.Verify(broker =>
                     broker.SelectClassroomByIdAsync(It.IsAny<Guid>()),
-                Times.Never);
+                        Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -87,7 +87,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
 
             this.storageBrokerMock.Verify(broker =>
                     broker.SelectClassroomByIdAsync(It.IsAny<Guid>()),
-                Times.Once);
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
