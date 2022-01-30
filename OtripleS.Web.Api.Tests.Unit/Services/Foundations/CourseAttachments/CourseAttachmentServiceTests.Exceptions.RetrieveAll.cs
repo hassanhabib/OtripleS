@@ -66,7 +66,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                 this.courseAttachmentService.RetrieveAllCourseAttachments();
 
             // then
-            Assert.Throws<CourseAttachmentDependencyException>(
+            Assert.Throws<CourseAttachmentServiceException>(
                retrieveAllCourseAttachmentAction);
 
             this.storageBrokerMock.Verify(broker =>
