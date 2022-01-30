@@ -25,9 +25,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                 broker.SelectAllCourseAttachments())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<CourseAttachmentDependencyException>(() =>
-                this.courseAttachmentService.RetrieveAllCourseAttachments());
+          
+            // when
+            Action retrieveAllCourseAttachmentAction = () =>
+                this.courseAttachmentService.RetrieveAllCourseAttachments();
+
+            // then
+            Assert.Throws<CourseAttachmentDependencyException>(
+               retrieveAllCourseAttachmentAction);
+
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCourseAttachments(),
@@ -55,9 +61,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                 broker.SelectAllCourseAttachments())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<CourseAttachmentServiceException>(() =>
-                this.courseAttachmentService.RetrieveAllCourseAttachments());
+            // when
+            Action retrieveAllCourseAttachmentAction = () =>
+                this.courseAttachmentService.RetrieveAllCourseAttachments();
+
+            // then
+            Assert.Throws<CourseAttachmentServiceException>(
+               retrieveAllCourseAttachmentAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCourseAttachments(),

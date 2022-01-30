@@ -25,9 +25,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
                 broker.SelectAllGuardianAttachments())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<GuardianAttachmentDependencyException>(() =>
-                this.guardianAttachmentService.RetrieveAllGuardianAttachments());
+           
+            // when
+            Action retrieveAllGuardianAttachmentAction = () =>
+                this.guardianAttachmentService.RetrieveAllGuardianAttachments();
+
+            // then
+            Assert.Throws<GuardianAttachmentDependencyException>(
+                retrieveAllGuardianAttachmentAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedGuardianAttachmentDependencyException))),
