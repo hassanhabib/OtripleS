@@ -60,12 +60,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudentExamFees())
                     .Throws(exception);
+               // when
+            Action retrieveAllstudentexamfeeAction = () =>
+                this.studentExamFeeService.RetrieveAllStudentExamFees();
 
-            // when . then
-            Assert.Throws<StudentExamFeeServiceException>(() =>
-                this.studentExamFeeService.RetrieveAllStudentExamFees());
+            // then
+            Assert.Throws<StudentExamFeeServiceException>(
+                 retrieveAllstudentexamfeeAction);
 
-            this.storageBrokerMock.Verify(broker =>
+              this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentExamFees(),
                     Times.Once);
 
