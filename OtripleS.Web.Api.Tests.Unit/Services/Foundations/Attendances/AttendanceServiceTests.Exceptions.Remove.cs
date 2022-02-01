@@ -139,7 +139,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAttendanceByIdAsync(inputAttendanceId))
                     .ThrowsAsync(Serviceexception);
-
             // when
             ValueTask<Attendance> deleteAttendanceTask =
                 this.attendanceService.RemoveAttendanceByIdAsync(inputAttendanceId);
