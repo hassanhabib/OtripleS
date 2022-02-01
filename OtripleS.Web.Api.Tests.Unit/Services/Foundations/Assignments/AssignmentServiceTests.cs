@@ -80,6 +80,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             };
         }
 
+        private static T GetInvalidEnum<T>()
+        {
+            int randomNumber = GetLocalRandomNumber();
+            while (Enum.IsDefined(typeof(T), randomNumber) is true)
+            {
+                randomNumber = GetLocalRandomNumber();
+            }
+            return (T)(object)randomNumber;
+            static int GetLocalRandomNumber() =>
+            new IntRange(min: int.MinValue, max: int.MaxValue).GetValue();
+        }
+
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
 

@@ -130,6 +130,54 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
         }
 
         [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateIfAssignmentStatusIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Assignment randomAssignment = CreateRandomAssignment();
+            Assignment invalidAssignment = randomAssignment;
+            invalidAssignment.Status = GetInvalidEnum<AssignmentStatus>();
+
+            var invalidAssignmentException = new InvalidAssignmentException();
+
+            invalidAssignmentException.AddData(
+                key: nameof(Assignment.Status),
+                values: "Value is not recognized");
+
+            var expectedAssignmentValidationException =
+                new AssignmentValidationException(invalidAssignmentException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
+
+            // when
+            ValueTask<Assignment> createAssignmentTask =
+                this.assignmentService.CreateAssignmentAsync(invalidAssignment);
+
+            // then
+            await Assert.ThrowsAsync<AssignmentValidationException>(() =>
+                createAssignmentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedAssignmentValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertAssignmentAsync(It.IsAny<Assignment>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public async void ShouldThrowValidationExceptionOnCreateWhenUpdatedByIsNotSameToCreatedByAndLogItAsync()
         {
             // given
