@@ -77,10 +77,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                 values: "Text is required");
 
             invalidAssignmentException.AddData(
-                key: nameof(Assignment.Status),
-                values: "Value is invalid");
-
-            invalidAssignmentException.AddData(
                 key: nameof(Assignment.Deadline),
                 values: "Date is required");
 
