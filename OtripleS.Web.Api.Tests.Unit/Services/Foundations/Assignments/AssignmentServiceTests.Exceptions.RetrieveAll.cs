@@ -55,22 +55,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var Serviceexception = new Exception();
+            var serviceException = new Exception();
 
             var expectedAssignmentServiceException =
-                new AssignmentServiceException(Serviceexception);
+                new AssignmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAssignments())
-                    .Throws(Serviceexception);
+                    .Throws(serviceException);
             
             // when
-            Action retrieveAllAssignmentAction = () =>
+            Action retrieveAllAssignmentsAction = () =>
                 this.assignmentService.RetrieveAllAssignments();
 
             // then
             Assert.Throws<AssignmentServiceException>(
-                retrieveAllAssignmentAction);
+               retrieveAllAssignmentsAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAssignments(),
