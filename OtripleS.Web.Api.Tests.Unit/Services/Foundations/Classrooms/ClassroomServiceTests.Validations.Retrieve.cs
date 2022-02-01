@@ -33,18 +33,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                 this.classroomService.RetrieveClassroomById(inputClassroomId);
 
             //then
-            await Assert.ThrowsAsync<ClassroomValidationException>(() => retrieveClassroomByIdTask.AsTask());
+            await Assert.ThrowsAsync<ClassroomValidationException>(() =>
+                retrieveClassroomByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
-                Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedClassroomValidationException))),
+                        Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker => broker.GetCurrentDateTime(),
-                Times.Never);
+            this.dateTimeBrokerMock.Verify(broker => 
+                broker.GetCurrentDateTime(),
+                    Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                    broker.SelectClassroomByIdAsync(It.IsAny<Guid>()),
-                Times.Never);
+                broker.SelectClassroomByIdAsync(It.IsAny<Guid>()),
+                    Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -59,14 +62,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Guid inputClassroomId = randomClassroomId;
             Classroom invalidStorageClassroom = null;
 
-            var notFoundClassroomException = new NotFoundClassroomException(inputClassroomId);
+            var notFoundClassroomException = 
+                new NotFoundClassroomException(inputClassroomId);
 
             var expectedClassroomValidationException =
                 new ClassroomValidationException(notFoundClassroomException);
 
             this.storageBrokerMock.Setup(broker =>
-                    broker.SelectClassroomByIdAsync(inputClassroomId))
-                .ReturnsAsync(invalidStorageClassroom);
+                broker.SelectClassroomByIdAsync(inputClassroomId))
+                    .ReturnsAsync(invalidStorageClassroom);
 
             //when
             ValueTask<Classroom> retrieveClassroomByIdTask =
@@ -77,15 +81,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                 retrieveClassroomByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
-                Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedClassroomValidationException))),
+                        Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker => broker.GetCurrentDateTime(),
-                Times.Never);
+            this.dateTimeBrokerMock.Verify(broker => 
+                broker.GetCurrentDateTime(),
+                    Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                    broker.SelectClassroomByIdAsync(It.IsAny<Guid>()),
-                Times.Once);
+                broker.SelectClassroomByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
