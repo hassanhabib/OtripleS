@@ -19,8 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
         public async void ShouldThrowValidationExceptionOnAddWhenCalendarIsNullAndLogItAsync()
         {
             // given
-            Calendar randomCalendar = null;
-            Calendar nullCalendar = randomCalendar;
+            Calendar invalidCalendar = null;
+            
 
             var nullCalendarException = new NullCalendarException();
 
@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
 
             // when
             ValueTask<Calendar> registerCalendarTask =
-                this.calendarService.AddCalendarAsync(nullCalendar);
+                this.calendarService.AddCalendarAsync(invalidCalendar);
 
             // then
             await Assert.ThrowsAsync<CalendarValidationException>(() =>
