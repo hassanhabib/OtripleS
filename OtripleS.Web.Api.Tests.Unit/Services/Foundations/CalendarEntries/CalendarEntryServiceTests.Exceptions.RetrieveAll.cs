@@ -25,10 +25,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                 broker.SelectAllCalendarEntries())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<CalendarEntryDependencyException>(() =>
-                this.calendarEntryService.RetrieveAllCalendarEntries());
+            // when
+            Action retrieveAllCalendarEntryAction = () =>
+                this.calendarEntryService.RetrieveAllCalendarEntries();
 
+            // then
+            Assert.Throws<CalendarEntryDependencyException>(
+                retrieveAllCalendarEntryAction);
+             
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedCalendarEntryDependencyException))),
                     Times.Once);
@@ -46,18 +50,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
         public void ShouldThrowServiceExceptionOnRetrieveAllCalendarEntriesWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedCalendarEntryServiceException =
-                new CalendarEntryServiceException(exception);
+                new CalendarEntryServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllCalendarEntries())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<CalendarEntryServiceException>(() =>
-                this.calendarEntryService.RetrieveAllCalendarEntries());
+            // when
+            Action retrieveAllCalendarEntryAction = () =>
+                this.calendarEntryService.RetrieveAllCalendarEntries();
+
+            // then
+            Assert.Throws<CalendarEntryServiceException>(
+                retrieveAllCalendarEntryAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryServiceException))),
