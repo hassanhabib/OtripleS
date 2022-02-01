@@ -25,9 +25,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                 broker.SelectAllAssignments())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<AssignmentDependencyException>(() =>
-                this.assignmentService.RetrieveAllAssignments());
+            
+            // when
+            Action retrieveAllAssignmentAction = () =>
+                this.assignmentService.RetrieveAllAssignments();
+
+            // then
+            Assert.Throws<AssignmentDependencyException>(
+                retrieveAllAssignmentAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAssignments(),
@@ -50,18 +55,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var Serviceexception = new Exception();
 
             var expectedAssignmentServiceException =
-                new AssignmentServiceException(exception);
+                new AssignmentServiceException(Serviceexception);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAssignments())
-                    .Throws(exception);
+                    .Throws(Serviceexception);
+            
+            // when
+            Action retrieveAllAssignmentAction = () =>
+                this.assignmentService.RetrieveAllAssignments();
 
-            // when . then
-            Assert.Throws<AssignmentServiceException>(() =>
-                this.assignmentService.RetrieveAllAssignments());
+            // then
+            Assert.Throws<AssignmentServiceException>(
+                retrieveAllAssignmentAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAssignments(),
