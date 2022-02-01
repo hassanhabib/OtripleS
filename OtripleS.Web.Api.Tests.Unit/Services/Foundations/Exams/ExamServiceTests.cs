@@ -17,6 +17,7 @@ using OtripleS.Web.Api.Models.Exams;
 using OtripleS.Web.Api.Services.Foundations.Exams;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
 {
@@ -39,15 +40,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 loggingBroker: this.loggingBrokerMock.Object);
         }
 
-        public static IEnumerable<object[]> InvalidMinuteCases()
+        public static TheoryData InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
             int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
 
-            return new List<object[]>
+            return new TheoryData<int>
             {
-                new object[] { randomMoreThanMinuteFromNow },
-                new object[] { randomMoreThanMinuteBeforeNow }
+                randomMoreThanMinuteFromNow,
+                randomMoreThanMinuteBeforeNow
             };
         }
 
