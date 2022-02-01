@@ -127,14 +127,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
         {
             // given
             Guid someAttachmentId = Guid.NewGuid();
-            var exception = new Exception();
+            var Serviceexception = new Exception();
 
             var expectedAttachmentServiceException =
-                new AttachmentServiceException(exception);
+                new AttachmentServiceException(Serviceexception);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAttachmentByIdAsync(someAttachmentId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(Serviceexception);
 
             // when
             ValueTask<Attachment> deleteAttachmentTask =
