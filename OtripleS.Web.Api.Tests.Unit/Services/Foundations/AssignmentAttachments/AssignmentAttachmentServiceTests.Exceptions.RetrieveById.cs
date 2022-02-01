@@ -149,14 +149,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
             // given
             Guid someAttachmentId = Guid.NewGuid();
             Guid someAssignmentId = Guid.NewGuid();
-            var exception = new Exception();
+            var Serviceexception = new Exception();
 
             var expectedAssignmentAttachmentException =
-                new AssignmentAttachmentServiceException(exception);
+                new AssignmentAttachmentServiceException(Serviceexception);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(Serviceexception);
 
             // when
             ValueTask<AssignmentAttachment> retrieveAssignmentAttachmentTask =
