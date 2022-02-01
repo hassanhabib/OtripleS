@@ -55,8 +55,8 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
 
         private static dynamic IsInvalidX(AssignmentStatus status) => new
         {
-            Condition = status != AssignmentStatus.Active,
-            Message = "Value is invalid"
+            Condition = Enum.IsDefined(status) is false,
+            Message = "Value is not recognized"
         };
 
         private static dynamic IsInvalidX(DateTimeOffset date) => new
