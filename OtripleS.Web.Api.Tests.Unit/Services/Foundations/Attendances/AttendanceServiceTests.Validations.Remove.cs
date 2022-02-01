@@ -36,8 +36,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             await Assert.ThrowsAsync<AttendanceValidationException>(() => actualAttendanceTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttendanceValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAttendanceByIdAsync(It.IsAny<Guid>()),
@@ -79,8 +80,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             await Assert.ThrowsAsync<AttendanceValidationException>(() => actualAttendanceTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttendanceValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAttendanceByIdAsync(inputAttendanceId),
