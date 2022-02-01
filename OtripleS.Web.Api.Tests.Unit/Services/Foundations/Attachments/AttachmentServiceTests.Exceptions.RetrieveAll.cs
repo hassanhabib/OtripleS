@@ -26,13 +26,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     .Throws(sqlException);
 
             // when
-            
-            ValueTask<Attachment> retrieveAllAttachmentTask =
-                this.attachmentService.RetrieveAllAttachmentByIdAsync();
+            Action retrieveAllAttachmentsAction = () =>
+                this.attachmentService.RetrieveAllAttachments();
 
             // then
-            await Assert.Throws<AttachmentDependencyException>(() =>
-               retrieveAllAttachmentTask.AsTask());
+            Assert.Throws<AttachmentDependencyException>(
+                retrieveAllAttachmentsAction);
 
 
             this.storageBrokerMock.Verify(broker =>
@@ -52,18 +51,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
         public void ShouldThrowServiceExceptionOnRetrieveAllAttachmentsWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var Serviceexception = new Exception();
 
             var expectedAttachmentServiceException =
-                new AttachmentServiceException(exception);
+                new AttachmentServiceException(Serviceexception);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAttachments())
-                    .Throws(exception);
+                    .Throws(Serviceexception);
 
-            // when . then
-            Assert.Throws<AttachmentServiceException>(() =>
-                this.attachmentService.RetrieveAllAttachments());
+            // when
+            Action retrieveAllAttachmentsAction = () =>
+                this.attachmentService.RetrieveAllAttachments();
+
+            // then
+            Assert.Throws<AttachmentServiceException>(
+                retrieveAllAttachmentsAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAttachments(),
