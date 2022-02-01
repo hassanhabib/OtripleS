@@ -142,7 +142,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             // when
             ValueTask<Attendance> deleteAttendanceTask =
                 this.attendanceService.RemoveAttendanceByIdAsync(inputAttendanceId);
-
             // then
             await Assert.ThrowsAsync<AttendanceServiceException>(() =>
                 deleteAttendanceTask.AsTask());
