@@ -101,14 +101,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             // given
             Guid randomAttendanceId = Guid.NewGuid();
             Guid inputAttendanceId = randomAttendanceId;
-            var Serviceexception = new Exception();
+            var serviceException = new Exception();
 
             var expectedAttendanceServiceException =
-                new AttendanceServiceException(Serviceexception);
+                new AttendanceServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAttendanceByIdAsync(inputAttendanceId))
-                    .ThrowsAsync(Serviceexception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Attendance> retrieveAttendanceByIdTask =
