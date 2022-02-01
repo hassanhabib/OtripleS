@@ -25,9 +25,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
                 broker.SelectAllCalendarEntryAttachments())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<CalendarEntryAttachmentDependencyException>(() =>
-                this.calendarEntryAttachmentService.RetrieveAllCalendarEntryAttachments());
+            // when
+            Action retrieveAllCalendarEntryAttachmensAction = () =>
+                this.calendarEntryAttachmentService.RetrieveAllCalendarEntryAttachments();
+
+            // then
+            Assert.Throws<CalendarEntryAttachmentDependencyException>(
+                retrieveAllCalendarEntryAttachmensAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCalendarEntryAttachments(),
@@ -46,18 +50,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
         public void ShouldThrowServiceExceptionOnRetrieveAllCalendarEntryAttachmentsWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedCalendarEntryAttachmentServiceException =
-                new CalendarEntryAttachmentServiceException(exception);
+                new CalendarEntryAttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllCalendarEntryAttachments())
-                    .Throws(exception);
+                    .Throws(serviceException);
+             // when
+            Action retrieveAllCalendarEntryAttachmensAction = () =>
+                this.calendarEntryAttachmentService.RetrieveAllCalendarEntryAttachments();
 
-            // when . then
-            Assert.Throws<CalendarEntryAttachmentServiceException>(() =>
-                this.calendarEntryAttachmentService.RetrieveAllCalendarEntryAttachments());
+            // then
+            Assert.Throws<CalendarEntryAttachmentServiceException>(
+                retrieveAllCalendarEntryAttachmensAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCalendarEntryAttachments(),
