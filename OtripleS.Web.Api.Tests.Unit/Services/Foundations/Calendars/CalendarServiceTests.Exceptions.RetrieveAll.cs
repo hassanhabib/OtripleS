@@ -30,8 +30,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
                 this.calendarService.RetrieveAllCalendars());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedCalendarDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedCalendarDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCalendars(),
@@ -64,8 +65,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
                 this.calendarService.RetrieveAllCalendars());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCalendarServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCalendars(),
