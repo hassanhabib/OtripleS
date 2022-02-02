@@ -25,10 +25,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllTeachers())
                     .Throws(sqlException);
+             // when
+           Action retrieveAllTeachersAction = () =>
+                this.teacherService.RetrieveAllTeachers();
 
-            // when . then
-            Assert.Throws<TeacherDependencyException>(() =>
-                this.teacherService.RetrieveAllTeachers());
+            // then
+            Assert.Throws<TeacherDependencyException>(
+                retrieveAllTeachersAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherDependencyException))),
@@ -51,18 +54,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedTeacherServiceException =
-                new TeacherServiceException(exception);
+                new TeacherServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllTeachers())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<TeacherServiceException>(() =>
-                this.teacherService.RetrieveAllTeachers());
+            // when
+            Action retrieveAllTeachersAction = () =>
+                 this.teacherService.RetrieveAllTeachers();
+
+            // then
+            Assert.Throws<TeacherServiceException>(
+                retrieveAllTeachersAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherServiceException))),
