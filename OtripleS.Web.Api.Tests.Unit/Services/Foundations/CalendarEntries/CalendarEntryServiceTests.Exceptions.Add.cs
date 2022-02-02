@@ -45,8 +45,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                 createCalendarEntryTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedCalendarEntryDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedCalendarEntryDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCalendarEntryAsync(inputCalendarEntry),
@@ -91,8 +92,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                 createCalendarEntryTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCalendarEntryDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCalendarEntryAsync(inputCalendarEntry),
@@ -137,8 +139,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                 createCalendarEntryTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarEntryServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCalendarEntryServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCalendarEntryAsync(inputCalendarEntry),
