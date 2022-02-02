@@ -51,9 +51,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
                 broker.SelectAllTeacherAttachments())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<TeacherAttachmentServiceException>(() =>
-                this.teacherAttachmentService.RetrieveAllTeacherAttachments());
+            
+            // when
+            Action retrieveAllTeacherAttachmentAction = () =>
+                this.teacherAttachmentService.RetrieveAllTeacherAttachments();
+
+            // then
+            Assert.Throws<TeacherAttachmentServiceException>(
+                retrieveAllTeacherAttachmentAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentServiceException))),
