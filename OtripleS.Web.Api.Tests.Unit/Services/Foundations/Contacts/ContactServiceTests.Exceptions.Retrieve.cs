@@ -98,16 +98,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedContactServiceException =
-                new ContactServiceException(exception);
+                new ContactServiceException(serviceException);
 
             var guid = Guid.NewGuid();
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectContactByIdAsync(guid))
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when 
             ValueTask<Contact> retrieveTask = this.contactService.RetrieveContactByIdAsync(guid);
