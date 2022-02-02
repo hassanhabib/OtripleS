@@ -52,14 +52,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
         public void ShouldThrowServiceExceptionOnRetrieveAllCourseAttachmentsWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedCourseAttachmentServiceException =
-                new CourseAttachmentServiceException(exception);
+                new CourseAttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllCourseAttachments())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when
             Action retrieveAllCourseAttachmentAction = () =>
