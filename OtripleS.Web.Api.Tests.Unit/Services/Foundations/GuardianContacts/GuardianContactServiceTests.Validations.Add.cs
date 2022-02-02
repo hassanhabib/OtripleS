@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         public async void ShouldThrowValidationExceptionOnAddWhenGuardianContactIsNullAndLogItAsync()
         {
             // given
-            GuardianContact invalidGuardianContact = default;
+            GuardianContact invalidGuardianContact = null;
             
             var nullGuardianContactException = new NullGuardianContactException();
 
