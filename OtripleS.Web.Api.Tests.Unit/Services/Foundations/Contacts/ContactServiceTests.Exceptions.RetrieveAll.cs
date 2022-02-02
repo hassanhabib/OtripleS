@@ -25,9 +25,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
                 broker.SelectAllContacts())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<ContactDependencyException>(() =>
-                this.contactService.RetrieveAllContacts());
+            // when
+            Action retrieveAllContactsAction = () =>
+                this.contactService.RetrieveAllContacts();
+
+            // then
+            Assert.Throws<ContactDependencyException>(
+                retrieveAllContactsAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedContactDependencyException))),
@@ -59,9 +63,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
                 broker.SelectAllContacts())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<ContactServiceException>(() =>
-                this.contactService.RetrieveAllContacts());
+            // when
+            Action retrieveAllContactsAction = () =>
+                this.contactService.RetrieveAllContacts();
+
+            // then
+            Assert.Throws<ContactServiceException>(
+                retrieveAllContactsAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedContactServiceException))),
