@@ -90,14 +90,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
         {
             // given
             CourseAttachment someCourseAttachment = CreateRandomCourseAttachment();
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedCourseAttachmentServiceException =
-                new CourseAttachmentServiceException(exception);
+                new CourseAttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertCourseAttachmentAsync(It.IsAny<CourseAttachment>()))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<CourseAttachment> addCourseAttachmentTask =
