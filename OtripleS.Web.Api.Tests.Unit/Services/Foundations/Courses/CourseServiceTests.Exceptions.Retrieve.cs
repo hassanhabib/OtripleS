@@ -26,9 +26,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                 broker.SelectAllCourses())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<CourseDependencyException>(() =>
-                this.courseService.RetrieveAllCourses());
+            // when
+            Action retrieveAllCoursesAction = () =>
+                this.courseService.RetrieveAllCourses();
+
+            // then
+            Assert.Throws<CourseDependencyException>(
+                retrieveAllCoursesAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCourses(),
@@ -56,10 +60,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                 broker.SelectAllCourses())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<CourseServiceException>(() =>
-                this.courseService.RetrieveAllCourses());
+            // when
+            Action retrieveAllCoursesAction = () =>
+                this.courseService.RetrieveAllCourses();
 
+            // then
+            Assert.Throws<CourseServiceException>(
+                retrieveAllCoursesAction);
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedCourseServiceException))),
                     Times.Once);
