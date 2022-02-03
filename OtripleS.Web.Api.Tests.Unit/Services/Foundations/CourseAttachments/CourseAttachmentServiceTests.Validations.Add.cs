@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
         public async void ShouldThrowValidationExceptionOnAddWhenCourseAttachmentIsNullAndLogItAsync()
         {
             // given
-            CourseAttachment nullCourseAttachment = default;
+            CourseAttachment invalidCourseAttachment = null;
             var nullCourseAttachmentException = new NullCourseAttachmentException();
 
             var expectedCourseAttachmentValidationException =
@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
 
             // when
             ValueTask<CourseAttachment> addCourseAttachmentTask =
-                this.courseAttachmentService.AddCourseAttachmentAsync(nullCourseAttachment);
+                this.courseAttachmentService.AddCourseAttachmentAsync(invalidCourseAttachment);
 
             // then
             await Assert.ThrowsAsync<CourseAttachmentValidationException>(() =>
