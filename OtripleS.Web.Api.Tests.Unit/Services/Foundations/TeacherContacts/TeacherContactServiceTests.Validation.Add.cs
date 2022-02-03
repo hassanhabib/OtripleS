@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         public async void ShouldThrowValidationExceptionOnAddWhenTeacherContactIsNullAndLogItAsync()
         {
             // given
-            TeacherContact invalidTeacherContact = default;
+            TeacherContact invalidTeacherContact = null;
             
             var nullTeacherContactException = new NullTeacherContactException();
 
