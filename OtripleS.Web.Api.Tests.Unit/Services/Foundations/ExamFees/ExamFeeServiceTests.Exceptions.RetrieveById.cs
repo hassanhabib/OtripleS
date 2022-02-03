@@ -101,14 +101,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             // given
             Guid randomExamFeeId = Guid.NewGuid();
             Guid inputExamFeeId = randomExamFeeId;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedExamFeeServiceException =
-                new ExamFeeServiceException(exception);
+                new ExamFeeServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectExamFeeByIdAsync(inputExamFeeId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<ExamFee> retrieveExamFeeByIdTask =
