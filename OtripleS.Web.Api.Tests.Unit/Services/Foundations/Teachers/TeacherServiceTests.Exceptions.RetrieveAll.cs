@@ -51,14 +51,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedTeacherServiceException =
-                new TeacherServiceException(exception);
+                new TeacherServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllTeachers())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when . then
             Assert.Throws<TeacherServiceException>(() =>
