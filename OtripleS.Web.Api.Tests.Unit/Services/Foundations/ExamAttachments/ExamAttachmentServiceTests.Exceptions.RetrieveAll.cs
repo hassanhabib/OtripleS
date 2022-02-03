@@ -46,14 +46,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
         public void ShouldThrowServiceExceptionOnRetrieveAllExamAttachmentsWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedExamAttachmentServiceException =
-                new ExamAttachmentServiceException(exception);
+                new ExamAttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllExamAttachments())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when . then
             Assert.Throws<ExamAttachmentServiceException>(() =>
