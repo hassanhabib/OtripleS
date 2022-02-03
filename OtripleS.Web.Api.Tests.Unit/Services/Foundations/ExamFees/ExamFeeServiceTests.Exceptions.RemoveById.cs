@@ -130,8 +130,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             var serviceException = new Exception();
 
             var expectedExamFeeServiceException = new ExamFeeServiceException(serviceException);
-
-            this.storageBrokerMock.Setup(broker =>
+              this.storageBrokerMock.Setup(broker =>
                  broker.SelectExamFeeByIdAsync(inputExamFeeId))
                     .ThrowsAsync(serviceException);
 
