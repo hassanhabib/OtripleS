@@ -26,9 +26,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 broker.SelectAllTeachers())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<TeacherDependencyException>(() =>
-                this.teacherService.RetrieveAllTeachers());
+            // when
+            Action retrieveAllTeachersAction = () =>
+                this.teacherService.RetrieveAllTeachers();
+
+            // then
+            Assert.Throws<TeacherDependencyException>(
+                retrieveAllTeachersAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherDependencyException))),
@@ -60,9 +64,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 broker.SelectAllTeachers())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<TeacherServiceException>(() =>
-                this.teacherService.RetrieveAllTeachers());
+            // when
+            Action retrieveAllTeachersAction = () =>
+                this.teacherService.RetrieveAllTeachers();
+
+            // then
+            Assert.Throws<TeacherServiceException>(
+                retrieveAllTeachersAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedTeacherServiceException))),
