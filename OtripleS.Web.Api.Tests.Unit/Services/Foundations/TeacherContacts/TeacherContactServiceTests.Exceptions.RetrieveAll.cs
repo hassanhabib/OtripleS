@@ -44,13 +44,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedTeacherContactServiceException =
-                new TeacherContactServiceException(exception);
+                new TeacherContactServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker => broker.SelectAllTeacherContacts())
-                .Throws(exception);
+                .Throws(serviceException);
 
             // when
             Action retrieveAllTeacherContactAction = () =>
