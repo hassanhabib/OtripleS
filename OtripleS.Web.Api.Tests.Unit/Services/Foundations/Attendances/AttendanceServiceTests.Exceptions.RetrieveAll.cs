@@ -30,8 +30,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 this.attendanceService.RetrieveAllAttendances());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedAttendanceDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedAttendanceDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAttendances(),
@@ -64,8 +65,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 this.attendanceService.RetrieveAllAttendances());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttendanceServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAttendances(),

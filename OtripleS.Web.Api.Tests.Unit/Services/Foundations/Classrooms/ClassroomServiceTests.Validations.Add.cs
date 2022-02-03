@@ -19,8 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         public async void ShouldThrowValidationExceptionOnCreateWhenClassroomIsNullAndLogItAsync()
         {
             // given
-            Classroom randomClassroom = null;
-            Classroom nullClassroom = randomClassroom;
+            Classroom invalidClassroom = null;
+            
             var nullClassroomException = new NullClassroomException();
 
             var expectedClassroomValidationException =
@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
 
             // when
             ValueTask<Classroom> createClassroomTask =
-                this.classroomService.CreateClassroomAsync(nullClassroom);
+                this.classroomService.CreateClassroomAsync(invalidClassroom);
 
             // then
             await Assert.ThrowsAsync<ClassroomValidationException>(() =>

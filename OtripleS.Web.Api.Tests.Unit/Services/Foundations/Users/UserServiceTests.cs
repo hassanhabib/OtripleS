@@ -22,20 +22,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
     public partial class UserServiceTests
     {
         private readonly Mock<IUserManagementBroker> userManagementBrokerMock;
-        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
+        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly IUserService userService;
 
         public UserServiceTests()
         {
             this.userManagementBrokerMock = new Mock<IUserManagementBroker>();
-            this.loggingBrokerMock = new Mock<ILoggingBroker>();
             this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
+            this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
             this.userService = new UserService(
                 userManagementBroker: this.userManagementBrokerMock.Object,
-                loggingBroker: this.loggingBrokerMock.Object,
-                dateTimeBroker: this.dateTimeBrokerMock.Object);
+                dateTimeBroker: this.dateTimeBrokerMock.Object,
+                loggingBroker: this.loggingBrokerMock.Object);
         }
 
         private static User CreateRandomUser()

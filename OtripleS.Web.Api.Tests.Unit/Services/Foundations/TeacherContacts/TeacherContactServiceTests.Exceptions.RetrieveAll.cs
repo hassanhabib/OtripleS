@@ -52,9 +52,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             this.storageBrokerMock.Setup(broker => broker.SelectAllTeacherContacts())
                 .Throws(exception);
 
-            // when . then
-            Assert.Throws<TeacherContactServiceException>(() =>
-                this.teacherContactService.RetrieveAllTeacherContacts());
+            // when
+            Action retrieveAllTeacherContactAction = () =>
+                this.teacherContactService.RetrieveAllTeacherContacts();
+
+            // then
+            Assert.Throws<TeacherContactServiceException>(
+                retrieveAllTeacherContactAction);
 
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactServiceException))),
