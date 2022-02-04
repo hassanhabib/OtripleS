@@ -91,14 +91,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
             // given
             GuardianAttachment randomGuardianAttachment = CreateRandomGuardianAttachment();
             GuardianAttachment someGuardianAttachment = randomGuardianAttachment;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedGuardianAttachmentServiceException =
-                new GuardianAttachmentServiceException(exception);
+                new GuardianAttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertGuardianAttachmentAsync(someGuardianAttachment))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<GuardianAttachment> addGuardianAttachmentTask =
