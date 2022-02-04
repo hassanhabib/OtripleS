@@ -44,8 +44,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedCourseDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedCourseDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCourseAsync(It.IsAny<Course>()),
@@ -85,8 +86,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCourseDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCourseAsync(It.IsAny<Course>()),
@@ -126,8 +128,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCourseServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCourseAsync(It.IsAny<Course>()),
