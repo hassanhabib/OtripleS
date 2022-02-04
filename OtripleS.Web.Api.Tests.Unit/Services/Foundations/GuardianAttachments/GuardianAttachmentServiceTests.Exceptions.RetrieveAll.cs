@@ -51,14 +51,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         public void ShouldThrowServiceExceptionOnRetrieveAllGuardianAttachmentsWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedGuardianAttachmentServiceException =
-                new GuardianAttachmentServiceException(exception);
+                new GuardianAttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllGuardianAttachments())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when . then
             Assert.Throws<GuardianAttachmentServiceException>(() =>
