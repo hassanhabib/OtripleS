@@ -46,14 +46,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
         public void ShouldThrowServiceExceptionOnRetrieveAllStudentExamFeesWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedStudentExamFeeServiceException =
-                new StudentExamFeeServiceException(exception);
+                new StudentExamFeeServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudentExamFees())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when . then
             Assert.Throws<StudentExamFeeServiceException>(() =>
