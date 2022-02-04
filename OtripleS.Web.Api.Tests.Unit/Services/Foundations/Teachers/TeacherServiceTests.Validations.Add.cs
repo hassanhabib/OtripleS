@@ -150,17 +150,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             invalidTeacher.Status = GetInValidTeacherStatus();
             var invalidTeacherException = new InvalidTeacherException();
                 
-                invalidTeacherException.AddData(
+            invalidTeacherException.AddData(
                     key:nameof(Teacher.Status),
-                    values: "Value is invalid");
+                    values: "Value is not recognized");
 
-            var expectedTeacherValidationException = new TeacherValidationException(invalidTeacherException);
+            var expectedTeacherValidationException = new 
+                TeacherValidationException(invalidTeacherException);
 
             //when
-            ValueTask<Teacher> createTeacherTask = this.teacherService.CreateTeacherAsync(invalidTeacher);
+            ValueTask<Teacher> createTeacherTask = 
+                this.teacherService.CreateTeacherAsync(invalidTeacher);
 
             //then
-            await Assert.ThrowsAsync<TeacherValidationException>(() => createTeacherTask.AsTask());
+            await Assert.ThrowsAsync<TeacherValidationException>(() => 
+                createTeacherTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker => 
                 broker.GetCurrentDateTime(),
