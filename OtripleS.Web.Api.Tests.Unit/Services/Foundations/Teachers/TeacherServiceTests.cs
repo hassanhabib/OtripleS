@@ -87,8 +87,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
         private static TeacherStatus GetInValidTeacherStatus()
         {
+
             int maxTeacherStatus = (int)Enum.GetValues(typeof(TeacherStatus))
-                                .Cast<TeacherStatus>().Count();
+                               .Cast<TeacherStatus>().Count();
 
             int randomOutOfRangeEnumValue = new IntRange(
                 min: maxTeacherStatus,
