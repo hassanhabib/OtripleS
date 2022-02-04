@@ -50,14 +50,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedGuardianServiceException =
-                new GuardianServiceException(exception);
+                new GuardianServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllGuardians())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when . then
             Assert.Throws<GuardianServiceException>(() =>
