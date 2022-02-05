@@ -26,13 +26,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 broker.SelectAllTeachers())
                     .Throws(sqlException);
 
-            
             // when
             Action retrieveAllTeacherAction = () =>
                 this.teacherService.RetrieveAllTeachers();
 
             // then
-            Assert.Throws<TeacherServiceException>(
+            Assert.Throws<TeacherDependencyException>(
                 retrieveAllTeacherAction);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -64,8 +63,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllTeachers())
                     .Throws(exception);
-
-            
 
             // when
             Action retrieveAllTeacherAction = () =>

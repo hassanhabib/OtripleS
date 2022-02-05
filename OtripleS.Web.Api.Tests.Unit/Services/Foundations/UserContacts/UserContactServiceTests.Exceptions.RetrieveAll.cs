@@ -59,6 +59,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             Assert.Throws<UserContactServiceException>(() =>
                 this.userContactService.RetrieveAllUserContacts());
 
+
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogError(It.Is(SameExceptionAs(expectedUserContactServiceException))),
                         Times.Once);
