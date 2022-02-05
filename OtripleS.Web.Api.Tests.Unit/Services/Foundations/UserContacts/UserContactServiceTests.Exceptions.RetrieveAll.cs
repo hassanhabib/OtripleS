@@ -59,13 +59,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             this.storageBrokerMock.Setup(broker => broker.SelectAllUserContacts())
                 .Throws(exception);
 
-            
             // when
             Action retrieveAllUserContactsAction = () =>
                 this.userContactService.RetrieveAllUserContacts();
 
             // then
-            Assert.Throws<UserContactDependencyException>(
+            Assert.Throws<UserContactServiceException>(
                 retrieveAllUserContactsAction);
 
             this.loggingBrokerMock.Verify(broker =>
