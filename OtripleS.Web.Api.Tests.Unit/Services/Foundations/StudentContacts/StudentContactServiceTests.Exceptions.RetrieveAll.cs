@@ -25,8 +25,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             this.storageBrokerMock.Setup(broker => broker.SelectAllStudentContacts())
                 .Throws(sqlException);
 
-
-            // when
+             // when
             Action retrieveAllStudentContactAction = () =>
                 this.studentContactService.RetrieveAllStudentContacts();
 
@@ -57,9 +56,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             this.storageBrokerMock.Setup(broker => broker.SelectAllStudentContacts())
                 .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<StudentContactServiceException>(() =>
-                this.studentContactService.RetrieveAllStudentContacts());
+            // when
+            Action retrieveAllStudentContactAction = () =>
+                this.studentContactService.RetrieveAllStudentContacts();
+
+            // then
+            Assert.Throws<StudentContactServiceException>(
+                retrieveAllStudentContactAction);
 
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogError(It.Is(SameExceptionAs(expectedStudentContactServiceException))),
