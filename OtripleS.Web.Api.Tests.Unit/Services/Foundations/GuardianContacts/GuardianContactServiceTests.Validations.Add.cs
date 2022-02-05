@@ -18,8 +18,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         public async void ShouldThrowValidationExceptionOnAddWhenGuardianContactIsNullAndLogItAsync()
         {
             // given
-            GuardianContact randomGuardianContact = default;
-            GuardianContact nullGuardianContact = randomGuardianContact;
+            GuardianContact invalidGuardianContact = null;
+            
             var nullGuardianContactException = new NullGuardianContactException();
 
             var expectedGuardianContactValidationException =
@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
 
             // when
             ValueTask<GuardianContact> addGuardianContactTask =
-                this.guardianContactService.AddGuardianContactAsync(nullGuardianContact);
+                this.guardianContactService.AddGuardianContactAsync(invalidGuardianContact);
 
             // then
             await Assert.ThrowsAsync<GuardianContactValidationException>(() =>

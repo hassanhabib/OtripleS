@@ -25,9 +25,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             this.storageBrokerMock.Setup(broker => broker.SelectAllTeacherContacts())
                 .Throws(sqlException);
 
-            //when. then
-            Assert.Throws<TeacherContactDependencyException>(() =>
-                this.teacherContactService.RetrieveAllTeacherContacts());
+            // when
+            Action retrieveAllTeacherContactsAction = () =>
+                this.teacherContactService.RetrieveAllTeacherContacts();
+
+            // then
+            Assert.Throws<TeacherContactDependencyException>(
+                retrieveAllTeacherContactsAction);
 
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherContactDependencyException))),
@@ -44,21 +48,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedTeacherContactServiceException =
-                new TeacherContactServiceException(exception);
+                new TeacherContactServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker => broker.SelectAllTeacherContacts())
-                .Throws(exception);
+                .Throws(serviceException);
 
             // when
-            Action retrieveAllTeacherContactAction = () =>
+            Action retrieveAllTeacherContactsAction = () =>
                 this.teacherContactService.RetrieveAllTeacherContacts();
 
             // then
             Assert.Throws<TeacherContactServiceException>(
-                retrieveAllTeacherContactAction);
+                retrieveAllTeacherContactsAction);
 
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactServiceException))),

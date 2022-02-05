@@ -26,9 +26,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
                 broker.SelectAllStudentExams())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<StudentExamDependencyException>(() =>
-                this.studentExamService.RetrieveAllStudentExams());
+            // when
+            Action retrieveAllstudentExamsAction = () =>
+                this.studentExamService.RetrieveAllStudentExams();
+
+            // then
+            Assert.Throws<StudentExamDependencyException>(
+                retrieveAllstudentExamsAction);
+
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentExamDependencyException))),
@@ -51,18 +56,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedStudentExamServiceException =
-                new StudentExamServiceException(exception);
+                new StudentExamServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudentExams())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<StudentExamServiceException>(() =>
-                this.studentExamService.RetrieveAllStudentExams());
+            // when
+            Action retrieveAllstudentExamsAction = () =>
+                this.studentExamService.RetrieveAllStudentExams();
+
+            // then
+            Assert.Throws<StudentExamServiceException>(
+                retrieveAllstudentExamsAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(expectedStudentExamServiceException))),

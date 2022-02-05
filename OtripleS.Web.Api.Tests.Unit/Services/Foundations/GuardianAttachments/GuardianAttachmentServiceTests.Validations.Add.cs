@@ -18,8 +18,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         public async void ShouldThrowValidationExceptionOnAddWhenGuardianAttachmentIsNullAndLogItAsync()
         {
             // given
-            GuardianAttachment randomGuardianAttachment = default;
-            GuardianAttachment nullGuardianAttachment = randomGuardianAttachment;
+            GuardianAttachment invalidGuardianAttachment = null;
+            
             var nullGuardianAttachmentException = new NullGuardianAttachmentException();
 
             var expectedGuardianAttachmentValidationException =
@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
 
             // when
             ValueTask<GuardianAttachment> addGuardianAttachmentTask =
-                this.guardianAttachmentService.AddGuardianAttachmentAsync(nullGuardianAttachment);
+                this.guardianAttachmentService.AddGuardianAttachmentAsync(invalidGuardianAttachment);
 
             // then
             await Assert.ThrowsAsync<GuardianAttachmentValidationException>(() =>

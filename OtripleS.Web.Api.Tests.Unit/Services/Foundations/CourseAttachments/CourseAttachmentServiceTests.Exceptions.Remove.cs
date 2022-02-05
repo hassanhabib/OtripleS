@@ -46,8 +46,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedCourseAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedCourseAttachmentDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteCourseAttachmentAsync(It.IsAny<CourseAttachment>()),
@@ -87,8 +88,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCourseAttachmentDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteCourseAttachmentAsync(It.IsAny<CourseAttachment>()),
@@ -130,8 +132,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCourseAttachmentException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteCourseAttachmentAsync(It.IsAny<CourseAttachment>()),
@@ -148,12 +151,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
             // given
             Guid someAttachmentId = Guid.NewGuid();
             Guid someCourseId = Guid.NewGuid();
-            var exception = new Exception();
-            var expectedCourseAttachmentException = new CourseAttachmentServiceException(exception);
-
-            this.storageBrokerMock.Setup(broker =>
+            var serviceException = new Exception();
+            var expectedCourseAttachmentException = new CourseAttachmentServiceException(serviceException);
+               this.storageBrokerMock.Setup(broker =>
                 broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<CourseAttachment> removeCourseAttachmentTask =
@@ -170,8 +172,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCourseAttachmentException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteCourseAttachmentAsync(It.IsAny<CourseAttachment>()),
