@@ -39,7 +39,6 @@ namespace OtripleS.Web.Api.Infrastructure.Build
                     Build = new BuildJob
                     {
                         RunsOn = BuildMachines.Windows2022,
-                        TimeoutInMinutes = 1,
 
                         Steps = new List<GithubTask>
                         {
