@@ -25,9 +25,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
                 broker.SelectAllStudentExamFees())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<StudentExamFeeDependencyException>(() =>
-                this.studentExamFeeService.RetrieveAllStudentExamFees());
+            // when
+            Action retrieveAllStudentExamFeesAction = () =>
+                this.studentExamFeeService.RetrieveAllStudentExamFees();
+
+            // then
+            Assert.Throws<StudentExamFeeDependencyException>(
+                retrieveAllStudentExamFeesAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentExamFees(),
@@ -55,9 +59,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
                 broker.SelectAllStudentExamFees())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<StudentExamFeeServiceException>(() =>
-                this.studentExamFeeService.RetrieveAllStudentExamFees());
+            // when
+            Action retrieveAllStudentExamFeesAction = () =>
+                this.studentExamFeeService.RetrieveAllStudentExamFees();
+
+            // then
+            Assert.Throws<StudentExamFeeServiceException>(
+                retrieveAllStudentExamFeesAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentExamFees(),
