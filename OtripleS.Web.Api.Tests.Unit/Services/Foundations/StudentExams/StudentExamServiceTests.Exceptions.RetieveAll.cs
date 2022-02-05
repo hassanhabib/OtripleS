@@ -34,8 +34,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             Assert.Throws<StudentExamDependencyException>(
                 retrieveAllstudentExamsAction);
 
-
-            this.loggingBrokerMock.Verify(broker =>
+                this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentExamDependencyException))),
                     Times.Once);
 
