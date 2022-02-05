@@ -20,9 +20,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 broker.SelectAllStudentRegistrations())
                     .Throws(sqlException);
 
-            // when . // then
-            Assert.Throws<StudentRegistrationDependencyException>(() =>
-                this.studentRegistrationService.RetrieveAllStudentRegistrations());
+            // when
+            Action retrieveAllStudentRegistrationAction = () =>
+                this.studentRegistrationService.RetrieveAllStudentRegistrations();
+
+            // then
+            Assert.Throws<StudentRegistrationDependencyException>(
+                retrieveAllStudentRegistrationAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
@@ -50,13 +54,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 broker.SelectAllStudentRegistrations())
                     .Throws(exception);
 
-
-            // when
+             // when
             Action retrieveAllStudentRegistrationAction = () =>
                 this.studentRegistrationService.RetrieveAllStudentRegistrations();
 
             // then
-            Assert.Throws<StudentRegistrationDependencyException>(
+            Assert.Throws<StudentRegistrationServiceException>(
                 retrieveAllStudentRegistrationAction);
 
 
