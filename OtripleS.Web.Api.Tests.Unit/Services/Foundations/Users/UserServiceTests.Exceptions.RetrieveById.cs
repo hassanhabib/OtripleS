@@ -137,14 +137,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             // given
             Guid randomUserId = Guid.NewGuid();
             Guid inputUserId = randomUserId;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedUserServiceException =
-                new UserServiceException(exception);
+                new UserServiceException(serviceException);
 
             this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(inputUserId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<User> retrieveUserTask =
