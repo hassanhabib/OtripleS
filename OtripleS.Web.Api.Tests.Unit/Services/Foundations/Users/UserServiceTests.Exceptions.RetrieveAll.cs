@@ -54,14 +54,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedUserServiceException =
-                new UserServiceException(exception);
+                new UserServiceException(serviceException);
 
             this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectAllUsers())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when . then
             Assert.Throws<UserServiceException>(() =>
