@@ -117,10 +117,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
             Guardian randomGuardian = CreateRandomGuardian(dateTime);
             Guardian inputGuardian = randomGuardian;
             inputGuardian.UpdatedBy = inputGuardian.CreatedBy;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedGuardianServiceException =
-                new GuardianServiceException(exception);
+                new GuardianServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -128,7 +128,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertGuardianAsync(inputGuardian))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Guardian> createGuardianTask =
