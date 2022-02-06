@@ -103,14 +103,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
             // given
             Guid randomGuardianId = Guid.NewGuid();
             Guid inputGuardianId = randomGuardianId;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedGuardianServiceException =
-                new GuardianServiceException(exception);
+                new GuardianServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectGuardianByIdAsync(inputGuardianId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Guardian> retrieveGuardianByIdTask =
