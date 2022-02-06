@@ -165,8 +165,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             Registration someRegistration = CreateRandomRegistration(dateTime: randomDateTime);
             Guid someRegistrationId = someRegistration.Id;
             Registration storageRegistration = someRegistration;
-            var exception = new Exception();
-            var expectedServiceException = new RegistrationServiceException(exception);
+            var serviceException = new Exception();
+            var expectedServiceException = new RegistrationServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()))
@@ -174,7 +174,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
 
             this.storageBrokerMock.Setup(broker =>
                 broker.DeleteRegistrationAsync(It.IsAny<Registration>()))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Registration> deleteRegistrationTask =
