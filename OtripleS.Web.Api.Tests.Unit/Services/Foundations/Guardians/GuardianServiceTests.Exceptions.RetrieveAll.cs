@@ -25,9 +25,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
                 broker.SelectAllGuardians())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<GuardianDependencyException>(() =>
-                this.guardianService.RetrieveAllGuardians());
+            // when
+            Action retrieveAllGuardiansAction = () =>
+                this.guardianService.RetrieveAllGuardians();
+
+            // then
+            Assert.Throws<GuardianDependencyException>(
+                retrieveAllGuardiansAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
@@ -60,9 +64,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
                 broker.SelectAllGuardians())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<GuardianServiceException>(() =>
-                this.guardianService.RetrieveAllGuardians());
+            // when
+            Action retrieveAllGuardiansAction = () =>
+                this.guardianService.RetrieveAllGuardians();
+
+            // then
+            Assert.Throws<GuardianServiceException>(
+                retrieveAllGuardiansAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
