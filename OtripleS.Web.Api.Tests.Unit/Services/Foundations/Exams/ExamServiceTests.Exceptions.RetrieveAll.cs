@@ -64,9 +64,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 broker.SelectAllExams())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<ExamServiceException>(() =>
-                this.examService.RetrieveAllExams());
+            // when
+            Action retrieveAllExamsAction = () =>
+                this.examService.RetrieveAllExams();
+
+            // then
+            Assert.Throws<ExamServiceException>(
+                retrieveAllExamsAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
