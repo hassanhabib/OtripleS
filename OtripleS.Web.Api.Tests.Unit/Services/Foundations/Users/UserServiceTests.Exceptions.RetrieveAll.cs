@@ -29,13 +29,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 broker.SelectAllUsers())
                     .Throws(sqlException);
 
-         
             // when
             Action retrieveAllUsersAction = () =>
                 this.userService.RetrieveAllUsers();
 
             // then
-            Assert.Throws<UserServiceException>(
+            Assert.Throws<UserDependencyException>(
                 retrieveAllUsersAction);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -67,8 +66,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectAllUsers())
                     .Throws(exception);
-
-            
 
             // when
             Action retrieveAllUsersAction = () =>
