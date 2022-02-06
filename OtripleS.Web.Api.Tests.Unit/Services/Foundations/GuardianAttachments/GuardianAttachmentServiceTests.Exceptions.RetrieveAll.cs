@@ -35,8 +35,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
                 retrieveAllGuardianAttachmentAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedGuardianAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedGuardianAttachmentDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllGuardianAttachments(),
@@ -65,8 +66,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
                 this.guardianAttachmentService.RetrieveAllGuardianAttachments());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianAttachmentServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllGuardianAttachments(),
