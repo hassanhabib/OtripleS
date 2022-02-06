@@ -34,7 +34,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             Assert.Throws<StudentGuardianDependencyException>(
                 retrieveAllStudentGuardiansAction);
 
-
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentGuardianDependencyException))),
                     Times.Once);
