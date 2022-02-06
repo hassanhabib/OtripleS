@@ -60,7 +60,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
 
             invalidClassroomException.AddData(
                 key: nameof(Classroom.Status),
-                values: "Value is not recognized");
+                values: "Value is not recognized"
+                );
 
             var exceptedClassroomValidationException = new 
                 ClassroomValidationException(invalidClassroomException);

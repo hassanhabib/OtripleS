@@ -80,8 +80,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
 
         public static T GetInvalidEnum<T>()
         {
-            int randomNumber = GetRandomNumber();
-            while(Enum.IsDefined(typeof(T), randomNumber) is false)
+            int randomNumber = GetLocalRandomNumber();
+            while(Enum.IsDefined(typeof(T), randomNumber) is true)
             {
                 randomNumber = GetLocalRandomNumber();
             }
