@@ -71,8 +71,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                 this.classroomService.RetrieveAllClassrooms());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedClassroomServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllClassrooms(),
