@@ -113,10 +113,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             Contact randomContact = CreateRandomContact(dateTime);
             Contact inputContact = randomContact;
             inputContact.UpdatedBy = inputContact.CreatedBy;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedContactServiceException =
-                new ContactServiceException(exception);
+                new ContactServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -124,7 +124,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertContactAsync(inputContact))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Contact> registerContactTask =
