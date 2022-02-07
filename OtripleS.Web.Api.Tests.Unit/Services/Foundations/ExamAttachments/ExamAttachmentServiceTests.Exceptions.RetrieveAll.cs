@@ -33,6 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
             Assert.Throws<ExamAttachmentDependencyException>(
                 retrieveAllExamAttachmentsAction); 
 
+
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllExamAttachments(),
                     Times.Once);
