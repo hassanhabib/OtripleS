@@ -160,7 +160,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 new FailedAssignmentAttachmentServiceException(serviceException);
 
             var expectedAssignmentAttachmentException = 
-                new AssignmentAttachmentServiceException(FailedAssignmentAttachmentServiceException);
+                new AssignmentAttachmentServiceException(failedAssignmentAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAssignmentAttachmentByIdAsync(someAssignmentId, someAttachmentId))
