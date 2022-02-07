@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
             Assert.Throws<AttachmentDependencyException>(
                 retrieveAllAttachmentsAction);
 
-            this.storageBrokerMock.Verify(broker =>
+           this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAttachments(),
                     Times.Once);
 
@@ -51,14 +51,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
         public void ShouldThrowServiceExceptionOnRetrieveAllAttachmentsWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedAttachmentServiceException =
-                new AttachmentServiceException(exception);
+                new AttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAttachments())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when
             Action retrieveAllAttachmentsAction = () =>
