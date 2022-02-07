@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
         {
             // given
             DateTimeOffset dateTimeOffset = GetRandomDateTime();
-            Guid randomGuardianId = default;
+            Guid randomGuardianId = Guid.Empty;
             Guid inputGuardianId = randomGuardianId;
 
             var invalidGuardianException = new InvalidGuardianException(
