@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         {
             // given
             Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomGuardianId = default;
+            Guid randomGuardianId = Guid.Empty;
             Guid inputAttachmentId = randomAttachmentId;
             Guid inputGuardianId = randomGuardianId;
 
