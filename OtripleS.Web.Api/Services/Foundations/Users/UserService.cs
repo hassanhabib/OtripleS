@@ -16,16 +16,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
     public partial class UserService : IUserService
     {
         private readonly IUserManagementBroker userManagementBroker;
-        private readonly ILoggingBroker loggingBroker;
         private readonly IDateTimeBroker dateTimeBroker;
+        private readonly ILoggingBroker loggingBroker;
 
-        public UserService(IUserManagementBroker userManagementBroker,
-            ILoggingBroker loggingBroker,
-            IDateTimeBroker dateTimeBroker)
+        public UserService(
+            IUserManagementBroker userManagementBroker,
+            IDateTimeBroker dateTimeBroker,
+            ILoggingBroker loggingBroker)
         {
             this.userManagementBroker = userManagementBroker;
-            this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
+            this.loggingBroker = loggingBroker;
         }
 
         public ValueTask<User> RemoveUserByIdAsync(Guid userId) =>

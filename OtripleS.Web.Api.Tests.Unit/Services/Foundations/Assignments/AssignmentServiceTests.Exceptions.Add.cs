@@ -33,8 +33,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertAssignmentAsync(It.IsAny<Assignment>()))
-                    .ThrowsAsync(sqlException);
+                broker.InsertAssignmentAsync(
+                    It.IsAny<Assignment>()))
+                        .ThrowsAsync(sqlException);
 
             // when
             ValueTask<Assignment> createAssignmentTask =
@@ -49,12 +50,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAssignmentAsync(It.IsAny<Assignment>()),
-                    Times.Once);
+                broker.InsertAssignmentAsync(
+                    It.IsAny<Assignment>()),
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedAssignmentDependencyException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -79,8 +82,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertAssignmentAsync(It.IsAny<Assignment>()))
-                    .ThrowsAsync(databaseUpdateException);
+                broker.InsertAssignmentAsync(
+                    It.IsAny<Assignment>()))
+                        .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<Assignment> createAssignmentTask =
@@ -95,12 +99,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAssignmentAsync(It.IsAny<Assignment>()),
-                    Times.Once);
+                broker.InsertAssignmentAsync(
+                    It.IsAny<Assignment>()),
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentDependencyException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -125,8 +131,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertAssignmentAsync(It.IsAny<Assignment>()))
-                    .ThrowsAsync(exception);
+                broker.InsertAssignmentAsync(
+                    It.IsAny<Assignment>()))
+                        .ThrowsAsync(exception);
 
             // when
             ValueTask<Assignment> createAssignmentTask =
@@ -141,12 +148,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertAssignmentAsync(It.IsAny<Assignment>()),
-                    Times.Once);
+                broker.InsertAssignmentAsync(
+                    It.IsAny<Assignment>()),
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentServiceException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

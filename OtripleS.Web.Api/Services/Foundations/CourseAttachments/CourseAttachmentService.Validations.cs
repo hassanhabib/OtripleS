@@ -40,7 +40,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
             Guid courseId,
             Guid attachmentId)
         {
-            if (storageCourseAttachment == null)
+            if (storageCourseAttachment is null)
                 throw new NotFoundCourseAttachmentException(courseId, attachmentId);
         }
 

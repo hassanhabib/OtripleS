@@ -19,8 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
         public async void ShouldThrowValidationExceptionOnAddWhenStudentGuardianIsNullAndLogItAsync()
         {
             // given
-            StudentGuardian randomStudentGuardian = default;
-            StudentGuardian nullStudentGuardian = randomStudentGuardian;
+            StudentGuardian invalidStudentGuardian = null;
+            
             var nullStudentGuardianException = new NullStudentGuardianException();
 
             var expectedStudentGuardianValidationException =
@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
 
             // when
             ValueTask<StudentGuardian> addStudentGuardianTask =
-                this.studentGuardianService.AddStudentGuardianAsync(nullStudentGuardian);
+                this.studentGuardianService.AddStudentGuardianAsync(invalidStudentGuardian);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>

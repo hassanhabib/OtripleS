@@ -40,8 +40,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
                 deleteCalendarTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedCalendarDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedCalendarDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCalendarByIdAsync(inputCalendarId),
@@ -76,8 +77,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
                 deleteCalendarTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCalendarDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCalendarByIdAsync(inputCalendarId),
@@ -113,8 +115,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
                 deleteCalendarTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCalendarDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCalendarByIdAsync(inputCalendarId),
@@ -131,14 +134,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             // given
             Guid randomCalendarId = Guid.NewGuid();
             Guid inputCalendarId = randomCalendarId;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedCalendarServiceException =
-                new CalendarServiceException(exception);
+                new CalendarServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectCalendarByIdAsync(inputCalendarId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Calendar> deleteCalendarTask =
@@ -149,8 +152,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
                 deleteCalendarTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCalendarServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCalendarByIdAsync(inputCalendarId),
