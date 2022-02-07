@@ -25,9 +25,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
                 broker.SelectAllRegistrations())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<RegistrationDependencyException>(() =>
-                this.registrationService.RetrieveAllRegistrations());
+            // when
+            Action retrieveAllRegistrations = () =>
+                this.registrationService.RetrieveAllRegistrations();
+
+            // then
+            Assert.Throws<RegistrationDependencyException>(
+                retrieveAllRegistrations);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllRegistrations(),
@@ -46,18 +50,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
         public void ShouldThrowServiceExceptionOnRetrieveAllRegistrationsWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedRegistrationServiceException =
-                new RegistrationServiceException(exception);
+                new RegistrationServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllRegistrations())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<RegistrationServiceException>(() =>
-                this.registrationService.RetrieveAllRegistrations());
+            // when
+            Action retrieveAllRegistrations = () =>
+                this.registrationService.RetrieveAllRegistrations();
+
+            // then
+            Assert.Throws<RegistrationServiceException>(
+                retrieveAllRegistrations);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllRegistrations(),

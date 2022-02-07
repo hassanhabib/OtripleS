@@ -98,14 +98,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             // given
             UserContact randomUserContact = CreateRandomUserContact();
             UserContact inputUserContact = randomUserContact;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedUserContactServiceException =
-                new UserContactServiceException(exception);
+                new UserContactServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertUserContactAsync(inputUserContact))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<UserContact> addUserContactTask =

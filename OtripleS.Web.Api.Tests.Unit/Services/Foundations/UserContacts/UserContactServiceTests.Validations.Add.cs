@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         public async void ShouldThrowValidationExceptionOnAddIfUserContactIsNullAndLogItAsync()
         {
             // given
-            UserContact nullUserContact = null;
+            UserContact invalidUserContact = null;
             var nullUserContactException = new NullUserContactException();
 
             var expectedUserContactValidationException =
@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
 
             // when
             ValueTask<UserContact> addUserContactTask =
-                this.userContactService.AddUserContactAsync(nullUserContact);
+                this.userContactService.AddUserContactAsync(invalidUserContact);
 
             // then
             await Assert.ThrowsAsync<UserContactValidationException>(() =>

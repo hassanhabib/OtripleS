@@ -34,7 +34,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             Assert.Throws<StudentGuardianDependencyException>(
                 retrieveAllStudentGuardianAction);
 
-
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(expectedStudentGuardianDependencyException))),
                     Times.Once);
@@ -56,14 +55,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedStudentGuardianServiceException =
-                new StudentGuardianServiceException(exception);
+                new StudentGuardianServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudentGuardians())
-                    .Throws(exception);
+                    .Throws(serviceException);
+
+            // when
+            Action retrieveAllStudentGuardiansAction = () =>
+                this.studentGuardianService.RetrieveAllStudentGuardians();
 
             // when
             Action retrieveAllStudentGuardianAction = () =>

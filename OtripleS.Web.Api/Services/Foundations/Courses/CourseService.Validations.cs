@@ -214,7 +214,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
 
         private static void ValidateStorageCourse(Course storageCourse, Guid courseId)
         {
-            if (storageCourse == null)
+            if (storageCourse is null)
             {
                 throw new NotFoundCourseException(courseId);
             }
