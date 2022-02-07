@@ -101,14 +101,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             var randomTeacherId = Guid.NewGuid();
             Guid inputContactId = randomContactId;
             Guid inputTeacherId = randomTeacherId;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedTeacherContactException =
-                new TeacherContactServiceException(exception);
+                new TeacherContactServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<TeacherContact> retrieveTeacherContactTask =

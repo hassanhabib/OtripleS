@@ -115,10 +115,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             Fee randomFee = CreateRandomFee(dateTime);
             Fee inputFee = randomFee;
             inputFee.UpdatedBy = inputFee.CreatedBy;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedFeeServiceException =
-                new FeeServiceException(exception);
+                new FeeServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -126,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertFeeAsync(inputFee))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Fee> createFeeTask =

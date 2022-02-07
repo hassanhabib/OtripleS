@@ -91,12 +91,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
             // given
             TeacherAttachment randomTeacherAttachment = CreateRandomTeacherAttachment();
             TeacherAttachment inputTeacherAttachment = randomTeacherAttachment;
-            var exception = new Exception();
-            var expectedTeacherAttachmentServiceException = new TeacherAttachmentServiceException(exception);
+            var serviceException = new Exception();
+            var expectedTeacherAttachmentServiceException = new TeacherAttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertTeacherAttachmentAsync(inputTeacherAttachment))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<TeacherAttachment> addTeacherAttachmentTask =

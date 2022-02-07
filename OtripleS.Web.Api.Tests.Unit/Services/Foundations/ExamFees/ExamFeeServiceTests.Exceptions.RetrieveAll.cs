@@ -25,9 +25,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                 broker.SelectAllExamFees())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<ExamFeeDependencyException>(() =>
-                this.examFeeService.RetrieveAllExamFees());
+            // when
+            Action retrieveAllExamFeesAction = () =>
+                this.examFeeService.RetrieveAllExamFees();
+
+            // then
+            Assert.Throws<ExamFeeDependencyException>(
+                retrieveAllExamFeesAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllExamFees(),
@@ -46,18 +50,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
         public void ShouldThrowServiceExceptionOnRetrieveAllExamFeesWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedExamFeeServiceException =
-                new ExamFeeServiceException(exception);
+                new ExamFeeServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllExamFees())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<ExamFeeServiceException>(() =>
-                this.examFeeService.RetrieveAllExamFees());
+            // when
+            Action retrieveAllExamFeesAction = () =>
+                this.examFeeService.RetrieveAllExamFees();
+
+            // then
+            Assert.Throws<ExamFeeServiceException>(
+                retrieveAllExamFeesAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllExamFees(),
