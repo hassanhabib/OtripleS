@@ -42,8 +42,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedCourseAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedCourseAttachmentDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -77,8 +78,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCourseAttachmentDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -90,14 +92,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
         {
             // given
             CourseAttachment someCourseAttachment = CreateRandomCourseAttachment();
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedCourseAttachmentServiceException =
-                new CourseAttachmentServiceException(exception);
+                new CourseAttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertCourseAttachmentAsync(It.IsAny<CourseAttachment>()))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<CourseAttachment> addCourseAttachmentTask =
@@ -112,8 +114,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCourseAttachmentServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

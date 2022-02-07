@@ -118,10 +118,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
             inputStudentSemesterCourse.UpdatedBy = inputStudentSemesterCourse.CreatedBy;
             inputStudentSemesterCourse.UpdatedDate = inputStudentSemesterCourse.CreatedDate;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedStudentSemesterCourseServiceException =
-                new StudentSemesterCourseServiceException(exception);
+                new StudentSemesterCourseServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -129,7 +129,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =

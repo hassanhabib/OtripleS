@@ -91,14 +91,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             // given
             TeacherContact randomTeacherContact = CreateRandomTeacherContact();
             TeacherContact inputTeacherContact = randomTeacherContact;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedTeacherContactServiceException =
-                new TeacherContactServiceException(exception);
+                new TeacherContactServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertTeacherContactAsync(inputTeacherContact))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<TeacherContact> addTeacherContactTask =
