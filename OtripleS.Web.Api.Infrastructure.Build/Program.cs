@@ -53,7 +53,7 @@ namespace OtripleS.Web.Api.Infrastructure.Build
 
                                 TargetDotNetVersion = new TargetDotNetVersion
                                 {
-                                    DotNetVersion = "6.0.100"
+                                    DotNetVersion = "6.0.101"
                                 }
                             },
 

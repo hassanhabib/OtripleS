@@ -18,8 +18,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
         public async void ShouldThrowValidationExceptionOnAddWhenStudentContactIsNullAndLogItAsync()
         {
             // given
-            StudentContact randomStudentContact = default;
-            StudentContact nullStudentContact = randomStudentContact;
+            StudentContact invalidStudentContact = null;
+          
             var nullStudentContactException = new NullStudentContactException();
 
             var expectedStudentContactValidationException =
@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
 
             // when
             ValueTask<StudentContact> addStudentContactTask =
-                this.studentContactService.AddStudentContactAsync(nullStudentContact);
+                this.studentContactService.AddStudentContactAsync(invalidStudentContact);
 
             // then
             await Assert.ThrowsAsync<StudentContactValidationException>(() =>
