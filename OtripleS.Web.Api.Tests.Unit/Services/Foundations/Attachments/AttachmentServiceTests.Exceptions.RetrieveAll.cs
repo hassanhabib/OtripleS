@@ -25,21 +25,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 broker.SelectAllAttachments())
                     .Throws(sqlException);
 
-             //When
+            // When
              Action retrieveAllAttachmentAction = () =>
-                this.attachmentService.RetrieveAllAttachments();
+             this.attachmentService.RetrieveAllAttachments();
 
             // then
             Assert.Throws<AttachmentDependencyException>(
-                retrieveAllAttachmentAction);
+               retrieveAllAttachmentAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAttachments(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedAttachmentDependencyException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -72,8 +73,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentServiceException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();

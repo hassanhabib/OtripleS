@@ -23,20 +23,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
     public partial class CalendarServiceTests
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
-        private readonly ICalendarService calendarService;
-        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
-
+        private readonly Mock<ILoggingBroker> loggingBrokerMock;
+        private readonly ICalendarService calendarService;
         public CalendarServiceTests()
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
-            this.loggingBrokerMock = new Mock<ILoggingBroker>();
             this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
+            this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
             this.calendarService = new CalendarService(
                 storageBroker: this.storageBrokerMock.Object,
-                loggingBroker: this.loggingBrokerMock.Object,
-                dateTimeBroker: this.dateTimeBrokerMock.Object);
+                dateTimeBroker: this.dateTimeBrokerMock.Object,
+                loggingBroker: this.loggingBrokerMock.Object);
         }
 
         private static Calendar CreateRandomCalendar(DateTimeOffset dates) =>

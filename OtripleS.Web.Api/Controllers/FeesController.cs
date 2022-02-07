@@ -28,10 +28,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Fee persistedFee =
+                Fee addedFee =
                     await this.feeService.AddFeeAsync(fee);
 
-                return Created(persistedFee);
+                return Created(addedFee);
             }
             catch (FeeValidationException feeValidationException)
                 when (feeValidationException.InnerException is AlreadyExistsFeeException)

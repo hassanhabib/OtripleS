@@ -19,8 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         public async void ShouldThrowValidationExceptionOnCreateWhenTeacherIsNullAndLogItAsync()
         {
             // given
-            Teacher randomTeacher = null;
-            Teacher nullTeacher = randomTeacher;
+            Teacher invalidTeacher = null;
+            
             var nullTeacherException = new NullTeacherException();
 
             var expectedTeacherValidationException =
@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             // when
             ValueTask<Teacher> createTeacherTask =
-                this.teacherService.CreateTeacherAsync(nullTeacher);
+                this.teacherService.CreateTeacherAsync(invalidTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() =>

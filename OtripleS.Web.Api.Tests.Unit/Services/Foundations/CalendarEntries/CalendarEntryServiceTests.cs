@@ -23,15 +23,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
     public partial class CalendarEntryServiceTests
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
-        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
+        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly ICalendarEntryService calendarEntryService;
 
         public CalendarEntryServiceTests()
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
-            this.loggingBrokerMock = new Mock<ILoggingBroker>();
             this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
+            this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
             this.calendarEntryService = new CalendarEntryService(
                 storageBroker: this.storageBrokerMock.Object,

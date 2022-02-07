@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
             CalendarEntryAttachment storageCalendarEntryAttachment,
             Guid calendarEntryId, Guid attachmentId)
         {
-            if (storageCalendarEntryAttachment == null)
+            if (storageCalendarEntryAttachment is null)
                 throw new NotFoundCalendarEntryAttachmentException(calendarEntryId, attachmentId);
         }
 
