@@ -22,20 +22,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
     public partial class StudentGuardianServiceTests
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
-        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
+        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly IStudentGuardianService studentGuardianService;
 
         public StudentGuardianServiceTests()
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
-            this.loggingBrokerMock = new Mock<ILoggingBroker>();
             this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
+            this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
             this.studentGuardianService = new StudentGuardianService(
                 storageBroker: this.storageBrokerMock.Object,
-                loggingBroker: this.loggingBrokerMock.Object,
-                dateTimeBroker: this.dateTimeBrokerMock.Object);
+                dateTimeBroker: this.dateTimeBrokerMock.Object,
+                loggingBroker: this.loggingBrokerMock.Object);
         }
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();

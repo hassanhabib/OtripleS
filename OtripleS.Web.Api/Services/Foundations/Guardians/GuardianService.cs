@@ -16,16 +16,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Guardians
     public partial class GuardianService : IGuardianService
     {
         private readonly IStorageBroker storageBroker;
-        private readonly ILoggingBroker loggingBroker;
         private readonly IDateTimeBroker dateTimeBroker;
+        private readonly ILoggingBroker loggingBroker;
 
-        public GuardianService(IStorageBroker storageBroker,
-            ILoggingBroker loggingBroker,
-            IDateTimeBroker dateTimeBroker)
+        public GuardianService(
+            IStorageBroker storageBroker,
+            IDateTimeBroker dateTimeBroker,
+            ILoggingBroker loggingBroker)
         {
             this.storageBroker = storageBroker;
-            this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
+            this.loggingBroker = loggingBroker;
         }
 
         public IQueryable<Guardian> RetrieveAllGuardians() =>

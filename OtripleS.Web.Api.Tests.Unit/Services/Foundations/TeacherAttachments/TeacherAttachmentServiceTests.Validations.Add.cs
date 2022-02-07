@@ -18,8 +18,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
         public async void ShouldThrowValidationExceptionOnAddWhenTeacherAttachmentIsNullAndLogItAsync()
         {
             // given
-            TeacherAttachment randomTeacherAttachment = default;
-            TeacherAttachment nullTeacherAttachment = randomTeacherAttachment;
+            TeacherAttachment invalidTeacherAttachment = null;
+            
             var nullTeacherAttachmentException = new NullTeacherAttachmentException();
 
             var expectedTeacherAttachmentValidationException =
@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
 
             // when
             ValueTask<TeacherAttachment> addTeacherAttachmentTask =
-                this.teacherAttachmentService.AddTeacherAttachmentAsync(nullTeacherAttachment);
+                this.teacherAttachmentService.AddTeacherAttachmentAsync(invalidTeacherAttachment);
 
             // then
             await Assert.ThrowsAsync<TeacherAttachmentValidationException>(() =>

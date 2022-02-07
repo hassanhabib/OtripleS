@@ -104,10 +104,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam randomStudentExam = CreateRandomStudentExam(dateTime);
             StudentExam inputStudentGuardian = randomStudentExam;
             inputStudentGuardian.UpdatedBy = inputStudentGuardian.CreatedBy;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedStudentGuardianServiceException =
-                new StudentExamServiceException(exception);
+                new StudentExamServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -115,7 +115,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertStudentExamAsync(inputStudentGuardian))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<StudentExam> addStudentGuardianTask =

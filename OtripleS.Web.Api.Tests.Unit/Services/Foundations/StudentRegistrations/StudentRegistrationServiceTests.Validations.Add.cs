@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
         public async void ShouldThrowValidationExceptionOnAddWhenStudentRegistrationIsNullAndLogItAsync()
         {
             // given
-            StudentRegistration nullStudentRegistration = default;
+            StudentRegistration invalidStudentRegistration = null;
             var nullStudentRegistrationException = new NullStudentRegistrationException();
 
             var expectedStudentRegistrationValidationException =
@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
 
             // when
             ValueTask<StudentRegistration> addStudentRegistrationTask =
-                this.studentRegistrationService.AddStudentRegistrationAsync(nullStudentRegistration);
+                this.studentRegistrationService.AddStudentRegistrationAsync(invalidStudentRegistration);
 
             // then
             await Assert.ThrowsAsync<StudentRegistrationValidationException>(() =>

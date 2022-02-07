@@ -23,20 +23,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
     public partial class AssignmentServiceTests
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
-        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
+        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly IAssignmentService assignmentService;
 
         public AssignmentServiceTests()
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
-            this.loggingBrokerMock = new Mock<ILoggingBroker>();
             this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
+            this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
             this.assignmentService = new AssignmentService(
                 storageBroker: this.storageBrokerMock.Object,
-                loggingBroker: this.loggingBrokerMock.Object,
-                dateTimeBroker: this.dateTimeBrokerMock.Object);
+                dateTimeBroker: this.dateTimeBrokerMock.Object,
+                loggingBroker: this.loggingBrokerMock.Object);
         }
 
         private static DateTimeOffset GetRandomDateTime() =>
