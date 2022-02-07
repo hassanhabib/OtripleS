@@ -19,8 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
         public async void ShouldThrowValidationExceptionOnAddWhenRegistrationIsNullAndLogItAsync()
         {
             // given
-            Registration randomRegistration = default;
-            Registration nullRegistration = randomRegistration;
+            Registration invalidRegistration = null;
+            
             var nullRegistrationException = new NullRegistrationException();
 
             var expectedRegistrationValidationException =
@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
 
             // when
             ValueTask<Registration> createRegistrationTask =
-                this.registrationService.AddRegistrationAsync(nullRegistration);
+                this.registrationService.AddRegistrationAsync(invalidRegistration);
 
             // then
             await Assert.ThrowsAsync<RegistrationValidationException>(() =>

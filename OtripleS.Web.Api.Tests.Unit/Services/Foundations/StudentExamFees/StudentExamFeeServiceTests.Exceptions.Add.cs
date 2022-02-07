@@ -115,10 +115,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             StudentExamFee someStudentExamFee = CreateRandomStudentExamFee(dateTime);
             someStudentExamFee.UpdatedBy = someStudentExamFee.CreatedBy;
             someStudentExamFee.UpdatedDate = someStudentExamFee.CreatedDate;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedStudentExamFeeServiceException =
-                new StudentExamFeeServiceException(exception);
+                new StudentExamFeeServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -126,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertStudentExamFeeAsync(It.IsAny<StudentExamFee>()))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<StudentExamFee> createStudentExamFeeTask =

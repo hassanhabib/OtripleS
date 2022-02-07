@@ -46,12 +46,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAssignmentAttachmentByIdAsync(
+                    It.IsAny<Guid>(), 
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteAssignmentAttachmentAsync(It.IsAny<AssignmentAttachment>()),
-                    Times.Never);
+                broker.DeleteAssignmentAttachmentAsync(
+                    It.IsAny<AssignmentAttachment>()),
+                        Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -84,16 +87,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 removeAssignmentAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
-                    Times.Never);
+                broker.SelectAssignmentAttachmentByIdAsync(
+                    It.IsAny<Guid>(), 
+                    It.IsAny<Guid>()),
+                        Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteAssignmentAttachmentAsync(It.IsAny<AssignmentAttachment>()),
-                    Times.Never);
+                broker.DeleteAssignmentAttachmentAsync(
+                    It.IsAny<AssignmentAttachment>()),
+                        Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -130,16 +137,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 removeAssignmentAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
-                    Times.Once);
+                broker.SelectAssignmentAttachmentByIdAsync(
+                    It.IsAny<Guid>(), 
+                    It.IsAny<Guid>()),
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.DeleteAssignmentAttachmentAsync(It.IsAny<AssignmentAttachment>()),
-                    Times.Never);
+                broker.DeleteAssignmentAttachmentAsync(
+                    It.IsAny<AssignmentAttachment>()),
+                        Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

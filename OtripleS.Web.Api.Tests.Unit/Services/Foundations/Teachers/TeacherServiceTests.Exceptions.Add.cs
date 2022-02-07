@@ -115,10 +115,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher randomTeacher = CreateRandomTeacher(dateTime);
             Teacher inputTeacher = randomTeacher;
             inputTeacher.UpdatedBy = inputTeacher.CreatedBy;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedTeacherServiceException =
-                new TeacherServiceException(exception);
+                new TeacherServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -126,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertTeacherAsync(inputTeacher))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Teacher> createTeacherTask =

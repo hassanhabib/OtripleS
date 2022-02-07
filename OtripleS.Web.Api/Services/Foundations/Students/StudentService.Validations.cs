@@ -90,23 +90,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             Message = "Date is not recent"
         };
 
-        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
-        {
-            var invalidStudentException = new InvalidStudentException();
-
-            foreach ((dynamic rule, string parameter) in validations)
-            {
-                if (rule.Condition)
-                {
-                    invalidStudentException.UpsertDataList(
-                        key: parameter,
-                        value: rule.Message);
-                }
-            }
-
-            invalidStudentException.ThrowIfContainsErrors();
-        }
-
         private static void ValidateStudentId(Guid studentId)
         {
             if (studentId == Guid.Empty)
@@ -119,7 +102,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 
         private static void ValidateStorageStudent(Student storageStudent, Guid studentId)
         {
-            if (storageStudent == null)
+            if (storageStudent is null)
             {
                 throw new NotFoundStudentException(studentId);
             }
@@ -187,5 +170,22 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
         private static bool IsInvalid(Guid input) => input == default;
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidStudentException = new InvalidStudentException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidStudentException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidStudentException.ThrowIfContainsErrors();
+        }
     }
 }

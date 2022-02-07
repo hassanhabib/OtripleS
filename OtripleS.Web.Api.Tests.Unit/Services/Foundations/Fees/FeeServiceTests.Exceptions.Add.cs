@@ -45,8 +45,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
                 createFeeTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedFeeDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedFeeDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertFeeAsync(inputFee),
@@ -91,8 +92,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
                 createFeeTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedFeeDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedFeeDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertFeeAsync(inputFee),
@@ -115,10 +117,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             Fee randomFee = CreateRandomFee(dateTime);
             Fee inputFee = randomFee;
             inputFee.UpdatedBy = inputFee.CreatedBy;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedFeeServiceException =
-                new FeeServiceException(exception);
+                new FeeServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -126,7 +128,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertFeeAsync(inputFee))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Fee> createFeeTask =
@@ -137,8 +139,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
                 createFeeTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedFeeServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedFeeServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertFeeAsync(inputFee),

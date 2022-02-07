@@ -39,8 +39,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
                 retrieveGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectGuardianByIdAsync(inputGuardianId),
@@ -79,8 +80,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
                 retrieveGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectGuardianByIdAsync(inputGuardianId),
@@ -101,14 +103,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
             // given
             Guid randomGuardianId = Guid.NewGuid();
             Guid inputGuardianId = randomGuardianId;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedGuardianServiceException =
-                new GuardianServiceException(exception);
+                new GuardianServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectGuardianByIdAsync(inputGuardianId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Guardian> retrieveGuardianByIdTask =
@@ -119,8 +121,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
                 retrieveGuardianByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectGuardianByIdAsync(inputGuardianId),

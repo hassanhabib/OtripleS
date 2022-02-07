@@ -25,13 +25,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
                 broker.SelectAllCalendars())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<CalendarDependencyException>(() =>
-                this.calendarService.RetrieveAllCalendars());
+            // when
+           Action retrieveAllCalendarAction = () =>
+                this.calendarService.RetrieveAllCalendars();
+
+            // then
+            Assert.Throws<CalendarDependencyException>(
+                retrieveAllCalendarAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedCalendarDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedCalendarDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCalendars(),
@@ -50,22 +55,27 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedCalendarServiceException =
-                new CalendarServiceException(exception);
+                new CalendarServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllCalendars())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<CalendarServiceException>(() =>
-                this.calendarService.RetrieveAllCalendars());
+            // when
+           Action retrieveAllCalendarAction = () =>
+                this.calendarService.RetrieveAllCalendars();
+
+            // then
+            Assert.Throws<CalendarServiceException>(
+                retrieveAllCalendarAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCalendarServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCalendarServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCalendars(),

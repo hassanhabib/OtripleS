@@ -28,10 +28,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Registration persistedRegistration =
+                Registration addedRegistration =
                     await this.registrationService.AddRegistrationAsync(registration);
 
-                return Created(persistedRegistration);
+                return Created(addedRegistration);
             }
             catch (RegistrationValidationException registrationValidationException)
                 when (registrationValidationException.InnerException is AlreadyExistsRegistrationException)

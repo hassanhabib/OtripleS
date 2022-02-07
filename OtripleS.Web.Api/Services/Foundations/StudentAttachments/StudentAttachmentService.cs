@@ -16,17 +16,16 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentAttachments
     public partial class StudentAttachmentService : IStudentAttachmentService
     {
         private readonly IStorageBroker storageBroker;
-        private readonly ILoggingBroker loggingBroker;
         private readonly IDateTimeBroker dateTimeBroker;
-
+        private readonly ILoggingBroker loggingBroker;
         public StudentAttachmentService(
             IStorageBroker storageBroker,
-            ILoggingBroker loggingBroker,
-            IDateTimeBroker dateTimeBroker)
+            IDateTimeBroker dateTimeBroker,
+            ILoggingBroker loggingBroker)
         {
             this.storageBroker = storageBroker;
-            this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
+            this.loggingBroker = loggingBroker;
         }
 
         public ValueTask<StudentAttachment> AddStudentAttachmentAsync(StudentAttachment studentAttachment) =>
