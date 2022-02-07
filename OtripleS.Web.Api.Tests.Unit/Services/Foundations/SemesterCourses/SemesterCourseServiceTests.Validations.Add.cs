@@ -18,8 +18,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
         public async void ShouldThrowValidationExceptionOnCreateWhenSemesterCourseIsNullAndLogItAsync()
         {
             // given
-            SemesterCourse randomSemesterCourse = null;
-            SemesterCourse nullSemesterCourse = randomSemesterCourse;
+            SemesterCourse invalidSemesterCourse = null;
+            
             var nullSemesterCourseException = new NullSemesterCourseException();
 
             var expectedSemesterCourseValidationException =
@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
 
             // when
             ValueTask<SemesterCourse> createSemesterCourseTask =
-                this.semesterCourseService.CreateSemesterCourseAsync(nullSemesterCourse);
+                this.semesterCourseService.CreateSemesterCourseAsync(invalidSemesterCourse);
 
             // then
             await Assert.ThrowsAsync<SemesterCourseValidationException>(() =>

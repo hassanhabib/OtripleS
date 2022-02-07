@@ -18,8 +18,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         public async void ShouldThrowValidationExceptionOnAddWhenGuardianAttachmentIsNullAndLogItAsync()
         {
             // given
-            GuardianAttachment randomGuardianAttachment = default;
-            GuardianAttachment nullGuardianAttachment = randomGuardianAttachment;
+            GuardianAttachment invalidGuardianAttachment = null;
+            
             var nullGuardianAttachmentException = new NullGuardianAttachmentException();
 
             var expectedGuardianAttachmentValidationException =
@@ -27,15 +27,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
 
             // when
             ValueTask<GuardianAttachment> addGuardianAttachmentTask =
-                this.guardianAttachmentService.AddGuardianAttachmentAsync(nullGuardianAttachment);
+                this.guardianAttachmentService.AddGuardianAttachmentAsync(invalidGuardianAttachment);
 
             // then
             await Assert.ThrowsAsync<GuardianAttachmentValidationException>(() =>
                 addGuardianAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertGuardianAttachmentAsync(It.IsAny<GuardianAttachment>()),
@@ -69,8 +70,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
                 addGuardianAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertGuardianAttachmentAsync(It.IsAny<GuardianAttachment>()),
@@ -104,8 +106,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
                 addGuardianAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertGuardianAttachmentAsync(It.IsAny<GuardianAttachment>()),
@@ -144,8 +147,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
                 addGuardianAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedGuardianAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertGuardianAttachmentAsync(alreadyExistsGuardianAttachment),
@@ -184,8 +188,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
                 addGuardianAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedGuardianAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertGuardianAttachmentAsync(invalidGuardianAttachment),
