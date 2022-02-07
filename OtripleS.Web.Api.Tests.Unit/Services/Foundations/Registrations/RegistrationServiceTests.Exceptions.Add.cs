@@ -115,10 +115,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             Registration randomRegistration = CreateRandomRegistration(dateTime);
             Registration inputRegistration = randomRegistration;
             inputRegistration.UpdatedBy = inputRegistration.CreatedBy;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedRegistrationServiceException =
-                new RegistrationServiceException(exception);
+                new RegistrationServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -126,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertRegistrationAsync(inputRegistration))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Registration> createRegistrationTask =

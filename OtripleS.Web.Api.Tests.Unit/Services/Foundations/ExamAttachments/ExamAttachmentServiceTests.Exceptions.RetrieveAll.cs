@@ -33,14 +33,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
             Assert.Throws<ExamAttachmentDependencyException>(
                 retrieveAllExamAttachmentsAction);
 
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllExamAttachments(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedExamAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedExamAttachmentDependencyException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -51,14 +51,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
         public void ShouldThrowServiceExceptionOnRetrieveAllExamAttachmentsWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedExamAttachmentServiceException =
-                new ExamAttachmentServiceException(exception);
+                new ExamAttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllExamAttachments())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when
             Action retrieveAllExamAttachmentsAction = () =>
@@ -67,14 +67,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
             // then
             Assert.Throws<ExamAttachmentServiceException>(
                 retrieveAllExamAttachmentsAction);
-
+           
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllExamAttachments(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamAttachmentServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExamAttachmentServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

@@ -89,8 +89,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
                 addContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertContactAsync(inputContact),
@@ -113,10 +114,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             Contact randomContact = CreateRandomContact(dateTime);
             Contact inputContact = randomContact;
             inputContact.UpdatedBy = inputContact.CreatedBy;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedContactServiceException =
-                new ContactServiceException(exception);
+                new ContactServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -124,7 +125,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertContactAsync(inputContact))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Contact> registerContactTask =
@@ -135,8 +136,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
                 registerContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedContactServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertContactAsync(inputContact),

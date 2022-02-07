@@ -109,10 +109,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom inputClassroom = randomClassroom;
             inputClassroom.UpdatedBy = inputClassroom.CreatedBy;
             inputClassroom.UpdatedDate = inputClassroom.CreatedDate;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedClassroomServiceException =
-                new ClassroomServiceException(exception);
+                new ClassroomServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -120,7 +120,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertClassroomAsync(inputClassroom))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Classroom> createClassroomTask =
@@ -131,8 +131,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                 createClassroomTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedClassroomServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertClassroomAsync(inputClassroom),

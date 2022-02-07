@@ -43,8 +43,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
                 deleteContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedContactDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectContactByIdAsync(inputContactId),
@@ -83,8 +84,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
                 deleteContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectContactByIdAsync(inputContactId),
@@ -124,8 +126,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
                 deleteContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectContactByIdAsync(inputContactId),
@@ -146,14 +149,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             // given
             Guid randomContactId = Guid.NewGuid();
             Guid inputContactId = randomContactId;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedContactServiceException =
-                new ContactServiceException(exception);
+                new ContactServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectContactByIdAsync(inputContactId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Contact> deleteContactTask =
@@ -164,8 +167,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
                 deleteContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedContactServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectContactByIdAsync(inputContactId),

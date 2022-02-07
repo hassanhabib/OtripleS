@@ -129,12 +129,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
             // given
             Guid someAttachmentId = Guid.NewGuid();
             Guid someTeacherId = Guid.NewGuid();
-            var exception = new Exception();
-            var expectedTeacherAttachmentException = new TeacherAttachmentServiceException(exception);
+            var serviceException = new Exception();
+            var expectedTeacherAttachmentException = new TeacherAttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherAttachmentByIdAsync(someTeacherId, someAttachmentId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<TeacherAttachment> retrieveTeacherAttachmentTask =
