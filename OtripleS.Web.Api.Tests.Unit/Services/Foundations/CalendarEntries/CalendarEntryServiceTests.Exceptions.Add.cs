@@ -117,10 +117,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             CalendarEntry randomCalendarEntry = CreateRandomCalendarEntry(dateTime);
             CalendarEntry inputCalendarEntry = randomCalendarEntry;
             inputCalendarEntry.UpdatedBy = inputCalendarEntry.CreatedBy;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedCalendarEntryServiceException =
-                new CalendarEntryServiceException(exception);
+                new CalendarEntryServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -128,7 +128,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertCalendarEntryAsync(inputCalendarEntry))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<CalendarEntry> createCalendarEntryTask =
