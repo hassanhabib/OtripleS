@@ -21,6 +21,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
                 (Rule: IsInvalidX(attendance.AttendanceDate), Parameter: nameof(Attendance.AttendanceDate)),
                 (Rule: IsNotRecent(attendance.AttendanceDate), Parameter: nameof(Attendance.AttendanceDate)),
                 (Rule: IsInvalidX(attendance.Notes), Parameter: nameof(Attendance.Notes)),
+                (Rule: IsInvalidX(attendance.Status), Parameter: nameof(Attendance.Status)),
                 (Rule: IsInvalidX(attendance.CreatedBy), Parameter: nameof(Attendance.CreatedBy)),
                 (Rule: IsInvalidX(attendance.UpdatedBy), Parameter: nameof(Attendance.UpdatedBy)),
                 (Rule: IsInvalidX(attendance.CreatedDate), Parameter: nameof(Attendance.CreatedDate)),
@@ -41,6 +42,8 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             );
         }
 
+      
+
         private void ValidateAttendanceOnModify(Attendance attendance)
         {
             ValidateAttendanceIsNull(attendance);
@@ -50,6 +53,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
                 (Rule: IsInvalidX(attendance.StudentSemesterCourseId), Parameter: nameof(Attendance.StudentSemesterCourseId)),
                 (Rule: IsInvalidX(attendance.AttendanceDate), Parameter: nameof(Attendance.AttendanceDate)),
                 (Rule: IsInvalidX(attendance.Notes), Parameter: nameof(Attendance.Notes)),
+                 (Rule: IsInvalidX(attendance.Status), Parameter: nameof(Attendance.Status)),
                 (Rule: IsInvalidX(attendance.CreatedBy), Parameter: nameof(Attendance.CreatedBy)),
                 (Rule: IsInvalidX(attendance.UpdatedBy), Parameter: nameof(Attendance.UpdatedBy)),
                 (Rule: IsInvalidX(attendance.CreatedDate), Parameter: nameof(Attendance.CreatedDate)),
@@ -86,6 +90,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
         {
             Condition = IsDateNotRecent(dateTimeOffset),
             Message = "Date is not recent"
+        };
+
+        private dynamic IsInvalidX(AttendanceStatus status) => new
+        {
+            Condition = Enum.IsDefined(status) is false,
+            Message = "Value not recognized"
+
         };
 
         private static dynamic IsNotSame(

@@ -136,7 +136,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
 
             invalidAttendanceException.AddData(
                 key: nameof(Attendance.Status),
-                values: "Value is not recognized");
+                values: "Value not recognized");
 
             var expectedAttendanceValidationException = new 
                 AttendanceValidationException(invalidAttendanceException);
@@ -152,18 +152,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             await Assert.ThrowsAsync<AttendanceValidationException>(() =>
                 createAttendanceTask.AsTask());
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(), Times.Once);
-
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameValidationExceptionAs
-                    (expectedAttendanceValidationException))),
+                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
                         Times.Once);
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertAttendanceAsync(It.IsAny<Attendance>()), 
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
