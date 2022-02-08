@@ -61,8 +61,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 EmployeeNumber = invalidText,
                 FirstName = invalidText,
                 MiddleName = invalidText,
-                LastName = invalidText,
-                Status = TeacherStatus.Terminated
+                LastName = invalidText
             };
 
             var invalidTeacherException = new InvalidTeacherException();
@@ -90,10 +89,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             invalidTeacherException.AddData(
                 key: nameof(Teacher.LastName),
                 values: "Text is required");
-
-            invalidTeacherException.AddData(
-                key: nameof(Teacher.Status),
-                values: "Value is invalid");
 
             invalidTeacherException.AddData(
                 key: nameof(Teacher.CreatedDate),
@@ -146,8 +141,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             //given
             DateTimeOffset date = GetRandomDateTime();
             Teacher randomTeacher =  CreateRandomTeacher(date);
-            var invalidTeacher = randomTeacher;
-            invalidTeacher.Status = GetInValidTeacherStatus();
+            Teacher invalidTeacher = randomTeacher;
+            invalidTeacher.Status = GetInValidTeacher<TeacherStatus>();
+
             var invalidTeacherException = new InvalidTeacherException();
                 
             invalidTeacherException.AddData(

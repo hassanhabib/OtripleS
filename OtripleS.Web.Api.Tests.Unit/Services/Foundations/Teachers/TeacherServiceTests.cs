@@ -85,19 +85,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             };
         }
 
-        private static TeacherStatus GetInValidTeacherStatus()
+        private static T GetInValidTeacher<T>()
         {
+            var randomNumber = GetLocalRandomNumber();
+            while (Enum.IsDefined(typeof(T), randomNumber) is true)
+            {
 
-            int maxTeacherStatus = (int)Enum.GetValues(typeof(TeacherStatus))
-                               .Cast<TeacherStatus>().Count();
+                randomNumber = GetLocalRandomNumber();
+            }
 
-            int randomOutOfRangeEnumValue = new IntRange(
-                min: maxTeacherStatus,
-                max: maxTeacherStatus + GetRandomNumber())
-                    .GetValue();
+            return (T)(object)randomNumber;
 
-            return (TeacherStatus)randomOutOfRangeEnumValue;
-        }
+            static int GetLocalRandomNumber() =>
+                new IntRange(min: int.MinValue, max: int.MaxValue).GetValue();
+        }     
+        
 
         private static Filler<Teacher> CreateRandomTeacherFiller(DateTimeOffset dates)
         {
