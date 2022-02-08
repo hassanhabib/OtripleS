@@ -66,7 +66,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime()).
-                Returns(randomDateTime);
+                    Returns(randomDateTime);
 
             //when
             ValueTask<Course> createCourseTask = 
@@ -103,8 +103,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             // given
             var invalidCourse = new Course
             {
-                Name = invalidText,
-                Status = CourseStatus.Unavailable
+                Name = invalidText
             };
 
             var invalidCourseException = new InvalidCourseException();
@@ -120,10 +119,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             invalidCourseException.AddData(
                 key: nameof(Course.Description),
                 values: "Text is required");
-
-            invalidCourseException.AddData(
-                key: nameof(Course.Status),
-                values: "Value is invalid");
 
             invalidCourseException.AddData(
                 key: nameof(Course.CreatedBy),
