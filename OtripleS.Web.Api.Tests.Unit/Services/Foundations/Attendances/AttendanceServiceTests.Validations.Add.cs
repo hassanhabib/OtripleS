@@ -123,6 +123,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateIfAttendanceStatusIsInvalidAndLogItAsync()
+        {
+            //given 
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Attendance randomAttendance = CreateRandomAttendance(randomDateTime);
+            Attendance invalidAttendance = randomAttendance;
+            invalidAttendance.Status = GetInvalidAttendance<AttendanceStatus>();
+
+            var invalidAttendanceException = new InvalidAttendanceException();
+
+            invalidAttendanceException.AddData(
+                key: nameof(Attendance.Status),
+                values: "Value is not recognized");
+
+            var expectedAttendanceValidationException = new 
+                AttendanceValidationException(invalidAttendanceException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime()).Returns(randomDateTime);
+
+            //when
+            ValueTask<Attendance> createAttendanceTask = 
+                this.attendanceService.CreateAttendanceAsync(invalidAttendance);
+
+            //then
+            await Assert.ThrowsAsync<AttendanceValidationException>(() =>
+                createAttendanceTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(), Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs
+                    (expectedAttendanceValidationException))),
+                        Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertAttendanceAsync(It.IsAny<Attendance>()), 
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+
+
         [Theory]
         [MemberData(nameof(InvalidMinuteCases))]
         public async Task ShouldThrowValidationExceptionOnCreateWhenAttendanceDateIsInvalidAndLogItAsync(

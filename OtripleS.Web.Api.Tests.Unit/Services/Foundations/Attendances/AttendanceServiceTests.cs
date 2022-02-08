@@ -83,6 +83,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
 
         private static string GetRandomMessage() => new MnemonicString().GetValue();
 
+        private static T GetInvalidAttendance<T>()
+        {
+            int randomNumber = GetLocalRandomNumber();
+
+            while(Enum.IsDefined(typeof(T), randomNumber) is true)
+            {
+                randomNumber = GetLocalRandomNumber();
+            }
+            return (T)(object)randomNumber;
+
+            static int GetLocalRandomNumber() =>
+                new IntRange(min: int.MinValue, max: int.MaxValue).GetValue();
+        }
+
         private static Filler<Attendance> GetAttendanceFiller(DateTimeOffset dateTime)
         {
             var attendance = new Filler<Attendance>();
