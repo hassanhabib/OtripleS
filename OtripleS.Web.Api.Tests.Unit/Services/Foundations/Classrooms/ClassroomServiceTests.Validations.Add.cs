@@ -68,7 +68,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime()).
-                Returns(randomDateTime);
+                    Returns(randomDateTime);
 
             //when
             ValueTask<Classroom> createClassroomTask = 
@@ -76,19 +76,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
 
             //then
             await Assert.ThrowsAsync<ClassroomValidationException>(()=>
-                    createClassroomTask.AsTask());
+                createClassroomTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
-                Times.Once);
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameValidationExceptionAs(exceptedClassroomValidationException))),
-                Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    exceptedClassroomValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertClassroomAsync(It.IsAny<Classroom>()),
-                Times.Never);
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -106,8 +107,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             var invalidClassroom = new Classroom
             {
                 Name = invalidText,
-                Location = invalidText,
-                Status = ClassroomStatus.Closed
+                Location = invalidText
             };
 
             var invalidClassroomException = new InvalidClassroomException();
@@ -123,10 +123,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             invalidClassroomException.AddData(
                 key: nameof(Classroom.Location),
                 values: "Text is required");
-
-            invalidClassroomException.AddData(
-                key: nameof(Classroom.Status),
-                values: "Value is invalid");
 
             invalidClassroomException.AddData(
                 key: nameof(Classroom.CreatedDate),
