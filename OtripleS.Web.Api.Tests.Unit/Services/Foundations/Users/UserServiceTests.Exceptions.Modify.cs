@@ -176,8 +176,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             someUser.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var serviceException = new Exception();
 
+            var failedUserServiceException = 
+                new FailedUserServiceException(serviceException);
+
             var expectedUserServiceException =
-                new UserServiceException(serviceException);
+                new UserServiceException(failedUserServiceException);
 
             this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(someUser.Id))
