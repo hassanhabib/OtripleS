@@ -80,20 +80,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
             }
         }
 
-        private CourseServiceException CreateAndLogServiceException(Exception exception)
+        private CourseValidationException CreateAndLogValidationException(Exception exception)
         {
-            var courseServiceException = new CourseServiceException(exception);
-            this.loggingBroker.LogError(courseServiceException);
+            var courseValidationException = new CourseValidationException(exception);
+            this.loggingBroker.LogError(courseValidationException);
 
-            return courseServiceException;
-        }
-
-        private CourseDependencyException CreateAndLogDependencyException(Exception exception)
-        {
-            var courseDependencyException = new CourseDependencyException(exception);
-            this.loggingBroker.LogError(courseDependencyException);
-
-            return courseDependencyException;
+            return courseValidationException;
         }
 
         private CourseDependencyException CreateAndLogCriticalDependencyException(Exception exception)
@@ -104,12 +96,20 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
             return courseDependencyException;
         }
 
-        private CourseValidationException CreateAndLogValidationException(Exception exception)
+        private CourseDependencyException CreateAndLogDependencyException(Exception exception)
         {
-            var courseValidationException = new CourseValidationException(exception);
-            this.loggingBroker.LogError(courseValidationException);
+            var courseDependencyException = new CourseDependencyException(exception);
+            this.loggingBroker.LogError(courseDependencyException);
 
-            return courseValidationException;
+            return courseDependencyException;
+        }
+
+        private CourseServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var courseServiceException = new CourseServiceException(exception);
+            this.loggingBroker.LogError(courseServiceException);
+
+            return courseServiceException;
         }
     }
 }
