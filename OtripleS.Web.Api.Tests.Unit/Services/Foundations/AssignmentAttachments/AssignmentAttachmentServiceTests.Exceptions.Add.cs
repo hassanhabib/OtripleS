@@ -100,7 +100,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
             AssignmentAttachment randomAssignmentAttachment = CreateRandomAssignmentAttachment();
             AssignmentAttachment inputAssignmentAttachment = randomAssignmentAttachment;
             var serviceException = new Exception();
-            var expectedAssignmentAttachmentServiceException = new AssignmentAttachmentServiceException(serviceException);
+
+            var failedAssignmentAttachmentServiceException =
+                new FailedAssignmentAttachmentServiceException(serviceException);
+
+            var expectedAssignmentAttachmentServiceException =
+                new AssignmentAttachmentServiceException(
+                    failedAssignmentAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertAssignmentAttachmentAsync(inputAssignmentAttachment))
