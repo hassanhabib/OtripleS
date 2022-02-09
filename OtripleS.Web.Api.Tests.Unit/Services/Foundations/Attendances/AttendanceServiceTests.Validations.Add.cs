@@ -122,6 +122,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Theory]
@@ -168,6 +169,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Theory]
@@ -214,6 +216,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -257,6 +260,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -300,6 +304,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
