@@ -123,8 +123,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             var serviceException = new Exception();
             string password = GetRandomPassword();
 
+            var failedUserServiceException =
+                new FailedUserServiceException(serviceException);
+
             var expectedAssignmentServiceException =
-                new UserServiceException(serviceException);
+                new UserServiceException(failedUserServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
