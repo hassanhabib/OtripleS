@@ -130,14 +130,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
         {
             // given
             Guid someRegistrationId = Guid.NewGuid();
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedRegistrationServiceException =
-                new RegistrationServiceException(exception);
+                new RegistrationServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Registration> retrieveByIdRegistrationTask =

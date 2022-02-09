@@ -35,8 +35,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                 createClassroomTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedClassroomValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectClassroomByIdAsync(It.IsAny<Guid>()),
@@ -312,8 +313,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedClassroomValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();

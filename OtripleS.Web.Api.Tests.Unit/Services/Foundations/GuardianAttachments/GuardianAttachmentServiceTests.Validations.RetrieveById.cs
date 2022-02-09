@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         {
             // given
             Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomGuardianId = default;
+            Guid randomGuardianId = Guid.Empty;
             Guid inputAttachmentId = randomAttachmentId;
             Guid inputGuardianId = randomGuardianId;
 
@@ -38,8 +38,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
             await Assert.ThrowsAsync<GuardianAttachmentValidationException>(() => actualGuardianAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectGuardianAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
@@ -54,7 +55,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         public async Task ShouldThrowValidatonExceptionOnRetrieveWhenAttachmentIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = default;
+            Guid randomAttachmentId = Guid.Empty;
             Guid randomGuardianId = Guid.NewGuid();
             Guid inputAttachmentId = randomAttachmentId;
             Guid inputGuardianId = randomGuardianId;
@@ -74,8 +75,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
             await Assert.ThrowsAsync<GuardianAttachmentValidationException>(() => actualGuardianAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectGuardianAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
@@ -114,8 +116,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
                 actualGuardianAttachmentRetrieveTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectGuardianAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
