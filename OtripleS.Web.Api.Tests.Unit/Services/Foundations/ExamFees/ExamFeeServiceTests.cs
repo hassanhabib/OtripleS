@@ -17,6 +17,7 @@ using OtripleS.Web.Api.Models.ExamFees;
 using OtripleS.Web.Api.Services.Foundations.ExamFees;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
 {
@@ -69,15 +70,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
         private static ExamFee CreateRandomExamFee(DateTimeOffset dates) =>
             CreateExamFeeFiller(dates).Create();
 
-        public static IEnumerable<object[]> InvalidMinuteCases()
+        public static TheoryData InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
             int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
 
-            return new List<object[]>
+            return new TheoryData<int>
             {
-                new object[] { randomMoreThanMinuteFromNow },
-                new object[] { randomMoreThanMinuteBeforeNow }
+                randomMoreThanMinuteFromNow,
+                randomMoreThanMinuteBeforeNow
             };
         }
 
