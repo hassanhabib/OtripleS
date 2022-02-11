@@ -60,7 +60,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             Guid inputExamFeeId = randomExamFeeId;
             var databaseUpdateException = new DbUpdateException();
 
-            var expectedExamFeeDependencyException = new ExamFeeDependencyException(databaseUpdateException);
+            var expectedExamFeeDependencyException =
+                new ExamFeeDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectExamFeeByIdAsync(inputExamFeeId))
