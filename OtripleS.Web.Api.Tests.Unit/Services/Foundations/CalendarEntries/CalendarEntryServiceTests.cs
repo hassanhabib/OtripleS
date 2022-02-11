@@ -17,6 +17,7 @@ using OtripleS.Web.Api.Models.CalendarEntries;
 using OtripleS.Web.Api.Services.Foundations.CalendarEntries;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
 {
@@ -60,15 +61,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                 && actualException.InnerException.Message == expectedException.InnerException.Message;
         }
 
-        public static IEnumerable<object[]> InvalidMinuteCases()
+        public static TheoryData InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
             int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
 
-            return new List<object[]>
+            return new TheoryData<int>
             {
-                new object[] { randomMoreThanMinuteFromNow },
-                new object[] { randomMoreThanMinuteBeforeNow }
+                randomMoreThanMinuteFromNow,
+                randomMoreThanMinuteBeforeNow
             };
         }
 

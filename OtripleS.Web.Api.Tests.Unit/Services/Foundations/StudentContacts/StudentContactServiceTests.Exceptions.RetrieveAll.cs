@@ -34,8 +34,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
                 retrieveAllStudentContactAction);
            
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogCritical(It.Is(SameExceptionAs(expectedStudentContactDependencyException))),
-                        Times.Once);
+                    broker.LogCritical(It.Is(SameExceptionAs(
+                        expectedStudentContactDependencyException))),
+                            Times.Once);
 
             this.storageBrokerMock.Verify(broker => broker.SelectAllStudentContacts(),
                 Times.Once);
@@ -65,8 +66,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
                 retrieveAllStudentContactAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogError(It.Is(SameExceptionAs(expectedStudentContactServiceException))),
-                        Times.Once);
+                    broker.LogError(It.Is(SameExceptionAs(
+                        expectedStudentContactServiceException))),
+                            Times.Once);
 
             this.storageBrokerMock.Verify(broker => broker.SelectAllStudentContacts(),
                 Times.Once);

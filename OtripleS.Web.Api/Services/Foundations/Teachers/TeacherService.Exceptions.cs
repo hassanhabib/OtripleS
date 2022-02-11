@@ -86,12 +86,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             }
         }
 
-        private TeacherServiceException CreateAndLogServiceException(Exception exception)
+        private TeacherValidationException CreateAndLogValidationException(Exception exception)
         {
-            var teacherServiceException = new TeacherServiceException(exception);
-            this.loggingBroker.LogError(teacherServiceException);
+            var teacherValidationException = new TeacherValidationException(exception);
+            this.loggingBroker.LogError(teacherValidationException);
 
-            return teacherServiceException;
+            return teacherValidationException;
         }
 
         private TeacherDependencyException CreateAndLogDependencyException(Exception exception)
@@ -110,12 +110,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             return teacherDependencyException;
         }
 
-        private TeacherValidationException CreateAndLogValidationException(Exception exception)
+        private TeacherServiceException CreateAndLogServiceException(Exception exception)
         {
-            var teacherValidationException = new TeacherValidationException(exception);
-            this.loggingBroker.LogError(teacherValidationException);
+            var teacherServiceException = new TeacherServiceException(exception);
+            this.loggingBroker.LogError(teacherServiceException);
 
-            return teacherValidationException;
+            return teacherServiceException;
         }
     }
 }

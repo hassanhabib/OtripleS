@@ -27,16 +27,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
                     .Throws(sqlException);
 
             // when
-            Action retrieveAllStudentGuardiansAction = () =>
+            Action retrieveAllStudentGuardianAction = () =>
                 this.studentGuardianService.RetrieveAllStudentGuardians();
 
             // then
             Assert.Throws<StudentGuardianDependencyException>(
-                retrieveAllStudentGuardiansAction);
+                retrieveAllStudentGuardianAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentGuardianDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedStudentGuardianDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentGuardians(),
@@ -68,13 +69,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             Action retrieveAllStudentGuardiansAction = () =>
                 this.studentGuardianService.RetrieveAllStudentGuardians();
 
+            // when
+            Action retrieveAllStudentGuardianAction = () =>
+                this.studentGuardianService.RetrieveAllStudentGuardians();
+
             // then
             Assert.Throws<StudentGuardianServiceException>(
-                retrieveAllStudentGuardiansAction);
+                retrieveAllStudentGuardianAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentGuardians(),
