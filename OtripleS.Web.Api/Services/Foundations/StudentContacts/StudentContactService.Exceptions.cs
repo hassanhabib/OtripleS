@@ -98,14 +98,6 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentContacts
             return studentContactValidationException;
         }
 
-        private StudentContactServiceException CreateAndLogServiceException(Exception exception)
-        {
-            var studentContactServiceException = new StudentContactServiceException(exception);
-            this.loggingBroker.LogError(studentContactServiceException);
-
-            return studentContactServiceException;
-        }
-
         private StudentContactDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
             var studentContactDependencyException = new StudentContactDependencyException(exception);
@@ -120,6 +112,14 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentContacts
             this.loggingBroker.LogError(studentContactDependencyException);
 
             return studentContactDependencyException;
+        }
+
+        private StudentContactServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var studentContactServiceException = new StudentContactServiceException(exception);
+            this.loggingBroker.LogError(studentContactServiceException);
+
+            return studentContactServiceException;
         }
     }
 }
