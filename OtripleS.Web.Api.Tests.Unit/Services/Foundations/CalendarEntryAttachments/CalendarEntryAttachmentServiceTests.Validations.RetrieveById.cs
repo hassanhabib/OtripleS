@@ -94,8 +94,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

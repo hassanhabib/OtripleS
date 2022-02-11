@@ -39,8 +39,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 retrieveSemesterCourseByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedSemesterCourseDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedSemesterCourseDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),
@@ -79,8 +80,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 retrieveSemesterCourseByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),
@@ -101,14 +103,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
             // given
             Guid randomSemesterCourseId = Guid.NewGuid();
             Guid inputSemesterCourseId = randomSemesterCourseId;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedSemesterCourseServiceException =
-                new SemesterCourseServiceException(exception);
+                new SemesterCourseServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<SemesterCourse> retrieveSemesterCourseByIdTask =
@@ -119,8 +121,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 retrieveSemesterCourseByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),

@@ -34,8 +34,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                 modifyClassroomTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
-                Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedClassroomValidationException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -151,8 +152,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameValidationExceptionAs(expectedClassroomValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedClassroomValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectClassroomByIdAsync(It.IsAny<Guid>()),
@@ -204,8 +206,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedClassroomValidationException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -258,8 +261,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedClassroomValidationException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -312,8 +316,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedClassroomValidationException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -367,8 +372,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedClassroomValidationException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();

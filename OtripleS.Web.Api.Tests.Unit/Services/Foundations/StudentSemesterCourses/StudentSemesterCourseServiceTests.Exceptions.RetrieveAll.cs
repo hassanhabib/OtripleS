@@ -30,8 +30,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
                 this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses());
 
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogCritical(It.Is(SameExceptionAs(expectedStudentSemesterCourseDependencyException))),
-                        Times.Once);
+                    broker.LogCritical(It.Is(SameExceptionAs(
+                        expectedStudentSemesterCourseDependencyException))),
+                            Times.Once);
 
             this.storageBrokerMock.Verify(broker => broker.SelectAllStudentSemesterCourses(),
                 Times.Once);
@@ -45,21 +46,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedStudentSemesterCourseServiceException =
-                new StudentSemesterCourseServiceException(exception);
+                new StudentSemesterCourseServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker => broker.SelectAllStudentSemesterCourses())
-                .Throws(exception);
+                .Throws(serviceException);
 
             // when . then
             Assert.Throws<StudentSemesterCourseServiceException>(() =>
                 this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses());
 
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseServiceException))),
-                        Times.Once);
+                    broker.LogError(It.Is(SameExceptionAs(
+                        expectedStudentSemesterCourseServiceException))),
+                            Times.Once);
 
             this.storageBrokerMock.Verify(broker => broker.SelectAllStudentSemesterCourses(),
                 Times.Once);

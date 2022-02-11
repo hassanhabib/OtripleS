@@ -67,23 +67,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             );
         }
 
-        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
-        {
-            var invalidClassroomException = new InvalidClassroomException();
-
-            foreach ((dynamic rule, string parameter) in validations)
-            {
-                if (rule.Condition)
-                {
-                    invalidClassroomException.UpsertDataList(
-                        key: parameter,
-                        value: rule.Message);
-                }
-            }
-
-            invalidClassroomException.ThrowIfContainsErrors();
-        }
-
         private static dynamic IsInvalidX(Guid id) => new
         {
             Condition = id == Guid.Empty,
@@ -198,5 +181,22 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
 
         private static bool IsInvalid(Guid input) => input == default;
         private static bool IsInvalid(DateTimeOffset input) => input == default;
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidClassroomException = new InvalidClassroomException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidClassroomException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidClassroomException.ThrowIfContainsErrors();
+        }
     }
 }

@@ -16,17 +16,17 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
     public partial class ExamAttachmentService : IExamAttachmentService
     {
         private readonly IStorageBroker storageBroker;
-        private readonly ILoggingBroker loggingBroker;
         private readonly IDateTimeBroker dateTimeBroker;
+        private readonly ILoggingBroker loggingBroker;
 
         public ExamAttachmentService(
             IStorageBroker storageBroker,
-            ILoggingBroker loggingBroker,
-            IDateTimeBroker dateTimeBroker)
+            IDateTimeBroker dateTimeBroker,
+            ILoggingBroker loggingBroker)  
         {
             this.storageBroker = storageBroker;
-            this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
+            this.loggingBroker = loggingBroker;
         }
 
         public ValueTask<ExamAttachment> AddExamAttachmentAsync(ExamAttachment examAttachment) =>
