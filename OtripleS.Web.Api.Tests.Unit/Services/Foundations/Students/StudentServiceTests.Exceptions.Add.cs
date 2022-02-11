@@ -49,7 +49,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
                     expectedStudentDependencyException))),
-                    Times.Once);
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentAsync(someStudent),

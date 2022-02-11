@@ -36,8 +36,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 createUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserValidationException))),
+                        Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(It.IsAny<Guid>()),
@@ -73,8 +74,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 registerUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserValidationException))),
+                        Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(It.IsAny<Guid>()),
@@ -114,8 +116,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 registerUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserValidationException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.userManagementBrokerMock.VerifyNoOtherCalls();
@@ -151,8 +154,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 registerUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserValidationException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.userManagementBrokerMock.VerifyNoOtherCalls();
@@ -188,8 +192,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 registerUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserValidationException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.userManagementBrokerMock.VerifyNoOtherCalls();
@@ -221,8 +226,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 registerUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserValidationException))),
+                        Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(It.IsAny<Guid>()),
@@ -258,8 +264,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 registerUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserValidationException))),
+                        Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(It.IsAny<Guid>()),
@@ -295,8 +302,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 registerUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserValidationException))),
+                        Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(It.IsAny<Guid>()),
@@ -344,8 +352,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserValidationException))),
+                        Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(It.IsAny<Guid>()),
@@ -400,8 +409,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedUserValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedUserValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.userManagementBrokerMock.VerifyNoOtherCalls();
