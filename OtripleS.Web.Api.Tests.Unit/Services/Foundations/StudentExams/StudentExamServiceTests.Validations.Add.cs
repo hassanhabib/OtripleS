@@ -33,8 +33,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
                 addStudentExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentExamValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentExamAsync(It.IsAny<StudentExam>()),
