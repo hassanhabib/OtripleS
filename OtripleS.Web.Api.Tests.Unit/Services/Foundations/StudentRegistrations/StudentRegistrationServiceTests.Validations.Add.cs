@@ -33,8 +33,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 addStudentRegistrationTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentRegistrationValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentRegistrationAsync(It.IsAny<StudentRegistration>()),
@@ -68,8 +69,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 addStudentRegistrationTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentRegistrationValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentRegistrationAsync(It.IsAny<StudentRegistration>()),
@@ -103,8 +105,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 addStudentRegistrationTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentRegistrationValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentRegistrationAsync(It.IsAny<StudentRegistration>()),
@@ -147,8 +150,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedStudentRegistrationValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedStudentRegistrationValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

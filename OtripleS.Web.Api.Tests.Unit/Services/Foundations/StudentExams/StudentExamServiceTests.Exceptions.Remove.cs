@@ -39,8 +39,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
                 deleteStudentExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentExamDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedStudentExamDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentExamByIdAsync(inputStudentExamId),
@@ -73,8 +74,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             await Assert.ThrowsAsync<StudentExamDependencyException>(() => deleteStudentExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentExamDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentExamByIdAsync(inputStudentExamId),
@@ -109,8 +111,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             await Assert.ThrowsAsync<StudentExamDependencyException>(() => deleteStudentExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentExamException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentExamByIdAsync(inputStudentExamId),

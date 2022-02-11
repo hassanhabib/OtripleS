@@ -81,6 +81,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -115,7 +116,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]

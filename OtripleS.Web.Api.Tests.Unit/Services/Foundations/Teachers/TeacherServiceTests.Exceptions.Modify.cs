@@ -55,8 +55,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedTeacherDependencyException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -102,8 +103,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherDependencyException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -150,8 +152,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherDependencyException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -197,8 +200,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherServiceException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
