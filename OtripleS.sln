@@ -13,6 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtripleS.Web.Api.Infrastruc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtripleS.Web.Api.Infrastructure.Provision", "OtripleS.Api.Infrastructure.Provision\OtripleS.Web.Api.Infrastructure.Provision.csproj", "{24FC5721-EEA1-4E51-887A-3C44E3C46608}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7AE36E37-538A-4B39-A6F5-84E7004D67BA}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
