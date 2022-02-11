@@ -83,14 +83,6 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentSemesterCourses
             }
         }
 
-        private StudentSemesterCourseServiceException CreateAndLogServiceException(Exception exception)
-        {
-            var studentSemesterCourseServiceException = new StudentSemesterCourseServiceException(exception);
-            this.loggingBroker.LogError(studentSemesterCourseServiceException);
-
-            return studentSemesterCourseServiceException;
-        }
-
         private StudentSemesterCourseValidationException CreateAndLogValidationException(Exception exception)
         {
             var studentSemesterCourseValidationException = new StudentSemesterCourseValidationException(exception);
@@ -98,6 +90,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentSemesterCourses
 
             return studentSemesterCourseValidationException;
         }
+
 
         private StudentSemesterCourseDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
@@ -113,6 +106,14 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentSemesterCourses
             this.loggingBroker.LogError(studentSemesterCourseDependencyException);
 
             return studentSemesterCourseDependencyException;
+        }
+
+        private StudentSemesterCourseServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var studentSemesterCourseServiceException = new StudentSemesterCourseServiceException(exception);
+            this.loggingBroker.LogError(studentSemesterCourseServiceException);
+
+            return studentSemesterCourseServiceException;
         }
     }
 }
