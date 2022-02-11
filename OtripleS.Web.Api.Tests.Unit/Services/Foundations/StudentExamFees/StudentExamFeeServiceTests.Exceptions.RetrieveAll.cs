@@ -24,24 +24,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudentExamFees())
                     .Throws(sqlException);
-
             
             // when
             Action retrieveAllStudentExamFeeAction = () =>
-                this.studentExamFeeService.RetrieveAllStudentExamFees();
+              this.studentExamFeeService.RetrieveAllStudentExamFees();
 
             // then
             Assert.Throws<StudentExamFeeDependencyException>(
-                retrieveAllStudentExamFeeAction);
-
+             retrieveAllStudentExamFeeAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentExamFees(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentExamFeeDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedStudentExamFeeDependencyException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -52,14 +51,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
         public void ShouldThrowServiceExceptionOnRetrieveAllStudentExamFeesWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedStudentExamFeeServiceException =
-                new StudentExamFeeServiceException(exception);
+                new StudentExamFeeServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudentExamFees())
                     .Throws(exception);
+          
                // when
             Action retrieveAllstudentexamfeeAction = () =>
                 this.studentExamFeeService.RetrieveAllStudentExamFees();
@@ -68,13 +68,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             Assert.Throws<StudentExamFeeServiceException>(
                  retrieveAllstudentexamfeeAction);
 
+
               this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentExamFees(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentExamFeeServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

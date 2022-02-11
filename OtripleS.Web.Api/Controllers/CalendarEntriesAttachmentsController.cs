@@ -29,10 +29,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                CalendarEntryAttachment persistedCalendarEntryAttachment =
+                CalendarEntryAttachment addedCalendarEntryAttachment =
                     await this.calendarEntryAttachmentService.AddCalendarEntryAttachmentAsync(calendarEntryAttachment);
 
-                return Created(persistedCalendarEntryAttachment);
+                return Created(addedCalendarEntryAttachment);
             }
             catch (CalendarEntryAttachmentValidationException calendarEntryAttachmentValidationException)
                 when (calendarEntryAttachmentValidationException.InnerException is AlreadyExistsCalendarEntryAttachmentException)
