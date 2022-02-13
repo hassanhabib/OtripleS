@@ -61,7 +61,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
         private static Filler<AssignmentAttachment> CreateAssignmentAttachmentFiller(DateTimeOffset dates)
         {
-            var filler = new Filler<AssignmentAttachment>();
+            var filler =
+                new Filler<AssignmentAttachment>();
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates)
