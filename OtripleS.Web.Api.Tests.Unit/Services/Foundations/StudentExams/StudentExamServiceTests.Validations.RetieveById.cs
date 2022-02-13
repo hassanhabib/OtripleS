@@ -61,7 +61,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             Guid randomStudentExamId = Guid.NewGuid();
             Guid inputStudentExamId = randomStudentExamId;
             StudentExam invalidStorageStudentExam = null;
-            var notFoundStudentExamException = new NotFoundStudentExamException(inputStudentExamId);
+            var notFoundStudentExamException =
+                new NotFoundStudentExamException(inputStudentExamId);
 
             var expectedStudentExamValidationException =
                 new StudentExamValidationException(notFoundStudentExamException);
