@@ -120,8 +120,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
             someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var serviceException = new Exception();
 
+            var failedAttachmentServiceException = 
+                new FailedAttachmentServiceException(serviceException);
+
             var expectedAttachmentServiceException =
-                new AttachmentServiceException(serviceException);
+                new AttachmentServiceException(failedAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()))
