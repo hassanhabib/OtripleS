@@ -100,7 +100,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             // given
             UserContact randomUserContact = CreateRandomUserContact();
             UserContact inputUserContact = randomUserContact;
-            var serviceException = new Exception();
+            var serviceException =
+                new Exception();
 
             var expectedUserContactServiceException =
                 new UserContactServiceException(serviceException);
