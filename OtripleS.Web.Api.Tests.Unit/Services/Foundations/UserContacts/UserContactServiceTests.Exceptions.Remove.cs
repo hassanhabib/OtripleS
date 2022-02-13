@@ -68,7 +68,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
 
             Guid someContactId = Guid.NewGuid();
             Guid someUserId = Guid.NewGuid();
-            var databaseUpdateException = new DbUpdateException();
+            var databaseUpdateException =
+                new DbUpdateException();
 
             var failedUserContactStorageException =
                 new FailedUserContactStorageException(databaseUpdateException);
@@ -112,7 +113,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             // given
             Guid someContactId = Guid.NewGuid();
             Guid someUserId = Guid.NewGuid();
-            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+            var databaseUpdateConcurrencyException =
+                new DbUpdateConcurrencyException();
 
             var lockedContactException =
                 new LockedUserContactException(databaseUpdateConcurrencyException);
