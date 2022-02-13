@@ -172,8 +172,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             someTeacher.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var serviceException = new Exception();
 
+            var failedTeacherServiceException =
+                new FailedTeacherServiceException(serviceException);
+
             var expectedTeacherServiceException =
-                new TeacherServiceException(serviceException);
+                new TeacherServiceException(failedTeacherServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherByIdAsync(someTeacher.Id))
