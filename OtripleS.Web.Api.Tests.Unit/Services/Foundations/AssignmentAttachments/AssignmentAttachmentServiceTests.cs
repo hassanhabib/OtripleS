@@ -34,10 +34,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
         }
 
         private static AssignmentAttachment CreateRandomAssignmentAttachment() =>
-            CreateAssignmentAttachmentFiller(dates: GetRandomDateTime()).Create();
+            CreateAssignmentAttachmentFiller(DateTimeOffset.UtcNow).Create();
 
         private static IQueryable<AssignmentAttachment> CreateRandomAssignmentAttachments() =>
-            CreateAssignmentAttachmentFiller(dates: GetRandomDateTime()).Create(GetRandomNumber()).AsQueryable();
+            CreateAssignmentAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
 
@@ -61,8 +61,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
         private static Filler<AssignmentAttachment> CreateAssignmentAttachmentFiller(DateTimeOffset dates)
         {
-            var filler =
-                new Filler<AssignmentAttachment>();
+            var filler = new Filler<AssignmentAttachment>();
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates)
