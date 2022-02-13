@@ -96,8 +96,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             // given
             Guid randomTeacherId = Guid.NewGuid();
             Guid inputTeacherId = randomTeacherId;
-            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
-            var lockedTeacherException = new LockedTeacherException(databaseUpdateConcurrencyException);
+
+            var databaseUpdateConcurrencyException =
+                new DbUpdateConcurrencyException();
+
+            var lockedTeacherException =
+                new LockedTeacherException(databaseUpdateConcurrencyException);
 
             var expectedTeacherDependencyException =
                 new TeacherDependencyException(lockedTeacherException);
