@@ -49,8 +49,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
         public async void ShouldThrowValidationExceptionOnAddWhenStudentIdIsInvalidAndLogItAsync()
         {
             // given
-            StudentRegistration randomStudentRegistration = CreateRandomStudentRegistration();
-            StudentRegistration inputStudentRegistration = randomStudentRegistration;
+            StudentRegistration randomStudentRegistration =
+                CreateRandomStudentRegistration();
+            StudentRegistration inputStudentRegistration =
+                randomStudentRegistration;
             inputStudentRegistration.StudentId = default;
 
             var invalidStudentRegistrationInputException = new InvalidStudentRegistrationException(
