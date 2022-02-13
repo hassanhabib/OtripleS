@@ -76,7 +76,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
                 this.studentExamService.RemoveStudentExamByIdAsync(inputStudentExamId);
 
             // then
-            await Assert.ThrowsAsync<StudentExamValidationException>(() => actualStudentExamDeleteTask.AsTask());
+            await Assert.ThrowsAsync<StudentExamValidationException>(() =>
+                actualStudentExamDeleteTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
