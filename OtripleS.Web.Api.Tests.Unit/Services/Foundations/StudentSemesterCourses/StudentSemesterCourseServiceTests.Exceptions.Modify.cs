@@ -172,8 +172,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             StudentSemesterCourse randomStudentSemesterCourse = CreateRandomStudentSemesterCourse(randomDateTime);
             StudentSemesterCourse someStudentSemesterCourse = randomStudentSemesterCourse;
             someStudentSemesterCourse.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
-            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
-            var lockedStudentSemesterCourseException = new LockedStudentSemesterCourseException(databaseUpdateConcurrencyException);
+            var databaseUpdateConcurrencyException =
+                new DbUpdateConcurrencyException();
+            var lockedStudentSemesterCourseException =
+                new LockedStudentSemesterCourseException(databaseUpdateConcurrencyException);
 
             var expectedStudentSemesterCourseDependencyException =
                 new StudentSemesterCourseDependencyException(lockedStudentSemesterCourseException);
