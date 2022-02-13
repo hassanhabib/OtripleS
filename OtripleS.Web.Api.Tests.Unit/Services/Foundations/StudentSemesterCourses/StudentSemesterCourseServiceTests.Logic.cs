@@ -65,8 +65,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             IQueryable<StudentSemesterCourse> randomSemesterCourses =
                 CreateRandomStudentSemesterCourses();
 
-            IQueryable<StudentSemesterCourse> storageStudentSemesterCourses = randomSemesterCourses;
-            IQueryable<StudentSemesterCourse> expectedStudentSemesterCourses = storageStudentSemesterCourses;
+            IQueryable<StudentSemesterCourse> storageStudentSemesterCourses =
+                randomSemesterCourses;
+            IQueryable<StudentSemesterCourse> expectedStudentSemesterCourses =
+                storageStudentSemesterCourses;
 
             this.storageBrokerMock.Setup(broker => broker.SelectAllStudentSemesterCourses())
                 .Returns(storageStudentSemesterCourses);
