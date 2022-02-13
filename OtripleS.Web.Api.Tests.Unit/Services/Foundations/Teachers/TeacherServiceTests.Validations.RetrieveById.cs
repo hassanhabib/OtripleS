@@ -60,7 +60,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher inputTeacher = randomTeacher;
             Teacher nullStorageTeacher = null;
 
-            var notFoundTeacherException = new NotFoundTeacherException(inputTeacherId);
+            var notFoundTeacherException =
+                new NotFoundTeacherException(inputTeacherId);
 
             var expectedTeacherValidationException =
                 new TeacherValidationException(notFoundTeacherException);
