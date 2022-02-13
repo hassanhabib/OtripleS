@@ -84,7 +84,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                     .ReturnsAsync(afterUpdateStorageStudent);
 
             // when
-            Student actualStudent = await this.studentService.ModifyStudentAsync(inputStudent);
+            Student actualStudent =
+                await this.studentService.ModifyStudentAsync(inputStudent);
 
             // then
             actualStudent.Should().BeEquivalentTo(expectedStudent);

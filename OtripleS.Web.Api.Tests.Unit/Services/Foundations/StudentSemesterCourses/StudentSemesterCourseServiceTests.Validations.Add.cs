@@ -21,7 +21,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             // given
             StudentSemesterCourse invalidStudentSemesterCourse = null;
             
-            var nullStudentSemesterCourseException = new NullStudentSemesterCourseException();
+            var nullStudentSemesterCourseException =
+                new NullStudentSemesterCourseException();
 
             var expectedStudentSemesterCourseValidationException =
                 new StudentSemesterCourseValidationException(nullStudentSemesterCourseException);
