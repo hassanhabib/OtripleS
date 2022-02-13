@@ -56,7 +56,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             Guid randomUserId = Guid.NewGuid();
             Guid inputUserId = randomUserId;
             User invalidStorageUser = null;
-            var notFoundUserException = new NotFoundUserException(inputUserId);
+            var notFoundUserException =
+                new NotFoundUserException(inputUserId);
 
             var expectedUserValidationException =
                 new UserValidationException(notFoundUserException);
