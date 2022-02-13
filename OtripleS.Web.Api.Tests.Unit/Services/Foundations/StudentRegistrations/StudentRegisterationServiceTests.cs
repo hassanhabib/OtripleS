@@ -36,7 +36,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
+        private static int GetRandomNumber() =>
+            new IntRange(min: 2, max: 150).GetValue();
 
         private StudentRegistration CreateRandomStudentRegistration() =>
             CreateStudentRegistrationFiller().Create();
