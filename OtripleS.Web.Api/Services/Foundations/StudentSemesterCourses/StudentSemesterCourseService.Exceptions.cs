@@ -107,7 +107,6 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentSemesterCourses
             return studentSemesterCourseDependencyException;
         }
 
-    
         private StudentSemesterCourseServiceException CreateAndLogServiceException(Exception exception)
         {
             var studentSemesterCourseServiceException = new StudentSemesterCourseServiceException(exception);
