@@ -242,7 +242,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             StudentExamFee inputStudentExamFee = randomStudentExamFee;
             inputStudentExamFee.UpdatedDate = default;
 
-            var invalidStudentExamFeeInputException = new InvalidStudentExamFeeException(
+            var invalidStudentExamFeeInputException =
+                new InvalidStudentExamFeeException(
                 parameterName: nameof(StudentExamFee.UpdatedDate),
                 parameterValue: inputStudentExamFee.UpdatedDate);
 
@@ -280,7 +281,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             StudentExamFee randomStudentExamFee = CreateRandomStudentExamFee(dateTime);
             StudentExamFee inputStudentExamFee = randomStudentExamFee;
 
-            var invalidStudentExamFeeInputException = new InvalidStudentExamFeeException(
+            var invalidStudentExamFeeInputException =
+                new InvalidStudentExamFeeException(
                 parameterName: nameof(StudentExamFee.UpdatedDate),
                 parameterValue: inputStudentExamFee.UpdatedDate);
 
@@ -323,7 +325,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             inputStudentExamFee.UpdatedBy = inputStudentExamFee.CreatedBy;
             inputStudentExamFee.UpdatedDate = dateTime.AddMinutes(minutes);
 
-            var invalidStudentExamFeeInputException = new InvalidStudentExamFeeException(
+            var invalidStudentExamFeeInputException =
+                new InvalidStudentExamFeeException(
                 parameterName: nameof(StudentExamFee.UpdatedDate),
                 parameterValue: inputStudentExamFee.UpdatedDate);
 
@@ -434,7 +437,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             Guid semesterCourseId = invalidStudentExamFee.ExamFeeId;
             invalidStudentExamFee.CreatedDate = storageStudentExamFee.CreatedDate.AddMinutes(randomNumber);
 
-            var invalidStudentExamFeeInputException = new InvalidStudentExamFeeException(
+            var invalidStudentExamFeeInputException =
+                new InvalidStudentExamFeeException(
                 parameterName: nameof(StudentExamFee.CreatedDate),
                 parameterValue: invalidStudentExamFee.CreatedDate);
 
