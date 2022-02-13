@@ -25,7 +25,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 parameterName: nameof(Teacher.Id),
                 parameterValue: inputTeacherId);
 
-            var expectedTeacherValidationException = new TeacherValidationException(invalidTeacherException);
+            var expectedTeacherValidationException =
+                new TeacherValidationException(invalidTeacherException);
 
             // when
             ValueTask<Teacher> actualTeacherTask =
@@ -62,7 +63,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher inputTeacher = randomTeacher;
             Teacher nullStorageTeacher = null;
 
-            var notFoundTeacherException = new NotFoundTeacherException(inputTeacherId);
+            var notFoundTeacherException =
+                new NotFoundTeacherException(inputTeacherId);
 
             var expectedTeacherValidationException =
                 new TeacherValidationException(notFoundTeacherException);
