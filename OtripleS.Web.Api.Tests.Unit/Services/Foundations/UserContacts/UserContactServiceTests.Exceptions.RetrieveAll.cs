@@ -52,7 +52,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var serviceException = new Exception();
+            var serviceException =
+                new Exception();
 
             var expectedUserContactServiceException =
                 new UserContactServiceException(serviceException);
