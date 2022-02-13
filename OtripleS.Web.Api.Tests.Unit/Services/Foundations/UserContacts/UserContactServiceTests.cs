@@ -40,8 +40,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         private static IQueryable<UserContact> CreateRandomUserContacts() =>
             CreateUserContactFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
-        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
-        private static string GetRandomMessage() => new MnemonicString().GetValue();
+        private static int GetRandomNumber() =>
+            new IntRange(min: 2, max: 10).GetValue();
+        private static string GetRandomMessage() =>
+            new MnemonicString().GetValue();
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
@@ -63,7 +65,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
 
         private static Filler<UserContact> CreateUserContactFiller(DateTimeOffset dates)
         {
-            var filler = new Filler<UserContact>();
+            var filler =
+                new Filler<UserContact>();
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates)
