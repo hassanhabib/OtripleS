@@ -237,7 +237,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher nonExistentTeacher = randomTeacher;
             nonExistentTeacher.CreatedDate = dateTime.AddMinutes(randomNegativeMinutes);
             Teacher noTeacher = null;
-            var notFoundTeacherException = new NotFoundTeacherException(nonExistentTeacher.Id);
+
+            var notFoundTeacherException =
+                new NotFoundTeacherException(nonExistentTeacher.Id);
 
             var expectedTeacherValidationException =
                 new TeacherValidationException(notFoundTeacherException);
