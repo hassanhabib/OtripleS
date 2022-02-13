@@ -64,7 +64,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
         }
 
         private static Assignment CreateRandomAssignment() =>
-            CreateAssignmentFiller(dates: DateTimeOffset.UtcNow).Create();
+            CreateAssignmentFiller(dates: GetRandomDateTime()).Create();
 
         private static IQueryable<Assignment> CreateRandomAssignments(DateTimeOffset dates) =>
             CreateAssignmentFiller(dates).Create(GetRandomNumber()).AsQueryable();
