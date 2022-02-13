@@ -19,7 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         {
             // given
             UserContact invalidUserContact = null;
-            var nullUserContactException = new NullUserContactException();
+            var nullUserContactException =
+                new NullUserContactException();
 
             var expectedUserContactValidationException =
                 new UserContactValidationException(nullUserContactException);
@@ -52,7 +53,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             UserContact randomUserContact = CreateRandomUserContact();
             UserContact inputUserContact = new UserContact();
 
-            var invalidUserContactException = new InvalidUserContactException();
+            var invalidUserContactException =
+                new InvalidUserContactException();
 
             invalidUserContactException.AddData(
                 key: nameof(UserContact.UserId),
@@ -94,7 +96,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             UserContact alreadyExistsUserContact = randomUserContact;
             string randomMessage = GetRandomMessage();
             string exceptionMessage = randomMessage;
-            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+            var duplicateKeyException =
+                new DuplicateKeyException(exceptionMessage);
 
             var alreadyExistsUserContactException =
                 new AlreadyExistsUserContactException(duplicateKeyException);
