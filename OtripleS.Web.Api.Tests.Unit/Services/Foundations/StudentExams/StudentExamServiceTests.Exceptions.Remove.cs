@@ -95,9 +95,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             Guid inputStudentExamId = randomStudentExamId;
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
-            var lockedStudentExamException = new LockedStudentExamException(databaseUpdateConcurrencyException);
+            var lockedStudentExamException =
+                new LockedStudentExamException(databaseUpdateConcurrencyException);
 
-            var expectedStudentExamException = new StudentExamDependencyException(lockedStudentExamException);
+            var expectedStudentExamException =
+                new StudentExamDependencyException(lockedStudentExamException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentExamByIdAsync(inputStudentExamId))
