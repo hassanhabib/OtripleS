@@ -21,7 +21,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             // given
             Guid someStudentId = Guid.NewGuid();
             Guid someExamFeeId = Guid.NewGuid();
-            var sqlException = GetSqlException();
+
+            var sqlException =
+                GetSqlException();
 
             var expectedStudentExamFeeDependencyException =
                 new StudentExamFeeDependencyException(sqlException);
@@ -65,7 +67,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             // given
             Guid someStudentId = Guid.NewGuid();
             Guid someExamFeeId = Guid.NewGuid();
-            var databaseUpdateException = new DbUpdateException();
+
+            var databaseUpdateException =
+                new DbUpdateException();
 
             var expectedStudentExamFeeDependencyException =
                 new StudentExamFeeDependencyException(databaseUpdateException);
@@ -109,7 +113,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             // given
             Guid someStudentId = Guid.NewGuid();
             Guid someExamFeeId = Guid.NewGuid();
-            var serviceException = new Exception();
+
+            var serviceException =
+                new Exception();
 
             var expectedStudentExamFeeServiceException =
                 new StudentExamFeeServiceException(serviceException);
