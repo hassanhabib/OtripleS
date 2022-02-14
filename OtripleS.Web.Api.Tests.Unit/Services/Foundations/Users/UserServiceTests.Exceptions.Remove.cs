@@ -102,6 +102,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             // given
             Guid randomUserId = Guid.NewGuid();
             Guid inputUserId = randomUserId;
+
             var databaseUpdateConcurrencyException =
                 new DbUpdateConcurrencyException();
 
