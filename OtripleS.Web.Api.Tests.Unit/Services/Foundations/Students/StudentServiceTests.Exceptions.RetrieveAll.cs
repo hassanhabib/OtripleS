@@ -24,9 +24,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudents())
                     .Throws(sqlException);
-
-           
-
+        
             // when
             Action retrieveAllStudentsAction = () =>
                 this.studentService.RetrieveAllStudents();
