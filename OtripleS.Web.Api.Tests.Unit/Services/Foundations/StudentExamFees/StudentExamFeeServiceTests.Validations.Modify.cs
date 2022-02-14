@@ -20,7 +20,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
         {
             //given
             StudentExamFee invalidStudentExamFee = null;
-            var nullStudentExamFeeException = new NullStudentExamFeeException();
+
+            var nullStudentExamFeeException =
+                new NullStudentExamFeeException();
 
             var expectedStudentExamFeeValidationException =
                 new StudentExamFeeValidationException(nullStudentExamFeeException);
