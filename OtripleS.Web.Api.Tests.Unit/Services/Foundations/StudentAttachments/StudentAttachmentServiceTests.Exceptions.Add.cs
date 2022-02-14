@@ -21,7 +21,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
             // given
             StudentAttachment randomStudentAttachment = CreateRandomStudentAttachment();
             StudentAttachment inputStudentAttachment = randomStudentAttachment;
-            var sqlException = GetSqlException();
+
+            var sqlException =
+                GetSqlException();
 
             var expectedStudentAttachmentDependencyException =
                 new StudentAttachmentDependencyException(sqlException);
@@ -57,7 +59,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
             // given
             StudentAttachment randomStudentAttachment = CreateRandomStudentAttachment();
             StudentAttachment inputStudentAttachment = randomStudentAttachment;
-            var databaseUpdateException = new DbUpdateException();
+
+            var databaseUpdateException =
+                new DbUpdateException();
 
             var expectedStudentAttachmentDependencyException =
                 new StudentAttachmentDependencyException(databaseUpdateException);
@@ -93,7 +97,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
             // given
             StudentAttachment randomStudentAttachment = CreateRandomStudentAttachment();
             StudentAttachment inputStudentAttachment = randomStudentAttachment;
-            var serviceException = new Exception();
+
+            var serviceException =
+                new Exception();
 
             var expectedStudentAttachmentServiceException =
                 new StudentAttachmentServiceException(serviceException);
