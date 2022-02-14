@@ -64,7 +64,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             var randomStudentId = Guid.NewGuid();
             Guid inputContactId = randomContactId;
             Guid inputStudentId = randomStudentId;
-            var databaseUpdateException = new DbUpdateException();
+
+            var databaseUpdateException =
+                new DbUpdateException();
 
             var expectedStudentContactDependencyException =
                 new StudentContactDependencyException(databaseUpdateException);
@@ -103,7 +105,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             var randomStudentId = Guid.NewGuid();
             Guid inputContactId = randomContactId;
             Guid inputStudentId = randomStudentId;
-            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+            var databaseUpdateConcurrencyException =
+                new DbUpdateConcurrencyException();
 
             var lockedContactException =
                 new LockedStudentContactException(databaseUpdateConcurrencyException);
@@ -144,7 +148,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             var randomStudentId = Guid.NewGuid();
             Guid inputContactId = randomContactId;
             Guid inputStudentId = randomStudentId;
-            var serviceException = new Exception();
+
+            var serviceException =
+                new Exception();
 
             var expectedStudentContactException =
                 new StudentContactServiceException(serviceException);
