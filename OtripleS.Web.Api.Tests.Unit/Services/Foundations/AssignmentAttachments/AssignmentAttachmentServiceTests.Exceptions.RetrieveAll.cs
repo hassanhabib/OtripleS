@@ -28,15 +28,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 broker.SelectAllAssignmentAttachments())
                     .Throws(sqlException);
 
-            
-            // when
+             // when
             Action retrieveAllAssignmentAttachmentsAction = () =>
                 this.assignmentAttachmentService.RetrieveAllAssignmentAttachments();
 
             // then
             Assert.Throws<AssignmentAttachmentDependencyException>(
                 retrieveAllAssignmentAttachmentsAction);
-
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAssignmentAttachments(),
