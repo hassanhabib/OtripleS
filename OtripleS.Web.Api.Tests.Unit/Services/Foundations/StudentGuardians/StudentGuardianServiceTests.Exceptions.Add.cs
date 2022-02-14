@@ -120,8 +120,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             inputStudentGuardian.UpdatedBy = inputStudentGuardian.CreatedBy;
             var serviceException = new Exception();
 
+            var failedStudentGuardianServiceException =
+                new FailedStudentGuardianServiceException(serviceException);
+
             var expectedStudentGuardianServiceException =
-                new StudentGuardianServiceException(serviceException);
+                new StudentGuardianServiceException(failedStudentGuardianServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
