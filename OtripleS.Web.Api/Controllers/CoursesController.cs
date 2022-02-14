@@ -28,10 +28,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Course persistedCourse =
+                Course createdCourse =
                     await this.courseService.CreateCourseAsync(course);
 
-                return Created(persistedCourse);
+                return Created(createdCourse);
             }
             catch (CourseValidationException courseValidationException)
                 when (courseValidationException.InnerException is AlreadyExistsCourseException)

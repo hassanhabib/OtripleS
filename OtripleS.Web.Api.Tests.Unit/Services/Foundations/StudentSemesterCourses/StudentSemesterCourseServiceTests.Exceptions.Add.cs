@@ -46,8 +46,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
                 createStudentSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentSemesterCourseDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedStudentSemesterCourseDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse),
@@ -93,8 +94,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
                 createStudentSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentSemesterCourseDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse),
@@ -118,10 +120,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             StudentSemesterCourse inputStudentSemesterCourse = randomStudentSemesterCourse;
             inputStudentSemesterCourse.UpdatedBy = inputStudentSemesterCourse.CreatedBy;
             inputStudentSemesterCourse.UpdatedDate = inputStudentSemesterCourse.CreatedDate;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedStudentSemesterCourseServiceException =
-                new StudentSemesterCourseServiceException(exception);
+                new StudentSemesterCourseServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -129,7 +131,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<StudentSemesterCourse> createStudentSemesterCourseTask =
@@ -140,8 +142,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
                 createStudentSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentSemesterCourseServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse),

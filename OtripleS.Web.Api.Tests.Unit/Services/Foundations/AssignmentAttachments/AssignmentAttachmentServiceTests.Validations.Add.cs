@@ -18,8 +18,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
         public async void ShouldThrowValidationExceptionOnAddWhenAssignmentAttachmentIsNullAndLogItAsync()
         {
             // given
-            AssignmentAttachment randomAssignmentAttachment = default;
-            AssignmentAttachment nullAssignmentAttachment = randomAssignmentAttachment;
+            AssignmentAttachment invalidAssignmentAttachment = null;
+            
             var nullAssignmentAttachmentException = new NullAssignmentAttachmentException();
 
             var expectedAssignmentAttachmentValidationException =
@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
             // when
             ValueTask<AssignmentAttachment> addAssignmentAttachmentTask =
-                this.assignmentAttachmentService.AddAssignmentAttachmentAsync(nullAssignmentAttachment);
+                this.assignmentAttachmentService.AddAssignmentAttachmentAsync(invalidAssignmentAttachment);
 
             // then
             await Assert.ThrowsAsync<AssignmentAttachmentValidationException>(() =>

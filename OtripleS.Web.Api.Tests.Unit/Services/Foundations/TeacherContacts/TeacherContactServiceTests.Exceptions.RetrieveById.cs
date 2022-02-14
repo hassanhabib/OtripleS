@@ -44,8 +44,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                 retrieveTeacherContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherContactDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedTeacherContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId),
@@ -82,8 +83,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                 () => retrieveTeacherContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId),
@@ -101,14 +103,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             var randomTeacherId = Guid.NewGuid();
             Guid inputContactId = randomContactId;
             Guid inputTeacherId = randomTeacherId;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedTeacherContactException =
-                new TeacherContactServiceException(exception);
+                new TeacherContactServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<TeacherContact> retrieveTeacherContactTask =
@@ -121,8 +123,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                 retrieveTeacherContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherContactException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId),

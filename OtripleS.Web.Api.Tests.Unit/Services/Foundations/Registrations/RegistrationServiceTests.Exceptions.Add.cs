@@ -45,8 +45,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
                 createRegistrationTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedRegistrationDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedRegistrationDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertRegistrationAsync(inputRegistration),
@@ -91,8 +92,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
                 createRegistrationTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedRegistrationDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertRegistrationAsync(inputRegistration),
@@ -115,10 +117,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             Registration randomRegistration = CreateRandomRegistration(dateTime);
             Registration inputRegistration = randomRegistration;
             inputRegistration.UpdatedBy = inputRegistration.CreatedBy;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedRegistrationServiceException =
-                new RegistrationServiceException(exception);
+                new RegistrationServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -126,7 +128,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertRegistrationAsync(inputRegistration))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Registration> createRegistrationTask =
@@ -137,8 +139,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
                 createRegistrationTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedRegistrationServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertRegistrationAsync(inputRegistration),

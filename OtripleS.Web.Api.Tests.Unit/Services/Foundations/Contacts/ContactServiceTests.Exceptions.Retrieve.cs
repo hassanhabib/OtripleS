@@ -40,8 +40,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             await Assert.ThrowsAsync<ContactDependencyException>(() => retrieveTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedContactDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectContactByIdAsync(badGuid),
@@ -79,8 +80,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             await Assert.ThrowsAsync<ContactDependencyException>(() => retrieveTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectContactByIdAsync(guid),
@@ -98,16 +100,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedContactServiceException =
-                new ContactServiceException(exception);
+                new ContactServiceException(serviceException);
 
             var guid = Guid.NewGuid();
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectContactByIdAsync(guid))
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when 
             ValueTask<Contact> retrieveTask = this.contactService.RetrieveContactByIdAsync(guid);
@@ -116,8 +118,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             await Assert.ThrowsAsync<ContactServiceException>(() => retrieveTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedContactServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectContactByIdAsync(guid),

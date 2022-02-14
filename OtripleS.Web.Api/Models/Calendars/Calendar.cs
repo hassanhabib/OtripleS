@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using OtripleS.Web.Api.Models.CalendarEntries;
 
 namespace OtripleS.Web.Api.Models.Calendars
@@ -18,6 +19,7 @@ namespace OtripleS.Web.Api.Models.Calendars
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
 
+        [JsonIgnore]
         public IEnumerable<CalendarEntry> CalendarEntries { get; set; }
     }
 }
