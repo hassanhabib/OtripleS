@@ -125,6 +125,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             someStudentGuardian.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var serviceException = new Exception();
 
+            var failedStudentGuardianServiceException = 
+                new FailedStudentGuardianServiceException(serviceException);    
+
             var expectedStudentGuardianServiceException =
                 new StudentGuardianServiceException(serviceException);
 
