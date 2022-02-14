@@ -129,7 +129,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
                 new FailedStudentGuardianServiceException(serviceException);    
 
             var expectedStudentGuardianServiceException =
-                new StudentGuardianServiceException(serviceException);
+                new StudentGuardianServiceException(failedStudentGuardianServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentGuardianByIdAsync
