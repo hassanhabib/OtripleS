@@ -43,11 +43,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static IQueryable<Attachment> CreateRandomAttachments() =>
-            CreateAttachmentFiller(dates: DateTimeOffset.UtcNow)
+            CreateAttachmentFiller(dates: GetRandomDateTime())
             .Create(GetRandomNumber()).AsQueryable();
 
         private static Attachment CreateRandomAttachment() =>
-            CreateAttachmentFiller(dates: DateTimeOffset.UtcNow).Create();
+            CreateAttachmentFiller(dates: GetRandomDateTime()).Create();
 
         private static Attachment CreateRandomAttachment(DateTimeOffset dates) =>
             CreateAttachmentFiller(dates).Create();
