@@ -65,8 +65,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(AssignmentAttachment => AssignmentAttachment.Assignment).IgnoreIt()
-                .OnProperty(AssignmentAttachment => AssignmentAttachment.Attachment).IgnoreIt();
+                .OnProperty(assignmentAttachment => assignmentAttachment.Assignment).IgnoreIt()
+                .OnProperty(assignmentAttachment => assignmentAttachment.Attachment).IgnoreIt();
 
             return filler;
         }
