@@ -29,10 +29,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                StudentAttachment persistedStudentAttachment =
+                StudentAttachment addedStudentAttachment =
                     await this.studentAttachmentService.AddStudentAttachmentAsync(studentAttachment);
 
-                return Created(persistedStudentAttachment);
+                return Created(addedStudentAttachment);
             }
             catch (StudentAttachmentValidationException studentAttachmentValidationException)
                 when (studentAttachmentValidationException.InnerException is AlreadyExistsStudentAttachmentException)

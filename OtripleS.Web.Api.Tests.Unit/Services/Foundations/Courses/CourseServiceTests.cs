@@ -17,6 +17,7 @@ using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Services.Foundations.Courses;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
 {
@@ -74,6 +75,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
+        public static TheoryData InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new TheoryData<int>
+            {
+                randomMoreThanMinuteFromNow,
+                randomMoreThanMinuteBeforeNow
+            };
+        }
+
         private static Filler<Course> CreateRandomCourseFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Course>();
@@ -85,18 +98,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                 .OnProperty(course => course.CourseAttachments).IgnoreIt();
 
             return filler;
-        }
-
-        public static IEnumerable<object[]> InvalidMinuteCases()
-        {
-            int randomMoreThanMinuteFromNow = GetRandomNumber();
-            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
-
-            return new List<object[]>
-            {
-                new object[] { randomMoreThanMinuteFromNow },
-                new object[] { randomMoreThanMinuteBeforeNow }
-            };
         }
     }
 }

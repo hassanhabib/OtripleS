@@ -18,8 +18,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
         public async void ShouldThrowValidationExceptionOnAddWhenExamAttachmentIsNullAndLogItAsync()
         {
             // given
-            ExamAttachment randomExamAttachment = default;
-            ExamAttachment nullExamAttachment = randomExamAttachment;
+            ExamAttachment invalidExamAttachment = null;
+           
             var nullExamAttachmentException = new NullExamAttachmentException();
 
             var expectedExamAttachmentValidationException =
@@ -27,15 +27,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
 
             // when
             ValueTask<ExamAttachment> addExamAttachmentTask =
-                this.examAttachmentService.AddExamAttachmentAsync(nullExamAttachment);
+                this.examAttachmentService.AddExamAttachmentAsync(invalidExamAttachment);
 
             // then
             await Assert.ThrowsAsync<ExamAttachmentValidationException>(() =>
                 addExamAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExamAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertExamAttachmentAsync(It.IsAny<ExamAttachment>()),
@@ -76,8 +77,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
                 addExamAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameValidationExceptionAs(expectedExamAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    expectedExamAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertExamAttachmentAsync(It.IsAny<ExamAttachment>()),
@@ -116,8 +118,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
                 addExamAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedExamAttachmentValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedExamAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertExamAttachmentAsync(alreadyExistsExamAttachment),
@@ -156,8 +159,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
                 addExamAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedExamAttachmentValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedExamAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertExamAttachmentAsync(invalidExamAttachment),

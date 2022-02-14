@@ -52,8 +52,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedUserDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedUserDependencyException))),
+                        Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
                 broker.InsertUserAsync(inputUser, password),
@@ -101,8 +102,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserDependencyException))),
+                        Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
                 broker.InsertUserAsync(inputUser, password),
@@ -120,11 +122,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             DateTimeOffset dateTime = GetRandomDateTime();
             User randomUser = CreateRandomUser(dates: dateTime);
             User inputUser = randomUser;
-            var exception = new Exception();
+            var serviceException = new Exception();
             string password = GetRandomPassword();
 
+            var failedUserServiceException =
+                new FailedUserServiceException(serviceException);
+
             var expectedAssignmentServiceException =
-                new UserServiceException(exception);
+                new UserServiceException(failedUserServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -132,7 +137,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
 
             this.userManagementBrokerMock.Setup(broker =>
                 broker.InsertUserAsync(inputUser, password))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<User> registerUserTask =
@@ -147,8 +152,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentServiceException))),
+                        Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
                 broker.InsertUserAsync(inputUser, password),
