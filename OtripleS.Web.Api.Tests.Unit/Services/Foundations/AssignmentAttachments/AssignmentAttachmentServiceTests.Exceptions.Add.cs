@@ -20,7 +20,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
         {
             // given
             AssignmentAttachment someAssignmentAttachment = CreateRandomAssignmentAttachment();
-            var sqlException = GetSqlException();
+
+            var sqlException =
+                GetSqlException();
 
             var failedAssigmentAttachmentStorageException =
                 new FailedAssignmentAttachmentStorageException(sqlException);
@@ -58,7 +60,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
         {
             // given
             AssignmentAttachment someAssignmentAttachment = CreateRandomAssignmentAttachment();
-            var databaseUpdateException = new DbUpdateException();
+
+            var databaseUpdateException =
+                new DbUpdateException();
 
             var failedAssigmentAttachmentStorageException =
                 new FailedAssignmentAttachmentStorageException(databaseUpdateException);
@@ -96,7 +100,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
         {
             // given
             AssignmentAttachment someAssignmentAttachment = CreateRandomAssignmentAttachment();
-            var serviceException = new Exception();
+
+            var serviceException =
+                new Exception();
 
             var failedAssignmentAttachmentServiceException =
                 new FailedAssignmentAttachmentServiceException(serviceException);
