@@ -126,7 +126,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             StudentContact alreadyExistsStudentContact = randomStudentContact;
             string randomMessage = GetRandomMessage();
             string exceptionMessage = randomMessage;
-            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var duplicateKeyException =
+                new DuplicateKeyException(exceptionMessage);
 
             var alreadyExistsStudentContactException =
                 new AlreadyExistsStudentContactException(duplicateKeyException);
@@ -167,7 +169,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             StudentContact invalidStudentContact = randomStudentContact;
             string randomMessage = GetRandomMessage();
             string exceptionMessage = randomMessage;
-            var foreignKeyConstraintConflictException = new ForeignKeyConstraintConflictException(exceptionMessage);
+
+            var foreignKeyConstraintConflictException =
+                new ForeignKeyConstraintConflictException(exceptionMessage);
 
             var invalidStudentContactReferenceException =
                 new InvalidStudentContactReferenceException(foreignKeyConstraintConflictException);
