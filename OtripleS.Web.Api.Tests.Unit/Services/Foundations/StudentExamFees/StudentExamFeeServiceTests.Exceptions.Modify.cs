@@ -75,7 +75,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             DateTimeOffset randomDateTime = GetRandomDateTime();
             StudentExamFee someStudentExamFee = CreateRandomStudentExamFee(randomDateTime);
             someStudentExamFee.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
-            var databaseUpdateException = new DbUpdateException();
+
+            var databaseUpdateException =
+                new DbUpdateException();
 
             var expectedStudentExamFeeDependencyException =
                 new StudentExamFeeDependencyException(databaseUpdateException);
@@ -126,7 +128,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             DateTimeOffset randomDateTime = GetRandomDateTime();
             StudentExamFee someStudentExamFee = CreateRandomStudentExamFee(randomDateTime);
             someStudentExamFee.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
-            var serviceException = new Exception();
+
+            var serviceException =
+                new Exception();
 
             var expectedStudentExamFeeServiceException =
                 new StudentExamFeeServiceException(serviceException);
@@ -177,7 +181,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             DateTimeOffset randomDateTime = GetRandomDateTime();
             StudentExamFee someStudentExamFee = CreateRandomStudentExamFee(randomDateTime);
             someStudentExamFee.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
-            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+            var databaseUpdateConcurrencyException =
+                new DbUpdateConcurrencyException();
 
             var lockedStudentExamFeeException =
                 new LockedStudentExamFeeException(databaseUpdateConcurrencyException);
