@@ -68,7 +68,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             // given
             Guid someStudentId = Guid.NewGuid();
             Guid someExamFeeId = Guid.NewGuid();
-            var databaseUpdateException = new DbUpdateException();
+
+            var databaseUpdateException =
+                new DbUpdateException();
 
             var expectedstudentExamFeeIdDependencyException =
                 new StudentExamFeeDependencyException(databaseUpdateException);
@@ -113,7 +115,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             // given
             Guid someStudentId = Guid.NewGuid();
             Guid someExamFeeId = Guid.NewGuid();
-            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+            var databaseUpdateConcurrencyException =
+                new DbUpdateConcurrencyException();
 
             var lockedAttachmentException =
                 new LockedStudentExamFeeException(databaseUpdateConcurrencyException);
@@ -160,8 +164,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             // given
             Guid someStudentId = Guid.NewGuid();
             Guid someExamFeeId = Guid.NewGuid();
-            var serviceException = new Exception();
-            var expectedStudentExamFeeException = new StudentExamFeeServiceException(serviceException);
+
+            var serviceException =
+                new Exception();
+
+            var expectedStudentExamFeeException =
+                new StudentExamFeeServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentExamFeeByIdsAsync(
