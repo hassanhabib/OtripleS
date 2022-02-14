@@ -23,7 +23,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             StudentExamFee someStudentExamFee = CreateRandomStudentExamFee(dateTime);
             someStudentExamFee.UpdatedBy = someStudentExamFee.CreatedBy;
             someStudentExamFee.UpdatedDate = someStudentExamFee.CreatedDate;
-            var sqlException = GetSqlException();
+
+            var sqlException =
+                GetSqlException();
 
             var expectedStudentExamFeeDependencyException =
                 new StudentExamFeeDependencyException(sqlException);
@@ -70,7 +72,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             StudentExamFee someStudentExamFee = CreateRandomStudentExamFee(dateTime);
             someStudentExamFee.UpdatedBy = someStudentExamFee.CreatedBy;
             someStudentExamFee.UpdatedDate = someStudentExamFee.CreatedDate;
-            var databaseUpdateException = new DbUpdateException();
+
+            var databaseUpdateException =
+                new DbUpdateException();
 
             var expectedStudentExamFeeDependencyException =
                 new StudentExamFeeDependencyException(databaseUpdateException);
@@ -117,7 +121,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             StudentExamFee someStudentExamFee = CreateRandomStudentExamFee(dateTime);
             someStudentExamFee.UpdatedBy = someStudentExamFee.CreatedBy;
             someStudentExamFee.UpdatedDate = someStudentExamFee.CreatedDate;
-            var serviceException = new Exception();
+
+            var serviceException =
+                new Exception();
 
             var expectedStudentExamFeeServiceException =
                 new StudentExamFeeServiceException(serviceException);
