@@ -19,8 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         public async void ShouldThrowValidationExceptionOnCreateWhenClassroomIsNullAndLogItAsync()
         {
             // given
-            Classroom randomClassroom = null;
-            Classroom nullClassroom = randomClassroom;
+            Classroom invalidClassroom = null;
+            
             var nullClassroomException = new NullClassroomException();
 
             var expectedClassroomValidationException =
@@ -28,15 +28,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
 
             // when
             ValueTask<Classroom> createClassroomTask =
-                this.classroomService.CreateClassroomAsync(nullClassroom);
+                this.classroomService.CreateClassroomAsync(invalidClassroom);
 
             // then
             await Assert.ThrowsAsync<ClassroomValidationException>(() =>
                 createClassroomTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedClassroomValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectClassroomByIdAsync(It.IsAny<Guid>()),
@@ -312,8 +313,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedClassroomValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedClassroomValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();

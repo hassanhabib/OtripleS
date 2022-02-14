@@ -53,7 +53,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.userManagementBrokerMock.VerifyNoOtherCalls();
-            this.userManagementBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]

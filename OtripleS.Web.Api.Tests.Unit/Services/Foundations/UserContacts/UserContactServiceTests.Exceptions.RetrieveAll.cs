@@ -37,8 +37,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 retrieveAllUserContactsAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogCritical(It.Is(SameExceptionAs(expectedUserContactDependencyException))),
-                        Times.Once);
+                    broker.LogCritical(It.Is(SameExceptionAs(
+                        expectedUserContactDependencyException))),
+                            Times.Once);
 
             this.storageBrokerMock.Verify(broker => broker.SelectAllUserContacts(),
                 Times.Once);
@@ -51,13 +52,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedUserContactServiceException =
-                new UserContactServiceException(exception);
+                new UserContactServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker => broker.SelectAllUserContacts())
-                .Throws(exception);
+                .Throws(serviceException);
 
             // when
             Action retrieveAllUserContactsAction = () =>
@@ -68,8 +69,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 retrieveAllUserContactsAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogError(It.Is(SameExceptionAs(expectedUserContactServiceException))),
-                        Times.Once);
+                    broker.LogError(It.Is(SameExceptionAs(
+                        expectedUserContactServiceException))),
+                            Times.Once);
 
             this.storageBrokerMock.Verify(broker => broker.SelectAllUserContacts(),
                 Times.Once);

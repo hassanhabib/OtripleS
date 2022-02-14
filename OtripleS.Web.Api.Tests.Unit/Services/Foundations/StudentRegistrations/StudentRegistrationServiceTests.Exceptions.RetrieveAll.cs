@@ -20,9 +20,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 broker.SelectAllStudentRegistrations())
                     .Throws(sqlException);
 
-            // when . // then
-            Assert.Throws<StudentRegistrationDependencyException>(() =>
-                this.studentRegistrationService.RetrieveAllStudentRegistrations());
+            // when
+            Action retrieveAllStudentRegistrationsAction = () =>
+                this.studentRegistrationService.RetrieveAllStudentRegistrations();
+
+            // then
+            Assert.Throws<StudentRegistrationDependencyException>(
+                retrieveAllStudentRegistrationsAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
@@ -41,18 +45,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
         public void ShouldThrowServiceExceptionOnRetrieveAllStudentRegistrationsWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedStudentRegistrationServiceException =
-                new StudentRegistrationServiceException(exception);
+                new StudentRegistrationServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudentRegistrations())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<StudentRegistrationServiceException>(() =>
-                this.studentRegistrationService.RetrieveAllStudentRegistrations());
+            // when
+            Action retrieveAllStudentRegistrationsAction = () =>
+                this.studentRegistrationService.RetrieveAllStudentRegistrations();
+
+            // then
+            Assert.Throws<StudentRegistrationServiceException>(
+                retrieveAllStudentRegistrationsAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentRegistrations(),

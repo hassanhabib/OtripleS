@@ -31,8 +31,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 new AssignmentAttachmentDependencyException(failedAssigmentAttachmentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
-                    .ThrowsAsync(sqlException);
+                 broker.SelectAssignmentAttachmentByIdAsync(
+                     It.IsAny<Guid>(), 
+                     It.IsAny<Guid>()))
+                        .ThrowsAsync(sqlException);
 
             // when
             ValueTask<AssignmentAttachment> retrieveAssignmentAttachmentTask =
@@ -74,8 +76,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 new AssignmentAttachmentDependencyException(failedAssigmentAttachmentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
-                    .ThrowsAsync(databaseUpdateException);
+                broker.SelectAssignmentAttachmentByIdAsync(
+                    It.IsAny<Guid>(), 
+                    It.IsAny<Guid>()))
+                        .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<AssignmentAttachment> retrieveAssignmentAttachmentTask =
@@ -117,8 +121,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 new AssignmentAttachmentDependencyValidationException(lockedAssignmentAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
-                    .ThrowsAsync(databaseUpdateConcurrencyException);
+                broker.SelectAssignmentAttachmentByIdAsync(
+                    It.IsAny<Guid>(), 
+                    It.IsAny<Guid>()))
+                        .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
             ValueTask<AssignmentAttachment> retrieveAssignmentAttachmentTask =
@@ -131,8 +137,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 retrieveAssignmentAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
-                    Times.Once);
+                broker.SelectAssignmentAttachmentByIdAsync(
+                    It.IsAny<Guid>(), 
+                    It.IsAny<Guid>()),
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -149,14 +157,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
             // given
             Guid someAttachmentId = Guid.NewGuid();
             Guid someAssignmentId = Guid.NewGuid();
-            var exception = new Exception();
+            var serviceException = new Exception();
+
+            var failedAssignmentAttachmentServiceException =
+                new FailedAssignmentAttachmentServiceException(serviceException);
 
             var expectedAssignmentAttachmentException =
-                new AssignmentAttachmentServiceException(exception);
+                new AssignmentAttachmentServiceException(failedAssignmentAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
-                    .ThrowsAsync(exception);
+                broker.SelectAssignmentAttachmentByIdAsync(
+                    It.IsAny<Guid>(), 
+                    It.IsAny<Guid>()))
+                        .ThrowsAsync(serviceException);
 
             // when
             ValueTask<AssignmentAttachment> retrieveAssignmentAttachmentTask =
@@ -169,8 +182,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 retrieveAssignmentAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
-                    Times.Once);
+                broker.SelectAssignmentAttachmentByIdAsync(
+                    It.IsAny<Guid>(), 
+                    It.IsAny<Guid>()),
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
