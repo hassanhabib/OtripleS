@@ -21,7 +21,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             // given
             StudentContact randomStudentContact = CreateRandomStudentContact();
             StudentContact inputStudentContact = randomStudentContact;
-            var sqlException = GetSqlException();
+
+            var sqlException =
+                GetSqlException();
 
             var expectedStudentContactDependencyException =
                 new StudentContactDependencyException(sqlException);
@@ -57,7 +59,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             // given
             StudentContact randomStudentContact = CreateRandomStudentContact();
             StudentContact inputStudentContact = randomStudentContact;
-            var databaseUpdateException = new DbUpdateException();
+
+            var databaseUpdateException =
+                new DbUpdateException();
 
             var expectedStudentContactDependencyException =
                 new StudentContactDependencyException(databaseUpdateException);
@@ -93,7 +97,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             // given
             StudentContact randomStudentContact = CreateRandomStudentContact();
             StudentContact inputStudentContact = randomStudentContact;
-            var serviceException = new Exception();
+
+            var serviceException =
+                new Exception();
 
             var expectedStudentContactServiceException =
                 new StudentContactServiceException(serviceException);
