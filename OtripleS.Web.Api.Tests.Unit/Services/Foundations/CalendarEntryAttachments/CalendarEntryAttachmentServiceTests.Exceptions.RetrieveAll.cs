@@ -65,7 +65,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
                 this.calendarEntryAttachmentService.RetrieveAllCalendarEntryAttachments();
 
             // then
-            Assert.Throws<CalendarEntryAttachmentDependencyException>(
+            Assert.Throws<CalendarEntryAttachmentServiceException>(
                 retrieveAllCalenderEntryAttachmentAction);
 
             this.storageBrokerMock.Verify(broker =>
