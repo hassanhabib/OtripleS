@@ -19,8 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         public async void ShouldThrowValidationExceptionOnAddWhenExamIsNullAndLogItAsync()
         {
             // given
-            Exam randomExam = default;
-            Exam nullExam = randomExam;
+            Exam invalidExam = null;
+            
             var nullExamException = new NullExamException();
 
             var expectedExamValidationException =
@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
 
             // when
             ValueTask<Exam> createExamTask =
-                this.examService.AddExamAsync(nullExam);
+                this.examService.AddExamAsync(invalidExam);
 
             // then
             await Assert.ThrowsAsync<ExamValidationException>(() =>
@@ -323,8 +323,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 createExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedExamValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedExamValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),

@@ -28,10 +28,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                Guardian persistedGuardian =
+                Guardian createdGuardian =
                     await this.guardianService.CreateGuardianAsync(guardian);
 
-                return Created(persistedGuardian);
+                return Created(createdGuardian);
             }
             catch (GuardianValidationException guardianValidationException)
                 when (guardianValidationException.InnerException is AlreadyExistsGuardianException)
