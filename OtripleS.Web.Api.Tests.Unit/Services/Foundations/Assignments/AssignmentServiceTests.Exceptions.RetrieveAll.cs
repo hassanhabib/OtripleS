@@ -27,12 +27,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
 
             
             // when
-            Action retrieveAllAssignmentAction = () =>
+            Action retrieveAllAssignmentsAction = () =>
                 this.assignmentService.RetrieveAllAssignments();
 
             // then
             Assert.Throws<AssignmentDependencyException>(
-                retrieveAllAssignmentAction);
+                retrieveAllAssignmentsAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAssignments(),
