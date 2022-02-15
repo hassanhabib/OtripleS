@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -93,8 +93,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
             StudentRegistration someStudentRegistration = CreateRandomStudentRegistration();
             var serviceException = new Exception();
 
+            var failedStudentRegistrationServiceException =
+                new FailedStudentRegistrationServiceException(serviceException);
+
             var expectedStudentRegistrationServiceException =
-                new StudentRegistrationServiceException(serviceException);
+                new StudentRegistrationServiceException(failedStudentRegistrationServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertStudentRegistrationAsync(It.IsAny<StudentRegistration>()))

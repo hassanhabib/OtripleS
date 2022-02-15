@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using Moq;
@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                     .Throws(sqlException);
 
             // when
-            Action retrieveAllCalendarEntryAction = () =>
+            Action retrieveAllCalendarEntriesAction = () =>
                 this.calendarEntryService.RetrieveAllCalendarEntries();
 
             // then
@@ -61,12 +61,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                     .Throws(serviceException);
 
             // when
-            Action retrieveAllCalendarEntryAction = () =>
+            Action retrieveAllCalendarEntriesAction = () =>
                 this.calendarEntryService.RetrieveAllCalendarEntries();
 
             // then
             Assert.Throws<CalendarEntryServiceException>(
-                retrieveAllCalendarEntryAction);
+                retrieveAllCalendarEntriesAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(

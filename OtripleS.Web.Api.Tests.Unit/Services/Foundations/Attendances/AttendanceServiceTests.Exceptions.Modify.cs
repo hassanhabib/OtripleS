@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -123,8 +123,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             someAttendance.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var serviceException = new Exception();
 
+            var failedAttendanceServiceException =
+                new FailedAttendanceServiceException(serviceException);
+
             var expectedAttendanceServiceException =
-                new AttendanceServiceException(serviceException);
+                new AttendanceServiceException(failedAttendanceServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAttendanceByIdAsync(someAttendance.Id))
