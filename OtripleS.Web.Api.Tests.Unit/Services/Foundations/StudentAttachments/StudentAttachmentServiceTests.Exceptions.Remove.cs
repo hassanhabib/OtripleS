@@ -44,8 +44,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
                 removeStudentAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedStudentAttachmentDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentAttachmentByIdAsync(someStudentId, someAttachmentId),
@@ -86,8 +87,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
                 () => removeStudentAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentAttachmentDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentAttachmentByIdAsync(someStudentId, someAttachmentId),
@@ -130,8 +132,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
                 removeStudentAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentAttachmentException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentAttachmentException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentAttachmentByIdAsync(someStudentId, someAttachmentId),
@@ -173,8 +176,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
                 removeStudentAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentAttachmentException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentAttachmentException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentAttachmentByIdAsync(someStudentId, someAttachmentId),

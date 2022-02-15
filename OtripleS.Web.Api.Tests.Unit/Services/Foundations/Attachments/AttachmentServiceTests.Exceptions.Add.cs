@@ -119,8 +119,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
             someAttachment.UpdatedDate = someAttachment.CreatedDate;
             var serviceException = new Exception();
 
+            var failedAttachmentServiceException =
+                new FailedAttachmentServiceException(serviceException);
+
             var expectedAttachmentServiceException =
-                new AttachmentServiceException(serviceException);
+                new AttachmentServiceException(failedAttachmentServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())

@@ -24,9 +24,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllCalendarEntries())
                     .Throws(sqlException);
-             // when
+              
+            // when
             Action retrieveAllCalenderEntryAction = () =>
                 this.calendarEntryService.RetrieveAllCalendarEntries();
+            
             // then
             Assert.Throws<CalendarEntryDependencyException>(
                 retrieveAllCalenderEntryAction);
