@@ -19,20 +19,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomSemesterCourseId = Guid.NewGuid();
-            Guid inputSemesterCourseId = randomSemesterCourseId;
+            Guid someSemesterCourseId = Guid.NewGuid();
             var sqlException = GetSqlException();
 
             var expectedSemesterCourseDependencyException =
                 new SemesterCourseDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
+                broker.SelectSemesterCourseByIdAsync(someSemesterCourseId))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<SemesterCourse> retrieveSemesterCourseByIdTask =
-                this.semesterCourseService.RetrieveSemesterCourseByIdAsync(inputSemesterCourseId);
+                this.semesterCourseService.RetrieveSemesterCourseByIdAsync(someSemesterCourseId);
 
             // then
             await Assert.ThrowsAsync<SemesterCourseDependencyException>(() =>
@@ -44,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId),
+                broker.SelectSemesterCourseByIdAsync(someSemesterCourseId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
