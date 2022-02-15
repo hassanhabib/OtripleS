@@ -90,16 +90,19 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedUserServiceException =
+                    new FailedUserServiceException(exception);
+
+                throw CreateAndLogServiceException(failedUserServiceException);
             }
         }
 
-        private UserServiceException CreateAndLogServiceException(Exception exception)
+        private Exception CreateAndLogValidationException(Exception exception)
         {
-            var userServiceException = new UserServiceException(exception);
-            this.loggingBroker.LogError(userServiceException);
+            var userValidationException = new UserValidationException(exception);
+            this.loggingBroker.LogError(userValidationException);
 
-            return userServiceException;
+            return userValidationException;
         }
 
         private UserDependencyException CreateAndLogDependencyException(Exception exception)
@@ -118,12 +121,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
             return userDependencyException;
         }
 
-        private Exception CreateAndLogValidationException(Exception exception)
+        private UserServiceException CreateAndLogServiceException(Exception exception)
         {
-            var userValidationException = new UserValidationException(exception);
-            this.loggingBroker.LogError(userValidationException);
+            var userServiceException = new UserServiceException(exception);
+            this.loggingBroker.LogError(userServiceException);
 
-            return userValidationException;
+            return userServiceException;
         }
     }
 }

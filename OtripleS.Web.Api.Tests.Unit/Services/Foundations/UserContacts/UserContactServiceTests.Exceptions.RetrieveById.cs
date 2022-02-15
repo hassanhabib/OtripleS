@@ -47,8 +47,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 retrieveUserContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedUserContactDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedUserContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectUserContactByIdAsync(inputUserId, inputContactId),
@@ -89,8 +90,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 () => retrieveUserContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserContactDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectUserContactByIdAsync(inputUserId, inputContactId),
@@ -131,8 +133,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 retrieveUserContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserContactException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserContactException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectUserContactByIdAsync(inputUserId, inputContactId),

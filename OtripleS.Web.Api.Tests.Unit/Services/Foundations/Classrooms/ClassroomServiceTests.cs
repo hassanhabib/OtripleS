@@ -17,6 +17,7 @@ using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Services.Foundations.Classrooms;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
 {
@@ -66,15 +67,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         private static Classroom CreateRandomClassroom() =>
             CreateClassroomFiller(dates: DateTimeOffset.UtcNow).Create();
 
-        public static IEnumerable<object[]> InvalidMinuteCases()
+        public static TheoryData InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
             int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
 
-            return new List<object[]>
+            return new TheoryData<int>
             {
-                new object[] { randomMoreThanMinuteFromNow },
-                new object[] { randomMoreThanMinuteBeforeNow }
+                randomMoreThanMinuteFromNow,
+                randomMoreThanMinuteBeforeNow
             };
         }
 

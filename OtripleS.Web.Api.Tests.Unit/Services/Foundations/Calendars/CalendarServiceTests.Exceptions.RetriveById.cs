@@ -100,14 +100,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
         {
             // given
             Guid someCalendarId = Guid.NewGuid();
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedCalendarServiceException =
-                new CalendarServiceException(exception);
+                new CalendarServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectCalendarByIdAsync(someCalendarId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Calendar> retrieveCalendarByIdTask =

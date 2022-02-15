@@ -27,10 +27,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAssignmentAttachments())
                     .Throws(sqlException);
+        
+            // when
+            Action retrieveAllAssignmentAttachmentsAction = () =>
+                this.assignmentAttachmentService.RetrieveAllAssignmentAttachments();
 
-            // when . then
-            Assert.Throws<AssignmentAttachmentDependencyException>(() =>
-                this.assignmentAttachmentService.RetrieveAllAssignmentAttachments());
+            // then
+            Assert.Throws<AssignmentAttachmentDependencyException>(
+                retrieveAllAssignmentAttachmentsAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAssignmentAttachments(),
@@ -58,9 +62,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 broker.SelectAllAssignmentAttachments())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<AssignmentAttachmentServiceException>(() =>
-                this.assignmentAttachmentService.RetrieveAllAssignmentAttachments());
+            // when
+            Action retrieveAllAssignmentAttachmentsAction = () =>
+                this.assignmentAttachmentService.RetrieveAllAssignmentAttachments();
+
+            // then
+            Assert.Throws<AssignmentAttachmentServiceException>(
+                retrieveAllAssignmentAttachmentsAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAssignmentAttachments(),
