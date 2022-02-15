@@ -39,7 +39,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
         }
 
         private static IQueryable<CalendarEntryAttachment> CreateRandomCalendarEntryAttachments() =>
-            CreateCalendarEntryAttachmentFiller( dates: GetRandomDateTime()).Create(GetRandomNumber()).AsQueryable();
+            CreateCalendarEntryAttachmentFiller(dates: GetRandomDateTime()).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 150).GetValue();
