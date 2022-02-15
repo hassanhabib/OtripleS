@@ -25,9 +25,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 broker.SelectAllAttendances())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<AttendanceDependencyException>(() =>
-                this.attendanceService.RetrieveAllAttendances());
+            // when
+            Action retrieveAllAttendancesAction = () =>
+                this.attendanceService.RetrieveAllAttendances();
+
+            // then
+            Assert.Throws<AttendanceDependencyException>(
+                retrieveAllAttendancesAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
@@ -60,9 +64,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 broker.SelectAllAttendances())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<AttendanceServiceException>(() =>
-                this.attendanceService.RetrieveAllAttendances());
+            // when
+            Action retrieveAllAttendancesAction = () =>
+                this.attendanceService.RetrieveAllAttendances();
+
+            // then
+            Assert.Throws<AttendanceServiceException>(
+                retrieveAllAttendancesAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(

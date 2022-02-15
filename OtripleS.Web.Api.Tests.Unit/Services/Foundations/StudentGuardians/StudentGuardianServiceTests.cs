@@ -16,6 +16,7 @@ using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Services.Foundations.StudentGuardians;
 using Tynamix.ObjectFiller;
+using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
 {
@@ -46,15 +47,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
         private static IQueryable<StudentGuardian> CreateRandomStudentGuardians() =>
             CreateStudentGuardianFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
-        public static IEnumerable<object[]> InvalidMinuteCases()
+        public static TheoryData InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
             int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
 
-            return new List<object[]>
+            return new TheoryData<int>
             {
-                new object[] { randomMoreThanMinuteFromNow },
-                new object[] { randomMoreThanMinuteBeforeNow }
+                randomMoreThanMinuteFromNow,
+                randomMoreThanMinuteBeforeNow
             };
         }
 

@@ -165,7 +165,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -207,7 +207,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
