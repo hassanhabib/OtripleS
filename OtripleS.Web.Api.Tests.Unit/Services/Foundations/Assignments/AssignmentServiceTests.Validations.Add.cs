@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
         {
             // given
             Assignment invalidAssignment = null;
-            
+
             var nullAssignmentException = new NullAssignmentException();
 
             var expectedAssignmentValidationException =

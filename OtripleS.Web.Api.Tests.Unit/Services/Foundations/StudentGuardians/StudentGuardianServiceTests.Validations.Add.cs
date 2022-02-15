@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
         {
             // given
             StudentGuardian invalidStudentGuardian = null;
-            
+
             var nullStudentGuardianException = new NullStudentGuardianException();
 
             var expectedStudentGuardianValidationException =

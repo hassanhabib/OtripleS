@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
             this.storageBrokerMock.Setup(broker => broker.SelectAllGuardianContacts())
                 .Throws(sqlException);
 
-           
+
             // when
             Action retrieveAllGuardianContactAction = () =>
                 this.guardianContactService.RetrieveAllGuardianContacts();

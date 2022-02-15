@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
-// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+﻿// ---------------------------------------------------------------
+//  Copyright (c) Coalition of the Good-Hearted Engineers 
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR 
+// ---------------------------------------------------------------
 
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         {
             // given
             TeacherContact invalidTeacherContact = null;
-            
+
             var nullTeacherContactException = new NullTeacherContactException();
 
             var expectedTeacherContactValidationException =

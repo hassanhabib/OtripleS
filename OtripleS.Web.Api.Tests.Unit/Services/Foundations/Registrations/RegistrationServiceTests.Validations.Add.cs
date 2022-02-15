@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
         {
             // given
             Registration invalidRegistration = null;
-            
+
             var nullRegistrationException = new NullRegistrationException();
 
             var expectedRegistrationValidationException =

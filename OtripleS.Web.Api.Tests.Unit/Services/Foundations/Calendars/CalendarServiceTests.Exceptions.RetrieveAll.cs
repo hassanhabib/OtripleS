@@ -26,8 +26,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
                     .Throws(sqlException);
 
             // when
-           Action retrieveAllCalendarAction = () =>
-                this.calendarService.RetrieveAllCalendars();
+            Action retrieveAllCalendarAction = () =>
+                 this.calendarService.RetrieveAllCalendars();
 
             // then
             Assert.Throws<CalendarDependencyException>(
@@ -65,8 +65,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
                     .Throws(serviceException);
 
             // when
-           Action retrieveAllCalendarAction = () =>
-                this.calendarService.RetrieveAllCalendars();
+            Action retrieveAllCalendarAction = () =>
+                 this.calendarService.RetrieveAllCalendars();
 
             // then
             Assert.Throws<CalendarServiceException>(

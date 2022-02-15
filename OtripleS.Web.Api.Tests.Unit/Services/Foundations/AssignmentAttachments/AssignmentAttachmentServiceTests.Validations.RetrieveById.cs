@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
-// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+﻿// ---------------------------------------------------------------
+//  Copyright (c) Coalition of the Good-Hearted Engineers 
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR 
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -47,7 +47,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAssignmentAttachmentByIdAsync(
-                    It.IsAny<Guid>(), 
+                    It.IsAny<Guid>(),
                     It.IsAny<Guid>()),
                         Times.Never);
 
@@ -88,7 +88,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAssignmentAttachmentByIdAsync(
-                    It.IsAny<Guid>(), 
+                    It.IsAny<Guid>(),
                     It.IsAny<Guid>()),
                         Times.Never);
 
@@ -127,7 +127,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAssignmentAttachmentByIdAsync(
-                    It.IsAny<Guid>(), 
+                    It.IsAny<Guid>(),
                     It.IsAny<Guid>()),
                         Times.Once);
 

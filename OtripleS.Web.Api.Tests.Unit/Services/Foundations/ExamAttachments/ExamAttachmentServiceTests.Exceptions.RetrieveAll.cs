@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
-// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+﻿// ---------------------------------------------------------------
+//  Copyright (c) Coalition of the Good-Hearted Engineers 
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR 
+// ---------------------------------------------------------------
 
 using System;
 using Moq;
@@ -25,13 +25,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
                 broker.SelectAllExamAttachments())
                     .Throws(sqlException);
 
-           // when
+            // when
             Action retrieveAllExamAttachmentsAction = () =>
                 this.examAttachmentService.RetrieveAllExamAttachments();
 
             // then
             Assert.Throws<ExamAttachmentDependencyException>(
-                retrieveAllExamAttachmentsAction); 
+                retrieveAllExamAttachmentsAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllExamAttachments(),
@@ -67,7 +67,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
             // then
             Assert.Throws<ExamAttachmentServiceException>(
                 retrieveAllExamAttachmentsAction);
-           
+
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllExamAttachments(),
                     Times.Once);

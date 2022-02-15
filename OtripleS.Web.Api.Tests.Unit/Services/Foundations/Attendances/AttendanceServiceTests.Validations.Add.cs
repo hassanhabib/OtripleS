@@ -21,7 +21,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         {
             // given
             Attendance invalidAttendance = null;
-            
+
             var nullAttendanceException = new NullAttendanceException();
 
             var expectedAttendanceValidationException =

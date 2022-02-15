@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
         {
             // given
             StudentExam invalidStudentExam = null;
-            
+
             var nullStudentExamException = new NullStudentExamException();
 
             var expectedStudentExamValidationException =

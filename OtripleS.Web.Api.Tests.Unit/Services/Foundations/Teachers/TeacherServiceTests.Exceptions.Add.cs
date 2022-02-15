@@ -119,7 +119,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             inputTeacher.UpdatedBy = inputTeacher.CreatedBy;
             var serviceException = new Exception();
 
-            var failedTeacherServiceException = 
+            var failedTeacherServiceException =
                 new FailedTeacherServiceException(serviceException);
 
             var expectedTeacherServiceException =
