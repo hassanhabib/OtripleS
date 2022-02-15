@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using Moq;
@@ -28,9 +28,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 broker.SelectAllAssignmentAttachments())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<AssignmentAttachmentDependencyException>(() =>
-                this.assignmentAttachmentService.RetrieveAllAssignmentAttachments());
+            // when
+            Action retrieveAllAssignmentAttachmentsAction = () =>
+                this.assignmentAttachmentService.RetrieveAllAssignmentAttachments();
+
+            // then
+            Assert.Throws<AssignmentAttachmentDependencyException>(
+                retrieveAllAssignmentAttachmentsAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAssignmentAttachments(),
@@ -58,9 +62,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 broker.SelectAllAssignmentAttachments())
                     .Throws(exception);
 
-            // when . then
-            Assert.Throws<AssignmentAttachmentServiceException>(() =>
-                this.assignmentAttachmentService.RetrieveAllAssignmentAttachments());
+            // when
+            Action retrieveAllAssignmentAttachmentsAction = () =>
+                this.assignmentAttachmentService.RetrieveAllAssignmentAttachments();
+
+            // then
+            Assert.Throws<AssignmentAttachmentServiceException>(
+                retrieveAllAssignmentAttachmentsAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAssignmentAttachments(),
