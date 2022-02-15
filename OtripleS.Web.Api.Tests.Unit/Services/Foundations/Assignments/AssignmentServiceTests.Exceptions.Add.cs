@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
     public partial class AssignmentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnCreateWhenSqlExceptionOccursAndLogItAsync()   
+        public async Task ShouldThrowDependencyExceptionOnCreateWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -123,7 +123,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             someAssignment.UpdatedDate = someAssignment.CreatedDate;
             var serviceException = new Exception();
 
-            var failedAssignmentServiceException = 
+            var failedAssignmentServiceException =
                 new FailedAssignmentServiceException(serviceException);
 
             var expectedAssignmentServiceException =
