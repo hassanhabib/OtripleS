@@ -19,20 +19,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomExamId = Guid.NewGuid();
-            Guid inputExamId = randomExamId;
+            Guid someExamId = Guid.NewGuid();
             var sqlException = GetSqlException();
 
             var expectedDependencyException =
                 new ExamDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectExamByIdAsync(inputExamId))
+                broker.SelectExamByIdAsync(someExamId))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<Exam> retrieveExamTask =
-                this.examService.RetrieveExamByIdAsync(inputExamId);
+                this.examService.RetrieveExamByIdAsync(someExamId);
 
             // then
             await Assert.ThrowsAsync<ExamDependencyException>(() =>
@@ -44,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamByIdAsync(inputExamId),
+                broker.SelectExamByIdAsync(someExamId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -60,20 +59,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomExamId = Guid.NewGuid();
-            Guid inputExamId = randomExamId;
+            Guid someExamId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedExamDependencyException =
                 new ExamDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectExamByIdAsync(inputExamId))
+                broker.SelectExamByIdAsync(someExamId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<Exam> retrieveExamTask =
-                this.examService.RetrieveExamByIdAsync(inputExamId);
+                this.examService.RetrieveExamByIdAsync(someExamId);
 
             // then
             await Assert.ThrowsAsync<ExamDependencyException>(() =>
@@ -85,7 +83,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamByIdAsync(inputExamId),
+                broker.SelectExamByIdAsync(someExamId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -101,20 +99,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomExamId = Guid.NewGuid();
-            Guid inputExamId = randomExamId;
+            Guid someExamId = Guid.NewGuid();
             var serviceException = new Exception();
 
             var expectedExamServiceException =
                 new ExamServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectExamByIdAsync(inputExamId))
+                broker.SelectExamByIdAsync(someExamId))
                     .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Exam> retrieveExamByIdTask =
-                this.examService.RetrieveExamByIdAsync(inputExamId);
+                this.examService.RetrieveExamByIdAsync(someExamId);
 
             // then
             await Assert.ThrowsAsync<ExamServiceException>(() =>
@@ -126,7 +123,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamByIdAsync(inputExamId),
+                broker.SelectExamByIdAsync(someExamId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
