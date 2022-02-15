@@ -26,13 +26,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
                 broker.SelectAllStudentGuardians())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<StudentGuardianDependencyException>(() =>
-                this.studentGuardianService.RetrieveAllStudentGuardians());
+            // when
+            Action retrieveAllStudentGuardianAction = () =>
+                this.studentGuardianService.RetrieveAllStudentGuardians();
+
+            // then
+            Assert.Throws<StudentGuardianDependencyException>(
+                retrieveAllStudentGuardianAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentGuardianDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedStudentGuardianDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentGuardians(),
@@ -51,22 +56,31 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedStudentGuardianServiceException =
-                new StudentGuardianServiceException(exception);
+                new StudentGuardianServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudentGuardians())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<StudentGuardianServiceException>(() =>
-                this.studentGuardianService.RetrieveAllStudentGuardians());
+            // when
+            Action retrieveAllStudentGuardiansAction = () =>
+                this.studentGuardianService.RetrieveAllStudentGuardians();
+
+            // when
+            Action retrieveAllStudentGuardianAction = () =>
+                this.studentGuardianService.RetrieveAllStudentGuardians();
+
+            // then
+            Assert.Throws<StudentGuardianServiceException>(
+                retrieveAllStudentGuardianAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentGuardians(),

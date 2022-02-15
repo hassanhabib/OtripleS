@@ -41,8 +41,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedAttachmentDependencyException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
@@ -79,8 +80,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentDependencyException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
@@ -96,6 +98,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
         {
             // given
             var someAttachmentId = Guid.NewGuid();
+
             var Serviceexception = new Exception();
 
             var expectedAttachmentServiceException =
@@ -111,14 +114,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
 
             // then
             await Assert.ThrowsAsync<AttachmentServiceException>(() => retrieveTask.AsTask());
-
-            this.storageBrokerMock.Verify(broker =>
+           this.storageBrokerMock.Verify(broker =>
                 broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentServiceException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),

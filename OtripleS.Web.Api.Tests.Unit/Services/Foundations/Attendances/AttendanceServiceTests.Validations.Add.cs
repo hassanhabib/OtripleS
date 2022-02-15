@@ -20,8 +20,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         public async void ShouldThrowValidationExceptionOnCreateWhenAttendanceIsNullAndLogItAsync()
         {
             // given
-            Attendance randomAttendance = null;
-            Attendance nullAttendance = randomAttendance;
+            Attendance invalidAttendance = null;
+            
             var nullAttendanceException = new NullAttendanceException();
 
             var expectedAttendanceValidationException =
@@ -29,15 +29,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
 
             // when
             ValueTask<Attendance> createAttendanceTask =
-                this.attendanceService.CreateAttendanceAsync(nullAttendance);
+                this.attendanceService.CreateAttendanceAsync(invalidAttendance);
 
             // then
             await Assert.ThrowsAsync<AttendanceValidationException>(() =>
                 createAttendanceTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttendanceValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertAttendanceAsync(It.IsAny<Attendance>()),
@@ -119,8 +120,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 broker.InsertAttendanceAsync(It.IsAny<Attendance>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+               broker.GetCurrentDateTime(),
+                   Times.AtLeastOnce);
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Theory]
@@ -157,15 +163,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 createAttendanceTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttendanceValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertAttendanceAsync(It.IsAny<Attendance>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+               broker.GetCurrentDateTime(),
+                   Times.AtLeastOnce);
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Theory]
@@ -202,15 +214,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 createAttendanceTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttendanceValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertAttendanceAsync(It.IsAny<Attendance>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+               broker.GetCurrentDateTime(),
+                   Times.AtLeastOnce);
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -244,15 +262,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 createAttendanceTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttendanceValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertAttendanceAsync(It.IsAny<Attendance>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+               broker.GetCurrentDateTime(),
+                   Times.AtLeastOnce);
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -294,8 +318,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 broker.InsertAttendanceAsync(It.IsAny<Attendance>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+               broker.GetCurrentDateTime(),
+                   Times.AtLeastOnce);
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -341,8 +370,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedAttendanceValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedAttendanceValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();

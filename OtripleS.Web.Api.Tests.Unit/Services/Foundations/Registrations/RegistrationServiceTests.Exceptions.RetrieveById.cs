@@ -39,8 +39,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
                 retrieveRegistrationTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedRegistrationDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedRegistrationDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()),
@@ -74,8 +75,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
                 retrieveByIdRegistrationTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedRegistrationDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()),
@@ -113,8 +115,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
                 retrieveByIdRegistrationTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedRegistrationDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()),
@@ -130,14 +133,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
         {
             // given
             Guid someRegistrationId = Guid.NewGuid();
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedRegistrationServiceException =
-                new RegistrationServiceException(exception);
+                new RegistrationServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Registration> retrieveByIdRegistrationTask =
@@ -148,8 +151,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
                 retrieveByIdRegistrationTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedRegistrationServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()),

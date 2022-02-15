@@ -29,10 +29,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                SemesterCourse persistedSemesterCourse =
+                SemesterCourse createdSemesterCourse =
                     await this.semesterCourseService.CreateSemesterCourseAsync(semesterCourse);
 
-                return Created(persistedSemesterCourse);
+                return Created(createdSemesterCourse);
             }
             catch (SemesterCourseValidationException semesterCourseValidationException)
                 when (semesterCourseValidationException.InnerException is AlreadyExistsSemesterCourseException)

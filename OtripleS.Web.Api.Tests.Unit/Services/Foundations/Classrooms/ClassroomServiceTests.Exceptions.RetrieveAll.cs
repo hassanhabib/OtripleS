@@ -30,10 +30,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                     .Throws(sqlException);
 
             // when
-            Action retrieveAllCountriesAction = () => this.classroomService.RetrieveAllClassrooms();
+            Action retrieveAllClassroomsAction = () => this.classroomService.RetrieveAllClassrooms();
 
             // then
-            Assert.Throws<ClassroomDependencyException>(retrieveAllCountriesAction);
+            Assert.Throws<ClassroomDependencyException>(retrieveAllClassroomsAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllClassrooms(),
@@ -57,22 +57,25 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedClassroomServiceException =
-                new ClassroomServiceException(exception);
+                new ClassroomServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllClassrooms())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<ClassroomServiceException>(() =>
-                this.classroomService.RetrieveAllClassrooms());
+            // when
+            Action retrieveAllClassroomsAction = () => this.classroomService.RetrieveAllClassrooms();
+
+            // then
+            Assert.Throws<ClassroomServiceException>(retrieveAllClassroomsAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedClassroomServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedClassroomServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllClassrooms(),

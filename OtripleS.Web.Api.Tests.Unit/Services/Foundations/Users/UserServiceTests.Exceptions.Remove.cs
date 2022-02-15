@@ -43,8 +43,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 deleteUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedUserDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedUserDependencyException))),
+                        Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(inputUserId),
@@ -82,8 +83,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 deleteUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserDependencyException))),
+                        Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(inputUserId),
@@ -121,8 +123,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 deleteUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserDependencyException))),
+                        Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(inputUserId),
@@ -139,14 +142,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             // given
             Guid randomUserId = Guid.NewGuid();
             Guid inputUserId = randomUserId;
-            var exception = new Exception();
+            var serviceException = new Exception();
+
+            var failedUserServiceException = 
+                new FailedUserServiceException(serviceException);
 
             var expectedUserServiceException =
-                new UserServiceException(exception);
+                new UserServiceException(failedUserServiceException);
 
             this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectUserByIdAsync(inputUserId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<User> deleteUserTask =
@@ -157,8 +163,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 deleteUserTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserServiceException))),
+                        Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(inputUserId),

@@ -93,12 +93,22 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             }
         }
 
-        private StudentServiceException CreateAndLogServiceException(Exception exception)
+        private StudentValidationException CreateAndLogValidationException(Exception exception)
         {
-            var studentServiceException = new StudentServiceException(exception);
-            this.loggingBroker.LogError(studentServiceException);
+            var studentValidationException = new StudentValidationException(exception);
+            this.loggingBroker.LogError(studentValidationException);
 
-            return studentServiceException;
+            return studentValidationException;
+        }
+        private StudentDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+
+        {
+            var studentDependencyValidationException =
+                new StudentDependencyValidationException(exception);
+
+            this.loggingBroker.LogError(studentDependencyValidationException);
+
+            return studentDependencyValidationException;
         }
 
         private StudentDependencyException CreateAndLogDependencyException(Exception exception)
@@ -117,22 +127,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             return studentDependencyException;
         }
 
-        private StudentValidationException CreateAndLogValidationException(Exception exception)
+        private StudentServiceException CreateAndLogServiceException(Exception exception)
         {
-            var studentValidationException = new StudentValidationException(exception);
-            this.loggingBroker.LogError(studentValidationException);
+            var studentServiceException = new StudentServiceException(exception);
+            this.loggingBroker.LogError(studentServiceException);
 
-            return studentValidationException;
-        }
-
-        private StudentDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
-        {
-            var studentDependencyValidationException =
-                new StudentDependencyValidationException(exception);
-
-            this.loggingBroker.LogError(studentDependencyValidationException);
-
-            return studentDependencyValidationException;
+            return studentServiceException;
         }
     }
 }
