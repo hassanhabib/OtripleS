@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                     .Throws(sqlException);
              
             // when
-           Action retrieveAllTeachersAction = () =>
+            Action retrieveAllTeachersAction = () =>
                 this.teacherService.RetrieveAllTeachers();
 
             // then
@@ -66,7 +66,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             // when
             Action retrieveAllTeachersAction = () =>
-                 this.teacherService.RetrieveAllTeachers();
+                this.teacherService.RetrieveAllTeachers();
 
             // then
             Assert.Throws<TeacherServiceException>(
