@@ -33,7 +33,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
             Assert.Throws<ExamAttachmentDependencyException>(
                 retrieveAllExamAttachmentsAction);
 
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllExamAttachments(),
                     Times.Once);
@@ -55,7 +54,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
 
             var expectedExamAttachmentServiceException =
                 new ExamAttachmentServiceException(exception);
-
+          
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllExamAttachments())
                     .Throws(exception);
