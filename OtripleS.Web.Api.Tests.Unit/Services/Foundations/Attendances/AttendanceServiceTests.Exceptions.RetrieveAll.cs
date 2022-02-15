@@ -55,14 +55,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedAttendanceServiceException =
-                new AttendanceServiceException(exception);
+                new AttendanceServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAttendances())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when
             Action retrieveAllAttendancesAction = () =>
