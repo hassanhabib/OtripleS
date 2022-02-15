@@ -121,10 +121,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             Assignment someAssignment = CreateRandomAssignment(dateTime);
             someAssignment.UpdatedBy = someAssignment.CreatedBy;
             someAssignment.UpdatedDate = someAssignment.CreatedDate;
-            var exception = new Exception();
+            var serviceException = new Exception();
+
+            var failedAssignmentServiceException =
+                new FailedAssignmentServiceException(serviceException);
 
             var expectedAssignmentServiceException =
-                new AssignmentServiceException(exception);
+                new AssignmentServiceException(failedAssignmentServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -133,7 +136,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertAssignmentAsync(
                     It.IsAny<Assignment>()))
-                        .ThrowsAsync(exception);
+                        .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Assignment> createAssignmentTask =

@@ -97,8 +97,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             Guid someAssignmentId = Guid.NewGuid();
             var serviceException = new Exception();
 
+            var failedAssignmentServiceException =
+                new FailedAssignmentServiceException(serviceException);
+
             var expectedAssignmentServiceException =
-                new AssignmentServiceException(serviceException);
+                new AssignmentServiceException(failedAssignmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()))
