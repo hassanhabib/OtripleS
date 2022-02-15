@@ -39,7 +39,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
         }
 
         private static IQueryable<CalendarEntryAttachment> CreateRandomCalendarEntryAttachments() =>
-            CreateCalendarEntryAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+            CreateCalendarEntryAttachmentFiller(dates: GetRandomDateTime()).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 150).GetValue();
@@ -51,7 +51,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static CalendarEntryAttachment CreateRandomCalendarEntryAttachment() =>
-            CreateCalendarEntryAttachmentFiller(DateTimeOffset.UtcNow).Create();
+            CreateCalendarEntryAttachmentFiller(dates: GetRandomDateTime()).Create();
 
         private static CalendarEntryAttachment CreateRandomCalendarEntryAttachment(DateTimeOffset dates) =>
             CreateCalendarEntryAttachmentFiller(dates).Create();
