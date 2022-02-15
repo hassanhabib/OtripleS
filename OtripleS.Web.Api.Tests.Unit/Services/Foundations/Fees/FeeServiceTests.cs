@@ -68,8 +68,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
 
             return new TheoryData<int>
             {
-                new object[] { randomMoreThanMinuteFromNow },
-                new object[] { randomMoreThanMinuteBeforeNow }
+                randomMoreThanMinuteFromNow,
+                randomMoreThanMinuteBeforeNow
             };
         }
 
