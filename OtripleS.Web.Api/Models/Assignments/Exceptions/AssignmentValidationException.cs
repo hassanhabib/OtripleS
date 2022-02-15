@@ -4,10 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Assignments.Exceptions
 {
-    public class AssignmentValidationException : Exception
+    public class AssignmentValidationException : Xeption
     {
         public AssignmentValidationException(Exception innerException)
             : base(message: "Invalid input, contact support.", innerException) { }

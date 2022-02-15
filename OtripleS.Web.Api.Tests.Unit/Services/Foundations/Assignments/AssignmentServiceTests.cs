@@ -47,7 +47,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
 
-        private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
+        private static Expression<Func<Xeption, bool>> SameValidationExceptionAs(Xeption expectedException)
         {
             return actualException =>
                 actualException.Message == expectedException.Message
