@@ -99,7 +99,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
             // given
-
             Guid randomCalendarId = Guid.NewGuid();
             Guid inputCalendarId = randomCalendarId;
             var serviceException = new Exception();
@@ -108,9 +107,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
                 new CalendarServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
-
                 broker.SelectCalendarByIdAsync(inputCalendarId))
-                    .ThrowsAsync(serviceException);
+                 .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Calendar> retrieveCalendarByIdTask =

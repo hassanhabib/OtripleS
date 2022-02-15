@@ -48,7 +48,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
                 Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
