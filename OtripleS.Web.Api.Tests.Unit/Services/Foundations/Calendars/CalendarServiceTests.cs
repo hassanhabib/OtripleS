@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             CreateCalendarFiller(dates).Create();
 
         private static IQueryable<Calendar> CreateRandomCalendars() =>
-            CreateCalendarFiller(dates: DateTimeOffset.UtcNow)
+            CreateCalendarFiller(dates: GetRandomDateTime())
                 .Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() =>
