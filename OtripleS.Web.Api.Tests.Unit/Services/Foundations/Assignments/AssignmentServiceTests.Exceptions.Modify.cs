@@ -118,8 +118,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             someAssignment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var serviceException = new Exception();
 
+            var failedAssignmentServiceException =
+                new FailedAssignmentServiceException(serviceException);
+
             var expectedAssignmentServiceException =
-                new AssignmentServiceException(serviceException);
+                new AssignmentServiceException(failedAssignmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()))
