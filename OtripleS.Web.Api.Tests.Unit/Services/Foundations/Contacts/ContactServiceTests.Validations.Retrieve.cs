@@ -35,8 +35,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             await Assert.ThrowsAsync<ContactValidationException>(() => retrieveContactByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
-                Times.Once
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedContactValidationException))),
+                        Times.Once
             );
 
             this.dateTimeBrokerMock.Verify(broker => broker.GetCurrentDateTime(),
@@ -47,7 +48,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
                 Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -76,8 +77,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
                 retrieveContactByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
-                Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedContactValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker => broker.GetCurrentDateTime(),
                 Times.Never);

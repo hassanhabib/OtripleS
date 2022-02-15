@@ -22,6 +22,7 @@ namespace OtripleS.Web.Api.Models.Courses
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
 
+        [JsonIgnore]
         public IEnumerable<SemesterCourse> SemesterCourses { get; set; }
 
         [JsonIgnore]

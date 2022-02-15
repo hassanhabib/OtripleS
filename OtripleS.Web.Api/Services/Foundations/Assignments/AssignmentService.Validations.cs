@@ -98,24 +98,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
             Message = "Date is not recent"
         };
 
-        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
-        {
-            var invalidAssignmentException = new InvalidAssignmentException();
-
-            foreach ((dynamic rule, string parameter) in validations)
-            {
-                if (rule.Condition)
-                {
-                    invalidAssignmentException.UpsertDataList(
-                        key: parameter,
-                        value: rule.Message);
-                }
-            }
-
-            invalidAssignmentException.ThrowIfContainsErrors();
-        }
-
-        private void ValidateAssignmentOnModify(Assignment assignment)
+       private void ValidateAssignmentOnModify(Assignment assignment)
         {
             ValidateAssignmentIsNull(assignment);
 
@@ -196,6 +179,23 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
             TimeSpan difference = now.Subtract(dateTime);
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidAssignmentException = new InvalidAssignmentException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidAssignmentException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidAssignmentException.ThrowIfContainsErrors();
         }
     }
 }

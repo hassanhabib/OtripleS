@@ -19,8 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
         public async void ShouldThrowValidationExceptionOnAddWhenContactIsNullAndLogItAsync()
         {
             // given
-            Contact randomContact = null;
-            Contact nullContact = randomContact;
+            Contact invalidContact = null;
+            
 
             var nullContactException = new NullContactException();
 
@@ -29,15 +29,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
 
             // when
             ValueTask<Contact> addContactTask =
-                this.contactService.AddContactAsync(nullContact);
+                this.contactService.AddContactAsync(invalidContact);
 
             // then
             await Assert.ThrowsAsync<ContactValidationException>(() =>
                 addContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedContactValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertContactAsync(It.IsAny<Contact>()),
@@ -308,8 +309,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedContactValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
