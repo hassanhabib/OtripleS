@@ -18,19 +18,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
         public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenIdIsInvalidAndLogItAsync()
         {
             //given
-            Guid randomCourseId = default;
-            Guid inputCourseId = randomCourseId;
+            Guid someCourseId = Guid.NewGuid();
 
             var invalidCourseException = new InvalidCourseException(
                 parameterName: nameof(Course.Id),
-                parameterValue: inputCourseId);
+                parameterValue: someCourseId);
 
             var expectedCourseValidationException =
                 new CourseValidationException(invalidCourseException);
 
             //when
             ValueTask<Course> retrieveCourseByIdTask =
-                this.courseService.RetrieveCourseByIdAsync(inputCourseId);
+                this.courseService.RetrieveCourseByIdAsync(someCourseId);
 
             //then
             await Assert.ThrowsAsync<CourseValidationException>(() => retrieveCourseByIdTask.AsTask());
