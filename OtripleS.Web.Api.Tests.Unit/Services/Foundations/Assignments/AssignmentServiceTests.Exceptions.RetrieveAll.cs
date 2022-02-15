@@ -24,8 +24,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAssignments())
                     .Throws(sqlException);
-
-            
+           
             // when
             Action retrieveAllAssignmentsAction = () =>
                 this.assignmentService.RetrieveAllAssignments();
