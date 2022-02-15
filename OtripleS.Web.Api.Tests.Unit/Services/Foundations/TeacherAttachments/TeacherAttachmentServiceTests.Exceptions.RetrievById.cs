@@ -133,7 +133,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
             Guid someAttachmentId = Guid.NewGuid();
             Guid someTeacherId = Guid.NewGuid();
             var serviceException = new Exception();
-            var expectedTeacherAttachmentException = new TeacherAttachmentServiceException(serviceException);
+
+            var failedTeacherAttachmentServiceException =
+                new FailedTeacherAttachmentServiceException(serviceException);
+
+            var expectedTeacherAttachmentException = 
+                new TeacherAttachmentServiceException(failedTeacherAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherAttachmentByIdAsync(someTeacherId, someAttachmentId))
