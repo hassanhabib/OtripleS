@@ -1,7 +1,7 @@
-// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -95,14 +95,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
         {
             // given
             Guid someAssignmentId = Guid.NewGuid();
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedAssignmentServiceException =
-                new AssignmentServiceException(exception);
+                new AssignmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAssignmentByIdAsync(It.IsAny<Guid>()))
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when 
             ValueTask<Assignment> retrieveTask =

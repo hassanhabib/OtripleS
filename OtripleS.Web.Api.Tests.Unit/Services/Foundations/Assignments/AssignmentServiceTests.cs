@@ -1,10 +1,9 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
@@ -64,7 +63,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
         }
 
         private static Assignment CreateRandomAssignment() =>
-            CreateAssignmentFiller(dates: DateTimeOffset.UtcNow).Create();
+            CreateAssignmentFiller(dates: GetRandomDateTime()).Create();
 
         private static IQueryable<Assignment> CreateRandomAssignments(DateTimeOffset dates) =>
             CreateAssignmentFiller(dates).Create(GetRandomNumber()).AsQueryable();

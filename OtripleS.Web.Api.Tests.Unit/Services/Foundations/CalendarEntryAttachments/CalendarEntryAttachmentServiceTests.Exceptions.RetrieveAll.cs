@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using Moq;
@@ -25,13 +25,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
                 broker.SelectAllCalendarEntryAttachments())
                     .Throws(sqlException);
 
-            //when
-            Action retrieveAllCalendarEntryAttachmentsAction = () =>
+            // when
+            Action retrieveAllCalenderEntryAttachmentAction = () =>
                 this.calendarEntryAttachmentService.RetrieveAllCalendarEntryAttachments();
 
             // then
             Assert.Throws<CalendarEntryAttachmentDependencyException>(
-                retrieveAllCalendarEntryAttachmentsAction);
+                retrieveAllCalenderEntryAttachmentAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCalendarEntryAttachments(),
@@ -61,12 +61,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
                     .Throws(serviceException);
 
             // when
-            Action retrieveAllCalendarEntryAttachmentsAction = () =>
+            Action retrieveAllCalenderEntryAttachmentAction = () =>
                 this.calendarEntryAttachmentService.RetrieveAllCalendarEntryAttachments();
 
             // then
             Assert.Throws<CalendarEntryAttachmentServiceException>(
-                retrieveAllCalendarEntryAttachmentsAction);
+                retrieveAllCalenderEntryAttachmentAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCalendarEntryAttachments(),
