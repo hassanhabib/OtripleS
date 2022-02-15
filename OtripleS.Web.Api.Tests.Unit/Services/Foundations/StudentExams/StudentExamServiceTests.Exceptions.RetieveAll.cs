@@ -27,12 +27,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
                     .Throws(sqlException);
 
             // when
-            Action retrieveAllstudentExamsAction = () =>
+            Action retrieveAllStudentExamsAction = () =>
                 this.studentExamService.RetrieveAllStudentExams();
 
             // then
             Assert.Throws<StudentExamDependencyException>(
-                retrieveAllstudentExamsAction);
+                retrieveAllStudentExamsAction);
 
             this.loggingBrokerMock.Verify(broker =>
             broker.LogCritical(It.Is(SameExceptionAs(
@@ -66,12 +66,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
                     .Throws(serviceException);
 
             // when
-            Action retrieveAllstudentExamsAction = () =>
+            Action retrieveAllStudentExamsAction = () =>
                 this.studentExamService.RetrieveAllStudentExams();
 
             // then
             Assert.Throws<StudentExamServiceException>(
-                retrieveAllstudentExamsAction);
+                retrieveAllStudentExamsAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
