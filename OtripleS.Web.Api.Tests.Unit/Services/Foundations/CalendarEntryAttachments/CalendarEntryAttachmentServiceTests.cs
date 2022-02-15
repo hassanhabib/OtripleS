@@ -22,24 +22,24 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
     public partial class CalendarEntryAttachmentServiceTests
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
-        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
+        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly ICalendarEntryAttachmentService calendarEntryAttachmentService;
 
         public CalendarEntryAttachmentServiceTests()
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
-            this.loggingBrokerMock = new Mock<ILoggingBroker>();
             this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
+            this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
             this.calendarEntryAttachmentService = new CalendarEntryAttachmentService(
                 storageBroker: this.storageBrokerMock.Object,
-                loggingBroker: this.loggingBrokerMock.Object,
-                dateTimeBroker: this.dateTimeBrokerMock.Object);
+                dateTimeBroker: this.dateTimeBrokerMock.Object,
+                loggingBroker: this.loggingBrokerMock.Object);
         }
 
         private static IQueryable<CalendarEntryAttachment> CreateRandomCalendarEntryAttachments() =>
-            CreateCalendarEntryAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+            CreateCalendarEntryAttachmentFiller(dates: GetRandomDateTime()).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 150).GetValue();
@@ -51,7 +51,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static CalendarEntryAttachment CreateRandomCalendarEntryAttachment() =>
-            CreateCalendarEntryAttachmentFiller(DateTimeOffset.UtcNow).Create();
+            CreateCalendarEntryAttachmentFiller(dates: GetRandomDateTime()).Create();
 
         private static CalendarEntryAttachment CreateRandomCalendarEntryAttachment(DateTimeOffset dates) =>
             CreateCalendarEntryAttachmentFiller(dates).Create();

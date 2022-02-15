@@ -47,8 +47,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 retrieveUserContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedUserContactDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedUserContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectUserContactByIdAsync(inputUserId, inputContactId),
@@ -89,8 +90,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 () => retrieveUserContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserContactDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectUserContactByIdAsync(inputUserId, inputContactId),
@@ -108,14 +110,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             var randomUserId = Guid.NewGuid();
             Guid inputContactId = randomContactId;
             Guid inputUserId = randomUserId;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedUserContactException =
-                new UserContactServiceException(exception);
+                new UserContactServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectUserContactByIdAsync(inputUserId, inputContactId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<UserContact> retrieveUserContactTask =
@@ -128,8 +130,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 retrieveUserContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserContactException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserContactException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectUserContactByIdAsync(inputUserId, inputContactId),

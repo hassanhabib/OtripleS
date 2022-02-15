@@ -36,8 +36,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
             await Assert.ThrowsAsync<AttachmentValidationException>(() => retrieveAttachmentByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
@@ -48,7 +49,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
@@ -81,8 +82,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),

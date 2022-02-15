@@ -50,11 +50,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertAttachmentAsync(It.IsAny<Attachment>()),
-                    Times.Once);
+                        Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedAttachmentDependencyException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -80,7 +81,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertAttachmentAsync(It.IsAny<Attachment>()))
-                    .ThrowsAsync(databaseUpdateException);
+                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<Attachment> createAttachmentTask =
@@ -96,11 +97,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertAttachmentAsync(It.IsAny<Attachment>()),
-                    Times.Once);
+                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentDependencyException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -115,18 +117,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
             Attachment someAttachment = CreateRandomAttachment(dateTime);
             someAttachment.UpdatedBy = someAttachment.CreatedBy;
             someAttachment.UpdatedDate = someAttachment.CreatedDate;
-            var Serviceexception = new Exception();
 
+            var serviceException = new Exception();
             var expectedAttachmentServiceException =
-                new AttachmentServiceException(Serviceexception);
+                new AttachmentServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
                     .Returns(dateTime);
-
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertAttachmentAsync(It.IsAny<Attachment>()))
-                    .ThrowsAsync(Serviceexception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Attachment> createAttachmentTask =
@@ -145,8 +146,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttachmentServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttachmentServiceException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

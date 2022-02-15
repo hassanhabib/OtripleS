@@ -25,17 +25,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
                 broker.SelectAllExamAttachments())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<ExamAttachmentDependencyException>(() =>
-                this.examAttachmentService.RetrieveAllExamAttachments());
+           // when
+            Action retrieveAllExamAttachmentsAction = () =>
+                this.examAttachmentService.RetrieveAllExamAttachments();
+
+            // then
+            Assert.Throws<ExamAttachmentDependencyException>(
+                retrieveAllExamAttachmentsAction); 
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllExamAttachments(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedExamAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedExamAttachmentDependencyException))),
+                        Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -46,26 +51,31 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
         public void ShouldThrowServiceExceptionOnRetrieveAllExamAttachmentsWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedExamAttachmentServiceException =
-                new ExamAttachmentServiceException(exception);
+                new ExamAttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllExamAttachments())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<ExamAttachmentServiceException>(() =>
-                this.examAttachmentService.RetrieveAllExamAttachments());
+            // when
+            Action retrieveAllExamAttachmentsAction = () =>
+                this.examAttachmentService.RetrieveAllExamAttachments();
 
+            // then
+            Assert.Throws<ExamAttachmentServiceException>(
+                retrieveAllExamAttachmentsAction);
+           
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllExamAttachments(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamAttachmentServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExamAttachmentServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

@@ -25,13 +25,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 broker.SelectAllAttendances())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<AttendanceDependencyException>(() =>
-                this.attendanceService.RetrieveAllAttendances());
+            // when
+            Action retrieveAllAttendancesAction = () =>
+                this.attendanceService.RetrieveAllAttendances();
+
+            // then
+            Assert.Throws<AttendanceDependencyException>(
+                retrieveAllAttendancesAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedAttendanceDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedAttendanceDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAttendances(),
@@ -50,22 +55,27 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedAttendanceServiceException =
-                new AttendanceServiceException(exception);
+                new AttendanceServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAttendances())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<AttendanceServiceException>(() =>
-                this.attendanceService.RetrieveAllAttendances());
+            // when
+            Action retrieveAllAttendancesAction = () =>
+                this.attendanceService.RetrieveAllAttendances();
+
+            // then
+            Assert.Throws<AttendanceServiceException>(
+                retrieveAllAttendancesAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAttendanceServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAttendanceServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAttendances(),

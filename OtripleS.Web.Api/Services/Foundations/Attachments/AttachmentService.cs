@@ -16,16 +16,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
     public partial class AttachmentService : IAttachmentService
     {
         private readonly IStorageBroker storageBroker;
-        private readonly ILoggingBroker loggingBroker;
         private readonly IDateTimeBroker dateTimeBroker;
+        private readonly ILoggingBroker loggingBroker;
 
-        public AttachmentService(IStorageBroker storageBroker,
-            ILoggingBroker loggingBroker,
-            IDateTimeBroker dateTimeBroker)
+        public AttachmentService(
+            IStorageBroker storageBroker,
+            IDateTimeBroker dateTimeBroker,
+            ILoggingBroker loggingBroker)
         {
             this.storageBroker = storageBroker;
-            this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
+            this.loggingBroker = loggingBroker;
         }
 
         public ValueTask<Attachment> AddAttachmentAsync(Attachment attachment) =>
@@ -58,7 +59,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
         {
             ValidateAttachmentId(attachmentId);
 
-            Attachment storageAttachment = await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
+            Attachment storageAttachment =
+                await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
+
             ValidateStorageAttachment(storageAttachment, attachmentId);
 
             return storageAttachment;

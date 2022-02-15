@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         public async void ShouldThrowValidationExceptionOnAddIfUserContactIsNullAndLogItAsync()
         {
             // given
-            UserContact nullUserContact = null;
+            UserContact invalidUserContact = null;
             var nullUserContactException = new NullUserContactException();
 
             var expectedUserContactValidationException =
@@ -26,15 +26,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
 
             // when
             ValueTask<UserContact> addUserContactTask =
-                this.userContactService.AddUserContactAsync(nullUserContact);
+                this.userContactService.AddUserContactAsync(invalidUserContact);
 
             // then
             await Assert.ThrowsAsync<UserContactValidationException>(() =>
                 addUserContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedUserContactValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserContactValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertUserContactAsync(It.IsAny<UserContact>()),
@@ -75,7 +76,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameValidationExceptionAs(
                     expectedUserContactValidationException))),
-                    Times.Once);
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertUserContactAsync(It.IsAny<UserContact>()),
@@ -114,8 +115,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 addUserContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedUserContactValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedUserContactValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertUserContactAsync(alreadyExistsUserContact),
@@ -155,8 +157,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 addUserContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedUserContactValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedUserContactValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertUserContactAsync(invalidUserContact),
