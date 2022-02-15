@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtripleS.Web.Api.Tests.Acce
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtripleS.Web.Api.Infrastructure.Build", "OtripleS.Web.Api.Infrastructure.Build\OtripleS.Web.Api.Infrastructure.Build.csproj", "{801E79E8-238B-434F-8E78-A980E6C72E57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtripleS.Web.Api.Infrastructure.Provision", "OtripleS.Api.Infrastructure.Provision\OtripleS.Web.Api.Infrastructure.Provision.csproj", "{24FC5721-EEA1-4E51-887A-3C44E3C46608}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtripleS.Web.Api.Infrastructure.Provision", "OtripleS.Api.Infrastructure.Provision\OtripleS.Web.Api.Infrastructure.Provision.csproj", "{24FC5721-EEA1-4E51-887A-3C44E3C46608}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

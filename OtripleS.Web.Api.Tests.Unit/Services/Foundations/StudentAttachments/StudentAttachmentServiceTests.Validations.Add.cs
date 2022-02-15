@@ -18,8 +18,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
         public async void ShouldThrowValidationExceptionOnAddWhenStudentAttachmentIsNullAndLogItAsync()
         {
             // given
-            StudentAttachment randomStudentAttachment = default;
-            StudentAttachment nullStudentAttachment = randomStudentAttachment;
+            StudentAttachment invalidStudentAttachment = null;
+            
             var nullStudentAttachmentException = new NullStudentAttachmentException();
 
             var expectedStudentAttachmentValidationException =
@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
 
             // when
             ValueTask<StudentAttachment> addStudentAttachmentTask =
-                this.studentAttachmentService.AddStudentAttachmentAsync(nullStudentAttachment);
+                this.studentAttachmentService.AddStudentAttachmentAsync(invalidStudentAttachment);
 
             // then
             await Assert.ThrowsAsync<StudentAttachmentValidationException>(() =>

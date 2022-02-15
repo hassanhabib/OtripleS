@@ -19,8 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
         public async void ShouldThrowValidationExceptionOnCreateWhenStudentExamFeeIsNullAndLogItAsync()
         {
             // given
-            StudentExamFee randomStudentExamFee = null;
-            StudentExamFee nullStudentExamFee = randomStudentExamFee;
+            StudentExamFee invalidStudentExamFee = null;
+            
             var nullStudentExamFeeException = new NullStudentExamFeeException();
 
             var expectedStudentExamFeeValidationException =
@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
 
             // when
             ValueTask<StudentExamFee> createStudentExamFeeTask =
-                this.studentExamFeeService.AddStudentExamFeeAsync(nullStudentExamFee);
+                this.studentExamFeeService.AddStudentExamFeeAsync(invalidStudentExamFee);
 
             // then
             await Assert.ThrowsAsync<StudentExamFeeValidationException>(() =>

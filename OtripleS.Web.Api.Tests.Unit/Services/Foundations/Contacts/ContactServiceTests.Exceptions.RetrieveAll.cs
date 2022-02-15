@@ -25,13 +25,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
                 broker.SelectAllContacts())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<ContactDependencyException>(() =>
-                this.contactService.RetrieveAllContacts());
+            // when
+            Action retrieveAllContactsAction = () =>
+                this.contactService.RetrieveAllContacts();
+
+            // then
+            Assert.Throws<ContactDependencyException>(
+                retrieveAllContactsAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedContactDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllContacts(),
@@ -50,22 +55,27 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedContactServiceException =
-                new ContactServiceException(exception);
+                new ContactServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllContacts())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<ContactServiceException>(() =>
-                this.contactService.RetrieveAllContacts());
+            // when
+            Action retrieveAllContactsAction = () =>
+                this.contactService.RetrieveAllContacts();
+
+            // then
+            Assert.Throws<ContactServiceException>(
+                retrieveAllContactsAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedContactServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllContacts(),

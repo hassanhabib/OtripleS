@@ -101,14 +101,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
             // given
             Guid randomSemesterCourseId = Guid.NewGuid();
             Guid inputSemesterCourseId = randomSemesterCourseId;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedSemesterCourseServiceException =
-                new SemesterCourseServiceException(exception);
+                new SemesterCourseServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<SemesterCourse> retrieveSemesterCourseByIdTask =

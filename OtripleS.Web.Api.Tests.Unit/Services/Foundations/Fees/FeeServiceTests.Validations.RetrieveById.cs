@@ -79,8 +79,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
                 retrieveFeeByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedFeeValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedFeeValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectFeeByIdAsync(It.IsAny<Guid>()),

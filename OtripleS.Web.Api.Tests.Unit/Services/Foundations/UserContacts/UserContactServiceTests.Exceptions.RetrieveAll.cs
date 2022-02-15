@@ -28,9 +28,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             this.storageBrokerMock.Setup(broker => broker.SelectAllUserContacts())
                 .Throws(sqlException);
 
-            //when. then
-            Assert.Throws<UserContactDependencyException>(() =>
-                this.userContactService.RetrieveAllUserContacts());
+            // when
+            Action retrieveAllUserContactsAction = () =>
+                this.userContactService.RetrieveAllUserContacts();
+
+            // then
+            Assert.Throws<UserContactDependencyException>(
+                retrieveAllUserContactsAction);
 
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogCritical(It.Is(SameExceptionAs(expectedUserContactDependencyException))),
@@ -47,17 +51,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedUserContactServiceException =
-                new UserContactServiceException(exception);
+                new UserContactServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker => broker.SelectAllUserContacts())
-                .Throws(exception);
+                .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<UserContactServiceException>(() =>
-                this.userContactService.RetrieveAllUserContacts());
+            // when
+            Action retrieveAllUserContactsAction = () =>
+                this.userContactService.RetrieveAllUserContacts();
+
+            // then
+            Assert.Throws<UserContactServiceException>(
+                retrieveAllUserContactsAction);
 
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogError(It.Is(SameExceptionAs(expectedUserContactServiceException))),
