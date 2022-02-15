@@ -25,8 +25,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
                 broker.SelectAllRegistrations())
                     .Throws(sqlException);
 
-            
-
             // when
             Action retrieveAllRegistrations = () =>
                 this.registrationService.RetrieveAllRegistrations();
@@ -40,8 +38,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedRegistrationDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedRegistrationDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -52,26 +51,31 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
         public void ShouldThrowServiceExceptionOnRetrieveAllRegistrationsWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedRegistrationServiceException =
-                new RegistrationServiceException(exception);
+                new RegistrationServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllRegistrations())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<RegistrationServiceException>(() =>
-                this.registrationService.RetrieveAllRegistrations());
+            // when
+            Action retrieveAllRegistrations = () =>
+                this.registrationService.RetrieveAllRegistrations();
+
+            // then
+            Assert.Throws<RegistrationServiceException>(
+                retrieveAllRegistrations);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllRegistrations(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedRegistrationServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

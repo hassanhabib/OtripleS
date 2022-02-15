@@ -34,9 +34,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             Assert.Throws<StudentExamDependencyException>(
                 retrieveAllStudentExamsAction);
 
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentExamDependencyException))),
-                    Times.Once);
+                this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedStudentExamDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentExams(),
@@ -55,26 +56,27 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedStudentExamServiceException =
-                new StudentExamServiceException(exception);
+                new StudentExamServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudentExams())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when
             Action retrieveAllStudentExamsAction = () =>
-                this.studentExamService.RetrieveAllStudentExams();
+            this.studentExamService.RetrieveAllStudentExams();
 
             // then
             Assert.Throws<StudentExamServiceException>(
-                retrieveAllStudentExamsAction);
+            retrieveAllStudentExamsAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentExamServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentExams(),
