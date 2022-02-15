@@ -45,8 +45,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 createExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedExamDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedExamDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertExamAsync(inputExam),
@@ -91,8 +92,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 createExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExamDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertExamAsync(inputExam),
@@ -115,10 +117,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Exam randomExam = CreateRandomExam(dateTime);
             Exam inputExam = randomExam;
             inputExam.UpdatedBy = inputExam.CreatedBy;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedExamServiceException =
-                new ExamServiceException(exception);
+                new ExamServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -126,7 +128,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertExamAsync(inputExam))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Exam> createExamTask =
@@ -137,8 +139,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 createExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExamServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertExamAsync(inputExam),

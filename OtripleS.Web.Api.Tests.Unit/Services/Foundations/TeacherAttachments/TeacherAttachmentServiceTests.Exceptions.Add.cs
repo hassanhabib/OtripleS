@@ -37,8 +37,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
                 addTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedTeacherAttachmentDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertTeacherAttachmentAsync(inputTeacherAttachment),
@@ -73,8 +74,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
                 addTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherAttachmentDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertTeacherAttachmentAsync(inputTeacherAttachment),
@@ -91,12 +93,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
             // given
             TeacherAttachment randomTeacherAttachment = CreateRandomTeacherAttachment();
             TeacherAttachment inputTeacherAttachment = randomTeacherAttachment;
-            var exception = new Exception();
-            var expectedTeacherAttachmentServiceException = new TeacherAttachmentServiceException(exception);
+            var serviceException = new Exception();
+            var expectedTeacherAttachmentServiceException = new TeacherAttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertTeacherAttachmentAsync(inputTeacherAttachment))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<TeacherAttachment> addTeacherAttachmentTask =
@@ -107,8 +109,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
                 addTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherAttachmentServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertTeacherAttachmentAsync(inputTeacherAttachment),

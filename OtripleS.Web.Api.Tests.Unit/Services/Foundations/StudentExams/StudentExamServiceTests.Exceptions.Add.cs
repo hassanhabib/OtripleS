@@ -80,8 +80,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
                 addStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentExamAsync(inputStudentExam),
@@ -104,10 +105,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam randomStudentExam = CreateRandomStudentExam(dateTime);
             StudentExam inputStudentGuardian = randomStudentExam;
             inputStudentGuardian.UpdatedBy = inputStudentGuardian.CreatedBy;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedStudentGuardianServiceException =
-                new StudentExamServiceException(exception);
+                new StudentExamServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -115,7 +116,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertStudentExamAsync(inputStudentGuardian))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<StudentExam> addStudentGuardianTask =
@@ -126,8 +127,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
                 addStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentExamAsync(inputStudentGuardian),

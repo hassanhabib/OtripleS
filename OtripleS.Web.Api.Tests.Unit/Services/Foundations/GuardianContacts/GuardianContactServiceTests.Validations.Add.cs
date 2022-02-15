@@ -18,8 +18,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         public async void ShouldThrowValidationExceptionOnAddWhenGuardianContactIsNullAndLogItAsync()
         {
             // given
-            GuardianContact randomGuardianContact = default;
-            GuardianContact nullGuardianContact = randomGuardianContact;
+            GuardianContact invalidGuardianContact = null;
+            
             var nullGuardianContactException = new NullGuardianContactException();
 
             var expectedGuardianContactValidationException =
@@ -27,15 +27,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
 
             // when
             ValueTask<GuardianContact> addGuardianContactTask =
-                this.guardianContactService.AddGuardianContactAsync(nullGuardianContact);
+                this.guardianContactService.AddGuardianContactAsync(invalidGuardianContact);
 
             // then
             await Assert.ThrowsAsync<GuardianContactValidationException>(() =>
                 addGuardianContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianContactValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertGuardianContactAsync(It.IsAny<GuardianContact>()),
@@ -69,8 +70,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
                 addGuardianContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianContactValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertGuardianContactAsync(It.IsAny<GuardianContact>()),
@@ -104,8 +106,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
                 addGuardianContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianContactValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertGuardianContactAsync(It.IsAny<GuardianContact>()),
@@ -144,8 +147,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
                 addGuardianContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedGuardianContactValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertGuardianContactAsync(alreadyExistsGuardianContact),
@@ -184,8 +188,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
                 addGuardianContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedGuardianContactValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertGuardianContactAsync(invalidGuardianContact),

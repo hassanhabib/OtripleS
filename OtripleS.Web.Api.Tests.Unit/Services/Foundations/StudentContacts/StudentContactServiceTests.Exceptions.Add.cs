@@ -39,8 +39,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
                 addStudentContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedStudentContactDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedStudentContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentContactAsync(inputStudentContact),
@@ -74,8 +75,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
                 addStudentContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentContactDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentContactAsync(inputStudentContact),
@@ -91,14 +93,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             // given
             StudentContact randomStudentContact = CreateRandomStudentContact();
             StudentContact inputStudentContact = randomStudentContact;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedStudentContactServiceException =
-                new StudentContactServiceException(exception);
+                new StudentContactServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertStudentContactAsync(inputStudentContact))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<StudentContact> addStudentContactTask =
@@ -109,8 +111,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
                 addStudentContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentContactServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentContactServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentContactAsync(inputStudentContact),

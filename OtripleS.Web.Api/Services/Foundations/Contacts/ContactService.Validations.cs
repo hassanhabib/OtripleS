@@ -67,23 +67,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
 
         }
 
-        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
-        {
-            var invalidContactException = new InvalidContactException();
-
-            foreach ((dynamic rule, string parameter) in validations)
-            {
-                if (rule.Condition)
-                {
-                    invalidContactException.UpsertDataList(
-                        key: parameter,
-                        value: rule.Message);
-                }
-            }
-
-            invalidContactException.ThrowIfContainsErrors();
-        }
-
         private static dynamic IsInvalidX(Guid id) => new
         {
             Condition = id == Guid.Empty,
@@ -259,6 +242,23 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
                     parameterName: nameof(contact.UpdatedDate),
                     parameterValue: contact.UpdatedDate);
             }
+        }
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidContactException = new InvalidContactException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidContactException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidContactException.ThrowIfContainsErrors();
         }
     }
 }
