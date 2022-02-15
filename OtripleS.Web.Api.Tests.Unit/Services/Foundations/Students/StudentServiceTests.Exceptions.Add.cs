@@ -154,17 +154,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         {
             // given
             Student someStudent = CreateRandomStudent();
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var failedStudentServiceException =
-                new FailedStudentServiceException(exception);
+                new FailedStudentServiceException(serviceException);
 
             var expectedStudentServiceException =
                 new StudentServiceException(failedStudentServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
             // when
             ValueTask<Student> registerStudentTask =

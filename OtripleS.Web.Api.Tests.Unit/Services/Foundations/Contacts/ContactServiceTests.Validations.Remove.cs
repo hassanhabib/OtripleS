@@ -36,8 +36,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             await Assert.ThrowsAsync<ContactValidationException>(() => deleteContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedContactValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectContactByIdAsync(It.IsAny<Guid>()),
@@ -79,8 +80,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             await Assert.ThrowsAsync<ContactValidationException>(() => actualContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedContactValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedContactValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectContactByIdAsync(inputContactId),

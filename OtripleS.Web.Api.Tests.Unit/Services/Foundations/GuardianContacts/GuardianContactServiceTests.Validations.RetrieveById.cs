@@ -38,8 +38,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
             await Assert.ThrowsAsync<GuardianContactValidationException>(() => retrieveGuardianContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianContactValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectGuardianContactByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
@@ -73,8 +74,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
             await Assert.ThrowsAsync<GuardianContactValidationException>(() => retrieveGuardianContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianContactValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectGuardianContactByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
@@ -112,8 +114,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
                 retrieveGuardianContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedGuardianContactValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianContactValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectGuardianContactByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),

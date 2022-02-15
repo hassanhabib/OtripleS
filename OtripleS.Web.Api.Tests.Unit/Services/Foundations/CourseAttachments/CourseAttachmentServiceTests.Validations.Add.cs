@@ -33,8 +33,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                 addCourseAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCourseAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCourseAttachmentAsync(It.IsAny<CourseAttachment>()),
@@ -75,8 +76,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                 addCourseAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCourseAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCourseAttachmentAsync(It.IsAny<CourseAttachment>()),
@@ -120,8 +122,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedCourseAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -161,8 +164,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedCourseAttachmentValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedCourseAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
