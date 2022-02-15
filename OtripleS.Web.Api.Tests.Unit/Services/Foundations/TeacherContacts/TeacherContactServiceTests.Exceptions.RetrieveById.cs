@@ -105,8 +105,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             Guid inputTeacherId = randomTeacherId;
             var serviceException = new Exception();
 
+            var failedTeacherContactException =
+                new FailedTeacherContactServiceException(serviceException);
+
             var expectedTeacherContactException =
-                new TeacherContactServiceException(serviceException);
+                new TeacherContactServiceException(
+                    failedTeacherContactException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId))
