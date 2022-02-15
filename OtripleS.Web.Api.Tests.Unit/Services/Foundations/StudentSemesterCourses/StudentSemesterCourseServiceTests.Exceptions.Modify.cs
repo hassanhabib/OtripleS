@@ -125,12 +125,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             someStudentSemesterCourse.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var serviceException = new Exception();
 
-            var failedStudentSemesterCourseException =
+            var failedStudentSemesterCourseServiceException =
                 new FailedStudentSemesterCourseServiceException(serviceException);
 
             var expectedStudentSemesterCourseServiceException =
                 new StudentSemesterCourseServiceException(
-                    failedStudentSemesterCourseException);
+                    failedStudentSemesterCourseServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentSemesterCourseByIdAsync
