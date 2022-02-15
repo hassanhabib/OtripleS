@@ -89,7 +89,10 @@ namespace OtripleS.Web.Api.Services.Foundations.TeacherContacts
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedTeacherContactServiceException =
+                    new FailedTeacherContactServiceException(exception);
+
+                throw CreateAndLogServiceException(failedTeacherContactServiceException);
             }
         }
 
