@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System.Threading.Tasks;
 using Moq;
@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
         {
             // given
             StudentExam invalidStudentExam = null;
-            
+
             var nullStudentExamException = new NullStudentExamException();
 
             var expectedStudentExamValidationException =
@@ -33,8 +33,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
                 addStudentExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentExamValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentExamAsync(It.IsAny<StudentExam>()),

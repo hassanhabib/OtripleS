@@ -1,6 +1,7 @@
-﻿// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
         {
             // given
             SemesterCourse invalidSemesterCourse = null;
-            
+
             var nullSemesterCourseException = new NullSemesterCourseException();
 
             var expectedSemesterCourseValidationException =
@@ -34,8 +35,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 createSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
@@ -71,8 +73,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 registerSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
@@ -108,8 +111,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 createSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
@@ -145,8 +149,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 createSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
@@ -182,8 +187,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 createSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
@@ -219,8 +225,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 createSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
@@ -256,8 +263,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 createSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
@@ -293,8 +301,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 createSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
@@ -330,8 +339,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 createSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
@@ -367,8 +377,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 createSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
@@ -404,8 +415,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 createSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
@@ -441,8 +453,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 createSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
@@ -479,8 +492,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                 createSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
@@ -528,8 +542,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSemesterCourseValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectSemesterCourseByIdAsync(It.IsAny<Guid>()),
@@ -583,8 +598,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedSemesterCourseValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedSemesterCourseValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();

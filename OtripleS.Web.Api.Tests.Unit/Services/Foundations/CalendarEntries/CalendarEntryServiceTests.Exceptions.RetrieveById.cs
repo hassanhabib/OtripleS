@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -19,20 +19,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomCalendarEntryId = Guid.NewGuid();
-            Guid inputCalendarEntryId = randomCalendarEntryId;
+            Guid someCalendarEntryId = Guid.NewGuid();
             var sqlException = GetSqlException();
 
             var expectedCalendarEntryDependencyException =
                 new CalendarEntryDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCalendarEntryByIdAsync(inputCalendarEntryId))
+                broker.SelectCalendarEntryByIdAsync(someCalendarEntryId))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<CalendarEntry> retrieveCalendarEntryByIdTask =
-                this.calendarEntryService.RetrieveCalendarEntryByIdAsync(inputCalendarEntryId);
+                this.calendarEntryService.RetrieveCalendarEntryByIdAsync(someCalendarEntryId);
 
             // then
             await Assert.ThrowsAsync<CalendarEntryDependencyException>(() =>
@@ -44,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCalendarEntryByIdAsync(inputCalendarEntryId),
+                broker.SelectCalendarEntryByIdAsync(someCalendarEntryId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -60,20 +59,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomCalendarEntryId = Guid.NewGuid();
-            Guid inputCalendarEntryId = randomCalendarEntryId;
+            Guid someCalendarEntryId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedCalendarEntryDependencyException =
                 new CalendarEntryDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCalendarEntryByIdAsync(inputCalendarEntryId))
+                broker.SelectCalendarEntryByIdAsync(someCalendarEntryId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<CalendarEntry> retrieveCalendarEntryByIdTask =
-                this.calendarEntryService.RetrieveCalendarEntryByIdAsync(inputCalendarEntryId);
+                this.calendarEntryService.RetrieveCalendarEntryByIdAsync(someCalendarEntryId);
 
             // then
             await Assert.ThrowsAsync<CalendarEntryDependencyException>(() =>
@@ -85,7 +83,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCalendarEntryByIdAsync(inputCalendarEntryId),
+                broker.SelectCalendarEntryByIdAsync(someCalendarEntryId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -101,20 +99,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomCalendarEntryId = Guid.NewGuid();
-            Guid inputCalendarEntryId = randomCalendarEntryId;
+            Guid someCalendarEntryId = Guid.NewGuid();
             var serviceException = new Exception();
 
             var expectedCalendarEntryServiceException =
                 new CalendarEntryServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCalendarEntryByIdAsync(inputCalendarEntryId))
+                broker.SelectCalendarEntryByIdAsync(someCalendarEntryId))
                     .ThrowsAsync(serviceException);
 
             // when
             ValueTask<CalendarEntry> retrieveCalendarEntryByIdTask =
-                this.calendarEntryService.RetrieveCalendarEntryByIdAsync(inputCalendarEntryId);
+                this.calendarEntryService.RetrieveCalendarEntryByIdAsync(someCalendarEntryId);
 
             // then
             await Assert.ThrowsAsync<CalendarEntryServiceException>(() =>
@@ -126,7 +123,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCalendarEntryByIdAsync(inputCalendarEntryId),
+                broker.SelectCalendarEntryByIdAsync(someCalendarEntryId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>

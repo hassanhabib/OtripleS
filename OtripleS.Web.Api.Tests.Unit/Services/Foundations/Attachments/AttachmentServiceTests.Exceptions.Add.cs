@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -119,8 +119,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
             someAttachment.UpdatedDate = someAttachment.CreatedDate;
             var serviceException = new Exception();
 
+            var failedAttachmentServiceException =
+                new FailedAttachmentServiceException(serviceException);
+
             var expectedAttachmentServiceException =
-                new AttachmentServiceException(serviceException);
+                new AttachmentServiceException(failedAttachmentServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())

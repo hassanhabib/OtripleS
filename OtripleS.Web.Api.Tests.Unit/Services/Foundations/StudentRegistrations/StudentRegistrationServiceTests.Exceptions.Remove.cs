@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -161,8 +161,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
             StudentRegistration someStudentRegistration = CreateRandomStudentRegistration();
             var serviceException = new Exception();
 
-            var expectedStudentRegistrationException =
-                new StudentRegistrationServiceException(serviceException);
+            var failedStudentRegistrationServiceException =
+                new FailedStudentRegistrationServiceException(serviceException);
+
+            var expectedStudentRegistrationServiceException =
+                new StudentRegistrationServiceException(
+                    failedStudentRegistrationServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentRegistrationByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
@@ -192,7 +196,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedStudentRegistrationException))),
+                    expectedStudentRegistrationServiceException))),
                         Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();

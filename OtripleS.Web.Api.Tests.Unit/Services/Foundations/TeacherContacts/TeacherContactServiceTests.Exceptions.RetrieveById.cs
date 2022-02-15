@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -44,8 +44,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                 retrieveTeacherContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherContactDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedTeacherContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId),
@@ -82,8 +83,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                 () => retrieveTeacherContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherContactDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId),
@@ -103,8 +105,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             Guid inputTeacherId = randomTeacherId;
             var serviceException = new Exception();
 
+            var failedTeacherContactException =
+                new FailedTeacherContactServiceException(serviceException);
+
             var expectedTeacherContactException =
-                new TeacherContactServiceException(serviceException);
+                new TeacherContactServiceException(
+                    failedTeacherContactException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId))
@@ -121,8 +127,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                 retrieveTeacherContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherContactException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId),

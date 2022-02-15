@@ -1,5 +1,6 @@
 ﻿// ---------------------------------------------------------------
-// Copyright (c) PiorSoft, LLC. All rights reserved.
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
 using System;
@@ -35,8 +36,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
                 deleteRegistrationTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedRegistrationValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()),
@@ -87,8 +89,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
                     Times.Never);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedRegistrationValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

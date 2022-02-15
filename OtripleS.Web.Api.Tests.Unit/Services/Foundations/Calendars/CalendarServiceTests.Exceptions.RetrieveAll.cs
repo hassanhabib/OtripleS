@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using Moq;
@@ -26,8 +26,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
                     .Throws(sqlException);
 
             // when
-           Action retrieveAllCalendarAction = () =>
-                this.calendarService.RetrieveAllCalendars();
+            Action retrieveAllCalendarAction = () =>
+                 this.calendarService.RetrieveAllCalendars();
 
             // then
             Assert.Throws<CalendarDependencyException>(
@@ -65,8 +65,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
                     .Throws(serviceException);
 
             // when
-           Action retrieveAllCalendarAction = () =>
-                this.calendarService.RetrieveAllCalendars();
+            Action retrieveAllCalendarAction = () =>
+                 this.calendarService.RetrieveAllCalendars();
 
             // then
             Assert.Throws<CalendarServiceException>(

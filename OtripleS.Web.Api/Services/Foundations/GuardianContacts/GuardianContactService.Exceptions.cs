@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -98,13 +98,6 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
             return guardianContactValidationException;
         }
 
-        private GuardianContactServiceException CreateAndLogServiceException(Exception exception)
-        {
-            var guardianContactServiceException = new GuardianContactServiceException(exception);
-            this.loggingBroker.LogError(guardianContactServiceException);
-
-            return guardianContactServiceException;
-        }
 
         private GuardianContactDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
@@ -120,6 +113,13 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
             this.loggingBroker.LogError(guardianContactDependencyException);
 
             return guardianContactDependencyException;
+        }
+        private GuardianContactServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var guardianContactServiceException = new GuardianContactServiceException(exception);
+            this.loggingBroker.LogError(guardianContactServiceException);
+
+            return guardianContactServiceException;
         }
     }
 }

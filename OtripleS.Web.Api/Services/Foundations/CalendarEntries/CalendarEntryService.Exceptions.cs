@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -97,20 +97,20 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
             return calendarEntryDependencyException;
         }
 
-        private CalendarEntryServiceException CreateAndLogServiceException(Exception exception)
-        {
-            var calendarEntryServiceException = new CalendarEntryServiceException(exception);
-            this.loggingBroker.LogError(calendarEntryServiceException);
-
-            return calendarEntryServiceException;
-        }
-
         private CalendarEntryDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
             var calendarEntryDependencyException = new CalendarEntryDependencyException(exception);
             this.loggingBroker.LogCritical(calendarEntryDependencyException);
 
             return calendarEntryDependencyException;
+        }
+
+        private CalendarEntryServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var calendarEntryServiceException = new CalendarEntryServiceException(exception);
+            this.loggingBroker.LogError(calendarEntryServiceException);
+
+            return calendarEntryServiceException;
         }
     }
 }

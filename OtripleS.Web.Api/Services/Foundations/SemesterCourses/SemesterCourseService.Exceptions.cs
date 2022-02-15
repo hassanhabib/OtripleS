@@ -1,7 +1,7 @@
-// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -81,13 +81,6 @@ namespace OtripleS.Web.Api.Services.Foundations.SemesterCourses
             }
         }
 
-        private SemesterCourseServiceException CreateAndLogServiceException(Exception exception)
-        {
-            var semesterCourseServiceException = new SemesterCourseServiceException(exception);
-            this.loggingBroker.LogError(semesterCourseServiceException);
-
-            return semesterCourseServiceException;
-        }
 
         private SemesterCourseValidationException CreateAndLogValidationException(Exception exception)
         {
@@ -111,6 +104,13 @@ namespace OtripleS.Web.Api.Services.Foundations.SemesterCourses
             this.loggingBroker.LogError(semesterCourseDependencyException);
 
             return semesterCourseDependencyException;
+        }
+        private SemesterCourseServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var semesterCourseServiceException = new SemesterCourseServiceException(exception);
+            this.loggingBroker.LogError(semesterCourseServiceException);
+
+            return semesterCourseServiceException;
         }
     }
 }

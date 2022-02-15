@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using Microsoft.Data.SqlClient;
@@ -34,8 +34,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                 retrieveAllTeacherContactsAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherContactDependencyException))),
-                        Times.Once);
+                    broker.LogCritical(It.Is(SameExceptionAs(
+                        expectedTeacherContactDependencyException))),
+                            Times.Once);
 
             this.storageBrokerMock.Verify(broker => broker.SelectAllTeacherContacts(),
                 Times.Once);
@@ -65,8 +66,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                 retrieveAllTeacherContactsAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogError(It.Is(SameExceptionAs(expectedTeacherContactServiceException))),
-                        Times.Once);
+                    broker.LogError(It.Is(SameExceptionAs(
+                        expectedTeacherContactServiceException))),
+                            Times.Once);
 
             this.storageBrokerMock.Verify(broker => broker.SelectAllTeacherContacts(),
                 Times.Once);

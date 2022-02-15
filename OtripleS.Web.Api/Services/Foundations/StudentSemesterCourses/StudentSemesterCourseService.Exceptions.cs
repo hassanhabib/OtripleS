@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -79,16 +79,11 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentSemesterCourses
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedStudentSemesterCourseServiceException =
+                    new FailedStudentSemesterCourseServiceException(exception);
+
+                throw CreateAndLogServiceException(failedStudentSemesterCourseServiceException);
             }
-        }
-
-        private StudentSemesterCourseServiceException CreateAndLogServiceException(Exception exception)
-        {
-            var studentSemesterCourseServiceException = new StudentSemesterCourseServiceException(exception);
-            this.loggingBroker.LogError(studentSemesterCourseServiceException);
-
-            return studentSemesterCourseServiceException;
         }
 
         private StudentSemesterCourseValidationException CreateAndLogValidationException(Exception exception)
@@ -98,6 +93,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentSemesterCourses
 
             return studentSemesterCourseValidationException;
         }
+
 
         private StudentSemesterCourseDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
@@ -113,6 +109,14 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentSemesterCourses
             this.loggingBroker.LogError(studentSemesterCourseDependencyException);
 
             return studentSemesterCourseDependencyException;
+        }
+
+        private StudentSemesterCourseServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var studentSemesterCourseServiceException = new StudentSemesterCourseServiceException(exception);
+            this.loggingBroker.LogError(studentSemesterCourseServiceException);
+
+            return studentSemesterCourseServiceException;
         }
     }
 }
