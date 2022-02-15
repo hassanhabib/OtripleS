@@ -46,7 +46,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
-
         [Fact]
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
