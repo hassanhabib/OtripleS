@@ -154,7 +154,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
 
         private static void ValidateStorageExam(Exam storageExam, Guid examId)
         {
-            if (storageExam == null)
+            if (storageExam is null)
             {
                 throw new NotFoundExamException(examId);
             }

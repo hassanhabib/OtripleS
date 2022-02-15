@@ -82,8 +82,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             await Assert.ThrowsAsync<ExamValidationException>(() => actualExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExamValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectExamByIdAsync(inputExamId),

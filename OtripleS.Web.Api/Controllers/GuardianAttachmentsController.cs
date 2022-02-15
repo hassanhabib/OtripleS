@@ -29,10 +29,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                GuardianAttachment persistedGuardianAttachment =
+                GuardianAttachment addedGuardianAttachment =
                     await this.guardianAttachmentService.AddGuardianAttachmentAsync(guardianAttachment);
 
-                return Created(persistedGuardianAttachment);
+                return Created(addedGuardianAttachment);
             }
             catch (GuardianAttachmentValidationException guardianAttachmentValidationException)
                 when (guardianAttachmentValidationException.InnerException is AlreadyExistsGuardianAttachmentException)

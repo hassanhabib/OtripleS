@@ -51,8 +51,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -97,8 +98,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedRegistrationDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedRegistrationDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -165,8 +167,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             Registration someRegistration = CreateRandomRegistration(dateTime: randomDateTime);
             Guid someRegistrationId = someRegistration.Id;
             Registration storageRegistration = someRegistration;
-            var exception = new Exception();
-            var expectedServiceException = new RegistrationServiceException(exception);
+            var serviceException = new Exception();
+            var expectedServiceException = new RegistrationServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()))
@@ -174,7 +176,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
 
             this.storageBrokerMock.Setup(broker =>
                 broker.DeleteRegistrationAsync(It.IsAny<Registration>()))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Registration> deleteRegistrationTask =
@@ -193,8 +195,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

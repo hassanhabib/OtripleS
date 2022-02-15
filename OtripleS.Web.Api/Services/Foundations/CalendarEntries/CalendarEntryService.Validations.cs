@@ -84,23 +84,6 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
 
         }
 
-        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
-        {
-            var invalidCalendarEntryException = new InvalidCalendarEntryException();
-
-            foreach ((dynamic rule, string parameter) in validations)
-            {
-                if (rule.Condition)
-                {
-                    invalidCalendarEntryException.UpsertDataList(
-                        key: parameter,
-                        value: rule.Message);
-                }
-            }
-
-            invalidCalendarEntryException.ThrowIfContainsErrors();
-        }
-
         private static dynamic IsInvalidX(Guid id) => new
         {
             Condition = id == Guid.Empty,
@@ -183,7 +166,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
             CalendarEntry storageCalendarEntry,
             Guid calendarEntryId)
         {
-            if (storageCalendarEntry == null)
+            if (storageCalendarEntry is null)
             {
                 throw new NotFoundCalendarEntryException(calendarEntryId);
             }
@@ -317,6 +300,23 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
                         parameterName: nameof(CalendarEntry.Description),
                         parameterValue: calendarEntry.Description);
             }
+        }
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidCalendarEntryException = new InvalidCalendarEntryException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidCalendarEntryException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidCalendarEntryException.ThrowIfContainsErrors();
         }
     }
 }
