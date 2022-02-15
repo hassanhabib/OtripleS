@@ -12,6 +12,6 @@ namespace OtripleS.Web.Api.Models.Teachers.Exceptions
     {
         public FailedTeacherServiceException(Exception innerException)
             : base(message: "Failed teacher service error occured. ", innerException)
-        {}
+        { }
     }
 }

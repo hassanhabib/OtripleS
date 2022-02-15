@@ -120,7 +120,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
             someAttachment.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var serviceException = new Exception();
 
-            var failedAttachmentServiceException = 
+            var failedAttachmentServiceException =
                 new FailedAttachmentServiceException(serviceException);
 
             var expectedAttachmentServiceException =

@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         {
             // given
             Exam invalidExam = null;
-            
+
             var nullExamException = new NullExamException();
 
             var expectedExamValidationException =

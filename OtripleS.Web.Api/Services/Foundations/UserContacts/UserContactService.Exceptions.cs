@@ -97,7 +97,7 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
             }
             catch (Exception exception)
             {
-                var failedUserContactServiceException = 
+                var failedUserContactServiceException =
                     new FailedUserContactServiceException(exception);
 
                 throw CreateAndLogServiceException(failedUserContactServiceException);

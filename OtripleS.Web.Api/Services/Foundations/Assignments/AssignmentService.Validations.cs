@@ -98,7 +98,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
             Message = "Date is not recent"
         };
 
-       private void ValidateAssignmentOnModify(Assignment assignment)
+        private void ValidateAssignmentOnModify(Assignment assignment)
         {
             ValidateAssignmentIsNull(assignment);
 

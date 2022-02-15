@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
-// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+﻿// ---------------------------------------------------------------
+//  Copyright (c) Coalition of the Good-Hearted Engineers 
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR 
+// ---------------------------------------------------------------
 
 using System;
 using Microsoft.Data.SqlClient;
@@ -25,14 +25,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             this.storageBrokerMock.Setup(broker => broker.SelectAllStudentContacts())
                 .Throws(sqlException);
 
-             // when
+            // when
             Action retrieveAllStudentContactAction = () =>
                 this.studentContactService.RetrieveAllStudentContacts();
 
             // then
             Assert.Throws<StudentContactDependencyException>(
                 retrieveAllStudentContactAction);
-           
+
             this.loggingBrokerMock.Verify(broker =>
                     broker.LogCritical(It.Is(SameExceptionAs(
                         expectedStudentContactDependencyException))),

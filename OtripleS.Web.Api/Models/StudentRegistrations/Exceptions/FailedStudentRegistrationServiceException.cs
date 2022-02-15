@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Models.StudentRegistrations.Exceptions
     public class FailedStudentRegistrationServiceException : Xeption
     {
         public FailedStudentRegistrationServiceException(Exception innerException)
-            : base(message:"Failed student registration service error occured.",innerException)
+            : base(message: "Failed student registration service error occured.", innerException)
         {
         }
     }

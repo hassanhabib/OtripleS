@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         {
             // given
             Classroom invalidClassroom = null;
-            
+
             var nullClassroomException = new NullClassroomException();
 
             var expectedClassroomValidationException =

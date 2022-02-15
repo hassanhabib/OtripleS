@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
                 broker.SelectAllFees())
                     .Throws(sqlException);
 
-            
+
             // when
             Action retrieveAllfeeAction = () =>
                 this.feeService.RetrieveAllFees();

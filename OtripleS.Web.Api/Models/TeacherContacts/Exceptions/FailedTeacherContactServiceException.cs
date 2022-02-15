@@ -12,7 +12,7 @@ namespace OtripleS.Web.Api.Models.TeacherContacts.Exceptions
     {
         public FailedTeacherContactServiceException(Exception innerException)
             : base(message: "Failed teacher contact service error occured.", innerException)
-        { 
+        {
         }
     }
 }

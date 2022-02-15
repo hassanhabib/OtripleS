@@ -54,7 +54,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             // given
             var serviceException = new Exception();
 
-            var failedUserContactServiceException = 
+            var failedUserContactServiceException =
                 new FailedUserContactServiceException(serviceException);
 
             var expectedUserContactServiceException =
