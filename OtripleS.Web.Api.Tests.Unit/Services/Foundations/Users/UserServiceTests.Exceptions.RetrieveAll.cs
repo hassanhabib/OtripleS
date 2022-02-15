@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using Microsoft.Data.SqlClient;
@@ -61,14 +61,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             // given
             var serviceException = new Exception();
 
+            var failedUserServiceException =
+                new FailedUserServiceException(serviceException);
+
             var expectedUserServiceException =
-                new UserServiceException(serviceException);
+                new UserServiceException(failedUserServiceException);
 
             this.userManagementBrokerMock.Setup(broker =>
                 broker.SelectAllUsers())
                     .Throws(serviceException);
 
-          
+
             // When
             Action retrieveAllUsersAction = () =>
                 this.userService.RetrieveAllUsers();
@@ -92,4 +95,3 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         }
     }
 }
-  
