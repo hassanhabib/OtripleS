@@ -61,7 +61,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                     .Throws(serviceException);
 
             // when
-           Action retrieveAllCalendarEntryAction = () =>
+            Action retrieveAllCalendarEntryAction = () =>
              this.calendarEntryService.RetrieveAllCalendarEntries();
 
             // then
