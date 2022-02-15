@@ -93,8 +93,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
             StudentRegistration someStudentRegistration = CreateRandomStudentRegistration();
             var serviceException = new Exception();
 
+            var failedStudentRegistrationServiceException =
+                new FailedStudentRegistrationServiceException(serviceException);
+
             var expectedStudentRegistrationServiceException =
-                new StudentRegistrationServiceException(serviceException);
+                new StudentRegistrationServiceException(failedStudentRegistrationServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertStudentRegistrationAsync(It.IsAny<StudentRegistration>()))
