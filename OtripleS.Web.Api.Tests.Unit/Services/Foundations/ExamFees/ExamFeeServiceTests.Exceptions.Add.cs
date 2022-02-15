@@ -53,8 +53,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedExamFeeDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedExamFeeDependencyException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -99,8 +100,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExamFeeDependencyException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -115,10 +117,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             ExamFee someExamFee = CreateRandomExamFee(dateTime);
             someExamFee.UpdatedBy = someExamFee.CreatedBy;
             someExamFee.UpdatedDate = someExamFee.CreatedDate;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedExamFeeServiceException =
-                new ExamFeeServiceException(exception);
+                new ExamFeeServiceException(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -126,7 +128,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertExamFeeAsync(It.IsAny<ExamFee>()))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<ExamFee> createExamFeeTask =
@@ -145,8 +147,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedExamFeeServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExamFeeServiceException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

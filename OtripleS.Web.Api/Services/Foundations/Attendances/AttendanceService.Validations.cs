@@ -115,23 +115,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
                 Message = $"Date is the same as {secondDateName}"
             };
 
-        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
-        {
-            var invalidAttendanceException = new InvalidAttendanceException();
-
-            foreach ((dynamic rule, string parameter) in validations)
-            {
-                if (rule.Condition)
-                {
-                    invalidAttendanceException.UpsertDataList(
-                        key: parameter,
-                        value: rule.Message);
-                }
-            }
-
-            invalidAttendanceException.ThrowIfContainsErrors();
-        }
-
         private static void ValidateAttendanceIsNull(Attendance attendance)
         {
             if (attendance is null)
@@ -189,6 +172,23 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             TimeSpan difference = now.Subtract(dateTime);
 
             return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
+
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
+        {
+            var invalidAttendanceException = new InvalidAttendanceException();
+
+            foreach ((dynamic rule, string parameter) in validations)
+            {
+                if (rule.Condition)
+                {
+                    invalidAttendanceException.UpsertDataList(
+                        key: parameter,
+                        value: rule.Message);
+                }
+            }
+
+            invalidAttendanceException.ThrowIfContainsErrors();
         }
     }
 }

@@ -17,26 +17,27 @@ using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Services.Foundations.Assignments;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
 {
     public partial class AssignmentServiceTests
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
-        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
+        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly IAssignmentService assignmentService;
 
         public AssignmentServiceTests()
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
-            this.loggingBrokerMock = new Mock<ILoggingBroker>();
             this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
+            this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
             this.assignmentService = new AssignmentService(
                 storageBroker: this.storageBrokerMock.Object,
-                loggingBroker: this.loggingBrokerMock.Object,
-                dateTimeBroker: this.dateTimeBrokerMock.Object);
+                dateTimeBroker: this.dateTimeBrokerMock.Object,
+                loggingBroker: this.loggingBrokerMock.Object);
         }
 
         private static DateTimeOffset GetRandomDateTime() =>
@@ -63,20 +64,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
         }
 
         private static Assignment CreateRandomAssignment() =>
-            CreateAssignmentFiller(dates: DateTimeOffset.UtcNow).Create();
+            CreateAssignmentFiller(dates: GetRandomDateTime()).Create();
 
         private static IQueryable<Assignment> CreateRandomAssignments(DateTimeOffset dates) =>
             CreateAssignmentFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
-        public static IEnumerable<object[]> InvalidMinuteCases()
+        public static TheoryData InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
             int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
 
-            return new List<object[]>
+            return new TheoryData<int>
             {
-                new object[] { randomMoreThanMinuteFromNow },
-                new object[] { randomMoreThanMinuteBeforeNow }
+                randomMoreThanMinuteFromNow,
+                randomMoreThanMinuteBeforeNow
             };
         }
 

@@ -71,8 +71,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
         TryCatch(() => this.storageBroker.SelectAllCalendarEntries());
 
         public ValueTask<CalendarEntry> RetrieveCalendarEntryByIdAsync(
-            Guid calendarEntryId) =>
-        TryCatch(async () =>
+            Guid calendarEntryId) => TryCatch(async () =>
         {
             ValidateCalendarEntryId(calendarEntryId);
 

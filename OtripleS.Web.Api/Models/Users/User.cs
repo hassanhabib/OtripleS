@@ -41,6 +41,7 @@ namespace OtripleS.Web.Api.Models.Users
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset UpdatedDate { get; set; }
 
+        [JsonIgnore]
         public IEnumerable<UserContact> UserContacts { get; set; }
 
         [JsonIgnore]
