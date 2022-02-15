@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using Moq;
@@ -27,7 +27,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAssignmentAttachments())
                     .Throws(sqlException);
-        
+
             // when
             Action retrieveAllAssignmentAttachmentsAction = () =>
                 this.assignmentAttachmentService.RetrieveAllAssignmentAttachments();
