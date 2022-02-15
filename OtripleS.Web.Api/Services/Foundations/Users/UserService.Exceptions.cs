@@ -90,7 +90,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedUserServiceException =
+                    new FailedUserServiceException(exception);
+
+                throw CreateAndLogServiceException(failedUserServiceException);
             }
         }
 
