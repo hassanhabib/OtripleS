@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 broker.SelectAllAttachments())
                     .Throws(sqlException);
 
-            // When
+            // when
              Action retrieveAllAttachmentAction = () =>
              this.attachmentService.RetrieveAllAttachments();
 
