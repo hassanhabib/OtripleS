@@ -26,12 +26,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     .Throws(sqlException);
 
             // when
-             Action retrieveAllAttachmentAction = () =>
-             this.attachmentService.RetrieveAllAttachments();
+            Action retrieveAllAttachmentAction = () =>
+                this.attachmentService.RetrieveAllAttachments();
 
             // then
             Assert.Throws<AttachmentDependencyException>(
-               retrieveAllAttachmentAction);
+                retrieveAllAttachmentAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAttachments(),
