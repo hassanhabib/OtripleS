@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using Moq;
@@ -24,7 +24,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllCalendarEntries())
                     .Throws(sqlException);
-             
+
             // when
             Action retrieveAllCalendarEntriesAction = () =>
                 this.calendarEntryService.RetrieveAllCalendarEntries();
