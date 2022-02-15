@@ -58,23 +58,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomGuardianId = Guid.NewGuid();
-            Guid inputContactId = randomContactId;
-            Guid inputGuardianId = randomGuardianId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someGuardianId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedGuardianContactDependencyException =
                 new GuardianContactDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectGuardianContactByIdAsync(inputGuardianId, inputContactId))
+                broker.SelectGuardianContactByIdAsync(someGuardianId, someContactId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<GuardianContact> retrieveGuardianContactTask =
                 this.guardianContactService.RetrieveGuardianContactByIdAsync
-                (inputGuardianId, inputContactId);
+                (someGuardianId, someContactId);
 
             // then
             await Assert.ThrowsAsync<GuardianContactDependencyException>(
@@ -86,7 +84,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianContactByIdAsync(inputGuardianId, inputContactId),
+                broker.SelectGuardianContactByIdAsync(someGuardianId, someContactId),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -97,24 +95,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomGuardianId = Guid.NewGuid();
-            Guid inputContactId = randomContactId;
-            Guid inputGuardianId = randomGuardianId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someGuardianId = Guid.NewGuid();
             var exception = new Exception();
 
             var expectedGuardianContactException =
                 new GuardianContactServiceException(exception);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectGuardianContactByIdAsync(inputGuardianId, inputContactId))
+                broker.SelectGuardianContactByIdAsync(someGuardianId, someContactId))
                     .ThrowsAsync(exception);
 
             // when
             ValueTask<GuardianContact> retrieveGuardianContactTask =
                 this.guardianContactService.RetrieveGuardianContactByIdAsync(
-                    inputGuardianId,
-                    inputContactId);
+                    someGuardianId,
+                    someContactId);
 
             // then
             await Assert.ThrowsAsync<GuardianContactServiceException>(() =>
@@ -126,7 +122,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianContactByIdAsync(inputGuardianId, inputContactId),
+                broker.SelectGuardianContactByIdAsync(someGuardianId, someContactId),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
