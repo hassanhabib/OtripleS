@@ -67,11 +67,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
 
             // when
             Action retrieveAllStudentExamsAction = () =>
-            this.studentExamService.RetrieveAllStudentExams();
+                this.studentExamService.RetrieveAllStudentExams();
 
             // then
             Assert.Throws<StudentExamServiceException>(
-            retrieveAllStudentExamsAction);
+                retrieveAllStudentExamsAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
