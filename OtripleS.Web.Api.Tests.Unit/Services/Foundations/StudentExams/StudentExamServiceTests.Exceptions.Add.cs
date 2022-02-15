@@ -80,8 +80,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
                 addStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianDependencyException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentExamAsync(inputStudentExam),
@@ -126,8 +127,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
                 addStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentGuardianServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentExamAsync(inputStudentGuardian),

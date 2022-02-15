@@ -25,13 +25,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             this.storageBrokerMock.Setup(broker => broker.SelectAllStudentSemesterCourses())
                 .Throws(sqlException);
 
-            //when. then
-            Assert.Throws<StudentSemesterCourseDependencyException>(() =>
-                this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses());
+            // when
+            Action retrieveAllStudentSemesterCourseAction = () =>
+                this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses();
+
+            // then
+            Assert.Throws<StudentSemesterCourseDependencyException>(
+                retrieveAllStudentSemesterCourseAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogCritical(It.Is(SameExceptionAs(expectedStudentSemesterCourseDependencyException))),
-                        Times.Once);
+                    broker.LogCritical(It.Is(SameExceptionAs(
+                        expectedStudentSemesterCourseDependencyException))),
+                            Times.Once);
 
             this.storageBrokerMock.Verify(broker => broker.SelectAllStudentSemesterCourses(),
                 Times.Once);
@@ -53,13 +58,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             this.storageBrokerMock.Setup(broker => broker.SelectAllStudentSemesterCourses())
                 .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<StudentSemesterCourseServiceException>(() =>
-                this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses());
+            // when
+            Action retrieveAllStudentSemesterCourseAction = () =>
+                this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses();
+
+            // then
+            Assert.Throws<StudentSemesterCourseServiceException>(
+                retrieveAllStudentSemesterCourseAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                    broker.LogError(It.Is(SameExceptionAs(expectedStudentSemesterCourseServiceException))),
-                        Times.Once);
+                    broker.LogError(It.Is(SameExceptionAs(
+                        expectedStudentSemesterCourseServiceException))),
+                            Times.Once);
 
             this.storageBrokerMock.Verify(broker => broker.SelectAllStudentSemesterCourses(),
                 Times.Once);

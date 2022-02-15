@@ -34,8 +34,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
                 addTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertTeacherAttachmentAsync(It.IsAny<TeacherAttachment>()),
@@ -70,8 +71,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
                 addTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertTeacherAttachmentAsync(It.IsAny<TeacherAttachment>()),
@@ -106,8 +108,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
                 addTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertTeacherAttachmentAsync(It.IsAny<TeacherAttachment>()),
@@ -147,8 +150,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
                 addTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedTeacherAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertTeacherAttachmentAsync(alreadyExistsTeacherAttachment),
@@ -188,8 +192,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
                 addTeacherAttachmentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedTeacherAttachmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertTeacherAttachmentAsync(invalidTeacherAttachment),
