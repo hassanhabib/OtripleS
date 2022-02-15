@@ -42,8 +42,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
                 removeStudentExamFeeTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentExamFeeValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentExamFeeByIdsAsync(
@@ -86,8 +87,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
                 removeStudentExamFeeTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamFeeValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentExamFeeValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectStudentExamFeeByIdsAsync(
@@ -140,8 +142,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
                         Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedAssignmentValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAssignmentValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteStudentExamFeeAsync(It.IsAny<StudentExamFee>()),

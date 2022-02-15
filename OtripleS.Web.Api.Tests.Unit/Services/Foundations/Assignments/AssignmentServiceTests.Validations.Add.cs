@@ -19,8 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
         public async void ShouldThrowValidationExceptionOnCreateWhenAssignmentIsNullAndLogItAsync()
         {
             // given
-            Assignment randomAssignment = null;
-            Assignment nullAssignment = randomAssignment;
+            Assignment invalidAssignment = null;
+            
             var nullAssignmentException = new NullAssignmentException();
 
             var expectedAssignmentValidationException =
@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
 
             // when
             ValueTask<Assignment> createAssignmentTask =
-                this.assignmentService.CreateAssignmentAsync(nullAssignment);
+                this.assignmentService.CreateAssignmentAsync(invalidAssignment);
 
             // then
             await Assert.ThrowsAsync<AssignmentValidationException>(() =>

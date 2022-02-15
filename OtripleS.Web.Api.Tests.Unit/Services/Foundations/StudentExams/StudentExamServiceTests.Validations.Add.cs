@@ -17,8 +17,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
         public async void ShouldThrowValidationExceptionOnAddWhenStudentExamIsNullAndLogItAsync()
         {
             // given
-            StudentExam randomStudentExam = default;
-            StudentExam nullStudentExam = randomStudentExam;
+            StudentExam invalidStudentExam = null;
+            
             var nullStudentExamException = new NullStudentExamException();
 
             var expectedStudentExamValidationException =
@@ -26,15 +26,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
 
             // when
             ValueTask<StudentExam> addStudentExamTask =
-                this.studentExamService.AddStudentExamAsync(nullStudentExam);
+                this.studentExamService.AddStudentExamAsync(invalidStudentExam);
 
             // then
             await Assert.ThrowsAsync<StudentExamValidationException>(() =>
                 addStudentExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedStudentExamValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentExamValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentExamAsync(It.IsAny<StudentExam>()),

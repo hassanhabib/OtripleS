@@ -17,26 +17,26 @@ using OtripleS.Web.Api.Models.CalendarEntries;
 using OtripleS.Web.Api.Models.Calendars;
 using OtripleS.Web.Api.Services.Foundations.Calendars;
 using Tynamix.ObjectFiller;
+using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
 {
     public partial class CalendarServiceTests
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
-        private readonly ICalendarService calendarService;
-        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
-
+        private readonly Mock<ILoggingBroker> loggingBrokerMock;
+        private readonly ICalendarService calendarService;
         public CalendarServiceTests()
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
-            this.loggingBrokerMock = new Mock<ILoggingBroker>();
             this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
+            this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
             this.calendarService = new CalendarService(
                 storageBroker: this.storageBrokerMock.Object,
-                loggingBroker: this.loggingBrokerMock.Object,
-                dateTimeBroker: this.dateTimeBrokerMock.Object);
+                dateTimeBroker: this.dateTimeBrokerMock.Object,
+                loggingBroker: this.loggingBrokerMock.Object);
         }
 
         private static Calendar CreateRandomCalendar(DateTimeOffset dates) =>
@@ -55,15 +55,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        public static IEnumerable<object[]> InvalidMinuteCases()
+        public static TheoryData InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
             int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
 
-            return new List<object[]>
+            return new TheoryData<int>
             {
-                new object[] { randomMoreThanMinuteFromNow },
-                new object[] { randomMoreThanMinuteBeforeNow }
+                randomMoreThanMinuteFromNow,
+                randomMoreThanMinuteBeforeNow
             };
         }
 

@@ -29,10 +29,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                GuardianContact persistedGuardianContact =
+                GuardianContact addedGuardianContact =
                     await this.guardianContactService.AddGuardianContactAsync(guardianContact);
 
-                return Created(persistedGuardianContact);
+                return Created(addedGuardianContact);
             }
             catch (GuardianContactValidationException guardianContactValidationException)
                 when (guardianContactValidationException.InnerException is AlreadyExistsGuardianContactException)

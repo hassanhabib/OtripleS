@@ -19,8 +19,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         public async void ShouldThrowValidationExceptionOnCreateWhenTeacherIsNullAndLogItAsync()
         {
             // given
-            Teacher randomTeacher = null;
-            Teacher nullTeacher = randomTeacher;
+            Teacher invalidTeacher = null;
+            
             var nullTeacherException = new NullTeacherException();
 
             var expectedTeacherValidationException =
@@ -28,15 +28,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             // when
             ValueTask<Teacher> createTeacherTask =
-                this.teacherService.CreateTeacherAsync(nullTeacher);
+                this.teacherService.CreateTeacherAsync(invalidTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() =>
                 createTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectTeacherByIdAsync(It.IsAny<Guid>()),
@@ -171,8 +172,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectTeacherByIdAsync(It.IsAny<Guid>()),
@@ -212,8 +214,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectTeacherByIdAsync(It.IsAny<Guid>()),
@@ -262,8 +265,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherValidationException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectTeacherByIdAsync(It.IsAny<Guid>()),
@@ -317,8 +321,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(expectedTeacherValidationException))),
-                    Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedTeacherValidationException))),
+                        Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();

@@ -23,13 +23,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
                 broker.SelectAllTeacherAttachments())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<TeacherAttachmentDependencyException>(() =>
-                this.teacherAttachmentService.RetrieveAllTeacherAttachments());
+            // when
+            Action retrieveAllTeacherAttachmentAction = () =>
+                this.teacherAttachmentService.RetrieveAllTeacherAttachments();
+
+            // then
+            Assert.Throws<TeacherAttachmentDependencyException>(
+                retrieveAllTeacherAttachmentAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherAttachmentDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedTeacherAttachmentDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllTeacherAttachments(),
@@ -44,20 +49,25 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
         public void ShouldThrowServiceExceptionOnRetrieveAllTeacherAttachmentsWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
-            var expectedTeacherAttachmentServiceException = new TeacherAttachmentServiceException(exception);
+            var serviceException = new Exception();
+            var expectedTeacherAttachmentServiceException = new TeacherAttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllTeacherAttachments())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<TeacherAttachmentServiceException>(() =>
-                this.teacherAttachmentService.RetrieveAllTeacherAttachments());
+            // when
+            Action retrieveAllTeacherAttachmentAction = () =>
+                this.teacherAttachmentService.RetrieveAllTeacherAttachments();
+
+            // then
+            Assert.Throws<TeacherAttachmentServiceException>(
+                retrieveAllTeacherAttachmentAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherAttachmentServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherAttachmentServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllTeacherAttachments(),

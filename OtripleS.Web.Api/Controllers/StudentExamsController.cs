@@ -29,10 +29,10 @@ namespace OtripleS.Web.Api.Controllers
         {
             try
             {
-                StudentExam persistedStudentExam =
+                StudentExam addedStudentExam =
                     await this.studentExamService.AddStudentExamAsync(studentExam);
 
-                return Created(persistedStudentExam);
+                return Created(addedStudentExam);
             }
             catch (StudentExamValidationException studentExamValidationException)
                 when (studentExamValidationException.InnerException is AlreadyExistsStudentExamException)
