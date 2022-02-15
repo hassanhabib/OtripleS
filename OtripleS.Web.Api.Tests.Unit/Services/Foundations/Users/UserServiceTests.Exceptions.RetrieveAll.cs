@@ -71,7 +71,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 broker.SelectAllUsers())
                     .Throws(serviceException);
 
-
+          
             // When
             Action retrieveAllUsersAction = () =>
                 this.userService.RetrieveAllUsers();
@@ -95,3 +95,4 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         }
     }
 }
+  

@@ -98,7 +98,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Guid inputTeacherId = randomTeacherId;
             var serviceException = new Exception();
 
-            var failedTeacherServiceException =
+            var failedTeacherServiceException = 
                 new FailedTeacherServiceException(serviceException);
 
             var expectedTeacherServiceException =

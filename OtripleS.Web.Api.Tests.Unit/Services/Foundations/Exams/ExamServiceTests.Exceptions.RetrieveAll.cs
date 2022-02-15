@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             // when
             Action retrieveAllexamAction = () =>
                 this.examService.RetrieveAllExams();
-
+            
             // then
             Assert.Throws<ExamDependencyException>(
                 retrieveAllexamAction);

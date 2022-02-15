@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
         {
             // given
             Attachment invalidAttachment = null;
-
+            
             var nullAttachmentException = new NullAttachmentException();
 
             var expectedAttachmentValidationException =

@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
         {
             // given
             Calendar invalidCalendar = null;
-
+            
 
             var nullCalendarException = new NullCalendarException();
 

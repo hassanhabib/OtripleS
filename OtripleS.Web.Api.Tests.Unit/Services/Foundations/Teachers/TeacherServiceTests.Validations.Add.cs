@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         {
             // given
             Teacher invalidTeacher = null;
-
+            
             var nullTeacherException = new NullTeacherException();
 
             var expectedTeacherValidationException =

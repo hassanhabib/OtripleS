@@ -34,10 +34,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             Assert.Throws<StudentExamDependencyException>(
                 retrieveAllstudentExamsAction);
 
-            this.loggingBrokerMock.Verify(broker =>
-            broker.LogCritical(It.Is(SameExceptionAs(
-                expectedStudentExamDependencyException))),
-                    Times.Once);
+                this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedStudentExamDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentExams(),

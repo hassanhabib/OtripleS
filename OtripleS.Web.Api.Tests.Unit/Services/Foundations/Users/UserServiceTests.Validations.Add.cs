@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         {
             // given
             User invalidUser = null;
-
+           
             var nullUserException = new NullUserException();
             string password = GetRandomPassword();
 

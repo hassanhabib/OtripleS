@@ -144,7 +144,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             Guid inputUserId = randomUserId;
             var serviceException = new Exception();
 
-            var failedUserServiceException =
+            var failedUserServiceException = 
                 new FailedUserServiceException(serviceException);
 
             var expectedUserServiceException =
