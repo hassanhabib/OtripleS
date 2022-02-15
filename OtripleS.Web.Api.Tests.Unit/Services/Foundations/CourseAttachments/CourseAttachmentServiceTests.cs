@@ -39,7 +39,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
         }
 
         private static IQueryable<CourseAttachment> CreateRandomCourseAttachments() =>
-            CreateCourseAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+            CreateCourseAttachmentFiller(dates: GetRandomDateTime()).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
 
