@@ -62,11 +62,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
 
             // when
             Action retrieveAllCalendarEntryAction = () =>
-             this.calendarEntryService.RetrieveAllCalendarEntries();
+                this.calendarEntryService.RetrieveAllCalendarEntries();
 
             // then
             Assert.Throws<CalendarEntryServiceException>(
-             retrieveAllCalendarEntryAction);
+                retrieveAllCalendarEntryAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
