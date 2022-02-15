@@ -122,8 +122,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             inputStudentSemesterCourse.UpdatedDate = inputStudentSemesterCourse.CreatedDate;
             var serviceException = new Exception();
 
+            var failedStudentSemesterCourseServiceException =
+                new FailedStudentSemesterCourseServiceException(serviceException);
+
             var expectedStudentSemesterCourseServiceException =
-                new StudentSemesterCourseServiceException(serviceException);
+                new StudentSemesterCourseServiceException(failedStudentSemesterCourseServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
