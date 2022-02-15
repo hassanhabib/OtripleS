@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Models.TeacherAttachments.Exceptions
     public class FailedTeacherAttachmentServiceException : Xeption
     {
         public FailedTeacherAttachmentServiceException(Exception innerException)
-            : base (message : "Failed teacher attachment service error occured.", innerException)
+            : base (message: "Failed teacher attachment service error occured.", innerException)
         {
         }
     }
