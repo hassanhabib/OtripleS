@@ -33,8 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
 
             // when
             ValueTask<GuardianAttachment> retrieveGuardianAttachmentTask =
-                this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync
-                (someGuardianId, someAttachmentId);
+                this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(() =>
