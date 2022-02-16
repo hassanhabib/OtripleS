@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Models.StudentContacts.Exceptions
     public class FailedStudentContactServiceException : Xeption
     {
         public FailedStudentContactServiceException(Exception innerException)
-            : base(message: "Failed student contact service error occured." ,innerException)
+            : base(message: "Failed student contact service error occurred, contact support.", innerException)
         {
         }
     }
