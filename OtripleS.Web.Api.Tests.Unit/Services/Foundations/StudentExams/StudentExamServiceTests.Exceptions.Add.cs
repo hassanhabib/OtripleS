@@ -131,7 +131,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedStudentGuardianServiceException))),
+                    expectedStudentExamServiceException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
