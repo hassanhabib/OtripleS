@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Models.StudentAttachments.Exceptions
     public class FailedStudentAttachmentServiceException : Xeption
     {
         public FailedStudentAttachmentServiceException(Exception innerException)
-            : base(message:"Failed student attachment service error occured,contact support.",innerException)
+            :base(message:"Failed student attachment service error occured,contact support.",innerException)
         {
         }
     }
