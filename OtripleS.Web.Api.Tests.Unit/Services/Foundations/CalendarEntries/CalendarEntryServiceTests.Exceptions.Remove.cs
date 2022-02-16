@@ -138,11 +138,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             Guid inputCalendarEntryId = randomCalendarEntryId;
             var serviceException = new Exception();
 
-            var failedCalendarEntryServiceException =
-                new FailedCalendarEntryServiceException(serviceException);
-
-                var expectedCalendarEntryServiceException =
-                new CalendarEntryServiceException(failedCalendarEntryServiceException);
+            var expectedCalendarEntryServiceException =
+                new CalendarEntryServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectCalendarEntryByIdAsync(inputCalendarEntryId))
