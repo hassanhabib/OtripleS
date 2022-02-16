@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             CreateCalendarFiller(dates).Create();
 
         private static IQueryable<Calendar> CreateRandomCalendars() =>
-            CreateCalendarFiller(dates: DateTimeOffset.UtcNow)
+            CreateCalendarFiller(dates: GetRandomDateTime())
                 .Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() =>
@@ -85,8 +85,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             var filler = new Filler<Calendar>();
 
             filler.Setup()
-                .OnProperty(Calendar => Calendar.CreatedDate).Use(dates)
-                .OnProperty(Calendar => Calendar.UpdatedDate).Use(dates)
+                .OnProperty(calendar => calendar.CreatedDate).Use(dates)
+                .OnProperty(calendar => calendar.UpdatedDate).Use(dates)
                 .OnType<IEnumerable<CalendarEntry>>().IgnoreIt();
 
             return filler;
