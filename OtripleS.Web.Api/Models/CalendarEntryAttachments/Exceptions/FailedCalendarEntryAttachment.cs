@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions
     public class FailedCalendarEntryAttachment : Xeption
     {
         public FailedCalendarEntryAttachment(Exception innerException)
-            :base(message:"Failed calendar entry attachment error occured,contact support", innerException)
-        {}
+            : base(message: "Failed calendar entry attachment error occured,contact support", innerException)
+        { }
     }
 }
