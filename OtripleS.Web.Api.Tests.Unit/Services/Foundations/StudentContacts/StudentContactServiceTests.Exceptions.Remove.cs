@@ -158,8 +158,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             Guid someStudentId = randomStudentId;
             var serviceException = new Exception();
 
-            var expectedStudentContactException =
-                new StudentContactServiceException(serviceException);
+            var failedStudentContactServiceException =
+                new FailedStudentContactServiceException(serviceException);
+
+            var expectedStudentContactServiceException =
+                new StudentContactServiceException(failedStudentContactServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentContactByIdAsync(someStudentId, someContactId))
@@ -177,7 +180,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedStudentContactException))),
+                    expectedStudentContactServiceException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
