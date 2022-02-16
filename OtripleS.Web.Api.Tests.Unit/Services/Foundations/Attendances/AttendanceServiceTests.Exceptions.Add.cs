@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -119,6 +119,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             inputAttendance.UpdatedBy = inputAttendance.CreatedBy;
 
             var Serviceexception = new Exception();
+
+            var failedAttendanceServiceException =
+                new FailedAttendanceServiceException(serviceException);
 
             var expectedAttendanceServiceException =
                 new AttendanceServiceException(Serviceexception);

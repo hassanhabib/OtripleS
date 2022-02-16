@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using Moq;
@@ -28,9 +28,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 broker.SelectAllAssignmentAttachments())
                     .Throws(sqlException);
 
-            // when . then
-            Assert.Throws<AssignmentAttachmentDependencyException>(() =>
-                this.assignmentAttachmentService.RetrieveAllAssignmentAttachments());
+            // when
+            Action retrieveAllAssignmentAttachmentsAction = () =>
+                this.assignmentAttachmentService.RetrieveAllAssignmentAttachments();
+
+            // then
+            Assert.Throws<AssignmentAttachmentDependencyException>(
+                retrieveAllAssignmentAttachmentsAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAssignmentAttachments(),
@@ -49,18 +53,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
         public void ShouldThrowServiceExceptionOnRetrieveAllAssignmentAttachmentsWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var expectedAssignmentAttachmentServiceException =
-                new AssignmentAttachmentServiceException(exception);
+                new AssignmentAttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAssignmentAttachments())
-                    .Throws(exception);
+                    .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<AssignmentAttachmentServiceException>(() =>
-                this.assignmentAttachmentService.RetrieveAllAssignmentAttachments());
+            // when
+            Action retrieveAllAssignmentAttachmentsAction = () =>
+                this.assignmentAttachmentService.RetrieveAllAssignmentAttachments();
+
+            // then
+            Assert.Throws<AssignmentAttachmentServiceException>(
+                retrieveAllAssignmentAttachmentsAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllAssignmentAttachments(),

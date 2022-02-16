@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -94,7 +94,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
             TeacherAttachment randomTeacherAttachment = CreateRandomTeacherAttachment();
             TeacherAttachment inputTeacherAttachment = randomTeacherAttachment;
             var serviceException = new Exception();
-            var expectedTeacherAttachmentServiceException = new TeacherAttachmentServiceException(serviceException);
+
+            var failedTeacherAttachmentServiceException =
+                new FailedTeacherAttachmentServiceException(serviceException);
+
+            var expectedTeacherAttachmentServiceException =
+                new TeacherAttachmentServiceException(failedTeacherAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertTeacherAttachmentAsync(inputTeacherAttachment))
