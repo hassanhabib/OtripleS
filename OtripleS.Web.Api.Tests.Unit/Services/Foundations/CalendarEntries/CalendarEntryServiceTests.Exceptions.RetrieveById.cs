@@ -104,7 +104,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
 
             var failedCalendarEntryServiceException =
                 new FailedCalendarEntryServiceException(serviceException);
- 
+
             var expectedCalendarEntryServiceException =
                 new CalendarEntryServiceException(failedCalendarEntryServiceException);
 

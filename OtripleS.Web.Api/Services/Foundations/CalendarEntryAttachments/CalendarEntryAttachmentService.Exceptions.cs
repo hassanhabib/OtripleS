@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
             }
             catch (Exception exception)
             {
-                               
+
                 throw CreateAndLogServiceException(exception);
             }
         }
