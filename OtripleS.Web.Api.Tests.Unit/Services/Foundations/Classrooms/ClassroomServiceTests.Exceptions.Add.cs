@@ -23,7 +23,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom someClassroom = CreateRandomClassroom(dateTime);
             var sqlException = GetSqlException();
 
-            var failedClassroomStorageException = 
+            var failedClassroomStorageException =
                 new FailedClassroomStorageException(sqlException);
 
             var expectedClassroomDependencyException =
