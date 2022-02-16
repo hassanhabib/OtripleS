@@ -1,7 +1,7 @@
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using Microsoft.Data.SqlClient;
@@ -52,8 +52,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             // given
             var serviceException = new Exception();
 
+            var failedStudentSemesterCourseServiceException =
+                new FailedStudentSemesterCourseServiceException(serviceException);
+
             var expectedStudentSemesterCourseServiceException =
-                new StudentSemesterCourseServiceException(serviceException);
+                new StudentSemesterCourseServiceException(failedStudentSemesterCourseServiceException);
 
             this.storageBrokerMock.Setup(broker => broker.SelectAllStudentSemesterCourses())
                 .Throws(serviceException);
