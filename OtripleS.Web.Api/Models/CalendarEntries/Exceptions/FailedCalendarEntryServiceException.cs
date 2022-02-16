@@ -10,8 +10,8 @@ namespace OtripleS.Web.Api.Models.CalendarEntries.Exceptions
 {
     public class FailedCalendarEntryServiceException : Xeption
     {
-        public FailedCalendarEntryServiceException(Exception innerexception)
-            : base(message: "Failed calendar entry service error occured,contact support.", innerexception)
+        public FailedCalendarEntryServiceException(Exception innerException)
+            : base(message: "Failed calendar entry service error occured, contact support.", innerException)
         { }
     }
 }
