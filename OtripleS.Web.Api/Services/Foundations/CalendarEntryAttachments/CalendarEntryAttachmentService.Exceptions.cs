@@ -69,7 +69,10 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedCalendarEntryAttachment =
+                    new FailedCalendarEntryAttachment(exception);
+
+                throw CreateAndLogServiceException(failedCalendarEntryAttachment);
             }
         }
 
