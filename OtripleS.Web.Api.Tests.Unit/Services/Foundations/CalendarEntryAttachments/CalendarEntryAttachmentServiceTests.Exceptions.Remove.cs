@@ -153,11 +153,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
             Guid someCalendarEntryId = Guid.NewGuid();
             var serviceException = new Exception();
 
-            var failedCalendarEntryAttachment =
+            var failedCalendarEntryAttachmentService =
                 new FailedCalendarEntryAttachmentService(serviceException);
 
             var expectedCalendarEntryAttachmentException = 
-                new CalendarEntryAttachmentServiceException(failedCalendarEntryAttachment);
+                new CalendarEntryAttachmentServiceException(failedCalendarEntryAttachmentService);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectCalendarEntryAttachmentByIdAsync(someCalendarEntryId, someAttachmentId))
