@@ -119,8 +119,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             inputCalendarEntry.UpdatedBy = inputCalendarEntry.CreatedBy;
             var serviceException = new Exception();
 
+            var failedCalendarEntryServiceException =
+                new FailedCalendarEntryServiceException(serviceException);
+
             var expectedCalendarEntryServiceException =
-                new CalendarEntryServiceException(serviceException);
+                new CalendarEntryServiceException(failedCalendarEntryServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
