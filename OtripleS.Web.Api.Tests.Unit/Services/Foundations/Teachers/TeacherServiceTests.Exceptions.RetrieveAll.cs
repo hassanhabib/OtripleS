@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using Microsoft.Data.SqlClient;
@@ -35,8 +35,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 retrieveAllTeachersAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(expectedTeacherDependencyException))),
-                    Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedTeacherDependencyException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllTeachers(),
@@ -57,8 +58,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             // given
             var serviceException = new Exception();
 
+            var failedTeacherServiceException =
+                new FailedTeacherServiceException(serviceException);
+
             var expectedTeacherServiceException =
-                new TeacherServiceException(serviceException);
+                new TeacherServiceException(failedTeacherServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllTeachers())
@@ -73,8 +77,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 retrieveAllTeachersAction);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(expectedTeacherServiceException))),
-                    Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherServiceException))),
+                        Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllTeachers(),

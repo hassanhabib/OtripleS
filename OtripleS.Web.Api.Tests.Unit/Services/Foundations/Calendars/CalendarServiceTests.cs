@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
@@ -17,6 +17,7 @@ using OtripleS.Web.Api.Models.CalendarEntries;
 using OtripleS.Web.Api.Models.Calendars;
 using OtripleS.Web.Api.Services.Foundations.Calendars;
 using Tynamix.ObjectFiller;
+using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
 {
@@ -42,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             CreateCalendarFiller(dates).Create();
 
         private static IQueryable<Calendar> CreateRandomCalendars() =>
-            CreateCalendarFiller(dates: DateTimeOffset.UtcNow)
+            CreateCalendarFiller(dates: GetRandomDateTime())
                 .Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() =>
@@ -54,15 +55,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        public static IEnumerable<object[]> InvalidMinuteCases()
+        public static TheoryData InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
             int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
 
-            return new List<object[]>
+            return new TheoryData<int>
             {
-                new object[] { randomMoreThanMinuteFromNow },
-                new object[] { randomMoreThanMinuteBeforeNow }
+                randomMoreThanMinuteFromNow,
+                randomMoreThanMinuteBeforeNow
             };
         }
 
@@ -84,8 +85,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             var filler = new Filler<Calendar>();
 
             filler.Setup()
-                .OnProperty(Calendar => Calendar.CreatedDate).Use(dates)
-                .OnProperty(Calendar => Calendar.UpdatedDate).Use(dates)
+                .OnProperty(calendar => calendar.CreatedDate).Use(dates)
+                .OnProperty(calendar => calendar.UpdatedDate).Use(dates)
                 .OnType<IEnumerable<CalendarEntry>>().IgnoreIt();
 
             return filler;

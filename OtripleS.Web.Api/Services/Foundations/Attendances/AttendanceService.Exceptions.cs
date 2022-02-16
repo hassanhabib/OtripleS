@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -60,7 +60,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedAttendanceServiceException =
+                    new FailedAttendanceServiceException(exception);
+
+                throw CreateAndLogServiceException(failedAttendanceServiceException);
             }
         }
 

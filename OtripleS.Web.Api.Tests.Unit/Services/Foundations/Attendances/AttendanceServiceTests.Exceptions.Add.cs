@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -117,10 +117,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             Attendance randomAttendance = CreateRandomAttendance(dateTime);
             Attendance inputAttendance = randomAttendance;
             inputAttendance.UpdatedBy = inputAttendance.CreatedBy;
-            var exception = new Exception();
+            var serviceException = new Exception();
+
+            var failedAttendanceServiceException =
+                new FailedAttendanceServiceException(serviceException);
 
             var expectedAttendanceServiceException =
-                new AttendanceServiceException(exception);
+                new AttendanceServiceException(failedAttendanceServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -128,7 +131,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertAttendanceAsync(inputAttendance))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Attendance> createAttendanceTask =

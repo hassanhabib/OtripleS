@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -60,7 +60,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedTeacherServiceException =
+                    new FailedTeacherServiceException(exception);
+
+                throw CreateAndLogServiceException(failedTeacherServiceException);
             }
         }
 
@@ -82,16 +85,19 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedTeacherServiceException =
+                    new FailedTeacherServiceException(exception);
+
+                throw CreateAndLogServiceException(failedTeacherServiceException);
             }
         }
 
-        private TeacherServiceException CreateAndLogServiceException(Exception exception)
+        private TeacherValidationException CreateAndLogValidationException(Exception exception)
         {
-            var teacherServiceException = new TeacherServiceException(exception);
-            this.loggingBroker.LogError(teacherServiceException);
+            var teacherValidationException = new TeacherValidationException(exception);
+            this.loggingBroker.LogError(teacherValidationException);
 
-            return teacherServiceException;
+            return teacherValidationException;
         }
 
         private TeacherDependencyException CreateAndLogDependencyException(Exception exception)
@@ -110,12 +116,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             return teacherDependencyException;
         }
 
-        private TeacherValidationException CreateAndLogValidationException(Exception exception)
+        private TeacherServiceException CreateAndLogServiceException(Exception exception)
         {
-            var teacherValidationException = new TeacherValidationException(exception);
-            this.loggingBroker.LogError(teacherValidationException);
+            var teacherServiceException = new TeacherServiceException(exception);
+            this.loggingBroker.LogError(teacherServiceException);
 
-            return teacherValidationException;
+            return teacherServiceException;
         }
     }
 }

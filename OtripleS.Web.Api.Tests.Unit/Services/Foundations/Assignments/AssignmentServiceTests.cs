@@ -1,10 +1,9 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
@@ -17,6 +16,7 @@ using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Services.Foundations.Assignments;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
 {
@@ -47,7 +47,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
 
-        private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
+        private static Expression<Func<Xeption, bool>> SameValidationExceptionAs(Xeption expectedException)
         {
             return actualException =>
                 actualException.Message == expectedException.Message
@@ -63,20 +63,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
         }
 
         private static Assignment CreateRandomAssignment() =>
-            CreateAssignmentFiller(dates: DateTimeOffset.UtcNow).Create();
+            CreateAssignmentFiller(dates: GetRandomDateTime()).Create();
 
         private static IQueryable<Assignment> CreateRandomAssignments(DateTimeOffset dates) =>
             CreateAssignmentFiller(dates).Create(GetRandomNumber()).AsQueryable();
 
-        public static IEnumerable<object[]> InvalidMinuteCases()
+        public static TheoryData InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
             int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
 
-            return new List<object[]>
+            return new TheoryData<int>
             {
-                new object[] { randomMoreThanMinuteFromNow },
-                new object[] { randomMoreThanMinuteBeforeNow }
+                randomMoreThanMinuteFromNow,
+                randomMoreThanMinuteBeforeNow
             };
         }
 

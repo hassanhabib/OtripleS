@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -24,7 +24,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             Guid inputExamFeeId = randomExamFeeId;
             SqlException sqlException = GetSqlException();
 
-            var expectedExamFeeDependencyException = new ExamFeeDependencyException(sqlException);
+            var expectedExamFeeDependencyException =
+                new ExamFeeDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
                  broker.SelectExamFeeByIdAsync(inputExamFeeId))
@@ -60,7 +61,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             Guid inputExamFeeId = randomExamFeeId;
             var databaseUpdateException = new DbUpdateException();
 
-            var expectedExamFeeDependencyException = new ExamFeeDependencyException(databaseUpdateException);
+            var expectedExamFeeDependencyException =
+                new ExamFeeDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectExamFeeByIdAsync(inputExamFeeId))
@@ -95,9 +97,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             Guid inputExamFeeId = randomExamFeeId;
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
-            var lockedExamFeeException = new LockedExamFeeException(databaseUpdateConcurrencyException);
+            var lockedExamFeeException =
+                new LockedExamFeeException(databaseUpdateConcurrencyException);
 
-            var expectedExamFeeException = new ExamFeeDependencyException(lockedExamFeeException);
+            var expectedExamFeeException =
+                new ExamFeeDependencyException(lockedExamFeeException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectExamFeeByIdAsync(inputExamFeeId))
@@ -132,8 +136,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             Guid inputExamFeeId = randomExamFeeId;
             var serviceException = new Exception();
 
-            var expectedExamFeeServiceException = new ExamFeeServiceException(serviceException);
-              this.storageBrokerMock.Setup(broker =>
+            var expectedExamFeeServiceException =
+                new ExamFeeServiceException(serviceException);
+
+            this.storageBrokerMock.Setup(broker =>
                  broker.SelectExamFeeByIdAsync(inputExamFeeId))
                     .ThrowsAsync(serviceException);
 

@@ -1,4 +1,9 @@
-﻿using System;
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
+// ---------------------------------------------------------------
+
+using System;
 using Moq;
 using OtripleS.Web.Api.Models.StudentRegistrations.Exceptions;
 using Xunit;
@@ -20,9 +25,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 broker.SelectAllStudentRegistrations())
                     .Throws(sqlException);
 
-            // when . // then
-            Assert.Throws<StudentRegistrationDependencyException>(() =>
-                this.studentRegistrationService.RetrieveAllStudentRegistrations());
+            // when
+            Action retrieveAllStudentRegistrationsAction = () =>
+                this.studentRegistrationService.RetrieveAllStudentRegistrations();
+
+            // then
+            Assert.Throws<StudentRegistrationDependencyException>(
+                retrieveAllStudentRegistrationsAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
@@ -50,9 +59,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                 broker.SelectAllStudentRegistrations())
                     .Throws(serviceException);
 
-            // when . then
-            Assert.Throws<StudentRegistrationServiceException>(() =>
-                this.studentRegistrationService.RetrieveAllStudentRegistrations());
+            // when
+            Action retrieveAllStudentRegistrationsAction = () =>
+                this.studentRegistrationService.RetrieveAllStudentRegistrations();
+
+            // then
+            Assert.Throws<StudentRegistrationServiceException>(
+                retrieveAllStudentRegistrationsAction);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentRegistrations(),
