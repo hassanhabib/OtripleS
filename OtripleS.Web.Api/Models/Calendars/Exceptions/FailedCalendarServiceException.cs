@@ -12,6 +12,6 @@ namespace OtripleS.Web.Api.Models.Calendars.Exceptions
     {
         public FailedCalendarServiceException(Exception innerException)
             : base(message: "Failed calendar service error occured, contact support", innerException)
-             { }
+        { }
     }
 }
