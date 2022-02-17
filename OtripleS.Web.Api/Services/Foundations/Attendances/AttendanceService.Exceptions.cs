@@ -79,7 +79,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedAttendanceServiceException =
+                    new FailedAttendanceServiceException(exception);
+
+                throw CreateAndLogServiceException(failedAttendanceServiceException);
             }
         }
 
