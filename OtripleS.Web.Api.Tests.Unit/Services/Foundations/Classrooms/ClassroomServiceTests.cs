@@ -78,6 +78,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             };
         }
 
+        public static T GetInvalidEnum<T>()
+        {
+            int randomNumber = GetLocalRandomNumber();
+
+            while(Enum.IsDefined(typeof(T), randomNumber) is true)
+            {
+                randomNumber = GetLocalRandomNumber();
+            }
+
+            return (T)(object)randomNumber;
+
+            static int GetLocalRandomNumber() =>
+                new IntRange(min: int.MinValue, max: int.MaxValue).GetValue();
+        }
+
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
