@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Models.StudentExamFees.Exceptions
     public class FailedStudentExamFeeServiceException : Xeption
     {
         public FailedStudentExamFeeServiceException(Exception innerException)
-            : base(message: "Failed student exam fee service error occured." ,innerException)
+           : base(message: "Failed student exam fee service error occurred, contact support.", innerException)
         {
         }
     }
