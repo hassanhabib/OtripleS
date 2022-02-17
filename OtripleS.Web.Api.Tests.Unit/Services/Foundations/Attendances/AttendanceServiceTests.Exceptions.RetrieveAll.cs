@@ -57,8 +57,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             // given
             var serviceException = new Exception();
 
+            var failedAttendanceServiceException =
+                new FailedAttendanceServiceException(serviceException);
+
             var expectedAttendanceServiceException =
-                new AttendanceServiceException(serviceException);
+                new AttendanceServiceException(failedAttendanceServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAttendances())
