@@ -148,8 +148,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
             Guid inputStudentId = randomStudentId;
             var serviceException = new Exception();
 
-            var expectedStudentAttachmentException =
-                new StudentAttachmentServiceException(serviceException);
+            var failedStudentAttachmentServiceException =
+                new FailedStudentAttachmentServiceException(serviceException);
+
+            var expectedStudentAttachmentServiceException =
+                new StudentAttachmentServiceException(failedStudentAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId))
@@ -166,7 +169,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedStudentAttachmentException))),
+                    expectedStudentAttachmentServiceException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
