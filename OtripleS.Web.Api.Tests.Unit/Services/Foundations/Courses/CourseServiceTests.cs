@@ -89,10 +89,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
         private static T GetInvalidEnum<T>()
         {
             int randomNumber = GetRandomNumber();
+
             while(Enum.IsDefined(typeof(T), randomNumber) is true)
             {
                 randomNumber = GetLocalRandomNumber();
             }
+
             return (T)(object)randomNumber;
 
             static int GetLocalRandomNumber() =>
