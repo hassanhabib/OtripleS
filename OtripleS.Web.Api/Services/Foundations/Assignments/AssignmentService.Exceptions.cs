@@ -81,7 +81,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedAssignmentServiceException =
+                    new FailedAssignmentServiceException(exception);
+
+                throw CreateAndLogServiceException(failedAssignmentServiceException);
             }
         }
 
