@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Models.Contacts.Exceptions
     public class FailedContactServiceException : Xeption
     {
         public FailedContactServiceException(Exception innerException)
-            :base(message: "Failed contact service error occured, contact support",
+            : base(message: "Failed contact service error occured, contact support",
                  innerException)
         { }
     }

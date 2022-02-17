@@ -62,7 +62,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                 key: nameof(Classroom.Status),
                 values: "Value is not recognized");
 
-            var exceptedClassroomValidationException = 
+            var exceptedClassroomValidationException =
                 new ClassroomValidationException(invalidClassroomException);
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -70,11 +70,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                     Returns(randomDateTime);
 
             //when
-            ValueTask<Classroom> createClassroomTask = 
+            ValueTask<Classroom> createClassroomTask =
                 this.classroomService.CreateClassroomAsync(invalidClassroom);
 
             //then
-            await Assert.ThrowsAsync<ClassroomValidationException>(()=>
+            await Assert.ThrowsAsync<ClassroomValidationException>(() =>
                 createClassroomTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -92,7 +92,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();  
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Theory]

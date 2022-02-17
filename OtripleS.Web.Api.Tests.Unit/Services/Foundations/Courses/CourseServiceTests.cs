@@ -91,7 +91,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
         {
             int randomNumber = GetRandomNumber();
 
-            while(Enum.IsDefined(typeof(T), randomNumber) is true)
+            while (Enum.IsDefined(typeof(T), randomNumber) is true)
             {
                 randomNumber = GetLocalRandomNumber();
             }

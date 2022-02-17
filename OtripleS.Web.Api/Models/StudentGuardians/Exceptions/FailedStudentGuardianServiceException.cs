@@ -10,8 +10,8 @@ namespace OtripleS.Web.Api.Models.StudentGuardians.Exceptions
 {
     public class FailedStudentGuardianServiceException : Xeption
     {
-       public FailedStudentGuardianServiceException(Exception innerException)
-            : base(message: "Failed student guardian service error occurred, contact support.", innerException)
+        public FailedStudentGuardianServiceException(Exception innerException)
+             : base(message: "Failed student guardian service error occurred, contact support.", innerException)
         {
         }
     }
