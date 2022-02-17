@@ -51,11 +51,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
         [Fact]
         public async void ShouldThrowValidationExceptionOnCreateIfCourseStatusIsInvalidAndLogItAsync()
         {
+            // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
             Course randomCourse = CreateRandomCourse(randomDateTime);
             Course invalidCourse = randomCourse;
             invalidCourse.Status = GetInvalidEnum<CourseStatus>();
-
             var invalidCourseException = new InvalidCourseException();
 
             invalidCourseException.AddData(
@@ -68,11 +68,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                 broker.GetCurrentDateTime()).
                     Returns(randomDateTime);
 
-            //when
+            // when
             ValueTask<Course> createCourseTask = 
                 this.courseService.CreateCourseAsync(invalidCourse);
 
-            //then
+            // then
             await Assert.ThrowsAsync<CourseValidationException>(() =>
                 createCourseTask.AsTask());
 
