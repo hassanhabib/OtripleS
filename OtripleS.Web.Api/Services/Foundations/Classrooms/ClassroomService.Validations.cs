@@ -80,8 +80,8 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         };
         private static dynamic IsInvalidX(ClassroomStatus status) => new
         {
-            Condition = status != ClassroomStatus.Available,
-            Message = "Value is invalid"
+            Condition = Enum.IsDefined(status) is false,
+            Message = "Value is not recognized"
         };
 
         private static dynamic IsInvalidX(DateTimeOffset date) => new

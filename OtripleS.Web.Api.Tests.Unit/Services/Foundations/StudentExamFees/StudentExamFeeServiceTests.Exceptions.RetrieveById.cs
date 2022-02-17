@@ -111,8 +111,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             Guid someExamFeeId = Guid.NewGuid();
             var serviceException = new Exception();
 
+            var failedStudentExamFeeServiceException =
+                new FailedStudentExamFeeServiceException(serviceException);
+
             var expectedStudentExamFeeServiceException =
-                new StudentExamFeeServiceException(serviceException);
+                new StudentExamFeeServiceException(failedStudentExamFeeServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentExamFeeByIdsAsync(

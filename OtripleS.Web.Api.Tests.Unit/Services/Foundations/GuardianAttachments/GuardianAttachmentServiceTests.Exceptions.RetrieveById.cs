@@ -20,23 +20,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
-            Guid randomGuardianId = Guid.NewGuid();
-            Guid inputGuardianId = randomGuardianId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someGuardianId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
             var expectedGuardianAttachmentDependencyException
                 = new GuardianAttachmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId))
+                 broker.SelectGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<GuardianAttachment> retrieveGuardianAttachmentTask =
-                this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync
-                (inputGuardianId, inputAttachmentId);
+                this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(() =>
@@ -48,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId),
+                broker.SelectGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -60,23 +57,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomGuardianId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
-            Guid inputGuardianId = randomGuardianId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someGuardianId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedGuardianAttachmentDependencyException =
                 new GuardianAttachmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId))
+                broker.SelectGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<GuardianAttachment> retrieveGuardianAttachmentTask =
-                this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync
-                (inputGuardianId, inputAttachmentId);
+                this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(
@@ -88,7 +82,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId),
+                broker.SelectGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -100,10 +94,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomGuardianId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
-            Guid inputGuardianId = randomGuardianId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someGuardianId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
             var lockedGuardianAttachmentException =
@@ -113,12 +105,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
                 new GuardianAttachmentDependencyException(lockedGuardianAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId))
+                broker.SelectGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
             ValueTask<GuardianAttachment> retrieveGuardianAttachmentTask =
-                this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId);
+                this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<GuardianAttachmentDependencyException>(() =>
@@ -130,7 +122,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId),
+                broker.SelectGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -142,23 +134,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomGuardianId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
-            Guid inputGuardianId = randomGuardianId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someGuardianId = Guid.NewGuid();
             var serviceException = new Exception();
 
             var expectedGuardianAttachmentException =
                 new GuardianAttachmentServiceException(serviceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId))
+                broker.SelectGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId))
                     .ThrowsAsync(serviceException);
 
             // when
             ValueTask<GuardianAttachment> retrieveGuardianAttachmentTask =
-                this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync
-                (inputGuardianId, inputAttachmentId);
+                this.guardianAttachmentService.RetrieveGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<GuardianAttachmentServiceException>(() =>
@@ -170,7 +159,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianAttachmentByIdAsync(inputGuardianId, inputAttachmentId),
+                broker.SelectGuardianAttachmentByIdAsync(someGuardianId, someAttachmentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

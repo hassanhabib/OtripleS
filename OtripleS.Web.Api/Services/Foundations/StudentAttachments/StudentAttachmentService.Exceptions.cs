@@ -69,7 +69,10 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentAttachments
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedStudentAttachmentServiceException =
+                    new FailedStudentAttachmentServiceException(exception);
+
+                throw CreateAndLogServiceException(failedStudentAttachmentServiceException);
             }
         }
 
