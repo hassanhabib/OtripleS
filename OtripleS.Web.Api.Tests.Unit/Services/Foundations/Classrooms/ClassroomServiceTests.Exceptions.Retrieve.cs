@@ -137,8 +137,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Guid inputClassroomId = randomClassroomId;
             var serviceException = new Exception();
 
+            var failedClassroomServiceException =
+                new FailedClassroomServiceException(serviceException);
+
             var expectedClassroomServiceException =
-                new ClassroomServiceException(serviceException);
+                new ClassroomServiceException(failedClassroomServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                     broker.SelectClassroomByIdAsync(inputClassroomId))
