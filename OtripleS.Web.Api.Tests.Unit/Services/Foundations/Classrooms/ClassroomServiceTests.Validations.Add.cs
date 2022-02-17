@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         [Fact]
         public async void ShouldThrowValidationExceptionOnCreateIfClassroomStatusIsInvalidAndLogItAsync()
         {
-            //given
+            // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
             Classroom randomClassroom = CreateRandomClassroom(randomDateTime);
             Classroom invalidClassroom = randomClassroom;
