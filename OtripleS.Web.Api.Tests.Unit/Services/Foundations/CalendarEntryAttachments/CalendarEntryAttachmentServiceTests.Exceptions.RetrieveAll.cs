@@ -54,7 +54,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
             var serviceException = new Exception();
 
             var failedCalendarEntryAttachmentService =
-                new FailedCalendarEntryAttachmentService(serviceException);
+                new FailedCalendarEntryAttachmentServiceException(serviceException);
 
             var expectedCalendarEntryAttachmentServiceException =
                 new CalendarEntryAttachmentServiceException(failedCalendarEntryAttachmentService);

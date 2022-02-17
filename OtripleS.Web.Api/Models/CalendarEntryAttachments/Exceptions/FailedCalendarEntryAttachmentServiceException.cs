@@ -8,9 +8,9 @@ using Xeptions;
 
 namespace OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions
 {
-    public class FailedCalendarEntryAttachmentService : Xeption
+    public class FailedCalendarEntryAttachmentServiceException : Xeption
     {
-        public FailedCalendarEntryAttachmentService(Exception innerException)
+        public FailedCalendarEntryAttachmentServiceException(Exception innerException)
             : base(message: "Failed calendar entry attachment service error occured,contact support", innerException)
         { }
     }
