@@ -55,16 +55,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             Classroom randomClassroom = CreateRandomClassroom(randomDateTime);
             Classroom invalidClassroom = randomClassroom;
             invalidClassroom.Status = GetInvalidEnum<ClassroomStatus>();
-
             var invalidClassroomException = new InvalidClassroomException();
 
             invalidClassroomException.AddData(
                 key: nameof(Classroom.Status),
-                values: "Value is not recognized"
-                );
+                values: "Value is not recognized");
 
-            var exceptedClassroomValidationException = new 
-                ClassroomValidationException(invalidClassroomException);
+            var exceptedClassroomValidationException = 
+                new ClassroomValidationException(invalidClassroomException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime()).
