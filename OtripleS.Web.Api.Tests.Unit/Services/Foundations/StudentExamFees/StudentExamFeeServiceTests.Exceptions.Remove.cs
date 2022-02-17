@@ -165,7 +165,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             var failedStudentExamFeeServiceException =
                 new FailedStudentExamFeeServiceException(serviceException);
 
-            var expectedStudentExamFeeException = 
+            var expectedStudentExamFeeServiceException = 
                 new StudentExamFeeServiceException(failedStudentExamFeeServiceException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -189,7 +189,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedStudentExamFeeException))),
+                    expectedStudentExamFeeServiceException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
