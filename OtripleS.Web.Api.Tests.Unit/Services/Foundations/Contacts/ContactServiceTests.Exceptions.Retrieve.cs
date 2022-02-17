@@ -102,8 +102,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             // given
             var serviceException = new Exception();
 
+            var failedContactServiceException =
+                new FailedContactServiceException(serviceException);
+
             var expectedContactServiceException =
-                new ContactServiceException(serviceException);
+                new ContactServiceException(failedContactServiceException);
 
             var guid = Guid.NewGuid();
 
