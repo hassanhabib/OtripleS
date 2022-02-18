@@ -119,8 +119,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             inputRegistration.UpdatedBy = inputRegistration.CreatedBy;
             var serviceException = new Exception();
 
+            var failedRegistrationServiceException =
+                new FailedRegistrationServiceException(serviceException);
+
             var expectedRegistrationServiceException =
-                new RegistrationServiceException(serviceException);
+                new RegistrationServiceException(failedRegistrationServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
