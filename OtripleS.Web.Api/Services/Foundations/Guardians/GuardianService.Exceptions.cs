@@ -60,7 +60,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Guardians
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedGuardianServiceException =
+                    new FailedGuardianServiceException(exception);
+
+                throw CreateAndLogServiceException(failedGuardianServiceException);
             }
         }
 
