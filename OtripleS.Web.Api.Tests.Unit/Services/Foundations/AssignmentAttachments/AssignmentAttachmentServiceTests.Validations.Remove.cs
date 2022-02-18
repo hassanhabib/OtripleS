@@ -19,9 +19,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
         {
             // given
             Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomAssignmentId = Guid.Empty;
+            Guid invalidAssignmentId = Guid.Empty;
             Guid inputAttachmentId = randomAttachmentId;
-            Guid inputAssignmentId = randomAssignmentId;
+            Guid inputAssignmentId = invalidAssignmentId;
 
             var invalidAssignmentAttachmentInputException = new InvalidAssignmentAttachmentException(
                 parameterName: nameof(AssignmentAttachment.AssignmentId),
@@ -64,9 +64,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
         public async Task ShouldThrowValidatonExceptionOnRemoveWhenAttachmentIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.Empty;
+            Guid invalidAttachmentId = Guid.Empty;
             Guid randomAssignmentId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
+            Guid inputAttachmentId = invalidAttachmentId;
             Guid inputAssignmentId = randomAssignmentId;
 
             var invalidAssignmentAttachmentInputException = new InvalidAssignmentAttachmentException(
