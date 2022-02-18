@@ -19,9 +19,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
         {
             // given
             Guid randomGuardianId = Guid.NewGuid();
-            Guid randomStudentId = default;
+            Guid invalidStudentId = Guid.Empty;
             Guid inputGuardianId = randomGuardianId;
-            Guid inputStudentId = randomStudentId;
+            Guid inputStudentId = invalidStudentId;
 
             var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
                 parameterName: nameof(StudentGuardian.StudentId),
@@ -55,9 +55,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
         public async Task ShouldThrowValidatonExceptionOnRetrieveWhenGuardianIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomGuardianId = default;
+            Guid invalidGuardianId = Guid.Empty;
             Guid randomStudentId = Guid.NewGuid();
-            Guid inputGuardianId = randomGuardianId;
+            Guid inputGuardianId = invalidGuardianId;
             Guid inputStudentId = randomStudentId;
 
             var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
