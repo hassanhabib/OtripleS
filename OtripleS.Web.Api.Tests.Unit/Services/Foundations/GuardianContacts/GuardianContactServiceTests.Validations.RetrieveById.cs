@@ -19,9 +19,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         {
             // given
             Guid randomContactId = Guid.NewGuid();
-            Guid randomGuardianId = Guid.Empty;
+            Guid invalidGuardianId = Guid.Empty;
             Guid inputContactId = randomContactId;
-            Guid inputGuardianId = randomGuardianId;
+            Guid inputGuardianId = invalidGuardianId;
 
             var invalidGuardianContactException = new InvalidGuardianContactException(
                 parameterName: nameof(GuardianContact.GuardianId),
@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
             // given
             Guid invalidContactId = Guid.Empty;
             Guid randomGuardianId = Guid.NewGuid();
-            Guid inputContactId = randomContactId;
+            Guid inputContactId = invalidContactId;
             Guid inputGuardianId = randomGuardianId;
 
             var invalidGuardianContactException = new InvalidGuardianContactException(
