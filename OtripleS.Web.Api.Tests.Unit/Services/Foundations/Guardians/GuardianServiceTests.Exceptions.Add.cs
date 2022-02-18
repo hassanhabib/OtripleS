@@ -119,8 +119,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
             inputGuardian.UpdatedBy = inputGuardian.CreatedBy;
             var serviceException = new Exception();
 
+            var failedGuardianServiceException =
+                new FailedGuardianServiceException(serviceException);
+
             var expectedGuardianServiceException =
-                new GuardianServiceException(serviceException);
+                new GuardianServiceException(failedGuardianServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
