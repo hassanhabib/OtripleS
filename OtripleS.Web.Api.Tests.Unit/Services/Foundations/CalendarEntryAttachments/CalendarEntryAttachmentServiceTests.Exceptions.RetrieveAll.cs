@@ -53,8 +53,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
             // given
             var serviceException = new Exception();
 
+            var failedCalendarEntryAttachmentService =
+                new FailedCalendarEntryAttachmentServiceException(serviceException);
+
             var expectedCalendarEntryAttachmentServiceException =
-                new CalendarEntryAttachmentServiceException(serviceException);
+                new CalendarEntryAttachmentServiceException(failedCalendarEntryAttachmentService);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllCalendarEntryAttachments())
