@@ -80,10 +80,10 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
             }
             catch (Exception exception)
             {
-               /* var failedCalendarEntryServiceException =
-                new FailedCalendarEntryServiceException(exception);*/
+                var failedCalendarEntryServiceException =
+                new FailedCalendarEntryServiceException(exception);
 
-                throw CreateAndLogServiceException(exception);
+                throw CreateAndLogServiceException(failedCalendarEntryServiceException);
             }
         }
 
