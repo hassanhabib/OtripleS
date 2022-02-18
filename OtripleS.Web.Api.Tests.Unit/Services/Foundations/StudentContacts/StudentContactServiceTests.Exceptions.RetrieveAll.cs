@@ -51,8 +51,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             // given
             var serviceException = new Exception();
 
+            var failedStudentContactServiceException =
+                new FailedStudentContactServiceException(serviceException);
+
             var expectedStudentContactServiceException =
-                new StudentContactServiceException(serviceException);
+                new StudentContactServiceException(failedStudentContactServiceException);
 
             this.storageBrokerMock.Setup(broker => broker.SelectAllStudentContacts())
                 .Throws(serviceException);
