@@ -19,9 +19,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         {
             // given
             Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomGuardianId = Guid.Empty;
+            Guid invalidGuardianId = Guid.Empty;
             Guid inputAttachmentId = randomAttachmentId;
-            Guid inputGuardianId = randomGuardianId;
+            Guid inputGuardianId = invalidGuardianId;
 
             var invalidGuardianAttachmentInputException = new InvalidGuardianAttachmentException(
                 parameterName: nameof(GuardianAttachment.GuardianId),
@@ -58,9 +58,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         public async Task ShouldThrowValidatonExceptionOnRemoveWhenAttachmentIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.Empty;
+            Guid invalidAttachmentId = Guid.Empty;
             Guid randomGuardianId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
+            Guid inputAttachmentId = invalidAttachmentId;
             Guid inputGuardianId = randomGuardianId;
 
             var invalidGuardianAttachmentInputException = new InvalidGuardianAttachmentException(
