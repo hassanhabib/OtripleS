@@ -82,7 +82,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         {
             int randomNumber = GetLocalRandomNumber();
 
-            while(Enum.IsDefined(typeof(T), randomNumber) is true)
+            while (Enum.IsDefined(typeof(T), randomNumber) is true)
             {
                 randomNumber = GetLocalRandomNumber();
             }

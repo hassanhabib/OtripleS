@@ -64,13 +64,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
                 values: "Value is not recognized");
 
             var expectedCourseValidationException = new CourseValidationException(invalidCourseException);
-            
+
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime()).
                     Returns(randomDateTime);
 
             // when
-            ValueTask<Course> createCourseTask = 
+            ValueTask<Course> createCourseTask =
                 this.courseService.CreateCourseAsync(invalidCourse);
 
             // then

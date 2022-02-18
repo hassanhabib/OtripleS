@@ -57,8 +57,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             // given
             var serviceException = new Exception();
 
+            var failedAssignmentServiceException =
+                new FailedAssignmentServiceException(serviceException);
+
             var expectedAssignmentServiceException =
-                new AssignmentServiceException(serviceException);
+                new AssignmentServiceException(failedAssignmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAssignments())

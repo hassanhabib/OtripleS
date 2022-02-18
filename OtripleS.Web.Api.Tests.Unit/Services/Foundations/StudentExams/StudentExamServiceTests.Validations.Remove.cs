@@ -107,7 +107,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             var failedStudentExamServiceException =
                 new FailedStudentExamServiceException(exception);
 
-            var expectedStudentExamServiceException = 
+            var expectedStudentExamServiceException =
                 new StudentExamServiceException(failedStudentExamServiceException);
 
             this.storageBrokerMock.Setup(broker =>

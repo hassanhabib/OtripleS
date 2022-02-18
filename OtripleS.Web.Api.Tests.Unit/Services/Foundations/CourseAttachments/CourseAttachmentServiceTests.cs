@@ -49,7 +49,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static CourseAttachment CreateRandomCourseAttachment() =>
-            CreateCourseAttachmentFiller(DateTimeOffset.UtcNow).Create();
+            CreateCourseAttachmentFiller(dates: GetRandomDateTime()).Create();
 
         private static CourseAttachment CreateRandomCourseAttachment(DateTimeOffset dates) =>
             CreateCourseAttachmentFiller(dates).Create();
