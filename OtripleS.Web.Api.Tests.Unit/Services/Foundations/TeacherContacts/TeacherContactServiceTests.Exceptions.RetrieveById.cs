@@ -20,24 +20,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var inputContactId = randomContactId;
-            Guid randomTeacherId = Guid.NewGuid();
-            Guid inputTeacherId = randomTeacherId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someTeacherId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
             var expectedTeacherContactDependencyException =
                 new TeacherContactDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId))
+                 broker.SelectTeacherContactByIdAsync(someTeacherId, someContactId))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<TeacherContact> retrieveTeacherContactTask =
                 this.teacherContactService.RetrieveTeacherContactByIdAsync(
-                    inputTeacherId,
-                    inputContactId);
+                    someTeacherId,
+                    someContactId);
 
             // then
             await Assert.ThrowsAsync<TeacherContactDependencyException>(() =>
@@ -49,7 +47,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId),
+                broker.SelectTeacherContactByIdAsync(someTeacherId, someContactId),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -60,23 +58,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomTeacherId = Guid.NewGuid();
-            Guid inputContactId = randomContactId;
-            Guid inputTeacherId = randomTeacherId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someTeacherId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedTeacherContactDependencyException =
                 new TeacherContactDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId))
+                broker.SelectTeacherContactByIdAsync(someTeacherId, someContactId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<TeacherContact> retrieveTeacherContactTask =
                 this.teacherContactService.RetrieveTeacherContactByIdAsync
-                (inputTeacherId, inputContactId);
+                (someTeacherId, someContactId);
 
             // then
             await Assert.ThrowsAsync<TeacherContactDependencyException>(
@@ -88,7 +84,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId),
+                broker.SelectTeacherContactByIdAsync(someTeacherId, someContactId),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -99,10 +95,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            var randomContactId = Guid.NewGuid();
-            var randomTeacherId = Guid.NewGuid();
-            Guid inputContactId = randomContactId;
-            Guid inputTeacherId = randomTeacherId;
+            Guid someContactId = Guid.NewGuid();
+            Guid someTeacherId = Guid.NewGuid();
             var serviceException = new Exception();
 
             var failedTeacherContactException =
@@ -113,14 +107,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                     failedTeacherContactException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId))
+                broker.SelectTeacherContactByIdAsync(someTeacherId, someContactId))
                     .ThrowsAsync(serviceException);
 
             // when
             ValueTask<TeacherContact> retrieveTeacherContactTask =
                 this.teacherContactService.RetrieveTeacherContactByIdAsync(
-                    inputTeacherId,
-                    inputContactId);
+                    someTeacherId,
+                    someContactId);
 
             // then
             await Assert.ThrowsAsync<TeacherContactServiceException>(() =>
@@ -132,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId),
+                broker.SelectTeacherContactByIdAsync(someTeacherId, someContactId),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
