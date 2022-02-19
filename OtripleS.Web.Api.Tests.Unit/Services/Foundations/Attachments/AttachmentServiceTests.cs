@@ -1,10 +1,9 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
@@ -43,11 +42,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static IQueryable<Attachment> CreateRandomAttachments() =>
-            CreateAttachmentFiller(dates: DateTimeOffset.UtcNow)
+            CreateAttachmentFiller(dates: GetRandomDateTime())
             .Create(GetRandomNumber()).AsQueryable();
 
         private static Attachment CreateRandomAttachment() =>
-            CreateAttachmentFiller(dates: DateTimeOffset.UtcNow).Create();
+            CreateAttachmentFiller(dates: GetRandomDateTime()).Create();
 
         private static Attachment CreateRandomAttachment(DateTimeOffset dates) =>
             CreateAttachmentFiller(dates).Create();

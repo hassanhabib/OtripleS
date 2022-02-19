@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -107,8 +107,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             inputStudentGuardian.UpdatedBy = inputStudentGuardian.CreatedBy;
             var serviceException = new Exception();
 
-            var expectedStudentGuardianServiceException =
-                new StudentExamServiceException(serviceException);
+            var failedStudentExamServiceException =
+                new FailedStudentExamServiceException(serviceException);
+
+            var expectedStudentExamServiceException =
+                new StudentExamServiceException(failedStudentExamServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -128,7 +131,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedStudentGuardianServiceException))),
+                    expectedStudentExamServiceException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>

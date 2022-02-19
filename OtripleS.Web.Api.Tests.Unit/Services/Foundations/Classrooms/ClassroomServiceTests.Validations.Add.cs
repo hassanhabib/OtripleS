@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
         {
             // given
             Classroom invalidClassroom = null;
-            
+
             var nullClassroomException = new NullClassroomException();
 
             var expectedClassroomValidationException =
@@ -48,6 +48,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateIfClassroomStatusIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Classroom randomClassroom = CreateRandomClassroom(randomDateTime);
+            Classroom invalidClassroom = randomClassroom;
+            invalidClassroom.Status = GetInvalidEnum<ClassroomStatus>();
+            var invalidClassroomException = new InvalidClassroomException();
+
+            invalidClassroomException.AddData(
+                key: nameof(Classroom.Status),
+                values: "Value is not recognized");
+
+            var exceptedClassroomValidationException =
+                new ClassroomValidationException(invalidClassroomException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime()).
+                    Returns(randomDateTime);
+
+            //when
+            ValueTask<Classroom> createClassroomTask =
+                this.classroomService.CreateClassroomAsync(invalidClassroom);
+
+            //then
+            await Assert.ThrowsAsync<ClassroomValidationException>(() =>
+                createClassroomTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameValidationExceptionAs(
+                    exceptedClassroomValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertClassroomAsync(It.IsAny<Classroom>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
@@ -59,8 +106,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             var invalidClassroom = new Classroom
             {
                 Name = invalidText,
-                Location = invalidText,
-                Status = ClassroomStatus.Closed
+                Location = invalidText
             };
 
             var invalidClassroomException = new InvalidClassroomException();
@@ -76,10 +122,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             invalidClassroomException.AddData(
                 key: nameof(Classroom.Location),
                 values: "Text is required");
-
-            invalidClassroomException.AddData(
-                key: nameof(Classroom.Status),
-                values: "Value is invalid");
 
             invalidClassroomException.AddData(
                 key: nameof(Classroom.CreatedDate),

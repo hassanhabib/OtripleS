@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using Microsoft.Data.SqlClient;
@@ -27,17 +27,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
                     .Throws(sqlException);
 
             // when
-            Action retrieveAllstudentExamsAction = () =>
+            Action retrieveAllStudentExamsAction = () =>
                 this.studentExamService.RetrieveAllStudentExams();
 
             // then
             Assert.Throws<StudentExamDependencyException>(
-                retrieveAllstudentExamsAction);
+                retrieveAllStudentExamsAction);
 
-                this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(
-                    expectedStudentExamDependencyException))),
-                        Times.Once);
+            this.loggingBrokerMock.Verify(broker =>
+            broker.LogCritical(It.Is(SameExceptionAs(
+                expectedStudentExamDependencyException))),
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudentExams(),
@@ -58,20 +58,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             // given
             var serviceException = new Exception();
 
+            var failedStudentExamServiceException =
+                new FailedStudentExamServiceException(serviceException);
+
             var expectedStudentExamServiceException =
-                new StudentExamServiceException(serviceException);
+                new StudentExamServiceException(failedStudentExamServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudentExams())
                     .Throws(serviceException);
 
             // when
-            Action retrieveAllstudentExamsAction = () =>
+            Action retrieveAllStudentExamsAction = () =>
                 this.studentExamService.RetrieveAllStudentExams();
 
             // then
             Assert.Throws<StudentExamServiceException>(
-                retrieveAllstudentExamsAction);
+                retrieveAllStudentExamsAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(

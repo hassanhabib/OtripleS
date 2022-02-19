@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -69,7 +69,10 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentContacts
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedStudentContactServiceException =
+                    new FailedStudentContactServiceException(exception);
+
+                throw CreateAndLogServiceException(failedStudentContactServiceException);
             }
         }
 
@@ -86,7 +89,10 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentContacts
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedStudentContactServiceException =
+                    new FailedStudentContactServiceException(exception);
+
+                throw CreateAndLogServiceException(failedStudentContactServiceException);
             }
         }
 

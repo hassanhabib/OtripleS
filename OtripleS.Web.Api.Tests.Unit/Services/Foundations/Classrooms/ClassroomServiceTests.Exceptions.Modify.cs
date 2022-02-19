@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -161,8 +161,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             someClassroom.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var serviceException = new Exception();
 
+            var failedClassroomServiceException =
+                new FailedClassroomServiceException(serviceException);
+
             var expectedClassroomServiceException =
-                new ClassroomServiceException(serviceException);
+                new ClassroomServiceException(failedClassroomServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectClassroomByIdAsync(someClassroom.Id))

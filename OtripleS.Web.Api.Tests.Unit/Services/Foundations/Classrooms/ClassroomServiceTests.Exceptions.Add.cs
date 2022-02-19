@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -22,7 +22,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             DateTimeOffset dateTime = GetRandomDateTime();
             Classroom someClassroom = CreateRandomClassroom(dateTime);
             var sqlException = GetSqlException();
-            var failedClassroomStorageException = new FailedClassroomStorageException(sqlException);
+
+            var failedClassroomStorageException =
+                new FailedClassroomStorageException(sqlException);
 
             var expectedClassroomDependencyException =
                 new ClassroomDependencyException(failedClassroomStorageException);
@@ -111,8 +113,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
             inputClassroom.UpdatedDate = inputClassroom.CreatedDate;
             var serviceException = new Exception();
 
+            var failedClassroomServiceException =
+                new FailedClassroomServiceException(serviceException);
+
             var expectedClassroomServiceException =
-                new ClassroomServiceException(serviceException);
+                new ClassroomServiceException(failedClassroomServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())

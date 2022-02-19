@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -128,8 +128,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             someStudentExamFee.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var serviceException = new Exception();
 
+            var failedStudentExamFeeServiceException =
+                new FailedStudentExamFeeServiceException(serviceException);
+
             var expectedStudentExamFeeServiceException =
-                new StudentExamFeeServiceException(serviceException);
+                new StudentExamFeeServiceException(failedStudentExamFeeServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentExamFeeByIdsAsync(
