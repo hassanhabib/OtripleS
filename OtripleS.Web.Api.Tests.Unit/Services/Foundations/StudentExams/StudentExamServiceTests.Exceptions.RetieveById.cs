@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -19,20 +19,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomStudentExamId = Guid.NewGuid();
-            Guid inputStudentExamId = randomStudentExamId;
+            Guid someStudentExamId = Guid.NewGuid();
             var sqlException = GetSqlException();
 
             var expectedStudentExamDependencyException =
                 new StudentExamDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentExamByIdAsync(inputStudentExamId))
+                broker.SelectStudentExamByIdAsync(someStudentExamId))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<StudentExam> retrieveStudentExamByIdTask =
-                this.studentExamService.RetrieveStudentExamByIdAsync(inputStudentExamId);
+                this.studentExamService.RetrieveStudentExamByIdAsync(someStudentExamId);
 
             // then
             await Assert.ThrowsAsync<StudentExamDependencyException>(() =>
@@ -44,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamByIdAsync(inputStudentExamId),
+                broker.SelectStudentExamByIdAsync(someStudentExamId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -60,20 +59,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomStudentExamId = Guid.NewGuid();
-            Guid inputStudentExamId = randomStudentExamId;
+            Guid someStudentExamId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedStudentExamDependencyException =
                 new StudentExamDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentExamByIdAsync(inputStudentExamId))
+                broker.SelectStudentExamByIdAsync(someStudentExamId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<StudentExam> retrieveStudentExamByIdTask =
-                this.studentExamService.RetrieveStudentExamByIdAsync(inputStudentExamId);
+                this.studentExamService.RetrieveStudentExamByIdAsync(someStudentExamId);
 
             // then
             await Assert.ThrowsAsync<StudentExamDependencyException>(() =>
@@ -85,7 +83,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamByIdAsync(inputStudentExamId),
+                broker.SelectStudentExamByIdAsync(someStudentExamId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -101,20 +99,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomStudentExamId = Guid.NewGuid();
-            Guid inputStudentExamId = randomStudentExamId;
+            Guid someStudentExamId = Guid.NewGuid();
             var serviceException = new Exception();
 
+            var failedStudentExamServiceException =
+                new FailedStudentExamServiceException(serviceException);
+
             var expectedStudentExamServiceException =
-                new StudentExamServiceException(serviceException);
+                new StudentExamServiceException(failedStudentExamServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentExamByIdAsync(inputStudentExamId))
+                broker.SelectStudentExamByIdAsync(someStudentExamId))
                     .ThrowsAsync(serviceException);
 
             // when
             ValueTask<StudentExam> retrieveStudentExamByIdTask =
-                this.studentExamService.RetrieveStudentExamByIdAsync(inputStudentExamId);
+                this.studentExamService.RetrieveStudentExamByIdAsync(someStudentExamId);
 
             // then
             await Assert.ThrowsAsync<StudentExamServiceException>(() =>
@@ -126,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentExamByIdAsync(inputStudentExamId),
+                broker.SelectStudentExamByIdAsync(someStudentExamId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>

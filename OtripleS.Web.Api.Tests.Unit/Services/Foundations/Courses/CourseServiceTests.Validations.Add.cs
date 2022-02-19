@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -49,6 +49,51 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async void ShouldThrowValidationExceptionOnCreateIfCourseStatusIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Course randomCourse = CreateRandomCourse(randomDateTime);
+            Course invalidCourse = randomCourse;
+            invalidCourse.Status = GetInvalidEnum<CourseStatus>();
+            var invalidCourseException = new InvalidCourseException();
+
+            invalidCourseException.AddData(
+                key: nameof(Course.Status),
+                values: "Value is not recognized");
+
+            var expectedCourseValidationException = new CourseValidationException(invalidCourseException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime()).
+                    Returns(randomDateTime);
+
+            // when
+            ValueTask<Course> createCourseTask =
+                this.courseService.CreateCourseAsync(invalidCourse);
+
+            // then
+            await Assert.ThrowsAsync<CourseValidationException>(() =>
+                createCourseTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedCourseValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCourseAsync(It.IsAny<Course>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
@@ -59,8 +104,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             // given
             var invalidCourse = new Course
             {
-                Name = invalidText,
-                Status = CourseStatus.Unavailable
+                Name = invalidText
             };
 
             var invalidCourseException = new InvalidCourseException();
@@ -76,10 +120,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             invalidCourseException.AddData(
                 key: nameof(Course.Description),
                 values: "Text is required");
-
-            invalidCourseException.AddData(
-                key: nameof(Course.Status),
-                values: "Value is invalid");
 
             invalidCourseException.AddData(
                 key: nameof(Course.CreatedBy),

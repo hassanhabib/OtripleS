@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -95,8 +95,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
             StudentContact inputStudentContact = randomStudentContact;
             var serviceException = new Exception();
 
+            var failedStudentContactServiceException =
+                new FailedStudentContactServiceException(serviceException);
+
             var expectedStudentContactServiceException =
-                new StudentContactServiceException(serviceException);
+                new StudentContactServiceException(failedStudentContactServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertStudentContactAsync(inputStudentContact))

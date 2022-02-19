@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -181,8 +181,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             Registration someRegistration = CreateRandomRegistration(dateTime: randomDateTime);
             var serviceException = new Exception();
 
+            var failedRegistrationServiceException =
+                new FailedRegistrationServiceException(serviceException);
+
             var expectedRegistrationServiceException =
-                new RegistrationServiceException(serviceException);
+                new RegistrationServiceException(failedRegistrationServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())

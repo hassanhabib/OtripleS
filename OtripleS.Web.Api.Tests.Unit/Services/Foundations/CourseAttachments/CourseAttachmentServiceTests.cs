@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -39,7 +39,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
         }
 
         private static IQueryable<CourseAttachment> CreateRandomCourseAttachments() =>
-            CreateCourseAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+            CreateCourseAttachmentFiller(dates: GetRandomDateTime()).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
 
@@ -49,7 +49,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static CourseAttachment CreateRandomCourseAttachment() =>
-            CreateCourseAttachmentFiller(DateTimeOffset.UtcNow).Create();
+            CreateCourseAttachmentFiller(dates: GetRandomDateTime()).Create();
 
         private static CourseAttachment CreateRandomCourseAttachment(DateTimeOffset dates) =>
             CreateCourseAttachmentFiller(dates).Create();

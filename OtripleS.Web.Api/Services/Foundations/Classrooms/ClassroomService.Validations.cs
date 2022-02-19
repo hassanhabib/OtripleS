@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using OtripleS.Web.Api.Models.Classrooms;
@@ -80,8 +80,8 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         };
         private static dynamic IsInvalidX(ClassroomStatus status) => new
         {
-            Condition = status != ClassroomStatus.Available,
-            Message = "Value is invalid"
+            Condition = Enum.IsDefined(status) is false,
+            Message = "Value is not recognized"
         };
 
         private static dynamic IsInvalidX(DateTimeOffset date) => new

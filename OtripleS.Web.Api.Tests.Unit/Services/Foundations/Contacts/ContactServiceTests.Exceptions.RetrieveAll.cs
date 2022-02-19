@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using Moq;
@@ -26,12 +26,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
                     .Throws(sqlException);
 
             // when
-            Action retrieveAllContactsAction = () =>
+            Action retrieveAllContactAction = () =>
                 this.contactService.RetrieveAllContacts();
 
             // then
             Assert.Throws<ContactDependencyException>(
-                retrieveAllContactsAction);
+                retrieveAllContactAction);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
@@ -57,8 +57,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             // given
             var serviceException = new Exception();
 
+            var failedContactServiceException =
+                new FailedContactServiceException(serviceException);
+
             var expectedContactServiceException =
-                new ContactServiceException(serviceException);
+                new ContactServiceException(failedContactServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllContacts())

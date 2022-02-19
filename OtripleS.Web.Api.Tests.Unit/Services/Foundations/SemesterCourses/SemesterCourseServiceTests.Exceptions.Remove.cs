@@ -1,7 +1,7 @@
-// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -132,7 +132,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
             Guid inputSemesterCourseId = randomSemesterCourseId;
             var serviceException = new Exception();
 
-            var expectedSemesterCourseServiceException = new SemesterCourseServiceException(serviceException);
+            var failedSemesterCourseServiceException =
+                new FailedSemesterCourseServiceException(serviceException);
+
+            var expectedSemesterCourseServiceException = 
+                new SemesterCourseServiceException(failedSemesterCourseServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                  broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))

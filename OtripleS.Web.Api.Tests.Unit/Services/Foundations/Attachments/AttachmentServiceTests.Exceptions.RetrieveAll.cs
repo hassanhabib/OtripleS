@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using Moq;
@@ -53,8 +53,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
             // given
             var serviceException = new Exception();
 
+            var failedAttachmentServiceException =
+                new FailedAttachmentServiceException(serviceException);
+
             var expectedAttachmentServiceException =
-                new AttachmentServiceException(serviceException);
+                new AttachmentServiceException(failedAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAttachments())

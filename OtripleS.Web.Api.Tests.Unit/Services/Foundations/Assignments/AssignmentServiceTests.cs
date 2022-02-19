@@ -1,10 +1,9 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
@@ -48,7 +47,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
 
-        private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
+        private static Expression<Func<Xeption, bool>> SameValidationExceptionAs(Xeption expectedException)
         {
             return actualException =>
                 actualException.Message == expectedException.Message

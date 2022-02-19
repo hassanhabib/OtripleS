@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -161,7 +161,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
             Guid someStudentId = Guid.NewGuid();
             Guid someExamFeeId = Guid.NewGuid();
             var serviceException = new Exception();
-            var expectedStudentExamFeeException = new StudentExamFeeServiceException(serviceException);
+
+            var failedStudentExamFeeServiceException =
+                new FailedStudentExamFeeServiceException(serviceException);
+
+            var expectedStudentExamFeeServiceException =
+                new StudentExamFeeServiceException(failedStudentExamFeeServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentExamFeeByIdsAsync(
@@ -184,7 +189,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedStudentExamFeeException))),
+                    expectedStudentExamFeeServiceException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>

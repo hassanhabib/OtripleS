@@ -1,7 +1,7 @@
-﻿//---------------------------------------------------------------
+﻿// ---------------------------------------------------------------
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-//----------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -100,7 +100,10 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedAssignmentAttachmentServiceException =
+                    new FailedAssignmentAttachmentServiceException(exception);
+
+                throw CreateAndLogServiceException(failedAssignmentAttachmentServiceException);
             }
 
         }

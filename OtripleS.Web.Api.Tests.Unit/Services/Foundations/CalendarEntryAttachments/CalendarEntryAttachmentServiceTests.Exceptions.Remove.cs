@@ -1,7 +1,7 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Coalition of the Good-Hearted Engineers
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 using System;
 using System.Threading.Tasks;
@@ -152,7 +152,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
             Guid someAttachmentId = Guid.NewGuid();
             Guid someCalendarEntryId = Guid.NewGuid();
             var serviceException = new Exception();
-            var expectedCalendarEntryAttachmentException = new CalendarEntryAttachmentServiceException(serviceException);
+
+            var failedCalendarEntryAttachmentService =
+                new FailedCalendarEntryAttachmentServiceException(serviceException);
+
+            var expectedCalendarEntryAttachmentException = 
+                new CalendarEntryAttachmentServiceException(failedCalendarEntryAttachmentService);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectCalendarEntryAttachmentByIdAsync(someCalendarEntryId, someAttachmentId))
