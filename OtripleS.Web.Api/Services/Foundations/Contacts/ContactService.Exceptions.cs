@@ -83,7 +83,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedContactServiceException =
+                    new FailedContactServiceException(exception);
+
+                throw CreateAndLogServiceException(failedContactServiceException);
             }
         }
 
