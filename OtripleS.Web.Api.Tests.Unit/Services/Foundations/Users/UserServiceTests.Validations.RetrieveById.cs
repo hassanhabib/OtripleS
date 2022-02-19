@@ -18,8 +18,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         public async Task ShouldThrowValidatonExceptionOnRetrieveWhenUserIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomUserId = default;
-            Guid inputUserId = randomUserId;
+            Guid invalidUserId = Guid.Empty;
+            Guid inputUserId = invalidUserId;
 
             var invalidUserException = new InvalidUserException(
                 parameterName: nameof(User.Id),
