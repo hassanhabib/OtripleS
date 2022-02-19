@@ -78,8 +78,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
 
             // when
             ValueTask<UserContact> retrieveUserContactTask =
-                this.userContactService.RetrieveUserContactByIdAsync
-                (someUserId, someContactId);
+                this.userContactService.RetrieveUserContactByIdAsync(someUserId, someContactId);
 
             // then
             await Assert.ThrowsAsync<UserContactDependencyException>(
@@ -118,9 +117,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
 
             // when
             ValueTask<UserContact> retrieveUserContactTask =
-                this.userContactService.RetrieveUserContactByIdAsync(
-                    someUserId,
-                    someContactId);
+                this.userContactService.RetrieveUserContactByIdAsync(someUserId, someContactId);
 
             // then
             await Assert.ThrowsAsync<UserContactServiceException>(() =>
