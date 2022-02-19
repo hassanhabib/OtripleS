@@ -20,8 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         public async Task ShouldThrowDependencyExceptionOnDeleteWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomUserId = Guid.NewGuid();
-            Guid inputUserId = randomUserId;
+            Guid someUserId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
             var failedUserStorageException =
@@ -31,12 +30,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 new UserDependencyException(failedUserStorageException);
 
             this.userManagementBrokerMock.Setup(broker =>
-                broker.SelectUserByIdAsync(inputUserId))
+                broker.SelectUserByIdAsync(someUserId))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<User> deleteUserTask =
-                this.userService.RemoveUserByIdAsync(inputUserId);
+                this.userService.RemoveUserByIdAsync(someUserId);
 
             // then
             await Assert.ThrowsAsync<UserDependencyException>(() =>
@@ -48,7 +47,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                         Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
-                broker.SelectUserByIdAsync(inputUserId),
+                broker.SelectUserByIdAsync(someUserId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -100,8 +99,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomUserId = Guid.NewGuid();
-            Guid inputUserId = randomUserId;
+            Guid someUserId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
             var lockedUserException =
@@ -111,12 +109,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 new UserDependencyException(lockedUserException);
 
             this.userManagementBrokerMock.Setup(broker =>
-                broker.SelectUserByIdAsync(inputUserId))
+                broker.SelectUserByIdAsync(someUserId))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
             ValueTask<User> deleteUserTask =
-                this.userService.RemoveUserByIdAsync(inputUserId);
+                this.userService.RemoveUserByIdAsync(someUserId);
 
             // then
             await Assert.ThrowsAsync<UserDependencyException>(() =>
@@ -128,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                         Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
-                broker.SelectUserByIdAsync(inputUserId),
+                broker.SelectUserByIdAsync(someUserId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -140,8 +138,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomUserId = Guid.NewGuid();
-            Guid inputUserId = randomUserId;
+            Guid someUserId = Guid.NewGuid();
             var serviceException = new Exception();
 
             var failedUserServiceException =
@@ -151,12 +148,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 new UserServiceException(failedUserServiceException);
 
             this.userManagementBrokerMock.Setup(broker =>
-                broker.SelectUserByIdAsync(inputUserId))
+                broker.SelectUserByIdAsync(someUserId))
                     .ThrowsAsync(serviceException);
 
             // when
             ValueTask<User> deleteUserTask =
-                this.userService.RemoveUserByIdAsync(inputUserId);
+                this.userService.RemoveUserByIdAsync(someUserId);
 
             // then
             await Assert.ThrowsAsync<UserServiceException>(() =>
@@ -168,7 +165,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                         Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
-                broker.SelectUserByIdAsync(inputUserId),
+                broker.SelectUserByIdAsync(someUserId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
