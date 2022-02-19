@@ -25,10 +25,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
         public AssignmentAttachmentServiceTests()
         {
-            this.storageBrokerMock =
-                new Mock<IStorageBroker>();
-            this.loggingBrokerMock =
-                new Mock<ILoggingBroker>();
+            this.storageBrokerMock = new Mock<IStorageBroker>();
+            this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
             this.assignmentAttachmentService = new AssignmentAttachmentService(
                 storageBroker: this.storageBrokerMock.Object,
@@ -41,8 +39,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
         private static IQueryable<AssignmentAttachment> CreateRandomAssignmentAttachments() =>
             CreateAssignmentAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
 
-        private static int GetRandomNumber() =>
-            new IntRange(min: 2, max: 150).GetValue();
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
@@ -64,13 +61,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
         private static Filler<AssignmentAttachment> CreateAssignmentAttachmentFiller(DateTimeOffset dates)
         {
-            var filler =
-                new Filler<AssignmentAttachment>();
+            var filler = new Filler<AssignmentAttachment>();
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates)
-                .OnProperty(AssignmentAttachment => AssignmentAttachment.Assignment).IgnoreIt()
-                .OnProperty(AssignmentAttachment => AssignmentAttachment.Attachment).IgnoreIt();
+                .OnProperty(assignmentAttachment => assignmentAttachment.Assignment).IgnoreIt()
+                .OnProperty(assignmentAttachment => assignmentAttachment.Attachment).IgnoreIt();
 
             return filler;
         }
