@@ -44,7 +44,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsCalendarEntryException =
-                new AlreadyExistsCalendarEntryException(duplicateKeyException);
+                    new AlreadyExistsCalendarEntryException(duplicateKeyException);
 
                 throw CreateAndLogValidationException(alreadyExistsCalendarEntryException);
             }
@@ -81,7 +81,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
             catch (Exception exception)
             {
                 var failedCalendarEntryServiceException =
-                new FailedCalendarEntryServiceException(exception);
+                    new FailedCalendarEntryServiceException(exception);
 
                 throw CreateAndLogServiceException(failedCalendarEntryServiceException);
             }

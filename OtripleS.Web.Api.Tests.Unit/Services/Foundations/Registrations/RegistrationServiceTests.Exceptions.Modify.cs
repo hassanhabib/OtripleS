@@ -181,8 +181,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             Registration someRegistration = CreateRandomRegistration(dateTime: randomDateTime);
             var serviceException = new Exception();
 
+            var failedRegistrationServiceException =
+                new FailedRegistrationServiceException(serviceException);
+
             var expectedRegistrationServiceException =
-                new RegistrationServiceException(serviceException);
+                new RegistrationServiceException(failedRegistrationServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())

@@ -53,8 +53,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
             // given
             var serviceException = new Exception();
 
+            var failedStudentAttachmentServiceException =
+                new FailedStudentAttachmentServiceException(serviceException);
+
             var expectedStudentAttachmentServiceException =
-                new StudentAttachmentServiceException(serviceException);
+                new StudentAttachmentServiceException(failedStudentAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudentAttachments())
