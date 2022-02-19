@@ -95,6 +95,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
             GuardianContact inputGuardianContact = randomGuardianContact;
             var exception = new Exception();
 
+            var failedGuardianContactServiceException =
+                new FailedGuardianContactServiceException(exception);
+
             var expectedGuardianContactServiceException =
                 new GuardianContactServiceException(exception);
 
