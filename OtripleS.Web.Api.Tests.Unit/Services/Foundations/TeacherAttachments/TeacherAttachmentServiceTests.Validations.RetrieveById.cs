@@ -19,9 +19,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
         {
             // given
             Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomTeacherId = default;
+            Guid invalidTeacherId = Guid.Empty;
             Guid inputAttachmentId = randomAttachmentId;
-            Guid inputTeacherId = randomTeacherId;
+            Guid inputTeacherId = invalidTeacherId;
 
             var invalidTeacherAttachmentInputException = new InvalidTeacherAttachmentException(
                 parameterName: nameof(TeacherAttachment.TeacherId),
@@ -55,9 +55,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
         public async Task ShouldThrowValidatonExceptionOnRetrieveWhenAttachmentIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = default;
+            Guid invalidAttachmentId = Guid.Empty;
             Guid randomTeacherId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
+            Guid inputAttachmentId = invalidAttachmentId;
             Guid inputTeacherId = randomTeacherId;
 
             var invalidTeacherAttachmentInputException = new InvalidTeacherAttachmentException(
