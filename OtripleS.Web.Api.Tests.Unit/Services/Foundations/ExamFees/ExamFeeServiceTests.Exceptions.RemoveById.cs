@@ -24,8 +24,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             Guid inputExamFeeId = randomExamFeeId;
             SqlException sqlException = GetSqlException();
 
-            var expectedExamFeeDependencyException =
-                new ExamFeeDependencyException(sqlException);
+            var expectedExamFeeDependencyException = new ExamFeeDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
                  broker.SelectExamFeeByIdAsync(inputExamFeeId))
