@@ -44,7 +44,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static IQueryable<GuardianAttachment> CreateRandomGuardianAttachments() =>
-            CreateGuardianAttachmentFiller(dates:  GetRandomDateTime())
+            CreateGuardianAttachmentFiller(dates: GetRandomDateTime())
                 .Create(GetRandomNumber()).AsQueryable();
 
         private static GuardianAttachment CreateRandomGuardianAttachment(DateTimeOffset dates) =>
