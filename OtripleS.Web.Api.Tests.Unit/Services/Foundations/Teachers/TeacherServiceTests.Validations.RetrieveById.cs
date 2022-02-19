@@ -18,8 +18,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         public async Task ShouldThrowValidatonExceptionOnRetrieveWhenIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomTeacherId = default;
-            Guid inputTeacherId = randomTeacherId;
+            Guid invalidTeacherId = Guid.Empty;
+            Guid inputTeacherId = invalidTeacherId;
 
             var invalidTeacherException = new InvalidTeacherException(
                 parameterName: nameof(Teacher.Id),
