@@ -156,17 +156,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
             var randomGuardianId = Guid.NewGuid();
             Guid someContactId = randomContactId;
             Guid someGuardianId = randomGuardianId;
-            var exception = new Exception();
+            var serviceException = new Exception();
 
             var failedGuardianContactServiceException =
-                new FailedGuardianContactServiceException(exception);
+                new FailedGuardianContactServiceException(serviceException);
 
             var expectedGuardianContactServiceException =
                 new GuardianContactServiceException(failedGuardianContactServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectGuardianContactByIdAsync(someGuardianId, someContactId))
-                    .ThrowsAsync(exception);
+                    .ThrowsAsync(serviceException);
 
             // when
             ValueTask<GuardianContact> removeGuardianContactTask =
