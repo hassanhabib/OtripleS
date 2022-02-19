@@ -19,9 +19,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         {
             // given
             Guid randomContactId = Guid.NewGuid();
-            Guid randomTeacherId = default;
+            Guid invalidTeacherId = Guid.Empty;
             Guid inputContactId = randomContactId;
-            Guid inputTeacherId = randomTeacherId;
+            Guid inputTeacherId = invalidTeacherId;
 
             var invalidTeacherContactException = new InvalidTeacherContactException(
                 parameterName: nameof(TeacherContact.TeacherId),
@@ -54,9 +54,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         public async Task ShouldThrowValidatonExceptionOnRetrieveWhenContactIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomContactId = default;
+            Guid invalidContactId = Guid.Empty;
             Guid randomTeacherId = Guid.NewGuid();
-            Guid inputContactId = randomContactId;
+            Guid inputContactId = invalidContactId;
             Guid inputTeacherId = randomTeacherId;
 
             var invalidTeacherContactException = new InvalidTeacherContactException(
