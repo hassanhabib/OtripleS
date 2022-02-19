@@ -18,8 +18,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
         public async void ShouldThrowValidationExceptionOnRetrieveWhenIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomStudentId = default;
-            Guid inputStudentId = randomStudentId;
+            Guid invalidStudentId = Guid.Empty;
+            Guid inputStudentId = invalidStudentId;
 
             var invalidStudentException = new InvalidStudentException(
                 parameterName: nameof(Student.Id),
