@@ -11,6 +11,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
+using OtripleS.Web.Api.Models.CoursesAttachments.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
 {
@@ -69,7 +70,10 @@ namespace OtripleS.Web.Api.Services.Foundations.CourseAttachments
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedCourseAttachmentServiceException =
+                    new FailedCourseAttachmentServiceException(exception);
+
+                throw CreateAndLogServiceException(failedCourseAttachmentServiceException);
             }
         }
 
