@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
+using OtripleS.Web.Api.Models.CoursesAttachments.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
@@ -92,10 +93,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
         {
             // given
             CourseAttachment someCourseAttachment = CreateRandomCourseAttachment();
+
             var serviceException = new Exception();
 
+            var failedCourseAttachmentServiceException =
+                new FailedCourseAttachmentServiceException(serviceException);
+
             var expectedCourseAttachmentServiceException =
-                new CourseAttachmentServiceException(serviceException);
+                new CourseAttachmentServiceException(failedCourseAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertCourseAttachmentAsync(It.IsAny<CourseAttachment>()))
