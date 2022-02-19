@@ -158,8 +158,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
             Guid someGuardianId = randomGuardianId;
             var exception = new Exception();
 
-            var expectedGuardianContactException =
-                new GuardianContactServiceException(exception);
+            var failedGuardianContactServiceException =
+                new FailedGuardianContactServiceException(exception);
+
+            var expectedGuardianContactServiceException =
+                new GuardianContactServiceException(failedGuardianContactServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectGuardianContactByIdAsync(someGuardianId, someContactId))
@@ -177,7 +180,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedGuardianContactException))),
+                    expectedGuardianContactServiceException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
