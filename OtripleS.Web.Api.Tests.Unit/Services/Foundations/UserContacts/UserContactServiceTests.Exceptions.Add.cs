@@ -93,7 +93,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
-
         [Fact]
         public async Task ShouldThrowServiceExceptionOnAddWhenExceptionOccursAndLogItAsync()
         {
