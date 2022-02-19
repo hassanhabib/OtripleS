@@ -18,9 +18,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
         public async Task ShouldThrowValidationExceptionOnRemoveWhenStudentIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomStudentId = default;
+            Guid invalidStudentId = Guid.Empty;
             Guid randomRegistrationId = Guid.NewGuid();
-            Guid inputStudentId = randomStudentId;
+            Guid inputStudentId = invalidStudentId;
             Guid inputRegistrationId = randomRegistrationId;
 
             var invalidStudentRegistrationException = new InvalidStudentRegistrationException(
@@ -62,9 +62,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
         {
             // given
             Guid randomStudentId = Guid.NewGuid();
-            Guid randomRegistrationId = default;
+            Guid invalidRegistrationId = Guid.Empty;
             Guid inputStudentId = randomStudentId;
-            Guid inputRegistrationId = randomRegistrationId;
+            Guid inputRegistrationId = invalidRegistrationId;
 
             var invalidStudentRegistrationException = new InvalidStudentRegistrationException(
                 parameterName: nameof(StudentRegistration.RegistrationId),
