@@ -135,7 +135,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
             var failedSemesterCourseServiceException =
                 new FailedSemesterCourseServiceException(serviceException);
 
-            var expectedSemesterCourseServiceException = new SemesterCourseServiceException(failedSemesterCourseServiceException);
+            var expectedSemesterCourseServiceException = 
+                new SemesterCourseServiceException(failedSemesterCourseServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                  broker.SelectSemesterCourseByIdAsync(inputSemesterCourseId))
