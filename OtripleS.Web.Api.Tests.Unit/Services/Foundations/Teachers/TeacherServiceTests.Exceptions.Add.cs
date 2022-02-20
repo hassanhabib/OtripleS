@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Teachers;
@@ -58,6 +59,51 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowDependencyValidationExceptionOnAddIfTeacherAlreadyExistsAndLogItAsync()
+        {
+            // given
+            var randomTeacher = CreateRandomTeacher();
+            var alreadyExistsTeacher = randomTeacher;
+            string randomMessage = GetRandomMessage();
+
+            var duplicateKeyException =
+                new DuplicateKeyException(randomMessage);
+
+            var alreadyExistsTeacherException =
+                new AlreadyExistsTeacherException(duplicateKeyException);
+
+            var expectedTeacherDependencyException =
+                new TeacherDependencyException(alreadyExistsTeacherException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Throws(duplicateKeyException);
+
+            // when 
+            ValueTask<Teacher> addTeacherTask =
+                this.teacherService.CreateTeacherAsync(alreadyExistsTeacher);
+
+            // then
+            await Assert.ThrowsAsync<TeacherDependencyException>( () =>
+                addTeacherTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTeacherAsync(It.IsAny<Teacher>()),
+                    Times.Never());
+
+            this.loggingBrokerMock.Verify(broker => broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherDependencyException))), 
+                        Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
         [Fact]
         public async Task ShouldThrowDependencyExceptionOnCreateWhenDbExceptionOccursAndLogItAsync()
         {

@@ -4,10 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Teachers.Exceptions
 {
-    public class AlreadyExistsTeacherException : Exception
+    public class AlreadyExistsTeacherException : Xeption
     {
         public AlreadyExistsTeacherException(Exception innerException)
             : base(message: "Teacher with the same id already exists.", innerException) { }
