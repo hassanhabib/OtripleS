@@ -57,8 +57,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
             // given
             var serviceException = new Exception();
 
+            var failedGuardianServiceException =
+                new FailedGuardianServiceException(serviceException);
+
             var expectedGuardianServiceException =
-                new GuardianServiceException(serviceException);
+                new GuardianServiceException(failedGuardianServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllGuardians())
