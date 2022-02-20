@@ -47,10 +47,11 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             }
             catch (DuplicateKeyException duplicateKeyException)
             {
+
                 var alreadyExistsTeacherException =
                     new AlreadyExistsTeacherException(duplicateKeyException);
 
-                throw CreateAndLogValidationException(alreadyExistsTeacherException);
+                throw CreateAndLogDependencyValidationException(alreadyExistsTeacherException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
@@ -81,7 +82,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             {
                 var lockedTeacherException = new LockedTeacherException(dbUpdateConcurrencyException);
 
-                throw CreateAndLogDependencyException(lockedTeacherException);
+                throw CreateAndLogDependencyValidationException(lockedTeacherException);
             }
             catch (Exception exception)
             {
@@ -92,6 +93,23 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             }
         }
 
+        private Exception CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var teacherDependencyValidationException =
+                new TeacherDependencyValidationException(exception);
+
+            this.loggingBroker.LogError(teacherDependencyValidationException);
+
+            return teacherDependencyValidationException;
+        }
+
+        private TeacherValidationException CreateAndLogValidationException(Xeption exception)
+        {
+            var teacherValidationException = new TeacherValidationException(exception);
+            this.loggingBroker.LogError(teacherValidationException);
+
+            return teacherValidationException;
+        }   
         private TeacherValidationException CreateAndLogValidationException(Exception exception)
         {
             var teacherValidationException = new TeacherValidationException(exception);

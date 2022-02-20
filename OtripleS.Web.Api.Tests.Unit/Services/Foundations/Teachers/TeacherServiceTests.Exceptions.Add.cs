@@ -74,7 +74,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 new AlreadyExistsTeacherException(duplicateKeyException);
 
             var expectedTeacherDependencyException =
-                new TeacherDependencyException(alreadyExistsTeacherException);
+                new TeacherDependencyValidationException(alreadyExistsTeacherException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -85,7 +85,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 this.teacherService.CreateTeacherAsync(alreadyExistsTeacher);
 
             // then
-            await Assert.ThrowsAsync<TeacherDependencyException>( () =>
+            await Assert.ThrowsAsync<TeacherDependencyValidationException>( () =>
                 addTeacherTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
