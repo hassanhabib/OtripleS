@@ -60,7 +60,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedExamServiceException =
+                    new FailedExamServiceException(exception);
+
+                throw CreateAndLogServiceException(failedExamServiceException);
             }
         }
 

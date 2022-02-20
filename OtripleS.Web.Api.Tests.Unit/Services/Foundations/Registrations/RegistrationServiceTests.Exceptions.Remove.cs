@@ -169,7 +169,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             Guid someRegistrationId = someRegistration.Id;
             Registration storageRegistration = someRegistration;
             var serviceException = new Exception();
-            var expectedServiceException = new RegistrationServiceException(serviceException);
+
+            var failedRegistrationServiceException =
+                new FailedRegistrationServiceException(serviceException);
+
+            var expectedRegistrationServiceException =
+                new RegistrationServiceException(failedRegistrationServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectRegistrationByIdAsync(It.IsAny<Guid>()))
@@ -197,7 +202,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedServiceException))),
+                    expectedRegistrationServiceException))),
                         Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();

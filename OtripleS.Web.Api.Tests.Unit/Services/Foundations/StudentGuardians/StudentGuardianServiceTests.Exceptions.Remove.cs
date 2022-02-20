@@ -20,22 +20,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
         public async Task ShouldThrowDependencyExceptionOnDeleteWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomStudentGuardianId = Guid.NewGuid();
-            Guid inputStudentGuardianId = randomStudentGuardianId;
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputStudentId = randomStudentId;
+            Guid someStudentGuardianId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
             var expectedStudentGuardianDependencyException =
                 new StudentGuardianDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectStudentGuardianByIdAsync(inputStudentGuardianId, inputStudentId))
+                 broker.SelectStudentGuardianByIdAsync(someStudentGuardianId, someStudentId))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<StudentGuardian> deleteStudentGuardianTask =
-                this.studentGuardianService.RemoveStudentGuardianByIdsAsync(inputStudentGuardianId, inputStudentId);
+                this.studentGuardianService.RemoveStudentGuardianByIdsAsync(someStudentGuardianId, someStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianDependencyException>(() =>
@@ -47,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentGuardianByIdAsync(inputStudentGuardianId, inputStudentId),
+                broker.SelectStudentGuardianByIdAsync(someStudentGuardianId, someStudentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -59,22 +57,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
         public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomStudentGuardianId = Guid.NewGuid();
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputStudentGuardianId = randomStudentGuardianId;
-            Guid inputStudentId = randomStudentId;
+            Guid someStudentGuardianId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedStudentGuardianDependencyException =
                 new StudentGuardianDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentGuardianByIdAsync(inputStudentGuardianId, inputStudentId))
+                broker.SelectStudentGuardianByIdAsync(someStudentGuardianId, someStudentId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<StudentGuardian> deleteStudentGuardianTask =
-                this.studentGuardianService.RemoveStudentGuardianByIdsAsync(inputStudentGuardianId, inputStudentId);
+                this.studentGuardianService.RemoveStudentGuardianByIdsAsync(someStudentGuardianId, someStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianDependencyException>(() => deleteStudentGuardianTask.AsTask());
@@ -85,7 +81,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentGuardianByIdAsync(inputStudentGuardianId, inputStudentId),
+                broker.SelectStudentGuardianByIdAsync(someStudentGuardianId, someStudentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -96,10 +92,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
         public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomStudentGuardianId = Guid.NewGuid();
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputStudentGuardianId = randomStudentGuardianId;
-            Guid inputStudentId = randomStudentId;
+            Guid someStudentGuardianId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
             var lockedStudentGuardianException =
@@ -109,12 +103,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
                 new StudentGuardianDependencyException(lockedStudentGuardianException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentGuardianByIdAsync(inputStudentGuardianId, inputStudentId))
+                broker.SelectStudentGuardianByIdAsync(someStudentGuardianId, someStudentId))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
             ValueTask<StudentGuardian> deleteStudentGuardianTask =
-                this.studentGuardianService.RemoveStudentGuardianByIdsAsync(inputStudentGuardianId, inputStudentId);
+                this.studentGuardianService.RemoveStudentGuardianByIdsAsync(someStudentGuardianId, someStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianDependencyException>(() => deleteStudentGuardianTask.AsTask());
@@ -125,7 +119,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentGuardianByIdAsync(inputStudentGuardianId, inputStudentId),
+                broker.SelectStudentGuardianByIdAsync(someStudentGuardianId, someStudentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -136,10 +130,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
         public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomStudentGuardianId = Guid.NewGuid();
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputStudentGuardianId = randomStudentGuardianId;
-            Guid inputStudentId = randomStudentId;
+            Guid someStudentGuardianId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             var serviceException = new Exception();
 
             var failedStudentGuardianServiceException =
@@ -149,12 +141,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
                 new StudentGuardianServiceException(failedStudentGuardianServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentGuardianByIdAsync(inputStudentGuardianId, inputStudentId))
+                broker.SelectStudentGuardianByIdAsync(someStudentGuardianId, someStudentId))
                     .ThrowsAsync(serviceException);
 
             // when
             ValueTask<StudentGuardian> deleteStudentGuardianTask =
-                this.studentGuardianService.RemoveStudentGuardianByIdsAsync(inputStudentGuardianId, inputStudentId);
+                this.studentGuardianService.RemoveStudentGuardianByIdsAsync(someStudentGuardianId, someStudentId);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianServiceException>(() =>
@@ -166,7 +158,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentGuardianByIdAsync(inputStudentGuardianId, inputStudentId),
+                broker.SelectStudentGuardianByIdAsync(someStudentGuardianId, someStudentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

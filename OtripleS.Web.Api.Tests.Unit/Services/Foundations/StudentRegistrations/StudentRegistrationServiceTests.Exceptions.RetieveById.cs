@@ -19,24 +19,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputStudentId = randomStudentId;
-            Guid randomRegistrationId = Guid.NewGuid();
-            Guid inputRegistrationId = randomRegistrationId;
+            Guid someStudentId = Guid.NewGuid();
+            Guid someRegistrationId = Guid.NewGuid();
             var sqlException = GetSqlException();
 
             var expectedStudentRegistrationDependencyException =
                 new StudentRegistrationDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId))
+                broker.SelectStudentRegistrationByIdAsync(someStudentId, someRegistrationId))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<StudentRegistration> retrieveStudentRegistrationByIdTask =
                 this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(
-                    inputStudentId,
-                    inputRegistrationId);
+                    someStudentId,
+                    someRegistrationId);
 
             // then
             await Assert.ThrowsAsync<StudentRegistrationDependencyException>(() =>
@@ -48,7 +46,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId),
+                broker.SelectStudentRegistrationByIdAsync(someStudentId, someRegistrationId),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -59,22 +57,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputStudentId = randomStudentId;
-            Guid randomRegistrationId = Guid.NewGuid();
-            Guid inputRegistrationId = randomRegistrationId;
+            Guid someStudentId = Guid.NewGuid();
+            Guid someRegistrationId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedStudentRegistrationDependencyException =
                 new StudentRegistrationDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId))
+                broker.SelectStudentRegistrationByIdAsync(someStudentId, someRegistrationId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<StudentRegistration> retrieveStudentRegistrationByIdTask =
-                this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId);
+                this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(someStudentId, someRegistrationId);
 
             // then
             await Assert.ThrowsAsync<StudentRegistrationDependencyException>(() =>
@@ -86,7 +82,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId),
+                broker.SelectStudentRegistrationByIdAsync(someStudentId, someRegistrationId),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -97,10 +93,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputStudentId = randomStudentId;
-            Guid randomRegistrationId = Guid.NewGuid();
-            Guid inputRegistrationId = randomRegistrationId;
+            Guid someStudentId = Guid.NewGuid();
+            Guid someRegistrationId = Guid.NewGuid();
             var serviceException = new Exception();
 
             var failedStudentRegistrationServiceException =
@@ -111,14 +105,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                     failedStudentRegistrationServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId))
+                broker.SelectStudentRegistrationByIdAsync(someStudentId, someRegistrationId))
                     .ThrowsAsync(serviceException);
 
             // when
             ValueTask<StudentRegistration> retrieveStudentRegistrationByIdTask =
                 this.studentRegistrationService.RetrieveStudentRegistrationByIdAsync(
-                    inputStudentId,
-                    inputRegistrationId);
+                    someStudentId,
+                    someRegistrationId);
 
             // then
             await Assert.ThrowsAsync<StudentRegistrationServiceException>(() =>
@@ -130,7 +124,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentRegistrations
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentRegistrationByIdAsync(inputStudentId, inputRegistrationId),
+                broker.SelectStudentRegistrationByIdAsync(someStudentId, someRegistrationId),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
