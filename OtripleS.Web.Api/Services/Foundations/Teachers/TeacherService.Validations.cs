@@ -13,12 +13,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
     {
         private static void ValidateTeacherId(Guid teacherId)
         {
-            if (teacherId == default)
-            {
-                throw new InvalidTeacherException(
-                    parameterName: nameof(Teacher.Id),
-                    parameterValue: teacherId);
-            }
+            Validate((Rule: IsInvalidX(teacherId), Parameter: nameof(Teacher.Id)));
         }
 
         private static void ValidateStorageTeacher(Teacher maybeTeacher, Guid teacherId)
