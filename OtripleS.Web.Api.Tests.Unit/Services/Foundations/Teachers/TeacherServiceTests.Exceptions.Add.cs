@@ -109,14 +109,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         {
             // given
             Teacher someTeacher = CreateRandomTeacher();
-
             var databaseUpdateException = new DbUpdateException();
 
-            var failedTeacherStorageException = 
+            var failedTeacherStorageException =
                 new FailedTeacherStorageException(databaseUpdateException);
 
             var expectedTeacherDependencyException =
-                new TeacherDependencyException(databaseUpdateException);
+                new TeacherDependencyException(failedTeacherStorageException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
