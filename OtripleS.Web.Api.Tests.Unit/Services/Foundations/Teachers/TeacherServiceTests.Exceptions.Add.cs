@@ -85,8 +85,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 this.teacherService.CreateTeacherAsync(alreadyExistsTeacher);
 
             // then
-            await Assert.ThrowsAsync<TeacherDependencyValidationException>( () =>
-                addTeacherTask.AsTask());
+            await Assert.ThrowsAsync<TeacherDependencyValidationException>(() =>
+               addTeacherTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
@@ -97,7 +97,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                     Times.Never());
 
             this.loggingBrokerMock.Verify(broker => broker.LogError(It.Is(SameExceptionAs(
-                    expectedTeacherDependencyException))), 
+                    expectedTeacherDependencyException))),
                         Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

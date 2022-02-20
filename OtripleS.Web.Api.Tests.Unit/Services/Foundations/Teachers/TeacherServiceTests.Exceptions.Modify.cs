@@ -117,7 +117,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher someTeacher = CreateRandomTeacher();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
-            var lockedTeacherException = 
+            var lockedTeacherException =
                 new LockedTeacherException(databaseUpdateConcurrencyException);
 
             var expectedTeacherDependencyValidationException =
@@ -141,7 +141,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectTeacherByIdAsync(someTeacher.Id),
-                    Times.Never); 
+                    Times.Never);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(

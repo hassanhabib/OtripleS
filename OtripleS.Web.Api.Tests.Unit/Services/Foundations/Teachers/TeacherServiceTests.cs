@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
@@ -56,7 +55,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             CreateRandomTeacherFiller(dateTime).Create();
 
         private static Teacher CreateRandomTeacher() =>
-            CreateRandomTeacherFiller(dates:GetRandomDateTime()).Create();
+            CreateRandomTeacherFiller(dates: GetRandomDateTime()).Create();
 
         private static IQueryable<Teacher> CreateRandomTeachers() =>
             CreateRandomTeacherFiller(dates: DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();

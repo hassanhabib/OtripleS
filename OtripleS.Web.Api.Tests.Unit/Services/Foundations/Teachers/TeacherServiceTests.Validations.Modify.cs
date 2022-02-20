@@ -358,7 +358,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             invalidTeacherException.AddData(
                 key: nameof(Teacher.CreatedBy),
                 values: $"Id is not the same as {nameof(Teacher.CreatedBy)}");
-            
+
             var expectedTeacherValidationException =
               new TeacherValidationException(invalidTeacherException);
 

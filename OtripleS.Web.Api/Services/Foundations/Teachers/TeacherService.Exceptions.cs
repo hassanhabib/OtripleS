@@ -113,7 +113,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             this.loggingBroker.LogError(teacherValidationException);
 
             return teacherValidationException;
-        }   
+        }
 
         private TeacherDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {

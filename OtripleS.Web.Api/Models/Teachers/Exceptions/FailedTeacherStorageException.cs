@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Models.Teachers.Exceptions
     public class FailedTeacherStorageException : Xeption
     {
         public FailedTeacherStorageException(Exception innerException)
-            :base(message: "Failed teacher storage error occurred, contact support.", innerException)
+            : base(message: "Failed teacher storage error occurred, contact support.", innerException)
         { }
     }
 }

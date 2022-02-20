@@ -62,7 +62,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Guid someTeacherId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
-            var failedTeacherStorageException = 
+            var failedTeacherStorageException =
                 new FailedTeacherStorageException(databaseUpdateException);
 
             var expectedTeacherDependencyException =

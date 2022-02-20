@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             invalidTeacherException.AddData(
                 key: nameof(Teacher.Id),
                 values: "Id is required");
-  
+
             var expectedTeacherValidationException = new TeacherValidationException(invalidTeacherException);
 
             // when
