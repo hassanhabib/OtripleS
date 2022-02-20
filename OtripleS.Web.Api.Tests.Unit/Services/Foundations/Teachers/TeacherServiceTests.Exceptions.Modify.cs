@@ -17,26 +17,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
     public partial class TeacherServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnModifyIfSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowCriticalDependencyExceptionOnModifyIfSqlErrorOccursAndLogItAsync()
         {
             // given
-            int randomNegativeNumber = GetNegativeRandomNumber();
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(randomDateTime);
-            Teacher someTeacher = randomTeacher;
-            someTeacher.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+            Teacher someTeacher = CreateRandomTeacher();
             SqlException sqlException = GetSqlException();
 
-            var expectedTeacherDependencyException =
-                new TeacherDependencyException(sqlException);
+            var failedStorageTeacherException =
+                new FailedTeacherStorageException(sqlException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectTeacherByIdAsync(someTeacher.Id))
-                    .ThrowsAsync(sqlException);
+            var expectedTeacherDependencyException =
+                new TeacherDependencyException(failedStorageTeacherException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(randomDateTime);
+                    .Throws(sqlException);
 
             // when
             ValueTask<Teacher> modifyTeacherTask =
@@ -52,12 +47,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectTeacherByIdAsync(someTeacher.Id),
-                    Times.Once);
+                    Times.Never);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
                     expectedTeacherDependencyException))),
                         Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateTeacherAsync(It.IsAny<Teacher>()),
+                    Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
