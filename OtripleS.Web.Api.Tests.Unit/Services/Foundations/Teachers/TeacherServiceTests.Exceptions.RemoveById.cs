@@ -96,7 +96,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRemoveIfDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
             Guid someTeacherId = Guid.NewGuid();
