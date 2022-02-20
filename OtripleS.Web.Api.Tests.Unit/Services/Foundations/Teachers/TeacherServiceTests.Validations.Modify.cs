@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        [InlineData("   ")]
+        [InlineData(" ")]
         public async void ShouldThrowValidationExceptionOnModifyIfTeacherIsInvalidAndLogItAsync(
             string invalidText)
         {
@@ -96,7 +96,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             invalidTeacherException.AddData(
                 key: nameof(Teacher.UpdatedDate),
-                values: "Date is required");
+                "Date is required",
+                $"Date is the same as {nameof(Teacher.CreatedDate)}");
 
             invalidTeacherException.AddData(
                 key: nameof(Teacher.CreatedBy),
@@ -105,6 +106,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             invalidTeacherException.AddData(
                 key: nameof(Teacher.UpdatedBy),
                 values: "Id is required");
+
 
             var expectedTeacherValidationException =
                 new TeacherValidationException(invalidTeacherException);
@@ -122,7 +124,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameValidationExceptionAs(
+                broker.LogError(It.Is(SameExceptionAs(
                     expectedTeacherValidationException))),
                         Times.Once);
 

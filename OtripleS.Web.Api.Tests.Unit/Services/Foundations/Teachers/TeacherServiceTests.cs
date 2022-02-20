@@ -46,21 +46,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 && actualException.InnerException.Message == expectedException.InnerException.Message
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
-        private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
-        {
-            return actualException =>
-                actualException.Message == expectedException.Message
-                && actualException.InnerException.Message == expectedException.InnerException.Message
-                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
-        }
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
-
-        private static IEnumerable<Teacher> CreateRandomTeachers(DateTimeOffset dateTime) =>
-            CreateRandomTeacherFiller(dateTime).Create(GetRandomNumber());
 
         private static Teacher CreateRandomTeacher(DateTimeOffset dateTime) =>
             CreateRandomTeacherFiller(dateTime).Create();
