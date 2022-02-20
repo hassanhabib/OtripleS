@@ -160,11 +160,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
         private static void ValidateAgainstStorageTeacherOnModify(Teacher inputTeacher, Teacher storageTeacher)
         {
             Validate(
-                (Rule:IsNotSame(
-                    firstId:inputTeacher.CreatedBy,
-                    secondId:storageTeacher.CreatedBy,
-                    secondIdName:nameof(Teacher.CreatedBy)),
-                Parameter:nameof(Teacher.CreatedBy)));
+                (Rule: IsNotSame(
+                    firstId: inputTeacher.CreatedBy,
+                    secondId: storageTeacher.CreatedBy,
+                    secondIdName: nameof(Teacher.CreatedBy)),
+                Parameter: nameof(Teacher.CreatedBy)),
+
+            (Rule: IsNotSame(
+                   firstDate: inputTeacher.CreatedDate,
+                   secondDate: storageTeacher.CreatedDate,
+                   secondDateName: nameof(Teacher.CreatedDate)),
+               Parameter: nameof(Teacher.CreatedDate)));
         }
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);

@@ -295,12 +295,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher storageTeacher = randomTeacher.DeepClone();
             Guid studentId = invalidTeacher.Id;
             invalidTeacher.CreatedDate = storageTeacher.CreatedDate.AddMinutes(randomNumber);
-
             var invalidTeacherException = new InvalidTeacherException();
 
             invalidTeacherException.AddData(
                 key: nameof(Teacher.CreatedDate),
-                values: $"Date is the same as {nameof(Teacher.CreatedDate)}");
+                values: $"Date is not the same as {nameof(Teacher.CreatedDate)}");
 
             var expectedTeacherValidationException =
               new TeacherValidationException(invalidTeacherException);
