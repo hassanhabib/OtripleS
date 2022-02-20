@@ -81,6 +81,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             {
                 return returningQueryableTeacherFunction();
             }
+            catch (SqlException sqlException)
+            {
+                var failedTeacherStorageExceptin =
+                    new FailedTeacherStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedTeacherStorageExceptin);
+            }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
                 var lockedTeacherException = new LockedTeacherException(dbUpdateConcurrencyException);
