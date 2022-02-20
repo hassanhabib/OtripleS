@@ -158,7 +158,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnModifyIfServiceExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnModifyIfServiceErrorOccursAndLogItAsync()
         {
             // given
             int randomNegativeNumber = GetNegativeRandomNumber();
