@@ -95,8 +95,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
             ExamAttachment someExamAttachment = randomExamAttachment;
             var serviceException = new Exception();
 
+            var failedExamAttachmentServiceException =
+                new FailedExamAttachmentServiceException(serviceException);
+
             var expectedExamAttachmentServiceException =
-                new ExamAttachmentServiceException(serviceException);
+                new ExamAttachmentServiceException(failedExamAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertExamAttachmentAsync(someExamAttachment))
