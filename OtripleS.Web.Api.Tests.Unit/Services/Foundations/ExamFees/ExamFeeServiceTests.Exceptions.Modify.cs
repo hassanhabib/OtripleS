@@ -168,8 +168,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             someExamFee.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
             var serviceException = new Exception();
 
+            var failedExamFeeServiceException =
+                new FailedExamFeeServiceException(serviceException);
+
             var expectedExamFeeServiceException =
-                new ExamFeeServiceException(serviceException);
+                new ExamFeeServiceException(failedExamFeeServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectExamFeeByIdAsync(someExamFee.Id))

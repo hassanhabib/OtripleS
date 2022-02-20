@@ -54,7 +54,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
         {
             // given
             var serviceException = new Exception();
-            
+
             var failedAssignmentAttachmentServiceException =
                 new FailedAssignmentAttachmentServiceException(serviceException);
 
