@@ -170,7 +170,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
                    firstDate: inputTeacher.CreatedDate,
                    secondDate: storageTeacher.CreatedDate,
                    secondDateName: nameof(Teacher.CreatedDate)),
-               Parameter: nameof(Teacher.CreatedDate)));
+               Parameter: nameof(Teacher.CreatedDate)),
+
+            (Rule: IsSame(
+                   firstDate: inputTeacher.UpdatedDate,
+                   secondDate: storageTeacher.UpdatedDate,
+                   secondDateName: nameof(Teacher.UpdatedDate)),
+               Parameter: nameof(Teacher.UpdatedDate)));
         }
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
