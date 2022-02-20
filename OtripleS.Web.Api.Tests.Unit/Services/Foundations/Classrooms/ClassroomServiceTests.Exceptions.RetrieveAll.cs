@@ -70,7 +70,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Classrooms
                     .Throws(serviceException);
 
             // when
-            Action retrieveAllClassroomsAction = () => 
+            Action retrieveAllClassroomsAction = () =>
                 this.classroomService.RetrieveAllClassrooms();
 
             // then
