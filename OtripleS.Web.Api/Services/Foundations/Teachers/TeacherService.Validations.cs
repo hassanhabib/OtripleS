@@ -159,23 +159,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
 
         private static void ValidateAgainstStorageTeacherOnModify(Teacher inputTeacher, Teacher storageTeacher)
         {
-            switch (inputTeacher)
-            {
-                case { } when inputTeacher.CreatedDate != storageTeacher.CreatedDate:
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(Teacher.CreatedDate),
-                        parameterValue: inputTeacher.CreatedDate);
-
-                case { } when inputTeacher.CreatedBy != storageTeacher.CreatedBy:
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(Teacher.CreatedBy),
-                        parameterValue: inputTeacher.CreatedBy);
-
-                case { } when inputTeacher.UpdatedDate == storageTeacher.UpdatedDate:
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(Teacher.UpdatedDate),
-                        parameterValue: inputTeacher.UpdatedDate);
-            }
+            Validate(
+                (Rule:IsNotSame(
+                    firstId:inputTeacher.CreatedBy,
+                    secondId:storageTeacher.CreatedBy,
+                    secondIdName:nameof(Teacher.CreatedBy)),
+                Parameter:nameof(Teacher.CreatedBy)));
         }
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);

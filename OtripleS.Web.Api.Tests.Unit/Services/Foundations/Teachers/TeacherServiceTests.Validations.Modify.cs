@@ -352,12 +352,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Guid studentId = invalidTeacher.Id;
             invalidTeacher.CreatedBy = invalidCreatedBy;
 
-            var InvalidTeacherException = new InvalidTeacherException(
-                parameterName: nameof(Teacher.CreatedBy),
-                parameterValue: invalidTeacher.CreatedBy);
+            var invalidTeacherException = new InvalidTeacherException();
 
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.CreatedBy),
+                values: $"Id is not the same as {nameof(Teacher.CreatedBy)}");
+            
             var expectedTeacherValidationException =
-              new TeacherValidationException(InvalidTeacherException);
+              new TeacherValidationException(invalidTeacherException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherByIdAsync(studentId))
