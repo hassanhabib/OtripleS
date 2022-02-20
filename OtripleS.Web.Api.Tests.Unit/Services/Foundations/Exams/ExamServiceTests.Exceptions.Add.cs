@@ -119,8 +119,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             inputExam.UpdatedBy = inputExam.CreatedBy;
             var serviceException = new Exception();
 
+            var failedExamServiceException =
+                new FailedExamServiceException(serviceException);
+
             var expectedExamServiceException =
-                new ExamServiceException(serviceException);
+                new ExamServiceException(failedExamServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())

@@ -152,7 +152,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
             Guid someAttachmentId = Guid.NewGuid();
             Guid someExamId = Guid.NewGuid();
             var serviceException = new Exception();
-            var expectedExamAttachmentException = new ExamAttachmentServiceException(serviceException);
+
+            var failedExamAttachmentServiceException =
+                new FailedExamAttachmentServiceException(serviceException);
+
+            var expectedExamAttachmentException = 
+                new ExamAttachmentServiceException(failedExamAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectExamAttachmentByIdAsync(someExamId, someAttachmentId))

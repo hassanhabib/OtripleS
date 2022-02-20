@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
+using OtripleS.Web.Api.Models.CoursesAttachments.Exceptions;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
@@ -152,7 +153,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
             Guid someAttachmentId = Guid.NewGuid();
             Guid someCourseId = Guid.NewGuid();
             var serviceException = new Exception();
-            var expectedCourseAttachmentException = new CourseAttachmentServiceException(serviceException);
+
+            var failedCourseAttachmentServiceException =
+                new FailedCourseAttachmentServiceException(serviceException);
+
+            var expectedCourseAttachmenServiceException = 
+                new CourseAttachmentServiceException(failedCourseAttachmentServiceException);
+
             this.storageBrokerMock.Setup(broker =>
              broker.SelectCourseAttachmentByIdAsync(someCourseId, someAttachmentId))
                  .ThrowsAsync(serviceException);
@@ -173,7 +180,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedCourseAttachmentException))),
+                    expectedCourseAttachmenServiceException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
