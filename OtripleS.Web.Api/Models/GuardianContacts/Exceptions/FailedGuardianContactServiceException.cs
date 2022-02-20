@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Models.GuardianContacts.Exceptions
     public class FailedGuardianContactServiceException : Xeption
     {
         public FailedGuardianContactServiceException(Exception innerException)
-            : base(message: "Failed semester course service error occurred, contact support.", innerException)
+            : base(message: "Failed guardian contact service error occurred, contact support.", innerException)
         {
         }
     }
