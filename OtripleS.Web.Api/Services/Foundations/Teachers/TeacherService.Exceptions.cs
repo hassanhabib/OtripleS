@@ -114,13 +114,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
 
             return teacherValidationException;
         }   
-        private TeacherValidationException CreateAndLogValidationException(Exception exception)
-        {
-            var teacherValidationException = new TeacherValidationException(exception);
-            this.loggingBroker.LogError(teacherValidationException);
 
-            return teacherValidationException;
-        }
         private TeacherDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
             var teacherDependencyException = new TeacherDependencyException(exception);

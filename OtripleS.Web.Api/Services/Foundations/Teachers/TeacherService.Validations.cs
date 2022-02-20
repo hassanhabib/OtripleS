@@ -135,7 +135,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
                 (Rule: IsInvalidX(teacher.UpdatedBy), Parameter: nameof(Teacher.UpdatedBy)),
                 (Rule: IsInvalidX(teacher.CreatedDate), Parameter: nameof(Teacher.CreatedDate)),
                 (Rule: IsInvalidX(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate)),
-                (Rule: IsNotRecent(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate))
+                (Rule: IsNotRecent(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate)),
+                (Rule: IsSame(
+                    firstDate: teacher.UpdatedDate,
+                    secondDate: teacher.CreatedDate,
+                    secondDateName: nameof(Teacher.CreatedDate)),
+
+                Parameter: nameof(Teacher.UpdatedDate))
             );
         }
 

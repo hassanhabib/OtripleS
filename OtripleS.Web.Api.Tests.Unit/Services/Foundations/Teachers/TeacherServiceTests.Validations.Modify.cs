@@ -146,10 +146,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             invalidTeacherException.AddData(
                 key: nameof(Teacher.UpdatedDate),
-                values: $"UpdatedDate is the same as {nameof(Teacher.CreatedDate)}");
+                values: $"Date is the same as {nameof(Teacher.CreatedDate)}");
 
             var expectedTeacherValidationException =
                 new TeacherValidationException(invalidTeacherException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
 
             // when
             ValueTask<Teacher> modifyTeacherTask =
