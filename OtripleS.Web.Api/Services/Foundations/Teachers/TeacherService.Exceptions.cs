@@ -11,6 +11,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Teachers;
 using OtripleS.Web.Api.Models.Teachers.Exceptions;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Teachers
 {
@@ -36,10 +37,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             catch (NotFoundTeacherException notFoundTeacherException)
             {
                 throw CreateAndLogValidationException(notFoundTeacherException);
-            }
-            catch (SqlException sqlException)
-            {
-                throw CreateAndLogCriticalDependencyException(sqlException);
             }
             catch (DuplicateKeyException duplicateKeyException)
             {
@@ -73,10 +70,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             {
                 return returningQueryableTeacherFunction();
             }
-            catch (SqlException sqlException)
-            {
-                throw CreateAndLogCriticalDependencyException(sqlException);
-            }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
                 var lockedTeacherException = new LockedTeacherException(dbUpdateConcurrencyException);
@@ -108,7 +101,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             return teacherDependencyException;
         }
 
-        private TeacherDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        private TeacherDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
             var teacherDependencyException = new TeacherDependencyException(exception);
             this.loggingBroker.LogCritical(teacherDependencyException);

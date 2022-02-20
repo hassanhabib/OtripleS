@@ -39,13 +39,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 dateTimeBroker: this.dateTimeBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object);
         }
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
         {
             return actualException =>
                 actualException.Message == expectedException.Message
-                && actualException.InnerException.Message == expectedException.InnerException.Message;
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
-
         private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
         {
             return actualException =>
@@ -53,6 +53,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 && actualException.InnerException.Message == expectedException.InnerException.Message
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                expectedException.Message == actualException.Message
+                && expectedException.InnerException.Message == actualException.InnerException.Message;
+        }
+
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
@@ -64,6 +72,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
         private static Teacher CreateRandomTeacher(DateTimeOffset dateTime) =>
             CreateRandomTeacherFiller(dateTime).Create();
+        private static Teacher CreateRandomTeacher() =>
+            CreateRandomTeacherFiller(dates:GetRandomDateTime()).Create();
 
         private static IQueryable<Teacher> CreateRandomTeachers() =>
             CreateRandomTeacherFiller(dates: DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
