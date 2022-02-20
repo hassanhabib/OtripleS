@@ -11,7 +11,8 @@ namespace OtripleS.Web.Api.Models.Teachers.Exceptions
     public class TeacherDependencyException : Xeption
     {
         public TeacherDependencyException(Xeption innerException)
-            : base(message: "Teacher dependency error occurred, contact support.", innerException) { }  
+            : base(message: "Teacher dependency error occurred, contact support.", innerException) { }
+
         public TeacherDependencyException(Exception innerException)
             : base(message: "Teacher dependency error occurred, contact support.", innerException) { }
     }

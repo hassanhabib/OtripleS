@@ -57,11 +57,14 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             {
                 var lockedTeacherException = new LockedTeacherException(dbUpdateConcurrencyException);
 
-                throw CreateAndLogDependencyException(lockedTeacherException);
+                throw CreateAndLogDependencyValidationException(lockedTeacherException);
             }
             catch (DbUpdateException dbUpdateException)
             {
-                throw CreateAndLogDependencyException(dbUpdateException);
+                var failedTeacherStorageException =
+                    new FailedTeacherStorageException(dbUpdateException);
+
+                throw CreateAndLogDependencyException(failedTeacherStorageException);
             }
             catch (Exception exception)
             {
@@ -117,19 +120,18 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
 
             return teacherValidationException;
         }
-
-        private TeacherDependencyException CreateAndLogDependencyException(Exception exception)
-        {
-            var teacherDependencyException = new TeacherDependencyException(exception);
-            this.loggingBroker.LogError(teacherDependencyException);
-
-            return teacherDependencyException;
-        }
-
         private TeacherDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
             var teacherDependencyException = new TeacherDependencyException(exception);
             this.loggingBroker.LogCritical(teacherDependencyException);
+
+            return teacherDependencyException;
+        }
+
+        private TeacherDependencyException CreateAndLogDependencyException(Xeption exception)
+        {
+            var teacherDependencyException = new TeacherDependencyException(exception);
+            this.loggingBroker.LogError(teacherDependencyException);
 
             return teacherDependencyException;
         }
