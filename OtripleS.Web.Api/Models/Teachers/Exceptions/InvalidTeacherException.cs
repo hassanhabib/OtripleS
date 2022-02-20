@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Teachers.Exceptions
     public class InvalidTeacherException : Xeption
     {
         public InvalidTeacherException()
-        : base(message: "Invalid teacher. Please fix the errors and try again.") { }
+            : base(message: "Invalid teacher. Please fix the errors and try again.") { }
     }
 }

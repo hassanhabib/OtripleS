@@ -38,6 +38,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 dateTimeBroker: this.dateTimeBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object);
         }
+
         private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
         {
             return actualException =>

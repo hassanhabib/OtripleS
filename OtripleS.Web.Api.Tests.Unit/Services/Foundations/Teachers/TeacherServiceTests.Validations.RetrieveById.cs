@@ -19,7 +19,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         {
             // given
             Guid invalidTeacherId = Guid.Empty;
-
             var invalidTeacherException = new InvalidTeacherException();
 
             invalidTeacherException.AddData(

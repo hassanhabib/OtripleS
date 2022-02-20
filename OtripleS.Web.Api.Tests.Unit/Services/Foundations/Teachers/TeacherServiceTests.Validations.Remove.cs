@@ -19,7 +19,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         {
             // given
             Guid invalidTeacherId = Guid.Empty;
-
             var invalidTeacherException = new InvalidTeacherException();
 
             invalidTeacherException.AddData(
@@ -29,11 +28,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             var expectedTeacherValidationException = new TeacherValidationException(invalidTeacherException);
 
             // when
-            ValueTask<Teacher> actualTeacherTask =
+            ValueTask<Teacher> removeTeacherTask =
                 this.teacherService.RemoveTeacherByIdAsync(invalidTeacherId);
 
             // then
-            await Assert.ThrowsAsync<TeacherValidationException>(() => actualTeacherTask.AsTask());
+            await Assert.ThrowsAsync<TeacherValidationException>(() => removeTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -73,11 +72,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                     .ReturnsAsync(nullStorageTeacher);
 
             // when
-            ValueTask<Teacher> actualTeacherTask =
+            ValueTask<Teacher> removeTeacherTask =
                 this.teacherService.RemoveTeacherByIdAsync(inputTeacherId);
 
             // then
-            await Assert.ThrowsAsync<TeacherValidationException>(() => actualTeacherTask.AsTask());
+            await Assert.ThrowsAsync<TeacherValidationException>(() => removeTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(

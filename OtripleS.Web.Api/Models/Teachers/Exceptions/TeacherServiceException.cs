@@ -10,6 +10,6 @@ namespace OtripleS.Web.Api.Models.Teachers.Exceptions
     public class TeacherServiceException : Xeption
     {
         public TeacherServiceException(Xeption innerException)
-            : base(message: "Service error occurred, contact support.", innerException) { }
+            : base(message: "Teacher service error occurred, contact support.", innerException) { }
     }
 }

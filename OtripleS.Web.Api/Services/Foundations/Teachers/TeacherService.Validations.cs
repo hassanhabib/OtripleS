@@ -131,6 +131,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
                 (Rule: IsInvalidX(teacher.CreatedDate), Parameter: nameof(Teacher.CreatedDate)),
                 (Rule: IsInvalidX(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate)),
                 (Rule: IsNotRecent(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate)),
+
                 (Rule: IsSame(
                     firstDate: teacher.UpdatedDate,
                     secondDate: teacher.CreatedDate,
@@ -166,17 +167,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
                     secondIdName: nameof(Teacher.CreatedBy)),
                 Parameter: nameof(Teacher.CreatedBy)),
 
-            (Rule: IsNotSame(
-                   firstDate: inputTeacher.CreatedDate,
-                   secondDate: storageTeacher.CreatedDate,
-                   secondDateName: nameof(Teacher.CreatedDate)),
-               Parameter: nameof(Teacher.CreatedDate)),
+                (Rule: IsNotSame(
+                    firstDate: inputTeacher.CreatedDate,
+                    secondDate: storageTeacher.CreatedDate,
+                    secondDateName: nameof(Teacher.CreatedDate)),
+                Parameter: nameof(Teacher.CreatedDate)),
 
-            (Rule: IsSame(
-                   firstDate: inputTeacher.UpdatedDate,
-                   secondDate: storageTeacher.UpdatedDate,
-                   secondDateName: nameof(Teacher.UpdatedDate)),
-               Parameter: nameof(Teacher.UpdatedDate)));
+                (Rule: IsSame(
+                    firstDate: inputTeacher.UpdatedDate,
+                    secondDate: storageTeacher.UpdatedDate,
+                    secondDateName: nameof(Teacher.UpdatedDate)),
+                Parameter: nameof(Teacher.UpdatedDate)));
         }
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);

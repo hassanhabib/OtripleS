@@ -107,7 +107,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 key: nameof(Teacher.UpdatedBy),
                 values: "Id is required");
 
-
             var expectedTeacherValidationException =
                 new TeacherValidationException(invalidTeacherException);
 
