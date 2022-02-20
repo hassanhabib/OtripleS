@@ -63,8 +63,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Guid someTeacherId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
+            var failedTeacherStorageException =
+                new FailedTeacherStorageException(databaseUpdateException);
+
             var expectedTeacherDependencyException =
-                new TeacherDependencyException(databaseUpdateException);
+                new TeacherDependencyException(failedTeacherStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherByIdAsync(someTeacherId))
