@@ -409,13 +409,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             invalidTeacher.UpdatedDate = randomDate;
             Teacher storageTeacher = randomTeacher.DeepClone();
             Guid studentId = invalidTeacher.Id;
+            var invalidTeacherException = new InvalidTeacherException();
 
-            var InvalidTeacherException = new InvalidTeacherException(
-                parameterName: nameof(Teacher.UpdatedDate),
-                parameterValue: invalidTeacher.UpdatedDate);
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.UpdatedDate),
+                values: $"Date is the same as {nameof(Teacher.UpdatedDate)}");
 
             var expectedTeacherValidationException =
-              new TeacherValidationException(InvalidTeacherException);
+              new TeacherValidationException(invalidTeacherException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherByIdAsync(studentId))
