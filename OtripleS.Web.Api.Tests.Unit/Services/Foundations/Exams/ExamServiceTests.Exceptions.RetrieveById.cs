@@ -102,8 +102,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Guid someExamId = Guid.NewGuid();
             var serviceException = new Exception();
 
+            var failedExamServiceException =
+                new FailedExamServiceException(serviceException);
+
             var expectedExamServiceException =
-                new ExamServiceException(serviceException);
+                new ExamServiceException(failedExamServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectExamByIdAsync(someExamId))
