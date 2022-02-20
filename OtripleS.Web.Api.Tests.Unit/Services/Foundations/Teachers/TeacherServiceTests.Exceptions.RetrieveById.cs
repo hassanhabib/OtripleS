@@ -95,7 +95,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnRetrieveIfServiceErrorOccursAndLogItAsync()
         {
             // given
             Guid someTeacherId = Guid.NewGuid();
