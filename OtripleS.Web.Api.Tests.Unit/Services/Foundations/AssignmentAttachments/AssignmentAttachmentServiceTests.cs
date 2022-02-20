@@ -34,10 +34,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
         }
 
         private static AssignmentAttachment CreateRandomAssignmentAttachment() =>
-            CreateAssignmentAttachmentFiller(DateTimeOffset.UtcNow).Create();
+            CreateAssignmentAttachmentFiller(dates: GetRandomDateTime()).Create();
 
         private static IQueryable<AssignmentAttachment> CreateRandomAssignmentAttachments() =>
-            CreateAssignmentAttachmentFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+            CreateAssignmentAttachmentFiller(dates: GetRandomDateTime()).Create(GetRandomNumber()).AsQueryable();
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
 
