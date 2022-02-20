@@ -296,9 +296,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Guid studentId = invalidTeacher.Id;
             invalidTeacher.CreatedDate = storageTeacher.CreatedDate.AddMinutes(randomNumber);
 
-            var invalidTeacherException = new InvalidTeacherException(
-                parameterName: nameof(Teacher.CreatedDate),
-                parameterValue: invalidTeacher.CreatedDate);
+            var invalidTeacherException = new InvalidTeacherException();
+
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.CreatedDate),
+                values: $"Date is the same as {nameof(Teacher.CreatedDate)}");
 
             var expectedTeacherValidationException =
               new TeacherValidationException(invalidTeacherException);
