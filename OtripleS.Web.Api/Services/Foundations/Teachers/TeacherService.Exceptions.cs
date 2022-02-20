@@ -88,12 +88,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
 
                 throw CreateAndLogCriticalDependencyException(failedTeacherStorageExceptin);
             }
-            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
-            {
-                var lockedTeacherException = new LockedTeacherException(dbUpdateConcurrencyException);
-
-                throw CreateAndLogDependencyValidationException(lockedTeacherException);
-            }
             catch (Exception exception)
             {
                 var failedTeacherServiceException =
