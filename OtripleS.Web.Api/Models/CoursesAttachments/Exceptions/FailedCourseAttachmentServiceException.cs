@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Models.CoursesAttachments.Exceptions
     public class FailedCourseAttachmentServiceException : Xeption
     {
         public FailedCourseAttachmentServiceException(Exception innerException)
-             : base(message: "Failed classroom service error occured, contact support.",
+             : base(message: "Failed course attachment service error occured, contact support.",
                   innerException)
         { }
     }
