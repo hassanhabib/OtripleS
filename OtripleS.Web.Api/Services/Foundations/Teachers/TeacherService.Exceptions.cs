@@ -38,6 +38,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             {
                 throw CreateAndLogValidationException(notFoundTeacherException);
             }
+            catch (SqlException sqlException)
+            {
+                var failedTeacherStorageExceptin =
+                    new FailedTeacherStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedTeacherStorageExceptin);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsTeacherException =
