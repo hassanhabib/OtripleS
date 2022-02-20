@@ -157,7 +157,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
             var failedCourseAttachmentServiceException =
                 new FailedCourseAttachmentServiceException(serviceException);
 
-            var expectedCourseAttachmentException = 
+            var expectedCourseAttachmenServiceException = 
                 new CourseAttachmentServiceException(failedCourseAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -180,7 +180,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedCourseAttachmentException))),
+                    expectedCourseAttachmenServiceException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>

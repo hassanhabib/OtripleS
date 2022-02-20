@@ -93,7 +93,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
         {
             // given
             CourseAttachment someCourseAttachment = CreateRandomCourseAttachment();
-
             var serviceException = new Exception();
 
             var failedCourseAttachmentServiceException =
