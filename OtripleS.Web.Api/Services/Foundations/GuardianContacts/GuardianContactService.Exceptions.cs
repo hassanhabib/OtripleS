@@ -89,7 +89,10 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedGuardianContactServiceException =
+                    new FailedGuardianContactServiceException(exception);
+
+                throw CreateAndLogServiceException(failedGuardianContactServiceException);
             }
         }
 
