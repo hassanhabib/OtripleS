@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         }
 
         [Fact]
-        public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
+        public void ShouldThrowServiceExceptionOnRetrieveAllIfServiceErrorOccursAndLogIt()
         {
             // given
             var serviceException = new Exception();
