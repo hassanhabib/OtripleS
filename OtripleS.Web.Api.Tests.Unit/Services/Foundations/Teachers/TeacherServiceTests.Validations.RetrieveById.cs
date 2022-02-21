@@ -19,18 +19,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         {
             // given
             Guid invalidTeacherId = Guid.Empty;
-            Guid inputTeacherId = invalidTeacherId;
 
             var invalidTeacherException = new InvalidTeacherException(
                 parameterName: nameof(Teacher.Id),
-                parameterValue: inputTeacherId);
+                parameterValue: invalidTeacherId);
 
             var expectedTeacherValidationException =
                 new TeacherValidationException(invalidTeacherException);
 
             // when
             ValueTask<Teacher> actualTeacherTask =
-                this.teacherService.RetrieveTeacherByIdAsync(inputTeacherId);
+                this.teacherService.RetrieveTeacherByIdAsync(invalidTeacherId);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() => actualTeacherTask.AsTask());
@@ -55,23 +54,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(dateTime);
-            Guid inputTeacherId = randomTeacher.Id;
-            Teacher inputTeacher = randomTeacher;
+            Teacher invalidTeacher = CreateRandomTeacher(dateTime);
+            Guid invalidTeacherId = invalidTeacher.Id;
             Teacher nullStorageTeacher = null;
 
-            var notFoundTeacherException = new NotFoundTeacherException(inputTeacherId);
+            var notFoundTeacherException = new NotFoundTeacherException(invalidTeacherId);
 
             var expectedTeacherValidationException =
                 new TeacherValidationException(notFoundTeacherException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectTeacherByIdAsync(inputTeacherId))
+                broker.SelectTeacherByIdAsync(invalidTeacherId))
                     .ReturnsAsync(nullStorageTeacher);
 
             // when
             ValueTask<Teacher> actualTeacherTask =
-                this.teacherService.RetrieveTeacherByIdAsync(inputTeacherId);
+                this.teacherService.RetrieveTeacherByIdAsync(invalidTeacherId);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() => actualTeacherTask.AsTask());
@@ -82,7 +80,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherByIdAsync(inputTeacherId),
+                broker.SelectTeacherByIdAsync(invalidTeacherId),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
