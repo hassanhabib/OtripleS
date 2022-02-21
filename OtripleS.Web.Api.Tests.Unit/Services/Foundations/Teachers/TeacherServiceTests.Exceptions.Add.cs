@@ -20,7 +20,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         [Fact]
         public async Task ShouldThrowCriticalDependencyExceptionOnAddIfSqlErrorOccursAndLogItAsync()
         {
-
+            // given
             Teacher someTeacher = CreateRandomTeacher();
             SqlException sqlException = GetSqlException();
 
@@ -93,17 +93,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 broker.GetCurrentDateTime(),
                     Times.Once());
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertTeacherAsync(It.IsAny<Teacher>()),
-                    Times.Never());
-
             this.loggingBrokerMock.Verify(broker => broker.LogError(It.Is(SameExceptionAs(
                     expectedTeacherDependencyValidationException))),
                         Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTeacherAsync(It.IsAny<Teacher>()),
+                    Times.Never());
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
         [Fact]
         public async Task ShouldThrowDependencyExceptionOnAddIfDatabaseUpdateErrorOccursAndLogItAsync()
