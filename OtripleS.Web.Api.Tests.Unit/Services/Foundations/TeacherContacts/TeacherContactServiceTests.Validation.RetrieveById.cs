@@ -18,21 +18,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         public async Task ShouldThrowValidatonExceptionOnRetrieveWhenTeacherIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomContactId = Guid.NewGuid();
+            Guid invalidContactId = Guid.Empty;
             Guid invalidTeacherId = Guid.Empty;
-            Guid inputContactId = randomContactId;
-            Guid inputTeacherId = invalidTeacherId;
 
             var invalidTeacherContactException = new InvalidTeacherContactException(
                 parameterName: nameof(TeacherContact.TeacherId),
-                parameterValue: inputTeacherId);
+                parameterValue: invalidTeacherId);
 
             var expectedTeacherContactValidationException =
                 new TeacherContactValidationException(invalidTeacherContactException);
 
             // when
             ValueTask<TeacherContact> retrieveTeacherContactTask =
-                this.teacherContactService.RetrieveTeacherContactByIdAsync(inputTeacherId, inputContactId);
+                this.teacherContactService.RetrieveTeacherContactByIdAsync(invalidTeacherId, invalidContactId);
 
             // then
             await Assert.ThrowsAsync<TeacherContactValidationException>(() => retrieveTeacherContactTask.AsTask());
@@ -55,20 +53,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         {
             // given
             Guid invalidContactId = Guid.Empty;
-            Guid randomTeacherId = Guid.NewGuid();
-            Guid inputContactId = invalidContactId;
-            Guid inputTeacherId = randomTeacherId;
+            Guid invalidTeacherId = Guid.Empty;
 
             var invalidTeacherContactException = new InvalidTeacherContactException(
                 parameterName: nameof(TeacherContact.ContactId),
-                parameterValue: inputContactId);
+                parameterValue: invalidContactId);
 
             var expectedTeacherContactValidationException =
                 new TeacherContactValidationException(invalidTeacherContactException);
 
             // when
             ValueTask<TeacherContact> retrieveTeacherContactTask =
-                this.teacherContactService.RetrieveTeacherContactByIdAsync(inputTeacherId, inputContactId);
+                this.teacherContactService.RetrieveTeacherContactByIdAsync(invalidTeacherId, invalidContactId);
 
             // then
             await Assert.ThrowsAsync<TeacherContactValidationException>(() => retrieveTeacherContactTask.AsTask());
@@ -92,23 +88,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
             TeacherContact randomTeacherContact = CreateRandomTeacherContact(randomDateTime);
-            Guid inputContactId = randomTeacherContact.ContactId;
-            Guid inputTeacherId = randomTeacherContact.TeacherId;
+            Guid invalidContactId = Guid.Empty;
+            Guid invalidTeacherId = Guid.Empty;
             TeacherContact nullStorageTeacherContact = null;
 
             var notFoundTeacherContactException =
-                new NotFoundTeacherContactException(inputTeacherId, inputContactId);
+                new NotFoundTeacherContactException(invalidTeacherId, invalidContactId);
 
             var expectedSemesterCourseValidationException =
                 new TeacherContactValidationException(notFoundTeacherContactException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectTeacherContactByIdAsync(inputTeacherId, inputContactId))
+                 broker.SelectTeacherContactByIdAsync(invalidTeacherId, invalidContactId))
                     .ReturnsAsync(nullStorageTeacherContact);
 
             // when
             ValueTask<TeacherContact> retrieveTeacherContactTask =
-                this.teacherContactService.RetrieveTeacherContactByIdAsync(inputTeacherId, inputContactId);
+                this.teacherContactService.RetrieveTeacherContactByIdAsync(invalidTeacherId, invalidContactId);
 
             // then
             await Assert.ThrowsAsync<TeacherContactValidationException>(() =>
