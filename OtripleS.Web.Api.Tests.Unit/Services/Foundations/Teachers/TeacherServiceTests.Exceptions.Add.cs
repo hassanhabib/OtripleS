@@ -64,8 +64,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         public async Task ShouldThrowDependencyValidationExceptionOnAddIfTeacherAlreadyExsitsAndLogItAsync()
         {
             // given
-            var randomTeacher = CreateRandomTeacher();
-            var alreadyExistsTeacher = randomTeacher;
+            var someTeacher = CreateRandomTeacher();
+            var alreadyExistsTeacher = someTeacher;
             string randomMessage = GetRandomMessage();
 
             var duplicateKeyException =
