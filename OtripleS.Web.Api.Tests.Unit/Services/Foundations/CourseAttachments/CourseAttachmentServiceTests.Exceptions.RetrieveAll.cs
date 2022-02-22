@@ -25,7 +25,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
                 broker.SelectAllCourseAttachments())
                     .Throws(sqlException);
 
-
             // when
             Action retrieveAllCourseAttachmentAction = () =>
                 this.courseAttachmentService.RetrieveAllCourseAttachments();
@@ -33,7 +32,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
             // then
             Assert.Throws<CourseAttachmentDependencyException>(
                retrieveAllCourseAttachmentAction);
-
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCourseAttachments(),
