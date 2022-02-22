@@ -15,24 +15,24 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
     public partial class TeacherServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnDeleteWhenIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnDeleteIfIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomTeacherId = default;
-            Guid inputTeacherId = randomTeacherId;
+            Guid invalidTeacherId = Guid.Empty;
+            var invalidTeacherException = new InvalidTeacherException();
 
-            var invalidTeacherException = new InvalidTeacherException(
-                parameterName: nameof(Teacher.Id),
-                parameterValue: inputTeacherId);
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.Id),
+                values: "Id is required");
 
             var expectedTeacherValidationException = new TeacherValidationException(invalidTeacherException);
 
             // when
-            ValueTask<Teacher> actualTeacherTask =
-                this.teacherService.RemoveTeacherByIdAsync(inputTeacherId);
+            ValueTask<Teacher> removeTeacherTask =
+                this.teacherService.RemoveTeacherByIdAsync(invalidTeacherId);
 
             // then
-            await Assert.ThrowsAsync<TeacherValidationException>(() => actualTeacherTask.AsTask());
+            await Assert.ThrowsAsync<TeacherValidationException>(() => removeTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -72,11 +72,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                     .ReturnsAsync(nullStorageTeacher);
 
             // when
-            ValueTask<Teacher> actualTeacherTask =
+            ValueTask<Teacher> removeTeacherTask =
                 this.teacherService.RemoveTeacherByIdAsync(inputTeacherId);
 
             // then
-            await Assert.ThrowsAsync<TeacherValidationException>(() => actualTeacherTask.AsTask());
+            await Assert.ThrowsAsync<TeacherValidationException>(() => removeTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(

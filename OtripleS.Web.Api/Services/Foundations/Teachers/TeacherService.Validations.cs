@@ -13,12 +13,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
     {
         private static void ValidateTeacherId(Guid teacherId)
         {
-            if (teacherId == default)
-            {
-                throw new InvalidTeacherException(
-                    parameterName: nameof(Teacher.Id),
-                    parameterValue: teacherId);
-            }
+            Validate((Rule: IsInvalidX(teacherId), Parameter: nameof(Teacher.Id)));
         }
 
         private static void ValidateStorageTeacher(Teacher maybeTeacher, Guid teacherId)
@@ -135,7 +130,14 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
                 (Rule: IsInvalidX(teacher.UpdatedBy), Parameter: nameof(Teacher.UpdatedBy)),
                 (Rule: IsInvalidX(teacher.CreatedDate), Parameter: nameof(Teacher.CreatedDate)),
                 (Rule: IsInvalidX(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate)),
-                (Rule: IsNotRecent(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate))
+                (Rule: IsNotRecent(teacher.UpdatedDate), Parameter: nameof(Teacher.UpdatedDate)),
+
+                (Rule: IsSame(
+                    firstDate: teacher.UpdatedDate,
+                    secondDate: teacher.CreatedDate,
+                    secondDateName: nameof(Teacher.CreatedDate)),
+
+                Parameter: nameof(Teacher.UpdatedDate))
             );
         }
 
@@ -158,23 +160,24 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
 
         private static void ValidateAgainstStorageTeacherOnModify(Teacher inputTeacher, Teacher storageTeacher)
         {
-            switch (inputTeacher)
-            {
-                case { } when inputTeacher.CreatedDate != storageTeacher.CreatedDate:
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(Teacher.CreatedDate),
-                        parameterValue: inputTeacher.CreatedDate);
+            Validate(
+                (Rule: IsNotSame(
+                    firstId: inputTeacher.CreatedBy,
+                    secondId: storageTeacher.CreatedBy,
+                    secondIdName: nameof(Teacher.CreatedBy)),
+                Parameter: nameof(Teacher.CreatedBy)),
 
-                case { } when inputTeacher.CreatedBy != storageTeacher.CreatedBy:
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(Teacher.CreatedBy),
-                        parameterValue: inputTeacher.CreatedBy);
+                (Rule: IsNotSame(
+                    firstDate: inputTeacher.CreatedDate,
+                    secondDate: storageTeacher.CreatedDate,
+                    secondDateName: nameof(Teacher.CreatedDate)),
+                Parameter: nameof(Teacher.CreatedDate)),
 
-                case { } when inputTeacher.UpdatedDate == storageTeacher.UpdatedDate:
-                    throw new InvalidTeacherException(
-                        parameterName: nameof(Teacher.UpdatedDate),
-                        parameterValue: inputTeacher.UpdatedDate);
-            }
+                (Rule: IsSame(
+                    firstDate: inputTeacher.UpdatedDate,
+                    secondDate: storageTeacher.UpdatedDate,
+                    secondDateName: nameof(Teacher.UpdatedDate)),
+                Parameter: nameof(Teacher.UpdatedDate)));
         }
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);

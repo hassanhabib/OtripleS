@@ -17,14 +17,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
     public partial class TeacherServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnDeleteWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowCriticalDependencyExceptionOnRemoveIfSqlErrorOccursAndLogItAsync()
         {
             // given
             Guid someTeacherId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
+            var failedTeacherStorageException =
+                new FailedTeacherStorageException(sqlException);
+
             var expectedTeacherDependencyException =
-                new TeacherDependencyException(sqlException);
+                new TeacherDependencyException(failedTeacherStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherByIdAsync(someTeacherId))
@@ -53,14 +56,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnDeleteIfDbUpdateExceptionOccursAndLogItAsync()
         {
             // given
             Guid someTeacherId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
+            var failedTeacherStorageException =
+                new FailedTeacherStorageException(databaseUpdateException);
+
             var expectedTeacherDependencyException =
-                new TeacherDependencyException(databaseUpdateException);
+                new TeacherDependencyException(failedTeacherStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherByIdAsync(someTeacherId))
@@ -89,15 +95,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyValidationOnRemoveIfDatabaseUpdateConcurrencyErrorOccursAndLogItAsync()
         {
             // given
             Guid someTeacherId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
             var lockedTeacherException = new LockedTeacherException(databaseUpdateConcurrencyException);
 
-            var expectedTeacherDependencyException =
-                new TeacherDependencyException(lockedTeacherException);
+            var expectedTeacherDependencyValidationException =
+                new TeacherDependencyValidationException(lockedTeacherException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherByIdAsync(someTeacherId))
@@ -108,12 +114,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 this.teacherService.RemoveTeacherByIdAsync(someTeacherId);
 
             // then
-            await Assert.ThrowsAsync<TeacherDependencyException>(() =>
+            await Assert.ThrowsAsync<TeacherDependencyValidationException>(() =>
                 deleteTeacherTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedTeacherDependencyException))),
+                    expectedTeacherDependencyValidationException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
@@ -126,7 +132,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnDeleteIfServiceErrorOccursAndLogItAsync()
         {
             // given
             Guid randomTeacherId = Guid.NewGuid();

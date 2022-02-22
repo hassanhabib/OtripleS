@@ -18,19 +18,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         public async Task ShouldThrowValidatonExceptionOnRetrieveWhenUserIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomUserId = default;
-            Guid inputUserId = randomUserId;
-
+            Guid invalidUserId = Guid.Empty;
             var invalidUserException = new InvalidUserException(
                 parameterName: nameof(User.Id),
-                parameterValue: inputUserId);
+                parameterValue: invalidUserId);
 
             var expectedUserValidationException =
                 new UserValidationException(invalidUserException);
 
             // when
             ValueTask<User> actualUserTask =
-                this.userService.RetrieveUserByIdAsync(inputUserId);
+                this.userService.RetrieveUserByIdAsync(invalidUserId);
 
             // then
             await Assert.ThrowsAsync<UserValidationException>(() => actualUserTask.AsTask());
@@ -53,21 +51,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         public async Task ShouldThrowValidatonExceptionOnRetrieveWhenStorageUserIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomUserId = Guid.NewGuid();
-            Guid inputUserId = randomUserId;
+            Guid invalidUserId = Guid.NewGuid();
             User invalidStorageUser = null;
-            var notFoundUserException = new NotFoundUserException(inputUserId);
+            var notFoundUserException = new NotFoundUserException(invalidUserId);
 
             var expectedUserValidationException =
                 new UserValidationException(notFoundUserException);
 
             this.userManagementBrokerMock.Setup(broker =>
-                broker.SelectUserByIdAsync(inputUserId))
+                broker.SelectUserByIdAsync(invalidUserId))
                     .ReturnsAsync(invalidStorageUser);
 
             // when
             ValueTask<User> retrieveUserTask =
-                this.userService.RetrieveUserByIdAsync(inputUserId);
+                this.userService.RetrieveUserByIdAsync(invalidUserId);
 
             // then
             await Assert.ThrowsAsync<UserValidationException>(() =>
@@ -83,7 +80,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                     Times.Never);
 
             this.userManagementBrokerMock.Verify(broker =>
-                broker.SelectUserByIdAsync(inputUserId),
+                broker.SelectUserByIdAsync(invalidUserId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

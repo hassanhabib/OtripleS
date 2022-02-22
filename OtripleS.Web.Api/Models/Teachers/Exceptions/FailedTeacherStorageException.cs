@@ -3,12 +3,15 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
 using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Teachers.Exceptions
 {
-    public class NullTeacherException : Xeption
+    public class FailedTeacherStorageException : Xeption
     {
-        public NullTeacherException() : base(message: "The teacher is null.") { }
+        public FailedTeacherStorageException(Exception innerException)
+            : base(message: "Failed teacher storage error occurred, contact support.", innerException)
+        { }
     }
 }

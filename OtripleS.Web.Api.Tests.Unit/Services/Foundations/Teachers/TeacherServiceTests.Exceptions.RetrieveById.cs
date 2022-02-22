@@ -17,14 +17,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
     public partial class TeacherServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowCriticalDependencyExceptionOnRetrievebyIdIfSqlErrorOccursAndLogItAsync()
         {
             // given
             Guid someTeacherId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
+            var failedTeacherStorageException =
+                new FailedTeacherStorageException(sqlException);
+
             var expectedTeacherDependencyException =
-                new TeacherDependencyException(sqlException);
+                new TeacherDependencyException(failedTeacherStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherByIdAsync(someTeacherId))
@@ -53,14 +56,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveIfDbUpdateErrorOccursAndLogItAsync()
         {
             // given
             Guid someTeacherId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
+            var failedTeacherStorageException =
+                new FailedTeacherStorageException(databaseUpdateException);
+
             var expectedTeacherDependencyException =
-                new TeacherDependencyException(databaseUpdateException);
+                new TeacherDependencyException(failedTeacherStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherByIdAsync(someTeacherId))
@@ -89,7 +95,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnRetrieveIfServiceErrorOccursAndLogItAsync()
         {
             // given
             Guid someTeacherId = Guid.NewGuid();

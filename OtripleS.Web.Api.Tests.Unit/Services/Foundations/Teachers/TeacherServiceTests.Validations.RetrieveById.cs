@@ -15,22 +15,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
     public partial class TeacherServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdIfIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomTeacherId = default;
-            Guid inputTeacherId = randomTeacherId;
+            Guid invalidTeacherId = Guid.Empty;
+            var invalidTeacherException = new InvalidTeacherException();
 
-            var invalidTeacherException = new InvalidTeacherException(
-                parameterName: nameof(Teacher.Id),
-                parameterValue: inputTeacherId);
+            invalidTeacherException.AddData(
+               key: nameof(Teacher.Id),
+               values: "Id is required");
 
             var expectedTeacherValidationException =
                 new TeacherValidationException(invalidTeacherException);
 
             // when
             ValueTask<Teacher> actualTeacherTask =
-                this.teacherService.RetrieveTeacherByIdAsync(inputTeacherId);
+                this.teacherService.RetrieveTeacherByIdAsync(invalidTeacherId);
 
             // then
             await Assert.ThrowsAsync<TeacherValidationException>(() => actualTeacherTask.AsTask());

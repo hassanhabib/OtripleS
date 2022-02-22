@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        [InlineData("   ")]
+        [InlineData(" ")]
         public async void ShouldThrowValidationExceptionOnModifyIfTeacherIsInvalidAndLogItAsync(
             string invalidText)
         {
@@ -96,7 +96,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             invalidTeacherException.AddData(
                 key: nameof(Teacher.UpdatedDate),
-                values: "Date is required");
+                "Date is required",
+                $"Date is the same as {nameof(Teacher.CreatedDate)}");
 
             invalidTeacherException.AddData(
                 key: nameof(Teacher.CreatedBy),
@@ -122,7 +123,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameValidationExceptionAs(
+                broker.LogError(It.Is(SameExceptionAs(
                     expectedTeacherValidationException))),
                         Times.Once);
 
@@ -146,10 +147,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             invalidTeacherException.AddData(
                 key: nameof(Teacher.UpdatedDate),
-                values: $"UpdatedDate is the same as {nameof(Teacher.CreatedDate)}");
+                values: $"Date is the same as {nameof(Teacher.CreatedDate)}");
 
             var expectedTeacherValidationException =
                 new TeacherValidationException(invalidTeacherException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
 
             // when
             ValueTask<Teacher> modifyTeacherTask =
@@ -289,10 +294,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Teacher storageTeacher = randomTeacher.DeepClone();
             Guid studentId = invalidTeacher.Id;
             invalidTeacher.CreatedDate = storageTeacher.CreatedDate.AddMinutes(randomNumber);
+            var invalidTeacherException = new InvalidTeacherException();
 
-            var invalidTeacherException = new InvalidTeacherException(
-                parameterName: nameof(Teacher.CreatedDate),
-                parameterValue: invalidTeacher.CreatedDate);
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.CreatedDate),
+                values: $"Date is not the same as {nameof(Teacher.CreatedDate)}");
 
             var expectedTeacherValidationException =
               new TeacherValidationException(invalidTeacherException);
@@ -346,12 +352,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             Guid studentId = invalidTeacher.Id;
             invalidTeacher.CreatedBy = invalidCreatedBy;
 
-            var InvalidTeacherException = new InvalidTeacherException(
-                parameterName: nameof(Teacher.CreatedBy),
-                parameterValue: invalidTeacher.CreatedBy);
+            var invalidTeacherException = new InvalidTeacherException();
+
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.CreatedBy),
+                values: $"Id is not the same as {nameof(Teacher.CreatedBy)}");
 
             var expectedTeacherValidationException =
-              new TeacherValidationException(InvalidTeacherException);
+              new TeacherValidationException(invalidTeacherException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherByIdAsync(studentId))
@@ -400,13 +408,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             invalidTeacher.UpdatedDate = randomDate;
             Teacher storageTeacher = randomTeacher.DeepClone();
             Guid studentId = invalidTeacher.Id;
+            var invalidTeacherException = new InvalidTeacherException();
 
-            var InvalidTeacherException = new InvalidTeacherException(
-                parameterName: nameof(Teacher.UpdatedDate),
-                parameterValue: invalidTeacher.UpdatedDate);
+            invalidTeacherException.AddData(
+                key: nameof(Teacher.UpdatedDate),
+                values: $"Date is the same as {nameof(Teacher.UpdatedDate)}");
 
             var expectedTeacherValidationException =
-              new TeacherValidationException(InvalidTeacherException);
+              new TeacherValidationException(invalidTeacherException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectTeacherByIdAsync(studentId))

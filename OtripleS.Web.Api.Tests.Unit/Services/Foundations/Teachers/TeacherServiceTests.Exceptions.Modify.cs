@@ -17,26 +17,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
     public partial class TeacherServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnModifyIfSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowCriticalDependencyExceptionOnModifyIfSqlErrorOccursAndLogItAsync()
         {
             // given
-            int randomNegativeNumber = GetNegativeRandomNumber();
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(randomDateTime);
-            Teacher someTeacher = randomTeacher;
-            someTeacher.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+            Teacher someTeacher = CreateRandomTeacher();
             SqlException sqlException = GetSqlException();
 
-            var expectedTeacherDependencyException =
-                new TeacherDependencyException(sqlException);
+            var failedStorageTeacherException =
+                new FailedTeacherStorageException(sqlException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectTeacherByIdAsync(someTeacher.Id))
-                    .ThrowsAsync(sqlException);
+            var expectedTeacherDependencyException =
+                new TeacherDependencyException(failedStorageTeacherException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(randomDateTime);
+                    .Throws(sqlException);
 
             // when
             ValueTask<Teacher> modifyTeacherTask =
@@ -52,12 +47,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectTeacherByIdAsync(someTeacher.Id),
-                    Times.Once);
+                    Times.Never);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
                     expectedTeacherDependencyException))),
                         Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateTeacherAsync(It.IsAny<Teacher>()),
+                    Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -68,27 +67,22 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateExceptionOccursAndLogItAsync()
         {
             // given
-            int randomNegativeNumber = GetNegativeRandomNumber();
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(randomDateTime);
-            Teacher someTeacher = randomTeacher;
-            someTeacher.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+            Teacher randomTeacher = CreateRandomTeacher();
             var databaseUpdateException = new DbUpdateException();
 
-            var expectedTeacherDependencyException =
-                new TeacherDependencyException(databaseUpdateException);
+            var failedTeacherStorageException =
+                new FailedTeacherStorageException(databaseUpdateException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectTeacherByIdAsync(someTeacher.Id))
-                    .ThrowsAsync(databaseUpdateException);
+            var expectedTeacherDependencyException =
+                new TeacherDependencyException(failedTeacherStorageException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(randomDateTime);
+                    .Throws(databaseUpdateException);
 
             // when
             ValueTask<Teacher> modifyTeacherTask =
-                this.teacherService.ModifyTeacherAsync(someTeacher);
+                this.teacherService.ModifyTeacherAsync(randomTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherDependencyException>(() =>
@@ -99,13 +93,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherByIdAsync(someTeacher.Id),
-                    Times.Once);
+                broker.SelectTeacherByIdAsync(randomTeacher.Id),
+                    Times.Never);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedTeacherDependencyException))),
                         Times.Once);
+
+            this.storageBrokerMock.Verify(broker => broker.
+                UpdateTeacherAsync(It.IsAny<Teacher>()),
+                    Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -116,31 +114,25 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            int randomNegativeNumber = GetNegativeRandomNumber();
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(randomDateTime);
-            Teacher someTeacher = randomTeacher;
-            someTeacher.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+            Teacher someTeacher = CreateRandomTeacher();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
-            var lockedTeacherException = new LockedTeacherException(databaseUpdateConcurrencyException);
 
-            var expectedTeacherDependencyException =
-                new TeacherDependencyException(lockedTeacherException);
+            var lockedTeacherException =
+                new LockedTeacherException(databaseUpdateConcurrencyException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectTeacherByIdAsync(someTeacher.Id))
-                    .ThrowsAsync(databaseUpdateConcurrencyException);
+            var expectedTeacherDependencyValidationException =
+                new TeacherDependencyValidationException(lockedTeacherException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(randomDateTime);
+                    .Throws(databaseUpdateConcurrencyException);
 
             // when
             ValueTask<Teacher> modifyTeacherTask =
                 this.teacherService.ModifyTeacherAsync(someTeacher);
 
             // then
-            await Assert.ThrowsAsync<TeacherDependencyException>(() =>
+            await Assert.ThrowsAsync<TeacherDependencyValidationException>(() =>
                 modifyTeacherTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -149,12 +141,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectTeacherByIdAsync(someTeacher.Id),
-                    Times.Once);
+                    Times.Never);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedTeacherDependencyException))),
+                    expectedTeacherDependencyValidationException))),
                         Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateTeacherAsync(It.IsAny<Teacher>()),
+                    Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -162,7 +158,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnModifyIfServiceExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnModifyIfServiceErrorOccursAndLogItAsync()
         {
             // given
             int randomNegativeNumber = GetNegativeRandomNumber();

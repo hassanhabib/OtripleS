@@ -87,7 +87,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Registrations
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedRegistrationServiceException =
+                    new FailedRegistrationServiceException(exception);
+
+                throw CreateAndLogServiceException(failedRegistrationServiceException);
             }
         }
 

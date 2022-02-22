@@ -53,8 +53,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             // given
             var serviceException = new Exception();
 
+            var failedRegistrationServiceException =
+                new FailedRegistrationServiceException(serviceException);
+
             var expectedRegistrationServiceException =
-                new RegistrationServiceException(serviceException);
+                new RegistrationServiceException(failedRegistrationServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllRegistrations())
