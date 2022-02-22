@@ -25,11 +25,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
             StudentExam inputStudentExam = randomStudentExam;
             inputStudentExam.UpdatedBy = inputStudentExam.CreatedBy;
 
-
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
                     .Returns(dateTime);
-
 
             // when
             ValueTask<StudentExam> addStudentExamTask =
