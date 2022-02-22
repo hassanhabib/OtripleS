@@ -459,7 +459,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
-
         [Fact]
         public async Task ShouldThrowValidationExceptionOnModifyIfStorageCreatedDateNotSameAsCreateDateAndLogItAsync()
         {

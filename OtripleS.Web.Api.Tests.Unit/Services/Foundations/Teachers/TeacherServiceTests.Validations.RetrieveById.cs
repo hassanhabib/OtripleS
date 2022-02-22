@@ -49,7 +49,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-
         [Fact]
         public async Task ShouldThrowValidatonExceptionOnRetriveWhenStorageTeacherIsInvalidAndLogItAsync()
         {

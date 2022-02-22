@@ -54,7 +54,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-
         }
 
         [Fact]

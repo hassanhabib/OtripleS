@@ -88,7 +88,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-
         }
 
         [Theory]
@@ -129,7 +128,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-
         }
 
         [Theory]
@@ -173,7 +171,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-
         }
 
         [Theory]
@@ -216,7 +213,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-
         }
 
         [Theory]
@@ -257,7 +253,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-
         }
 
         [Theory]
@@ -301,7 +296,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-
         }
 
 
@@ -635,6 +629,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-
     }
 }

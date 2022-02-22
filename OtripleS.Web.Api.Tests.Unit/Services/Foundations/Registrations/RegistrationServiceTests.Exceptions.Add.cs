@@ -158,7 +158,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
-
-
     }
 }
