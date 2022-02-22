@@ -21,7 +21,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
             // given
             Contact invalidContact = null;
 
-
             var nullContactException = new NullContactException();
 
             var expectedContactValidationException =
