@@ -54,7 +54,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-
         [Fact]
         public async Task ShouldThrowValidatonExceptionOnRemoveWhenStorageFeeIsInvalidAndLogItAsync()
         {
