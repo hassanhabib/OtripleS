@@ -191,6 +191,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-
     }
 }
