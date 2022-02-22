@@ -33,7 +33,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             Assert.Throws<StudentDependencyException>(
                 retrieveAllStudentsAction);
 
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllStudents(),
                     Times.Once);
