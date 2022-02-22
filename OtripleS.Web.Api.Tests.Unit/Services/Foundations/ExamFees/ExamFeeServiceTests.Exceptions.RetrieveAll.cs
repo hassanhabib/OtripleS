@@ -81,6 +81,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-
     }
 }

@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
         private static IQueryable<AssignmentAttachment> CreateRandomAssignmentAttachments() =>
             CreateAssignmentAttachmentFiller(dates: GetRandomDateTime()).Create(GetRandomNumber()).AsQueryable();
-
+            
         private static int GetRandomNumber() => new IntRange(min: 2, max: 150).GetValue();
 
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)

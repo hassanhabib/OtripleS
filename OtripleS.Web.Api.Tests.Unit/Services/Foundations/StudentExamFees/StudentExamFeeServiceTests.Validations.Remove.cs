@@ -14,7 +14,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExamFees
 {
     public partial class StudentExamFeeServiceTests
     {
-
         [Fact]
         public async Task ShouldThrowValidatonExceptionOnRemoveWhenStudentIdIsInvalidAndLogItAsync()
         {
