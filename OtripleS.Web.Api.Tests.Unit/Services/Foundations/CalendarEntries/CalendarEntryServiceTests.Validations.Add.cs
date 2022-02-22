@@ -21,7 +21,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             // given
             CalendarEntry invalidCalendarEntry = null;
 
-
             var nullCalendarEntryException = new NullCalendarEntryException();
 
             var expectedCalendarEntryValidationException =
@@ -325,7 +324,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-
         }
 
         [Fact]
