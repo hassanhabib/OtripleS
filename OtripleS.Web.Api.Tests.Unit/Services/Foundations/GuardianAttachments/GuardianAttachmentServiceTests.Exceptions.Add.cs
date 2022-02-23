@@ -95,8 +95,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
             GuardianAttachment someGuardianAttachment = randomGuardianAttachment;
             var serviceException = new Exception();
 
+            var failedGuardianAttachmentServiceException =
+                new FailedGuardianAttachmentServiceException(serviceException);
+
             var expectedGuardianAttachmentServiceException =
-                new GuardianAttachmentServiceException(serviceException);
+                new GuardianAttachmentServiceException(failedGuardianAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertGuardianAttachmentAsync(someGuardianAttachment))
