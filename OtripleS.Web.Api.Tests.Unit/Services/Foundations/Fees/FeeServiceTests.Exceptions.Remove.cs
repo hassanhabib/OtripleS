@@ -134,7 +134,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             var serviceException = new Exception();
 
             var failedFeeServiceException =
-                new FeeServiceException(serviceException);
+                new FailedFeeServiceException(serviceException);
 
             var expectedFeeServiceException =
                 new FeeServiceException(failedFeeServiceException);
