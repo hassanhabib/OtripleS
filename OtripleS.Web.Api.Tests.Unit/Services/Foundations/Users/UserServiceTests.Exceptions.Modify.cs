@@ -52,6 +52,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Once);
+
             this.userManagementBrokerMock.Verify(broker =>
                 broker.SelectUserByIdAsync(someUser.Id),
                     Times.Once);

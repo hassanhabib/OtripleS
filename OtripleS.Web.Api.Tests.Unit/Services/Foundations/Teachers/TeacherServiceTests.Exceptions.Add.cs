@@ -5,6 +5,8 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Teachers;
@@ -16,33 +18,33 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
     public partial class TeacherServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnCreateWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowCriticalDependencyExceptionOnAddIfSqlErrorOccursAndLogItAsync()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(dateTime);
-            Teacher inputTeacher = randomTeacher;
-            inputTeacher.UpdatedBy = inputTeacher.CreatedBy;
-            var sqlException = GetSqlException();
+            Teacher someTeacher = CreateRandomTeacher();
+            SqlException sqlException = GetSqlException();
+
+            var failedTeacherStorageException =
+                new FailedTeacherStorageException(sqlException);
 
             var expectedTeacherDependencyException =
-                new TeacherDependencyException(sqlException);
+                new TeacherDependencyException(failedTeacherStorageException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertTeacherAsync(inputTeacher))
-                    .ThrowsAsync(sqlException);
+                    .Throws(sqlException);
 
             // when
-            ValueTask<Teacher> createTeacherTask =
-                this.teacherService.CreateTeacherAsync(inputTeacher);
+            ValueTask<Teacher> addTeacherTask =
+                this.teacherService.CreateTeacherAsync(someTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherDependencyException>(() =>
-                createTeacherTask.AsTask());
+                addTeacherTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
@@ -50,12 +52,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertTeacherAsync(inputTeacher),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
+                broker.InsertTeacherAsync(It.IsAny<Teacher>()),
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -63,33 +61,78 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnCreateWhenDbExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyValidationExceptionOnAddIfTeacherAlreadyExsitsAndLogItAsync()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(dateTime);
-            Teacher inputTeacher = randomTeacher;
-            inputTeacher.UpdatedBy = inputTeacher.CreatedBy;
-            var databaseUpdateException = new DbUpdateException();
+            var someTeacher = CreateRandomTeacher();
+            var alreadyExistsTeacher = someTeacher;
+            string randomMessage = GetRandomMessage();
 
-            var expectedTeacherDependencyException =
-                new TeacherDependencyException(databaseUpdateException);
+            var duplicateKeyException =
+                new DuplicateKeyException(randomMessage);
+
+            var alreadyExistsTeacherException =
+                new AlreadyExistsTeacherException(duplicateKeyException);
+
+            var expectedTeacherDependencyValidationException =
+                new TeacherDependencyValidationException(alreadyExistsTeacherException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
+                    .Throws(duplicateKeyException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertTeacherAsync(inputTeacher))
-                    .ThrowsAsync(databaseUpdateException);
+            // when 
+            ValueTask<Teacher> addTeacherTask =
+                this.teacherService.CreateTeacherAsync(alreadyExistsTeacher);
+
+            // then
+            await Assert.ThrowsAsync<TeacherDependencyValidationException>(() =>
+                addTeacherTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once());
+
+            this.loggingBrokerMock.Verify(broker => broker.LogError(It.Is(SameExceptionAs(
+                    expectedTeacherDependencyValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTeacherAsync(It.IsAny<Teacher>()),
+                    Times.Never());
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnAddIfDatabaseUpdateErrorOccursAndLogItAsync()
+        {
+            // given
+            Teacher someTeacher = CreateRandomTeacher();
+            var databaseUpdateException = new DbUpdateException();
+
+            var failedTeacherStorageException =
+                new FailedTeacherStorageException(databaseUpdateException);
+
+            var expectedTeacherDependencyException =
+                new TeacherDependencyException(failedTeacherStorageException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Throws(databaseUpdateException);
 
             // when
-            ValueTask<Teacher> createTeacherTask =
-                this.teacherService.CreateTeacherAsync(inputTeacher);
+            ValueTask<Teacher> addTeacherTask =
+                this.teacherService.CreateTeacherAsync(someTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherDependencyException>(() =>
-                createTeacherTask.AsTask());
+                addTeacherTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -97,12 +140,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertTeacherAsync(inputTeacher),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
+                broker.InsertTeacherAsync(It.IsAny<Teacher>()),
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
@@ -110,13 +149,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnCreateWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(dateTime);
-            Teacher inputTeacher = randomTeacher;
-            inputTeacher.UpdatedBy = inputTeacher.CreatedBy;
+            Teacher someTeacher = CreateRandomTeacher();
             var serviceException = new Exception();
 
             var failedTeacherServiceException =
@@ -127,19 +163,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertTeacherAsync(inputTeacher))
-                    .ThrowsAsync(serviceException);
+                    .Throws(serviceException);
 
             // when
-            ValueTask<Teacher> createTeacherTask =
-                 this.teacherService.CreateTeacherAsync(inputTeacher);
+            ValueTask<Teacher> addTeacherTask =
+                 this.teacherService.CreateTeacherAsync(someTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherServiceException>(() =>
-                createTeacherTask.AsTask());
+                addTeacherTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -147,12 +183,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertTeacherAsync(inputTeacher),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
+                broker.InsertTeacherAsync(It.IsAny<Teacher>()),
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

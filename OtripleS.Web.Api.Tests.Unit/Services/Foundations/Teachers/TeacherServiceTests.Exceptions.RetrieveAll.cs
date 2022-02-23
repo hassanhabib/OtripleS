@@ -14,13 +14,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
     public partial class TeacherServiceTests
     {
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogIt()
+        public void ShouldThrowCriticalDependencyExceptionOnRetrieveAllIfSqlErrorOccursAndLogIt()
         {
             // given
             SqlException sqlException = GetSqlException();
 
+            var failedTeacherStorageException =
+                new FailedTeacherStorageException(sqlException);
+
             var expectedTeacherDependencyException =
-                new TeacherDependencyException(sqlException);
+                new TeacherDependencyException(failedTeacherStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllTeachers())
@@ -53,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
         }
 
         [Fact]
-        public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
+        public void ShouldThrowServiceExceptionOnRetrieveAllIfServiceErrorOccursAndLogIt()
         {
             // given
             var serviceException = new Exception();

@@ -119,8 +119,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             inputFee.UpdatedBy = inputFee.CreatedBy;
             var serviceException = new Exception();
 
+            var failedFeeServiceException =
+                new FailedFeeServiceException(serviceException);
+
             var expectedFeeServiceException =
-                new FeeServiceException(serviceException);
+                new FeeServiceException(failedFeeServiceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())

@@ -60,7 +60,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Fees
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedFeeServiceException =
+                    new FailedFeeServiceException(exception);
+
+                throw CreateAndLogServiceException(failedFeeServiceException);
             }
         }
 

@@ -124,7 +124,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
-
         [Fact]
         public async void ShouldThrowValidationExceptionOnCreateWhenCreatedDateIsInvalidAndLogItAsync()
         {

@@ -25,7 +25,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
             this.storageBrokerMock.Setup(broker => broker.SelectAllGuardianContacts())
                 .Throws(sqlException);
 
-
             // when
             Action retrieveAllGuardianContactAction = () =>
                 this.guardianContactService.RetrieveAllGuardianContacts();
@@ -50,13 +49,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         public void ShouldThrowServiceExceptionOnRetrieveAllWhenExceptionOccursAndLogIt()
         {
             // given
-            var exception = new Exception();
+            var serviceException = new Exception();
+
+            var failedGuardianContactServiceException =
+                new FailedGuardianContactServiceException(serviceException);
 
             var expectedGuardianContactServiceException =
-                new GuardianContactServiceException(exception);
+                new GuardianContactServiceException(failedGuardianContactServiceException);
 
             this.storageBrokerMock.Setup(broker => broker.SelectAllGuardianContacts())
-                .Throws(exception);
+                .Throws(serviceException);
 
             // when . then
             Assert.Throws<GuardianContactServiceException>(() =>

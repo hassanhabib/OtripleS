@@ -165,6 +165,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
-
     }
 }
