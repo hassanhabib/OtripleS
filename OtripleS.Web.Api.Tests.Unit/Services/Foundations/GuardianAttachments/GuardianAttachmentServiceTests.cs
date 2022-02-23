@@ -38,13 +38,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         }
 
         private static GuardianAttachment CreateRandomGuardianAttachment() =>
-            CreateGuardianAttachmentFiller(DateTimeOffset.UtcNow).Create();
+            CreateGuardianAttachmentFiller(dates: GetRandomDateTime()).Create();
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static IQueryable<GuardianAttachment> CreateRandomGuardianAttachments() =>
-            CreateGuardianAttachmentFiller(dates: DateTimeOffset.UtcNow)
+            CreateGuardianAttachmentFiller(dates: GetRandomDateTime())
                 .Create(GetRandomNumber()).AsQueryable();
 
         private static GuardianAttachment CreateRandomGuardianAttachment(DateTimeOffset dates) =>
