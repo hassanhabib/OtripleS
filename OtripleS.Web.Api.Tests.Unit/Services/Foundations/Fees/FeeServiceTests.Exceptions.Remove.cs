@@ -133,8 +133,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
             Guid someFeeId = Guid.NewGuid();
             var serviceException = new Exception();
 
-            var expectedFeeServiceException =
+            var failedFeeServiceException =
                 new FeeServiceException(serviceException);
+
+            var expectedFeeServiceException =
+                new FeeServiceException(failedFeeServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectFeeByIdAsync(It.IsAny<Guid>()))
