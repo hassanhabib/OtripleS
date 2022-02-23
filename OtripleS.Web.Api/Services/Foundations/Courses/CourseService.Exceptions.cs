@@ -79,7 +79,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedCourseServiceException =
+                    new FailedCourseServiceException(exception);
+
+                throw CreateAndLogServiceException(failedCourseServiceException);
             }
         }
 
