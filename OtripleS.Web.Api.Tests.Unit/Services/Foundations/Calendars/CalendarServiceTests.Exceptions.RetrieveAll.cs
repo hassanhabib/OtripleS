@@ -57,8 +57,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
             // given
             var serviceException = new Exception();
 
+            var failedCalendarServiceException =
+                new FailedCalendarServiceException(serviceException);
+
             var expectedCalendarServiceException =
-                new CalendarServiceException(serviceException);
+                new CalendarServiceException(failedCalendarServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllCalendars())
