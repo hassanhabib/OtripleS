@@ -69,7 +69,10 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianAttachments
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedGuardianAttachmentServiceException =
+                    new FailedGuardianAttachmentServiceException(exception);
+
+                throw CreateAndLogServiceException(failedGuardianAttachmentServiceException);
             }
         }
 
