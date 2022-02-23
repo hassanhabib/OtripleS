@@ -54,8 +54,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             // given
             var serviceException = new Exception();
 
+            var failedCourseServiceException =
+                new FailedCourseServiceException(serviceException);
+
             var expectedCourseServiceException =
-                new CourseServiceException(serviceException);
+                new CourseServiceException(failedCourseServiceException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllCourses())
