@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Models.GuardianAttachments.Exceptions
     public class FailedGuardianAttachmentServiceException : Xeption
     {
         public FailedGuardianAttachmentServiceException(Exception innerException)
-            :base (message: "Failed guardian attachment service error occurred, contact support", 
+            : base(message: "Failed guardian attachment service error occurred, contact support",
                  innerException)
         { }
     }

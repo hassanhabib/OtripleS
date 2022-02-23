@@ -157,7 +157,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
             var failedCourseAttachmentServiceException =
                 new FailedCourseAttachmentServiceException(serviceException);
 
-            var expectedCourseAttachmenServiceException = 
+            var expectedCourseAttachmenServiceException =
                 new CourseAttachmentServiceException(failedCourseAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
