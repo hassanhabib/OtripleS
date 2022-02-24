@@ -18,14 +18,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
         public async Task ShouldThrowValidatonExceptionOnRemoveWhenAssignmentIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
+            Guid invalidAttachmentId = Guid.NewGuid();
             Guid invalidAssignmentId = Guid.Empty;
-            Guid inputAttachmentId = randomAttachmentId;
-            Guid inputAssignmentId = invalidAssignmentId;
 
             var invalidAssignmentAttachmentInputException = new InvalidAssignmentAttachmentException(
                 parameterName: nameof(AssignmentAttachment.AssignmentId),
-                parameterValue: inputAssignmentId);
+                parameterValue: invalidAssignmentId);
 
             var expectedAssignmentAttachmentValidationException =
                 new AssignmentAttachmentValidationException(invalidAssignmentAttachmentInputException);
@@ -33,8 +31,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
             // when
             ValueTask<AssignmentAttachment> removeAssignmentAttachmentTask =
                 this.assignmentAttachmentService.RemoveAssignmentAttachmentByIdAsync(
-                    inputAssignmentId,
-                    inputAttachmentId);
+                    invalidAssignmentId,
+                    invalidAttachmentId);
 
             // then
             await Assert.ThrowsAsync<AssignmentAttachmentValidationException>(() =>
@@ -65,13 +63,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
         {
             // given
             Guid invalidAttachmentId = Guid.Empty;
-            Guid randomAssignmentId = Guid.NewGuid();
-            Guid inputAttachmentId = invalidAttachmentId;
-            Guid inputAssignmentId = randomAssignmentId;
+            Guid invalidAssignmentId = Guid.NewGuid();
 
             var invalidAssignmentAttachmentInputException = new InvalidAssignmentAttachmentException(
                 parameterName: nameof(AssignmentAttachment.AttachmentId),
-                parameterValue: inputAttachmentId);
+                parameterValue: invalidAttachmentId);
 
             var expectedAssignmentAttachmentValidationException =
                 new AssignmentAttachmentValidationException(invalidAssignmentAttachmentInputException);
@@ -79,8 +75,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
             // when
             ValueTask<AssignmentAttachment> removeAssignmentAttachmentTask =
                 this.assignmentAttachmentService.RemoveAssignmentAttachmentByIdAsync(
-                    inputAssignmentId,
-                    inputAttachmentId);
+                    invalidAssignmentId,
+                    invalidAttachmentId);
 
             // then
             await Assert.ThrowsAsync<AssignmentAttachmentValidationException>(() =>
@@ -112,25 +108,25 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
             AssignmentAttachment randomAssignmentAttachment = CreateRandomAssignmentAttachment(randomDateTime);
-            Guid inputAttachmentId = randomAssignmentAttachment.AttachmentId;
-            Guid inputAssignmentId = randomAssignmentAttachment.AssignmentId;
+            Guid invalidAttachmentId = Guid.NewGuid();
+            Guid invalidAssignmentId = Guid.NewGuid();
             AssignmentAttachment nullStorageAssignmentAttachment = null;
 
             var notFoundAssignmentAttachmentException =
-                new NotFoundAssignmentAttachmentException(inputAssignmentId, inputAttachmentId);
+                new NotFoundAssignmentAttachmentException(invalidAssignmentId, invalidAttachmentId);
 
             var expectedAssignmentValidationException =
                 new AssignmentAttachmentValidationException(notFoundAssignmentAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectAssignmentAttachmentByIdAsync(inputAssignmentId, inputAttachmentId))
+                 broker.SelectAssignmentAttachmentByIdAsync(invalidAssignmentId, invalidAttachmentId))
                     .ReturnsAsync(nullStorageAssignmentAttachment);
 
             // when
             ValueTask<AssignmentAttachment> removeAssignmentAttachmentTask =
                 this.assignmentAttachmentService.RemoveAssignmentAttachmentByIdAsync(
-                    inputAssignmentId,
-                    inputAttachmentId);
+                    invalidAssignmentId,
+                    invalidAttachmentId);
 
             // then
             await Assert.ThrowsAsync<AssignmentAttachmentValidationException>(() =>
