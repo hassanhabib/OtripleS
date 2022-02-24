@@ -18,21 +18,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         public async Task ShouldThrowValidatonExceptionOnRetrieveWhenGuardianIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomContactId = Guid.NewGuid();
+            Guid invalidContactId = Guid.NewGuid();
             Guid invalidGuardianId = Guid.Empty;
-            Guid inputContactId = randomContactId;
-            Guid inputGuardianId = invalidGuardianId;
 
             var invalidGuardianContactException = new InvalidGuardianContactException(
                 parameterName: nameof(GuardianContact.GuardianId),
-                parameterValue: inputGuardianId);
+                parameterValue: invalidGuardianId);
 
             var expectedGuardianContactValidationException =
                 new GuardianContactValidationException(invalidGuardianContactException);
 
             // when
             ValueTask<GuardianContact> retrieveGuardianContactTask =
-                this.guardianContactService.RetrieveGuardianContactByIdAsync(inputGuardianId, inputContactId);
+                this.guardianContactService.RetrieveGuardianContactByIdAsync(invalidGuardianId, invalidContactId);
 
             // then
             await Assert.ThrowsAsync<GuardianContactValidationException>(() => retrieveGuardianContactTask.AsTask());
@@ -55,20 +53,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         {
             // given
             Guid invalidContactId = Guid.Empty;
-            Guid randomGuardianId = Guid.NewGuid();
-            Guid inputContactId = invalidContactId;
-            Guid inputGuardianId = randomGuardianId;
+            Guid invalidGuardianId = Guid.NewGuid();
 
             var invalidGuardianContactException = new InvalidGuardianContactException(
                 parameterName: nameof(GuardianContact.ContactId),
-                parameterValue: inputContactId);
+                parameterValue: invalidContactId);
 
             var expectedGuardianContactValidationException =
                 new GuardianContactValidationException(invalidGuardianContactException);
 
             // when
             ValueTask<GuardianContact> retrieveGuardianContactTask =
-                this.guardianContactService.RetrieveGuardianContactByIdAsync(inputGuardianId, inputContactId);
+                this.guardianContactService.RetrieveGuardianContactByIdAsync(invalidGuardianId, invalidContactId);
 
             // then
             await Assert.ThrowsAsync<GuardianContactValidationException>(() => retrieveGuardianContactTask.AsTask());
@@ -91,23 +87,23 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         {
             // given
             GuardianContact randomGuardianContact = CreateRandomGuardianContact();
-            Guid inputContactId = randomGuardianContact.ContactId;
-            Guid inputGuardianId = randomGuardianContact.GuardianId;
+            Guid invalidContactId = randomGuardianContact.ContactId;
+            Guid invalidGuardianId = randomGuardianContact.GuardianId;
             GuardianContact nullStorageGuardianContact = null;
 
             var notFoundGuardianContactException =
-                new NotFoundGuardianContactException(inputGuardianId, inputContactId);
+                new NotFoundGuardianContactException(invalidGuardianId, invalidContactId);
 
             var expectedGuardianContactValidationException =
                 new GuardianContactValidationException(notFoundGuardianContactException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectGuardianContactByIdAsync(inputGuardianId, inputContactId))
+                 broker.SelectGuardianContactByIdAsync(invalidGuardianId, invalidContactId))
                     .ReturnsAsync(nullStorageGuardianContact);
 
             // when
             ValueTask<GuardianContact> retrieveGuardianContactTask =
-                this.guardianContactService.RetrieveGuardianContactByIdAsync(inputGuardianId, inputContactId);
+                this.guardianContactService.RetrieveGuardianContactByIdAsync(invalidGuardianId, invalidContactId);
 
             // then
             await Assert.ThrowsAsync<GuardianContactValidationException>(() =>
