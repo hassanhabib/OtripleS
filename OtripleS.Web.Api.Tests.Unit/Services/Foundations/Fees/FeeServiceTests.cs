@@ -77,9 +77,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Fees
         private static string GetRandomMessage() => new MnemonicString().GetValue();
 
         private static Fee CreateRandomFee() =>
-            CreateRandomFeeFiller(DateTimeOffset.UtcNow).Create();
-
-        private static SqlException GetSqlException() =>
+            CreateRandomFeeFiller( GetRandomDateTime()).Create();T
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static IQueryable<Fee> CreateRandomFees(DateTimeOffset dates) =>
