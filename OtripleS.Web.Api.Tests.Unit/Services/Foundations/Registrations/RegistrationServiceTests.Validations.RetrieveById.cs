@@ -19,18 +19,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
         {
             //given
             Guid invalidRegistrationId = Guid.Empty;
-            Guid inputRegistrationId = invalidRegistrationId;
 
             var invalidRegistrationException = new InvalidRegistrationException(
                 parameterName: nameof(Registration.Id),
-                parameterValue: inputRegistrationId);
+                parameterValue: invalidRegistrationId);
 
             var expectedRegistrationValidationException =
                 new RegistrationValidationException(invalidRegistrationException);
 
             //when
             ValueTask<Registration> retrieveRegistrationByIdTask =
-                this.registrationService.RetrieveRegistrationByIdAsync(inputRegistrationId);
+                this.registrationService.RetrieveRegistrationByIdAsync(invalidRegistrationId);
 
             //then
             await Assert.ThrowsAsync<RegistrationValidationException>(() => retrieveRegistrationByIdTask.AsTask());
@@ -56,10 +55,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
         public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageRegistrationIsNullAndLogItAsync()
         {
             //given
-            Guid randomRegistrationId = Guid.NewGuid();
-            Guid someRegistrationId = randomRegistrationId;
+            Guid invalidRegistrationId = Guid.NewGuid();
             Registration invalidStorageRegistration = null;
-            var notFoundRegistrationException = new NotFoundRegistrationException(someRegistrationId);
+            var notFoundRegistrationException = new NotFoundRegistrationException(invalidRegistrationId);
 
             var expectedRegistrationValidationException =
                 new RegistrationValidationException(notFoundRegistrationException);
@@ -70,7 +68,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Registrations
 
             //when
             ValueTask<Registration> retrieveRegistrationByIdTask =
-                this.registrationService.RetrieveRegistrationByIdAsync(someRegistrationId);
+                this.registrationService.RetrieveRegistrationByIdAsync(invalidRegistrationId);
 
             //then
             await Assert.ThrowsAsync<RegistrationValidationException>(() =>
