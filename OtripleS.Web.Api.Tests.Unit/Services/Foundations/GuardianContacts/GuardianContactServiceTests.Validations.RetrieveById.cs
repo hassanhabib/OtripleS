@@ -22,8 +22,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
             Guid invalidGuardianId = Guid.Empty;
 
             var invalidGuardianContactException = new InvalidGuardianContactException(
-                parameterName: nameof(GuardianContact.GuardianId),
-                parameterValue: invalidGuardianId);
+                parameterName: nameof(GuardianContact.ContactId),
+                parameterValue: invalidContactId);
 
             var expectedGuardianContactValidationException =
                 new GuardianContactValidationException(invalidGuardianContactException);
