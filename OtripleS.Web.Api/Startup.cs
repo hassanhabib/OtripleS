@@ -108,7 +108,7 @@ namespace OtripleS.Web.Api
             applicationBuilder.UseEndpoints(endpoints => endpoints.MapControllers());
         }
 
-        private void AddBrokers(IServiceCollection services)
+        private static void AddBrokers(IServiceCollection services)
         {
             services.AddScoped<IUserManagementBroker, UserManagementBroker>();
             services.AddScoped<IStorageBroker, StorageBroker>();
