@@ -17,7 +17,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
     public partial class UserServiceTests
     {
         [Fact]
-        public async Task ShouldRegisterUserAsync()
+        public async Task ShouldAddUserAsync()
         {
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
