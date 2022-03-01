@@ -11,6 +11,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Exams;
 using OtripleS.Web.Api.Models.Exams.Exceptions;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Exams
 {
@@ -39,7 +40,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             }
             catch (SqlException sqlException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var failedExamStorageException =
+                    new FailedExamStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedExamStorageException);
             }
             catch (DuplicateKeyException duplicateKeyException)
             {
@@ -94,6 +98,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             return examValidationException;
         }
 
+        private ExamDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
+        {
+            var examDependencyException = new ExamDependencyException(exception);
+            this.loggingBroker.LogCritical(examDependencyException);
+
+            return examDependencyException;
+        }   
         private ExamDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
             var examDependencyException = new ExamDependencyException(exception);
