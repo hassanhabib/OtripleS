@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
                 var alreadyExistsExamException =
                     new AlreadyExistsExamException(duplicateKeyException);
 
-                throw CreateAndLogValidationException(alreadyExistsExamException);
+                throw CreateAndLogDependencyValidationException(alreadyExistsExamException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
@@ -96,6 +96,16 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
         private ExamValidationException CreateAndLogValidationException(Exception exception)
         {
             var examValidationException = new ExamValidationException(exception);
+            this.loggingBroker.LogError(examValidationException);
+
+            return examValidationException;
+        }   
+        
+        private ExamDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var examValidationException = 
+                new ExamDependencyValidationException(exception);
+
             this.loggingBroker.LogError(examValidationException);
 
             return examValidationException;
