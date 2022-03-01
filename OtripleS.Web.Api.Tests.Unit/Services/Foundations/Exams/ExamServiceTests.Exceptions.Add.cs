@@ -103,13 +103,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnAddWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Exam randomExam = CreateRandomExam(dateTime);
-            Exam inputExam = randomExam;
-            inputExam.UpdatedBy = inputExam.CreatedBy;
+            Exam someExam = CreateRandomExam();
             var serviceException = new Exception();
 
             var failedExamServiceException =
@@ -120,19 +117,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertExamAsync(inputExam))
-                    .ThrowsAsync(serviceException);
+                    .Throws(serviceException);
 
             // when
             ValueTask<Exam> createExamTask =
-                 this.examService.AddExamAsync(inputExam);
+                 this.examService.AddExamAsync(someExam);
 
             // then
             await Assert.ThrowsAsync<ExamServiceException>(() =>
                 createExamTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -140,12 +137,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertExamAsync(inputExam),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
+                broker.InsertExamAsync(It.IsAny<Exam>()),
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

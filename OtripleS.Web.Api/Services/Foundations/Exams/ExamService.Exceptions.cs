@@ -124,7 +124,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             return examDependencyException;
         }
 
-        private ExamServiceException CreateAndLogServiceException(Exception exception)
+        private ExamServiceException CreateAndLogServiceException(Xeption exception)
         {
             var examServiceException = new ExamServiceException(exception);
             this.loggingBroker.LogError(examServiceException);

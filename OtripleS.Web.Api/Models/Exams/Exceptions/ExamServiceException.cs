@@ -4,12 +4,13 @@
 // ---------------------------------------------------------------
 
 using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Exams.Exceptions
 {
-    public class ExamServiceException : Exception
+    public class ExamServiceException : Xeption
     {
-        public ExamServiceException(Exception innerException)
-            : base(message: "Service error occurred, contact support.", innerException) { }
+        public ExamServiceException(Xeption innerException)
+            : base(message: "Service error occurred, contact support.", innerException) { }  
     }
 }
