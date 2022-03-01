@@ -8,9 +8,9 @@ using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Exams.Exceptions
 {
-    public class AlreadyExistsExamException : Xeption
+    public class ExamDependencyValidationException : Xeption
     {
-        public AlreadyExistsExamException(Exception innerException)
-            : base(message: "Exam with the same id already exists.", innerException) { }
+        public ExamDependencyValidationException(Xeption innerException)
+            : base(message: "Exam dependency validation error occurred, contact support.", innerException) { }
     }
 }

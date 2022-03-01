@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -48,6 +49,53 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
                     expectedExamDependencyException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertExamAsync(It.IsAny<Exam>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+
+        [Fact]
+        public async void ShouldThrowDependencyValidationExceptionOnAddIfExamAlreadyExistsAndLogItAsync()
+        {
+            // given
+            Exam someExam = CreateRandomExam();
+            string exceptionMessage = GetRandomMessage();
+
+            var duplicateKeyException = 
+                new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsExamException =
+                new AlreadyExistsExamException(duplicateKeyException);
+
+            var expectedExamDependencyValidationException =
+                new ExamDependencyValidationException(alreadyExistsExamException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Throws(duplicateKeyException);
+
+            // when
+            ValueTask<Exam> createExamTask =
+                this.examService.AddExamAsync(someExam);
+
+            // then
+            await Assert.ThrowsAsync<ExamDependencyValidationException>(() =>
+                createExamTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+            
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedExamDependencyValidationException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>

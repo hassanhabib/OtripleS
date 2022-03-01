@@ -287,57 +287,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenExamAlreadyExistsAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Exam randomExam = CreateRandomExam(dateTime);
-            Exam alreadyExistsExam = randomExam;
-            alreadyExistsExam.UpdatedBy = alreadyExistsExam.CreatedBy;
-            string randomMessage = GetRandomMessage();
-            string exceptionMessage = randomMessage;
-            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
-
-            var alreadyExistsExamException =
-                new AlreadyExistsExamException(duplicateKeyException);
-
-            var expectedExamValidationException =
-                new ExamValidationException(alreadyExistsExamException);
-
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertExamAsync(alreadyExistsExam))
-                    .ThrowsAsync(duplicateKeyException);
-
-            // when
-            ValueTask<Exam> createExamTask =
-                this.examService.AddExamAsync(alreadyExistsExam);
-
-            // then
-            await Assert.ThrowsAsync<ExamValidationException>(() =>
-                createExamTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(SameExceptionAs(
-                   expectedExamValidationException))),
-                        Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertExamAsync(alreadyExistsExam),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-        }
     }
 }
