@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using OtripleS.Web.Api.Models.Exams;
@@ -16,33 +17,33 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
     public partial class ExamServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnAddWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnAddIfSqlErrorOccursAndLogItAsync()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Exam randomExam = CreateRandomExam(dateTime);
-            Exam inputExam = randomExam;
-            inputExam.UpdatedBy = inputExam.CreatedBy;
-            var sqlException = GetSqlException();
+            Exam someExam = CreateRandomExam();
+            SqlException sqlException = GetSqlException();
+
+            var failedExamStorageException =
+                new FailedExamStorageException(sqlException);
 
             var expectedExamDependencyException =
-                new ExamDependencyException(sqlException);
+                new ExamDependencyException(failedExamStorageException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertExamAsync(inputExam))
-                    .ThrowsAsync(sqlException);
+                    .Throws(sqlException);
 
             // when
-            ValueTask<Exam> createExamTask =
-                this.examService.AddExamAsync(inputExam);
+            ValueTask<Exam> AddExamTask =
+                this.examService.AddExamAsync(someExam);
 
             // then
             await Assert.ThrowsAsync<ExamDependencyException>(() =>
-                createExamTask.AsTask());
+                AddExamTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
@@ -50,12 +51,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertExamAsync(inputExam),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
+                broker.InsertExamAsync(It.IsAny<Exam>()),
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

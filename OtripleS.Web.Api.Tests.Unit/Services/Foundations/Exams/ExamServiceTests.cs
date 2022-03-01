@@ -64,6 +64,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         private static Exam CreateRandomExam(DateTimeOffset dateTime) =>
             CreateRandomExamFiller(dateTime).Create();
 
+        private static Exam CreateRandomExam() =>
+            CreateRandomExamFiller(dateTime:GetRandomDateTime()).Create();
+
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
@@ -72,6 +75,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             return actualException =>
                  actualException.Message == expectedException.Message
                  && actualException.InnerException.Message == expectedException.InnerException.Message;
+        }
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
+        {
+            return actualException =>
+                 actualException.Message == expectedException.Message
+                 && actualException.InnerException.Message == expectedException.InnerException.Message
+                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
         private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
