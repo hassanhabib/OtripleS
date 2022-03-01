@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             CreateStudentSemesterCourseFiller(dates).Create();
 
         private static IQueryable<StudentSemesterCourse> CreateRandomStudentSemesterCourses() =>
-            CreateStudentSemesterCourseFiller(DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+            CreateStudentSemesterCourseFiller(dates: GetRandomDateTime()).Create(GetRandomNumber()).AsQueryable();
 
         public static TheoryData InvalidMinuteCases()
         {
