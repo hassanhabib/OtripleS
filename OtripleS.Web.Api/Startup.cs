@@ -116,7 +116,7 @@ namespace OtripleS.Web.Api
             services.AddTransient<IDateTimeBroker, DateTimeBroker>();
         }
 
-        private void AddFoundationServices(IServiceCollection services)
+        private static void AddFoundationServices(IServiceCollection services)
         {
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<ITeacherService, TeacherService>();
