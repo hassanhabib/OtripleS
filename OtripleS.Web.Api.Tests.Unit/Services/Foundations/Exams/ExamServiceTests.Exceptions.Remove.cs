@@ -17,7 +17,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
     public partial class ExamServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnDeleteWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnDeleteIfSqlErrorOccursAndLogItAsync()
         {
             // given
             Guid randomExamId = Guid.NewGuid();
