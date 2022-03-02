@@ -108,7 +108,7 @@ namespace OtripleS.Web.Api
             applicationBuilder.UseEndpoints(endpoints => endpoints.MapControllers());
         }
 
-        private void AddBrokers(IServiceCollection services)
+        private static void AddBrokers(IServiceCollection services)
         {
             services.AddScoped<IUserManagementBroker, UserManagementBroker>();
             services.AddScoped<IStorageBroker, StorageBroker>();
@@ -116,7 +116,7 @@ namespace OtripleS.Web.Api
             services.AddTransient<IDateTimeBroker, DateTimeBroker>();
         }
 
-        private void AddFoundationServices(IServiceCollection services)
+        private static void AddFoundationServices(IServiceCollection services)
         {
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<ITeacherService, TeacherService>();
