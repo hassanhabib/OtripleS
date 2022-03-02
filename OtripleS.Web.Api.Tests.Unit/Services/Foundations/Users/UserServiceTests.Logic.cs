@@ -56,34 +56,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         }
 
         [Fact]
-        public async Task ShouldRetrieveUserById()
-        {
-            //given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            User randomUser = CreateRandomUser(dates: dateTime);
-            Guid inputUserId = randomUser.Id;
-            User inputUser = randomUser;
-            User expectedUser = randomUser;
-
-            this.userManagementBrokerMock.Setup(broker =>
-                    broker.SelectUserByIdAsync(inputUserId))
-                .ReturnsAsync(inputUser);
-
-            //when 
-            User actualUser = await this.userService.RetrieveUserByIdAsync(inputUserId);
-
-            //then
-            actualUser.Should().BeEquivalentTo(expectedUser);
-
-            this.userManagementBrokerMock.Verify(broker =>
-                broker.SelectUserByIdAsync(inputUserId), Times.Once);
-
-            this.userManagementBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
         public void ShouldRetrieveAllUsers()
         {
             // given
