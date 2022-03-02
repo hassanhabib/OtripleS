@@ -45,10 +45,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                     expectedExamDependencyException))),
                         Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -86,10 +82,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllExams(),
                     Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

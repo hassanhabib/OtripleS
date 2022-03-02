@@ -10,8 +10,6 @@ namespace OtripleS.Web.Api.Models.Exams.Exceptions
 {
     public class ExamDependencyException : Xeption
     {
-        public ExamDependencyException(Exception innerException)
-            : base(message: "Profile dependency error occurred, contact support.", innerException) { }
         public ExamDependencyException(Xeption innerException)
              : base(message: "Profile dependency error occurred, contact support.", innerException) { }
     }

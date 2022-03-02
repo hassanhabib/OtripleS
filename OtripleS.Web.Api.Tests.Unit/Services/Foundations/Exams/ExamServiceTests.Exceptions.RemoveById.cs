@@ -57,46 +57,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnDeleteifDatabaseUpdateExceptionOccursAndLogItAsync()
-        {
-            // given
-            Guid someExamId = Guid.NewGuid();
-            var databaseUpdateException = new DbUpdateException();
-
-            var failedExamStorageException =
-                new FailedExamStorageException(databaseUpdateException);
-
-            var expectedExamDependencyException =
-                new ExamDependencyException(failedExamStorageException);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectExamByIdAsync(someExamId))
-                    .ThrowsAsync(databaseUpdateException);
-
-            // when
-            ValueTask<Exam> deleteExamTask =
-                this.examService.RemoveExamByIdAsync(someExamId);
-
-            // then
-            await Assert.ThrowsAsync<ExamDependencyException>(() =>
-                deleteExamTask.AsTask());
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamByIdAsync(someExamId),
-                    Times.Once);
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(
-                    expectedExamDependencyException))),
-                        Times.Once);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async Task ShouldThrowDependencyExceptionOnDeleteIfDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyValidationExceptionOnDeleteIfDbUpdateConcurrencyErrorOccursAndLogItAsync()
         {
             // given
             Guid someExamId = Guid.NewGuid();
@@ -135,6 +96,45 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnDeleteifDatabaseUpdateErrorOccursAndLogItAsync()
+        {
+            // given
+            Guid someExamId = Guid.NewGuid();
+            var databaseUpdateException = new DbUpdateException();
+
+            var failedExamStorageException =
+                new FailedExamStorageException(databaseUpdateException);
+
+            var expectedExamDependencyException =
+                new ExamDependencyException(failedExamStorageException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectExamByIdAsync(someExamId))
+                    .ThrowsAsync(databaseUpdateException);
+
+            // when
+            ValueTask<Exam> deleteExamTask =
+                this.examService.RemoveExamByIdAsync(someExamId);
+
+            // then
+            await Assert.ThrowsAsync<ExamDependencyException>(() =>
+                deleteExamTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(someExamId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExamDependencyException))),
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+        
         [Fact]
         public async Task ShouldThrowServiceExceptionOnDeleteIfServiceErrorOccursAndLogItAsync()
         {

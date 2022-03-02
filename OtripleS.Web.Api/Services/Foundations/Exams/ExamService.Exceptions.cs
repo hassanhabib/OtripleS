@@ -103,7 +103,14 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
 
             return examValidationException;
         }   
-        
+
+        private ExamDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
+        {
+            var examDependencyException = new ExamDependencyException(exception);
+            this.loggingBroker.LogCritical(examDependencyException);
+
+            return examDependencyException;
+        }
         private ExamDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
         {
             var examValidationException = 
@@ -113,23 +120,8 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
 
             return examValidationException;
         }
-
-        private ExamDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
-        {
-            var examDependencyException = new ExamDependencyException(exception);
-            this.loggingBroker.LogCritical(examDependencyException);
-
-            return examDependencyException;
-        }   
-        private ExamDependencyException CreateAndLogCriticalDependencyException(Exception exception)
-        {
-            var examDependencyException = new ExamDependencyException(exception);
-            this.loggingBroker.LogCritical(examDependencyException);
-
-            return examDependencyException;
-        }
-
-        private ExamDependencyException CreateAndLogDependencyException(Exception exception)
+        
+        private ExamDependencyException CreateAndLogDependencyException(Xeption exception)
         {
             var examDependencyException = new ExamDependencyException(exception);
             this.loggingBroker.LogError(examDependencyException);
