@@ -16,14 +16,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
     public partial class ExamServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveIfSqlErrorOccursAndLogItAsync()
         {
             // given
             Guid someExamId = Guid.NewGuid();
             var sqlException = GetSqlException();
 
+            var failedExamStorageException =
+                new FailedExamStorageException(sqlException);
+
             var expectedDependencyException =
-                new ExamDependencyException(sqlException);
+                new ExamDependencyException(failedExamStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectExamByIdAsync(someExamId))
