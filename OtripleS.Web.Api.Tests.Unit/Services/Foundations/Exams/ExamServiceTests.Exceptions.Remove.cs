@@ -136,11 +136,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnDeleteWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnDeleteIfServiceErrorOccursAndLogItAsync()
         {
             // given
-            Guid randomExamId = Guid.NewGuid();
-            Guid inputExamId = randomExamId;
+            Guid someExamId = Guid.NewGuid();
             var serviceException = new Exception();
 
             var failedExamServiceException =
@@ -150,29 +149,29 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 new ExamServiceException(failedExamServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectExamByIdAsync(inputExamId))
+                broker.SelectExamByIdAsync(someExamId))
                     .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Exam> deleteExamTask =
-                this.examService.RemoveExamByIdAsync(inputExamId);
+                this.examService.RemoveExamByIdAsync(someExamId);
 
             // then
             await Assert.ThrowsAsync<ExamServiceException>(() =>
                 deleteExamTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(someExamId),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedExamServiceException))),
                         Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamByIdAsync(inputExamId),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
