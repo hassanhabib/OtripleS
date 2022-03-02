@@ -13,13 +13,16 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
     public partial class ExamServiceTests
     {
         [Fact]
-        public void ShouldThrowDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogIt()
+        public void ShouldThrowCriticalDependencyExceptionOnRetrieveAllIfSqlErrorOccursAndLogIt()
         {
             // given
             var sqlException = GetSqlException();
 
+            var failedExamStorageException =
+                new FailedExamStorageException(sqlException);
+
             var expectedExamDependencyException =
-                new ExamDependencyException(sqlException);
+                new ExamDependencyException(failedExamStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllExams())
@@ -33,22 +36,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Assert.Throws<ExamDependencyException>(
                 retrieveAllexamAction);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllExams(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
                     expectedExamDependencyException))),
                         Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllExams(),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
