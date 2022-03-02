@@ -103,7 +103,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyValidationExceptionOnModifyIfDbUpdateConcurrencyErrorOccursAndLogItAsync()
         {
             // given
             Exam someExam = CreateRandomExam();
@@ -114,8 +114,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             var lockedExamException = 
                 new LockedExamException(databaseUpdateConcurrencyException);
 
-            var expectedExamDependencyException =
-                new ExamDependencyException(lockedExamException);
+            var expectedExamDependencyValidationException =
+                new ExamDependencyValidationException(lockedExamException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -126,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 this.examService.ModifyExamAsync(someExam);
 
             // then
-            await Assert.ThrowsAsync<ExamDependencyException>(() =>
+            await Assert.ThrowsAsync<ExamDependencyValidationException>(() =>
                 modifyExamTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -139,7 +139,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedExamDependencyException))),
+                    expectedExamDependencyValidationException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
