@@ -82,7 +82,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             }
             catch (SqlException sqlException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var failedExamStorageException = 
+                    new FailedExamStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedExamStorageException);
             }
             catch (Exception exception)
             {
