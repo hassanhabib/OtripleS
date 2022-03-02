@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             {
                 var lockedExamException = new LockedExamException(dbUpdateConcurrencyException);
 
-                throw CreateAndLogDependencyException(lockedExamException);
+                throw CreateAndLogDependencyValidationException(lockedExamException);
             }
             catch (DbUpdateException dbUpdateException)
             {

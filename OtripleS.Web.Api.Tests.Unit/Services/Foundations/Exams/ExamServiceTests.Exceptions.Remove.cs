@@ -57,78 +57,82 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnDeleteifDatabaseUpdateExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomExamId = Guid.NewGuid();
-            Guid inputExamId = randomExamId;
+            Guid someExamId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
+            var failedExamStorageException =
+                new FailedExamStorageException(databaseUpdateException);
+
             var expectedExamDependencyException =
-                new ExamDependencyException(databaseUpdateException);
+                new ExamDependencyException(failedExamStorageException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectExamByIdAsync(inputExamId))
+                broker.SelectExamByIdAsync(someExamId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<Exam> deleteExamTask =
-                this.examService.RemoveExamByIdAsync(inputExamId);
+                this.examService.RemoveExamByIdAsync(someExamId);
 
             // then
             await Assert.ThrowsAsync<ExamDependencyException>(() =>
                 deleteExamTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(someExamId),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedExamDependencyException))),
                         Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamByIdAsync(inputExamId),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnDeleteWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnDeleteIfDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomExamId = Guid.NewGuid();
-            Guid inputExamId = randomExamId;
-            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
-            var lockedExamException = new LockedExamException(databaseUpdateConcurrencyException);
+            Guid someExamId = Guid.NewGuid();
+            var databaseUpdateConcurrencyException =
+                new DbUpdateConcurrencyException();
 
-            var expectedExamDependencyException =
-                new ExamDependencyException(lockedExamException);
+            var lockedExamException = 
+                new LockedExamException(databaseUpdateConcurrencyException);
+
+            var expectedExamDependencyValidationException =
+                new ExamDependencyValidationException(lockedExamException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectExamByIdAsync(inputExamId))
+                broker.SelectExamByIdAsync(someExamId))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
             ValueTask<Exam> deleteExamTask =
-                this.examService.RemoveExamByIdAsync(inputExamId);
+                this.examService.RemoveExamByIdAsync(someExamId);
 
             // then
-            await Assert.ThrowsAsync<ExamDependencyException>(() =>
+            await Assert.ThrowsAsync<ExamDependencyValidationException>(() =>
                 deleteExamTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(someExamId),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedExamDependencyException))),
+                    expectedExamDependencyValidationException))),
                         Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamByIdAsync(inputExamId),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
