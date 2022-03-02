@@ -106,24 +106,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         public async Task ShouldThrowDependencyExceptionOnModifyIfDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            int randomNegativeNumber = GetNegativeRandomNumber();
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            Exam randomExam = CreateRandomExam(randomDateTime);
-            Exam someExam = randomExam;
-            someExam.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
-            var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
-            var lockedExamException = new LockedExamException(databaseUpdateConcurrencyException);
+            Exam someExam = CreateRandomExam();
+
+            var databaseUpdateConcurrencyException = 
+                new DbUpdateConcurrencyException();
+
+            var lockedExamException = 
+                new LockedExamException(databaseUpdateConcurrencyException);
 
             var expectedExamDependencyException =
                 new ExamDependencyException(lockedExamException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectExamByIdAsync(someExam.Id))
-                    .ThrowsAsync(databaseUpdateConcurrencyException);
-
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(randomDateTime);
+                    .Throws(databaseUpdateConcurrencyException);
 
             // when
             ValueTask<Exam> modifyExamTask =
@@ -139,16 +135,20 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectExamByIdAsync(someExam.Id),
-                    Times.Once);
+                    Times.Never);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedExamDependencyException))),
                         Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateExamAsync(someExam),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
