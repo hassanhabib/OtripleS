@@ -95,8 +95,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
-        
-
         [Fact]
         public void ShouldRetrieveAllUsers()
         {
