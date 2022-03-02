@@ -152,14 +152,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnModifyIfServiceExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnModifyIfServiceErrorOccursAndLogItAsync()
         {
             // given
-            int randomNegativeNumber = GetNegativeRandomNumber();
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            Exam randomExam = CreateRandomExam(randomDateTime);
-            Exam someExam = randomExam;
-            someExam.CreatedDate = randomDateTime.AddMinutes(randomNegativeNumber);
+            Exam someExam = CreateRandomExam();
             var serviceException = new Exception();
 
             var failedExamServiceException =
@@ -168,13 +164,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             var expectedExamServiceException =
                 new ExamServiceException(failedExamServiceException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectExamByIdAsync(someExam.Id))
-                    .ThrowsAsync(serviceException);
-
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(randomDateTime);
+                    .Throws(serviceException);
 
             // when
             ValueTask<Exam> modifyExamTask =
@@ -188,18 +180,18 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 broker.GetCurrentDateTime(),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamByIdAsync(someExam.Id),
-                    Times.Once);
-
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedExamServiceException))),
                         Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(someExam.Id),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
