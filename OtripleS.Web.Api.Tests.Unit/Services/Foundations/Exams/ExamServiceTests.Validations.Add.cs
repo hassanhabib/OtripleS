@@ -48,7 +48,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         }
 
         [Fact]
-         public async void ShouldThrowValidationExceptionOnAddIfExamIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddIfExamIsInvalidAndLogItAsync()
         {
             // given
             var invalidExam = new Exam();

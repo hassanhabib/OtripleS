@@ -62,7 +62,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Guid someExamId = Guid.NewGuid();
             Exam invalidStorageExam = null;
 
-            var notFoundExamException = 
+            var notFoundExamException =
                 new NotFoundExamException(someExamId);
 
             var expectedExamValidationException =
