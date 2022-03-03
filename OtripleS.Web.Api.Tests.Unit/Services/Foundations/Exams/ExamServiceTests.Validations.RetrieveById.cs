@@ -15,11 +15,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
     public partial class ExamServiceTests
     {
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdIfIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomExamId = default;
-            Guid inputExamId = randomExamId;
+            Guid invalidExamId = Guid.Empty;
 
             var invalidExamInputException = new InvalidExamException();
 
@@ -32,14 +31,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
 
             // when
             ValueTask<Exam> retrieveExamByIdTask =
-                this.examService.RetrieveExamByIdAsync(inputExamId);
+                this.examService.RetrieveExamByIdAsync(invalidExamId);
 
             // then
             await Assert.ThrowsAsync<ExamValidationException>(() =>
                 retrieveExamByIdTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameValidationExceptionAs(
+                broker.LogError(It.Is(SameExceptionAs(
                     expectedExamValidationException))),
                         Times.Once);
 
