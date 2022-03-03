@@ -7,9 +7,9 @@ using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Exams.Exceptions
 {
-    public class ExamDependencyException : Xeption
+    public class ExamDependencyValidationException : Xeption
     {
-        public ExamDependencyException(Xeption innerException)
-             : base(message: "Exam dependency error occurred, contact support.", innerException) { }
+        public ExamDependencyValidationException(Xeption innerException)
+            : base(message: "Exam dependency validation error occurred, fix the errors.", innerException) { }
     }
 }
