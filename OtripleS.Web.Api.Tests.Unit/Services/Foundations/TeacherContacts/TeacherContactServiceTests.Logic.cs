@@ -43,29 +43,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
-        [Fact]
-        public void ShouldRetrieveAllTeacherContacts()
-        {
-            //given
-            IQueryable<TeacherContact> randomSemesterCourses = CreateRandomTeacherContacts();
-            IQueryable<TeacherContact> storageTeacherContacts = randomSemesterCourses;
-            IQueryable<TeacherContact> expectedTeacherContacts = storageTeacherContacts;
-
-            this.storageBrokerMock.Setup(broker => broker.SelectAllTeacherContacts())
-                .Returns(storageTeacherContacts);
-
-            // when
-            IQueryable<TeacherContact> actualTeacherContacts =
-                this.teacherContactService.RetrieveAllTeacherContacts();
-
-            actualTeacherContacts.Should().BeEquivalentTo(expectedTeacherContacts);
-
-            this.storageBrokerMock.Verify(broker => broker.SelectAllTeacherContacts(),
-                Times.Once);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-        }
 
         [Fact]
         public async Task ShouldRemoveTeacherContactAsync()
