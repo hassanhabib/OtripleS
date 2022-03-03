@@ -4,10 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Exams.Exceptions
 {
-    public class NullExamException : Exception
+    public class NullExamException : Xeption
     {
         public NullExamException() : base(message: "The exam is null.") { }
     }

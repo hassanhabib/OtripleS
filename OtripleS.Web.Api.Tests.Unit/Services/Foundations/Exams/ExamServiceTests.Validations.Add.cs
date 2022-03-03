@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
     public partial class ExamServiceTests
     {
         [Fact]
-        public async void ShouldThrowValidationExceptionOnAddWhenExamIsNullAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnAddIfExamIsNullAndLogItAsync()
         {
             // given
             Exam invalidExam = null;

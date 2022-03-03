@@ -96,7 +96,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             }
         }
 
-        private ExamValidationException CreateAndLogValidationException(Exception exception)
+        private ExamValidationException CreateAndLogValidationException(Xeption exception)
         {
             var examValidationException = new ExamValidationException(exception);
             this.loggingBroker.LogError(examValidationException);

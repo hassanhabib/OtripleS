@@ -4,12 +4,13 @@
 // ---------------------------------------------------------------
 
 using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Exams.Exceptions
 {
-    public class ExamValidationException : Exception
+    public class ExamValidationException : Xeption
     {
-        public ExamValidationException(Exception innerException)
+        public ExamValidationException(Xeption innerException)
             : base(message: "Invalid input, contact support.", innerException) { }
     }
 }
