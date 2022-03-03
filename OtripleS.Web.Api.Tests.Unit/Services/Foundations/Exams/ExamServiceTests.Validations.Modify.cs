@@ -196,7 +196,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
 
         [Theory]
         [MemberData(nameof(InvalidMinuteCases))]
-        public async void ShouldThrowValidationExceptionOnModifyWhenUpdatedDateIsNotRecentAndLogItAsync(
+        public async void ShouldThrowValidationExceptionOnModifyIfUpdatedDateIsNotRecentAndLogItAsync(
             int minutes)
         {
             // given
@@ -232,7 +232,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameValidationExceptionAs(
+                broker.LogError(It.Is(SameExceptionAs(
                     expectedExamValidationException))),
                         Times.Once);
 
