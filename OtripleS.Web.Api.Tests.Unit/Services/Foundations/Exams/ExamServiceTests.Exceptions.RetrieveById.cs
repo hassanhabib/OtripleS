@@ -16,14 +16,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
     public partial class ExamServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowCriticalDependencyExceptionOnRetrieveIfSqlErrorOccursAndLogItAsync()
         {
             // given
             Guid someExamId = Guid.NewGuid();
             var sqlException = GetSqlException();
 
+            var failedExamStorageException =
+                new FailedExamStorageException(sqlException);
+
             var expectedDependencyException =
-                new ExamDependencyException(sqlException);
+                new ExamDependencyException(failedExamStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectExamByIdAsync(someExamId))
@@ -56,14 +59,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveifDatabaseUpdateErrorOccursAndLogItAsync()
         {
             // given
             Guid someExamId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
+            var failedExamStorageException =
+                new FailedExamStorageException(databaseUpdateException);
+
             var expectedExamDependencyException =
-                new ExamDependencyException(databaseUpdateException);
+                new ExamDependencyException(failedExamStorageException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectExamByIdAsync(someExamId))
@@ -77,26 +83,26 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             await Assert.ThrowsAsync<ExamDependencyException>(() =>
                 retrieveExamTask.AsTask());
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(someExamId),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedExamDependencyException))),
                         Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamByIdAsync(someExamId),
-                    Times.Once);
-
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Never);
 
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnRetrieveByIdIfServiceErrorOccursAndLogItAsync()
         {
             // given
             Guid someExamId = Guid.NewGuid();
@@ -129,13 +135,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 broker.SelectExamByIdAsync(someExamId),
                     Times.Once);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

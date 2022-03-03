@@ -4,10 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Exams.Exceptions
 {
-    public class LockedExamException : Exception
+    public class LockedExamException : Xeption
     {
         public LockedExamException(Exception innerException)
             : base(message: "Locked exam record exception, please try again later.", innerException) { }
