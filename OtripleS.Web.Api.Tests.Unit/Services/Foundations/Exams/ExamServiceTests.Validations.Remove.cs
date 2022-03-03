@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
     public partial class ExamServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnDeleteWhenIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnDeleteIfIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomExamId = default;
@@ -38,7 +38,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             await Assert.ThrowsAsync<ExamValidationException>(() => actualExamTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameValidationExceptionAs(
+                broker.LogError(It.Is(SameExceptionAs(
                     expectedExamValidationException))),
                         Times.Once);
 
