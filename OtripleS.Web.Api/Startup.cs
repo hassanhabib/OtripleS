@@ -87,7 +87,7 @@ namespace OtripleS.Web.Api
             });
         }
 
-        public void Configure(
+        public static void Configure(
             IApplicationBuilder applicationBuilder,
             IWebHostEnvironment webHostEnvironment)
         {
