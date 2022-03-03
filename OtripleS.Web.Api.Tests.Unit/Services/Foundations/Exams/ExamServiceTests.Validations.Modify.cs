@@ -44,7 +44,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnModifyWhenExamIsInvalidAndLogItAsyn()
+        public async Task ShouldThrowValidationExceptionOnModifyIfExamIsInvalidAndLogItAsyn()
         {
             // given
             var invalidExam = new Exam();
@@ -90,7 +90,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameValidationExceptionAs(
+                broker.LogError(It.Is(SameExceptionAs(
                     expectedExamValidationException))),
                         Times.Once);
 
