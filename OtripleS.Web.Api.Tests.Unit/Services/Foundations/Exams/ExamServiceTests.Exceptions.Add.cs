@@ -35,12 +35,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                     .Throws(sqlException);
 
             // when
-            ValueTask<Exam> AddExamTask =
+            ValueTask<Exam> addExamTask =
                 this.examService.AddExamAsync(someExam);
 
             // then
             await Assert.ThrowsAsync<ExamDependencyException>(() =>
-                AddExamTask.AsTask());
+                addExamTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
@@ -60,7 +60,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
-
         [Fact]
         public async void ShouldThrowDependencyValidationExceptionOnAddIfExamAlreadyExistsAndLogItAsync()
         {
@@ -68,7 +67,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Exam someExam = CreateRandomExam();
             string exceptionMessage = GetRandomMessage();
 
-            var duplicateKeyException = 
+            var duplicateKeyException =
                 new DuplicateKeyException(exceptionMessage);
 
             var alreadyExistsExamException =
@@ -82,17 +81,17 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                     .Throws(duplicateKeyException);
 
             // when
-            ValueTask<Exam> createExamTask =
+            ValueTask<Exam> addExamTask =
                 this.examService.AddExamAsync(someExam);
 
             // then
             await Assert.ThrowsAsync<ExamDependencyValidationException>(() =>
-                createExamTask.AsTask());
+                addExamTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
                 broker.GetCurrentDateTime(),
                     Times.Once);
-            
+
             this.loggingBrokerMock.Verify(broker =>
                broker.LogError(It.Is(SameExceptionAs(
                    expectedExamDependencyValidationException))),
@@ -114,7 +113,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             Exam someExam = CreateRandomExam();
             var databaseUpdateException = new DbUpdateException();
 
-            var failedExamStorageException = 
+            var failedExamStorageException =
                 new FailedExamStorageException(databaseUpdateException);
 
             var expectedExamDependencyException =

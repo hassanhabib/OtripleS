@@ -11,7 +11,7 @@ namespace OtripleS.Web.Api.Models.Exams.Exceptions
     public class FailedExamStorageException : Xeption
     {
         public FailedExamStorageException(Exception innerException)
-            : base("Failed exam storage error occurred, please contact support.", innerException)
+            : base(message: "Failed exam storage error occurred, please contact support.", innerException)
         { }
     }
 }

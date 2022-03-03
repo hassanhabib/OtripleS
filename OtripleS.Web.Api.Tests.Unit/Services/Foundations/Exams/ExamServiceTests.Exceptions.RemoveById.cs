@@ -61,10 +61,11 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         {
             // given
             Guid someExamId = Guid.NewGuid();
+
             var databaseUpdateConcurrencyException =
                 new DbUpdateConcurrencyException();
 
-            var lockedExamException = 
+            var lockedExamException =
                 new LockedExamException(databaseUpdateConcurrencyException);
 
             var expectedExamDependencyValidationException =
@@ -134,7 +135,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-        
+
         [Fact]
         public async Task ShouldThrowServiceExceptionOnDeleteIfServiceErrorOccursAndLogItAsync()
         {

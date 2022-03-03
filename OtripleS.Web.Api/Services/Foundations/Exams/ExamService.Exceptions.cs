@@ -82,7 +82,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             }
             catch (SqlException sqlException)
             {
-                var failedExamStorageException = 
+                var failedExamStorageException =
                     new FailedExamStorageException(sqlException);
 
                 throw CreateAndLogCriticalDependencyException(failedExamStorageException);
@@ -102,7 +102,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             this.loggingBroker.LogError(examValidationException);
 
             return examValidationException;
-        }   
+        }
 
         private ExamDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
@@ -111,16 +111,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
 
             return examDependencyException;
         }
+
         private ExamDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
         {
-            var examValidationException = 
+            var examDependencyValidationException =
                 new ExamDependencyValidationException(exception);
 
-            this.loggingBroker.LogError(examValidationException);
+            this.loggingBroker.LogError(examDependencyValidationException);
 
-            return examValidationException;
+            return examDependencyValidationException;
         }
-        
+
         private ExamDependencyException CreateAndLogDependencyException(Xeption exception)
         {
             var examDependencyException = new ExamDependencyException(exception);

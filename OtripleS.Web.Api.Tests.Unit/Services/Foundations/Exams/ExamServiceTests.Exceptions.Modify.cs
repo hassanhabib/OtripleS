@@ -65,10 +65,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
             // given
             Exam someExam = CreateRandomExam();
 
-            var databaseUpdateConcurrencyException = 
+            var databaseUpdateConcurrencyException =
                 new DbUpdateConcurrencyException();
 
-            var lockedExamException = 
+            var lockedExamException =
                 new LockedExamException(databaseUpdateConcurrencyException);
 
             var expectedExamDependencyValidationException =
@@ -90,14 +90,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 broker.GetCurrentDateTime(),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamByIdAsync(someExam.Id),
-                    Times.Never);
-
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedExamDependencyValidationException))),
                         Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(someExam.Id),
+                    Times.Never);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.UpdateExamAsync(someExam),
