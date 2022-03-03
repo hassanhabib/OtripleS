@@ -56,28 +56,33 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageExamIsNullAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveByIdIfStorageExamIsNullAndLogItAsync()
         {
             // given
-            Guid randomExamId = Guid.NewGuid();
-            Guid inputExamId = randomExamId;
+            Guid someExamId = Guid.NewGuid();
             Exam invalidStorageExam = null;
-            var notFoundExamException = new NotFoundExamException(inputExamId);
+
+            var notFoundExamException = 
+                new NotFoundExamException(someExamId);
 
             var expectedExamValidationException =
                 new ExamValidationException(notFoundExamException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectExamByIdAsync(inputExamId))
+                broker.SelectExamByIdAsync(someExamId))
                     .ReturnsAsync(invalidStorageExam);
 
             // when
             ValueTask<Exam> retrieveExamByIdTask =
-                this.examService.RetrieveExamByIdAsync(inputExamId);
+                this.examService.RetrieveExamByIdAsync(someExamId);
 
             // then
             await Assert.ThrowsAsync<ExamValidationException>(() =>
                 retrieveExamByIdTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectExamByIdAsync(someExamId),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -88,13 +93,9 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
                 broker.GetCurrentDateTime(),
                     Times.Never);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectExamByIdAsync(inputExamId),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
