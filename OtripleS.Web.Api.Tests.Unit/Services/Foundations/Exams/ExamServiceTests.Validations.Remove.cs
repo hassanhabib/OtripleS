@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         public async Task ShouldThrowValidatonExceptionOnDeleteIfIdIsInvalidAndLogItAsync()
         {
             // given
-            Guid randomExamId = default;
+            Guid randomExamId = Guid.Empty;
             Guid inputExamId = randomExamId;
 
             var invalidExamInputException = new InvalidExamException();
@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         }
 
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnDeleteWhenStorageExamIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnDeleteIfStorageExamIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
