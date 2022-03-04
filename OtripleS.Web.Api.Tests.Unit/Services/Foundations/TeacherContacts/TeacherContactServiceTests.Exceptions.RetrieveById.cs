@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
 
             // when
             ValueTask<TeacherContact> retrieveTeacherContactTask =
-                this.teacherContactService.RetrieveTeacherContactByIdAsync(someTeacherId,someContactId);
+                this.teacherContactService.RetrieveTeacherContactByIdAsync(someTeacherId, someContactId);
 
             // then
             await Assert.ThrowsAsync<TeacherContactDependencyException>(() =>
