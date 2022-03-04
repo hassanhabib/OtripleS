@@ -87,9 +87,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             this.userManagementBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-
-        
-        }
     }
+}
 
  
