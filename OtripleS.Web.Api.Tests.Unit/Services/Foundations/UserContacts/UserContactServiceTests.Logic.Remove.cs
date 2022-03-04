@@ -42,7 +42,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             // when
             UserContact actualUserContact =
                 await this.userContactService.RemoveUserContactByIdAsync(inputUserId, inputContactId);
-
             // then
             actualUserContact.Should().BeEquivalentTo(expectedUserContact);
 
@@ -57,6 +56,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-
     }
 }
