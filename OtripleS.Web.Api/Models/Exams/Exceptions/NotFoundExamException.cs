@@ -4,10 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Exams.Exceptions
 {
-    public class NotFoundExamException : Exception
+    public class NotFoundExamException : Xeption
     {
         public NotFoundExamException(Guid examId)
             : base(message: $"Couldn't find exam with id: {examId}.") { }

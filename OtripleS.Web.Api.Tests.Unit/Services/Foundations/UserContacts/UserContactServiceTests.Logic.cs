@@ -42,7 +42,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-        
         [Fact]
         public void ShouldRetrieveAllUserContacts()
         {
@@ -63,7 +62,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
 
             // then
             actualUserContacts.Should().BeEquivalentTo(expectedUserContacts);
-
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllUserContacts(),
                     Times.Once);
@@ -71,7 +69,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-
         [Fact]
         public async Task ShouldRetrieveUserContactById()
         {
