@@ -56,34 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public void ShouldRetrieveAllStudentSemesterCourses()
-        {
-            //given
-            IQueryable<StudentSemesterCourse> randomSemesterCourses =
-                CreateRandomStudentSemesterCourses();
-
-            IQueryable<StudentSemesterCourse> storageStudentSemesterCourses = randomSemesterCourses;
-            IQueryable<StudentSemesterCourse> expectedStudentSemesterCourses = storageStudentSemesterCourses;
-
-            this.storageBrokerMock.Setup(broker => broker.SelectAllStudentSemesterCourses())
-                .Returns(storageStudentSemesterCourses);
-
-            // when
-            IQueryable<StudentSemesterCourse> actualStudentSemesterCourses =
-                this.studentSemesterCourseService.RetrieveAllStudentSemesterCourses();
-
-            actualStudentSemesterCourses.Should().BeEquivalentTo(expectedStudentSemesterCourses);
-
-            this.storageBrokerMock.Verify(broker => broker.SelectAllStudentSemesterCourses(),
-                Times.Once);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
+        }        
 
         [Fact]
         public async Task ShouldModifyStudentSemesterCourseAsync()
