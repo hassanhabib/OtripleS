@@ -15,8 +15,7 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
 {
     public partial class UserServiceTests
-    {
-        
+    {        
         [Fact]
         public void ShouldRetrieveAllUsers()
         {
@@ -49,9 +48,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             this.userManagementBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-
-        [Fact]
-        public async Task ShouldModifyUserAsync()
+          [Fact]
+         public async Task ShouldModifyUserAsync()
         {
             // given
             int randomNumber = GetRandomNumber();
