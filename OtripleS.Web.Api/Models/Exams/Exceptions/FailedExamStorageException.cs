@@ -3,13 +3,15 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
+using System;
 using Xeptions;
 
 namespace OtripleS.Web.Api.Models.Exams.Exceptions
 {
-    public class ExamDependencyException : Xeption
+    public class FailedExamStorageException : Xeption
     {
-        public ExamDependencyException(Xeption innerException)
-             : base(message: "Exam dependency error occurred, contact support.", innerException) { }
+        public FailedExamStorageException(Exception innerException)
+            : base(message: "Failed exam storage error occurred, please contact support.", innerException)
+        { }
     }
 }
