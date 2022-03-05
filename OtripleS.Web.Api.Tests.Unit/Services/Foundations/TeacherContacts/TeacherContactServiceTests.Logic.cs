@@ -15,7 +15,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
 {
     public partial class TeacherContactServiceTests
     {        
-
         [Fact]
         public void ShouldRetrieveAllTeacherContacts()
         {
@@ -39,7 +38,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-
         [Fact]
         public async Task ShouldRemoveTeacherContactAsync()
         {
