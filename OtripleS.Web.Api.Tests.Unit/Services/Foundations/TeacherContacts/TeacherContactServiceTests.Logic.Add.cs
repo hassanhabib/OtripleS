@@ -37,12 +37,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             // then
             actualTeacherContact.Should().BeEquivalentTo(expectedTeacherContact);
 
-            this.storageBrokerMock.Verify(broker =>
+             this.storageBrokerMock.Verify(broker =>
                 broker.InsertTeacherContactAsync(inputTeacherContact),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
+             this.storageBrokerMock.VerifyNoOtherCalls();
+             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
