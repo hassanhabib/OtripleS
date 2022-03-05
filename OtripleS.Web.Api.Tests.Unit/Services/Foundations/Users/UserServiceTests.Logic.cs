@@ -53,40 +53,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
             this.userManagementBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public void ShouldRetrieveAllUsers()
-        {
-            // given
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            IQueryable<User> randomUsers = CreateRandomUsers(dates: randomDateTime);
-            IQueryable<User> storageUsers = randomUsers;
-            IQueryable<User> expectedUsers = storageUsers;
-
-            this.userManagementBrokerMock.Setup(broker =>
-                broker.SelectAllUsers())
-                    .Returns(storageUsers);
-
-            // when
-            IQueryable<User> actualUsers =
-                this.userService.RetrieveAllUsers();
-
-            // then
-            actualUsers.Should().BeEquivalentTo(expectedUsers);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
-            this.userManagementBrokerMock.Verify(broker =>
-                broker.SelectAllUsers(),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.userManagementBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-        }
+        }        
 
         [Fact]
         public async Task ShouldModifyUserAsync()

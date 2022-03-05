@@ -11,6 +11,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Exams;
 using OtripleS.Web.Api.Models.Exams.Exceptions;
+using Xeptions;
 
 namespace OtripleS.Web.Api.Services.Foundations.Exams
 {
@@ -39,24 +40,30 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             }
             catch (SqlException sqlException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var failedExamStorageException =
+                    new FailedExamStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedExamStorageException);
             }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsExamException =
                     new AlreadyExistsExamException(duplicateKeyException);
 
-                throw CreateAndLogValidationException(alreadyExistsExamException);
+                throw CreateAndLogDependencyValidationException(alreadyExistsExamException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
                 var lockedExamException = new LockedExamException(dbUpdateConcurrencyException);
 
-                throw CreateAndLogDependencyException(lockedExamException);
+                throw CreateAndLogDependencyValidationException(lockedExamException);
             }
             catch (DbUpdateException dbUpdateException)
             {
-                throw CreateAndLogDependencyException(dbUpdateException);
+                var failedExamStorageException =
+                    new FailedExamStorageException(dbUpdateException);
+
+                throw CreateAndLogDependencyException(failedExamStorageException);
             }
             catch (Exception exception)
             {
@@ -75,7 +82,10 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             }
             catch (SqlException sqlException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var failedExamStorageException =
+                    new FailedExamStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedExamStorageException);
             }
             catch (Exception exception)
             {
@@ -86,7 +96,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             }
         }
 
-        private ExamValidationException CreateAndLogValidationException(Exception exception)
+        private ExamValidationException CreateAndLogValidationException(Xeption exception)
         {
             var examValidationException = new ExamValidationException(exception);
             this.loggingBroker.LogError(examValidationException);
@@ -94,7 +104,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             return examValidationException;
         }
 
-        private ExamDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        private ExamDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
             var examDependencyException = new ExamDependencyException(exception);
             this.loggingBroker.LogCritical(examDependencyException);
@@ -102,7 +112,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             return examDependencyException;
         }
 
-        private ExamDependencyException CreateAndLogDependencyException(Exception exception)
+        private ExamDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var examDependencyValidationException =
+                new ExamDependencyValidationException(exception);
+
+            this.loggingBroker.LogError(examDependencyValidationException);
+
+            return examDependencyValidationException;
+        }
+
+        private ExamDependencyException CreateAndLogDependencyException(Xeption exception)
         {
             var examDependencyException = new ExamDependencyException(exception);
             this.loggingBroker.LogError(examDependencyException);
@@ -110,7 +130,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             return examDependencyException;
         }
 
-        private ExamServiceException CreateAndLogServiceException(Exception exception)
+        private ExamServiceException CreateAndLogServiceException(Xeption exception)
         {
             var examServiceException = new ExamServiceException(exception);
             this.loggingBroker.LogError(examServiceException);
