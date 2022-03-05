@@ -43,7 +43,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
-
         [Fact]
         public async Task ShouldRemoveTeacherContactAsync()
         {
