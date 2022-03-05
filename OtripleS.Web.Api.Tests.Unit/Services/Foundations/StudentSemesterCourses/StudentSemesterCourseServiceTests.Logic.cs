@@ -17,7 +17,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
     public partial class StudentSemesterCourseServiceTests
     {
         [Fact]
-        public async Task ShouldCreateStudentSemesterCourseAsync()
+        public async Task ShouldAddStudentSemesterCourseAsync()
         {
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();
@@ -149,6 +149,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-
     }
 }
