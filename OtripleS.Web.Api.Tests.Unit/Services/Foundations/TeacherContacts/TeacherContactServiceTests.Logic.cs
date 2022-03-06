@@ -15,33 +15,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
 {
     public partial class TeacherContactServiceTests
     {
-        [Fact]
-        public async Task ShouldAddTeacherContactAsync()
-        {
-            // given
-            TeacherContact randomTeacherContact = CreateRandomTeacherContact();
-            TeacherContact inputTeacherContact = randomTeacherContact;
-            TeacherContact storageTeacherContact = randomTeacherContact;
-            TeacherContact expectedTeacherContact = storageTeacherContact;
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertTeacherContactAsync(inputTeacherContact))
-                    .ReturnsAsync(storageTeacherContact);
-
-            // when
-            TeacherContact actualTeacherContact =
-                await this.teacherContactService.AddTeacherContactAsync(inputTeacherContact);
-
-            // then
-            actualTeacherContact.Should().BeEquivalentTo(expectedTeacherContact);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertTeacherContactAsync(inputTeacherContact),
-                    Times.Once);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-        }
 
         [Fact]
         public void ShouldRetrieveAllTeacherContacts()
