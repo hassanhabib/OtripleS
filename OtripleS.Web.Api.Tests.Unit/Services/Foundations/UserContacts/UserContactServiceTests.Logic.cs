@@ -14,34 +14,6 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
 {
     public partial class UserContactServiceTests
-    {                
-        [Fact]
-        public void ShouldRetrieveAllUserContacts()
-        {
-            // given
-            IQueryable<UserContact> randomUserContacts =
-                CreateRandomUserContacts();
-
-            IQueryable<UserContact> storageUserContacts = randomUserContacts;
-            IQueryable<UserContact> expectedUserContacts = storageUserContacts;
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllUserContacts())
-                    .Returns(storageUserContacts);
-
-            // when
-            IQueryable<UserContact> actualUserContacts =
-                this.userContactService.RetrieveAllUserContacts();
-
-            // then
-            actualUserContacts.Should().BeEquivalentTo(expectedUserContacts);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllUserContacts(),
-                    Times.Once);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-        }        
+    {                        
     }
 }
