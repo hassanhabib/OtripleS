@@ -60,7 +60,7 @@ namespace OtripleS.Web.Api
 
         public IConfiguration Configuration { get; }
 
-        public  static void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
             AddNewtonSoftJson(services);
