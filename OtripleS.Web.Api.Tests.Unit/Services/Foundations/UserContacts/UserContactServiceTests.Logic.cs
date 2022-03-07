@@ -15,7 +15,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
 {
     public partial class UserContactServiceTests
     {                
-
         [Fact]
         public void ShouldRetrieveAllUserContacts()
         {
