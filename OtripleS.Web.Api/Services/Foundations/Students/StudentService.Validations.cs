@@ -111,6 +111,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
         private void ValidateStudentOnModify(Student student)
         {
             ValidateStudent(student);
+
             Validate(
                 (Rule: IsInvalidX(student.Id), Parameter: nameof(Student.Id)),
                 (Rule: IsInvalidX(student.UserId), Parameter: nameof(Student.UserId)),
