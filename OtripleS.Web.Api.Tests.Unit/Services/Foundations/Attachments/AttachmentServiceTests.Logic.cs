@@ -73,7 +73,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-
         [Fact]
         public void ShouldRetrieveAllAttachments()
         {
