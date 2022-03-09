@@ -56,7 +56,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-
         [Fact]
         public async Task ShouldModifyAssignmentAsync()
         {
