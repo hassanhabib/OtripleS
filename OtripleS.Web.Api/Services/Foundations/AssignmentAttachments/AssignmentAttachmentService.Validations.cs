@@ -49,7 +49,7 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
             AssignmentAttachment storageAssignmentAttachment,
             Guid assignmentId, Guid attachmentId)
         {
-            if (storageAssignmentAttachment == null)
+            if (storageAssignmentAttachment is null)
                 throw new NotFoundAssignmentAttachmentException(assignmentId, attachmentId);
         }
 
