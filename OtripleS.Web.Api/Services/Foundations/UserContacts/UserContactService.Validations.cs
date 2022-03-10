@@ -11,7 +11,6 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
 {
     public partial class UserContactService
     {
-
         private static void ValidateUserContactOnAdd(UserContact userContact)
         {
             ValidateUserContactIsNull(userContact);
