@@ -16,7 +16,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
 {
     public partial class CalendarEntryServiceTests
     {        
-
         [Fact]
         public void ShouldRetrieveAllCalendarEntries()
         {
