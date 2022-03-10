@@ -67,7 +67,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
 
         private static void ValidateStudentGuardianIdIsNull(Guid studentId, Guid guardianId)
         {
-            if (studentId == default)
+            if (studentId == Guid.Empty)
             {
                 throw new InvalidStudentGuardianInputException(
                     parameterName: nameof(StudentGuardian.StudentId),
