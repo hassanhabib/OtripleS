@@ -75,38 +75,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async Task ShouldRetrieveCalendarEntryAttachmentById()
-        {
-            // given
-            CalendarEntryAttachment randomCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();
-            CalendarEntryAttachment storageCalendarEntryAttachment = randomCalendarEntryAttachment;
-            CalendarEntryAttachment expectedCalendarEntryAttachment = storageCalendarEntryAttachment;
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectCalendarEntryAttachmentByIdAsync(
-                    randomCalendarEntryAttachment.CalendarEntryId, randomCalendarEntryAttachment.AttachmentId))
-                        .ReturnsAsync(randomCalendarEntryAttachment);
-
-            // when
-            CalendarEntryAttachment actualCalendarEntryAttachment = await
-                this.calendarEntryAttachmentService.RetrieveCalendarEntryAttachmentByIdAsync(
-                    randomCalendarEntryAttachment.CalendarEntryId, randomCalendarEntryAttachment.AttachmentId);
-
-            // then
-            actualCalendarEntryAttachment.Should().BeEquivalentTo(expectedCalendarEntryAttachment);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectCalendarEntryAttachmentByIdAsync(
-                    randomCalendarEntryAttachment.CalendarEntryId, randomCalendarEntryAttachment.AttachmentId),
-                        Times.Once);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
+        }        
 
         [Fact]
         public async Task ShouldRemoveCalendarEntryAttachmentAsync()
