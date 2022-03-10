@@ -43,7 +43,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-
         [Fact]
         public void ShouldRetrieveAllCalendarEntryAttachments()
         {
