@@ -65,6 +65,5 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentAttachments
 
             return maybeStudentAttachment;
         });
-
     }
 }
