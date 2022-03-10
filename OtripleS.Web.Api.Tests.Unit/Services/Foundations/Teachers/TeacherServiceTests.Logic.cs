@@ -54,37 +54,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-
-        [Fact]
-        public async Task ShouldRetrieveTeacherByIdAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Teacher randomTeacher = CreateRandomTeacher(dateTime);
-            Guid inputTeacherId = randomTeacher.Id;
-            Teacher storageTeacher = randomTeacher;
-            Teacher expectedTeacher = randomTeacher;
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectTeacherByIdAsync(inputTeacherId))
-                    .ReturnsAsync(storageTeacher);
-
-            // when
-            Teacher actualTeacher =
-                await this.teacherService.RetrieveTeacherByIdAsync(inputTeacherId);
-
-            // then
-            actualTeacher.Should().BeEquivalentTo(expectedTeacher);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherByIdAsync(inputTeacherId),
-                    Times.Once);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
+              
         [Fact]
         public void ShouldRetrieveAllTeachers()
         {
