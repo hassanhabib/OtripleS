@@ -54,40 +54,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public void ShouldRetrieveAllCalendarEntries()
-        {
-            // given
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            IQueryable<CalendarEntry> randomCalendarEntries = CreateRandomCalendarEntries(randomDateTime);
-            IQueryable<CalendarEntry> storageCalendarEntries = randomCalendarEntries;
-            IQueryable<CalendarEntry> expectedCalendarEntries = storageCalendarEntries;
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllCalendarEntries())
-                    .Returns(storageCalendarEntries);
-
-            // when
-            IQueryable<CalendarEntry> actualCalendarEntries =
-                this.calendarEntryService.RetrieveAllCalendarEntries();
-
-            // then
-            actualCalendarEntries.Should().BeEquivalentTo(expectedCalendarEntries);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllCalendarEntries(),
-                    Times.Once);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
+        }        
 
         [Fact]
         public async Task ShouldRetrieveCalendarEntryByIdAsync()
