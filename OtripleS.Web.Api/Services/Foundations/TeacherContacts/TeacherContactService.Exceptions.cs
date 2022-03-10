@@ -103,6 +103,7 @@ namespace OtripleS.Web.Api.Services.Foundations.TeacherContacts
 
             return teacherContactValidationException;
         }
+        
         private TeacherContactDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
             var teacherContactDependencyException = new TeacherContactDependencyException(exception);
