@@ -23,7 +23,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
 
         private static void ValidateStorageAttachment(Attachment storageAttachment, Guid attachmentId)
         {
-            if (storageAttachment == null)
+            if (storageAttachment is null)
             {
                 throw new NotFoundAttachmentException(attachmentId);
             }

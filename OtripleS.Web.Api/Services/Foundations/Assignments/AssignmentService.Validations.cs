@@ -141,7 +141,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
 
         private static void ValidateStorageAssignment(Assignment storageAssignment, Guid assignmentId)
         {
-            if (storageAssignment == null)
+            if (storageAssignment is null)
             {
                 throw new NotFoundAssignmentException(assignmentId);
             }
@@ -182,7 +182,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
 
             return timeDifference.Duration() > oneMinute;
         }
-
+      
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidAssignmentException = new InvalidAssignmentException();
