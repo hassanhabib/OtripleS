@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentRegistrations
 
         private static void ValidateStorageStudentRegistration(StudentRegistration storageStudentRegistration, Guid studentId, Guid registrationId)
         {
-            if (storageStudentRegistration == null)
+            if (storageStudentRegistration is null)
             {
                 throw new NotFoundStudentRegistrationException(studentId, registrationId);
             }
