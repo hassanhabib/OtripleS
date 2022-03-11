@@ -15,57 +15,7 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
 {
     public partial class AttendanceServiceTests
-    {
-        [Fact]
-        public async Task ShouldModifyAttendanceAsync()
-        {
-            // given
-            DateTimeOffset randomDate = GetRandomDateTime();
-            DateTimeOffset randomInputDate = GetRandomDateTime();
-            Attendance randomAttendance = CreateRandomAttendance(randomInputDate);
-            Attendance inputAttendance = randomAttendance;
-            Attendance afterUpdateStorageAttendance = inputAttendance;
-            Attendance expectedAttendance = afterUpdateStorageAttendance;
-            Attendance beforeUpdateStorageAttendance = randomAttendance.DeepClone();
-            inputAttendance.UpdatedDate = randomDate;
-            Guid attendanceId = inputAttendance.Id;
-
-            this.dateTimeBrokerMock.Setup(broker =>
-               broker.GetCurrentDateTime())
-                   .Returns(randomDate);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttendanceByIdAsync(attendanceId))
-                    .ReturnsAsync(beforeUpdateStorageAttendance);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.UpdateAttendanceAsync(inputAttendance))
-                    .ReturnsAsync(afterUpdateStorageAttendance);
-
-            // when
-            Attendance actualAttendance =
-                await this.attendanceService.ModifyAttendanceAsync(inputAttendance);
-
-            // then
-            actualAttendance.Should().BeEquivalentTo(expectedAttendance);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttendanceByIdAsync(attendanceId),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.UpdateAttendanceAsync(inputAttendance),
-                    Times.Once);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
+    {       
         [Fact]
         public async Task ShouldRetrieveAttendanceByIdAsync()
         {
@@ -100,40 +50,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public void ShouldRetrieveAllAttendances()
-        {
-            // given
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            IQueryable<Attendance> randomAttendances = CreateRandomAttendances(randomDateTime);
-            IQueryable<Attendance> storageAttendances = randomAttendances;
-            IQueryable<Attendance> expectedAttendances = storageAttendances;
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllAttendances())
-                    .Returns(storageAttendances);
-
-            // when
-            IQueryable<Attendance> actualAttendances =
-                this.attendanceService.RetrieveAllAttendances();
-
-            // then
-            actualAttendances.Should().BeEquivalentTo(expectedAttendances);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Never);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllAttendances(),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-        }
+        }        
 
         [Fact]
         public async Task ShouldDeleteAttendanceAsync()
@@ -172,47 +89,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async Task ShouldCreateAttendanceAsync()
-        {
-            // given
-            DateTimeOffset randomDateTime = GetRandomDateTime();
-            DateTimeOffset dateTime = randomDateTime;
-            Attendance randomAttendance = CreateRandomAttendance(randomDateTime);
-            randomAttendance.UpdatedBy = randomAttendance.CreatedBy;
-            randomAttendance.UpdatedDate = randomAttendance.CreatedDate;
-            Attendance inputAttendance = randomAttendance;
-            Attendance storageAttendance = inputAttendance;
-            Attendance expectedAttendance = storageAttendance;
-
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertAttendanceAsync(inputAttendance))
-                    .ReturnsAsync(storageAttendance);
-
-            // when
-            Attendance actualAttendance =
-                await this.attendanceService.CreateAttendanceAsync(inputAttendance);
-
-            // then
-            actualAttendance.Should().BeEquivalentTo(expectedAttendance);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.AtLeastOnce);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertAttendanceAsync(inputAttendance),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-        }
+        }        
     }
 }
