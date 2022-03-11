@@ -86,40 +86,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async Task ShouldRetrieveAttachmentByIdAsync()
-        {
-            //given
-            DateTimeOffset dateTime = GetRandomDateTime();
-
-            Attachment randomAttachment =
-                CreateRandomAttachment(dateTime);
-
-            Guid inputAttachmentId = randomAttachment.Id;
-            Attachment inputAttachment = randomAttachment;
-            Attachment expectedAttachment = randomAttachment;
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttachmentByIdAsync(inputAttachmentId))
-                    .ReturnsAsync(inputAttachment);
-
-            //when 
-            Attachment actualAttachment =
-                await this.attachmentService.RetrieveAttachmentByIdAsync(inputAttachmentId);
-
-            //then
-            actualAttachment.Should().BeEquivalentTo(expectedAttachment);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttachmentByIdAsync(inputAttachmentId),
-                    Times.Once);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
+        }        
 
         [Fact]
         public async Task ShouldRemoveAttachmentAsync()

@@ -35,7 +35,7 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
 
         private static void ValidateStorageUserContact(UserContact storageUserContact, Guid userId, Guid contactId)
         {
-            if (storageUserContact == null)
+            if (storageUserContact is null)
             {
                 throw new NotFoundUserContactException(userId, contactId);
             }
