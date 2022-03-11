@@ -47,7 +47,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentAttachments
             StudentAttachment storageStudentAttachment,
             Guid studentId, Guid attachmentId)
         {
-            if (storageStudentAttachment == null)
+            if (storageStudentAttachment is null)
             {
                 throw new NotFoundStudentAttachmentException(studentId, attachmentId);
             }

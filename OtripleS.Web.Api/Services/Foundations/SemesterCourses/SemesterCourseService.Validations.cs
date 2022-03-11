@@ -143,7 +143,7 @@ namespace OtripleS.Web.Api.Services.Foundations.SemesterCourses
 
         private static void ValidateStorageSemesterCourse(SemesterCourse storageSemesterCourse, Guid semesterCourseId)
         {
-            if (storageSemesterCourse == null)
+            if (storageSemesterCourse is null)
             {
                 throw new NotFoundSemesterCourseException(semesterCourseId);
             }
