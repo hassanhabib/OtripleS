@@ -104,7 +104,6 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
             return guardianContactValidationException;
         }
 
-
         private GuardianContactDependencyException CreateAndLogCriticalDependencyException(Exception exception)
         {
             var guardianContactDependencyException = new GuardianContactDependencyException(exception);
