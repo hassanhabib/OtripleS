@@ -62,7 +62,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentContacts
             StudentContact storageStudentContact,
             Guid studentId, Guid contactId)
         {
-            if (storageStudentContact == null)
+            if (storageStudentContact is null)
             {
                 throw new NotFoundStudentContactException(studentId, contactId);
             }

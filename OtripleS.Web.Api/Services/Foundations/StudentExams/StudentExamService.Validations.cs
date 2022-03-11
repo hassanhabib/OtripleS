@@ -23,7 +23,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExams
 
         private static void ValidateStorageStudentExam(StudentExam storageStudentExam, Guid studentExamId)
         {
-            if (storageStudentExam == null)
+            if (storageStudentExam is null)
             {
                 throw new NotFoundStudentExamException(studentExamId);
             }

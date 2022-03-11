@@ -152,7 +152,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
 
         private static void ValidateStorageClassroom(Classroom storageClassroom, Guid classroomId)
         {
-            if (storageClassroom == null)
+            if (storageClassroom is null)
             {
                 throw new NotFoundClassroomException(classroomId);
             }
