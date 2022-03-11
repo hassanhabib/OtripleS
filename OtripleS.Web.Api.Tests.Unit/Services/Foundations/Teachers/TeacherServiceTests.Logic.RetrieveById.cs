@@ -17,6 +17,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 {
     public partial class TeacherServiceTests
     {
+        
         [Fact]
         public async Task ShouldRetrieveTeacherByIdAsync()
         {
