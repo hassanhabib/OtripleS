@@ -109,7 +109,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Guardians
 
         private static void ValidateStorageGuardian(Guardian storageGuardian, Guid guardianId)
         {
-            if (storageGuardian == null)
+            if (storageGuardian is null)
             {
                 throw new NotFoundGuardianException(guardianId);
             }

@@ -141,7 +141,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
 
         private static void ValidateStorageAssignment(Assignment storageAssignment, Guid assignmentId)
         {
-            if (storageAssignment == null)
+            if (storageAssignment is null)
             {
                 throw new NotFoundAssignmentException(assignmentId);
             }
