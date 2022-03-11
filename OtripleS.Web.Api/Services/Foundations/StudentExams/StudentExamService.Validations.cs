@@ -79,13 +79,15 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExams
 
         private static bool IsInvalid(Guid input) => input == default;
 
-        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        private bool IsDateNotRecent(DateTimeOffset date)
         {
-            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
-            int oneMinute = 1;
-            TimeSpan difference = now.Subtract(dateTime);
+            DateTimeOffset currentDateTime =
+                this.dateTimeBroker.GetCurrentDateTime();
 
-            return Math.Abs(difference.TotalMinutes) > oneMinute;
+            TimeSpan timeDifference = currentDateTime.Subtract(date);
+            TimeSpan oneMinute = TimeSpan.FromMinutes(1);
+
+            return timeDifference.Duration() > oneMinute;
         }
 
         private static void ValidateStudentExamIsNotNull(StudentExam studentExam)
