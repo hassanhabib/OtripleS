@@ -188,7 +188,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentSemesterCourses
             StudentSemesterCourse storageStudentSemesterCourse,
             Guid semesterCourseId, Guid studentId)
         {
-            if (storageStudentSemesterCourse == null)
+            if (storageStudentSemesterCourse is null)
             {
                 throw new NotFoundStudentSemesterCourseException(semesterCourseId, studentId);
             }
