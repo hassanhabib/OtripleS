@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExamFees
           Guid studentId,
           Guid examFeeId)
         {
-            if (storageStudentExamFee == null)
+            if (storageStudentExamFee is null)
                 throw new NotFoundStudentExamFeeException(studentId, examFeeId);
         }
 
