@@ -210,7 +210,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Registrations
             (Registration storageRegistration,
             Guid registrationId)
         {
-            if (storageRegistration == null)
+            if (storageRegistration is null)
             {
                 throw new NotFoundRegistrationException(registrationId);
             }
