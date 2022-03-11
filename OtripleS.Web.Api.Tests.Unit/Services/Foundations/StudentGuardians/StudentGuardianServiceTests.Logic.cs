@@ -17,36 +17,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
     public partial class StudentGuardianServiceTests
     {
         [Fact]
-        public void ShouldRetrieveAllStudentGuardians()
-        {
-            // given
-            IQueryable<StudentGuardian> randomStudentGuardians =
-                CreateRandomStudentGuardians();
-
-            IQueryable<StudentGuardian> storageStudentGuardians = randomStudentGuardians;
-            IQueryable<StudentGuardian> expectedStudentGuardians = storageStudentGuardians;
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllStudentGuardians())
-                    .Returns(storageStudentGuardians);
-
-            // when
-            IQueryable<StudentGuardian> actualStudentGuardians =
-                this.studentGuardianService.RetrieveAllStudentGuardians();
-
-            // then
-            actualStudentGuardians.Should().BeEquivalentTo(expectedStudentGuardians);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllStudentGuardians(),
-                    Times.Once);
-
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
         public async Task ShouldRetrieveStudentGuardianById()
         {
             // given
