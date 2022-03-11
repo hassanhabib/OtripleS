@@ -70,7 +70,7 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
             GuardianContact storageGuardianContact,
             Guid guardianId, Guid contactId)
         {
-            if (storageGuardianContact == null)
+            if (storageGuardianContact is null)
             {
                 throw new NotFoundGuardianContactException(guardianId, contactId);
             }
