@@ -4,10 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Teachers;
 using Xunit;
@@ -15,8 +16,7 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 {
     public partial class TeacherServiceTests
-    {                
-
+    {
         [Fact]
         public async Task ShouldCreateTeacherAsync()
         {
@@ -55,6 +55,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }        
+        }
     }
 }
