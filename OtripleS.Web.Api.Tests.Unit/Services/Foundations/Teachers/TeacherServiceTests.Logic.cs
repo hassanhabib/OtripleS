@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 {
     public partial class TeacherServiceTests
     {        
-
+        
         [Fact]
         public async Task ShouldRetrieveTeacherByIdAsync()
         {
@@ -45,7 +45,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }        
-        
+        }               
     }
 }
