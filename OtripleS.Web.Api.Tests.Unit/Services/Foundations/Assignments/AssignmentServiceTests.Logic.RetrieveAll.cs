@@ -17,6 +17,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
 {
     public partial class AssignmentServiceTests
     {
+        
         [Fact]
         public void ShouldRetrieveAllAssignments()
         {
