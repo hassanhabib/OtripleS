@@ -64,7 +64,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Contacts
                 Parameter: nameof(Contact.UpdatedDate))
 
             );
-
         }
 
         private static dynamic IsInvalidX(Guid id) => new

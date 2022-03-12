@@ -4,10 +4,11 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Teachers;
 using Xunit;
@@ -16,45 +17,34 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 {
     public partial class TeacherServiceTests
     {
-       
         [Fact]
-        public async Task ShouldCreateTeacherAsync()
+        public async Task ShouldRetrieveTeacherByIdAsync()
         {
             // given
-            DateTimeOffset dateTime = DateTimeOffset.UtcNow;
+            DateTimeOffset dateTime = GetRandomDateTime();
             Teacher randomTeacher = CreateRandomTeacher(dateTime);
-            randomTeacher.UpdatedBy = randomTeacher.CreatedBy;
-            randomTeacher.UpdatedDate = randomTeacher.CreatedDate;
-            Teacher inputTeacher = randomTeacher;
+            Guid inputTeacherId = randomTeacher.Id;
             Teacher storageTeacher = randomTeacher;
             Teacher expectedTeacher = randomTeacher;
 
-            this.dateTimeBrokerMock.Setup(broker =>
-               broker.GetCurrentDateTime())
-                   .Returns(dateTime);
-
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertTeacherAsync(inputTeacher))
+                broker.SelectTeacherByIdAsync(inputTeacherId))
                     .ReturnsAsync(storageTeacher);
 
             // when
             Teacher actualTeacher =
-                await this.teacherService.CreateTeacherAsync(inputTeacher);
+                await this.teacherService.RetrieveTeacherByIdAsync(inputTeacherId);
 
             // then
             actualTeacher.Should().BeEquivalentTo(expectedTeacher);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertTeacherAsync(inputTeacher),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
+                broker.SelectTeacherByIdAsync(inputTeacherId),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }        
+        }
     }
 }
