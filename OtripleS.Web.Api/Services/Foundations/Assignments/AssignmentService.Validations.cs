@@ -182,7 +182,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
 
             return timeDifference.Duration() > oneMinute;
         }
-      
+
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidAssignmentException = new InvalidAssignmentException();

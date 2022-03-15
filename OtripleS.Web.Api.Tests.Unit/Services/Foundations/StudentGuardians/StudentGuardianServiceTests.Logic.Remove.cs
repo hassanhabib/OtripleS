@@ -4,10 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using Xunit;
@@ -15,7 +13,7 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
 {
     public partial class StudentGuardianServiceTests
-    { 
+    {
         [Fact]
         public async Task ShouldRemoveStudentGuardianAsync()
         {

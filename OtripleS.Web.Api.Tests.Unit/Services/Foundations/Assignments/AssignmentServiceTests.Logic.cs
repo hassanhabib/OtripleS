@@ -5,9 +5,7 @@
 
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using FluentAssertions;
-using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Assignments;
 using Xunit;
@@ -15,7 +13,7 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
 {
     public partial class AssignmentServiceTests
-    {        
+    {
         [Fact]
         public void ShouldRetrieveAllAssignments()
         {
@@ -47,6 +45,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-        }        
+        }
     }
 }

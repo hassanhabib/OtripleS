@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
@@ -69,4 +68,3 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         }
     }
 }
- 

@@ -73,7 +73,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
                     parameterName: nameof(StudentGuardian.StudentId),
                     parameterValue: studentId);
             }
-            
+
             if (guardianId == default)
             {
                 throw new InvalidStudentGuardianInputException(

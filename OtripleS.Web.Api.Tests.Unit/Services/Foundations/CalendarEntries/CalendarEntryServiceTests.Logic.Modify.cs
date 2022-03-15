@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
@@ -15,7 +14,7 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
 {
     public partial class CalendarEntryServiceTests
-    {        
+    {
         [Fact]
         public async Task ShouldModifyCalendarEntryAsync()
         {
@@ -64,6 +63,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }        
+        }
     }
 }

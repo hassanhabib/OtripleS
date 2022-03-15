@@ -90,7 +90,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Guardians
 
             return timeDifference.Duration() > oneMinute;
         }
-     
+
         private static void ValidateGuardianIdIsNotNull(Guardian guardian)
         {
             if (guardian is null)
