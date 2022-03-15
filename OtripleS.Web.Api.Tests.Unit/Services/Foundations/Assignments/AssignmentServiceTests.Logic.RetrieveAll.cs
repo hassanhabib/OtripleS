@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Assignments;
 using Xunit;
@@ -24,7 +25,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
             DateTimeOffset randomDateTime = GetRandomDateTime();
             IQueryable<Assignment> randomAssignments = CreateRandomAssignments(randomDateTime);
             IQueryable<Assignment> storageAssignments = randomAssignments;
-            IQueryable<Assignment> expectedAssignments = storageAssignments;
+            IQueryable<Assignment> expectedAssignments = storageAssignments.DeepClone();
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAssignments())
