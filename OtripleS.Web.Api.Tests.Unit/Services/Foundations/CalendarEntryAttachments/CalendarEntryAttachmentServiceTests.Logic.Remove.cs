@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -14,8 +13,8 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachments
 {
     public partial class CalendarEntryAttachmentServiceTests
-    {        
-         [Fact]
+    {
+        [Fact]
         public async Task ShouldRemoveCalendarEntryAttachmentAsync()
         {
             // given

@@ -5,9 +5,7 @@
 
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using FluentAssertions;
-using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.CalendarEntries;
 using Xunit;
@@ -15,7 +13,7 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
 {
     public partial class CalendarEntryServiceTests
-    {        
+    {
         [Fact]
         public void ShouldRetrieveAllCalendarEntries()
         {
@@ -47,6 +45,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }        
+        }
     }
 }

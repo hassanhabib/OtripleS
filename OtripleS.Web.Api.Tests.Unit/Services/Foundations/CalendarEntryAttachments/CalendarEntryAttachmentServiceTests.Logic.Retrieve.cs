@@ -3,8 +3,6 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -14,7 +12,7 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachments
 {
     public partial class CalendarEntryAttachmentServiceTests
-    {        
+    {
         [Fact]
         public async Task ShouldRetrieveCalendarEntryAttachmentById()
         {

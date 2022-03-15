@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
@@ -15,7 +14,7 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
 {
     public partial class ExamServiceTests
-    { 
+    {
         [Fact]
         public async Task ShouldModifyExamAsync()
         {

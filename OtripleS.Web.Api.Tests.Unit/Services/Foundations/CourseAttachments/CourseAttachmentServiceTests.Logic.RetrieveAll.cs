@@ -4,7 +4,6 @@
 // ---------------------------------------------------------------
 
 using System.Linq;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.CourseAttachments;

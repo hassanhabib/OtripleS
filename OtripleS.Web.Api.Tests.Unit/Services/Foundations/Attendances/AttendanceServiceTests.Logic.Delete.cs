@@ -4,10 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Attendances;
 using Xunit;
@@ -15,7 +13,7 @@ using Xunit;
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
 {
     public partial class AttendanceServiceTests
-    {       
+    {
         [Fact]
         public async Task ShouldDeleteAttendanceAsync()
         {
@@ -53,6 +51,6 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }        
+        }
     }
 }
