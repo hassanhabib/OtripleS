@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Attachments;
 using Xunit;
@@ -23,7 +24,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
             // given
             IQueryable<Attachment> randomAttachments = CreateRandomAttachments();
             IQueryable<Attachment> storageAttachments = randomAttachments;
-            IQueryable<Attachment> expectedAttachments = storageAttachments;
+            IQueryable<Attachment> expectedAttachments = storageAttachments.DeepClone();
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllAttachments())
