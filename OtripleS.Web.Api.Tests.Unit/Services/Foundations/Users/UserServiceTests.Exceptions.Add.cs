@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                     .Returns(dateTime);
 
             this.userManagementBrokerMock.Setup(broker =>
-                broker.InsertUserAsync(inputUser, password))
+                broker.InsertUserAsync(It.IsAny<User>(), It.IsAny<string>()))
                     .ThrowsAsync(sqlException);
 
             // when
@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                         Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
-                broker.InsertUserAsync(inputUser, password),
+                broker.InsertUserAsync(It.IsAny<User>(), It.IsAny<string>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
