@@ -56,17 +56,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
         public ValueTask<Attachment> ModifyAttachmentAsync(Attachment attachment) =>
         TryCatch(async () =>
         {
-           ValidateAttachmentOnModify(attachment);
-           Attachment maybeAttachment = await this.storageBroker.SelectAttachmentByIdAsync(attachment.Id);
-           ValidateStorageAttachment(maybeAttachment, attachment.Id);
+            ValidateAttachmentOnModify(attachment);
+            Attachment maybeAttachment = await this.storageBroker.SelectAttachmentByIdAsync(attachment.Id);
+            ValidateStorageAttachment(maybeAttachment, attachment.Id);
 
-           ValidateAgainstStorageAttachmentOnModify(
-           inputAttachment: attachment,
-           storageAttachment: maybeAttachment);
+            ValidateAgainstStorageAttachmentOnModify(
+            inputAttachment: attachment,
+            storageAttachment: maybeAttachment);
 
-           return await this.storageBroker.UpdateAttachmentAsync(attachment);
+            return await this.storageBroker.UpdateAttachmentAsync(attachment);
         });
-    
+        
         public ValueTask<Attachment> RemoveAttachmentByIdAsync(Guid attachmentId) =>
         TryCatch(async () =>
         {
