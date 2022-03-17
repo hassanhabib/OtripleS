@@ -3,14 +3,10 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-using FluentAssertions;
-using Moq;
-using OtripleS.Web.Api.Models.Teachers;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FluentAssertions;
+using OtripleS.Web.Api.Models.Teachers;
+using Moq;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
@@ -48,6 +44,5 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-
     }
 }
