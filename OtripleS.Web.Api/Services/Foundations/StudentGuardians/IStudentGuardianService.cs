@@ -12,10 +12,10 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
 {
     public interface IStudentGuardianService
     {
-        IQueryable<StudentGuardian> RetrieveAllStudentGuardians();
-        ValueTask<StudentGuardian> ModifyStudentGuardianAsync(StudentGuardian studentGuardian);
-        ValueTask<StudentGuardian> RetrieveStudentGuardianByIdAsync(Guid studentId, Guid guardianId);
         ValueTask<StudentGuardian> AddStudentGuardianAsync(StudentGuardian studentGuardian);
+        IQueryable<StudentGuardian> RetrieveAllStudentGuardians();
+        ValueTask<StudentGuardian> RetrieveStudentGuardianByIdAsync(Guid studentId, Guid guardianId);
+        ValueTask<StudentGuardian> ModifyStudentGuardianAsync(StudentGuardian studentGuardian);
         ValueTask<StudentGuardian> RemoveStudentGuardianByIdsAsync(Guid guardianId, Guid studentId);
     }
 }

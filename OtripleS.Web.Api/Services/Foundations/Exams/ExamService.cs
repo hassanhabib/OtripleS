@@ -30,7 +30,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             this.loggingBroker = loggingBroker;
         }
 
-
         public ValueTask<Exam> RetrieveExamByIdAsync(Guid examId) =>
         TryCatch(async () =>
         {
