@@ -12,8 +12,8 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentSemesterCourses
 {
     public interface IStudentSemesterCourseService
     {
-        
-        ValueTask<StudentSemesterCourse> CreateStudentSemesterCourseAsync( StudentSemesterCourse inputStudentSemesterCourse);
+
+        ValueTask<StudentSemesterCourse> CreateStudentSemesterCourseAsync(StudentSemesterCourse inputStudentSemesterCourse);
         IQueryable<StudentSemesterCourse> RetrieveAllStudentSemesterCourses();
         ValueTask<StudentSemesterCourse> RetrieveStudentSemesterCourseByIdAsync(Guid studentId, Guid semesterCourse);
         ValueTask<StudentSemesterCourse> ModifyStudentSemesterCourseAsync(StudentSemesterCourse studentSemesterCourse);
