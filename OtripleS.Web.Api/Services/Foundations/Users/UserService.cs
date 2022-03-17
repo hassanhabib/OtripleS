@@ -23,6 +23,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
             IUserManagementBroker userManagementBroker,
             IDateTimeBroker dateTimeBroker,
             ILoggingBroker loggingBroker)
+            
         {
             this.userManagementBroker = userManagementBroker;
             this.dateTimeBroker = dateTimeBroker;
