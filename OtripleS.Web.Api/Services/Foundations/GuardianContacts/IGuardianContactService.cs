@@ -17,5 +17,4 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
         ValueTask<GuardianContact> RetrieveGuardianContactByIdAsync(Guid guardianId, Guid contactId);
         ValueTask<GuardianContact> RemoveGuardianContactByIdAsync(Guid guardianId, Guid contactId);
     }
-
 }
