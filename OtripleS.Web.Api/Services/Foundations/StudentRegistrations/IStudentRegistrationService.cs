@@ -12,8 +12,8 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentRegistrations
 {
     public interface IStudentRegistrationService
     {
-        IQueryable<StudentRegistration> RetrieveAllStudentRegistrations();
         ValueTask<StudentRegistration> AddStudentRegistrationAsync(StudentRegistration studentRegistration);
+        IQueryable<StudentRegistration> RetrieveAllStudentRegistrations();
         ValueTask<StudentRegistration> RetrieveStudentRegistrationByIdAsync(Guid studentId, Guid registrationId);
         ValueTask<StudentRegistration> RemoveStudentRegistrationByIdsAsync(Guid studentId, Guid registrationId);
     }
