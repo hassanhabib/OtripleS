@@ -36,21 +36,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
 
             return await this.storageBroker.InsertAttachmentAsync(attachment);
         });
-
-        public ValueTask<Attachment> ModifyAttachmentAsync(Attachment attachment) =>
-        TryCatch(async () =>
-        {
-            ValidateAttachmentOnModify(attachment);
-            Attachment maybeAttachment = await this.storageBroker.SelectAttachmentByIdAsync(attachment.Id);
-            ValidateStorageAttachment(maybeAttachment, attachment.Id);
-
-            ValidateAgainstStorageAttachmentOnModify(
-                inputAttachment: attachment,
-                storageAttachment: maybeAttachment);
-
-            return await this.storageBroker.UpdateAttachmentAsync(attachment);
-        });
-
+        
         public IQueryable<Attachment> RetrieveAllAttachments() =>
         TryCatch(() => this.storageBroker.SelectAllAttachments());
 
@@ -67,6 +53,20 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
             return storageAttachment;
         });
 
+        public ValueTask<Attachment> ModifyAttachmentAsync(Attachment attachment) =>
+        TryCatch(async () =>
+        {
+           ValidateAttachmentOnModify(attachment);
+           Attachment maybeAttachment = await this.storageBroker.SelectAttachmentByIdAsync(attachment.Id);
+           ValidateStorageAttachment(maybeAttachment, attachment.Id);
+
+           ValidateAgainstStorageAttachmentOnModify(
+           inputAttachment: attachment,
+           storageAttachment: maybeAttachment);
+
+           return await this.storageBroker.UpdateAttachmentAsync(attachment);
+        });
+    
         public ValueTask<Attachment> RemoveAttachmentByIdAsync(Guid attachmentId) =>
         TryCatch(async () =>
         {
@@ -79,5 +79,3 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
 
             return await this.storageBroker.DeleteAttachmentAsync(maybeAttachment);
         });
-    }
-}
