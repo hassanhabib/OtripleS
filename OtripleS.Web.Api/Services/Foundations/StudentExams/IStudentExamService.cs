@@ -13,13 +13,9 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExams
     public interface IStudentExamService
     {
         ValueTask<StudentExam> AddStudentExamAsync(StudentExam studentExam);
-
-        ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId);
-
         IQueryable<StudentExam> RetrieveAllStudentExams();
-
-        ValueTask<StudentExam> RemoveStudentExamByIdAsync(Guid studentExamId);
-
+        ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId);
         ValueTask<StudentExam> ModifyStudentExamAsync(StudentExam studentExam);
+        ValueTask<StudentExam> RemoveStudentExamByIdAsync(Guid studentExamId);
     }
 }
