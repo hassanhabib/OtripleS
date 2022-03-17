@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
 
             return await this.storageBroker.InsertAttachmentAsync(attachment);
         });
-        
+
         public IQueryable<Attachment> RetrieveAllAttachments() =>
         TryCatch(() => this.storageBroker.SelectAllAttachments());
 
@@ -66,7 +66,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
 
             return await this.storageBroker.UpdateAttachmentAsync(attachment);
         });
-        
+
         public ValueTask<Attachment> RemoveAttachmentByIdAsync(Guid attachmentId) =>
         TryCatch(async () =>
         {
@@ -79,3 +79,5 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
 
             return await this.storageBroker.DeleteAttachmentAsync(maybeAttachment);
         });
+    }
+}
