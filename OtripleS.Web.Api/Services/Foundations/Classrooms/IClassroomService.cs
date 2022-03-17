@@ -17,6 +17,5 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
         ValueTask<Classroom> RetrieveClassroomById(Guid classroomId);
         ValueTask<Classroom> ModifyClassroomAsync(Classroom classroom);
         ValueTask<Classroom> RemoveClassroomAsync(Guid classroomId);
-
     }
 }
