@@ -17,9 +17,5 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExams
         ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId);
         ValueTask<StudentExam> ModifyStudentExamAsync(StudentExam studentExam);
         ValueTask<StudentExam> RemoveStudentExamByIdAsync(Guid studentExamId);
-
-
-
-
     }
 }
