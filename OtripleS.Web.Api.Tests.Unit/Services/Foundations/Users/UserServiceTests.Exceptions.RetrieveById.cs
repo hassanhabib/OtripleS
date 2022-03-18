@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 new UserDependencyException(failedUserStorageException);
 
             this.userManagementBrokerMock.Setup(broker =>
-                broker.SelectUserByIdAsync(someUserId))
+                broker.SelectUserByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
@@ -86,7 +86,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                         Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
-                broker.SelectUserByIdAsync(someUserId),
+                broker.SelectUserByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
