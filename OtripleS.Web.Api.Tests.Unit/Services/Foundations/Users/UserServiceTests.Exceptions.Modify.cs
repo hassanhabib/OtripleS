@@ -187,7 +187,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 new UserServiceException(failedUserServiceException);
 
             this.userManagementBrokerMock.Setup(broker =>
-                broker.SelectUserByIdAsync(someUser.Id))
+                broker.SelectUserByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -207,7 +207,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                     Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
-                broker.SelectUserByIdAsync(someUser.Id),
+                broker.SelectUserByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
