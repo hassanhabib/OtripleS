@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 new UserContactDependencyException(failedUserContactStorageException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectUserContactByIdAsync(someUserId, someContactId))
+                 broker.SelectUserContactByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
                     .ThrowsAsync(sqlException);
 
             // when
@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectUserContactByIdAsync(someUserId, someContactId),
+                broker.SelectUserContactByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
