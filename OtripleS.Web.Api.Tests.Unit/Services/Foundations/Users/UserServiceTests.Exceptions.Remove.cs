@@ -109,7 +109,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                 new UserDependencyException(lockedUserException);
 
             this.userManagementBrokerMock.Setup(broker =>
-                broker.SelectUserByIdAsync(someUserId))
+                broker.SelectUserByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
@@ -126,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
                         Times.Once);
 
             this.userManagementBrokerMock.Verify(broker =>
-                broker.SelectUserByIdAsync(someUserId),
+                broker.SelectUserByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
