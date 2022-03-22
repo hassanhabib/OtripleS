@@ -36,7 +36,23 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
 
             return await this.storageBroker.InsertCalendarEntryAsync(calendarEntry);
         });
+        
+        public IQueryable<CalendarEntry> RetrieveAllCalendarEntries() =>
+       TryCatch(() => this.storageBroker.SelectAllCalendarEntries());
 
+        public ValueTask<CalendarEntry> RetrieveCalendarEntryByIdAsync(
+            Guid calendarEntryId) => TryCatch(async () =>
+            {
+                ValidateCalendarEntryId(calendarEntryId);
+
+                CalendarEntry maybeCalendarEntry =
+                    await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntryId);
+
+                ValidateStorageCalendarEntry(maybeCalendarEntry, calendarEntryId);
+
+                return maybeCalendarEntry;
+            });
+        
         public ValueTask<CalendarEntry> ModifyCalendarEntryAsync(CalendarEntry calendarEntry) =>
         TryCatch(async () =>
         {
@@ -53,7 +69,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
 
             return await this.storageBroker.UpdateCalendarEntryAsync(calendarEntry);
         });
-
+        
         public ValueTask<CalendarEntry> RemoveCalendarEntryByIdAsync(Guid calendarEntryId) =>
         TryCatch(async () =>
         {
@@ -65,22 +81,6 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
             ValidateStorageCalendarEntry(maybeCalendarEntry, calendarEntryId);
 
             return await this.storageBroker.DeleteCalendarEntryAsync(maybeCalendarEntry);
-        });
-
-        public IQueryable<CalendarEntry> RetrieveAllCalendarEntries() =>
-        TryCatch(() => this.storageBroker.SelectAllCalendarEntries());
-
-        public ValueTask<CalendarEntry> RetrieveCalendarEntryByIdAsync(
-            Guid calendarEntryId) => TryCatch(async () =>
-        {
-            ValidateCalendarEntryId(calendarEntryId);
-
-            CalendarEntry maybeCalendarEntry =
-                await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntryId);
-
-            ValidateStorageCalendarEntry(maybeCalendarEntry, calendarEntryId);
-
-            return maybeCalendarEntry;
         });
     }
 }
