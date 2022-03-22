@@ -36,6 +36,22 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
             return await this.storageBroker.InsertCourseAsync(course);
         });
 
+        public IQueryable<Course> RetrieveAllCourses() =>
+        TryCatch(() => this.storageBroker.SelectAllCourses());
+
+        public ValueTask<Course> RetrieveCourseByIdAsync(Guid courseId) =>
+        TryCatch(async () =>
+        {
+            ValidateCourseId(courseId);
+
+            Course maybeCourse =
+                await this.storageBroker.SelectCourseByIdAsync(courseId);
+
+            ValidateStorageCourse(maybeCourse, courseId);
+
+            return maybeCourse;
+        });
+
         public ValueTask<Course> ModifyCourseAsync(Course course) =>
         TryCatch(async () =>
         {
@@ -58,22 +74,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Courses
             ValidateStorageCourse(maybeCourse, courseId);
 
             return await this.storageBroker.DeleteCourseAsync(maybeCourse);
-        });
-
-        public IQueryable<Course> RetrieveAllCourses() =>
-        TryCatch(() => this.storageBroker.SelectAllCourses());
-
-        public ValueTask<Course> RetrieveCourseByIdAsync(Guid courseId) =>
-        TryCatch(async () =>
-        {
-            ValidateCourseId(courseId);
-
-            Course maybeCourse =
-                await this.storageBroker.SelectCourseByIdAsync(courseId);
-
-            ValidateStorageCourse(maybeCourse, courseId);
-
-            return maybeCourse;
         });
     }
 }
