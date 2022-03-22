@@ -29,36 +29,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<Teacher> CreateTeacherAsync(Teacher teacher) =>
+        public ValueTask<Teacher> AddTeacherAsync(Teacher teacher) =>
         TryCatch(async () =>
         {
             ValidateTeacherOnCreate(teacher);
 
             return await this.storageBroker.InsertTeacherAsync(teacher);
-        });
-
-        public ValueTask<Teacher> RemoveTeacherByIdAsync(Guid teacherId) =>
-        TryCatch(async () =>
-        {
-            ValidateTeacherId(teacherId);
-
-            Teacher maybeTeacher =
-               await this.storageBroker.SelectTeacherByIdAsync(teacherId);
-
-            ValidateStorageTeacher(maybeTeacher, teacherId);
-
-            return await this.storageBroker.DeleteTeacherAsync(maybeTeacher);
-        });
-
-        public ValueTask<Teacher> ModifyTeacherAsync(Teacher teacher) =>
-        TryCatch(async () =>
-        {
-            ValidateTeacherOnModify(teacher);
-            Teacher maybeTeacher = await this.storageBroker.SelectTeacherByIdAsync(teacher.Id);
-            ValidateStorageTeacher(maybeTeacher, teacher.Id);
-            ValidateAgainstStorageTeacherOnModify(inputTeacher: teacher, storageTeacher: maybeTeacher);
-
-            return await this.storageBroker.UpdateTeacherAsync(teacher);
         });
 
         public IQueryable<Teacher> RetrieveAllTeachers() =>
@@ -75,6 +51,30 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             ValidateStorageTeacher(storageTeacher, teacherId);
 
             return storageTeacher;
+        });
+
+        public ValueTask<Teacher> ModifyTeacherAsync(Teacher teacher) =>
+        TryCatch(async () =>
+         {
+             ValidateTeacherOnModify(teacher);
+             Teacher maybeTeacher = await this.storageBroker.SelectTeacherByIdAsync(teacher.Id);
+             ValidateStorageTeacher(maybeTeacher, teacher.Id);
+             ValidateAgainstStorageTeacherOnModify(inputTeacher: teacher, storageTeacher: maybeTeacher);
+
+             return await this.storageBroker.UpdateTeacherAsync(teacher);
+         });
+
+        public ValueTask<Teacher> RemoveTeacherByIdAsync(Guid teacherId) =>
+        TryCatch(async () =>
+        {
+            ValidateTeacherId(teacherId);
+
+            Teacher maybeTeacher =
+               await this.storageBroker.SelectTeacherByIdAsync(teacherId);
+
+            ValidateStorageTeacher(maybeTeacher, teacherId);
+
+            return await this.storageBroker.DeleteTeacherAsync(maybeTeacher);
         });
     }
 }

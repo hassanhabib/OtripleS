@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             // when
             ValueTask<Teacher> addTeacherTask =
-                this.teacherService.CreateTeacherAsync(someTeacher);
+                this.teacherService.AddTeacherAsync(someTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherDependencyException>(() =>
@@ -83,7 +83,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             // when 
             ValueTask<Teacher> addTeacherTask =
-                this.teacherService.CreateTeacherAsync(alreadyExistsTeacher);
+                this.teacherService.AddTeacherAsync(alreadyExistsTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherDependencyValidationException>(() =>
@@ -124,7 +124,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             // when
             ValueTask<Teacher> addTeacherTask =
-                this.teacherService.CreateTeacherAsync(someTeacher);
+                this.teacherService.AddTeacherAsync(someTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherDependencyException>(() =>
@@ -167,7 +167,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             // when
             ValueTask<Teacher> addTeacherTask =
-                 this.teacherService.CreateTeacherAsync(someTeacher);
+                 this.teacherService.AddTeacherAsync(someTeacher);
 
             // then
             await Assert.ThrowsAsync<TeacherServiceException>(() =>

@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
 
             // when
             Teacher actualTeacher =
-                await this.teacherService.CreateTeacherAsync(inputTeacher);
+                await this.teacherService.AddTeacherAsync(inputTeacher);
 
             // then
             actualTeacher.Should().BeEquivalentTo(expectedTeacher);

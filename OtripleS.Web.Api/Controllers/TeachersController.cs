@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Controllers
             try
             {
                 Teacher createdTeacher =
-                    await this.teacherService.CreateTeacherAsync(teacher);
+                    await this.teacherService.AddTeacherAsync(teacher);
 
                 return Created(createdTeacher);
             }

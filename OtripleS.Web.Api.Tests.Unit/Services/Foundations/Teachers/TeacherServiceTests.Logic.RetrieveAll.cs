@@ -5,8 +5,8 @@
 
 using System.Linq;
 using FluentAssertions;
-using OtripleS.Web.Api.Models.Teachers;
 using Moq;
+using OtripleS.Web.Api.Models.Teachers;
 using Xunit;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers

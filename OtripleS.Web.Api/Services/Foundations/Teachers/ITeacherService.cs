@@ -12,7 +12,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
 {
     public interface ITeacherService
     {
-        ValueTask<Teacher> CreateTeacherAsync(Teacher teacher);
+        ValueTask<Teacher> AddTeacherAsync(Teacher teacher);
         IQueryable<Teacher> RetrieveAllTeachers();
         ValueTask<Teacher> RetrieveTeacherByIdAsync(Guid teacherId);
         ValueTask<Teacher> ModifyTeacherAsync(Teacher teacher);
