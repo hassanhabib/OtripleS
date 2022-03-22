@@ -109,7 +109,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                 new UserContactServiceException(failedUserContactServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertUserContactAsync(inputUserContact))
+                broker.InsertUserContactAsync(It.IsAny<UserContact>()))
                     .ThrowsAsync(serviceException);
 
             // when
@@ -126,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertUserContactAsync(inputUserContact),
+                broker.InsertUserContactAsync(It.IsAny<UserContact>()),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
