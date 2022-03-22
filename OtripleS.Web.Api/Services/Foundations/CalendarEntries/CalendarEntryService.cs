@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
 
             return await this.storageBroker.InsertCalendarEntryAsync(calendarEntry);
         });
-        
+
         public IQueryable<CalendarEntry> RetrieveAllCalendarEntries() =>
        TryCatch(() => this.storageBroker.SelectAllCalendarEntries());
 
@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
 
                 return maybeCalendarEntry;
             });
-        
+
         public ValueTask<CalendarEntry> ModifyCalendarEntryAsync(CalendarEntry calendarEntry) =>
         TryCatch(async () =>
         {
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
 
             return await this.storageBroker.UpdateCalendarEntryAsync(calendarEntry);
         });
-        
+
         public ValueTask<CalendarEntry> RemoveCalendarEntryByIdAsync(Guid calendarEntryId) =>
         TryCatch(async () =>
         {
