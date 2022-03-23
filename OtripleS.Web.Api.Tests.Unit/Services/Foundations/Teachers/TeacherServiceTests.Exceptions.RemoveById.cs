@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 new TeacherDependencyException(failedTeacherStorageException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectTeacherByIdAsync(someTeacherId))
+                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
@@ -86,7 +86,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherByIdAsync(someTeacherId),
+                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
