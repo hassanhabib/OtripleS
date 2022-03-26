@@ -32,20 +32,7 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
 
             return await this.storageBroker.InsertGuardianContactAsync(guardianContact);
         });
-
-        public ValueTask<GuardianContact> RemoveGuardianContactByIdAsync(Guid guardianId, Guid contactId) =>
-        TryCatch(async () =>
-        {
-            ValidateGuardianContactIdIsNull(guardianId, contactId);
-
-            GuardianContact mayBeGuardianContact =
-                await this.storageBroker.SelectGuardianContactByIdAsync(guardianId, contactId);
-
-            ValidateStorageGuardianContact(mayBeGuardianContact, guardianId, contactId);
-
-            return await this.storageBroker.DeleteGuardianContactAsync(mayBeGuardianContact);
-        });
-
+        
         public IQueryable<GuardianContact> RetrieveAllGuardianContacts() =>
         TryCatch(() => this.storageBroker.SelectAllGuardianContacts());
 
@@ -60,6 +47,19 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
             ValidateStorageGuardianContact(maybeGuardianContact, guardianId, contactId);
 
             return maybeGuardianContact;
+        });
+
+        public ValueTask<GuardianContact> RemoveGuardianContactByIdAsync(Guid guardianId, Guid contactId) =>
+        TryCatch(async () =>
+        {
+            ValidateGuardianContactIdIsNull(guardianId, contactId);
+
+            GuardianContact mayBeGuardianContact =
+                await this.storageBroker.SelectGuardianContactByIdAsync(guardianId, contactId);
+
+            ValidateStorageGuardianContact(mayBeGuardianContact, guardianId, contactId);
+
+            return await this.storageBroker.DeleteGuardianContactAsync(mayBeGuardianContact);
         });
     }
 }
