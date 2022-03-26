@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
 
             return await this.storageBroker.InsertClassroomAsync(classroom);
         });
-        
+
         public IQueryable<Classroom> RetrieveAllClassrooms() =>
         TryCatch(() => this.storageBroker.SelectAllClassrooms());
 
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
 
             return await this.storageBroker.UpdateClassroomAsync(classroom);
         });
-        
+
         public ValueTask<Classroom> RemoveClassroomAsync(Guid classroomId) =>
         TryCatch(async () =>
         {
