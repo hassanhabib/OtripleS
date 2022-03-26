@@ -16,7 +16,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0-preview-20220301-01" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0-preview-20220131-20" />
     <PackageReference Include="RESTFulSense" Version="2.4.0" />
     <PackageReference Include="Tynamix.ObjectFiller" Version="1.5.7" />
     <PackageReference Include="xunit" Version="2.4.2-pre.12" />
