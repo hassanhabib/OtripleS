@@ -106,7 +106,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                     failedAssignmentAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertAssignmentAttachmentAsync(It.IsAny<AssignmentAttachment>()))
+                broker.InsertAssignmentAttachmentAsync(someAssignmentAttachment))
                     .ThrowsAsync(serviceException);
 
             // when
@@ -124,7 +124,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertAssignmentAttachmentAsync(
-                    It.IsAny<AssignmentAttachment>()),
+                    someAssignmentAttachment),
                         Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
