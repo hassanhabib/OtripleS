@@ -28,7 +28,15 @@ namespace OtripleS.Web.Api.Services.Foundations.SemesterCourses
             this.dateTimeBroker = dateTimeBroker;
             this.loggingBroker = loggingBroker;
         }
+        
+        public ValueTask<SemesterCourse> CreateSemesterCourseAsync(SemesterCourse semesterCourse) =>
+        TryCatch(async () =>
+        {
+            ValidateSemesterCourseOnCreate(semesterCourse);
 
+            return await this.storageBroker.InsertSemesterCourseAsync(semesterCourse);
+        });
+        
         public IQueryable<SemesterCourse> RetrieveAllSemesterCourses() =>
         TryCatch(() => this.storageBroker.SelectAllSemesterCourses());
 
@@ -44,15 +52,7 @@ namespace OtripleS.Web.Api.Services.Foundations.SemesterCourses
 
             return maybeSemesterCourse;
         });
-
-        public ValueTask<SemesterCourse> CreateSemesterCourseAsync(SemesterCourse semesterCourse) =>
-        TryCatch(async () =>
-        {
-            ValidateSemesterCourseOnCreate(semesterCourse);
-
-            return await this.storageBroker.InsertSemesterCourseAsync(semesterCourse);
-        });
-
+        
         public ValueTask<SemesterCourse> ModifySemesterCourseAsync(SemesterCourse semesterCourse) =>
         TryCatch(async () =>
         {
@@ -69,7 +69,7 @@ namespace OtripleS.Web.Api.Services.Foundations.SemesterCourses
 
             return await this.storageBroker.UpdateSemesterCourseAsync(semesterCourse);
         });
-
+        
         public ValueTask<SemesterCourse> RemoveSemesterCourseByIdAsync(Guid semesterCourseId) =>
         TryCatch(async () =>
         {
