@@ -40,9 +40,9 @@ namespace OtripleS.Web.Api.Infrastructure.Provision.Brokers.Clouds
                     environment: AzureEnvironment.AzureGlobalCloud);
 
             return Azure.Configure()
-                .WithLogLevel(HttpLoggingDelegatingHandler.Level.Basic)
-                .Authenticate(credentials)
-                .WithDefaultSubscription();
+                        .WithLogLevel(HttpLoggingDelegatingHandler.Level.Basic)
+                        .Authenticate(credentials)
+                        .WithDefaultSubscription();
         }
     }
 }

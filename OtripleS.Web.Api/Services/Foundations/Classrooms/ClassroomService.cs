@@ -37,36 +37,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             return await this.storageBroker.InsertClassroomAsync(classroom);
         });
 
-        public ValueTask<Classroom> RemoveClassroomAsync(Guid classroomId) =>
-        TryCatch(async () =>
-        {
-            ValidateClassroomIdIsNull(classroomId);
-
-            Classroom maybeClassroom =
-                await this.storageBroker.SelectClassroomByIdAsync(classroomId);
-
-            ValidateStorageClassroom(maybeClassroom, classroomId);
-
-            return await this.storageBroker.DeleteClassroomAsync(maybeClassroom);
-        });
-
-        public ValueTask<Classroom> ModifyClassroomAsync(Classroom classroom) =>
-        TryCatch(async () =>
-        {
-            ValidateClassroomOnModify(classroom);
-
-            Classroom maybeClassroom =
-                await this.storageBroker.SelectClassroomByIdAsync(classroom.Id);
-
-            ValidateStorageClassroom(maybeClassroom, classroom.Id);
-
-            ValidateAgainstStorageClassroomOnModify(
-                inputClassroom: classroom,
-                storageClassroom: maybeClassroom);
-
-            return await this.storageBroker.UpdateClassroomAsync(classroom);
-        });
-
         public IQueryable<Classroom> RetrieveAllClassrooms() =>
         TryCatch(() => this.storageBroker.SelectAllClassrooms());
 
@@ -76,11 +46,41 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             ValidateClassroomIdIsNull(classroomId);
 
             Classroom maybeClassroom =
-                await this.storageBroker.SelectClassroomByIdAsync(classroomId);
+               await this.storageBroker.SelectClassroomByIdAsync(classroomId);
 
             ValidateStorageClassroom(maybeClassroom, classroomId);
 
             return maybeClassroom;
+        });
+
+        public ValueTask<Classroom> ModifyClassroomAsync(Classroom classroom) =>
+        TryCatch(async () =>
+        {
+            ValidateClassroomOnModify(classroom);
+
+            Classroom maybeClassroom =
+               await this.storageBroker.SelectClassroomByIdAsync(classroom.Id);
+
+            ValidateStorageClassroom(maybeClassroom, classroom.Id);
+
+            ValidateAgainstStorageClassroomOnModify(
+               inputClassroom: classroom,
+               storageClassroom: maybeClassroom);
+
+            return await this.storageBroker.UpdateClassroomAsync(classroom);
+        });
+
+        public ValueTask<Classroom> RemoveClassroomAsync(Guid classroomId) =>
+        TryCatch(async () =>
+        {
+            ValidateClassroomIdIsNull(classroomId);
+
+            Classroom maybeClassroom =
+               await this.storageBroker.SelectClassroomByIdAsync(classroomId);
+
+            ValidateStorageClassroom(maybeClassroom, classroomId);
+
+            return await this.storageBroker.DeleteClassroomAsync(maybeClassroom);
         });
     }
 }
