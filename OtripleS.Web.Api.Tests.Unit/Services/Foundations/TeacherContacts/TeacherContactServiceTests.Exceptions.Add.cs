@@ -102,7 +102,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                 new TeacherContactServiceException(failedTeacherContactServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertTeacherContactAsync(inputTeacherContact))
+                broker.InsertTeacherContactAsync(It.IsAny<TeacherContact>()))
                     .ThrowsAsync(serviceException);
 
             // when
@@ -119,7 +119,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertTeacherContactAsync(inputTeacherContact),
+                broker.InsertTeacherContactAsync(It.IsAny<TeacherContact>()),
                     Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
