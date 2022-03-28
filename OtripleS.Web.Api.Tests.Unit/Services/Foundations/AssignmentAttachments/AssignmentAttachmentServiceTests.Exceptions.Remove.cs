@@ -31,7 +31,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 new AssignmentAttachmentDependencyException(failedAssigmentAttachmentStorageException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectAssignmentAttachmentByIdAsync(someAssignmentId, someAttachmentId))
+                 broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
                     .ThrowsAsync(sqlException);
 
             // when
@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 removeAssignmentAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAssignmentAttachmentByIdAsync(someAssignmentId, someAttachmentId),
+                broker.SelectAssignmentAttachmentByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
