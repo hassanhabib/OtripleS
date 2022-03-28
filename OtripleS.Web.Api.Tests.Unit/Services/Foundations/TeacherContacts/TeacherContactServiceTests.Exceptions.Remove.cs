@@ -120,7 +120,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                 new TeacherContactDependencyException(lockedContactException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectTeacherContactByIdAsync(someTeacherId, someContactId))
+                broker.SelectTeacherContactByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
@@ -137,7 +137,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherContactByIdAsync(someTeacherId, someContactId),
+                broker.SelectTeacherContactByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
