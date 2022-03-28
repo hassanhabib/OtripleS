@@ -108,7 +108,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                 new TeacherServiceException(failedTeacherServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectTeacherByIdAsync(someTeacherId))
+                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(serviceException);
 
             // when
@@ -125,7 +125,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectTeacherByIdAsync(someTeacherId),
+                broker.SelectTeacherByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
