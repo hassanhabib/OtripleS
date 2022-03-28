@@ -37,6 +37,9 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExams
             return await this.storageBroker.InsertStudentExamAsync(studentExam);
         });
 
+        public IQueryable<StudentExam> RetrieveAllStudentExams() =>
+        TryCatch(() => this.storageBroker.SelectAllStudentExams());
+        
         public ValueTask<StudentExam> RetrieveStudentExamByIdAsync(Guid studentExamId) =>
         TryCatch(async () =>
         {
@@ -49,10 +52,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentExams
 
             return maybeStudentExam;
         });
-
-        public IQueryable<StudentExam> RetrieveAllStudentExams() =>
-        TryCatch(() => this.storageBroker.SelectAllStudentExams());
-
+        
         public ValueTask<StudentExam> ModifyStudentExamAsync(StudentExam studentExam) =>
         TryCatch(async () =>
         {
