@@ -35,20 +35,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentAttachments
 
             return await this.storageBroker.InsertStudentAttachmentAsync(studentAttachment);
         });
-
-        public ValueTask<StudentAttachment> RemoveStudentAttachmentByIdAsync(Guid studentId, Guid attachmentId) =>
-        TryCatch(async () =>
-        {
-            ValidateStudentAttachmentIdIsNull(studentId, attachmentId);
-
-            StudentAttachment mayBeStudentAttachment =
-                await this.storageBroker.SelectStudentAttachmentByIdAsync(studentId, attachmentId);
-
-            ValidateStorageStudentAttachment(mayBeStudentAttachment, studentId, attachmentId);
-
-            return await this.storageBroker.DeleteStudentAttachmentAsync(mayBeStudentAttachment);
-        });
-
+        
         public IQueryable<StudentAttachment> RetrieveAllStudentAttachments() =>
         TryCatch(() => this.storageBroker.SelectAllStudentAttachments());
 
@@ -64,6 +51,19 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentAttachments
             ValidateStorageStudentAttachment(maybeStudentAttachment, studentId, attachmentId);
 
             return maybeStudentAttachment;
+        });
+
+        public ValueTask<StudentAttachment> RemoveStudentAttachmentByIdAsync(Guid studentId, Guid attachmentId) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentAttachmentIdIsNull(studentId, attachmentId);
+
+            StudentAttachment mayBeStudentAttachment =
+                await this.storageBroker.SelectStudentAttachmentByIdAsync(studentId, attachmentId);
+
+            ValidateStorageStudentAttachment(mayBeStudentAttachment, studentId, attachmentId);
+
+            return await this.storageBroker.DeleteStudentAttachmentAsync(mayBeStudentAttachment);
         });
 
     }
