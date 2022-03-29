@@ -24,10 +24,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentRegistrations
             this.storageBroker = storageBroker;
             this.loggingBroker = loggingBroker;
         }
-
-        public IQueryable<StudentRegistration> RetrieveAllStudentRegistrations() =>
-        TryCatch(() => this.storageBroker.SelectAllStudentRegistrations());
-
+        
         public ValueTask<StudentRegistration> AddStudentRegistrationAsync(StudentRegistration studentRegistration) =>
         TryCatch(async () =>
         {
@@ -35,6 +32,10 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentRegistrations
 
             return await storageBroker.InsertStudentRegistrationAsync(studentRegistration);
         });
+
+        public IQueryable<StudentRegistration> RetrieveAllStudentRegistrations() =>
+        TryCatch(() => this.storageBroker.SelectAllStudentRegistrations());
+
 
         public ValueTask<StudentRegistration> RetrieveStudentRegistrationByIdAsync(
             Guid studentId,
