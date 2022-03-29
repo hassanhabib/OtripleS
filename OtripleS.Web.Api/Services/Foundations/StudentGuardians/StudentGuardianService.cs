@@ -36,29 +36,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
 
             return await this.storageBroker.InsertStudentGuardianAsync(studentGuardian);
         });
-
-        public ValueTask<StudentGuardian> ModifyStudentGuardianAsync(StudentGuardian studentGuardian) =>
-        TryCatch(async () =>
-        {
-            ValidateStudentGuardianOnModify(studentGuardian);
-
-            StudentGuardian maybeStudentGuardian =
-                await storageBroker.SelectStudentGuardianByIdAsync(
-                    studentGuardian.StudentId,
-                    studentGuardian.GuardianId);
-
-            ValidateStorageStudentGuardian(
-                maybeStudentGuardian,
-                studentGuardian.StudentId,
-                studentGuardian.GuardianId);
-
-            ValidateAgainstStorageStudentGuardianOnModify(
-                inputStudentGuardian: studentGuardian,
-                storageStudentGuardian: maybeStudentGuardian);
-
-            return await storageBroker.UpdateStudentGuardianAsync(studentGuardian);
-        });
-
+        
         public IQueryable<StudentGuardian> RetrieveAllStudentGuardians() =>
         TryCatch(() => this.storageBroker.SelectAllStudentGuardians());
 
@@ -72,8 +50,29 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
             return storageStudentGuardian;
         });
 
-        public ValueTask<StudentGuardian>
-        RemoveStudentGuardianByIdsAsync(Guid guardianId, Guid studentId) => TryCatch(async () =>
+        public ValueTask<StudentGuardian> ModifyStudentGuardianAsync(StudentGuardian studentGuardian) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentGuardianOnModify(studentGuardian);
+
+            StudentGuardian maybeStudentGuardian =
+                await storageBroker.SelectStudentGuardianByIdAsync(
+                studentGuardian.StudentId,
+                studentGuardian.GuardianId);
+
+            ValidateStorageStudentGuardian(
+               maybeStudentGuardian,
+               studentGuardian.StudentId,
+               studentGuardian.GuardianId);
+
+            ValidateAgainstStorageStudentGuardianOnModify(
+               inputStudentGuardian: studentGuardian,
+               storageStudentGuardian: maybeStudentGuardian);
+
+            return await storageBroker.UpdateStudentGuardianAsync(studentGuardian);
+        });
+        
+        public ValueTask<StudentGuardian> RemoveStudentGuardianByIdsAsync(Guid guardianId, Guid studentId) => TryCatch(async () =>
         {
             ValidateStudentGuardianId(guardianId);
             ValidateStudentId(studentId);
