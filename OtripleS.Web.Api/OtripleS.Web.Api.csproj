@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.0-preview.1.22109.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.0-preview.2.22153.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.2">
@@ -24,7 +24,7 @@
     <PackageReference Include="RESTFulSense" Version="2.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.3.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.3.0" />
-    <PackageReference Include="System.Collections.Immutable" Version="7.0.0-preview.1.22076.8" />
+    <PackageReference Include="System.Collections.Immutable" Version="7.0.0-preview.2.22152.2" />
     <PackageReference Include="Xeption" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>

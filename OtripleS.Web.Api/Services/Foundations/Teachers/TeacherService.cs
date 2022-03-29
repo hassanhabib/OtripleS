@@ -74,7 +74,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
 
             ValidateStorageTeacher(maybeTeacher, teacherId);
 
-            return await this.storageBroker.DeleteTeacherAsync(maybeTeacher);
+            return maybeTeacher;
         });
     }
 }

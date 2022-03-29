@@ -29,20 +29,22 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<Attendance> ModifyAttendanceAsync(Attendance attendance) =>
+        public ValueTask<Attendance> CreateAttendanceAsync(Attendance attendance) =>
         TryCatch(async () =>
         {
-            ValidateAttendanceOnModify(attendance);
-            Attendance maybeAttendance = await storageBroker.SelectAttendanceByIdAsync(attendance.Id);
-            ValidateStorageAttendance(maybeAttendance, attendance.Id);
+            ValidateAttendanceOnCreate(attendance);
 
-            ValidateAgainstStorageAttendanceOnModify(
-                inputAttendance: attendance,
-                storageAttendance: maybeAttendance);
-
-            return await storageBroker.UpdateAttendanceAsync(attendance);
+            return await this.storageBroker.InsertAttendanceAsync(attendance);
         });
+        
+        public IQueryable<Attendance> RetrieveAllAttendances() =>
+        TryCatch(() =>
+        {
+            IQueryable<Attendance> storageAttendances = this.storageBroker.SelectAllAttendances();
 
+            return storageAttendances;
+        });
+        
         public ValueTask<Attendance> RetrieveAttendanceByIdAsync(Guid attendanceId) =>
         TryCatch(async () =>
         {
@@ -56,14 +58,20 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             return maybeAttendance;
         });
 
-        public IQueryable<Attendance> RetrieveAllAttendances() =>
-        TryCatch(() =>
+        public ValueTask<Attendance> ModifyAttendanceAsync(Attendance attendance) =>
+        TryCatch(async () =>
         {
-            IQueryable<Attendance> storageAttendances = this.storageBroker.SelectAllAttendances();
+            ValidateAttendanceOnModify(attendance);
+            Attendance maybeAttendance = await storageBroker.SelectAttendanceByIdAsync(attendance.Id);
+            ValidateStorageAttendance(maybeAttendance, attendance.Id);
 
-            return storageAttendances;
+            ValidateAgainstStorageAttendanceOnModify(
+               inputAttendance: attendance,
+               storageAttendance: maybeAttendance);
+
+            return await storageBroker.UpdateAttendanceAsync(attendance);
         });
-
+        
         public ValueTask<Attendance> RemoveAttendanceByIdAsync(Guid attendanceId) =>
         TryCatch(async () =>
         {
@@ -75,14 +83,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             ValidateStorageAttendance(maybeAttendance, attendanceId);
 
             return await storageBroker.DeleteAttendanceAsync(maybeAttendance);
-        });
-
-        public ValueTask<Attendance> CreateAttendanceAsync(Attendance attendance) =>
-        TryCatch(async () =>
-        {
-            ValidateAttendanceOnCreate(attendance);
-
-            return await this.storageBroker.InsertAttendanceAsync(attendance);
         });
     }
 }

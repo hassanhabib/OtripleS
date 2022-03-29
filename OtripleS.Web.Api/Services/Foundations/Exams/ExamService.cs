@@ -30,6 +30,17 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             this.loggingBroker = loggingBroker;
         }
 
+        public ValueTask<Exam> AddExamAsync(Exam exam) =>
+        TryCatch(async () =>
+        {
+            ValidateExamOnAdd(exam);
+
+            return await this.storageBroker.InsertExamAsync(exam);
+        });
+
+        public IQueryable<Exam> RetrieveAllExams() =>
+        TryCatch(() => this.storageBroker.SelectAllExams());
+
         public ValueTask<Exam> RetrieveExamByIdAsync(Guid examId) =>
         TryCatch(async () =>
         {
@@ -42,15 +53,15 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             return maybeExam;
         });
 
-        public IQueryable<Exam> RetrieveAllExams() =>
-        TryCatch(() => this.storageBroker.SelectAllExams());
-
-        public ValueTask<Exam> AddExamAsync(Exam exam) =>
+        public ValueTask<Exam> ModifyExamAsync(Exam exam) =>
         TryCatch(async () =>
         {
-            ValidateExamOnAdd(exam);
+            ValidateExamOnModify(exam);
+            Exam maybeExam = await storageBroker.SelectExamByIdAsync(exam.Id);
+            ValidateStorageExam(maybeExam, exam.Id);
+            ValidateAgainstStorageExamOnModify(inputExam: exam, storageExam: maybeExam);
 
-            return await this.storageBroker.InsertExamAsync(exam);
+            return await storageBroker.UpdateExamAsync(exam);
         });
 
         public ValueTask<Exam> RemoveExamByIdAsync(Guid examId) =>
@@ -63,15 +74,5 @@ namespace OtripleS.Web.Api.Services.Foundations.Exams
             return await storageBroker.DeleteExamAsync(maybeExam);
         });
 
-        public ValueTask<Exam> ModifyExamAsync(Exam exam) =>
-        TryCatch(async () =>
-        {
-            ValidateExamOnModify(exam);
-            Exam maybeExam = await storageBroker.SelectExamByIdAsync(exam.Id);
-            ValidateStorageExam(maybeExam, exam.Id);
-            ValidateAgainstStorageExamOnModify(inputExam: exam, storageExam: maybeExam);
-
-            return await storageBroker.UpdateExamAsync(exam);
-        });
     }
 }

@@ -14,10 +14,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-	<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0-preview.1.22076.8" />
-	<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.0-preview.1.22076.8" />
-	<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.0-preview.1.22076.8" />
-	<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0-preview.1.22076.8" />
+	<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0-preview.2.22152.2" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.0-preview.2.22152.2" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.0-preview.2.22152.2" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0-preview.2.22152.2" />
   </ItemGroup>
 
 </Project>
