@@ -32,20 +32,7 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
 
             return await this.storageBroker.InsertUserContactAsync(userContact);
         });
-
-        public ValueTask<UserContact> RemoveUserContactByIdAsync(Guid userId, Guid contactId) =>
-        TryCatch(async () =>
-        {
-            ValidateUserContactIds(userId, contactId);
-
-            UserContact mayBeUserContact =
-                await this.storageBroker.SelectUserContactByIdAsync(userId, contactId);
-
-            ValidateStorageUserContact(mayBeUserContact, userId, contactId);
-
-            return await this.storageBroker.DeleteUserContactAsync(mayBeUserContact);
-        });
-
+        
         public IQueryable<UserContact> RetrieveAllUserContacts() =>
         TryCatch(() => this.storageBroker.SelectAllUserContacts());
 
@@ -60,6 +47,19 @@ namespace OtripleS.Web.Api.Services.Foundations.UserContacts
             ValidateStorageUserContact(storageUserContact, userId, contactId);
 
             return storageUserContact;
+        });
+        
+        public ValueTask<UserContact> RemoveUserContactByIdAsync(Guid userId, Guid contactId) =>
+        TryCatch(async () =>
+        {
+            ValidateUserContactIds(userId, contactId);
+
+            UserContact mayBeUserContact =
+               await this.storageBroker.SelectUserContactByIdAsync(userId, contactId);
+
+            ValidateStorageUserContact(mayBeUserContact, userId, contactId);
+
+            return await this.storageBroker.DeleteUserContactAsync(mayBeUserContact);
         });
     }
 }
