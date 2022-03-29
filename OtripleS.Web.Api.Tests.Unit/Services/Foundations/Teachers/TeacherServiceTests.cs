@@ -59,7 +59,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Teachers
             CreateRandomTeacherFiller(dates: GetRandomDateTime()).Create();
 
         private static IQueryable<Teacher> CreateRandomTeachers() =>
-            CreateRandomTeacherFiller(dates: DateTimeOffset.UtcNow).Create(GetRandomNumber()).AsQueryable();
+            CreateRandomTeacherFiller(dates: GetRandomDateTime()).Create(GetRandomNumber()).AsQueryable();
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
