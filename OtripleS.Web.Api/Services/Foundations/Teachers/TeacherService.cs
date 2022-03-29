@@ -46,7 +46,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
             ValidateTeacherId(teacherId);
 
             Teacher maybeTeacher =
-               await this.storageBroker.SelectTeacherByIdAsync(teacherId);
+            await this.storageBroker.SelectTeacherByIdAsync(teacherId);
 
             ValidateStorageTeacher(maybeTeacher, teacherId);
 
