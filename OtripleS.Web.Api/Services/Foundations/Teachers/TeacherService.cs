@@ -56,12 +56,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Teachers
         public ValueTask<Teacher> ModifyTeacherAsync(Teacher teacher) =>
         TryCatch(async () =>
         {
-             ValidateTeacherOnModify(teacher);
-             Teacher maybeTeacher = await this.storageBroker.SelectTeacherByIdAsync(teacher.Id);
-             ValidateStorageTeacher(maybeTeacher, teacher.Id);
-             ValidateAgainstStorageTeacherOnModify(inputTeacher: teacher, storageTeacher: maybeTeacher);
+            ValidateTeacherOnModify(teacher);
+            Teacher maybeTeacher = await this.storageBroker.SelectTeacherByIdAsync(teacher.Id);
+            ValidateStorageTeacher(maybeTeacher, teacher.Id);
+            ValidateAgainstStorageTeacherOnModify(inputTeacher: teacher, storageTeacher: maybeTeacher);
 
-             return await this.storageBroker.UpdateTeacherAsync(teacher);
+            return await this.storageBroker.UpdateTeacherAsync(teacher);
         });
 
         public ValueTask<Teacher> RemoveTeacherByIdAsync(Guid teacherId) =>

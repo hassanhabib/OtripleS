@@ -37,17 +37,20 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
             return await this.storageBroker.InsertClassroomAsync(classroom);
         });
 
-        public ValueTask<Classroom> RemoveClassroomAsync(Guid classroomId) =>
+        public IQueryable<Classroom> RetrieveAllClassrooms() =>
+        TryCatch(() => this.storageBroker.SelectAllClassrooms());
+
+        public ValueTask<Classroom> RetrieveClassroomById(Guid classroomId) =>
         TryCatch(async () =>
         {
             ValidateClassroomIdIsNull(classroomId);
 
             Classroom maybeClassroom =
-                await this.storageBroker.SelectClassroomByIdAsync(classroomId);
+              await this.storageBroker.SelectClassroomByIdAsync(classroomId);
 
             ValidateStorageClassroom(maybeClassroom, classroomId);
 
-            return await this.storageBroker.DeleteClassroomAsync(maybeClassroom);
+            return maybeClassroom;
         });
 
         public ValueTask<Classroom> ModifyClassroomAsync(Classroom classroom) =>
@@ -66,11 +69,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
 
             return await this.storageBroker.UpdateClassroomAsync(classroom);
         });
-
-        public IQueryable<Classroom> RetrieveAllClassrooms() =>
-        TryCatch(() => this.storageBroker.SelectAllClassrooms());
-
-        public ValueTask<Classroom> RetrieveClassroomById(Guid classroomId) =>
+        public ValueTask<Classroom> RemoveClassroomAsync(Guid classroomId) =>
         TryCatch(async () =>
         {
             ValidateClassroomIdIsNull(classroomId);
@@ -80,7 +79,12 @@ namespace OtripleS.Web.Api.Services.Foundations.Classrooms
 
             ValidateStorageClassroom(maybeClassroom, classroomId);
 
-            return maybeClassroom;
+            return await this.storageBroker.DeleteClassroomAsync(maybeClassroom);
         });
+
+
+
+
+
     }
 }
