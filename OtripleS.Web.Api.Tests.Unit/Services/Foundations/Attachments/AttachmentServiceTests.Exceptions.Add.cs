@@ -33,7 +33,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertAttachmentAsync(someAttachment))
+                broker.InsertAttachmentAsync(It.IsAny<Attachment>()))
                     .ThrowsAsync(sqlException);
 
             // when
