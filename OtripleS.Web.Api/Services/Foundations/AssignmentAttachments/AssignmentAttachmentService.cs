@@ -16,7 +16,6 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
-
         public AssignmentAttachmentService(
             IStorageBroker storageBroker,
             ILoggingBroker loggingBroker)
@@ -24,7 +23,6 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
             this.storageBroker = storageBroker;
             this.loggingBroker = loggingBroker;
         }
-
         public ValueTask<AssignmentAttachment> AddAssignmentAttachmentAsync(
             AssignmentAttachment assignmentAttachment) => TryCatch(async () =>
         {
@@ -32,10 +30,8 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
 
             return await this.storageBroker.InsertAssignmentAttachmentAsync(assignmentAttachment);
         });
-
         public IQueryable<AssignmentAttachment> RetrieveAllAssignmentAttachments() =>
         TryCatch(() => this.storageBroker.SelectAllAssignmentAttachments());
-
         public ValueTask<AssignmentAttachment> RetrieveAssignmentAttachmentByIdAsync(
             Guid assignmentId,
             Guid attachmentId) => TryCatch(async () =>
@@ -49,7 +45,6 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
 
             return storageAssignmentAttachment;
         });
-
         public ValueTask<AssignmentAttachment> RemoveAssignmentAttachmentByIdAsync(
             Guid assignmentId,
             Guid attachmentId) => TryCatch(async () =>
