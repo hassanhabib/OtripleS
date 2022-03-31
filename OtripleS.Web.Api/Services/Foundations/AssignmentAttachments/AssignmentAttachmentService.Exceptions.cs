@@ -19,7 +19,6 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
     {
         private delegate ValueTask<AssignmentAttachment> ReturningAssignmentAttachmentFunction();
         private delegate IQueryable<AssignmentAttachment> ReturningAssignmentAttachmentsFunction();
-
         private async ValueTask<AssignmentAttachment> TryCatch(
             ReturningAssignmentAttachmentFunction returningAssignmentAttachmentFunction)
         {
@@ -83,7 +82,6 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
                 throw CreateAndLogServiceException(failedAssignmentAttachmentServiceException);
             }
         }
-
         private IQueryable<AssignmentAttachment> TryCatch(
             ReturningAssignmentAttachmentsFunction returningAssignmentAttachmentsFunction)
         {
@@ -107,7 +105,6 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
             }
 
         }
-
         private AssignmentAttachmentValidationException CreateAndLogValidationException(Exception exception)
         {
             var assignmentAttachmentValidationException = new AssignmentAttachmentValidationException(exception);
@@ -115,7 +112,6 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
 
             return assignmentAttachmentValidationException;
         }
-
         private AssignmentAttachmentDependencyValidationException CreateAndLogDependencyValidationException(
             Exception exception)
         {
@@ -126,7 +122,6 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
 
             return assignmentAttachmentDependencyValidationException;
         }
-
         private AssignmentAttachmentDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
             var assignmentAttachmentDependencyException =
@@ -136,7 +131,6 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
 
             return assignmentAttachmentDependencyException;
         }
-
         private AssignmentAttachmentDependencyException CreateAndLogDependencyException(Xeption exception)
         {
             var assignmentAttachmentDependencyException = new AssignmentAttachmentDependencyException(exception);
@@ -144,7 +138,6 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
 
             return assignmentAttachmentDependencyException;
         }
-
         private AssignmentAttachmentServiceException CreateAndLogServiceException(Exception exception)
         {
             var assignmentAttachmentServiceException = new AssignmentAttachmentServiceException(exception);
