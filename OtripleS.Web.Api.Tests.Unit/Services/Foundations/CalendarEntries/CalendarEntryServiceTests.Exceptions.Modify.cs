@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCalendarEntryByIdAsync(It.IsAny<Guid>(),
+                broker.SelectCalendarEntryByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
