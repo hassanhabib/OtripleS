@@ -18,7 +18,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
         private readonly IStorageBroker storageBroker;
         private readonly IDateTimeBroker dateTimeBroker;
         private readonly ILoggingBroker loggingBroker;
-
         public AttendanceService(
             IStorageBroker storageBroker,
             IDateTimeBroker dateTimeBroker,
@@ -28,7 +27,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             this.dateTimeBroker = dateTimeBroker;
             this.loggingBroker = loggingBroker;
         }
-
         public ValueTask<Attendance> ModifyAttendanceAsync(Attendance attendance) =>
         TryCatch(async () =>
         {
@@ -42,7 +40,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
 
             return await storageBroker.UpdateAttendanceAsync(attendance);
         });
-
         public ValueTask<Attendance> RetrieveAttendanceByIdAsync(Guid attendanceId) =>
         TryCatch(async () =>
         {
@@ -55,7 +52,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
 
             return maybeAttendance;
         });
-
         public IQueryable<Attendance> RetrieveAllAttendances() =>
         TryCatch(() =>
         {
@@ -63,7 +59,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
 
             return storageAttendances;
         });
-
         public ValueTask<Attendance> RemoveAttendanceByIdAsync(Guid attendanceId) =>
         TryCatch(async () =>
         {
@@ -76,7 +71,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
 
             return await storageBroker.DeleteAttendanceAsync(maybeAttendance);
         });
-
         public ValueTask<Attendance> CreateAttendanceAsync(Attendance attendance) =>
         TryCatch(async () =>
         {
