@@ -63,7 +63,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 new AttachmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttachmentByIdAsync(someAttachmentId))
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
