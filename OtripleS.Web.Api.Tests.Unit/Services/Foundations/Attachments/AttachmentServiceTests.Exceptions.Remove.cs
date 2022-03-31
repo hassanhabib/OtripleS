@@ -139,7 +139,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 new AttachmentServiceException(failedAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttachmentByIdAsync(someAttachmentId))
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(serviceException);
 
             // when
