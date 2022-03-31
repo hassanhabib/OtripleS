@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                 new CalendarEntryDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectCalendarEntryByIdAsync(someCalendarEntry.Id))
+                broker.SelectCalendarEntryByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(sqlException);
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -50,7 +50,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntries
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectCalendarEntryByIdAsync(someCalendarEntry.Id),
+                broker.SelectCalendarEntryByIdAsync(It.IsAny<Guid>(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
