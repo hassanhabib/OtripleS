@@ -100,7 +100,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attachments
                 new AttachmentDependencyException(lockedAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttachmentByIdAsync(someAttachmentId))
+                broker.SelectAttachmentByIdAsync(It.IsAny<Guid>()))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
