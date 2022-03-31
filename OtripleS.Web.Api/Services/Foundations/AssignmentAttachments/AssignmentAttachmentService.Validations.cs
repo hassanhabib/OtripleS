@@ -20,7 +20,6 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
                 assignmentAttachment.AssignmentId,
                 assignmentAttachment.AttachmentId);
         }
-
         private static void ValidateAssignmentAttachmentIsNull(AssignmentAttachment assignmentContact)
         {
             if (assignmentContact is null)
@@ -28,7 +27,6 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
                 throw new NullAssignmentAttachmentException();
             }
         }
-
         private static void ValidateAssignmentAttachmentIds(Guid assignmentId, Guid attachmentId)
         {
             if (assignmentId == default)
@@ -44,7 +42,6 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
                     parameterValue: attachmentId);
             }
         }
-
         private static void ValidateStorageAssignmentAttachment(
             AssignmentAttachment storageAssignmentAttachment,
             Guid assignmentId, Guid attachmentId)
@@ -52,7 +49,6 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
             if (storageAssignmentAttachment is null)
                 throw new NotFoundAssignmentAttachmentException(assignmentId, attachmentId);
         }
-
         private void ValidateStorageAssignmentAttachments
             (IQueryable<AssignmentAttachment> storageAssignmentAttachments)
         {
@@ -61,6 +57,5 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
                 this.loggingBroker.LogWarning("No assignment attachments found in storage.");
             }
         }
-
     }
 }
