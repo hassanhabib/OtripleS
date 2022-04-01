@@ -101,7 +101,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
                 new CalendarEntryAttachmentServiceException(failedCalendarEntryAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertCalendarEntryAttachmentAsync(someCalendarEntryAttachment))
+                broker.InsertCalendarEntryAttachmentAsync(It.IsAny<CalendarEntryAttachment>()))
                     .ThrowsAsync(serviceException);
 
             // when
@@ -113,7 +113,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
                 addCalendarEntryAttachmentTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertCalendarEntryAttachmentAsync(someCalendarEntryAttachment),
+                broker.InsertCalendarEntryAttachmentAsync(It.IsAny<CalendarEntryAttachment>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
