@@ -35,7 +35,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentAttachments
 
             return await this.storageBroker.InsertStudentAttachmentAsync(studentAttachment);
         });
-        
+
         public IQueryable<StudentAttachment> RetrieveAllStudentAttachments() =>
         TryCatch(() => this.storageBroker.SelectAllStudentAttachments());
 
@@ -65,6 +65,5 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentAttachments
 
             return await this.storageBroker.DeleteStudentAttachmentAsync(mayBeStudentAttachment);
         });
-
     }
 }
