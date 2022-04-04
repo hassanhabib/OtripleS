@@ -74,7 +74,7 @@ namespace OtripleS.Web.Api.Services.Foundations.SemesterCourses
         TryCatch(async () =>
         {
             ValidateSemesterCourseId(semesterCourseId);
-
+             
             SemesterCourse maybeSemesterCourse =
                 await this.storageBroker.SelectSemesterCourseByIdAsync(semesterCourseId);
 
