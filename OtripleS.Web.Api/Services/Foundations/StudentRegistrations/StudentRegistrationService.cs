@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentRegistrations
         private readonly ILoggingBroker loggingBroker;
 
         public StudentRegistrationService(
-            IStorageBroker storageBroker,
+            IStorageBroker storageBroker, 
             ILoggingBroker loggingBroker)
         {
             this.storageBroker = storageBroker;
