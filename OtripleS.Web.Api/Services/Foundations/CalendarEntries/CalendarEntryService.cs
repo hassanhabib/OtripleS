@@ -51,7 +51,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
 
             return maybeCalendarEntry;
         });
-        
+
         public ValueTask<CalendarEntry> ModifyCalendarEntryAsync(CalendarEntry calendarEntry) =>
         TryCatch(async () =>
         {

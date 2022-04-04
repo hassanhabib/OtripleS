@@ -47,7 +47,7 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
 
         private static void ValidateStorageAssignmentAttachment(
             AssignmentAttachment storageAssignmentAttachment,
-            Guid assignmentId, 
+            Guid assignmentId,
             Guid attachmentId)
         {
             if (storageAssignmentAttachment is null)
