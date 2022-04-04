@@ -11,7 +11,7 @@ using OtripleS.Web.Api.Brokers.Storages;
 using OtripleS.Web.Api.Models.AssignmentAttachments;
 
 namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
-{
+{ 
     public partial class AssignmentAttachmentService : IAssignmentAttachmentService
     {
         private readonly IStorageBroker storageBroker;
