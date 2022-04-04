@@ -71,7 +71,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
 
             return await storageBroker.UpdateStudentGuardianAsync(studentGuardian);
         });
-        
+         
         public ValueTask<StudentGuardian> RemoveStudentGuardianByIdsAsync(Guid guardianId, Guid studentId) => TryCatch(async () =>
         {
             ValidateStudentGuardianId(guardianId);
