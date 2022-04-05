@@ -79,4 +79,4 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             return await this.storageBroker.InsertAttendanceAsync(attendance);
         });
     }
-}
+} 
