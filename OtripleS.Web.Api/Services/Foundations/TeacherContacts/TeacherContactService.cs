@@ -58,7 +58,7 @@ namespace OtripleS.Web.Api.Services.Foundations.TeacherContacts
                 await this.storageBroker.SelectTeacherContactByIdAsync(teacherId, contactId);
 
             ValidateStorageTeacherContact(mayBeTeacherContact, teacherId, contactId);
-
+             
             return await this.storageBroker.DeleteTeacherContactAsync(mayBeTeacherContact);
         });
     }
