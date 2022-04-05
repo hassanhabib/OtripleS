@@ -36,6 +36,19 @@ namespace OtripleS.Web.Api.Services.Foundations.TeacherContacts
         public IQueryable<TeacherContact> RetrieveAllTeacherContacts() =>
         TryCatch(() => this.storageBroker.SelectAllTeacherContacts());
 
+        public ValueTask<TeacherContact> RetrieveTeacherContactByIdAsync(Guid teacherId, Guid contactId) =>
+        TryCatch(async () =>
+        {
+            ValidateTeacherContactIdIsNull(teacherId, contactId);
+
+            TeacherContact storageTeacherContact =
+                await this.storageBroker.SelectTeacherContactByIdAsync(teacherId, contactId);
+
+            ValidateStorageTeacherContact(storageTeacherContact, teacherId, contactId);
+
+            return storageTeacherContact;
+        });
+
         public ValueTask<TeacherContact> RemoveTeacherContactByIdAsync(Guid teacherId, Guid contactId) =>
         TryCatch(async () =>
         {
@@ -49,17 +62,6 @@ namespace OtripleS.Web.Api.Services.Foundations.TeacherContacts
             return await this.storageBroker.DeleteTeacherContactAsync(mayBeTeacherContact);
         });
 
-        public ValueTask<TeacherContact> RetrieveTeacherContactByIdAsync(Guid teacherId, Guid contactId) =>
-        TryCatch(async () =>
-        {
-            ValidateTeacherContactIdIsNull(teacherId, contactId);
 
-            TeacherContact storageTeacherContact =
-                await this.storageBroker.SelectTeacherContactByIdAsync(teacherId, contactId);
-
-            ValidateStorageTeacherContact(storageTeacherContact, teacherId, contactId);
-
-            return storageTeacherContact;
-        });
     }
 }
