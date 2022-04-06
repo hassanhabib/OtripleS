@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
             this.loggingBroker = loggingBroker;
         }
         public ValueTask<Attachment> AddAttachmentAsync(Attachment attachment) =>
-        TryCatch(async () =>
+        TryCatch(async () => 
         {
             ValidateAttachmentOnCreate(attachment);
 
