@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
 
             return await this.storageBroker.InsertAttendanceAsync(attendance);
         });
-        
+
         public IQueryable<Attendance> RetrieveAllAttendances() =>
         TryCatch(() =>
         {
@@ -44,7 +44,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
 
             return storageAttendances;
         });
-        
+
         public ValueTask<Attendance> RetrieveAttendanceByIdAsync(Guid attendanceId) =>
         TryCatch(async () =>
         {
@@ -71,7 +71,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
 
             return await storageBroker.UpdateAttendanceAsync(attendance);
         });
-        
+
         public ValueTask<Attendance> RemoveAttendanceByIdAsync(Guid attendanceId) =>
         TryCatch(async () =>
         {
