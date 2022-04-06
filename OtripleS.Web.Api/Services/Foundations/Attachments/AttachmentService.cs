@@ -18,7 +18,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
         private readonly IStorageBroker storageBroker;
         private readonly IDateTimeBroker dateTimeBroker;
         private readonly ILoggingBroker loggingBroker;
-
         public AttachmentService(
             IStorageBroker storageBroker,
             IDateTimeBroker dateTimeBroker,
@@ -28,7 +27,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
             this.dateTimeBroker = dateTimeBroker;
             this.loggingBroker = loggingBroker;
         }
-
         public ValueTask<Attachment> AddAttachmentAsync(Attachment attachment) =>
         TryCatch(async () =>
         {
@@ -36,10 +34,8 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
 
             return await this.storageBroker.InsertAttachmentAsync(attachment);
         });
-
         public IQueryable<Attachment> RetrieveAllAttachments() =>
         TryCatch(() => this.storageBroker.SelectAllAttachments());
-
         public ValueTask<Attachment> RetrieveAttachmentByIdAsync(Guid attachmentId) =>
         TryCatch(async () =>
         {
@@ -52,7 +48,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
 
             return storageAttachment;
         });
-
         public ValueTask<Attachment> ModifyAttachmentAsync(Attachment attachment) =>
         TryCatch(async () =>
         {
@@ -66,7 +61,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
 
             return await this.storageBroker.UpdateAttachmentAsync(attachment);
         });
-
         public ValueTask<Attachment> RemoveAttachmentByIdAsync(Guid attachmentId) =>
         TryCatch(async () =>
         {
