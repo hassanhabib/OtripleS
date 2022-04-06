@@ -22,7 +22,7 @@ namespace OtripleS.Web.Api.Services.Foundations.TeacherContacts
             ILoggingBroker loggingBroker)
         {
             this.storageBroker = storageBroker;
-            this.loggingBroker = loggingBroker;
+            this.loggingBroker = loggingBroker; 
         }
 
         public ValueTask<TeacherContact> AddTeacherContactAsync(TeacherContact teacherContact) =>
