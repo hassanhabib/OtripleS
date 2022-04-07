@@ -37,6 +37,21 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
             return await this.storageBroker.InsertStudentGuardianAsync(studentGuardian);
         });
 
+        public IQueryable<StudentGuardian> RetrieveAllStudentGuardians() =>
+        TryCatch(() => this.storageBroker.SelectAllStudentGuardians());
+
+        public ValueTask<StudentGuardian> RetrieveStudentGuardianByIdAsync(Guid studentId, Guid guardianId) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentGuardianIdIsNull(studentId, guardianId);
+
+            StudentGuardian storageStudentGuardian =
+                await this.storageBroker.SelectStudentGuardianByIdAsync(studentId, guardianId);
+
+            ValidateStorageStudentGuardian(storageStudentGuardian, studentId, guardianId);
+            return storageStudentGuardian;
+        });
+
         public ValueTask<StudentGuardian> ModifyStudentGuardianAsync(StudentGuardian studentGuardian) =>
         TryCatch(async () =>
         {
@@ -57,19 +72,6 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
                 storageStudentGuardian: maybeStudentGuardian);
 
             return await storageBroker.UpdateStudentGuardianAsync(studentGuardian);
-        });
-
-        public IQueryable<StudentGuardian> RetrieveAllStudentGuardians() =>
-        TryCatch(() => this.storageBroker.SelectAllStudentGuardians());
-
-        public ValueTask<StudentGuardian> RetrieveStudentGuardianByIdAsync(Guid studentId, Guid guardianId) =>
-        TryCatch(async () =>
-        {
-            ValidateStudentGuardianIdIsNull(studentId, guardianId);
-            StudentGuardian storageStudentGuardian =
-                await this.storageBroker.SelectStudentGuardianByIdAsync(studentId, guardianId);
-            ValidateStorageStudentGuardian(storageStudentGuardian, studentId, guardianId);
-            return storageStudentGuardian;
         });
 
         public ValueTask<StudentGuardian>
