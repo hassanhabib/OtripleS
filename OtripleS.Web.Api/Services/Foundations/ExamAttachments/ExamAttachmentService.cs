@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
 
             return await this.storageBroker.InsertExamAttachmentAsync(examAttachment);
         });
-        
+
         public IQueryable<ExamAttachment> RetrieveAllExamAttachments() =>
         TryCatch(() => storageBroker.SelectAllExamAttachments());
 
@@ -60,14 +60,14 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
            Guid attachmentId) =>
         TryCatch(async () =>
         {
-           ValidateExamAttachmentIds(examId, attachmentId);
+            ValidateExamAttachmentIds(examId, attachmentId);
 
-           ExamAttachment maybeExamAttachment =
-             await this.storageBroker.SelectExamAttachmentByIdAsync(examId, attachmentId);
+            ExamAttachment maybeExamAttachment =
+              await this.storageBroker.SelectExamAttachmentByIdAsync(examId, attachmentId);
 
-           ValidateStorageExamAttachment(maybeExamAttachment, examId, attachmentId);
+            ValidateStorageExamAttachment(maybeExamAttachment, examId, attachmentId);
 
-           return await this.storageBroker.DeleteExamAttachmentAsync(maybeExamAttachment);
+            return await this.storageBroker.DeleteExamAttachmentAsync(maybeExamAttachment);
         });
     }
 }
