@@ -18,7 +18,6 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
         private readonly IStorageBroker storageBroker;
         private readonly IDateTimeBroker dateTimeBroker;
         private readonly ILoggingBroker loggingBroker;
-
         public CalendarEntryAttachmentService(
             IStorageBroker storageBroker,
             IDateTimeBroker dateTimeBroker,
@@ -28,7 +27,6 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
             this.dateTimeBroker = dateTimeBroker;
             this.loggingBroker = loggingBroker;
         }
-
         public ValueTask<CalendarEntryAttachment> AddCalendarEntryAttachmentAsync(
             CalendarEntryAttachment calendarEntryAttachment) => TryCatch(async () =>
         {
@@ -36,10 +34,8 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
 
             return await this.storageBroker.InsertCalendarEntryAttachmentAsync(calendarEntryAttachment);
         });
-
         public IQueryable<CalendarEntryAttachment> RetrieveAllCalendarEntryAttachments() =>
         TryCatch(() => this.storageBroker.SelectAllCalendarEntryAttachments());
-
         public ValueTask<CalendarEntryAttachment> RetrieveCalendarEntryAttachmentByIdAsync
             (Guid calendarEntryId, Guid attachmentId) => TryCatch(async () =>
         {
@@ -52,7 +48,6 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
 
             return maybeCalendarEntryAttachment;
         });
-
         public ValueTask<CalendarEntryAttachment> RemoveCalendarEntryAttachmentByIdAsync(
             Guid calendarEntryId, Guid attachmentId) => TryCatch(async () =>
         {
