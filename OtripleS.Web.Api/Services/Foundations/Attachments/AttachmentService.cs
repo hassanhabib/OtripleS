@@ -73,5 +73,5 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
 
             return await this.storageBroker.DeleteAttachmentAsync(maybeAttachment);
         });
-    } 
+    }  
 }
