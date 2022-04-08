@@ -32,10 +32,10 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentContacts
 
             return await this.storageBroker.InsertStudentContactAsync(studentContact);
         });
-        
+
         public IQueryable<StudentContact> RetrieveAllStudentContacts() =>
         TryCatch(() => this.storageBroker.SelectAllStudentContacts());
-        
+
         public ValueTask<StudentContact> RetrieveStudentContactByIdAsync(Guid studentId, Guid contactId) =>
         TryCatch(async () =>
         {

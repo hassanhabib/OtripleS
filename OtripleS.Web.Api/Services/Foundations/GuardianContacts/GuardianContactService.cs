@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Services.Foundations.GuardianContacts
 
             return await this.storageBroker.InsertGuardianContactAsync(guardianContact);
         });
-        
+
         public IQueryable<GuardianContact> RetrieveAllGuardianContacts() =>
         TryCatch(() => this.storageBroker.SelectAllGuardianContacts());
 
