@@ -12,13 +12,12 @@ namespace OtripleS.Web.Api.Services.Foundations.ExamAttachments
 {
     public interface IExamAttachmentService
     {
-        ValueTask<ExamAttachment> RemoveExamAttachmentByIdAsync(
-          Guid examId,
-          Guid attachmentId);
         ValueTask<ExamAttachment> AddExamAttachmentAsync(ExamAttachment someExamAttachment);
         IQueryable<ExamAttachment> RetrieveAllExamAttachments();
-
         ValueTask<ExamAttachment> RetrieveExamAttachmentByIdAsync
             (Guid examId, Guid attachmentId);
+        ValueTask<ExamAttachment> RemoveExamAttachmentByIdAsync(
+         Guid examId,
+         Guid attachmentId);
     }
 }
