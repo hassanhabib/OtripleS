@@ -37,6 +37,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             return await this.storageBroker.InsertStudentAsync(student);
         });
 
+        public IQueryable<Student> RetrieveAllStudents() =>
+        TryCatch(() => this.storageBroker.SelectAllStudents());
+
         public ValueTask<Student> RetrieveStudentByIdAsync(Guid studentId) =>
         TryCatch(async () =>
         {
@@ -74,7 +77,5 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
             return await this.storageBroker.DeleteStudentAsync(maybeStudent);
         });
 
-        public IQueryable<Student> RetrieveAllStudents() =>
-        TryCatch(() => this.storageBroker.SelectAllStudents());
     }
 }
