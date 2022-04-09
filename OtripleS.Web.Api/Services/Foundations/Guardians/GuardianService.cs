@@ -29,9 +29,6 @@ namespace OtripleS.Web.Api.Services.Foundations.Guardians
             this.loggingBroker = loggingBroker;
         }
 
-        public IQueryable<Guardian> RetrieveAllGuardians() =>
-        TryCatch(() => this.storageBroker.SelectAllGuardians());
-
         public ValueTask<Guardian> CreateGuardianAsync(Guardian guardian) =>
         TryCatch(async () =>
         {
@@ -40,18 +37,8 @@ namespace OtripleS.Web.Api.Services.Foundations.Guardians
             return await this.storageBroker.InsertGuardianAsync(guardian);
         });
 
-        public ValueTask<Guardian> RemoveGuardianByIdAsync(Guid guardianId) =>
-        TryCatch(async () =>
-        {
-            ValidateGuardianId(guardianId);
-
-            Guardian maybeGuardian =
-                await this.storageBroker.SelectGuardianByIdAsync(guardianId);
-
-            ValidateStorageGuardian(maybeGuardian, guardianId);
-
-            return await this.storageBroker.DeleteGuardianAsync(maybeGuardian);
-        });
+        public IQueryable<Guardian> RetrieveAllGuardians() =>
+        TryCatch(() => this.storageBroker.SelectAllGuardians());
 
         public ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId) =>
         TryCatch(async () =>
@@ -72,6 +59,19 @@ namespace OtripleS.Web.Api.Services.Foundations.Guardians
             ValidateAgainstStorageGuardianOnModify(inputGuardian: guardian, storageGuardian: maybeGuardian);
 
             return await storageBroker.UpdateGuardianAsync(guardian);
+        });
+
+        public ValueTask<Guardian> RemoveGuardianByIdAsync(Guid guardianId) =>
+        TryCatch(async () =>
+        {
+            ValidateGuardianId(guardianId);
+
+            Guardian maybeGuardian =
+                await this.storageBroker.SelectGuardianByIdAsync(guardianId);
+
+            ValidateStorageGuardian(maybeGuardian, guardianId);
+
+            return await this.storageBroker.DeleteGuardianAsync(maybeGuardian);
         });
     }
 }
