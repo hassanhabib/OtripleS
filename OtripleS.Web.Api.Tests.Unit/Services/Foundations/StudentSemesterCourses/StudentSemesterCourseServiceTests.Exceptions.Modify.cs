@@ -134,7 +134,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectStudentSemesterCourseByIdAsync
-                (someStudentSemesterCourse.StudentId, someStudentSemesterCourse.SemesterCourseId))
+                (It.IsAny<Guid>(), It.IsAny<Guid>()))
                     .ThrowsAsync(serviceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
