@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
                 = new StudentSemesterCourseDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectStudentSemesterCourseByIdAsync(someSemesterCourseId, someStudentId))
+                 broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
                     .ThrowsAsync(sqlException);
 
             // when
@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(someSemesterCourseId, someStudentId),
+                broker.SelectStudentSemesterCourseByIdAsync(It.IsAny<Guid>(), It.IsAny<Guid>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
