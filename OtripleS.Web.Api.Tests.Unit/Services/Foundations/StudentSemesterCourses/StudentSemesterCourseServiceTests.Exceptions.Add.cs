@@ -133,7 +133,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
                     .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse))
+                broker.InsertStudentSemesterCourseAsync(It.IsAny<StudentSemesterCourse>()))
                     .ThrowsAsync(serviceException);
 
             // when
@@ -150,7 +150,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentSemesterCourseAsync(inputStudentSemesterCourse),
+                broker.InsertStudentSemesterCourseAsync(It.IsAny<StudentSemesterCourse>()),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
