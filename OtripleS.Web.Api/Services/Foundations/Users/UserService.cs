@@ -54,9 +54,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
         TryCatch(async () =>
         {
             ValidateUserOnModify(user);
-
             User maybeUser = await this.userManagementBroker.SelectUserByIdAsync(user.Id);
-
             ValidateStorageUser(maybeUser, user.Id);
             ValidateAgainstStorageUserOnModify(inputUser: user, storageUser: maybeUser);
 
@@ -67,10 +65,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
         TryCatch(async () =>
         {
             ValidateUserIdIsNull(userId);
-
-            User maybeUser =
-                await this.userManagementBroker.SelectUserByIdAsync(userId);
-
+            User maybeUser = await this.userManagementBroker.SelectUserByIdAsync(userId);
             ValidateStorageUser(maybeUser, userId);
 
             return await this.userManagementBroker.DeleteUserAsync(maybeUser);
