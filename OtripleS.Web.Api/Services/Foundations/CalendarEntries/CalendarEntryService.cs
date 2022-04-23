@@ -43,10 +43,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
         public ValueTask<CalendarEntry> RetrieveCalendarEntryByIdAsync(Guid calendarEntryId) => TryCatch(async () =>
         {
             ValidateCalendarEntryId(calendarEntryId);
-
-            CalendarEntry maybeCalendarEntry =
-               await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntryId);
-
+            CalendarEntry maybeCalendarEntry = await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntryId);
             ValidateStorageCalendarEntry(maybeCalendarEntry, calendarEntryId);
 
             return maybeCalendarEntry;
@@ -56,15 +53,9 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
         TryCatch(async () =>
         {
             ValidateCalendarEntryOnModify(calendarEntry);
-
-            CalendarEntry maybeCalendarEntry =
-               await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntry.Id);
-
+            CalendarEntry maybeCalendarEntry = await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntry.Id);
             ValidateStorageCalendarEntry(maybeCalendarEntry, calendarEntry.Id);
-
-            ValidateAgainstStorageCalendarEntryOnModify(
-                inputCalendarEntry: calendarEntry,
-                storageCalendarEntry: maybeCalendarEntry);
+            ValidateAgainstStorageCalendarEntryOnModify(inputCalendarEntry: calendarEntry, storageCalendarEntry: maybeCalendarEntry);
 
             return await this.storageBroker.UpdateCalendarEntryAsync(calendarEntry);
         });
@@ -73,10 +64,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntries
         TryCatch(async () =>
         {
             ValidateCalendarEntryId(calendarEntryId);
-
-            CalendarEntry maybeCalendarEntry =
-               await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntryId);
-
+            CalendarEntry maybeCalendarEntry = await this.storageBroker.SelectCalendarEntryByIdAsync(calendarEntryId);
             ValidateStorageCalendarEntry(maybeCalendarEntry, calendarEntryId);
 
             return await this.storageBroker.DeleteCalendarEntryAsync(maybeCalendarEntry);
