@@ -43,10 +43,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
         TryCatch(async () =>
         {
             ValidateAssignmentIdIsNull(assignmentId);
-
-            Assignment maybeAssignment =
-                await this.storageBroker.SelectAssignmentByIdAsync(assignmentId);
-
+            Assignment maybeAssignment = await this.storageBroker.SelectAssignmentByIdAsync(assignmentId);
             ValidateStorageAssignment(maybeAssignment, assignmentId);
 
             return maybeAssignment;
@@ -56,15 +53,9 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
         TryCatch(async () =>
         {
             ValidateAssignmentOnModify(assignment);
-
-            Assignment maybeAssignment =
-                await this.storageBroker.SelectAssignmentByIdAsync(assignment.Id);
-
+            Assignment maybeAssignment = await this.storageBroker.SelectAssignmentByIdAsync(assignment.Id);
             ValidateStorageAssignment(maybeAssignment, assignment.Id);
-
-            ValidateAgainstStorageAssignmentOnModify(
-                inputAssignment: assignment,
-                storageAssignment: maybeAssignment);
+            ValidateAgainstStorageAssignmentOnModify(inputAssignment: assignment, storageAssignment: maybeAssignment);
 
             return await this.storageBroker.UpdateAssignmentAsync(assignment);
         });
@@ -73,10 +64,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Assignments
         TryCatch(async () =>
         {
             ValidateAssignmentIdIsNull(assignmentId);
-
-            Assignment maybeAssignment =
-                await this.storageBroker.SelectAssignmentByIdAsync(assignmentId);
-
+            Assignment maybeAssignment = await this.storageBroker.SelectAssignmentByIdAsync(assignmentId);
             ValidateStorageAssignment(maybeAssignment, assignmentId);
 
             return await this.storageBroker.DeleteAssignmentAsync(maybeAssignment);
