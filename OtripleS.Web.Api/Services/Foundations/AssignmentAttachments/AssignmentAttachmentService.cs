@@ -41,10 +41,7 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
             Guid attachmentId) => TryCatch(async () =>
         {
             ValidateAssignmentAttachmentIds(assignmentId, attachmentId);
-
-            AssignmentAttachment storageAssignmentAttachment =
-                await this.storageBroker.SelectAssignmentAttachmentByIdAsync(assignmentId, attachmentId);
-
+            AssignmentAttachment storageAssignmentAttachment = await this.storageBroker.SelectAssignmentAttachmentByIdAsync(assignmentId, attachmentId);
             ValidateStorageAssignmentAttachment(storageAssignmentAttachment, assignmentId, attachmentId);
 
             return storageAssignmentAttachment;
@@ -55,10 +52,7 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
             Guid attachmentId) => TryCatch(async () =>
         {
             ValidateAssignmentAttachmentIds(assignmentId, attachmentId);
-
-            AssignmentAttachment maybeAssignmentAttachment =
-                await this.storageBroker.SelectAssignmentAttachmentByIdAsync(assignmentId, attachmentId);
-
+            AssignmentAttachment maybeAssignmentAttachment = await this.storageBroker.SelectAssignmentAttachmentByIdAsync(assignmentId, attachmentId);
             ValidateStorageAssignmentAttachment(maybeAssignmentAttachment, assignmentId, attachmentId);
 
             return await this.storageBroker.DeleteAssignmentAttachmentAsync(maybeAssignmentAttachment);
