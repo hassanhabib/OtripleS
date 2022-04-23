@@ -44,10 +44,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
         TryCatch(async () =>
         {
             ValidateAttachmentId(attachmentId);
-
-            Attachment storageAttachment =
-                await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
-
+            Attachment storageAttachment = await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
             ValidateStorageAttachment(storageAttachment, attachmentId);
 
             return storageAttachment;
@@ -59,10 +56,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
             ValidateAttachmentOnModify(attachment);
             Attachment maybeAttachment = await this.storageBroker.SelectAttachmentByIdAsync(attachment.Id);
             ValidateStorageAttachment(maybeAttachment, attachment.Id);
-
-            ValidateAgainstStorageAttachmentOnModify(
-            inputAttachment: attachment,
-            storageAttachment: maybeAttachment);
+            ValidateAgainstStorageAttachmentOnModify(inputAttachment: attachment, storageAttachment: maybeAttachment);
 
             return await this.storageBroker.UpdateAttachmentAsync(attachment);
         });
@@ -71,10 +65,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attachments
         TryCatch(async () =>
         {
             ValidateAttachmentIdIsNull(attachmentId);
-
-            Attachment maybeAttachment =
-                await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
-
+            Attachment maybeAttachment = await this.storageBroker.SelectAttachmentByIdAsync(attachmentId);
             ValidateStorageAttachment(maybeAttachment, attachmentId);
 
             return await this.storageBroker.DeleteAttachmentAsync(maybeAttachment);
