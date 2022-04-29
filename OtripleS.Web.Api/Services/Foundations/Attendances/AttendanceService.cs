@@ -49,10 +49,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
         TryCatch(async () =>
         {
             ValidateAttendanceId(attendanceId);
-
-            Attendance maybeAttendance =
-                await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
-
+            Attendance maybeAttendance = await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
             ValidateStorageAttendance(maybeAttendance, attendanceId);
 
             return maybeAttendance;
@@ -64,10 +61,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
             ValidateAttendanceOnModify(attendance);
             Attendance maybeAttendance = await storageBroker.SelectAttendanceByIdAsync(attendance.Id);
             ValidateStorageAttendance(maybeAttendance, attendance.Id);
-
-            ValidateAgainstStorageAttendanceOnModify(
-               inputAttendance: attendance,
-               storageAttendance: maybeAttendance);
+            ValidateAgainstStorageAttendanceOnModify(inputAttendance: attendance, storageAttendance: maybeAttendance);
 
             return await storageBroker.UpdateAttendanceAsync(attendance);
         });
@@ -76,10 +70,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Attendances
         TryCatch(async () =>
         {
             ValidateAttendanceId(attendanceId);
-
-            Attendance maybeAttendance =
-                 await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
-
+            Attendance maybeAttendance = await this.storageBroker.SelectAttendanceByIdAsync(attendanceId);
             ValidateStorageAttendance(maybeAttendance, attendanceId);
 
             return await storageBroker.DeleteAttendanceAsync(maybeAttendance);
