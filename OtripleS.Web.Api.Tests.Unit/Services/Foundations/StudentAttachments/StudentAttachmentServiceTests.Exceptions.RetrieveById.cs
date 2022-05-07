@@ -100,10 +100,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
-            Guid inputStudentId = randomStudentId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
             var lockedAttachmentException =
@@ -113,12 +111,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
                 new StudentAttachmentDependencyException(lockedAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId))
+                broker.SelectStudentAttachmentByIdAsync(someStudentId, someAttachmentId))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
             ValueTask<StudentAttachment> retrieveStudentAttachmentTask =
-                this.studentAttachmentService.RetrieveStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId);
+                this.studentAttachmentService.RetrieveStudentAttachmentByIdAsync(someStudentId, someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<StudentAttachmentDependencyException>(() =>
@@ -130,7 +128,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId),
+                broker.SelectStudentAttachmentByIdAsync(someStudentId, someAttachmentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
