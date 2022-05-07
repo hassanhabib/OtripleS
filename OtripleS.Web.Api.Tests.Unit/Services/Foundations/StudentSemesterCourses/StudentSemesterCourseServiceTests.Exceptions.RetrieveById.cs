@@ -98,10 +98,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomSemesterCourseId = Guid.NewGuid();
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputSemesterCourseId = randomSemesterCourseId;
-            Guid inputStudentId = randomStudentId;
+            Guid someSemesterCourseId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
             var lockedSemesterCourseException =
@@ -111,12 +109,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
                 new StudentSemesterCourseDependencyException(lockedSemesterCourseException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId))
+                broker.SelectStudentSemesterCourseByIdAsync(someStudentId, someSemesterCourseId))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
             ValueTask<StudentSemesterCourse> deleteStudentSemesterCourseTask =
-                this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId);
+                this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync(someStudentId, someSemesterCourseId);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseDependencyException>(() => deleteStudentSemesterCourseTask.AsTask());
@@ -127,7 +125,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId),
+                broker.SelectStudentSemesterCourseByIdAsync(someStudentId, someSemesterCourseId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
