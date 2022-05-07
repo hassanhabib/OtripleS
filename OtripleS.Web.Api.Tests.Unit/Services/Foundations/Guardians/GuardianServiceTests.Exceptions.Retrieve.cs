@@ -99,8 +99,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomGuardianId = Guid.NewGuid();
-            Guid inputGuardianId = randomGuardianId;
+            Guid someGuardianId = Guid.NewGuid();
             var serviceException = new Exception();
 
             var failedGuardianServiceException =
@@ -110,12 +109,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
                 new GuardianServiceException(failedGuardianServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectGuardianByIdAsync(inputGuardianId))
+                broker.SelectGuardianByIdAsync(someGuardianId))
                     .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Guardian> retrieveGuardianByIdTask =
-                this.guardianService.RetrieveGuardianByIdAsync(inputGuardianId);
+                this.guardianService.RetrieveGuardianByIdAsync(someGuardianId);
 
             // then
             await Assert.ThrowsAsync<GuardianServiceException>(() =>
@@ -127,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianByIdAsync(inputGuardianId),
+                broker.SelectGuardianByIdAsync(someGuardianId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
