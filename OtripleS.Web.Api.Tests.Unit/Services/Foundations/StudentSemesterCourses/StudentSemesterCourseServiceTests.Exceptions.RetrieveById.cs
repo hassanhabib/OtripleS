@@ -137,10 +137,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomSemesterCourseId = Guid.NewGuid();
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputSemesterCourseId = randomSemesterCourseId;
-            Guid inputStudentId = randomStudentId;
+            Guid someSemesterCourseId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             var serviceException = new Exception();
 
             var failedStudentSemesterCourseServiceException =
@@ -151,13 +149,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
                     failedStudentSemesterCourseServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId))
+                broker.SelectStudentSemesterCourseByIdAsync(someStudentId, someSemesterCourseId))
                     .ThrowsAsync(serviceException);
 
             // when
             ValueTask<StudentSemesterCourse> deleteStudentSemesterCourseTask =
                 this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync
-                (inputStudentId, inputSemesterCourseId);
+                (someStudentId, someSemesterCourseId);
 
             // then
             await Assert.ThrowsAsync<StudentSemesterCourseServiceException>(() =>
@@ -169,7 +167,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId),
+                broker.SelectStudentSemesterCourseByIdAsync(someStudentId, someSemesterCourseId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -178,3 +176,4 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
         }
     }
 }
+      
