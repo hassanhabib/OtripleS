@@ -35,7 +35,7 @@ namespace OtripleS.Web.Api.Services.Foundations.TeacherContacts
 
         public IQueryable<TeacherContact> RetrieveAllTeacherContacts() =>
         TryCatch(() => this.storageBroker.SelectAllTeacherContacts());
-        
+
         public ValueTask<TeacherContact> RetrieveTeacherContactByIdAsync(Guid teacherId, Guid contactId) =>
         TryCatch(async () =>
         {
