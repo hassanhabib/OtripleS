@@ -19,20 +19,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomAttendanceId = Guid.NewGuid();
-            Guid inputAttendanceId = randomAttendanceId;
+            Guid someAttendanceId = Guid.NewGuid();
             var sqlException = GetSqlException();
 
             var expectedDependencyException =
                 new AttendanceDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttendanceByIdAsync(inputAttendanceId))
+                broker.SelectAttendanceByIdAsync(someAttendanceId))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<Attendance> retrieveAttendanceTask =
-                this.attendanceService.RetrieveAttendanceByIdAsync(inputAttendanceId);
+                this.attendanceService.RetrieveAttendanceByIdAsync(someAttendanceId);
 
             // then
             await Assert.ThrowsAsync<AttendanceDependencyException>(() =>
@@ -44,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttendanceByIdAsync(inputAttendanceId),
+                broker.SelectAttendanceByIdAsync(someAttendanceId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -60,20 +59,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomAttendanceId = Guid.NewGuid();
-            Guid inputAttendanceId = randomAttendanceId;
+            Guid someAttendanceId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedAttendanceDependencyException =
                 new AttendanceDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttendanceByIdAsync(inputAttendanceId))
+                broker.SelectAttendanceByIdAsync(someAttendanceId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<Attendance> retrieveAttendanceTask =
-                this.attendanceService.RetrieveAttendanceByIdAsync(inputAttendanceId);
+                this.attendanceService.RetrieveAttendanceByIdAsync(someAttendanceId);
 
             // then
             await Assert.ThrowsAsync<AttendanceDependencyException>(() =>
@@ -85,7 +83,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttendanceByIdAsync(inputAttendanceId),
+                broker.SelectAttendanceByIdAsync(someAttendanceId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -100,9 +98,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         [Fact]
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
-            // given
-            Guid randomAttendanceId = Guid.NewGuid();
-            Guid inputAttendanceId = randomAttendanceId;
+            // given 
+            Guid someAttendanceId = Guid.NewGuid();
             var serviceException = new Exception();
 
             var failedAttendanceServiceException =
@@ -112,12 +109,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                 new AttendanceServiceException(failedAttendanceServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttendanceByIdAsync(inputAttendanceId))
+                broker.SelectAttendanceByIdAsync(someAttendanceId))
                     .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Attendance> retrieveAttendanceByIdTask =
-                this.attendanceService.RetrieveAttendanceByIdAsync(inputAttendanceId);
+                this.attendanceService.RetrieveAttendanceByIdAsync(someAttendanceId);
 
             // then
             await Assert.ThrowsAsync<AttendanceServiceException>(() =>
@@ -129,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttendanceByIdAsync(inputAttendanceId),
+                broker.SelectAttendanceByIdAsync(someAttendanceId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>

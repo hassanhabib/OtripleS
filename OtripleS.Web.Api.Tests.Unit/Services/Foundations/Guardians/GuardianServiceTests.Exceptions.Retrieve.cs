@@ -19,20 +19,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomGuardianId = Guid.NewGuid();
-            Guid inputGuardianId = randomGuardianId;
+            Guid someGuardianId = Guid.NewGuid();
             var sqlException = GetSqlException();
 
             var expectedDependencyException =
                 new GuardianDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectGuardianByIdAsync(inputGuardianId))
+                broker.SelectGuardianByIdAsync(someGuardianId))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<Guardian> retrieveGuardianTask =
-                this.guardianService.RetrieveGuardianByIdAsync(inputGuardianId);
+                this.guardianService.RetrieveGuardianByIdAsync(someGuardianId);
 
             // then
             await Assert.ThrowsAsync<GuardianDependencyException>(() =>
@@ -44,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianByIdAsync(inputGuardianId),
+                broker.SelectGuardianByIdAsync(someGuardianId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -60,20 +59,19 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomGuardianId = Guid.NewGuid();
-            Guid inputGuardianId = randomGuardianId;
+            Guid someGuardianId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedGuardianDependencyException =
                 new GuardianDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectGuardianByIdAsync(inputGuardianId))
+                broker.SelectGuardianByIdAsync(someGuardianId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<Guardian> retrieveGuardianTask =
-                this.guardianService.RetrieveGuardianByIdAsync(inputGuardianId);
+                this.guardianService.RetrieveGuardianByIdAsync(someGuardianId);
 
             // then
             await Assert.ThrowsAsync<GuardianDependencyException>(() =>
@@ -85,7 +83,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianByIdAsync(inputGuardianId),
+                broker.SelectGuardianByIdAsync(someGuardianId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -101,8 +99,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomGuardianId = Guid.NewGuid();
-            Guid inputGuardianId = randomGuardianId;
+            Guid someGuardianId = Guid.NewGuid();
             var serviceException = new Exception();
 
             var failedGuardianServiceException =
@@ -112,12 +109,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
                 new GuardianServiceException(failedGuardianServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectGuardianByIdAsync(inputGuardianId))
+                broker.SelectGuardianByIdAsync(someGuardianId))
                     .ThrowsAsync(serviceException);
 
             // when
             ValueTask<Guardian> retrieveGuardianByIdTask =
-                this.guardianService.RetrieveGuardianByIdAsync(inputGuardianId);
+                this.guardianService.RetrieveGuardianByIdAsync(someGuardianId);
 
             // then
             await Assert.ThrowsAsync<GuardianServiceException>(() =>
@@ -129,7 +126,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectGuardianByIdAsync(inputGuardianId),
+                broker.SelectGuardianByIdAsync(someGuardianId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
