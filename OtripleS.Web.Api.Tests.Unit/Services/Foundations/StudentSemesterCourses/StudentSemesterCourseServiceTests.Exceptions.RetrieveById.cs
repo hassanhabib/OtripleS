@@ -23,7 +23,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
             Guid someSemesterCourseId = Guid.NewGuid();
             Guid someStudentId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
-             
+
             var expectedStudentSemesterCourseDependencyException
                 = new StudentSemesterCourseDependencyException(sqlException);
 
@@ -174,4 +174,3 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
         }
     }
 }
-      
