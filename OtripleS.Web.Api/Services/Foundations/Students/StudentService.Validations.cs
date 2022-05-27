@@ -142,11 +142,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
                         secondDate: storageStudent.CreatedDate,
                         secondDateName: nameof(Student.CreatedDate)),
                 Parameter: nameof(Student.CreatedDate)),
+               
                 (Rule: IsSame(
                         firstDate: inputStudent.UpdatedDate,
                         secondDate: storageStudent.UpdatedDate,
                         secondDateName: nameof(Student.UpdatedDate)),
                 Parameter: nameof(Student.UpdatedDate)),
+
                 (Rule: IsNotSame(
                         firstId: inputStudent.CreatedBy,
                         secondId: storageStudent.CreatedBy,
