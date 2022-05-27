@@ -112,6 +112,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
                 throw new NullStudentGuardianException();
             }
         }
+      
         private static void ValidateStudentGuardianId(Guid studentGuardianId)
         {
             if (studentGuardianId == Guid.Empty)
@@ -121,6 +122,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
                     parameterValue: studentGuardianId);
             }
         }
+       
         private static void ValidateStudentId(Guid studentId)
         {
             if (studentId == Guid.Empty)
