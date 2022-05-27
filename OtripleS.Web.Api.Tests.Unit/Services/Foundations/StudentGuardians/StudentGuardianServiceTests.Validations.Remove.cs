@@ -23,7 +23,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             Guid inputStudentGuardianId = randomStudentGuardianId;
             Guid inputStudentId = randomStudentId;
 
-            var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
+            var invalidStudentGuardianInputException = new InvalidStudentGuardiantException(
                 parameterName: nameof(StudentGuardian.GuardianId),
                 parameterValue: inputStudentGuardianId
             );
@@ -64,7 +64,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             Guid inputStudentGuardianId = randomStudentGuardianId;
             Guid inputStudentId = randomStudentId;
 
-            var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
+            var invalidStudentGuardianInputException = new InvalidStudentGuardiantException(
                 parameterName: nameof(StudentGuardian.StudentId),
                 parameterValue: inputStudentId);
 

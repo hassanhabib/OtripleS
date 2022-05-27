@@ -7,9 +7,9 @@ using System;
 
 namespace OtripleS.Web.Api.Models.StudentGuardians.Exceptions
 {
-    public class InvalidStudentGuardianInputException : Exception
-    {
-        public InvalidStudentGuardianInputException(string parameterName, object parameterValue)
+    public class InvalidStudentGuardiantException : Exception
+    { 
+        public InvalidStudentGuardiantException(string parameterName, object parameterValue)
             : base(message: $"Invalid student guardian, " +
                   $"parameter name: {parameterName}, " +
                   $"parameter value: {parameterValue}.")

@@ -57,7 +57,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             StudentGuardian inputStudentGuardian = randomStudentGuardian;
             inputStudentGuardian.StudentId = default;
 
-            var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
+            var invalidStudentGuardianInputException = new InvalidStudentGuardiantException(
                 parameterName: nameof(StudentGuardian.StudentId),
                 parameterValue: inputStudentGuardian.StudentId);
 
@@ -95,7 +95,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             StudentGuardian inputStudentGuardian = randomStudentGuardian;
             inputStudentGuardian.GuardianId = default;
 
-            var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
+            var invalidStudentGuardianInputException = new InvalidStudentGuardiantException(
                 parameterName: nameof(StudentGuardian.GuardianId),
                 parameterValue: inputStudentGuardian.GuardianId);
 
@@ -133,7 +133,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             StudentGuardian inputStudentGuardian = randomStudentGuardian;
             inputStudentGuardian.CreatedBy = default;
 
-            var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
+            var invalidStudentGuardianInputException = new InvalidStudentGuardiantException(
                 parameterName: nameof(StudentGuardian.CreatedBy),
                 parameterValue: inputStudentGuardian.CreatedBy);
 
@@ -171,7 +171,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             StudentGuardian inputStudentGuardian = randomStudentGuardian;
             inputStudentGuardian.CreatedDate = default;
 
-            var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
+            var invalidStudentGuardianInputException = new InvalidStudentGuardiantException(
                 parameterName: nameof(StudentGuardian.CreatedDate),
                 parameterValue: inputStudentGuardian.CreatedDate);
 
@@ -209,7 +209,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             StudentGuardian inputStudentGuardian = randomStudentGuardian;
             inputStudentGuardian.UpdatedBy = default;
 
-            var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
+            var invalidStudentGuardianInputException = new InvalidStudentGuardiantException(
                 parameterName: nameof(StudentGuardian.UpdatedBy),
                 parameterValue: inputStudentGuardian.UpdatedBy);
 
@@ -247,7 +247,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             StudentGuardian inputStudentGuardian = randomStudentGuardian;
             inputStudentGuardian.UpdatedDate = default;
 
-            var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
+            var invalidStudentGuardianInputException = new InvalidStudentGuardiantException(
                 parameterName: nameof(StudentGuardian.UpdatedDate),
                 parameterValue: inputStudentGuardian.UpdatedDate);
 
@@ -285,7 +285,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             StudentGuardian inputStudentGuardian = randomStudentGuardian;
             inputStudentGuardian.UpdatedBy = Guid.NewGuid();
 
-            var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
+            var invalidStudentGuardianInputException = new InvalidStudentGuardiantException(
                 parameterName: nameof(StudentGuardian.UpdatedBy),
                 parameterValue: inputStudentGuardian.UpdatedBy);
 
@@ -324,7 +324,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             inputStudentGuardian.UpdatedBy = randomStudentGuardian.CreatedBy;
             inputStudentGuardian.UpdatedDate = GetRandomDateTime();
 
-            var invalidStudentGuardianInputException = new InvalidStudentGuardianInputException(
+            var invalidStudentGuardianInputException = new InvalidStudentGuardiantException(
                 parameterName: nameof(StudentGuardian.UpdatedDate),
                 parameterValue: inputStudentGuardian.UpdatedDate);
 
@@ -367,7 +367,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
             inputStudentGuardian.UpdatedDate = inputStudentGuardian.CreatedDate;
 
             var invalidStudentGuardianInputException =
-                new InvalidStudentGuardianInputException(
+                new InvalidStudentGuardiantException(
                     parameterName: nameof(StudentGuardian.CreatedDate),
                     parameterValue: inputStudentGuardian.CreatedDate);
 
