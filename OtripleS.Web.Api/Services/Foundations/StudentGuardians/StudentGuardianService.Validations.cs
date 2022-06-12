@@ -33,17 +33,17 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
             switch (studentGuardian)
             {
                 case { } when studentGuardian.UpdatedBy != studentGuardian.CreatedBy:
-                    throw new InvalidStudentGuardianInputException(
+                    throw new InvalidStudentGuardiantException(
                         parameterName: nameof(StudentGuardian.UpdatedBy),
                         parameterValue: studentGuardian.UpdatedBy);
 
                 case { } when studentGuardian.UpdatedDate != studentGuardian.CreatedDate:
-                    throw new InvalidStudentGuardianInputException(
+                    throw new InvalidStudentGuardiantException(
                         parameterName: nameof(StudentGuardian.UpdatedDate),
                         parameterValue: studentGuardian.UpdatedDate);
 
                 case { } when IsDateNotRecent(studentGuardian.CreatedDate):
-                    throw new InvalidStudentGuardianInputException(
+                    throw new InvalidStudentGuardiantException(
                         parameterName: nameof(StudentGuardian.CreatedDate),
                         parameterValue: studentGuardian.CreatedDate);
             }
@@ -54,12 +54,12 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
             switch (studentGuardian)
             {
                 case { } when IsInvalid(studentGuardian.StudentId):
-                    throw new InvalidStudentGuardianInputException(
+                    throw new InvalidStudentGuardiantException(
                         parameterName: nameof(StudentGuardian.StudentId),
                         parameterValue: studentGuardian.StudentId);
 
                 case { } when IsInvalid(studentGuardian.GuardianId):
-                    throw new InvalidStudentGuardianInputException(
+                    throw new InvalidStudentGuardiantException(
                         parameterName: nameof(StudentGuardian.GuardianId),
                         parameterValue: studentGuardian.GuardianId);
             }
@@ -69,14 +69,14 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
         {
             if (studentId == default)
             {
-                throw new InvalidStudentGuardianInputException(
+                throw new InvalidStudentGuardiantException(
                     parameterName: nameof(StudentGuardian.StudentId),
                     parameterValue: studentId);
             }
 
             if (guardianId == default)
             {
-                throw new InvalidStudentGuardianInputException(
+                throw new InvalidStudentGuardiantException(
                     parameterName: nameof(StudentGuardian.GuardianId),
                     parameterValue: guardianId);
             }
@@ -99,7 +99,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
             switch (inputStudentGuardian)
             {
                 case { } when inputStudentGuardian.CreatedDate != storageStudentGuardian.CreatedDate:
-                    throw new InvalidStudentGuardianInputException(
+                    throw new InvalidStudentGuardiantException(
                         parameterName: nameof(StudentGuardian.CreatedDate),
                         parameterValue: inputStudentGuardian.CreatedDate);
             }
@@ -112,20 +112,22 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
                 throw new NullStudentGuardianException();
             }
         }
+      
         private static void ValidateStudentGuardianId(Guid studentGuardianId)
         {
             if (studentGuardianId == Guid.Empty)
             {
-                throw new InvalidStudentGuardianInputException(
+                throw new InvalidStudentGuardiantException(
                     parameterName: nameof(StudentGuardian.GuardianId),
                     parameterValue: studentGuardianId);
             }
         }
+       
         private static void ValidateStudentId(Guid studentId)
         {
             if (studentId == Guid.Empty)
             {
-                throw new InvalidStudentGuardianInputException(
+                throw new InvalidStudentGuardiantException(
                     parameterName: nameof(StudentGuardian.StudentId),
                     parameterValue: studentId);
             }
@@ -136,22 +138,22 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
             switch (studentGuardian)
             {
                 case { } when IsInvalid(studentGuardian.CreatedBy):
-                    throw new InvalidStudentGuardianInputException(
+                    throw new InvalidStudentGuardiantException(
                         parameterName: nameof(StudentGuardian.CreatedBy),
                         parameterValue: studentGuardian.CreatedBy);
 
                 case { } when IsInvalid(studentGuardian.UpdatedBy):
-                    throw new InvalidStudentGuardianInputException(
+                    throw new InvalidStudentGuardiantException(
                         parameterName: nameof(StudentGuardian.UpdatedBy),
                         parameterValue: studentGuardian.UpdatedBy);
 
                 case { } when IsInvalid(studentGuardian.CreatedDate):
-                    throw new InvalidStudentGuardianInputException(
+                    throw new InvalidStudentGuardiantException(
                         parameterName: nameof(StudentGuardian.CreatedDate),
                         parameterValue: studentGuardian.CreatedDate);
 
                 case { } when IsInvalid(studentGuardian.UpdatedDate):
-                    throw new InvalidStudentGuardianInputException(
+                    throw new InvalidStudentGuardiantException(
                         parameterName: nameof(StudentGuardian.UpdatedDate),
                         parameterValue: studentGuardian.UpdatedDate);
             }
@@ -161,7 +163,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
         {
             if (studentGuardian.CreatedDate == studentGuardian.UpdatedDate)
             {
-                throw new InvalidStudentGuardianInputException(
+                throw new InvalidStudentGuardiantException(
                     parameterName: nameof(StudentGuardian.UpdatedDate),
                     parameterValue: studentGuardian.UpdatedDate);
             }
@@ -171,7 +173,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
         {
             if (IsDateNotRecent(studentGuardian.UpdatedDate))
             {
-                throw new InvalidStudentGuardianInputException(
+                throw new InvalidStudentGuardiantException(
                     parameterName: nameof(StudentGuardian.UpdatedDate),
                     parameterValue: studentGuardian.UpdatedDate);
             }

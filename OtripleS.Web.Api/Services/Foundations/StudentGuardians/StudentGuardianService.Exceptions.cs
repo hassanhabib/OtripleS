@@ -30,7 +30,7 @@ namespace OtripleS.Web.Api.Services.Foundations.StudentGuardians
             {
                 throw CreateAndLogValidationException(nullStudentGuardianException);
             }
-            catch (InvalidStudentGuardianInputException invalidStudentGuardianInputException)
+            catch (InvalidStudentGuardiantException invalidStudentGuardianInputException)
             {
                 throw CreateAndLogValidationException(invalidStudentGuardianInputException);
             }

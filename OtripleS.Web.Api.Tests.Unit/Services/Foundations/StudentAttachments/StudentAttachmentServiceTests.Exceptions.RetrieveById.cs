@@ -20,23 +20,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputStudentId = randomStudentId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
             var expectedStudentAttachmentDependencyException
                 = new StudentAttachmentDependencyException(sqlException);
 
             this.storageBrokerMock.Setup(broker =>
-                 broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId))
+                 broker.SelectStudentAttachmentByIdAsync(someStudentId, someAttachmentId))
                     .ThrowsAsync(sqlException);
 
             // when
             ValueTask<StudentAttachment> retrieveStudentAttachmentTask =
                 this.studentAttachmentService.RetrieveStudentAttachmentByIdAsync
-                (inputStudentId, inputAttachmentId);
+                (someStudentId, someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<StudentAttachmentDependencyException>(() =>
@@ -48,7 +46,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId),
+                broker.SelectStudentAttachmentByIdAsync(someStudentId, someAttachmentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -60,23 +58,21 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
-            Guid inputStudentId = randomStudentId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             var databaseUpdateException = new DbUpdateException();
 
             var expectedStudentAttachmentDependencyException =
                 new StudentAttachmentDependencyException(databaseUpdateException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId))
+                broker.SelectStudentAttachmentByIdAsync(someStudentId, someAttachmentId))
                     .ThrowsAsync(databaseUpdateException);
 
             // when
             ValueTask<StudentAttachment> retrieveStudentAttachmentTask =
                 this.studentAttachmentService.RetrieveStudentAttachmentByIdAsync
-                (inputStudentId, inputAttachmentId);
+                (someStudentId, someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<StudentAttachmentDependencyException>(
@@ -88,7 +84,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId),
+                broker.SelectStudentAttachmentByIdAsync(someStudentId, someAttachmentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -100,10 +96,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
         public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
-            Guid inputStudentId = randomStudentId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
             var lockedAttachmentException =
@@ -113,12 +107,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
                 new StudentAttachmentDependencyException(lockedAttachmentException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId))
+                broker.SelectStudentAttachmentByIdAsync(someStudentId, someAttachmentId))
                     .ThrowsAsync(databaseUpdateConcurrencyException);
 
             // when
             ValueTask<StudentAttachment> retrieveStudentAttachmentTask =
-                this.studentAttachmentService.RetrieveStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId);
+                this.studentAttachmentService.RetrieveStudentAttachmentByIdAsync(someStudentId, someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<StudentAttachmentDependencyException>(() =>
@@ -130,7 +124,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId),
+                broker.SelectStudentAttachmentByIdAsync(someStudentId, someAttachmentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -142,10 +136,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
         public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
         {
             // given
-            Guid randomAttachmentId = Guid.NewGuid();
-            Guid randomStudentId = Guid.NewGuid();
-            Guid inputAttachmentId = randomAttachmentId;
-            Guid inputStudentId = randomStudentId;
+            Guid someAttachmentId = Guid.NewGuid();
+            Guid someStudentId = Guid.NewGuid();
             var serviceException = new Exception();
 
             var failedStudentAttachmentServiceException =
@@ -155,13 +147,13 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
                 new StudentAttachmentServiceException(failedStudentAttachmentServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId))
+                broker.SelectStudentAttachmentByIdAsync(someStudentId, someAttachmentId))
                     .ThrowsAsync(serviceException);
 
             // when
             ValueTask<StudentAttachment> retrieveStudentAttachmentTask =
                 this.studentAttachmentService.RetrieveStudentAttachmentByIdAsync
-                (inputStudentId, inputAttachmentId);
+                (someStudentId, someAttachmentId);
 
             // then
             await Assert.ThrowsAsync<StudentAttachmentServiceException>(() =>
@@ -173,7 +165,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentAttachments
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentAttachmentByIdAsync(inputStudentId, inputAttachmentId),
+                broker.SelectStudentAttachmentByIdAsync(someStudentId, someAttachmentId),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();

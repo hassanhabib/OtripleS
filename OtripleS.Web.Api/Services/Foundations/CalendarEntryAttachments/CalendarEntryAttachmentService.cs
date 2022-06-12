@@ -44,10 +44,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
             (Guid calendarEntryId, Guid attachmentId) => TryCatch(async () =>
         {
             ValidateCalendarEntryAttachmentIds(calendarEntryId, attachmentId);
-
-            CalendarEntryAttachment maybeCalendarEntryAttachment =
-                await this.storageBroker.SelectCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
-
+            CalendarEntryAttachment maybeCalendarEntryAttachment = await this.storageBroker.SelectCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
             ValidateStorageCalendarEntryAttachment(maybeCalendarEntryAttachment, calendarEntryId, attachmentId);
 
             return maybeCalendarEntryAttachment;
@@ -57,10 +54,7 @@ namespace OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments
             Guid calendarEntryId, Guid attachmentId) => TryCatch(async () =>
         {
             ValidateCalendarEntryAttachmentIds(calendarEntryId, attachmentId);
-
-            CalendarEntryAttachment maybeCalendarEntryAttachment =
-                await this.storageBroker.SelectCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
-
+            CalendarEntryAttachment maybeCalendarEntryAttachment = await this.storageBroker.SelectCalendarEntryAttachmentByIdAsync(calendarEntryId, attachmentId);
             ValidateStorageCalendarEntryAttachment(maybeCalendarEntryAttachment, calendarEntryId, attachmentId);
 
             return await this.storageBroker.DeleteCalendarEntryAttachmentAsync(maybeCalendarEntryAttachment);

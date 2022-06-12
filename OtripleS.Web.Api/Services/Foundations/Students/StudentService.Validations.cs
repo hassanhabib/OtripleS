@@ -26,16 +26,18 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
                 (Rule: IsInvalidX(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
                 (Rule: IsInvalidX(student.UpdatedDate), Parameter: nameof(Student.UpdatedDate)),
                 (Rule: IsNotRecent(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
+
                 (Rule: IsNotSame(
                         firstId: student.UpdatedBy,
                         secondId: student.CreatedBy,
                         secondIdName: nameof(Student.CreatedBy)),
-                    Parameter: nameof(Student.UpdatedBy)),
+                Parameter: nameof(Student.UpdatedBy)),
+
                 (Rule: IsNotSame(
                         firstDate: student.UpdatedDate,
                         secondDate: student.CreatedDate,
                         secondDateName: nameof(Student.CreatedDate)),
-                    Parameter: nameof(Student.UpdatedDate))
+                Parameter: nameof(Student.UpdatedDate))
             );
         }
 
@@ -128,7 +130,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
                         firstDate: student.UpdatedDate,
                         secondDate: student.CreatedDate,
                         secondDateName: nameof(Student.CreatedDate)),
-                    Parameter: nameof(Student.UpdatedDate))
+                Parameter: nameof(Student.UpdatedDate))
             );
         }
 
@@ -139,17 +141,19 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
                         firstDate: inputStudent.CreatedDate,
                         secondDate: storageStudent.CreatedDate,
                         secondDateName: nameof(Student.CreatedDate)),
-                    Parameter: nameof(Student.CreatedDate)),
+                Parameter: nameof(Student.CreatedDate)),
+               
                 (Rule: IsSame(
                         firstDate: inputStudent.UpdatedDate,
                         secondDate: storageStudent.UpdatedDate,
                         secondDateName: nameof(Student.UpdatedDate)),
-                    Parameter: nameof(Student.UpdatedDate)),
+                Parameter: nameof(Student.UpdatedDate)),
+
                 (Rule: IsNotSame(
                         firstId: inputStudent.CreatedBy,
                         secondId: storageStudent.CreatedBy,
                         secondIdName: nameof(Student.CreatedBy)),
-                    Parameter: nameof(Student.CreatedBy))
+                Parameter: nameof(Student.CreatedBy))
             );
         }
 
@@ -163,6 +167,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
 
             return timeDifference.Duration() > oneMinute;
         }
+       
         private static void ValidateStudent(Student student)
         {
             if (student is null)
