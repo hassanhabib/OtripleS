@@ -12,14 +12,14 @@ namespace OtripleS.Web.Api.Models.Meals
 {
     public class Meal
     {
-        public GUID Id { get; set; }
+        public Guid Id { get; set; }
         public enum Type { Breakfast, Lunch, Dinner};
         public double Price { get; set; }
-        public GUID StudentId { get; set; }
+        public Guid StudentId { get; set; }
         public enum Status { Ready, Pickedup, Delivered, Cancelled};
         public int Quantity { get; set; }
-        public GUID CreatedBy { get; set; }
-        public GUID UpdatedBy { get; set; }
+        public Guid CreatedBy { get; set; }
+        public Guid UpdatedBy { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset UpdatedDate { get; set; }
 
