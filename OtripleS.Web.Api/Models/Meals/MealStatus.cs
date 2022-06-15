@@ -3,7 +3,13 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-namespace OtripleS.Web.Api.Brokers.Storages
+namespace OtripleS.Web.Api.Models.Meals
 {
-    public partial interface IStorageBroker { }
+    public enum MealStatus
+    {
+        Ready,
+        Pickedup,
+        Delivered,
+        Cancelled
+    }
 }
