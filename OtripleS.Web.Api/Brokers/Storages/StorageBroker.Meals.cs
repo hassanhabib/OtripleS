@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using OtripleS.Web.Api.Models.Meals;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-
+using System.Linq;
+using System;
 
 namespace OtripleS.Web.Api.Brokers.Storages
 {
@@ -21,6 +22,39 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
             EntityEntry<Meal> mealEntityEntry = 
                 await broker.Meals.AddAsync(entity: meal);
+
+            await broker.SaveChangesAsync();
+
+            return mealEntityEntry.Entity;
+        }
+
+        public IQueryable<Meal> SelectAllMeals() => this.Meals;
+
+        public async ValueTask<Meal> SelectMealByIdAsync(Guid mealId)
+        {
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
+            return await broker.Meals.FindAsync(mealId);
+        }
+
+        public async ValueTask<Meal> UpdateMealAsync(Meal meal)
+        {
+            using var broker = new StorageBroker(this.configuration);
+
+            EntityEntry<Meal> mealEntityEntry =
+                broker.Meals.Update(entity: meal);
+
+            await broker.SaveChangesAsync();
+
+            return mealEntityEntry.Entity;
+        }
+
+        public async ValueTask<Meal> DeleteSemesterCourseAsync(Meal meal)
+        {
+            using var broker = new StorageBroker(this.configuration);
+
+            EntityEntry<Meal> mealEntityEntry = broker.Meals.Remove(entity: meal);
 
             await broker.SaveChangesAsync();
 

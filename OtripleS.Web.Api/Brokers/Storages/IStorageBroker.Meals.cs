@@ -4,11 +4,17 @@
 // ---------------------------------------------------------------
 
 using OtripleS.Web.Api.Models.Meals;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Brokers.Storages
 {
     public partial interface IStorageBroker {
         ValueTask<Meal> InsertMealAsync(Meal meal);
+        IQueryable<Meal> SelectAllMeals();
+        ValueTask<Meal> SelectMealByIdAsync(Guid mealId);
+        ValueTask<Meal> UpdateMealAsync(Meal meal);
+        ValueTask<Meal> DeleteSemesterCourseAsync(Meal meal);
     }
 }
