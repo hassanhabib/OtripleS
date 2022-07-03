@@ -26,5 +26,17 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
             return mealEntityEntry.Entity;
         }
+
+        public async ValueTask<Meal> UpdateMealAsync(Meal meal)
+        {
+            using var broker = new StorageBroker(this.configuration);
+
+            EntityEntry<Meal> mealEntityEntry =
+                broker.Meals.Update(entity: meal);
+
+            await broker.SaveChangesAsync();
+
+            return mealEntityEntry.Entity;
+        }
     }
 }
