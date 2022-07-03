@@ -38,5 +38,16 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
             return mealEntityEntry.Entity;
         }
+
+        public async ValueTask<Meal> DeleteMealAsync(Meal meal)
+        {
+            using var broker = new StorageBroker(this.configuration);
+
+            EntityEntry<Meal> mealEntityEntry = broker.Meals.Remove(entity: meal);
+
+            await broker.SaveChangesAsync();
+
+            return mealEntityEntry.Entity;
+        }
     }
 }
