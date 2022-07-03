@@ -10,5 +10,6 @@ namespace OtripleS.Web.Api.Brokers.Storages
 {
     public partial interface IStorageBroker {
         ValueTask<Meal> InsertMealAsync(Meal meal);
+        ValueTask<Meal> UpdateMealAsync(Meal meal);
     }
 }
