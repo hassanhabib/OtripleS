@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: windows-latest
     env:
-      ClientId: "d3983779-f348-404f-8fc3-bbdb93c461ef"
+      AzureClientId: "d3983779-f348-404f-8fc3-bbdb93c461ef"
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
