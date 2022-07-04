@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Infrastructure.Provision.Brokers.Clouds
         {
             return await this.azure.ResourceGroups
                 .Define(name: resourceGroupName)
-                .WithRegion(region: Region.USWest2)
+                .WithRegion(region: Region.USWest3)
                 .CreateAsync();
         }
 

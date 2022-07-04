@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Infrastructure.Provision.Brokers.Clouds
         {
             return await this.azure.AppServices.AppServicePlans
                 .Define(planName)
-                .WithRegion(Region.USWest2)
+                .WithRegion(Region.USWest3)
                 .WithExistingResourceGroup(resourceGroup)
                 .WithPricingTier(PricingTier.StandardS1)
                 .WithOperatingSystem(OS.Windows)
