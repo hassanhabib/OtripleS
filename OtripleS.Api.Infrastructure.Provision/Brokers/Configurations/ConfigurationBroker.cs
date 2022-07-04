@@ -14,6 +14,7 @@ namespace OtripleS.Web.Api.Infrastructure.Provision.Brokers.Configurations
         public CloudManagementConfiguration GetConfigurations()
         {
             IConfigurationRoot configurationRoot = new ConfigurationBuilder()
+               .SetBasePath(basePath: Directory.GetCurrentDirectory())
                .AddJsonFile(path: "OtripleS.Api.Infrastructure.Provision\\appSettings.json", optional: false)
                .Build();
 
