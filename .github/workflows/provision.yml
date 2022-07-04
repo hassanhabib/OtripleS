@@ -1,0 +1,30 @@
+name: Provisioning Azure Resources
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      AzureClientId: ${{ secrets.AZURECLIENTID }}
+      AzureTenantId: ${{ secrets.AZURETENANTID }}
+      AzureClientSecret: ${{ secrets.AZURECLIENTSECRET }}
+      AzureAdminName: ${{ secrets.AZUREADMINNAME }}
+      AzureAdminAccess: ${{ secrets.AZUREADMINACCESS }}
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 7.0.100-preview.1.22110.4
+        include-prerelease: true
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet run --project .\OtripleS.Api.Infrastructure.Provision\OtripleS.Web.Api.Infrastructure.Provision.csproj
