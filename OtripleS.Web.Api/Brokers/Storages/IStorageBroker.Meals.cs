@@ -13,6 +13,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
     public partial interface IStorageBroker {
         ValueTask<Meal> InsertMealAsync(Meal meal);
         IQueryable<Meal> SelectAllMeals();
+        ValueTask<Meal> SelectMealByIdAsync(Guid mealId);
         ValueTask<Meal> UpdateMealAsync(Meal meal);
         ValueTask<Meal> DeleteMealAsync(Meal meal);
     }

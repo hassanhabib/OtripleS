@@ -30,6 +30,14 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public IQueryable<Meal> SelectAllMeals() => this.Meals;
 
+        public async ValueTask<Meal> SelectMealByIdAsync(Guid mealId)
+        {
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
+            return await broker.Meals.FindAsync(mealId);
+        }
+
         public async ValueTask<Meal> UpdateMealAsync(Meal meal)
         {
             using var broker = new StorageBroker(this.configuration);
