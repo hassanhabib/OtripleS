@@ -23,8 +23,6 @@ namespace OtripleS.Web.Api.Infrastructure.Provision.Brokers.Clouds
         public CloudBroker()
         {
             this.clientId = Environment.GetEnvironmentVariable("AzureClientId");
-            Console.WriteLine($"Client Id: {this.clientId}");
-            
             this.clientSecret = Environment.GetEnvironmentVariable("AzureClientSecret");
             this.tenantId = Environment.GetEnvironmentVariable("AzureTenantId");
             this.adminName = Environment.GetEnvironmentVariable("AzureAdminName");
