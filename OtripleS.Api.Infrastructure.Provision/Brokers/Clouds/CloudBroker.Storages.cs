@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Infrastructure.Provision.Brokers.Clouds
         {
             return await this.azure.SqlServers
                 .Define(sqlServerName)
-                .WithRegion(Region.USWest3)
+                .WithRegion(Region.USWest2)
                 .WithExistingResourceGroup(resourceGroup)
                 .WithAdministratorLogin(this.adminName)
                 .WithAdministratorPassword(this.adminAccess)
