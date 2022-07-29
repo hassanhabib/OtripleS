@@ -22,5 +22,6 @@ namespace OtripleS.Web.Api.Services.Foundations.AssignmentAttachments
         ValueTask<AssignmentAttachment> RemoveAssignmentAttachmentByIdAsync(
             Guid assignmentId,
             Guid attachmentId);
+        ValueTask<AssignmentAttachment> RemoveAssignmentAttachmentByIdAsync(Guid someGuid);
     }
 }

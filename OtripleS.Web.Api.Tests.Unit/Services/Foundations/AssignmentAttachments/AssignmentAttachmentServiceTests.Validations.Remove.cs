@@ -5,6 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Moq;
 using OtripleS.Web.Api.Models.AssignmentAttachments;
 using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
@@ -14,6 +15,10 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
 {
     public partial class AssignmentAttachmentServiceTests
     {
+        private object actualAssignmentAttachmentDependencyValidationException;
+        private Guid someGuid;
+        private object expectedAssignmentAttachmenDependencyValidationException;
+
         [Fact]
         public async Task ShouldThrowValidatonExceptionOnRemoveWhenAssignmentIdIsInvalidAndLogItAsync()
         {
@@ -31,14 +36,15 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.AssignmentAttachments
                 new AssignmentAttachmentValidationException(invalidAssignmentAttachmentInputException);
 
             // when
-            ValueTask<AssignmentAttachment> removeAssignmentAttachmentTask =
-                this.assignmentAttachmentService.RemoveAssignmentAttachmentByIdAsync(
-                    inputAssignmentId,
-                    inputAttachmentId);
+            ValueTask<AssignmentAttachment> actualassignmentAttachmenTask =
+                this.assignmentAttachmentService.RemoveAssignmentAttachmentByIdAsync(someGuid);
+
+            AssignmentAttachmentDependencyValidationException actualAssignmentAttachmentbDependencyValidationException =
+                await Assert.ThrowsAsync<AssignmentAttachmentDependencyValidationException>(actualassignmentAttachmenTask.AsTask);
 
             // then
-            await Assert.ThrowsAsync<AssignmentAttachmentValidationException>(() =>
-                removeAssignmentAttachmentTask.AsTask());
+            actualAssignmentAttachmentDependencyValidationException.Should().BeEquivalentTo(
+                expectedAssignmentAttachmenDependencyValidationException);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
