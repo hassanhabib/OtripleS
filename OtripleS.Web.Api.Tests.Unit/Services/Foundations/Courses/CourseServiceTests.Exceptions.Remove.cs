@@ -33,10 +33,14 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Courses
             // when
             ValueTask<Course> deleteCourseTask =
                 this.courseService.RemoveCourseAsync(someCourseId);
+            
+            CourseDependencyException actualCourseDependencyException =
+                await Assert.ThrowsAsync<CourseDependencyException>(
+                    deleteCourseTask.AsTask);
 
             // then
-            await Assert.ThrowsAsync<CourseDependencyException>(() =>
-                deleteCourseTask.AsTask());
+            actualCourseDependencyException.Should().BeEquivalentTo(
+                expectedCourseDependencyException);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCourseByIdAsync(someCourseId),
