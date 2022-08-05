@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<AssignmentAttachment> UpdateAssignmentAttachmentAsync(
             AssignmentAttachment assignmentAttachment)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             EntityEntry<AssignmentAttachment> assignmentAttachmentEntityEntry =
                 broker.AssignmentAttachments.Update(entity: assignmentAttachment);
