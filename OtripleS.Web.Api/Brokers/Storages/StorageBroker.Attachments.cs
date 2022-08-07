@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Attachment> SelectAttachmentByIdAsync(Guid attachmentId)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await Attachments.FindAsync(attachmentId);
