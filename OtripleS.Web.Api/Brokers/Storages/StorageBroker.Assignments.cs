@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Assignment> SelectAssignmentByIdAsync(Guid assignmentId)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await Assignments.FindAsync(assignmentId);
