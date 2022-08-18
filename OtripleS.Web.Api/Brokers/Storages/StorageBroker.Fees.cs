@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Fee> UpdateFeeAsync(Fee fee)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             EntityEntry<Fee> feeEntityEntry = broker.Fees.Update(entity: fee);
             await broker.SaveChangesAsync();
 
