@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid guardianId,
             Guid contactId)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await broker.GuardianContacts.FindAsync(guardianId, contactId);
