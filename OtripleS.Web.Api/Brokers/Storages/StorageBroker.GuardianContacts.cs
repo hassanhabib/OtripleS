@@ -68,4 +68,4 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return guardianContactEntityEntry.Entity;
         }
     }
-}
+} 
