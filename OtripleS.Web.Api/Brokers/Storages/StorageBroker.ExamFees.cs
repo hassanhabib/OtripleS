@@ -46,7 +46,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<ExamFee> DeleteExamFeeAsync(ExamFee examFee)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             EntityEntry<ExamFee> examFeeEntityEntry = broker.ExamFees.Remove(entity: examFee);
             await broker.SaveChangesAsync();
 
