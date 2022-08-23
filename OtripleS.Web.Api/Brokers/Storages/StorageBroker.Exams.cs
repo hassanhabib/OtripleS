@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Exam> InsertExamAsync(Exam exam)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             EntityEntry<Exam> examEntityEntry = await broker.Exams.AddAsync(entity: exam);
             await broker.SaveChangesAsync();
 
@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Exam> SelectExamByIdAsync(Guid examId)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await broker.Exams.FindAsync(examId);
@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Exam> UpdateExamAsync(Exam exam)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             EntityEntry<Exam> examEntityEntry = broker.Exams.Update(entity: exam);
             await broker.SaveChangesAsync();
 
@@ -46,7 +46,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Exam> DeleteExamAsync(Exam exam)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             EntityEntry<Exam> examEntityEntry = broker.Exams.Remove(entity: exam);
             await broker.SaveChangesAsync();
 

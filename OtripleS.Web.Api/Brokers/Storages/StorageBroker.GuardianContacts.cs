@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid guardianId,
             Guid contactId)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await broker.GuardianContacts.FindAsync(guardianId, contactId);
@@ -58,7 +58,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<GuardianContact> DeleteGuardianContactAsync(
             GuardianContact guardianContact)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             EntityEntry<GuardianContact> guardianContactEntityEntry =
                 broker.GuardianContacts.Remove(entity: guardianContact);
@@ -68,4 +68,4 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return guardianContactEntityEntry.Entity;
         }
     }
-}
+} 

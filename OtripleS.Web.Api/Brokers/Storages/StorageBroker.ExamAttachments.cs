@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<ExamAttachment> InsertExamAttachmentAsync(
             ExamAttachment examAttachment)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             EntityEntry<ExamAttachment> examAttachmentEntityEntry =
                 await broker.ExamAttachments.AddAsync(entity: examAttachment);
@@ -45,7 +45,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<ExamAttachment> UpdateExamAttachmentAsync(
             ExamAttachment examAttachment)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             EntityEntry<ExamAttachment> examAttachmentEntityEntry =
                 broker.ExamAttachments.Update(entity: examAttachment);
@@ -58,7 +58,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<ExamAttachment> DeleteExamAttachmentAsync(
             ExamAttachment examAttachment)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             EntityEntry<ExamAttachment> examAttachmentEntityEntry =
                 broker.ExamAttachments.Remove(entity: examAttachment);
