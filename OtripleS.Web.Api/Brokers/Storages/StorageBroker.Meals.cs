@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Meal> DeleteMealAsync(Meal meal)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             EntityEntry<Meal> mealEntityEntry = broker.Meals.Remove(entity: meal);
 
