@@ -36,7 +36,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid examId,
             Guid attachmentId)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await broker.ExamAttachments.FindAsync(examId, attachmentId);

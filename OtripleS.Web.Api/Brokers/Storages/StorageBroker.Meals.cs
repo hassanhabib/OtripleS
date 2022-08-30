@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Meal> InsertMealAsync(Meal meal)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             EntityEntry<Meal> mealEntityEntry = 
                 await broker.Meals.AddAsync(entity: meal);
@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Meal> SelectMealByIdAsync(Guid mealId)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await broker.Meals.FindAsync(mealId);
@@ -40,7 +40,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Meal> UpdateMealAsync(Meal meal)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             EntityEntry<Meal> mealEntityEntry =
                 broker.Meals.Update(entity: meal);
@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Meal> DeleteMealAsync(Meal meal)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             EntityEntry<Meal> mealEntityEntry = broker.Meals.Remove(entity: meal);
 

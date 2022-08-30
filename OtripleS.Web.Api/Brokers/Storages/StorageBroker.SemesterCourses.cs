@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<SemesterCourse> InsertSemesterCourseAsync(SemesterCourse semesterCourse)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             EntityEntry<SemesterCourse> semesterCourseEntityEntry =
                 await broker.SemesterCourses.AddAsync(entity: semesterCourse);
@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<SemesterCourse> SelectSemesterCourseByIdAsync(Guid semesterCourseId)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await broker.SemesterCourses.FindAsync(semesterCourseId);
@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<SemesterCourse> DeleteSemesterCourseAsync(SemesterCourse semesterCourse)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             EntityEntry<SemesterCourse> semesterCourseEntityEntry = broker.SemesterCourses.Remove(entity: semesterCourse);
             await broker.SaveChangesAsync();
 
