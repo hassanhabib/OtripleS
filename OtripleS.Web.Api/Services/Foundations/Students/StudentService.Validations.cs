@@ -31,13 +31,13 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
                         firstId: student.UpdatedBy,
                         secondId: student.CreatedBy,
                         secondIdName: nameof(Student.CreatedBy)),
-                Parameter: nameof(Student.UpdatedBy)),
+                        Parameter: nameof(Student.UpdatedBy)),
 
                 (Rule: IsNotSame(
                         firstDate: student.UpdatedDate,
                         secondDate: student.CreatedDate,
                         secondDateName: nameof(Student.CreatedDate)),
-                Parameter: nameof(Student.UpdatedDate))
+                        Parameter: nameof(Student.UpdatedDate))
             );
         }
 
