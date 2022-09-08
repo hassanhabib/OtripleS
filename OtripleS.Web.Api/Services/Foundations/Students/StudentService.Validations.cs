@@ -130,7 +130,7 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
                         firstDate: student.UpdatedDate,
                         secondDate: student.CreatedDate,
                         secondDateName: nameof(Student.CreatedDate)),
-                Parameter: nameof(Student.UpdatedDate))
+                        Parameter: nameof(Student.UpdatedDate))
             );
         }
 
@@ -141,19 +141,19 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
                         firstDate: inputStudent.CreatedDate,
                         secondDate: storageStudent.CreatedDate,
                         secondDateName: nameof(Student.CreatedDate)),
-                Parameter: nameof(Student.CreatedDate)),
+                        Parameter: nameof(Student.CreatedDate)),
                
                 (Rule: IsSame(
                         firstDate: inputStudent.UpdatedDate,
                         secondDate: storageStudent.UpdatedDate,
                         secondDateName: nameof(Student.UpdatedDate)),
-                Parameter: nameof(Student.UpdatedDate)),
+                        Parameter: nameof(Student.UpdatedDate)),
 
                 (Rule: IsNotSame(
                         firstId: inputStudent.CreatedBy,
                         secondId: storageStudent.CreatedBy,
                         secondIdName: nameof(Student.CreatedBy)),
-                Parameter: nameof(Student.CreatedBy))
+                        Parameter: nameof(Student.CreatedBy))
             );
         }
 
@@ -171,27 +171,23 @@ namespace OtripleS.Web.Api.Services.Foundations.Students
         private static void ValidateStudent(Student student)
         {
             if (student is null)
-            {
                 throw new NullStudentException();
-            }
         }
 
-        private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
-        private static bool IsInvalid(Guid input) => input == default;
+        private static bool IsInvalid(string input) 
+            => String.IsNullOrWhiteSpace(input);
+        private static bool IsInvalid(Guid input) 
+            => input == default;
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidStudentException = new InvalidStudentException();
 
             foreach ((dynamic rule, string parameter) in validations)
-            {
                 if (rule.Condition)
-                {
                     invalidStudentException.UpsertDataList(
                         key: parameter,
                         value: rule.Message);
-                }
-            }
 
             invalidStudentException.ThrowIfContainsErrors();
         }
