@@ -19,7 +19,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<CalendarEntryAttachment> InsertCalendarEntryAttachmentAsync(
             CalendarEntryAttachment calendarEntryAttachment)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             EntityEntry<CalendarEntryAttachment> calendarEntryAttachmentEntityEntry =
                 await broker.CalendarEntriesAttachments.AddAsync(entity: calendarEntryAttachment);
