@@ -44,7 +44,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<StudentSemesterCourse> UpdateStudentSemesterCourseAsync(
             StudentSemesterCourse studentSemesterCourse)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             EntityEntry<StudentSemesterCourse> studentSemesterCourseEntityEntry =
                 broker.StudentSemesterCourses.Update(entity: studentSemesterCourse);
