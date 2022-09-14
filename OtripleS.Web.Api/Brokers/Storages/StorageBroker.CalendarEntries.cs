@@ -42,7 +42,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<CalendarEntry> UpdateCalendarEntryAsync(CalendarEntry calendarEntry)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             EntityEntry<CalendarEntry> calendarEntryEntityEntry =
                 broker.CalendarEntries.Update(entity: calendarEntry);
