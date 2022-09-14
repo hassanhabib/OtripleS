@@ -37,7 +37,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
             return await broker.SemesterCourses.FindAsync(semesterCourseId);
         }
-
+         
         public async ValueTask<SemesterCourse> UpdateSemesterCourseAsync(SemesterCourse semesterCourse)
         {
             var broker = new StorageBroker(this.configuration);
