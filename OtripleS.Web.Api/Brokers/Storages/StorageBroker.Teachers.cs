@@ -18,7 +18,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<Teacher> InsertTeacherAsync(Teacher teacher)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             EntityEntry<Teacher> teacherEntityEntry = await broker.Teachers.AddAsync(entity: teacher);
             await broker.SaveChangesAsync();
 
