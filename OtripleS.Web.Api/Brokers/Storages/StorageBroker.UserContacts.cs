@@ -44,7 +44,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<UserContact> UpdateUserContactAsync(
             UserContact userContact)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             EntityEntry<UserContact> userContactEntityEntry =
                 broker.UserContacts.Update(entity: userContact);
