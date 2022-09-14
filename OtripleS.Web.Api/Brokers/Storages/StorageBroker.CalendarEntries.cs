@@ -32,7 +32,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public async ValueTask<CalendarEntry> SelectCalendarEntryByIdAsync(Guid calendarEntryId)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             broker.ChangeTracker.QueryTrackingBehavior =
                 QueryTrackingBehavior.NoTracking;
