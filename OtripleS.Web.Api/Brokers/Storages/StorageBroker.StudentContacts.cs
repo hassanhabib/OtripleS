@@ -58,7 +58,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public async ValueTask<StudentContact> DeleteStudentContactAsync(
             StudentContact studentContact)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
 
             EntityEntry<StudentContact> studentContactEntityEntry =
                 broker.StudentContacts.Remove(entity: studentContact);
