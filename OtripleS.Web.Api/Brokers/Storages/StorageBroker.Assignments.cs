@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return assignmentEntityEntry.Entity;
         }
 
-        public IQueryable<Assignment> SelectAllAssignments() => this.Assignments;
+        public IQueryable<Assignment> SelectAllAssignments() => SelectAllAssignments();
 
         public async ValueTask<Assignment> SelectAssignmentByIdAsync(Guid assignmentId)
         {
