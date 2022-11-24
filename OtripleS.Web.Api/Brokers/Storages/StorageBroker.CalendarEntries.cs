@@ -16,17 +16,8 @@ namespace OtripleS.Web.Api.Brokers.Storages
     {
         public DbSet<CalendarEntry> CalendarEntries { get; set; }
 
-        public async ValueTask<CalendarEntry> InsertCalendarEntryAsync(CalendarEntry calendarEntry)
-        {
-            var broker = new StorageBroker(this.configuration);
-
-            EntityEntry<CalendarEntry> calendarEntryEntityEntry =
-                await broker.CalendarEntries.AddAsync(entity: calendarEntry);
-
-            await broker.SaveChangesAsync();
-
-            return calendarEntryEntityEntry.Entity;
-        }
+        public async ValueTask<CalendarEntry> InsertCalendarEntryAsync(CalendarEntry CalendarEntry) =>
+             await InsertCalendarEntryAsync(CalendarEntry);
 
         public IQueryable<CalendarEntry> SelectAllCalendarEntries() => this.CalendarEntries;
 
