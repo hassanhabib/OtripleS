@@ -29,8 +29,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return calendarEntryAttachmentEntityEntry.Entity;
         }
 
-        public IQueryable<CalendarEntryAttachment> SelectAllCalendarEntryAttachments() =>
-            this.CalendarEntriesAttachments;
+        public IQueryable<CalendarEntryAttachment> SelectAllCalendarEntryAttachment() => SelectAllCalendarEntryAttachment();
 
         public async ValueTask<CalendarEntryAttachment> SelectCalendarEntryAttachmentByIdAsync(
             Guid calendarEntryId,
