@@ -30,15 +30,8 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public IQueryable<CalendarEntry> SelectAllCalendarEntries() => this.CalendarEntries;
 
-        public async ValueTask<CalendarEntry> SelectCalendarEntryByIdAsync(Guid calendarEntryId)
-        {
-            using var broker = new StorageBroker(this.configuration);
-
-            broker.ChangeTracker.QueryTrackingBehavior =
-                QueryTrackingBehavior.NoTracking;
-
-            return await broker.CalendarEntries.FindAsync(calendarEntryId);
-        }
+        public async ValueTask<CalendarEntry> SelectCalendarEntrByIdAsync(Guid CalendarEntryId) =>
+              await SelectCalendarEntrByIdAsync(CalendarEntryId);
 
         public async ValueTask<CalendarEntry> UpdateCalendarEntryAsync(CalendarEntry calendarEntry)
         {
