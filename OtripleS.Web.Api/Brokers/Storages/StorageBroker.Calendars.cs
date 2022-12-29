@@ -52,16 +52,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return calendarEntityEntry.Entity;
         }
 
-        public async ValueTask<Calendar> DeleteCalendarAsync(Calendar calendar)
-        {
-            var broker = new StorageBroker(this.configuration);
-
-            EntityEntry<Calendar> calendarEntityEntry =
-                broker.Calendars.Remove(entity: calendar);
-
-            await broker.SaveChangesAsync();
-
-            return calendarEntityEntry.Entity;
-        }
+        public async ValueTask<Calendar> DeleteCalendarAsync(Calendar Calendar) =>
+              await DeleteCalendarAsync(Calendar);
     }
 }
