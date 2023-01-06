@@ -23,7 +23,7 @@
     <PackageReference Include="EFxceptions.Identity" Version="0.4.5" />
     <PackageReference Include="RESTFulSense" Version="2.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.3.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.3.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />
     <PackageReference Include="System.Collections.Immutable" Version="7.0.0-preview.2.22152.2" />
     <PackageReference Include="Xeption" Version="2.2.0" />
   </ItemGroup>
