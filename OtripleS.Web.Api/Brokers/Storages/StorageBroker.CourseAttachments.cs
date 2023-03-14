@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         }
 
         public async ValueTask<CourseAttachment> UpdateCourseAttachmentAsync(CourseAttachment CourseAttachment) =>
-            await UpdateCourseAttachmentAsync(CourseAttachment);
+            await UpdateCourseAttachmentAsync(CourseAttachment); 
 
         public async ValueTask<CourseAttachment> DeleteCourseAttachmentAsync(
             CourseAttachment courseAttachment)
