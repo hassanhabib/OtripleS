@@ -42,18 +42,8 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return await broker.ExamAttachments.FindAsync(examId, attachmentId);
         }
 
-        public async ValueTask<ExamAttachment> UpdateExamAttachmentAsync(
-            ExamAttachment examAttachment)
-        {
-            var broker = new StorageBroker(this.configuration);
-
-            EntityEntry<ExamAttachment> examAttachmentEntityEntry =
-                broker.ExamAttachments.Update(entity: examAttachment);
-
-            await broker.SaveChangesAsync();
-
-            return examAttachmentEntityEntry.Entity;
-        }
+        public async ValueTask<ExamAttachment> SelectExamAttachmentByIdAsync(Guid ExamAttachmentId) =>
+            await SelectExamAttachmentByIdAsync(ExamAttachmentId);
 
         public async ValueTask<ExamAttachment> DeleteExamAttachmentAsync(
             ExamAttachment examAttachment)
