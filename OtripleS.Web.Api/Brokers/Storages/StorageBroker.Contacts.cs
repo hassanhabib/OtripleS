@@ -35,14 +35,8 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return await broker.Contacts.FindAsync(contactId);
         }
 
-        public async ValueTask<Contact> UpdateContactAsync(Contact contact)
-        {
-            var broker = new StorageBroker(this.configuration);
-            EntityEntry<Contact> contactEntityEntry = broker.Contacts.Update(entity: contact);
-            await broker.SaveChangesAsync();
-
-            return contactEntityEntry.Entity;
-        }
+        public async ValueTask<Contact> UpdateContactAsync(Contact Contact) =>
+             await UpdateContactAsync(Contact);
 
         public async ValueTask<Contact> DeleteContactAsync(Contact contact)
         {
