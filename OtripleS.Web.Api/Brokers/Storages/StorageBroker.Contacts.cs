@@ -27,13 +27,8 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public IQueryable<Contact> SelectAllContacts() => this.Contacts;
 
-        public async ValueTask<Contact> SelectContactByIdAsync(Guid contactId)
-        {
-            var broker = new StorageBroker(this.configuration);
-            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-
-            return await broker.Contacts.FindAsync(contactId);
-        }
+        public async ValueTask<Contact> SelectContactByIdAsync(Guid ContactId) =>
+            await SelectContactByIdAsync(ContactId);
 
         public async ValueTask<Contact> UpdateContactAsync(Contact contact)
         {
