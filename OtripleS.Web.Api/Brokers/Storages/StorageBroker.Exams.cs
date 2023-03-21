@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return examEntityEntry.Entity;
         }
 
-        public IQueryable<Exam> SelectAllExams() => this.Exams;
+        public IQueryable<Exam> SelectAllExam() => SelectAllExam();
 
         public async ValueTask<Exam> SelectExamByIdAsync(Guid examId)
         {
