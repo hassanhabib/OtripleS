@@ -26,7 +26,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         }
 
         public IQueryable<Exam> SelectAllExam() => SelectAllExam();
-
+         
         public async ValueTask<Exam> SelectExamByIdAsync(Guid examId)
         {
             var broker = new StorageBroker(this.configuration);
