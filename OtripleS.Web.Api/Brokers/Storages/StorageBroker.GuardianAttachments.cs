@@ -32,15 +32,8 @@ namespace OtripleS.Web.Api.Brokers.Storages
         public IQueryable<GuardianAttachment> SelectAllGuardianAttachments() =>
             this.GuardianAttachments;
 
-        public async ValueTask<GuardianAttachment> SelectGuardianAttachmentByIdAsync(
-            Guid guardianId,
-            Guid attachmentId)
-        {
-            var broker = new StorageBroker(this.configuration);
-            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-
-            return await broker.GuardianAttachments.FindAsync(guardianId, attachmentId);
-        }
+        public async ValueTask<GuardianAttachment> SelectGuardianAttachmentByIdAsync(Guid GuardianAttachmentId) =>
+             await SelectGuardianAttachmentByIdAsync(GuardianAttachmentId);
 
         public async ValueTask<GuardianAttachment> UpdateGuardianAttachmentAsync(
             GuardianAttachment guardianAttachment)
