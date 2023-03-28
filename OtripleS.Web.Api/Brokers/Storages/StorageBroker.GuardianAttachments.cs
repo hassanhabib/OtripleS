@@ -29,7 +29,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return guardianAttachmentEntityEntry.Entity;
         }
 
-        public IQueryable<GuardianAttachment> SelectAllGuardianAttachments() =>
+        public IQueryable<GuardianAttachment> SelectAllGuardianAttachments() => 
             this.GuardianAttachments;
 
         public async ValueTask<GuardianAttachment> SelectGuardianAttachmentByIdAsync(
@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
         }
 
         public async ValueTask<GuardianAttachment> UpdateGuardianAttachmentAsync(
-            GuardianAttachment guardianAttachment)
+            GuardianAttachment guardianAttachment) 
         {
             var broker = new StorageBroker(this.configuration);
 
