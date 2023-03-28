@@ -27,13 +27,8 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public IQueryable<Fee> SelectAllFees() => this.Fees;
 
-        public async ValueTask<Fee> SelectFeeByIdAsync(Guid feeId)
-        {
-            var broker = new StorageBroker(this.configuration);
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-
-            return await broker.Fees.FindAsync(feeId);
-        }
+        public async ValueTask<Fee> SelectFeeByIdAsync(Guid FeeId) =>
+            await SelectFeeByIdAsync(FeeId);
 
         public async ValueTask<Fee> UpdateFeeAsync(Fee fee)
         {
