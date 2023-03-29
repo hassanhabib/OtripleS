@@ -16,18 +16,8 @@ namespace OtripleS.Web.Api.Brokers.Storages
     {
         public DbSet<GuardianContact> GuardianContacts { get; set; }
 
-        public async ValueTask<GuardianContact> InsertGuardianContactAsync(
-            GuardianContact guardianContact)
-        {
-            var broker = new StorageBroker(this.configuration);
-
-            EntityEntry<GuardianContact> guardianContactEntityEntry =
-                await broker.GuardianContacts.AddAsync(entity: guardianContact);
-
-            await broker.SaveChangesAsync();
-
-            return guardianContactEntityEntry.Entity;
-        }
+        public async ValueTask<GuardianContact> InsertGuardianContactAsync(GuardianContact GuardianContact) =>
+           await InsertGuardianContactAsync(GuardianContact);
 
         public IQueryable<GuardianContact> SelectAllGuardianContacts() =>
             this.GuardianContacts;
