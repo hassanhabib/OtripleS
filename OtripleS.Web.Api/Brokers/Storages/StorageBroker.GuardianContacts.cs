@@ -29,9 +29,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return guardianContactEntityEntry.Entity;
         }
 
-        public IQueryable<GuardianContact> SelectAllGuardianContacts() =>
-            this.GuardianContacts;
-
+        public IQueryable<GuardianContact> SelectAllsGuardianContact() => SelectAllsGuardianContact();
         public async ValueTask<GuardianContact> SelectGuardianContactByIdAsync(
             Guid guardianId,
             Guid contactId)
