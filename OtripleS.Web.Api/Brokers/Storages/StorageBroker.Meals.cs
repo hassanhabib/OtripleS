@@ -28,7 +28,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return mealEntityEntry.Entity;
         }
 
-        public IQueryable<Meal> SelectAllMeals() => this.Meals;
+        public IQueryable<Meal> SelectAllMeal() => SelectAllMeal();
 
         public async ValueTask<Meal> SelectMealByIdAsync(Guid mealId)
         {
