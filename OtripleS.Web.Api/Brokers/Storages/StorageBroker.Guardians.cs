@@ -25,7 +25,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return guardianEntityEntry.Entity;
         }
 
-        public IQueryable<Guardian> SelectAllGuardians() => this.Guardians;
+        public IQueryable<Guardian> SelectAllGuardian() => SelectAllGuardian();
 
         public async ValueTask<Guardian> SelectGuardianByIdAsync(Guid guardianId)
         {
