@@ -16,14 +16,8 @@ namespace OtripleS.Web.Api.Brokers.Storages
     {
         public DbSet<Registration> Registrations { get; set; }
 
-        public async ValueTask<Registration> InsertRegistrationAsync(Registration registration)
-        {
-            var broker = new StorageBroker(this.configuration);
-            EntityEntry<Registration> registrationEntityEntry = await broker.Registrations.AddAsync(entity: registration);
-            await broker.SaveChangesAsync();
-
-            return registrationEntityEntry.Entity;
-        }
+        public async ValueTask<Registration> InsertRegistrationAsync(Registration Registration) =>
+           await InsertRegistrationAsync(Registration);
 
         public IQueryable<Registration> SelectAllRegistrations() => this.Registrations;
 
