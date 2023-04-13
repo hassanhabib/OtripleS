@@ -27,13 +27,8 @@ namespace OtripleS.Web.Api.Brokers.Storages
 
         public IQueryable<Registration> SelectAllRegistrations() => this.Registrations;
 
-        public async ValueTask<Registration> SelectRegistrationByIdAsync(Guid registrationId)
-        {
-            using var broker = new StorageBroker(this.configuration);
-            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-
-            return await broker.Registrations.FindAsync(registrationId);
-        }
+        public async ValueTask<Registration> SelectRegistrationByIdAsync(Guid RegistrationId) =>
+             await SelectRegistrationByIdAsync(RegistrationId);
 
         public async ValueTask<Registration> UpdateRegistrationAsync(Registration registration)
         {
