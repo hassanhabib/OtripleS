@@ -29,8 +29,8 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return teacherContactEntityEntry.Entity;
         }
 
-        public IQueryable<TeacherContact> SelectAllTeacherContacts() =>
-            this.TeacherContacts;
+        public IQueryable<TeacherContact> SelectAllTeacherContacts() => SelectAllTeacherContacts();
+
 
         public async ValueTask<TeacherContact> SelectTeacherContactByIdAsync(
             Guid teacherId,
