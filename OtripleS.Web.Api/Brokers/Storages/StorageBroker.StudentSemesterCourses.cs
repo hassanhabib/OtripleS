@@ -54,17 +54,8 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return studentSemesterCourseEntityEntry.Entity;
         }
 
-        public async ValueTask<StudentSemesterCourse> DeleteStudentSemesterCourseAsync(
-            StudentSemesterCourse studentSemesterCourse)
-        {
-            using var broker = new StorageBroker(this.configuration);
-
-            EntityEntry<StudentSemesterCourse> studentSemesterCourseEntityEntry =
-                broker.StudentSemesterCourses.Remove(entity: studentSemesterCourse);
-
-            await broker.SaveChangesAsync();
-
-            return studentSemesterCourseEntityEntry.Entity;
-        }
+        public async ValueTask<StudentSemesterCourse> DeleteStudentSemesterCourseAsync(StudentSemesterCourse StudentSemesterCourse) =>
+             await DeleteStudentSemesterCourseAsync(StudentSemesterCourse);
     }
 }
+
