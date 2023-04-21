@@ -29,8 +29,8 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return studentRegistrationEntityEntry.Entity;
         }
 
-        public IQueryable<StudentRegistration> SelectAllStudentRegistrations() =>
-            this.StudentRegistrations;
+        public IQueryable<StudentRegistration> SelectAllStudentRegistration() => SelectAllStudentRegistration();
+
 
         public async ValueTask<StudentRegistration> SelectStudentRegistrationByIdAsync(
             Guid studentId,
