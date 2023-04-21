@@ -35,14 +35,8 @@ namespace OtripleS.Web.Api.Brokers.Storages
             return await broker.Teachers.FindAsync(teacherId);
         }
 
-        public async ValueTask<Teacher> UpdateTeacherAsync(Teacher teacher)
-        {
-            using var broker = new StorageBroker(this.configuration);
-            EntityEntry<Teacher> teacherEntityEntry = broker.Teachers.Update(entity: teacher);
-            await broker.SaveChangesAsync();
-
-            return teacherEntityEntry.Entity;
-        }
+        public async ValueTask<Teacher> UpdateTeacherAsync(Teacher Teacher) =>
+            await UpdateTeacherAsync(Teacher);
 
         public async ValueTask<Teacher> DeleteTeacherAsync(Teacher teacher)
         {
