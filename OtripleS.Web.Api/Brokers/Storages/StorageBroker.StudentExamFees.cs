@@ -34,7 +34,7 @@ namespace OtripleS.Web.Api.Brokers.Storages
             Guid studentId,
             Guid examFeeId)
         {
-            using var broker = new StorageBroker(this.configuration);
+            var broker = new StorageBroker(this.configuration);
             this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return await broker.StudentExamFees.FindAsync(studentId, examFeeId);
