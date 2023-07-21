@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
     public partial class CourseAttachmentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenIdsAreInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenIdsAreInvalidAndLogItAsync()
         {
             // given
             Guid invalidCourseId = Guid.Empty;
@@ -60,7 +60,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CourseAttachments
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageCourseAttachmentIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageCourseAttachmentIsInvalidAndLogItAsync()
         {
             // given
             CourseAttachment randomCourseAttachment = CreateRandomCourseAttachment();
