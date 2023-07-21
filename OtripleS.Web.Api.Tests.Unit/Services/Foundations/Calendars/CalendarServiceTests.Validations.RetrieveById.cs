@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
     public partial class CalendarServiceTests
     {
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveWhenIdIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomCalendarId = default;
@@ -55,7 +55,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Calendars
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveWhenStorageCalendarIsNullAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageCalendarIsNullAndLogItAsync()
         {
             // given
             Guid randomCalendarId = Guid.NewGuid();
