@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
     public partial class ExamAttachmentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenExamIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenExamIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomAttachmentId = default;
@@ -61,7 +61,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamAttachments
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageExamAttachmentIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageExamAttachmentIsInvalidAndLogItAsync()
         {
             // given
             ExamAttachment randomExamAttachment = CreateRandomExamAttachment();
