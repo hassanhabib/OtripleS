@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
     public partial class AssignmentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogIt()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenSqlExceptionOccursAndLogIt()
         {
             // given
             Guid someAssignmentId = Guid.NewGuid();
@@ -54,7 +54,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogIt()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbExceptionOccursAndLogIt()
         {
             // given
             Guid someAssignmentId = Guid.NewGuid();
@@ -91,7 +91,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogIt()
+        public async Task ShouldThrowServiceExceptionOnRetrieveByIdWhenExceptionOccursAndLogIt()
         {
             // given
             Guid someAssignmentId = Guid.NewGuid();
