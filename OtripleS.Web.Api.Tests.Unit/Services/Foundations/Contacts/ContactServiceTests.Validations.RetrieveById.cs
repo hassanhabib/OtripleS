@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
     public partial class ContactServiceTests
     {
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveWhenIdIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenIdIsInvalidAndLogItAsync()
         {
             //given
             Guid randomContactId = default;
@@ -53,7 +53,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveWhenStorageContactIsNullAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageContactIsNullAndLogItAsync()
         {
             //given
             Guid randomContactId = Guid.NewGuid();
