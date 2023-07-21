@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
     public partial class AttendanceServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenIdIsNullAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenIdIsNullAndLogItAsync()
         {
             // given
             DateTimeOffset dateTimeOffset = GetRandomDateTime();
@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageAttendanceIsNullAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageAttendanceIsNullAndLogItAsync()
         {
             // given
             DateTimeOffset dateTimeOffset = GetRandomDateTime();

@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
     public partial class AttendanceServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
             Guid someAttendanceId = Guid.NewGuid();
@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbExceptionOccursAndLogItAsync()
         {
             // given
             Guid someAttendanceId = Guid.NewGuid();
@@ -96,7 +96,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnRetrieveByIdWhenExceptionOccursAndLogItAsync()
         {
             // given 
             Guid someAttendanceId = Guid.NewGuid();
