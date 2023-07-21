@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
     public partial class ExamServiceTests
     {
         [Fact]
-        public async Task ShouldThrowCriticalDependencyExceptionOnRetrieveIfSqlErrorOccursAndLogItAsync()
+        public async Task ShouldThrowCriticalDependencyExceptionOnRetrieveByIdIfSqlErrorOccursAndLogItAsync()
         {
             // given
             Guid someExamId = Guid.NewGuid();
@@ -59,7 +59,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Exams
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveifDatabaseUpdateErrorOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdifDatabaseUpdateErrorOccursAndLogItAsync()
         {
             // given
             Guid someExamId = Guid.NewGuid();
