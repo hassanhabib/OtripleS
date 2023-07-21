@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
     public partial class GuardianServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenIdIsNullAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenIdIsNullAndLogItAsync()
         {
             // given
             DateTimeOffset dateTimeOffset = GetRandomDateTime();
@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageGuardianIsNullAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageGuardianIsNullAndLogItAsync()
         {
             // given
             DateTimeOffset dateTimeOffset = GetRandomDateTime();
