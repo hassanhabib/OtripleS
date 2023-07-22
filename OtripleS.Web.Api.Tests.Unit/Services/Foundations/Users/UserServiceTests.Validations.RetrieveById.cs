@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
     public partial class UserServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenUserIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenUserIdIsInvalidAndLogItAsync()
         {
             // given
             Guid invalidUserId = Guid.Empty;
@@ -48,7 +48,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         }
 
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenStorageUserIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenStorageUserIsInvalidAndLogItAsync()
         {
             // given
             Guid invalidUserId = Guid.NewGuid();
