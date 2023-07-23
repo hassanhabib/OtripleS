@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
     public partial class ExamFeeServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
             Guid someExamFeeId = Guid.NewGuid();
@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbExceptionOccursAndLogItAsync()
         {
             // given
             Guid someExamFeeId = Guid.NewGuid();
@@ -96,7 +96,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnRetrieveByIdWhenExceptionOccursAndLogItAsync()
         {
             // given
             Guid someExamFeeId = Guid.NewGuid();

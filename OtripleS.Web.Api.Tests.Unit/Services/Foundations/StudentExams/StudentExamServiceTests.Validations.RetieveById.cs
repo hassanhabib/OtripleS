@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
     public partial class StudentExamServiceTests
     {
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveWhenIdIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomStudentExamId = default;
@@ -55,7 +55,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentExams
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveWhenStorageStudentExamIsNullAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageStudentExamIsNullAndLogItAsync()
         {
             // given
             Guid randomStudentExamId = Guid.NewGuid();

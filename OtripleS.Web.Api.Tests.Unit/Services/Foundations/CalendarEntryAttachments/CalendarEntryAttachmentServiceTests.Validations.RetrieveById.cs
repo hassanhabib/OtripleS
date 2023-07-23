@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
     public partial class CalendarEntryAttachmentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenIdsAreInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenIdsAreInvalidAndLogItAsync()
         {
             // given
             Guid invalidCalendarEntryId = Guid.Empty;
@@ -62,7 +62,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.CalendarEntryAttachme
 
         [Fact]
         public async Task
-            ShouldThrowValidationExceptionOnRetrieveWhenStorageCalendarEntryAttachmentIsInvalidAndLogItAsync()
+            ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageCalendarEntryAttachmentIsInvalidAndLogItAsync()
         {
             // given
             CalendarEntryAttachment randomCalendarEntryAttachment = CreateRandomCalendarEntryAttachment();

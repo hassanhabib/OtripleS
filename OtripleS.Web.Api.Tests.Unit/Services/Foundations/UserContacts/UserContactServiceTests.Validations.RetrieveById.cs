@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
     public partial class UserContactServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenContactIdOrUserIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenContactIdOrUserIdIsInvalidAndLogItAsync()
         {
             // given
             Guid inputContactId = Guid.Empty;
@@ -55,7 +55,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.UserContacts
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageUserContactIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageUserContactIsInvalidAndLogItAsync()
         {
             // given
             UserContact randomUserContact = CreateRandomUserContact();

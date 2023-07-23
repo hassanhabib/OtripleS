@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
     public partial class StudentContactServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenStudentIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenStudentIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomContactId = Guid.NewGuid();
@@ -51,7 +51,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
         }
 
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenContactIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenContactIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomContactId = default;
@@ -87,7 +87,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentContacts
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageStudentContactIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageStudentContactIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();

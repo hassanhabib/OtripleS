@@ -17,7 +17,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
     public partial class UserServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
             Guid someUserId = Guid.NewGuid();
@@ -56,7 +56,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbExceptionOccursAndLogItAsync()
         {
             // given
             Guid someUserId = Guid.NewGuid();
@@ -95,7 +95,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateConcurrencyExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbConcurrencyExceptionOccursAndLogItAsync()
         {
             // given
             Guid someUserId = Guid.NewGuid();
@@ -132,7 +132,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Users
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnRetrieveByIdWhenExceptionOccursAndLogItAsync()
         {
             // given
             Guid someUserId = Guid.NewGuid();

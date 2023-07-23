@@ -16,7 +16,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
     public partial class ContactServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogIt()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenSqlExceptionOccursAndLogIt()
         {
             // given
             var sqlException = GetSqlException();
@@ -58,7 +58,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Contacts
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbExceptionOccursAndLogIt()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbExceptionOccursAndLogIt()
         {
             // given
             var databaseUpdateException = new DbUpdateException();

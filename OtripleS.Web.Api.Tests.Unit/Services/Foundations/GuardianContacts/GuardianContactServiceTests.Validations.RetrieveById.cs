@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
     public partial class GuardianContactServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenGuardianIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenGuardianIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomContactId = Guid.NewGuid();
@@ -51,7 +51,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         }
 
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenContactIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenContactIdIsInvalidAndLogItAsync()
         {
             // given
             Guid invalidContactId = Guid.Empty;
@@ -87,7 +87,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianContacts
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageGuardianContactIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageGuardianContactIsInvalidAndLogItAsync()
         {
             // given
             GuardianContact randomGuardianContact = CreateRandomGuardianContact();

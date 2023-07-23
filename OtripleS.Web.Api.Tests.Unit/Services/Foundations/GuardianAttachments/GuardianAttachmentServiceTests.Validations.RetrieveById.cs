@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
     public partial class GuardianAttachmentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenGuardianIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenGuardianIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomAttachmentId = Guid.NewGuid();
@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         }
 
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenAttachmentIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenAttachmentIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomAttachmentId = Guid.Empty;
@@ -89,7 +89,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.GuardianAttachments
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageGuardianAttachmentIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageGuardianAttachmentIsInvalidAndLogItAsync()
         {
             // given
             GuardianAttachment randomGuardianAttachment = CreateRandomGuardianAttachment();

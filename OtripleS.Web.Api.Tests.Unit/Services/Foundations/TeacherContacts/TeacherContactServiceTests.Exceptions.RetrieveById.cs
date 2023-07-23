@@ -17,7 +17,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
     public partial class TeacherContactServiceTests
     {
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenSqlExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenSqlExceptionOccursAndLogItAsync()
         {
             // given
             Guid someContactId = Guid.NewGuid();
@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetrieveWhenDbUpdateExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetrieveByIdWhenDbUpdateExceptionOccursAndLogItAsync()
         {
             // given
             Guid someContactId = Guid.NewGuid();
@@ -87,7 +87,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnRetrieveWhenExceptionOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnRetrieveByIdWhenExceptionOccursAndLogItAsync()
         {
             // given
             Guid someContactId = Guid.NewGuid();

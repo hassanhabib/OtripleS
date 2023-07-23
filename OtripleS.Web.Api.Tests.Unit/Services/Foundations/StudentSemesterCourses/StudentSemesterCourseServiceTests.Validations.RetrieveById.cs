@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
     public partial class StudentSemesterCourseServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenStudentIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenStudentIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomSemesterCourseId = Guid.NewGuid();
@@ -32,10 +32,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
 
             // when
             ValueTask<StudentSemesterCourse> actualStudentSemesterCourseTask =
-                this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId);
+                this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync(
+                    inputStudentId, inputSemesterCourseId);
 
             // then
-            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() => actualStudentSemesterCourseTask.AsTask());
+            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
+                actualStudentSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -52,7 +54,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
         }
 
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenSemesterCourseIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenSemesterCourseIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomSemesterCourseId = default;
@@ -69,10 +71,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
 
             // when
             ValueTask<StudentSemesterCourse> actualStudentSemesterCourseTask =
-                this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync(inputStudentId, inputSemesterCourseId);
+                this.studentSemesterCourseService.RetrieveStudentSemesterCourseByIdAsync(
+                    inputStudentId, inputSemesterCourseId);
 
             // then
-            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() => actualStudentSemesterCourseTask.AsTask());
+            await Assert.ThrowsAsync<StudentSemesterCourseValidationException>(() =>
+                actualStudentSemesterCourseTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -89,7 +93,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentSemesterCourse
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageStudentSemesterCourseIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageStudentSemesterCourseIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();

@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
     public partial class ExamFeeServiceTests
     {
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveWhenIdIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomExamFeeId = default;
@@ -55,7 +55,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.ExamFees
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveWhenStorageExamFeeIsNullAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageExamFeeIsNullAndLogItAsync()
         {
             // given
             Guid randomExamFeeId = Guid.NewGuid();

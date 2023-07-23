@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
     public partial class SemesterCourseServiceTests
     {
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveWhenIdIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomSemesterCourseId = default;
@@ -55,7 +55,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.SemesterCourses
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveWhenStorageSemesterCourseIsNullAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageSemesterCourseIsNullAndLogItAsync()
         {
             // given
             Guid randomSemesterCourseId = Guid.NewGuid();

@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
     public partial class TeacherAttachmentServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenTeacherIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenTeacherIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomAttachmentId = Guid.NewGuid();
@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
         }
 
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenAttachmentIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenAttachmentIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomAttachmentId = default;
@@ -89,7 +89,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherAttachments
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageTeacherAttachmentIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageTeacherAttachmentIsInvalidAndLogItAsync()
         {
             // given
             TeacherAttachment randomTeacherAttachment = CreateRandomTeacherAttachment();

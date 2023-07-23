@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
     public partial class StudentGuardianServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenStudentIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenStudentIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomGuardianId = Guid.NewGuid();
@@ -52,7 +52,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
         }
 
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenGuardianIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenGuardianIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomGuardianId = default;
@@ -89,7 +89,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.StudentGuardians
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageStudentGuardianIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenStudentGuardianIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();

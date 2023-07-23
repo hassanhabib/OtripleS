@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
     public partial class AssignmentServiceTests
     {
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveWhenIdIsInvalidAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenIdIsInvalidAndLogItAsync()
         {
             //given
             Guid randomAssignmentId = default;
@@ -53,7 +53,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Assignments
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnRetrieveWhenStorageAssignmentIsNullAndLogItAsync()
+        public async void ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageAssignmentIsNullAndLogItAsync()
         {
             //given
             Guid randomAssignmentId = Guid.NewGuid();

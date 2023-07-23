@@ -15,7 +15,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
     public partial class TeacherContactServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenTeacherIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenTeacherIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomContactId = Guid.NewGuid();
@@ -51,7 +51,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         }
 
         [Fact]
-        public async Task ShouldThrowValidatonExceptionOnRetrieveWhenContactIdIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidatonExceptionOnRetrieveByIdWhenContactIdIsInvalidAndLogItAsync()
         {
             // given
             Guid randomContactId = default;
@@ -71,7 +71,8 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
                 this.teacherContactService.RetrieveTeacherContactByIdAsync(inputTeacherId, inputContactId);
 
             // then
-            await Assert.ThrowsAsync<TeacherContactValidationException>(() => retrieveTeacherContactTask.AsTask());
+            await Assert.ThrowsAsync<TeacherContactValidationException>(() => 
+                retrieveTeacherContactTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -87,7 +88,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.TeacherContacts
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageTeacherContactIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageTeacherContactIsInvalidAndLogItAsync()
         {
             // given
             DateTimeOffset randomDateTime = GetRandomDateTime();

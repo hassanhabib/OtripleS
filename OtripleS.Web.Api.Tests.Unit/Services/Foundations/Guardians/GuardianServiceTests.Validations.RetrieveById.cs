@@ -6,36 +6,36 @@
 using System;
 using System.Threading.Tasks;
 using Moq;
-using OtripleS.Web.Api.Models.Attendances;
-using OtripleS.Web.Api.Models.Attendances.Exceptions;
+using OtripleS.Web.Api.Models.Guardians;
+using OtripleS.Web.Api.Models.Guardians.Exceptions;
 using Xunit;
 
-namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
+namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Guardians
 {
-    public partial class AttendanceServiceTests
+    public partial class GuardianServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenIdIsNullAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenIdIsNullAndLogItAsync()
         {
             // given
             DateTimeOffset dateTimeOffset = GetRandomDateTime();
-            Guid randomAttendanceId = default;
-            Guid inputAttendanceId = randomAttendanceId;
+            Guid randomGuardianId = default;
+            Guid inputGuardianId = randomGuardianId;
 
-            var invalidAttendanceException = new InvalidAttendanceException(
-                parameterName: nameof(Attendance.Id),
-                parameterValue: inputAttendanceId);
+            var invalidGuardianException = new InvalidGuardianException(
+                parameterName: nameof(Guardian.Id),
+                parameterValue: inputGuardianId);
 
             var expectedValidationException =
-                new AttendanceValidationException(invalidAttendanceException);
+                new GuardianValidationException(invalidGuardianException);
 
             // when
-            ValueTask<Attendance> retrieveAttendanceTask =
-                this.attendanceService.RetrieveAttendanceByIdAsync(inputAttendanceId);
+            ValueTask<Guardian> retrieveGuardianTask =
+                this.guardianService.RetrieveGuardianByIdAsync(inputGuardianId);
 
             // then
-            await Assert.ThrowsAsync<AttendanceValidationException>(() =>
-                retrieveAttendanceTask.AsTask());
+            await Assert.ThrowsAsync<GuardianValidationException>(() =>
+                retrieveGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -43,7 +43,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttendanceByIdAsync(inputAttendanceId),
+                broker.SelectGuardianByIdAsync(inputGuardianId),
                     Times.Never);
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -56,29 +56,29 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveWhenStorageAttendanceIsNullAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageGuardianIsNullAndLogItAsync()
         {
             // given
             DateTimeOffset dateTimeOffset = GetRandomDateTime();
-            Guid randomAttendanceId = Guid.NewGuid();
-            Guid inputAttendanceId = randomAttendanceId;
-            Attendance nullAttendance = default;
-            var nullAttendanceException = new NotFoundAttendanceException(attendanceId: inputAttendanceId);
+            Guid randomGuardianId = Guid.NewGuid();
+            Guid inputGuardianId = randomGuardianId;
+            Guardian nullGuardian = default;
+            var nullGuardianException = new NotFoundGuardianException(guardianId: inputGuardianId);
 
             var expectedValidationException =
-                new AttendanceValidationException(nullAttendanceException);
+                new GuardianValidationException(nullGuardianException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAttendanceByIdAsync(inputAttendanceId))
-                    .ReturnsAsync(nullAttendance);
+                broker.SelectGuardianByIdAsync(inputGuardianId))
+                    .ReturnsAsync(nullGuardian);
 
             // when
-            ValueTask<Attendance> retrieveAttendanceTask =
-                this.attendanceService.RetrieveAttendanceByIdAsync(inputAttendanceId);
+            ValueTask<Guardian> retrieveGuardianTask =
+                this.guardianService.RetrieveGuardianByIdAsync(inputGuardianId);
 
             // then
-            await Assert.ThrowsAsync<AttendanceValidationException>(() =>
-                retrieveAttendanceTask.AsTask());
+            await Assert.ThrowsAsync<GuardianValidationException>(() =>
+                retrieveGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -86,7 +86,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Attendances
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAttendanceByIdAsync(inputAttendanceId),
+                broker.SelectGuardianByIdAsync(inputGuardianId),
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
