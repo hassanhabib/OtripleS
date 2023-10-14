@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.StudentExamFees;
 using OtripleS.Web.Api.Models.StudentExamFees.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.StudentExamFees;
@@ -36,15 +37,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentExamFeeValidationException studentExamFeeValidationException)
                 when (studentExamFeeValidationException.InnerException is AlreadyExistsStudentExamFeeException)
             {
-                string innerMessage = GetInnerMessage(studentExamFeeValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(studentExamFeeValidationException.GetInnerMessage());
             }
             catch (StudentExamFeeValidationException studentExamFeeValidationException)
             {
-                string innerMessage = GetInnerMessage(studentExamFeeValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(studentExamFeeValidationException.GetInnerMessage());
             }
             catch (StudentExamFeeDependencyException studentExamFeeDependencyException)
             {
@@ -92,15 +89,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentExamFeeValidationException studentExamFeeValidationException)
                 when (studentExamFeeValidationException.InnerException is NotFoundStudentExamFeeException)
             {
-                string innerMessage = GetInnerMessage(studentExamFeeValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(studentExamFeeValidationException.GetInnerMessage());
             }
             catch (StudentExamFeeValidationException studentExamFeeValidationException)
             {
-                string innerMessage = GetInnerMessage(studentExamFeeValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(studentExamFeeValidationException.GetInnerMessage());
             }
             catch (StudentExamFeeDependencyException studentExamFeeDependencyException)
             {
@@ -125,22 +118,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentExamFeeValidationException studentExamFeeValidationException)
                 when (studentExamFeeValidationException.InnerException is NotFoundStudentExamFeeException)
             {
-                string innerMessage = GetInnerMessage(studentExamFeeValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(studentExamFeeValidationException.GetInnerMessage());
             }
             catch (StudentExamFeeValidationException studentExamFeeValidationException)
             {
-                string innerMessage = GetInnerMessage(studentExamFeeValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(studentExamFeeValidationException.GetInnerMessage());
             }
             catch (StudentExamFeeDependencyException studentExamFeeDependencyException)
                 when (studentExamFeeDependencyException.InnerException is LockedStudentExamFeeException)
             {
-                string innerMessage = GetInnerMessage(studentExamFeeDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(studentExamFeeDependencyException.GetInnerMessage());
             }
             catch (StudentExamFeeDependencyException studentExamFeeDependencyException)
             {
@@ -169,22 +156,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentExamFeeValidationException studentExamFeeValidationException)
                 when (studentExamFeeValidationException.InnerException is NotFoundStudentExamFeeException)
             {
-                string innerMessage = GetInnerMessage(studentExamFeeValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(studentExamFeeValidationException.GetInnerMessage());
             }
             catch (StudentExamFeeValidationException studentExamFeeValidationException)
             {
-                string innerMessage = GetInnerMessage(studentExamFeeValidationException);
-
                 return BadRequest(studentExamFeeValidationException);
             }
             catch (StudentExamFeeDependencyException studentExamFeeDependencyException)
                when (studentExamFeeDependencyException.InnerException is LockedStudentExamFeeException)
             {
-                string innerMessage = GetInnerMessage(studentExamFeeDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(studentExamFeeDependencyException.GetInnerMessage());
             }
             catch (StudentExamFeeDependencyException studentExamFeeDependencyException)
             {
@@ -196,7 +177,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

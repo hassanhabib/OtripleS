@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments;
 using OtripleS.Web.Api.Models.CalendarEntryAttachments.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.CalendarEntryAttachments;
@@ -37,22 +38,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (CalendarEntryAttachmentValidationException calendarEntryAttachmentValidationException)
                 when (calendarEntryAttachmentValidationException.InnerException is AlreadyExistsCalendarEntryAttachmentException)
             {
-                string innerMessage = GetInnerMessage(calendarEntryAttachmentValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(calendarEntryAttachmentValidationException.GetInnerMessage());
             }
             catch (CalendarEntryAttachmentValidationException calendarEntryAttachmentValidationException)
                 when (calendarEntryAttachmentValidationException.InnerException is InvalidCalendarEntryAttachmentReferenceException)
             {
-                string innerMessage = GetInnerMessage(calendarEntryAttachmentValidationException);
-
-                return FailedDependency(innerMessage);
+                return FailedDependency(calendarEntryAttachmentValidationException.GetInnerMessage());
             }
             catch (CalendarEntryAttachmentValidationException calendarEntryAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(calendarEntryAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(calendarEntryAttachmentValidationException.GetInnerMessage());
             }
             catch (CalendarEntryAttachmentDependencyException calendarEntryAttachmentDependencyException)
             {
@@ -99,15 +94,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (CalendarEntryAttachmentValidationException semesterCalendarEntryAttachmentValidationException)
                 when (semesterCalendarEntryAttachmentValidationException.InnerException is NotFoundCalendarEntryAttachmentException)
             {
-                string innerMessage = GetInnerMessage(semesterCalendarEntryAttachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(semesterCalendarEntryAttachmentValidationException.GetInnerMessage());
             }
             catch (CalendarEntryAttachmentValidationException semesterCalendarEntryAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(semesterCalendarEntryAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(semesterCalendarEntryAttachmentValidationException.GetInnerMessage());
             }
             catch (CalendarEntryAttachmentDependencyException semesterCalendarEntryAttachmentDependencyException)
             {
@@ -132,22 +123,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (CalendarEntryAttachmentValidationException calendarEntryAttachmentValidationException)
                 when (calendarEntryAttachmentValidationException.InnerException is NotFoundCalendarEntryAttachmentException)
             {
-                string innerMessage = GetInnerMessage(calendarEntryAttachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(calendarEntryAttachmentValidationException.GetInnerMessage());
             }
             catch (CalendarEntryAttachmentValidationException calendarEntryAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(calendarEntryAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(calendarEntryAttachmentValidationException.GetInnerMessage());
             }
             catch (CalendarEntryAttachmentDependencyException calendarEntryAttachmentValidationException)
                when (calendarEntryAttachmentValidationException.InnerException is LockedCalendarEntryAttachmentException)
             {
-                string innerMessage = GetInnerMessage(calendarEntryAttachmentValidationException);
-
-                return Locked(innerMessage);
+                return Locked(calendarEntryAttachmentValidationException.GetInnerMessage());
             }
             catch (CalendarEntryAttachmentDependencyException calendarEntryAttachmentDependencyException)
             {
@@ -159,7 +144,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

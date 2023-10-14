@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.StudentGuardians;
 using OtripleS.Web.Api.Models.StudentGuardians.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.StudentGuardians;
@@ -36,15 +37,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentGuardianValidationException studentGuardianValidationException)
                 when (studentGuardianValidationException.InnerException is AlreadyExistsStudentGuardianException)
             {
-                string innerMessage = GetInnerMessage(studentGuardianValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(studentGuardianValidationException.GetInnerMessage());
             }
             catch (StudentGuardianValidationException studentGuardianValidationException)
             {
-                string innerMessage = GetInnerMessage(studentGuardianValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(studentGuardianValidationException.GetInnerMessage());
             }
             catch (StudentGuardianDependencyException studentGuardianDependencyException)
             {
@@ -88,15 +85,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentGuardianValidationException studentGuardianValidationException)
                 when (studentGuardianValidationException.InnerException is NotFoundStudentGuardianException)
             {
-                string innerMessage = GetInnerMessage(studentGuardianValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(studentGuardianValidationException.GetInnerMessage());
             }
             catch (StudentGuardianValidationException studentGuardianValidationException)
             {
-                string innerMessage = GetInnerMessage(studentGuardianValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(studentGuardianValidationException.GetInnerMessage());
             }
             catch (StudentGuardianDependencyException studentGuardianDependencyException)
             {
@@ -121,22 +114,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentGuardianValidationException studentGuardianValidationException)
                 when (studentGuardianValidationException.InnerException is NotFoundStudentGuardianException)
             {
-                string innerMessage = GetInnerMessage(studentGuardianValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(studentGuardianValidationException.GetInnerMessage());
             }
             catch (StudentGuardianValidationException studentGuardianValidationException)
             {
-                string innerMessage = GetInnerMessage(studentGuardianValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(studentGuardianValidationException.GetInnerMessage());
             }
             catch (StudentGuardianDependencyException studentGuardianDependencyException)
                 when (studentGuardianDependencyException.InnerException is LockedStudentGuardianException)
             {
-                string innerMessage = GetInnerMessage(studentGuardianDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(studentGuardianDependencyException.GetInnerMessage());
             }
             catch (StudentGuardianDependencyException studentGuardianDependencyException)
             {
@@ -161,22 +148,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentGuardianValidationException studentGuardianValidationException)
                 when (studentGuardianValidationException.InnerException is NotFoundStudentGuardianException)
             {
-                string innerMessage = GetInnerMessage(studentGuardianValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(studentGuardianValidationException.GetInnerMessage());
             }
             catch (StudentGuardianValidationException studentGuardianValidationException)
             {
-                string innerMessage = GetInnerMessage(studentGuardianValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(studentGuardianValidationException.GetInnerMessage());
             }
             catch (StudentGuardianDependencyException studentGuardianValidationException)
                when (studentGuardianValidationException.InnerException is LockedStudentGuardianException)
             {
-                string innerMessage = GetInnerMessage(studentGuardianValidationException);
-
-                return Locked(innerMessage);
+                return Locked(studentGuardianValidationException.GetInnerMessage());
             }
             catch (StudentGuardianDependencyException studentGuardianDependencyException)
             {
@@ -188,7 +169,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

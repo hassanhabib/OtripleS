@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Models.Courses.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Courses;
@@ -85,15 +86,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (CourseValidationException courseValidationException)
                 when (courseValidationException.InnerException is NotFoundCourseException)
             {
-                string innerMessage = GetInnerMessage(courseValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(courseValidationException.GetInnerMessage());
             }
             catch (CourseValidationException courseValidationException)
             {
-                string innerMessage = GetInnerMessage(courseValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(courseValidationException.GetInnerMessage());
             }
             catch (CourseDependencyException courseDependencyException)
             {
@@ -118,22 +115,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (CourseValidationException courseValidationException)
                 when (courseValidationException.InnerException is NotFoundCourseException)
             {
-                string innerMessage = GetInnerMessage(courseValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(courseValidationException.GetInnerMessage());
             }
             catch (CourseValidationException courseValidationException)
             {
-                string innerMessage = GetInnerMessage(courseValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(courseValidationException.GetInnerMessage());
             }
             catch (CourseDependencyException courseDependencyException)
                 when (courseDependencyException.InnerException is LockedCourseException)
             {
-                string innerMessage = GetInnerMessage(courseDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(courseDependencyException.GetInnerMessage());
             }
             catch (CourseDependencyException courseDependencyException)
             {
@@ -158,22 +149,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (CourseValidationException courseValidationException)
                 when (courseValidationException.InnerException is NotFoundCourseException)
             {
-                string innerMessage = GetInnerMessage(courseValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(courseValidationException.GetInnerMessage());
             }
             catch (CourseValidationException courseValidationException)
             {
-                string innerMessage = GetInnerMessage(courseValidationException);
-
-                return BadRequest(courseValidationException);
+                return BadRequest(courseValidationException.GetInnerMessage());
             }
             catch (CourseDependencyException courseDependencyException)
                when (courseDependencyException.InnerException is LockedCourseException)
             {
-                string innerMessage = GetInnerMessage(courseDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(courseDependencyException.GetInnerMessage());
             }
             catch (CourseDependencyException courseDependencyException)
             {
@@ -185,7 +170,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

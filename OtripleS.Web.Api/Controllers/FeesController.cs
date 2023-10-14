@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.Fees;
 using OtripleS.Web.Api.Models.Fees.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Fees;
@@ -36,15 +37,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (FeeValidationException feeValidationException)
                 when (feeValidationException.InnerException is AlreadyExistsFeeException)
             {
-                string innerMessage = GetInnerMessage(feeValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(feeValidationException.GetInnerMessage());
             }
             catch (FeeValidationException feeValidationException)
             {
-                string innerMessage = GetInnerMessage(feeValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(feeValidationException.GetInnerMessage());
             }
             catch (FeeDependencyException feeDependencyException)
             {
@@ -89,15 +86,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (FeeValidationException feeValidationException)
                 when (feeValidationException.InnerException is NotFoundFeeException)
             {
-                string innerMessage = GetInnerMessage(feeValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(feeValidationException.GetInnerMessage());
             }
             catch (FeeValidationException feeValidationException)
             {
-                string innerMessage = GetInnerMessage(feeValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(feeValidationException.GetInnerMessage());
             }
             catch (FeeDependencyException feeDependencyException)
             {
@@ -122,22 +115,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (FeeValidationException feeValidationException)
                 when (feeValidationException.InnerException is NotFoundFeeException)
             {
-                string innerMessage = GetInnerMessage(feeValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(feeValidationException.GetInnerMessage());
             }
             catch (FeeValidationException feeValidationException)
             {
-                string innerMessage = GetInnerMessage(feeValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(feeValidationException.GetInnerMessage());
             }
             catch (FeeDependencyException feeDependencyException)
                 when (feeDependencyException.InnerException is LockedFeeException)
             {
-                string innerMessage = GetInnerMessage(feeDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(feeDependencyException.GetInnerMessage());
             }
             catch (FeeDependencyException feeDependencyException)
             {
@@ -162,22 +149,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (FeeValidationException feeValidationException)
                 when (feeValidationException.InnerException is NotFoundFeeException)
             {
-                string innerMessage = GetInnerMessage(feeValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(feeValidationException.GetInnerMessage());
             }
             catch (FeeValidationException feeValidationException)
             {
-                string innerMessage = GetInnerMessage(feeValidationException);
-
                 return BadRequest(feeValidationException);
             }
             catch (FeeDependencyException feeDependencyException)
                when (feeDependencyException.InnerException is LockedFeeException)
             {
-                string innerMessage = GetInnerMessage(feeDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(feeDependencyException.GetInnerMessage());
             }
             catch (FeeDependencyException feeDependencyException)
             {
@@ -189,7 +170,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

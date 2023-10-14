@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.SemesterCourses;
@@ -37,15 +38,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (SemesterCourseValidationException semesterCourseValidationException)
                 when (semesterCourseValidationException.InnerException is AlreadyExistsSemesterCourseException)
             {
-                string innerMessage = GetInnerMessage(semesterCourseValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(semesterCourseValidationException.GetInnerMessage());
             }
             catch (SemesterCourseValidationException semesterCourseValidationException)
             {
-                string innerMessage = GetInnerMessage(semesterCourseValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(semesterCourseValidationException.GetInnerMessage());
             }
             catch (SemesterCourseDependencyException semesterCourseDependencyException)
             {
@@ -90,15 +87,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (SemesterCourseValidationException semesterSemesterCourseValidationException)
                 when (semesterSemesterCourseValidationException.InnerException is NotFoundSemesterCourseException)
             {
-                string innerMessage = GetInnerMessage(semesterSemesterCourseValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(semesterSemesterCourseValidationException.GetInnerMessage());
             }
             catch (SemesterCourseValidationException semesterSemesterCourseValidationException)
             {
-                string innerMessage = GetInnerMessage(semesterSemesterCourseValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(semesterSemesterCourseValidationException.GetInnerMessage());
             }
             catch (SemesterCourseDependencyException semesterSemesterCourseDependencyException)
             {
@@ -123,22 +116,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (SemesterCourseValidationException semesterCourseValidationException)
                 when (semesterCourseValidationException.InnerException is NotFoundSemesterCourseException)
             {
-                string innerMessage = GetInnerMessage(semesterCourseValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(semesterCourseValidationException.GetInnerMessage());
             }
             catch (SemesterCourseValidationException semesterCourseValidationException)
             {
-                string innerMessage = GetInnerMessage(semesterCourseValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(semesterCourseValidationException.GetInnerMessage());
             }
             catch (SemesterCourseDependencyException semesterCourseDependencyException)
                 when (semesterCourseDependencyException.InnerException is LockedSemesterCourseException)
             {
-                string innerMessage = GetInnerMessage(semesterCourseDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(semesterCourseDependencyException.GetInnerMessage());
             }
             catch (SemesterCourseDependencyException semesterCourseDependencyException)
             {
@@ -163,9 +150,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (SemesterCourseValidationException semesterCourseValidationException)
                 when (semesterCourseValidationException.InnerException is NotFoundSemesterCourseException)
             {
-                string innerMessage = GetInnerMessage(semesterCourseValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(semesterCourseValidationException.GetInnerMessage());
             }
             catch (SemesterCourseValidationException semesterCourseValidationException)
             {
@@ -174,9 +159,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (SemesterCourseDependencyException semesterCourseDependencyException)
                 when (semesterCourseDependencyException.InnerException is LockedSemesterCourseException)
             {
-                string innerMessage = GetInnerMessage(semesterCourseDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(semesterCourseDependencyException.GetInnerMessage());
             }
             catch (SemesterCourseDependencyException semesterCourseDependencyException)
             {
@@ -188,7 +171,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

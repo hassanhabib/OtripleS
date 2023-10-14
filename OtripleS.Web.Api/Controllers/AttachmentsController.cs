@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.Attachments;
 using OtripleS.Web.Api.Models.Attachments.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Attachments;
@@ -36,15 +37,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (AttachmentValidationException attachmentValidationException)
                 when (attachmentValidationException.InnerException is AlreadyExistsAttachmentException)
             {
-                string innerMessage = GetInnerMessage(attachmentValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(attachmentValidationException.GetInnerMessage());
             }
             catch (AttachmentValidationException attachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(attachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(attachmentValidationException.GetInnerMessage());
             }
             catch (AttachmentDependencyException attachmentDependencyException)
             {
@@ -89,15 +86,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (AttachmentValidationException attachmentValidationException)
                 when (attachmentValidationException.InnerException is NotFoundAttachmentException)
             {
-                string innerMessage = GetInnerMessage(attachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(attachmentValidationException.GetInnerMessage());
             }
             catch (AttachmentValidationException attachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(attachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(attachmentValidationException.GetInnerMessage());
             }
             catch (AttachmentDependencyException attachmentDependencyException)
             {
@@ -122,22 +115,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (AttachmentValidationException attachmentValidationException)
                 when (attachmentValidationException.InnerException is NotFoundAttachmentException)
             {
-                string innerMessage = GetInnerMessage(attachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(attachmentValidationException.GetInnerMessage());
             }
             catch (AttachmentValidationException attachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(attachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(attachmentValidationException.GetInnerMessage());
             }
             catch (AttachmentDependencyException attachmentDependencyException)
                 when (attachmentDependencyException.InnerException is LockedAttachmentException)
             {
-                string innerMessage = GetInnerMessage(attachmentDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(attachmentDependencyException.GetInnerMessage());
             }
             catch (AttachmentDependencyException attachmentDependencyException)
             {
@@ -162,9 +149,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (AttachmentValidationException attachmentValidationException)
                 when (attachmentValidationException.InnerException is NotFoundAttachmentException)
             {
-                string innerMessage = GetInnerMessage(attachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(attachmentValidationException.GetInnerMessage());
             }
             catch (AttachmentValidationException attachmentValidationException)
             {
@@ -173,9 +158,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (AttachmentDependencyException attachmentDependencyException)
                 when (attachmentDependencyException.InnerException is LockedAttachmentException)
             {
-                string innerMessage = GetInnerMessage(attachmentDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(attachmentDependencyException.GetInnerMessage());
             }
             catch (AttachmentDependencyException attachmentDependencyException)
             {
@@ -187,7 +170,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

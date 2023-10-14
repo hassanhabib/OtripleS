@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.TeacherAttachments;
 using OtripleS.Web.Api.Models.TeacherAttachments.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.TeacherAttachments;
@@ -37,22 +38,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (TeacherAttachmentValidationException teacherAttachmentValidationException)
                 when (teacherAttachmentValidationException.InnerException is AlreadyExistsTeacherAttachmentException)
             {
-                string innerMessage = GetInnerMessage(teacherAttachmentValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(teacherAttachmentValidationException.GetInnerMessage());
             }
             catch (TeacherAttachmentValidationException teacherAttachmentValidationException)
                 when (teacherAttachmentValidationException.InnerException is InvalidTeacherAttachmentReferenceException)
             {
-                string innerMessage = GetInnerMessage(teacherAttachmentValidationException);
-
-                return FailedDependency(innerMessage);
+                return FailedDependency(teacherAttachmentValidationException.GetInnerMessage());
             }
             catch (TeacherAttachmentValidationException teacherAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(teacherAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(teacherAttachmentValidationException.GetInnerMessage());
             }
             catch (TeacherAttachmentDependencyException teacherAttachmentDependencyException)
             {
@@ -99,15 +94,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (TeacherAttachmentValidationException semesterTeacherAttachmentValidationException)
                 when (semesterTeacherAttachmentValidationException.InnerException is NotFoundTeacherAttachmentException)
             {
-                string innerMessage = GetInnerMessage(semesterTeacherAttachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(semesterTeacherAttachmentValidationException.GetInnerMessage());
             }
             catch (TeacherAttachmentValidationException semesterTeacherAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(semesterTeacherAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(semesterTeacherAttachmentValidationException.GetInnerMessage());
             }
             catch (TeacherAttachmentDependencyException semesterTeacherAttachmentDependencyException)
             {
@@ -132,22 +123,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (TeacherAttachmentValidationException teacherAttachmentValidationException)
                 when (teacherAttachmentValidationException.InnerException is NotFoundTeacherAttachmentException)
             {
-                string innerMessage = GetInnerMessage(teacherAttachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(teacherAttachmentValidationException.GetInnerMessage());
             }
             catch (TeacherAttachmentValidationException teacherAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(teacherAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(teacherAttachmentValidationException.GetInnerMessage());
             }
             catch (TeacherAttachmentDependencyException teacherAttachmentValidationException)
                when (teacherAttachmentValidationException.InnerException is LockedTeacherAttachmentException)
             {
-                string innerMessage = GetInnerMessage(teacherAttachmentValidationException);
-
-                return Locked(innerMessage);
+                return Locked(teacherAttachmentValidationException.GetInnerMessage());
             }
             catch (TeacherAttachmentDependencyException teacherAttachmentDependencyException)
             {
@@ -159,7 +144,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

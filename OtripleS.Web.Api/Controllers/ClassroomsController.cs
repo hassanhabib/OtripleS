@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.Classrooms;
 using OtripleS.Web.Api.Models.Classrooms.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Classrooms;
@@ -36,9 +37,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (ClassroomValidationException classroomValidationException)
                 when (classroomValidationException.InnerException is AlreadyExistsClassroomException)
             {
-                string innerMessage = GetInnerMessage(classroomValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(classroomValidationException.GetInnerMessage());
             }
             catch (ClassroomValidationException classroomValidationException)
             {
@@ -87,15 +86,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (ClassroomValidationException classroomValidationException)
                 when (classroomValidationException.InnerException is NotFoundClassroomException)
             {
-                string innerMessage = GetInnerMessage(classroomValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(classroomValidationException.GetInnerMessage());
             }
             catch (ClassroomValidationException classroomValidationException)
             {
-                string innerMessage = GetInnerMessage(classroomValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(classroomValidationException.GetInnerMessage());
             }
             catch (ClassroomDependencyException classroomDependencyException)
             {
@@ -120,9 +115,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (ClassroomValidationException classroomValidationException)
                 when (classroomValidationException.InnerException is NotFoundClassroomException)
             {
-                string innerMessage = GetInnerMessage(classroomValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(classroomValidationException.GetInnerMessage());
             }
             catch (ClassroomValidationException classroomValidationException)
             {
@@ -131,9 +124,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (ClassroomDependencyException classroomDependencyException)
                 when (classroomDependencyException.InnerException is LockedClassroomException)
             {
-                string innerMessage = GetInnerMessage(classroomDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(classroomDependencyException.GetInnerMessage());
             }
             catch (ClassroomDependencyException classroomDependencyException)
             {
@@ -158,9 +149,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (ClassroomValidationException classroomValidationException)
                 when (classroomValidationException.InnerException is NotFoundClassroomException)
             {
-                string innerMessage = GetInnerMessage(classroomValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(classroomValidationException.GetInnerMessage());
             }
             catch (ClassroomValidationException classroomValidationException)
             {
@@ -169,9 +158,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (ClassroomDependencyException classroomDependencyException)
                 when (classroomDependencyException.InnerException is LockedClassroomException)
             {
-                string innerMessage = GetInnerMessage(classroomDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(classroomDependencyException.GetInnerMessage());
             }
             catch (ClassroomDependencyException classroomDependencyException)
             {
@@ -183,7 +170,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.TeacherContacts;
 using OtripleS.Web.Api.Models.TeacherContacts.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.TeacherContacts;
@@ -37,15 +38,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (TeacherContactValidationException teacherContactValidationException)
                 when (teacherContactValidationException.InnerException is AlreadyExistsTeacherContactException)
             {
-                string innerMessage = GetInnerMessage(teacherContactValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(teacherContactValidationException.GetInnerMessage());
             }
             catch (TeacherContactValidationException teacherContactValidationException)
             {
-                string innerMessage = GetInnerMessage(teacherContactValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(teacherContactValidationException.GetInnerMessage());
             }
             catch (TeacherContactDependencyException teacherContactDependencyException)
             {
@@ -90,15 +87,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (TeacherContactValidationException semesterTeacherContactValidationException)
                 when (semesterTeacherContactValidationException.InnerException is NotFoundTeacherContactException)
             {
-                string innerMessage = GetInnerMessage(semesterTeacherContactValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(semesterTeacherContactValidationException.GetInnerMessage());
             }
             catch (TeacherContactValidationException semesterTeacherContactValidationException)
             {
-                string innerMessage = GetInnerMessage(semesterTeacherContactValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(semesterTeacherContactValidationException.GetInnerMessage());
             }
             catch (TeacherContactDependencyException semesterTeacherContactDependencyException)
             {
@@ -123,22 +116,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (TeacherContactValidationException teacherContactValidationException)
                 when (teacherContactValidationException.InnerException is NotFoundTeacherContactException)
             {
-                string innerMessage = GetInnerMessage(teacherContactValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(teacherContactValidationException.GetInnerMessage());
             }
             catch (TeacherContactValidationException teacherContactValidationException)
             {
-                string innerMessage = GetInnerMessage(teacherContactValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(teacherContactValidationException.GetInnerMessage());
             }
             catch (TeacherContactDependencyException teacherContactValidationException)
                when (teacherContactValidationException.InnerException is LockedTeacherContactException)
             {
-                string innerMessage = GetInnerMessage(teacherContactValidationException);
-
-                return Locked(innerMessage);
+                return Locked(teacherContactValidationException.GetInnerMessage());
             }
             catch (TeacherContactDependencyException teacherContactDependencyException)
             {
@@ -150,7 +137,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

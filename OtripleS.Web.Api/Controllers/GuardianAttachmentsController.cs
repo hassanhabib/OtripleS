@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.GuardianAttachments;
 using OtripleS.Web.Api.Models.GuardianAttachments.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.GuardianAttachments;
@@ -37,15 +38,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (GuardianAttachmentValidationException guardianAttachmentValidationException)
                 when (guardianAttachmentValidationException.InnerException is AlreadyExistsGuardianAttachmentException)
             {
-                string innerMessage = GetInnerMessage(guardianAttachmentValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(guardianAttachmentValidationException.GetInnerMessage());
             }
             catch (GuardianAttachmentValidationException guardianAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(guardianAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(guardianAttachmentValidationException.GetInnerMessage());
             }
             catch (GuardianAttachmentDependencyException guardianAttachmentDependencyException)
             {
@@ -92,15 +89,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (GuardianAttachmentValidationException semesterGuardianAttachmentValidationException)
                 when (semesterGuardianAttachmentValidationException.InnerException is NotFoundGuardianAttachmentException)
             {
-                string innerMessage = GetInnerMessage(semesterGuardianAttachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(semesterGuardianAttachmentValidationException.GetInnerMessage());
             }
             catch (GuardianAttachmentValidationException semesterGuardianAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(semesterGuardianAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(semesterGuardianAttachmentValidationException.GetInnerMessage());
             }
             catch (GuardianAttachmentDependencyException semesterGuardianAttachmentDependencyException)
             {
@@ -125,22 +118,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (GuardianAttachmentValidationException guardianAttachmentValidationException)
                 when (guardianAttachmentValidationException.InnerException is NotFoundGuardianAttachmentException)
             {
-                string innerMessage = GetInnerMessage(guardianAttachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(guardianAttachmentValidationException.GetInnerMessage());
             }
             catch (GuardianAttachmentValidationException guardianAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(guardianAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(guardianAttachmentValidationException.GetInnerMessage());
             }
             catch (GuardianAttachmentDependencyException guardianAttachmentValidationException)
                when (guardianAttachmentValidationException.InnerException is LockedGuardianAttachmentException)
             {
-                string innerMessage = GetInnerMessage(guardianAttachmentValidationException);
-
-                return Locked(innerMessage);
+                return Locked(guardianAttachmentValidationException.GetInnerMessage());
             }
             catch (GuardianAttachmentDependencyException guardianAttachmentDependencyException)
             {
@@ -152,7 +139,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

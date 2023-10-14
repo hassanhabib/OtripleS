@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.StudentContacts;
 using OtripleS.Web.Api.Models.StudentContacts.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.StudentContacts;
@@ -37,15 +38,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentContactValidationException studentContactValidationException)
                 when (studentContactValidationException.InnerException is AlreadyExistsStudentContactException)
             {
-                string innerMessage = GetInnerMessage(studentContactValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(studentContactValidationException.GetInnerMessage());
             }
             catch (StudentContactValidationException studentContactValidationException)
             {
-                string innerMessage = GetInnerMessage(studentContactValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(studentContactValidationException.GetInnerMessage());
             }
             catch (StudentContactDependencyException studentContactDependencyException)
             {
@@ -90,15 +87,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentContactValidationException semesterStudentContactValidationException)
                 when (semesterStudentContactValidationException.InnerException is NotFoundStudentContactException)
             {
-                string innerMessage = GetInnerMessage(semesterStudentContactValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(semesterStudentContactValidationException.GetInnerMessage());
             }
             catch (StudentContactValidationException semesterStudentContactValidationException)
             {
-                string innerMessage = GetInnerMessage(semesterStudentContactValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(semesterStudentContactValidationException.GetInnerMessage());
             }
             catch (StudentContactDependencyException semesterStudentContactDependencyException)
             {
@@ -123,22 +116,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentContactValidationException studentContactValidationException)
                 when (studentContactValidationException.InnerException is NotFoundStudentContactException)
             {
-                string innerMessage = GetInnerMessage(studentContactValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(studentContactValidationException.GetInnerMessage());
             }
             catch (StudentContactValidationException studentContactValidationException)
             {
-                string innerMessage = GetInnerMessage(studentContactValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(studentContactValidationException.GetInnerMessage());
             }
             catch (StudentContactDependencyException studentContactValidationException)
                when (studentContactValidationException.InnerException is LockedStudentContactException)
             {
-                string innerMessage = GetInnerMessage(studentContactValidationException);
-
-                return Locked(innerMessage);
+                return Locked(studentContactValidationException.GetInnerMessage());
             }
             catch (StudentContactDependencyException studentContactDependencyException)
             {
@@ -150,7 +137,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

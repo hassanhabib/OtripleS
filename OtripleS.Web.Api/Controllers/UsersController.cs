@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.Users;
 using OtripleS.Web.Api.Models.Users.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Users;
@@ -36,15 +37,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (UserValidationException userValidationException)
                 when (userValidationException.InnerException is AlreadyExistsUserException)
             {
-                string innerMessage = GetInnerMessage(userValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(userValidationException.GetInnerMessage());
             }
             catch (UserValidationException userValidationException)
             {
-                string innerMessage = GetInnerMessage(userValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(userValidationException.GetInnerMessage());
             }
             catch (UserDependencyException userDependencyException)
             {
@@ -89,15 +86,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (UserValidationException userValidationException)
                 when (userValidationException.InnerException is NotFoundUserException)
             {
-                string innerMessage = GetInnerMessage(userValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(userValidationException.GetInnerMessage());
             }
             catch (UserValidationException userValidationException)
             {
-                string innerMessage = GetInnerMessage(userValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(userValidationException.GetInnerMessage());
             }
             catch (UserDependencyException userDependencyException)
             {
@@ -122,22 +115,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (UserValidationException userValidationException)
                 when (userValidationException.InnerException is NotFoundUserException)
             {
-                string innerMessage = GetInnerMessage(userValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(userValidationException.GetInnerMessage());
             }
             catch (UserValidationException userValidationException)
             {
-                string innerMessage = GetInnerMessage(userValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(userValidationException.GetInnerMessage());
             }
             catch (UserDependencyException userDependencyException)
                 when (userDependencyException.InnerException is LockedUserException)
             {
-                string innerMessage = GetInnerMessage(userDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(userDependencyException.GetInnerMessage());
             }
             catch (UserDependencyException userDependencyException)
             {
@@ -162,9 +149,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (UserValidationException userValidationException)
                 when (userValidationException.InnerException is NotFoundUserException)
             {
-                string innerMessage = GetInnerMessage(userValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(userValidationException.GetInnerMessage());
             }
             catch (UserValidationException userValidationException)
             {
@@ -173,9 +158,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (UserDependencyException userDependencyException)
                 when (userDependencyException.InnerException is LockedUserException)
             {
-                string innerMessage = GetInnerMessage(userDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(userDependencyException.GetInnerMessage());
             }
             catch (UserDependencyException userDependencyException)
             {
@@ -187,7 +170,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

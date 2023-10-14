@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.Assignments;
 using OtripleS.Web.Api.Models.Assignments.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Assignments;
@@ -85,15 +86,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (AssignmentValidationException assignmentValidationException)
                 when (assignmentValidationException.InnerException is NotFoundAssignmentException)
             {
-                string innerMessage = GetInnerMessage(assignmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(assignmentValidationException.GetInnerMessage());
             }
             catch (AssignmentValidationException assignmentValidationException)
             {
-                string innerMessage = GetInnerMessage(assignmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(assignmentValidationException.GetInnerMessage());
             }
             catch (AssignmentDependencyException assignmentDependencyException)
             {
@@ -118,22 +115,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (AssignmentValidationException assignmentValidationException)
                 when (assignmentValidationException.InnerException is NotFoundAssignmentException)
             {
-                string innerMessage = GetInnerMessage(assignmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(assignmentValidationException.GetInnerMessage());
             }
             catch (AssignmentValidationException assignmentValidationException)
             {
-                string innerMessage = GetInnerMessage(assignmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(assignmentValidationException.GetInnerMessage());
             }
             catch (AssignmentDependencyException assignmentDependencyException)
                 when (assignmentDependencyException.InnerException is LockedAssignmentException)
             {
-                string innerMessage = GetInnerMessage(assignmentDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(assignmentDependencyException.GetInnerMessage());
             }
             catch (AssignmentDependencyException assignmentDependencyException)
             {
@@ -158,9 +149,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (AssignmentValidationException assignmentValidationException)
                 when (assignmentValidationException.InnerException is NotFoundAssignmentException)
             {
-                string innerMessage = GetInnerMessage(assignmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(assignmentValidationException.GetInnerMessage());
             }
             catch (AssignmentValidationException assignmentValidationException)
             {
@@ -169,9 +158,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (AssignmentDependencyException assignmentDependencyException)
                 when (assignmentDependencyException.InnerException is LockedAssignmentException)
             {
-                string innerMessage = GetInnerMessage(assignmentDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(assignmentDependencyException.GetInnerMessage());
             }
             catch (AssignmentDependencyException assignmentDependencyException)
             {
@@ -183,7 +170,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

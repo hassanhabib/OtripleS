@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.AssignmentAttachments;
 using OtripleS.Web.Api.Models.AssignmentAttachments.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.AssignmentAttachments;
@@ -37,22 +38,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (AssignmentAttachmentValidationException assignmentAttachmentValidationException)
                 when (assignmentAttachmentValidationException.InnerException is AlreadyExistsAssignmentAttachmentException)
             {
-                string innerMessage = GetInnerMessage(assignmentAttachmentValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(assignmentAttachmentValidationException.GetInnerMessage());
             }
             catch (AssignmentAttachmentValidationException assignmentAttachmentValidationException)
                 when (assignmentAttachmentValidationException.InnerException is InvalidAssignmentAttachmentReferenceException)
             {
-                string innerMessage = GetInnerMessage(assignmentAttachmentValidationException);
-
-                return FailedDependency(innerMessage);
+                return FailedDependency(assignmentAttachmentValidationException.GetInnerMessage());
             }
             catch (AssignmentAttachmentValidationException assignmentAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(assignmentAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(assignmentAttachmentValidationException.GetInnerMessage());
             }
             catch (AssignmentAttachmentDependencyException assignmentAttachmentDependencyException)
             {
@@ -99,15 +94,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (AssignmentAttachmentValidationException semesterAssignmentAttachmentValidationException)
                 when (semesterAssignmentAttachmentValidationException.InnerException is NotFoundAssignmentAttachmentException)
             {
-                string innerMessage = GetInnerMessage(semesterAssignmentAttachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(semesterAssignmentAttachmentValidationException.GetInnerMessage());
             }
             catch (AssignmentAttachmentValidationException semesterAssignmentAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(semesterAssignmentAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(semesterAssignmentAttachmentValidationException.GetInnerMessage());
             }
             catch (AssignmentAttachmentDependencyException semesterAssignmentAttachmentDependencyException)
             {
@@ -136,22 +127,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (AssignmentAttachmentValidationException assignmentAttachmentValidationException)
                 when (assignmentAttachmentValidationException.InnerException is NotFoundAssignmentAttachmentException)
             {
-                string innerMessage = GetInnerMessage(assignmentAttachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(assignmentAttachmentValidationException.GetInnerMessage());
             }
             catch (AssignmentAttachmentValidationException assignmentAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(assignmentAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(assignmentAttachmentValidationException.GetInnerMessage());
             }
             catch (AssignmentAttachmentDependencyException assignmentAttachmentValidationException)
                when (assignmentAttachmentValidationException.InnerException is LockedAssignmentAttachmentException)
             {
-                string innerMessage = GetInnerMessage(assignmentAttachmentValidationException);
-
-                return Locked(innerMessage);
+                return Locked(assignmentAttachmentValidationException.GetInnerMessage());
             }
             catch (AssignmentAttachmentDependencyException assignmentAttachmentDependencyException)
             {
@@ -162,8 +147,5 @@ namespace OtripleS.Web.Api.Controllers
                 return Problem(assignmentAttachmentServiceException.Message);
             }
         }
-
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }
