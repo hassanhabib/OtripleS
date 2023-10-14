@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.StudentAttachments;
 using OtripleS.Web.Api.Models.StudentAttachments.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.StudentAttachments;
@@ -37,15 +38,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentAttachmentValidationException studentAttachmentValidationException)
                 when (studentAttachmentValidationException.InnerException is AlreadyExistsStudentAttachmentException)
             {
-                string innerMessage = GetInnerMessage(studentAttachmentValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(studentAttachmentValidationException.GetInnerMessage());
             }
             catch (StudentAttachmentValidationException studentAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(studentAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(studentAttachmentValidationException.GetInnerMessage());
             }
             catch (StudentAttachmentDependencyException studentAttachmentDependencyException)
             {
@@ -92,15 +89,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentAttachmentValidationException semesterStudentAttachmentValidationException)
                 when (semesterStudentAttachmentValidationException.InnerException is NotFoundStudentAttachmentException)
             {
-                string innerMessage = GetInnerMessage(semesterStudentAttachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(semesterStudentAttachmentValidationException.GetInnerMessage());
             }
             catch (StudentAttachmentValidationException semesterStudentAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(semesterStudentAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(semesterStudentAttachmentValidationException.GetInnerMessage());
             }
             catch (StudentAttachmentDependencyException semesterStudentAttachmentDependencyException)
             {
@@ -125,22 +118,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentAttachmentValidationException studentAttachmentValidationException)
                 when (studentAttachmentValidationException.InnerException is NotFoundStudentAttachmentException)
             {
-                string innerMessage = GetInnerMessage(studentAttachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(studentAttachmentValidationException.GetInnerMessage());
             }
             catch (StudentAttachmentValidationException studentAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(studentAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(studentAttachmentValidationException.GetInnerMessage());
             }
             catch (StudentAttachmentDependencyException studentAttachmentValidationException)
                when (studentAttachmentValidationException.InnerException is LockedStudentAttachmentException)
             {
-                string innerMessage = GetInnerMessage(studentAttachmentValidationException);
-
-                return Locked(innerMessage);
+                return Locked(studentAttachmentValidationException.GetInnerMessage());
             }
             catch (StudentAttachmentDependencyException studentAttachmentDependencyException)
             {
@@ -152,7 +139,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

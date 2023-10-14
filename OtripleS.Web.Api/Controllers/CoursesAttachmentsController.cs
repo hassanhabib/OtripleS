@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.CourseAttachments;
 using OtripleS.Web.Api.Models.CourseAttachments.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.CourseAttachments;
@@ -37,22 +38,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (CourseAttachmentValidationException courseAttachmentValidationException)
                 when (courseAttachmentValidationException.InnerException is AlreadyExistsCourseAttachmentException)
             {
-                string innerMessage = GetInnerMessage(courseAttachmentValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(courseAttachmentValidationException.GetInnerMessage());
             }
             catch (CourseAttachmentValidationException courseAttachmentValidationException)
                 when (courseAttachmentValidationException.InnerException is InvalidCourseAttachmentReferenceException)
             {
-                string innerMessage = GetInnerMessage(courseAttachmentValidationException);
-
-                return FailedDependency(innerMessage);
+                return FailedDependency(courseAttachmentValidationException.GetInnerMessage());
             }
             catch (CourseAttachmentValidationException courseAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(courseAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(courseAttachmentValidationException.GetInnerMessage());
             }
             catch (CourseAttachmentDependencyException courseAttachmentDependencyException)
             {
@@ -99,15 +94,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (CourseAttachmentValidationException semesterCourseAttachmentValidationException)
                 when (semesterCourseAttachmentValidationException.InnerException is NotFoundCourseAttachmentException)
             {
-                string innerMessage = GetInnerMessage(semesterCourseAttachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(semesterCourseAttachmentValidationException.GetInnerMessage());
             }
             catch (CourseAttachmentValidationException semesterCourseAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(semesterCourseAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(semesterCourseAttachmentValidationException.GetInnerMessage());
             }
             catch (CourseAttachmentDependencyException semesterCourseAttachmentDependencyException)
             {
@@ -132,22 +123,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (CourseAttachmentValidationException courseAttachmentValidationException)
                 when (courseAttachmentValidationException.InnerException is NotFoundCourseAttachmentException)
             {
-                string innerMessage = GetInnerMessage(courseAttachmentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(courseAttachmentValidationException.GetInnerMessage());
             }
             catch (CourseAttachmentValidationException courseAttachmentValidationException)
             {
-                string innerMessage = GetInnerMessage(courseAttachmentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(courseAttachmentValidationException.GetInnerMessage());
             }
             catch (CourseAttachmentDependencyException courseAttachmentValidationException)
                when (courseAttachmentValidationException.InnerException is LockedCourseAttachmentException)
             {
-                string innerMessage = GetInnerMessage(courseAttachmentValidationException);
-
-                return Locked(innerMessage);
+                return Locked(courseAttachmentValidationException.GetInnerMessage());
             }
             catch (CourseAttachmentDependencyException courseAttachmentDependencyException)
             {
@@ -159,7 +144,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

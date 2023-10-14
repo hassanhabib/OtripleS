@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.Guardians;
 using OtripleS.Web.Api.Models.Guardians.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Guardians;
@@ -36,15 +37,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (GuardianValidationException guardianValidationException)
                 when (guardianValidationException.InnerException is AlreadyExistsGuardianException)
             {
-                string innerMessage = GetInnerMessage(guardianValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(guardianValidationException.GetInnerMessage());
             }
             catch (GuardianValidationException guardianValidationException)
             {
-                string innerMessage = GetInnerMessage(guardianValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(guardianValidationException.GetInnerMessage());
             }
             catch (GuardianDependencyException guardianDependencyException)
             {
@@ -89,15 +86,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (GuardianValidationException guardianValidationException)
                 when (guardianValidationException.InnerException is NotFoundGuardianException)
             {
-                string innerMessage = GetInnerMessage(guardianValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(guardianValidationException.GetInnerMessage());
             }
             catch (GuardianValidationException guardianValidationException)
             {
-                string innerMessage = GetInnerMessage(guardianValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(guardianValidationException.GetInnerMessage());
             }
             catch (GuardianDependencyException guardianDependencyException)
             {
@@ -122,22 +115,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (GuardianValidationException guardianValidationException)
                 when (guardianValidationException.InnerException is NotFoundGuardianException)
             {
-                string innerMessage = GetInnerMessage(guardianValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(guardianValidationException.GetInnerMessage());
             }
             catch (GuardianValidationException guardianValidationException)
             {
-                string innerMessage = GetInnerMessage(guardianValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(guardianValidationException.GetInnerMessage());
             }
             catch (GuardianDependencyException guardianDependencyException)
                 when (guardianDependencyException.InnerException is LockedGuardianException)
             {
-                string innerMessage = GetInnerMessage(guardianDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(guardianDependencyException.GetInnerMessage());
             }
             catch (GuardianDependencyException guardianDependencyException)
             {
@@ -162,22 +149,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (GuardianValidationException guardianValidationException)
                 when (guardianValidationException.InnerException is NotFoundGuardianException)
             {
-                string innerMessage = GetInnerMessage(guardianValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(guardianValidationException.GetInnerMessage());
             }
             catch (GuardianValidationException guardianValidationException)
             {
-                string innerMessage = GetInnerMessage(guardianValidationException);
-
-                return BadRequest(guardianValidationException);
+                return BadRequest(guardianValidationException.GetInnerMessage());
             }
             catch (GuardianDependencyException guardianDependencyException)
                when (guardianDependencyException.InnerException is LockedGuardianException)
             {
-                string innerMessage = GetInnerMessage(guardianDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(guardianDependencyException.GetInnerMessage());
             }
             catch (GuardianDependencyException guardianDependencyException)
             {
@@ -189,7 +170,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

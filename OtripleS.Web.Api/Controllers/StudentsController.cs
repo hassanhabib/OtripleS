@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.Students;
 using OtripleS.Web.Api.Models.Students.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Students;
@@ -85,14 +86,10 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentValidationException studentValidationException)
                 when (studentValidationException.InnerException is NotFoundStudentException)
             {
-                string innerMessage = GetInnerMessage(studentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(studentValidationException.GetInnerMessage());
             }
             catch (StudentValidationException studentValidationException)
             {
-                string innerMessage = GetInnerMessage(studentValidationException);
-
                 return BadRequest(studentValidationException);
             }
             catch (StudentDependencyException studentDependencyException)
@@ -118,22 +115,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentValidationException studentValidationException)
                 when (studentValidationException.InnerException is NotFoundStudentException)
             {
-                string innerMessage = GetInnerMessage(studentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(studentValidationException.GetInnerMessage());
             }
             catch (StudentValidationException studentValidationException)
             {
-                string innerMessage = GetInnerMessage(studentValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(studentValidationException.GetInnerMessage());
             }
             catch (StudentDependencyException studentDependencyException)
                 when (studentDependencyException.InnerException is LockedStudentException)
             {
-                string innerMessage = GetInnerMessage(studentDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(studentDependencyException);
             }
             catch (StudentDependencyException studentDependencyException)
             {
@@ -158,22 +149,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentValidationException studentValidationException)
                 when (studentValidationException.InnerException is NotFoundStudentException)
             {
-                string innerMessage = GetInnerMessage(studentValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(studentValidationException.GetInnerMessage());
             }
             catch (StudentValidationException studentValidationException)
             {
-                string innerMessage = GetInnerMessage(studentValidationException);
-
                 return BadRequest(studentValidationException);
             }
             catch (StudentDependencyException studentDependencyException)
                when (studentDependencyException.InnerException is LockedStudentException)
             {
-                string innerMessage = GetInnerMessage(studentDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(studentDependencyException.GetInnerMessage());
             }
             catch (StudentDependencyException studentDependencyException)
             {
@@ -185,7 +170,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.Registrations;
 using OtripleS.Web.Api.Models.Registrations.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Registrations;
@@ -36,15 +37,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (RegistrationValidationException registrationValidationException)
                 when (registrationValidationException.InnerException is AlreadyExistsRegistrationException)
             {
-                string innerMessage = GetInnerMessage(registrationValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(registrationValidationException.GetInnerMessage());
             }
             catch (RegistrationValidationException registrationValidationException)
             {
-                string innerMessage = GetInnerMessage(registrationValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(registrationValidationException.GetInnerMessage());
             }
             catch (RegistrationDependencyException registrationDependencyException)
             {
@@ -89,15 +86,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (RegistrationValidationException registrationValidationException)
                 when (registrationValidationException.InnerException is NotFoundRegistrationException)
             {
-                string innerMessage = GetInnerMessage(registrationValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(registrationValidationException.GetInnerMessage());
             }
             catch (RegistrationValidationException registrationValidationException)
             {
-                string innerMessage = GetInnerMessage(registrationValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(registrationValidationException.GetInnerMessage());
             }
             catch (RegistrationDependencyException registrationDependencyException)
             {
@@ -122,22 +115,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (RegistrationValidationException registrationValidationException)
                 when (registrationValidationException.InnerException is NotFoundRegistrationException)
             {
-                string innerMessage = GetInnerMessage(registrationValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(registrationValidationException.GetInnerMessage());
             }
             catch (RegistrationValidationException registrationValidationException)
             {
-                string innerMessage = GetInnerMessage(registrationValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(registrationValidationException.GetInnerMessage());
             }
             catch (RegistrationDependencyException registrationDependencyException)
                 when (registrationDependencyException.InnerException is LockedRegistrationException)
             {
-                string innerMessage = GetInnerMessage(registrationDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(registrationDependencyException.GetInnerMessage());
             }
             catch (RegistrationDependencyException registrationDependencyException)
             {
@@ -162,22 +149,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (RegistrationValidationException registrationValidationException)
                 when (registrationValidationException.InnerException is NotFoundRegistrationException)
             {
-                string innerMessage = GetInnerMessage(registrationValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(registrationValidationException.GetInnerMessage());
             }
             catch (RegistrationValidationException registrationValidationException)
             {
-                string innerMessage = GetInnerMessage(registrationValidationException);
-
                 return BadRequest(registrationValidationException);
             }
             catch (RegistrationDependencyException registrationDependencyException)
                when (registrationDependencyException.InnerException is LockedRegistrationException)
             {
-                string innerMessage = GetInnerMessage(registrationDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(registrationDependencyException.GetInnerMessage());
             }
             catch (RegistrationDependencyException registrationDependencyException)
             {
@@ -189,7 +170,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

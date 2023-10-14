@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.StudentRegistrations;
 using OtripleS.Web.Api.Models.StudentRegistrations.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.StudentRegistrations;
@@ -37,15 +38,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentRegistrationValidationException studentRegistrationValidationException)
                 when (studentRegistrationValidationException.InnerException is AlreadyExistsStudentRegistrationException)
             {
-                string innerMessage = GetInnerMessage(studentRegistrationValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(studentRegistrationValidationException.GetInnerMessage());
             }
             catch (StudentRegistrationValidationException studentRegistrationValidationException)
             {
-                string innerMessage = GetInnerMessage(studentRegistrationValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(studentRegistrationValidationException.GetInnerMessage());
             }
             catch (StudentRegistrationDependencyException studentRegistrationDependencyException)
             {
@@ -92,15 +89,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentRegistrationValidationException semesterStudentRegistrationValidationException)
                 when (semesterStudentRegistrationValidationException.InnerException is NotFoundStudentRegistrationException)
             {
-                string innerMessage = GetInnerMessage(semesterStudentRegistrationValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(semesterStudentRegistrationValidationException.GetInnerMessage());
             }
             catch (StudentRegistrationValidationException semesterStudentRegistrationValidationException)
             {
-                string innerMessage = GetInnerMessage(semesterStudentRegistrationValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(semesterStudentRegistrationValidationException.GetInnerMessage());
             }
             catch (StudentRegistrationDependencyException semesterStudentRegistrationDependencyException)
             {
@@ -127,22 +120,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (StudentRegistrationValidationException studentRegistrationValidationException)
                 when (studentRegistrationValidationException.InnerException is NotFoundStudentRegistrationException)
             {
-                string innerMessage = GetInnerMessage(studentRegistrationValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(studentRegistrationValidationException.GetInnerMessage());
             }
             catch (StudentRegistrationValidationException studentRegistrationValidationException)
             {
-                string innerMessage = GetInnerMessage(studentRegistrationValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(studentRegistrationValidationException.GetInnerMessage());
             }
             catch (StudentRegistrationDependencyException studentRegistrationValidationException)
                when (studentRegistrationValidationException.InnerException is LockedStudentRegistrationException)
             {
-                string innerMessage = GetInnerMessage(studentRegistrationValidationException);
-
-                return Locked(innerMessage);
+                return Locked(studentRegistrationValidationException.GetInnerMessage());
             }
             catch (StudentRegistrationDependencyException studentRegistrationDependencyException)
             {
@@ -154,7 +141,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

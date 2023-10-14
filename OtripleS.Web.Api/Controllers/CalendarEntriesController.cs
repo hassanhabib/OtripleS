@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.CalendarEntries;
 using OtripleS.Web.Api.Models.CalendarEntries.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.CalendarEntries;
@@ -36,9 +37,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (CalendarEntryValidationException calendarEntryValidationException)
                 when (calendarEntryValidationException.InnerException is AlreadyExistsCalendarEntryException)
             {
-                string innerMessage = GetInnerMessage(calendarEntryValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(calendarEntryValidationException.GetInnerMessage());
             }
             catch (CalendarEntryValidationException calendarEntryValidationException)
             {
@@ -87,15 +86,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (CalendarEntryValidationException calendarEntryValidationException)
                 when (calendarEntryValidationException.InnerException is NotFoundCalendarEntryException)
             {
-                string innerMessage = GetInnerMessage(calendarEntryValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(calendarEntryValidationException.GetInnerMessage());
             }
             catch (CalendarEntryValidationException calendarEntryValidationException)
             {
-                string innerMessage = GetInnerMessage(calendarEntryValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(calendarEntryValidationException.GetInnerMessage());
             }
             catch (CalendarEntryDependencyException calendarEntryDependencyException)
             {
@@ -120,22 +115,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (CalendarEntryValidationException calendarEntryValidationException)
                 when (calendarEntryValidationException.InnerException is NotFoundCalendarEntryException)
             {
-                string innerMessage = GetInnerMessage(calendarEntryValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(calendarEntryValidationException.GetInnerMessage());
             }
             catch (CalendarEntryValidationException calendarEntryValidationException)
             {
-                string innerMessage = GetInnerMessage(calendarEntryValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(calendarEntryValidationException.GetInnerMessage());
             }
             catch (CalendarEntryDependencyException calendarEntryDependencyException)
                 when (calendarEntryDependencyException.InnerException is LockedCalendarEntryException)
             {
-                string innerMessage = GetInnerMessage(calendarEntryDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(calendarEntryDependencyException.GetInnerMessage());
             }
             catch (CalendarEntryDependencyException calendarEntryDependencyException)
             {
@@ -160,9 +149,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (CalendarEntryValidationException calendarEntryValidationException)
                 when (calendarEntryValidationException.InnerException is NotFoundCalendarEntryException)
             {
-                string innerMessage = GetInnerMessage(calendarEntryValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(calendarEntryValidationException.GetInnerMessage());
             }
             catch (CalendarEntryValidationException calendarEntryValidationException)
             {
@@ -171,9 +158,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (CalendarEntryDependencyException calendarEntryDependencyException)
                 when (calendarEntryDependencyException.InnerException is LockedCalendarEntryException)
             {
-                string innerMessage = GetInnerMessage(calendarEntryDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(calendarEntryDependencyException.GetInnerMessage());
             }
             catch (CalendarEntryDependencyException calendarEntryDependencyException)
             {
@@ -185,7 +170,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

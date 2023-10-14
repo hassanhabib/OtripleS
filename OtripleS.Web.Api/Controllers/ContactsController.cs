@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.Contacts;
 using OtripleS.Web.Api.Models.Contacts.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Contacts;
@@ -35,9 +36,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (ContactValidationException contactValidationException)
                 when (contactValidationException.InnerException is AlreadyExistsContactException)
             {
-                string innerMessage = GetInnerMessage(contactValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(contactValidationException.GetInnerMessage());
             }
             catch (ContactValidationException contactValidationException)
             {
@@ -45,15 +44,11 @@ namespace OtripleS.Web.Api.Controllers
             }
             catch (ContactDependencyException contactDependencyException)
             {
-                string innerMessage = GetInnerMessage(contactDependencyException);
-
-                return Problem(innerMessage);
+                return Problem(contactDependencyException.GetInnerMessage());
             }
             catch (ContactServiceException contactServiceException)
             {
-                string innerMessage = GetInnerMessage(contactServiceException);
-
-                return Problem(innerMessage);
+                return Problem(contactServiceException.GetInnerMessage());
             }
         }
 
@@ -68,15 +63,11 @@ namespace OtripleS.Web.Api.Controllers
             }
             catch (ContactDependencyException contactDependencyException)
             {
-                string innerMessage = GetInnerMessage(contactDependencyException);
-
-                return Problem(innerMessage);
+                return Problem(contactDependencyException.GetInnerMessage());
             }
             catch (ContactServiceException contactServiceException)
             {
-                string innerMessage = GetInnerMessage(contactServiceException);
-
-                return Problem(innerMessage);
+                return Problem(contactServiceException.GetInnerMessage());
             }
         }
 
@@ -92,27 +83,19 @@ namespace OtripleS.Web.Api.Controllers
             catch (ContactValidationException contactValidationException)
                 when (contactValidationException.InnerException is NotFoundContactException)
             {
-                string innerMessage = GetInnerMessage(contactValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(contactValidationException.GetInnerMessage());
             }
             catch (ContactValidationException contactValidationException)
             {
-                string innerMessage = GetInnerMessage(contactValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(contactValidationException.GetInnerMessage());
             }
             catch (ContactDependencyException contactDependencyException)
             {
-                string innerMessage = GetInnerMessage(contactDependencyException);
-
-                return Problem(innerMessage);
+                return Problem(contactDependencyException.GetInnerMessage());
             }
             catch (ContactServiceException contactServiceException)
             {
-                string innerMessage = GetInnerMessage(contactServiceException);
-
-                return Problem(innerMessage);
+                return Problem(contactServiceException.GetInnerMessage());
             }
         }
 
@@ -128,24 +111,18 @@ namespace OtripleS.Web.Api.Controllers
             catch (ContactValidationException contactValidationException)
                when (contactValidationException.InnerException is NotFoundContactException)
             {
-                string innerMessage = GetInnerMessage(contactValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(contactValidationException.GetInnerMessage());
             }
 
             catch (ContactValidationException contactValidationException)
             {
-                string innerMessage = GetInnerMessage(contactValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(contactValidationException.GetInnerMessage());
             }
 
             catch (ContactDependencyException contactDependencyException)
                 when (contactDependencyException.InnerException is LockedContactException)
             {
-                string innerMessage = GetInnerMessage(contactDependencyException);
-
-                return NotFound(innerMessage);
+                return NotFound(contactDependencyException.GetInnerMessage());
             }
         }
 
@@ -162,22 +139,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (ContactValidationException contactValidationException)
                 when (contactValidationException.InnerException is NotFoundContactException)
             {
-                string innerMessage = GetInnerMessage(contactValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(contactValidationException.GetInnerMessage());
             }
             catch (ContactValidationException contactValidationException)
             {
-                string innerMessage = GetInnerMessage(contactValidationException);
-
                 return BadRequest(contactValidationException);
             }
             catch (ContactDependencyException contactDependencyException)
                when (contactDependencyException.InnerException is LockedContactException)
             {
-                string innerMessage = GetInnerMessage(contactDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(contactDependencyException.GetInnerMessage());
             }
             catch (ContactDependencyException contactDependencyException)
             {
@@ -189,7 +160,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

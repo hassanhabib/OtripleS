@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.Teachers;
 using OtripleS.Web.Api.Models.Teachers.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Teachers;
@@ -85,15 +86,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (TeacherValidationException teacherValidationException)
                 when (teacherValidationException.InnerException is NotFoundTeacherException)
             {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(teacherValidationException.GetInnerMessage());
             }
             catch (TeacherValidationException teacherValidationException)
             {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(teacherValidationException.GetInnerMessage());
             }
             catch (TeacherDependencyException teacherDependencyException)
             {
@@ -118,22 +115,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (TeacherValidationException teacherValidationException)
                 when (teacherValidationException.InnerException is NotFoundTeacherException)
             {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(teacherValidationException.GetInnerMessage());
             }
             catch (TeacherValidationException teacherValidationException)
             {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(teacherValidationException.GetInnerMessage());
             }
             catch (TeacherDependencyException teacherDependencyException)
                 when (teacherDependencyException.InnerException is LockedTeacherException)
             {
-                string innerMessage = GetInnerMessage(teacherDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(teacherDependencyException.GetInnerMessage());
             }
             catch (TeacherDependencyException teacherDependencyException)
             {
@@ -158,9 +149,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (TeacherValidationException teacherValidationException)
                 when (teacherValidationException.InnerException is NotFoundTeacherException)
             {
-                string innerMessage = GetInnerMessage(teacherValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(teacherValidationException.GetInnerMessage());
             }
             catch (TeacherValidationException teacherValidationException)
             {
@@ -169,9 +158,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (TeacherDependencyException teacherDependencyException)
                 when (teacherDependencyException.InnerException is LockedTeacherException)
             {
-                string innerMessage = GetInnerMessage(teacherDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(teacherDependencyException.GetInnerMessage());
             }
             catch (TeacherDependencyException teacherDependencyException)
             {
@@ -183,7 +170,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

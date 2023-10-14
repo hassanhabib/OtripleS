@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.GuardianContacts;
 using OtripleS.Web.Api.Models.GuardianContacts.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.GuardianContacts;
@@ -37,15 +38,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (GuardianContactValidationException guardianContactValidationException)
                 when (guardianContactValidationException.InnerException is AlreadyExistsGuardianContactException)
             {
-                string innerMessage = GetInnerMessage(guardianContactValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(guardianContactValidationException.GetInnerMessage());
             }
             catch (GuardianContactValidationException guardianContactValidationException)
             {
-                string innerMessage = GetInnerMessage(guardianContactValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(guardianContactValidationException.GetInnerMessage());
             }
             catch (GuardianContactDependencyException guardianContactDependencyException)
             {
@@ -90,15 +87,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (GuardianContactValidationException semesterGuardianContactValidationException)
                 when (semesterGuardianContactValidationException.InnerException is NotFoundGuardianContactException)
             {
-                string innerMessage = GetInnerMessage(semesterGuardianContactValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(semesterGuardianContactValidationException.GetInnerMessage());
             }
             catch (GuardianContactValidationException semesterGuardianContactValidationException)
             {
-                string innerMessage = GetInnerMessage(semesterGuardianContactValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(semesterGuardianContactValidationException.GetInnerMessage());
             }
             catch (GuardianContactDependencyException semesterGuardianContactDependencyException)
             {
@@ -123,22 +116,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (GuardianContactValidationException guardianContactValidationException)
                 when (guardianContactValidationException.InnerException is NotFoundGuardianContactException)
             {
-                string innerMessage = GetInnerMessage(guardianContactValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(guardianContactValidationException.GetInnerMessage());
             }
             catch (GuardianContactValidationException guardianContactValidationException)
             {
-                string innerMessage = GetInnerMessage(guardianContactValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(guardianContactValidationException.GetInnerMessage());
             }
             catch (GuardianContactDependencyException guardianContactValidationException)
                when (guardianContactValidationException.InnerException is LockedGuardianContactException)
             {
-                string innerMessage = GetInnerMessage(guardianContactValidationException);
-
-                return Locked(innerMessage);
+                return Locked(guardianContactValidationException.GetInnerMessage());
             }
             catch (GuardianContactDependencyException guardianContactDependencyException)
             {
@@ -150,7 +137,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }

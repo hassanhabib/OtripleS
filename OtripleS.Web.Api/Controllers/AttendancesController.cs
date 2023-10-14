@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.Attendances;
 using OtripleS.Web.Api.Models.Attendances.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Attendances;
@@ -85,15 +86,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (AttendanceValidationException attendanceValidationException)
                 when (attendanceValidationException.InnerException is NotFoundAttendanceException)
             {
-                string innerMessage = GetInnerMessage(attendanceValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(attendanceValidationException.GetInnerMessage());
             }
             catch (AttendanceValidationException attendanceValidationException)
             {
-                string innerMessage = GetInnerMessage(attendanceValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(attendanceValidationException.GetInnerMessage());
             }
             catch (AttendanceDependencyException attendanceDependencyException)
             {
@@ -118,22 +115,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (AttendanceValidationException attendanceValidationException)
                 when (attendanceValidationException.InnerException is NotFoundAttendanceException)
             {
-                string innerMessage = GetInnerMessage(attendanceValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(attendanceValidationException.GetInnerMessage());
             }
             catch (AttendanceValidationException attendanceValidationException)
             {
-                string innerMessage = GetInnerMessage(attendanceValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(attendanceValidationException.GetInnerMessage());
             }
             catch (AttendanceDependencyException attendanceDependencyException)
                 when (attendanceDependencyException.InnerException is LockedAttendanceException)
             {
-                string innerMessage = GetInnerMessage(attendanceDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(attendanceDependencyException.GetInnerMessage());
             }
             catch (AttendanceDependencyException attendanceDependencyException)
             {
@@ -158,9 +149,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (AttendanceValidationException attendanceValidationException)
                 when (attendanceValidationException.InnerException is NotFoundAttendanceException)
             {
-                string innerMessage = GetInnerMessage(attendanceValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(attendanceValidationException.GetInnerMessage());
             }
             catch (AttendanceValidationException attendanceValidationException)
             {
@@ -169,9 +158,7 @@ namespace OtripleS.Web.Api.Controllers
             catch (AttendanceDependencyException attendanceDependencyException)
                 when (attendanceDependencyException.InnerException is LockedAttendanceException)
             {
-                string innerMessage = GetInnerMessage(attendanceDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(attendanceDependencyException.GetInnerMessage());
             }
             catch (AttendanceDependencyException attendanceDependencyException)
             {
@@ -183,8 +170,6 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
 
     }
 }

@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OtripleS.Web.Api.Extensions;
 using OtripleS.Web.Api.Models.Exams;
 using OtripleS.Web.Api.Models.Exams.Exceptions;
 using OtripleS.Web.Api.Services.Foundations.Exams;
@@ -36,15 +37,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (ExamValidationException examValidationException)
                 when (examValidationException.InnerException is AlreadyExistsExamException)
             {
-                string innerMessage = GetInnerMessage(examValidationException);
-
-                return Conflict(innerMessage);
+                return Conflict(examValidationException.GetInnerMessage());
             }
             catch (ExamValidationException examValidationException)
             {
-                string innerMessage = GetInnerMessage(examValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(examValidationException.GetInnerMessage());
             }
             catch (ExamDependencyException examDependencyException)
             {
@@ -89,15 +86,11 @@ namespace OtripleS.Web.Api.Controllers
             catch (ExamValidationException examValidationException)
                 when (examValidationException.InnerException is NotFoundExamException)
             {
-                string innerMessage = GetInnerMessage(examValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(examValidationException.GetInnerMessage());
             }
             catch (ExamValidationException examValidationException)
             {
-                string innerMessage = GetInnerMessage(examValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(examValidationException.GetInnerMessage());
             }
             catch (ExamDependencyException examDependencyException)
             {
@@ -122,22 +115,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (ExamValidationException examValidationException)
                 when (examValidationException.InnerException is NotFoundExamException)
             {
-                string innerMessage = GetInnerMessage(examValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(examValidationException.GetInnerMessage());
             }
             catch (ExamValidationException examValidationException)
             {
-                string innerMessage = GetInnerMessage(examValidationException);
-
-                return BadRequest(innerMessage);
+                return BadRequest(examValidationException.GetInnerMessage());
             }
             catch (ExamDependencyException examDependencyException)
                 when (examDependencyException.InnerException is LockedExamException)
             {
-                string innerMessage = GetInnerMessage(examDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(examDependencyException.GetInnerMessage());
             }
             catch (ExamDependencyException examDependencyException)
             {
@@ -162,22 +149,16 @@ namespace OtripleS.Web.Api.Controllers
             catch (ExamValidationException examValidationException)
                 when (examValidationException.InnerException is NotFoundExamException)
             {
-                string innerMessage = GetInnerMessage(examValidationException);
-
-                return NotFound(innerMessage);
+                return NotFound(examValidationException.GetInnerMessage());
             }
             catch (ExamValidationException examValidationException)
             {
-                string innerMessage = GetInnerMessage(examValidationException);
-
-                return BadRequest(examValidationException);
+                return BadRequest(examValidationException.GetInnerMessage());
             }
             catch (ExamDependencyException examDependencyException)
                when (examDependencyException.InnerException is LockedExamException)
             {
-                string innerMessage = GetInnerMessage(examDependencyException);
-
-                return Locked(innerMessage);
+                return Locked(examDependencyException.GetInnerMessage());
             }
             catch (ExamDependencyException examDependencyException)
             {
@@ -189,7 +170,5 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        private static string GetInnerMessage(Exception exception) =>
-            exception.InnerException.Message;
     }
 }
