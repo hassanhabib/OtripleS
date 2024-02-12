@@ -270,12 +270,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
             Guid differentId = Guid.NewGuid();
             Guid invalidCreatedBy = differentId;
             Student randomStudent = CreateRandomStudent(dates: randomDate);
-            Student invalidStudent = randomStudent;
             Student storageStudent = randomStudent.DeepClone();
-            invalidStudent.CreatedDate = storageStudent.CreatedDate.AddDays(randomNumber);
-            invalidStudent.UpdatedDate = storageStudent.UpdatedDate;
-            invalidStudent.CreatedBy = invalidCreatedBy;
-            Guid studentId = invalidStudent.Id;
+            Student modifiedStudent = storageStudent.DeepClone();
+            modifiedStudent.CreatedDate = storageStudent.CreatedDate.AddDays(randomNumber);
+            modifiedStudent.UpdatedDate = storageStudent.UpdatedDate;
+            modifiedStudent.CreatedBy = invalidCreatedBy;
+            Guid studentId = modifiedStudent.Id;
 
             var invalidStudentException = new InvalidStudentException();
 
@@ -284,12 +284,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                 values: $"Date is not the same as {nameof(Student.CreatedDate)}");
             invalidStudentException.AddData(
                 key: nameof(Student.UpdatedDate),
-                values: $"Date is same as {nameof(Student.UpdatedDate)}");
+                values: $"Date is the same as {nameof(Student.UpdatedDate)}");
             invalidStudentException.AddData(
                 key: nameof(Student.CreatedBy),
                 values: $"Id is not the same as {nameof(Student.CreatedBy)}");
 
-            var expectedStudentValidationException =
+            StudentValidationException expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -302,7 +302,7 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
 
             // when
             ValueTask<Student> modifyStudentTask =
-                this.studentService.ModifyStudentAsync(invalidStudent);
+                this.studentService.ModifyStudentAsync(modifiedStudent);
 
             // then
             await Assert.ThrowsAsync<StudentValidationException>(() =>
@@ -313,13 +313,12 @@ namespace OtripleS.Web.Api.Tests.Unit.Services.Foundations.Students
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectStudentByIdAsync(invalidStudent.Id),
+                broker.SelectStudentByIdAsync(modifiedStudent.Id),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(
-                    expectedStudentValidationException))),
-                        Times.Once);
+                broker.LogError(It.Is(SameValidationExceptionAs(expectedStudentValidationException))),
+                    Times.Once);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
