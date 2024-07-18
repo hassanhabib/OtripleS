@@ -29,83 +29,25 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
             ValidateInvalidAuditFields(user);
             ValidateAuditFieldsOnModify(user);
         }
-
-        private static void ValidateStorageUser(User storageUser, Guid userId)
+        
+        private static void ValidateUserIsNull(User user)
         {
-            if (storageUser is null)
+            if (user is null)
             {
-                throw new NotFoundUserException(userId);
+                throw new NullUserException();
             }
         }
-
-        private void ValidateCreatedDateIsRecent(User user)
+        
+        private static void ValidateUserIdIsNull(Guid userId)
         {
-            if (IsDateNotRecent(user.CreatedDate))
+            if (userId == default)
             {
                 throw new InvalidUserException(
-                    parameterName: nameof(User.CreatedDate),
-                    parameterValue: user.CreatedDate);
+                    parameterName: nameof(User.Id),
+                    parameterValue: userId);
             }
         }
-
-        private static void ValidateAuditFieldsDataOnCreate(User user)
-        {
-            switch (user)
-            {
-                case { } when user.UpdatedDate != user.CreatedDate:
-                    throw new InvalidUserException(
-                    parameterName: nameof(User.UpdatedDate),
-                    parameterValue: user.UpdatedDate);
-            }
-        }
-
-        private static void ValidateInvalidAuditFields(User user)
-        {
-            switch (user)
-            {
-                case { } when IsInvalid(user.CreatedDate):
-                    throw new InvalidUserException(
-                    parameterName: nameof(User.CreatedDate),
-                    parameterValue: user.CreatedDate);
-                case { } when IsInvalid(user.UpdatedDate):
-                    throw new InvalidUserException(
-                    parameterName: nameof(User.UpdatedDate),
-                    parameterValue: user.UpdatedDate);
-            }
-        }
-
-        private void ValidateAuditFieldsOnModify(User user)
-        {
-            switch (user)
-            {
-                case { } when user.UpdatedDate == user.CreatedDate:
-                    throw new InvalidUserException(
-                        parameterName: nameof(User.UpdatedDate),
-                        parameterValue: user.UpdatedDate);
-
-                case { } when IsDateNotRecent(user.UpdatedDate):
-                    throw new InvalidUserException(
-                        parameterName: nameof(User.UpdatedDate),
-                        parameterValue: user.UpdatedDate);
-            }
-        }
-
-        private static void ValidateAgainstStorageUserOnModify(User inputUser, User storageUser)
-        {
-            switch (inputUser)
-            {
-                case { } when inputUser.CreatedDate != storageUser.CreatedDate:
-                    throw new InvalidUserException(
-                        parameterName: nameof(User.CreatedDate),
-                        parameterValue: inputUser.CreatedDate);
-
-                case { } when inputUser.UpdatedDate == storageUser.UpdatedDate:
-                    throw new InvalidUserException(
-                        parameterName: nameof(User.UpdatedDate),
-                        parameterValue: inputUser.UpdatedDate);
-            }
-        }
-
+        
         private static void ValidateUserFields(User user)
         {
             if (IsInvalid(user.UserName))
@@ -127,22 +69,80 @@ namespace OtripleS.Web.Api.Services.Foundations.Users
                     parameterValue: user.FamilyName);
             }
         }
-
-        private static void ValidateUserIdIsNull(Guid userId)
+        
+        private static void ValidateInvalidAuditFields(User user)
         {
-            if (userId == default)
+            switch (user)
             {
-                throw new InvalidUserException(
-                    parameterName: nameof(User.Id),
-                    parameterValue: userId);
+                case { } when IsInvalid(user.CreatedDate):
+                    throw new InvalidUserException(
+                    parameterName: nameof(User.CreatedDate),
+                    parameterValue: user.CreatedDate);
+                case { } when IsInvalid(user.UpdatedDate):
+                    throw new InvalidUserException(
+                    parameterName: nameof(User.UpdatedDate),
+                    parameterValue: user.UpdatedDate);
+            }
+        }
+        
+        private static void ValidateAuditFieldsDataOnCreate(User user)
+        {
+            switch (user)
+            {
+                case { } when user.UpdatedDate != user.CreatedDate:
+                    throw new InvalidUserException(
+                    parameterName: nameof(User.UpdatedDate),
+                    parameterValue: user.UpdatedDate);
+            }
+        }
+        
+        private void ValidateAuditFieldsOnModify(User user)
+        {
+            switch (user)
+            {
+                case { } when user.UpdatedDate == user.CreatedDate:
+                    throw new InvalidUserException(
+                        parameterName: nameof(User.UpdatedDate),
+                        parameterValue: user.UpdatedDate);
+
+                case { } when IsDateNotRecent(user.UpdatedDate):
+                    throw new InvalidUserException(
+                        parameterName: nameof(User.UpdatedDate),
+                        parameterValue: user.UpdatedDate);
+            }
+        }
+        
+        private static void ValidateStorageUser(User storageUser, Guid userId)
+        {
+            if (storageUser is null)
+            {
+                throw new NotFoundUserException(userId);
             }
         }
 
-        private static void ValidateUserIsNull(User user)
+        private static void ValidateCreatedDateIsRecent(User user)
         {
-            if (user is null)
+            if (IsDateNotRecent(user.CreatedDate))
             {
-                throw new NullUserException();
+                throw new InvalidUserException(
+                    parameterName: nameof(User.CreatedDate),
+                    parameterValue: user.CreatedDate);
+            }
+        }
+        
+        private static void ValidateAgainstStorageUserOnModify(User inputUser, User storageUser)
+        {
+            switch (inputUser)
+            {
+                case { } when inputUser.CreatedDate != storageUser.CreatedDate:
+                    throw new InvalidUserException(
+                        parameterName: nameof(User.CreatedDate),
+                        parameterValue: inputUser.CreatedDate);
+
+                case { } when inputUser.UpdatedDate == storageUser.UpdatedDate:
+                    throw new InvalidUserException(
+                        parameterName: nameof(User.UpdatedDate),
+                        parameterValue: inputUser.UpdatedDate);
             }
         }
 
